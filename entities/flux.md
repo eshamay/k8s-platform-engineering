@@ -3,7 +3,7 @@ title: Flux
 type: entity
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -80,6 +80,9 @@ sources:
   - id: research-pitfalls-and-case-studies
     hash: 9407913c2448
     ingested: 2026-11-25
+  - id: research-gap-g3-reconcile-defaults
+    hash: b7be72012393
+    ingested: 2026-11-26
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -96,15 +99,15 @@ See [[findings/destructive-deletion-of-external-resources]], [[findings/immutabl
 
 ## Declarative behavior details
 
-The concepts page defines sources that produce artifacts, which Kustomization and HelmRelease objects apply, with reconciliation on an interval that reverts manual changes unless suspended. The Kustomization API adds a per-object prune opt-out annotation, a deletion policy (MirrorPrune, Delete, WaitForTermination, Orphan), and `force`, which should be set only temporarily because it can cause downtime. The concepts page says the default interval is five minutes while the API page says the minimum is 60 seconds, which needs verification. [[sources/research-declarative-vs-imperative]] See [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]] and [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]].
+The concepts page defines sources that produce artifacts, which Kustomization and HelmRelease objects apply, with reconciliation on an interval that reverts manual changes unless suspended. The Kustomization API adds a per-object prune opt-out annotation, a deletion policy (MirrorPrune, Delete, WaitForTermination, Orphan), and `force`, which should be set only temporarily because it can cause downtime. The concepts page says the default interval is five minutes, while the Kustomization API page marks `.spec.interval` as required and only recommends a 60 second minimum. Correction 2026-11-26: no controller-side default exists, so the five-minute figure is not a default, see [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]]. [[sources/research-declarative-vs-imperative]] See [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]] and [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]].
 
 ## Interval, retry, and suspend
 
-The Kustomization `.spec.interval` (minimum 60 seconds) re-fetches, builds, and applies on a schedule, with a server-side apply dry run each cycle for drift detection. `.spec.retryInterval` governs failures, reconcile also runs immediately on source revision or metadata changes, `.spec.suspend` stops applying and drift detection, and `.spec.force` recreates objects on immutable-field conflicts. [[sources/research-level-triggered-vs-edge-triggered]] See [[comparisons/reconcile-cadence-and-off-switches-across-tools]] and [[examples/gitops-reverts-a-hand-edited-deployment]].
+The Kustomization `.spec.interval` (required, with a recommended minimum of 60 seconds that the CRD does not enforce) re-fetches, builds, and applies on a schedule, with a server-side apply dry run each cycle for drift detection. `.spec.retryInterval` governs failures, reconcile also runs immediately on source revision or metadata changes, `.spec.suspend` stops applying and drift detection, and `.spec.force` recreates objects on immutable-field conflicts. [[sources/research-level-triggered-vs-edge-triggered]] See [[comparisons/reconcile-cadence-and-off-switches-across-tools]] and [[examples/gitops-reverts-a-hand-edited-deployment]].
 
 ## Convergence behavior
 
-Flux re-reconciles a Kustomization at `spec.interval` (minimum 60 seconds), uses a server-side apply dry run to detect drift, reconciles immediately when the generation or source revision changes, and separates `retryInterval` for failures. `dependsOn` makes dependents wait for Ready, and `wait` and `healthChecks` define readiness. `force` handles immutable fields at the risk of downtime. [[sources/research-eventual-consistency-and-convergence]] See [[examples/flux-dependson-and-health-checks-gate-rollout]] and [[findings/drift-detection-latency-is-the-interval]].
+Flux re-reconciles a Kustomization at `spec.interval` (required, recommended minimum 60 seconds), uses a server-side apply dry run to detect drift, reconciles immediately when the generation or source revision changes, and separates `retryInterval` for failures. `dependsOn` makes dependents wait for Ready, and `wait` and `healthChecks` define readiness. `force` handles immutable fields at the risk of downtime. [[sources/research-eventual-consistency-and-convergence]] See [[examples/flux-dependson-and-health-checks-gate-rollout]] and [[findings/drift-detection-latency-is-the-interval]].
 
 ## Related concepts
 
@@ -148,7 +151,7 @@ The Flux components page describes Flux as built from the GitOps Toolkit: specia
 
 ## Interval, retry, and timing in the reconciliation-loop dossier
 
-The Kustomization reference describes `spec.interval` as the periodic reconcile cadence with a 60 second minimum, `retryInterval` as the delay after failures (defaulting to `interval`), `timeout` as the bound on build, apply, and health-check work, and `suspend` as the switch that pauses reconciliation and drift correction. Jitter can spread many Kustomizations, and a manual reconcile can be requested by annotation. The dossier read only the first 100,000 of about 121,600 characters of the page. [[sources/research-reconciliation-loop]] See [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]] and [[concepts/reconciliation-loop]].
+The Kustomization reference describes `spec.interval` as the required periodic reconcile cadence with a recommended 60 second minimum, `retryInterval` as the delay after failures (defaulting to `interval`), `timeout` as the bound on build, apply, and health-check work, and `suspend` as the switch that pauses reconciliation and drift correction. Jitter can spread many Kustomizations, and a manual reconcile can be requested by annotation. The dossier read only the first 100,000 of about 121,600 characters of the page. [[sources/research-reconciliation-loop]] See [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]] and [[concepts/reconciliation-loop]].
 
 ## Repeated apply as idempotency
 
@@ -198,3 +201,7 @@ The scale dossier describes two ways to add capacity to Flux. Vertical scaling r
 ## Ignore rules for drift fights in the pitfalls dossier
 
 The pitfalls dossier reports that kustomize-controller reverts any field another controller changes, such as HPA replicas or a cainjector-written `caBundle`, and that a Flux user hit a SEV2 when Flux, the HPA, and the cluster autoscaler looped. Flux added a Kustomization `.spec.ignore` list of JSON Pointer paths with an optional target selector. Flux strips the field when another server-side apply manager owns it and adopts the live value when it is the sole owner. Ignored fields do not trigger reconciliation, `flux diff` honours the rules, and Git changes to an ignored field are no longer applied. See [[examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed]], [[findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied]], [[concepts/pitfalls-and-case-studies]], and [[sources/research-pitfalls-and-case-studies]]. URL: https://fluxcd.io/blog/2026/08/ignore-rules-drift-detection/.
+
+## Interval default and drift wording in the reconcile-defaults dossier
+
+The 2026-11-26 verification settles the default question. `.spec.interval` is required on both the Kustomization and the HelmRelease, the CRD Go type carries only a duration-format pattern with no default and no minimum, and the reference says "The minimum value should be 60 seconds", which is a recommendation. The `flux create` command's global `--interval` flag defaults to one minute, which is the only default found. The concepts page's "every five minutes by default" therefore matches no controller behavior, and the ten-minute figure in the reference is an example of drift-check cadence. Drift correction happens on the interval (the reference says reconciliation applies the Kustomization "correcting any existing drift"), source or spec changes are handled instantly outside the interval, `retryInterval` defaults to `.spec.interval`, and the controller can be configured with jitter whose value was not read. A guide example uses `interval: 60m0s` with the comment "detect drift and undo kubectl edits every hour". [[sources/research-gap-g3-reconcile-defaults]] See [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]] and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].

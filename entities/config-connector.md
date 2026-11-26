@@ -1,9 +1,9 @@
 ---
 title: Config Connector
 type: entity
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
@@ -56,6 +56,9 @@ sources:
   - id: research-landscape
     hash: d28204a90545
     ingested: 2026-11-25
+  - id: research-gap-g3-reconcile-defaults
+    hash: b7be72012393
+    ingested: 2026-11-26
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -139,3 +142,7 @@ The kro overview says kro works with any CRD and names ACK, Azure Service Operat
 ## Landscape view: identity and ordering
 
 The overview says Config Connector "reconciles the configured state against Google Cloud APIs asynchronously" and acts with its own IAM service account, which centralizes authorization, see [[findings/controllers-that-act-with-their-own-cloud-identity-give-whoever-can-create-a-resource-that-identity-s-rights]]. A single practitioner blog reports no Terraform-style dependency ordering and unordered deletion under Argo CD, worked around with sync waves and a finalizer-patching CronJob, see [[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]]. The dossier did not confirm namespaced versus cluster mode details or deletion policies. See [[examples/google-cloud-shops-deliver-config-connector-resources-from-git-while-the-controller-s-own-identity-makes-the-cloud-calls]]. [[sources/research-landscape]]
+
+## Reconcile interval and drift cadence in the reconcile-defaults dossier
+
+The reconciliation page says resources reconcile on every update and "after a jitter period with an average based on the preconfigured default interval". In source the global default mean is 10 minutes, the interval resolves from the Terraform service mapping, DCL metadata, IAM kind constants, and then the default, jitter spreads requeues between 0.5 and 1.5 times the mean (5 to 15 minutes by default), the annotation `cnrm.cloud.google.com/reconcile-interval-in-seconds` overrides it per resource, setting it to 0 is documented as irreversible, and failure backoff is capped at 120 seconds by default. Per-kind Terraform and DCL values were not read, so whether the controller types differ by default is open. [[sources/research-gap-g3-reconcile-defaults]] See [[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]].

@@ -3,11 +3,14 @@ title: "Upjet"
 type: entity
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-provider
     hash: 7e43edcd71be
     ingested: 2026-11-25
+  - id: research-gap-g3-reconcile-defaults
+    hash: b7be72012393
+    ingested: 2026-11-26
 aliases: []
 tags: [upjet, crossplane, terraform, code-generation, provider]
 ---
@@ -29,3 +32,7 @@ See [[examples/upjet-generates-crossplane-providers-from-terraform-providers]]. 
 ## Consequences and open points
 
 Generated providers share behavior and bugs, see [[findings/generated-provider-catalogs-inherit-the-behavior-and-bugs-of-their-generator]]. Whether the runtime invokes Terraform as a subprocess or in-process, and what it costs in memory, was not confirmed. Related: [[entities/crossplane]], [[concepts/provider]], [[entities/tofu-controller]].
+
+## Poll interval override in generated providers
+
+A provider generated with Upjet can override the Crossplane default poll interval. provider-upjet-aws sets `--poll` to 10m, `--sync` to 1h, and `--max-reconcile-rate` to 100, with poll jitter of 5 percent of the interval, against a 1 minute default in crossplane-runtime and core. [[sources/research-gap-g3-reconcile-defaults]] See [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]].

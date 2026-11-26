@@ -198,6 +198,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the full pages directly and correct the entity and finding pages.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** argo-cd, flux, ack, verification
+- **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Marginally helpful, on the ACK default only. The 10 hour resync default is verified against the drift-recovery page and the runtime constant `defaultResyncPeriod = 10 * time.Hour`. The failure-mode details for Argo CD drift, Flux conflicts, and Config Connector were not read. See [[entities/ack]].
+
 
 ## Community direction for the Kubernetes-as-a-kernel distribution model — status: open
 
@@ -220,6 +222,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, drift, verification
 - **Possible resolution from [[sources/research-idempotency]]:** Only marginally helpful. The Kustomization reference quote ("every ten minutes, the Kustomization runs a server-side apply dry-run") uses ten minutes as an example interval, and the dossier does not state a default or the 60-second minimum. See [[entities/flux]].
+- **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Settled, and the user can close it. The concepts page's "every five minutes by default" matches no controller behavior. `.spec.interval` is required on the Kustomization and the HelmRelease, the CRD Go type has only a duration-format pattern with no default and no minimum, and the reference says "The minimum value should be 60 seconds", a recommendation and not an enforced floor. The only default found is the `flux create` global `--interval` flag at one minute. The ten-minute figure is an example of drift-check cadence, and a guide example uses `60m0s` for hourly drift correction. Drift is corrected on the interval, and source or spec changes are handled instantly outside it. Not settled: the origin of the five-minute wording and the controller jitter value. See [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[entities/flux]], and [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
+
 
 ## Adoption, observe-only, and ignore-differences controls — status: open
 
@@ -306,6 +310,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** crossplane, ack, cluster-api, intervals
 - **Possible resolution from [[sources/research-informers-reflectors-and-workqueues]]:** Marginally helpful, for Crossplane only. Crossplane providers gained `--max-reconcile-rate` in 1.6 alongside `--poll-interval`, but no default value is stated and the current performance guide was not read. See [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]].
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Partly helpful. ACK defaults to about 10 hours after `ResourceSynced` with per-kind overrides. Crossplane's poll interval is configurable but its default is still not stated, and the Cluster API source is the v0.4 book. See [[comparisons/drift-detection-mechanisms-across-tools]].
+- **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Settled for Crossplane and ACK, and only partly for Cluster API, so the user should decide whether to close it. Crossplane's poll interval is 1 minute in crossplane-runtime and core (minimum per-resource value 1 second), and the provider-upjet-aws S3 provider overrides it to 10 minutes with a 1 hour sync period, `--max-reconcile-rate` 100, and 5 percent jitter. The per-resource `crossplane.io/poll-interval` annotation is implemented although its design one-pager is still marked Draft. ACK defaults to 10 hours after `ResourceSynced`, from both the docs page and the runtime constant, with Helm overrides per controller or per kind. Cluster API's `--sync-period` is 10 minutes but is a cache resync, and no per-resource drift period or MachineHealthCheck cadence was found. Not settled: the docs.crossplane.io poll page and Cluster API infrastructure drift handling. The cadence comparison rows are filled in [[comparisons/reconcile-cadence-and-off-switches-across-tools]]. See [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]] and [[findings/the-cluster-api-sync-period-flag-is-a-cache-resync-and-not-a-poll-of-the-cloud-infrastructure]].
+
 
 
 ## Kubernetes v1.36 staleness mitigation mechanisms and metrics — status: open
@@ -367,6 +373,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Fill the Config Connector row in [[comparisons/drift-detection-mechanisms-across-tools]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** config-connector, intervals, verification
+- **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Partly settled, and the user decides whether to close it. The docs describe a jittered average based on a per-resource default without stating a number. In source the global default mean is 10 minutes, jitter spreads requeues between 0.5 and 1.5 times the mean (5 to 15 minutes), the annotation `cnrm.cloud.google.com/reconcile-interval-in-seconds` overrides it per resource, setting it to 0 is documented as irreversible, and failure backoff is capped at 120 seconds. The resolution order runs Terraform service mapping, DCL metadata, IAM kind constants, then the default. Not settled: the per-kind Terraform and DCL values, so whether direct, Terraform-based, and DCL-based controllers differ by default stays open. The drift comparison row is filled in [[comparisons/drift-detection-mechanisms-across-tools]]. See [[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]] and [[entities/config-connector]].
+
 
 ## Production incidents from drift correction — status: open
 
@@ -802,6 +810,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the `timeout.reconciliation` documentation for several releases.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** argo-cd, intervals
+- **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Settled for the versions sampled, and the user can close it. `timeout.reconciliation` is 180s from v2.5.0 through v2.14.0 (the jitter key appears from v2.10.0 with default 0) and 120s plus 60s of jitter from v3.0.0 through v3.6.0, in both the manifest and the controller constants. The v3.0.0 FAQ restates 3 minutes as a "default maximum polling interval", and the v3.2.0 high-availability page still says 3m. Not settled: why the default changed (the upgrade notes and pull request searches found nothing) and the values for v2.0.0 to v2.4.0, which were not sampled. See [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]] and [[entities/argo-cd]].
+
 
 ## Named postmortems of runaway reconcile loops — status: open
 

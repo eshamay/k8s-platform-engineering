@@ -92,6 +92,9 @@ sources:
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
+  - id: research-gap-g3-reconcile-defaults
+    hash: b7be72012393
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -116,7 +119,7 @@ A provider re-reconciles each managed resource, compares `forProvider` to the ex
 
 ## Convergence behavior
 
-Managed resources report `Synced` and `Ready`, can set a poll interval per resource by annotation, link to the cloud identifier with the external-name annotation, and back off on errors. The default poll interval and backoff values were not stated in the convergence dossier. [[sources/research-eventual-consistency-and-convergence]] See [[examples/crossplane-database-claim-reports-synced-and-ready]].
+Managed resources report `Synced` and `Ready`, can set a poll interval per resource by annotation, link to the cloud identifier with the external-name annotation, and back off on errors. The convergence dossier did not state the default poll interval or backoff values. Correction 2026-11-26: the poll interval defaults to 1 minute in crossplane-runtime and core and to 10 minutes in Upjet providers, see [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]]. [[sources/research-eventual-consistency-and-convergence]] See [[examples/crossplane-database-claim-reports-synced-and-ready]].
 
 ## Related concepts
 
@@ -248,3 +251,7 @@ Release v2.5.0 was published on 2026-11-24, and v1.20 reached end of life with i
 **Activation policies and scale.** MRDs and MRAPs are alpha in the docs, the Helm chart activates everything by default, and v2.4 and v2.5 add provider scale-to-zero and memory cuts, see [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]] and [[examples/crossplane-v2-4-and-v2-5-cut-memory-on-clusters-with-hundreds-to-two-thousand-crds]]. The 2023 family-split decision still stands and now has an alpha alternative, see [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]]. The scale dossier's statement that no source covered v2 scaling guidance is superseded: there is no single v2 scaling page, but the Pods guide, v2.1.0 notes (API Priority and Fairness, an XR circuit breaker, and `--max-concurrent-reconciles`), and design docs give guidance, and no numeric limits are documented.
 
 **Scanners.** Pluto and kubent carry no Crossplane rules, see [[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]].
+
+## Poll interval defaults in the reconcile-defaults dossier
+
+The managed reconciler in crossplane-runtime defaults to a 1 minute poll interval, Crossplane core's `--poll-interval` flag defaults to 1 minute with a 1 second minimum per-resource value, and the provider-upjet-aws S3 provider overrides it with `--poll` 10m, `--sync` 1h, `--max-reconcile-rate` 100, and poll jitter of 5 percent of the interval. The `crossplane.io/poll-interval` annotation is implemented in code although its design one-pager is still marked Draft. The docs.crossplane.io page for the provider poll interval was not read. [[sources/research-gap-g3-reconcile-defaults]] See [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]] and [[entities/upjet]].

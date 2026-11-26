@@ -3,7 +3,7 @@ title: Self-Healing and Drift Detection
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -20,6 +20,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-gap-g3-reconcile-defaults
+    hash: b7be72012393
+    ingested: 2026-11-26
 aliases: [Drift correction]
 tags: [architecture, principle]
 ---
@@ -44,13 +47,13 @@ For external infrastructure such as cloud databases, buckets, and IAM, the same 
 
 ## Tool behavior and escape hatches
 
-Flux reconciles Kustomizations on an interval and reverts manual changes unless suspended, using a server-side apply dry run (minimum 60 seconds on the Kustomization page). For Helm releases, drift detection is a per-release option whose `mode` is `disabled` by default, `warn` to emit events only, or `enabled` to correct. Argo CD reverts live changes only when self-heal is enabled, and self-heal is off by default. Flux suspend is the escape hatch for incident work. Drift correction can also fight server-defaulted values, as Config Connector's legacy Merge mode showed. See [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]] and [[findings/defaulting-and-drift-reconcile-loops]]. [[sources/research-declarative-vs-imperative]]
+Flux reconciles Kustomizations on an interval and reverts manual changes unless suspended, using a server-side apply dry run (required, no default, 60 seconds recommended minimum on the Kustomization page). For Helm releases, drift detection is a per-release option whose `mode` is `disabled` by default, `warn` to emit events only, or `enabled` to correct. Argo CD reverts live changes only when self-heal is enabled, and self-heal is off by default. Flux suspend is the escape hatch for incident work. Drift correction can also fight server-defaulted values, as Config Connector's legacy Merge mode showed. See [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]] and [[findings/defaulting-and-drift-reconcile-loops]]. [[sources/research-declarative-vs-imperative]]
 
 Every stack offers a way to say "do not fight this field or resource": Argo CD `ignoreDifferences`, Flux `driftDetection.ignore` and the `ssa` annotation, Crossplane `managementPolicies` and the pause annotation, and server-side apply conflict handling. See [[comparisons/exemption-and-ignore-controls-across-tools]]. [[sources/research-self-healing-and-drift-detection]]
 
 ## Cadence and cost
 
-Drift correction is level-triggered reconciliation applied repeatedly, so its latency and cost are set by intervals and jitter. Flux uses a 60 second minimum interval, Argo CD polls with 120 seconds plus up to 60 seconds of jitter, and Config Connector offers an interval annotation where longer intervals reduce API quota use. [[sources/research-level-triggered-vs-edge-triggered]] External-API controllers choose much longer periods: ACK defaults to about 10 hours with per-kind overrides, and kro's dynamic controller resyncs every 10 hours. See [[comparisons/reconcile-cadence-and-off-switches-across-tools]], [[decisions/choosing-a-drift-check-interval-for-external-resources]], [[findings/cost-of-constant-reconciliation]], and [[findings/continuous-loops-override-intentional-changes]]. [[sources/research-self-healing-and-drift-detection]]
+Drift correction is level-triggered reconciliation applied repeatedly, so its latency and cost are set by intervals and jitter. Flux requires an explicit interval (60 seconds recommended minimum), Argo CD v3.x polls with 120 seconds plus up to 60 seconds of jitter, and Config Connector offers an interval annotation where longer intervals reduce API quota use. [[sources/research-level-triggered-vs-edge-triggered]] External-API controllers choose much longer periods: ACK defaults to about 10 hours with per-kind overrides, and kro's dynamic controller resyncs every 10 hours. See [[comparisons/reconcile-cadence-and-off-switches-across-tools]], [[decisions/choosing-a-drift-check-interval-for-external-resources]], [[findings/cost-of-constant-reconciliation]], and [[findings/continuous-loops-override-intentional-changes]]. [[sources/research-self-healing-and-drift-detection]]
 
 ## Drift detection latency
 
@@ -70,4 +73,4 @@ The sources agree that correction is never free of policy. The main failure mode
 
 ## To research
 
-Production postmortems of drift-correction incidents, Crossplane's default poll interval, Config Connector's drift cadence, and current Cluster API remediation behavior. See [[open-knowledge-gaps]].
+Production postmortems of drift-correction incidents, per-kind Config Connector drift cadence, and current Cluster API remediation behavior. Crossplane's poll interval and Config Connector's default mean are now verified, see [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]] and [[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]]. See [[open-knowledge-gaps]].

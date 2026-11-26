@@ -22,6 +22,12 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-part-3-for-the-kro-v0-10-0-verification-pass]] — open
 - [[#update-part-4-for-the-kro-v0-10-0-verification-pass]] — open
 - [[#update-part-5-for-the-kro-v0-10-0-verification-pass]] — open
+- [[#update-part-1-for-the-reconcile-defaults-verification-pass]] — open
+- [[#update-part-2-for-the-reconcile-defaults-verification-pass]] — open
+- [[#update-part-3-for-the-reconcile-defaults-verification-pass]] — open
+- [[#update-part-5-for-the-reconcile-defaults-verification-pass]] — open
+- [[#update-flux-ramp-up-for-the-reconcile-defaults-verification-pass]] — open
+- [[#update-crossplane-ramp-up-for-the-reconcile-defaults-verification-pass]] — open
 
 ## Open
 
@@ -95,6 +101,48 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, revise the paragraph beginning "The same split-by-key idea appears outside GitOps". It says "unreleased kro documentation gives a default of 20 retries" and "Treat all of these as unreleased-doc values that may differ in released versions". The v0.10.0 release documents the same values, so drop the caveat, cite the released version, and optionally add the documented note that per-RGD queues may replace the shared queue and the collection limit of 1000 items ([[findings/a-kro-foreach-collection-above-the-1000-item-default-limit-gets-stuck-during-deletion]]). Cite [[examples/kro-shared-queue-tunes-throughput]] and [[sources/research-gap-g3-kro]].
 - **Why:** The 2026-11-26 kro dossier verified the defaults at a released version.
 - **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-1 for the reconcile defaults verification pass — status: open
+
+- **What:** In `outputs/part-1-core-architectural-principles.md`, revise three places. (1) In the detection-cadence table, the Flux Kustomization row says "`interval`, minimum 60 seconds" and should say the interval is required with no default and 60 seconds is a recommended minimum; the Argo CD row should say 120 seconds plus up to 60 seconds of jitter in v3.x and 180 seconds in v2.x; the Crossplane row says "Configurable poll interval; default not confirmed" and should give 1 minute in core and runtime and 10 minutes in Upjet providers; the ACK row can drop "About". (2) The sentence beginning "The wiki notes that Flux's concepts page gives a five-minute default interval" should say the interval is required, has no controller-side default, and the five-minute figure is documentation shorthand. (3) The provider-controller paragraph on Config Connector cadence can add the 10 minute mean with jitter. Cite [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]], [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]], and [[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]].
+- **Why:** The 2026-11-26 reconcile defaults dossier corrected or settled the cadence figures this passage states, see [[sources/research-gap-g3-reconcile-defaults]].
+- **Acceptance:** Passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-2 for the reconcile defaults verification pass — status: open
+
+- **What:** In `outputs/part-2-krm-and-api-machinery.md`, the cloud add-ons paragraph says ACK has "a periodic resync that the dossier states as ten hours by default (flagged for re-verification)". The 10 hour default is now verified against the ACK drift-recovery page and the runtime constant, so the re-verification flag can be dropped. Cite [[entities/ack]] and [[sources/research-gap-g3-reconcile-defaults]].
+- **Why:** The 2026-11-26 reconcile defaults dossier corrected or settled the cadence figures this passage states, see [[sources/research-gap-g3-reconcile-defaults]].
+- **Acceptance:** Passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 for the reconcile defaults verification pass — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the "How they time the loop" paragraph says Flux uses `spec.interval` "with a minimum of 60 seconds" and that Argo CD polls on "a 120 second cadence with up to 60 seconds of jitter". Revise it to say the Flux interval is required with a recommended 60 second minimum and no controller default, and that Argo CD's 120 plus 60 second figure is the v3.x default (v2.x was a flat 180 seconds). It can also add the Crossplane 1 minute and 10 minute poll defaults and Config Connector's 10 minute jittered mean. Cite [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]], and [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]].
+- **Why:** The 2026-11-26 reconcile defaults dossier corrected or settled the cadence figures this passage states, see [[sources/research-gap-g3-reconcile-defaults]].
+- **Acceptance:** Passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 for the reconcile defaults verification pass — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, revise two passages. The Flux Kustomization paragraph says "the Kustomization page gives a minimum of 60 seconds" and should say the interval is required with a recommended 60 second minimum. The delivery-layer paragraph says Argo CD polls "on a 120-second cadence with up to 60 seconds of jitter" and should name v3.x (180 seconds in v2.x). Cite [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]] and [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]].
+- **Why:** The 2026-11-26 reconcile defaults dossier corrected or settled the cadence figures this passage states, see [[sources/research-gap-g3-reconcile-defaults]].
+- **Acceptance:** Passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update the Flux ramp-up for the reconcile defaults verification pass — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, revise three passages. The interval paragraph ("the Kustomization API page documents a minimum of 60 seconds, though the wiki's sources disagree about the default") and the following "A note on defaults" paragraph, which says the wiki flags the default as needing verification, should now say that `.spec.interval` is required, no controller-side default exists, the 60 second minimum is a recommendation, and the five-minute figure on the concepts page is shorthand; the advice to set the interval explicitly stays. The unknowns paragraph near the end that says the default is "stated as five minutes on one page and has a 60 second minimum on another" should be corrected the same way. Cite [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]] and [[entities/flux]].
+- **Why:** The 2026-11-26 reconcile defaults dossier corrected or settled the cadence figures this passage states, see [[sources/research-gap-g3-reconcile-defaults]].
+- **Acceptance:** Passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update the Crossplane ramp-up for the reconcile defaults verification pass — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the reconcile-load paragraph says the managed resource poll interval "is the one the wiki did not confirm from the sources it read", and the unknowns paragraph says "The default poll interval and backoff values for managed resources were not confirmed". The poll interval is now verified at 1 minute in crossplane-runtime and core and 10 minutes in Upjet providers (with a 1 hour sync period, `--max-reconcile-rate` 100, and 5 percent jitter), and the per-resource `crossplane.io/poll-interval` annotation is implemented. Backoff values remain unverified. Cite [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]] and [[entities/upjet]].
+- **Why:** The 2026-11-26 reconcile defaults dossier corrected or settled the cadence figures this passage states, see [[sources/research-gap-g3-reconcile-defaults]].
+- **Acceptance:** Passages revised and citing the pages named above.
 - **Drafted by:** agent on 2026-11-26
 
 ## Done

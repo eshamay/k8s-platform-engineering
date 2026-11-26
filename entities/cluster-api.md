@@ -3,7 +3,7 @@ title: Cluster API
 type: entity
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
@@ -53,6 +53,9 @@ sources:
   - id: research-landscape
     hash: d28204a90545
     ingested: 2026-11-25
+  - id: research-gap-g3-reconcile-defaults
+    hash: b7be72012393
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -132,3 +135,7 @@ The Providers dossier read the provider contracts overview. Cluster API defines 
 ## Landscape view
 
 The Cluster API Book describes a management cluster running Cluster API and providers to manage workload clusters, with infrastructure providers creating machines and networks, bootstrap providers producing node init data (typically cloud-init), and control-plane providers managing the control plane, as in "custom resources like KubeadmControlPlane to manage control plane Machines" (https://cluster-api.sigs.k8s.io/user/concepts). The dossier calls the Deployment-to-Pod analogy the best newcomer hook. Crossplane adopters such as RTL Nederland also provision whole clusters, so the layers overlap, see [[examples/rtl-nederland-provisions-whole-kubernetes-clusters-with-crossplane-which-overlaps-with-cluster-api]] and [[concepts/tooling-landscape]]. [[sources/research-landscape]]
+
+## Sync period in the reconcile-defaults dossier
+
+The core controller flag `--sync-period` defaults to 10 minutes and is described as "The minimum interval at which watched resources are reconciled (e.g. 15m)". It is a cache resync and not an infrastructure poll, and no per-resource drift period or MachineHealthCheck requeue period was found. [[sources/research-gap-g3-reconcile-defaults]] See [[findings/the-cluster-api-sync-period-flag-is-a-cache-resync-and-not-a-poll-of-the-cloud-infrastructure]].

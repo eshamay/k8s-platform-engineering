@@ -3,7 +3,7 @@ title: GitOps reverts a hand-edited Deployment
 type: example
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
@@ -11,6 +11,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-gap-g3-reconcile-defaults
+    hash: b7be72012393
+    ingested: 2026-11-26
 aliases: []
 tags: [gitops, drift, flux, argo-cd]
 ---
@@ -23,11 +26,11 @@ Someone hand-edits a Deployment in production, for example with `kubectl edit`. 
 
 ## How Flux does it
 
-The Flux Kustomization controller re-applies on `.spec.interval`, with a minimum of 60 seconds, and runs a server-side apply dry run each cycle to detect drift. It also reconciles immediately when the source revision or relevant metadata changes, so events are a latency optimization on top of the interval. Setting `.spec.suspend` stops both applying and drift detection. See [[entities/flux]].
+The Flux Kustomization controller re-applies on `.spec.interval`, which is required and has a recommended minimum of 60 seconds, and runs a server-side apply dry run each cycle to detect drift. It also reconciles immediately when the source revision or relevant metadata changes, so events are a latency optimization on top of the interval. Setting `.spec.suspend` stops both applying and drift detection. See [[entities/flux]].
 
 ## How Argo CD does it
 
-Argo CD compares Git manifests to live state and marks the Application OutOfSync. With automated sync and self-heal enabled it re-applies, which reverts the manual edit. Polling follows `timeout.reconciliation`, documented as 120 seconds plus up to 60 seconds of jitter. See [[entities/argo-cd]].
+Argo CD compares Git manifests to live state and marks the Application OutOfSync. With automated sync and self-heal enabled it re-applies, which reverts the manual edit. Polling follows `timeout.reconciliation`, documented as 120 seconds plus up to 60 seconds of jitter in v3.x (180 seconds in v2.x, see [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]]). See [[entities/argo-cd]].
 
 ## Lesson
 

@@ -3,7 +3,7 @@ title: Drift detection latency is the interval
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
@@ -11,6 +11,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-gap-g3-reconcile-defaults
+    hash: b7be72012393
+    ingested: 2026-11-26
 aliases: []
 tags: [drift, intervals, api-load, trade-off]
 ---
@@ -36,3 +39,7 @@ Choose intervals per resource class, with shorter intervals for critical objects
 ## External API latencies
 
 For external resources the interval is long: ACK defaults to about 10 hours and kro to 10 hours, against Argo CD's roughly 2 minutes plus jitter or near-immediate detection with Git webhooks. [[sources/research-self-healing-and-drift-detection]] See [[decisions/choosing-a-drift-check-interval-for-external-resources]] and [[comparisons/drift-detection-mechanisms-across-tools]].
+
+## Verified defaults behind the latency figures
+
+The 2026-11-26 dossier fixes the interval values behind this finding: Flux has no default and the author sets it, Argo CD v3.x polls every 120 to 180 seconds (180 seconds flat in v2.x), Crossplane polls managed resources every 1 minute by default in core and runtime and every 10 minutes in Upjet providers, Config Connector uses a 10 minute mean with jitter, and ACK resyncs after 10 hours. [[sources/research-gap-g3-reconcile-defaults]] See [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]], [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]], and [[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]].

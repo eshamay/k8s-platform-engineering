@@ -49,8 +49,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/crossplane]] — control plane framework, four layers, v2 changes, adoption patterns, and costs (active)
 - [[entities/kro]] — resource-graph based platform API tool, RGD model, deletion, and maturity (active)
 - [[entities/argo-cd]] — GitOps tool with phase and wave ordering (active)
-- [[entities/config-connector]] — Google Cloud resources as Kubernetes objects (draft)
-- [[entities/ack]] — AWS services as Kubernetes objects, one controller per service (draft)
+- [[entities/config-connector]] — Google Cloud resources as Kubernetes objects (active)
+- [[entities/ack]] — AWS services as Kubernetes objects, one controller per service (active)
 - [[entities/cluster-api]] — management cluster that creates workload clusters (draft)
 - [[entities/kcp]] — node-less multi-tenant API workspaces (draft)
 - [[entities/kubectl]] — CLI behind imperative and declarative techniques (draft)
@@ -116,6 +116,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-pitfalls-and-case-studies]] — research dossier on postmortems, finalizers, drift fights, and deletion guard rails, 11 web sources, 2026-11-25
 - [[sources/research-gap-g3-crossplane-v2]] — verified dossier on Crossplane v2.5 claims, conditions, SSA, deletion policies, Operations, activation policies, scaling, and scanners, 2026-11-26 (active)
 - [[sources/research-gap-g3-kro]] — verified dossier on kro v0.10.0 tuning defaults, instance conditions, Graph API, readiness mechanics, status schema, and governance, 2026-11-26 (active)
+- [[sources/research-gap-g3-reconcile-defaults]] — verified dossier on default reconcile intervals for Flux, Argo CD, Crossplane, ACK, Cluster API, and Config Connector, 2026-11-26 (active)
 
 ## Examples
 
@@ -285,9 +286,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/kubectl-object-management-techniques]] — three kubectl techniques (draft)
 - [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]] — drift and prune behavior (draft)
 - [[comparisons/deletion-policies-across-gitops-and-provider-tools]] — retain, abandon, orphan (draft)
-- [[comparisons/reconcile-cadence-and-off-switches-across-tools]] — intervals, retries, and pause controls (draft)
+- [[comparisons/reconcile-cadence-and-off-switches-across-tools]] — intervals, retries, and pause controls, with verified defaults (active)
 - [[comparisons/retry-and-backoff-controls-across-tools]] — backoff, caps, and waiting states (draft)
-- [[comparisons/drift-detection-mechanisms-across-tools]] — what each tool compares, and how often (draft)
+- [[comparisons/drift-detection-mechanisms-across-tools]] — what each tool compares, and how often, with verified defaults (active)
 - [[comparisons/exemption-and-ignore-controls-across-tools]] — ignore, observe, and pause controls (draft)
 - [[comparisons/push-versus-pull-delivery]] — credentials, reach, and reconciliation (draft)
 - [[comparisons/flux-versus-argo-cd-architecture]] — controllers versus three components (draft)
@@ -538,6 +539,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/crossplane-operations-are-alpha-and-cannot-delete-resources-or-set-owner-references]] — Operations maturity (active)
 - [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]] — default MRAP activates all (active)
 - [[findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes]] — docs versus code mismatches (active)
+- [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]] — Flux interval is required with no controller default (active)
+- [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]] — version-dependent polling default (active)
+- [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]] — one minute versus ten minutes by layer (active)
+- [[findings/the-cluster-api-sync-period-flag-is-a-cache-resync-and-not-a-poll-of-the-cloud-infrastructure]] — a 10 minute figure that is not a drift poll (active)
+- [[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]] — jittered 10 minute mean and a one-way off switch (active)
 
 ## Outputs
 

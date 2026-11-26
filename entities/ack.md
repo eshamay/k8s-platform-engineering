@@ -1,9 +1,9 @@
 ---
 title: AWS Controllers for Kubernetes (ACK)
 type: entity
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
@@ -50,6 +50,9 @@ sources:
   - id: research-landscape
     hash: d28204a90545
     ingested: 2026-11-25
+  - id: research-gap-g3-reconcile-defaults
+    hash: b7be72012393
+    ingested: 2026-11-26
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -60,7 +63,7 @@ ACK is the AWS project that exposes AWS services such as S3, databases, and IAM 
 
 ## Design properties
 
-ACK runs one controller per AWS service. Each controller talks to a single AWS API endpoint and receives only the IAM permissions it needs, so permissions and releases are scoped per service. Reconciliation runs on change and on a periodic resync, with a default the dossier states as 10 hours. Existing AWS resources can be adopted through annotations, a deletion-policy annotation chooses between delete and retain, and cross-account management uses IAM roles that are separate from Kubernetes RBAC.
+ACK runs one controller per AWS service. Each controller talks to a single AWS API endpoint and receives only the IAM permissions it needs, so permissions and releases are scoped per service. Reconciliation runs on change and on a periodic resync, with a default of 10 hours, confirmed in 2026-11-26 against both the drift-recovery page and the runtime source. Existing AWS resources can be adopted through annotations, a deletion-policy annotation chooses between delete and retain, and cross-account management uses IAM roles that are separate from Kubernetes RBAC.
 
 ## Pitfalls
 
@@ -125,3 +128,7 @@ The Amazon EKS guide positions kro as the glue that composes workloads with ACK-
 ## Landscape view
 
 In [[concepts/tooling-landscape]], ACK is the AWS-only member of the provisioning layer, shipping one controller image per service through ECR Public so a cluster installs only what it needs, with adoption of existing AWS resources, field export to ConfigMaps or Secrets, and cross-account management (https://aws-controllers-k8s.github.io/community/docs/community/overview/). The dossier notes that each service has its own release cadence. See [[examples/single-cloud-teams-pick-ack-per-service-or-azure-service-operator-v2-with-code-generated-crds]]. [[sources/research-landscape]]
+
+## Resync default confirmed in the reconcile-defaults dossier
+
+The ACK drift-recovery page says "By default, all ACK controllers attempt to detect drift once every **10 hours**", the runtime constant is `defaultResyncPeriod = 10 * time.Hour`, and the Helm values `reconcile.defaultResyncPeriod` (seconds) and `reconcile.resourceResyncPeriods` override it for all kinds or per kind. The docs page is marked deprecated in favor of a newer site. [[sources/research-gap-g3-reconcile-defaults]] See [[examples/ack-resync-period-tuning-for-stateful-resources]].

@@ -3,7 +3,7 @@ title: Reconciliation Loop
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -17,6 +17,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-gap-g3-reconcile-defaults
+    hash: b7be72012393
+    ingested: 2026-11-26
 aliases: [Reconcile, Control loop]
 tags: [controllers, reconciliation, controller-runtime]
 ---
@@ -51,7 +54,7 @@ The reconcile package adds `TerminalError`, which is logged and counted but not 
 
 ## How tools wrap the loop
 
-Different stacks add timing and failure policy around the same primitive. Flux uses `spec.interval` for a periodic full reconcile and `retryInterval` for failures. Argo CD polls Git on a 120 second cadence with 60 seconds of jitter and refuses to retry a failed sync of the same commit unless retry is configured. Crossplane providers run an Observe, Create, Update, Delete loop against external APIs and expose `Synced` and `Ready` conditions. kro funnels all instance events through one shared rate-limited queue. [[sources/research-reconciliation-loop]] See [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]], [[examples/argo-cd-does-not-retry-a-failed-sync-of-the-same-commit-unless-retry-is-configured]], [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]], and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
+Different stacks add timing and failure policy around the same primitive. Flux uses `spec.interval` for a periodic full reconcile and `retryInterval` for failures. Argo CD v3.x polls Git on a 120 second cadence with 60 seconds of jitter (v2.x used a flat 180 seconds) and refuses to retry a failed sync of the same commit unless retry is configured. Crossplane providers run an Observe, Create, Update, Delete loop against external APIs and expose `Synced` and `Ready` conditions. kro funnels all instance events through one shared rate-limited queue. [[sources/research-reconciliation-loop]] See [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]], [[examples/argo-cd-does-not-retry-a-failed-sync-of-the-same-commit-unless-retry-is-configured]], [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]], and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
 
 ## Pitfalls
 

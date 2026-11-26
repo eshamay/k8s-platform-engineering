@@ -3,7 +3,7 @@ title: Argo CD
 type: entity
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
@@ -83,6 +83,9 @@ sources:
   - id: research-pitfalls-and-case-studies
     hash: 9407913c2448
     ingested: 2026-11-25
+  - id: research-gap-g3-reconcile-defaults
+    hash: b7be72012393
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -105,7 +108,7 @@ Automated sync applies Git state when an application is OutOfSync. Pruning and s
 
 ## Polling interval and jitter
 
-Argo CD polls on `timeout.reconciliation` in the `argocd-cm` ConfigMap, which the documentation gives as 120 seconds plus up to 60 seconds of jitter. With self-heal enabled it reverts manual `kubectl edit` changes, and it does not retry a failed automated sync of the same commit and parameters. [[sources/research-level-triggered-vs-edge-triggered]] See [[comparisons/reconcile-cadence-and-off-switches-across-tools]] and [[examples/gitops-reverts-a-hand-edited-deployment]].
+Argo CD polls on `timeout.reconciliation` in the `argocd-cm` ConfigMap, which the documentation gives as 120 seconds plus up to 60 seconds of jitter in v3.0.0 and later (v2.x defaulted to a flat 180 seconds, see [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]]). With self-heal enabled it reverts manual `kubectl edit` changes, and it does not retry a failed automated sync of the same commit and parameters. [[sources/research-level-triggered-vs-edge-triggered]] See [[comparisons/reconcile-cadence-and-off-switches-across-tools]] and [[examples/gitops-reverts-a-hand-edited-deployment]].
 
 ## To research
 
@@ -145,7 +148,7 @@ The operator-pattern dossier fetched no page on Argo CD, so how its controllers 
 
 ## Reconcile timing and failure policy in the reconciliation-loop dossier
 
-Automated sync polls on `timeout.reconciliation`, default 120 seconds plus 60 seconds of jitter (older material says 3 minutes), self-heal re-syncs on divergence with a default 5 second delay, and prune is off by default. Automated sync does not retry a failed sync of the same commit and parameters unless retry is configured, which differs from the controller-runtime default of retrying with backoff. [[sources/research-reconciliation-loop]] See [[examples/argo-cd-does-not-retry-a-failed-sync-of-the-same-commit-unless-retry-is-configured]].
+Automated sync polls on `timeout.reconciliation`, default 120 seconds plus 60 seconds of jitter (v2.x and some stale pages say 3 minutes, see [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]]), self-heal re-syncs on divergence with a default 5 second delay, and prune is off by default. Automated sync does not retry a failed sync of the same commit and parameters unless retry is configured, which differs from the controller-runtime default of retrying with backoff. [[sources/research-reconciliation-loop]] See [[examples/argo-cd-does-not-retry-a-failed-sync-of-the-same-commit-unless-retry-is-configured]].
 
 ## Self-heal and retry as idempotency
 
@@ -203,3 +206,7 @@ The scale dossier adds that Argo CD shards by destination cluster across applica
 ## Guard rails against destructive syncs in the pitfalls dossier
 
 The pitfalls dossier catalogues Argo CD's sync options against accidental damage: `Prune=false` and `Prune=confirm`, `Delete=false` and `Delete=confirm` (confirmation recommended for Namespaces), a `PrunePropagationPolicy` that is foreground by default, `PruneLast`, `FailOnSharedResource`, and `ApplyOutOfSyncOnly`. `Replace=true` and `Force=true` can recreate resources and cause outages. With `ServerSideApply=true` Argo CD runs `--force-conflicts` and moves client-side apply managers to `argocd-controller`, and `RespectIgnoreDifferences` makes `ignoreDifferences` apply at sync time. See [[findings/argo-cd-replace-and-force-sync-options-can-recreate-resources-and-cause-outages]], [[findings/unintended-deletion-through-prune]], [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]], and [[sources/research-pitfalls-and-case-studies]]. URL: https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/.
+
+## Default polling across versions in the reconcile-defaults dossier
+
+The default `timeout.reconciliation` was 180 seconds from v2.5.0 through v2.14.0 (the `timeout.reconciliation.jitter` key appears from v2.10.0 with default 0) and is 120 seconds plus 60 seconds of jitter from v3.0.0 through v3.6.0, in both the manifest example and the controller constants. The v3.0.0 FAQ calls it a "default maximum polling interval ... 3 minutes (120 seconds + 60 seconds jitter)", so a polling pass lands between 120 and 180 seconds in v3.x, and the v3.2.0 high-availability page still says 3m. The reason for the change is not verified, and a pull request merged on 2026-07-31 changes how a value of 0 is handled (title only read). [[sources/research-gap-g3-reconcile-defaults]] See [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]].
