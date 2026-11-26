@@ -1,0 +1,367 @@
+---
+title: "Part 1: Why Kubernetes Works as a Universal Control Plane"
+type: output
+status: draft
+created: 2026-11-25
+updated: 2026-11-25
+sources:
+  - id: krm-platform-vocabulary
+    hash: 731a6941f9db
+    ingested: 2026-11-25
+  - id: research-universal-control-plane
+    hash: 037575049a4c
+    ingested: 2026-11-25
+  - id: research-declarative-vs-imperative
+    hash: 570767ba4094
+    ingested: 2026-11-25
+  - id: research-level-triggered-vs-edge-triggered
+    hash: 27a34aa0de59
+    ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
+  - id: research-gitops-pull-based-delivery
+    hash: 335ba8f50b2b
+    ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
+  - id: research-landscape
+    hash: d28204a90545
+    ingested: 2026-11-25
+  - id: research-pitfalls-and-case-studies
+    hash: 9407913c2448
+    ingested: 2026-11-25
+aliases: []
+tags: [tutorial, series-part, architecture, control-plane, gitops, reconciliation]
+---
+
+# Part 1: Why Kubernetes Works as a Universal Control Plane
+
+> [!NOTE]
+> **Audience:** Engineers who operate Kubernetes (pods, deployments, services, RBAC, kubectl) but have not yet studied controllers, API machinery, or platform abstractions<br>
+> **Purpose:** Explain the five architectural principles that let Kubernetes manage resources far beyond containers, and show how Flux, Crossplane, and neighboring tools inherit them<br>
+> **Status:** Draft<br>
+> **Created:** 2026-11-25<br>
+> **As of:** 2026-11-25<br>
+> **Draws on:** [[concepts/universal-control-plane]], [[concepts/declarative-vs-imperative]], [[concepts/level-triggered-vs-edge-triggered]], [[concepts/eventual-consistency-and-convergence]], [[concepts/self-healing-and-drift-detection]], [[concepts/gitops-pull-based-delivery]], [[concepts/reconciliation-loop]], [[concepts/tooling-landscape]], [[concepts/pitfalls-and-case-studies]]
+
+## 1. Who this series is for and how to read it
+
+This series is written for people who already run Kubernetes. You know what a Pod is, you have written a Deployment, you have fought with a Service selector, and you have granted or denied access with RBAC. What you may not have studied is the machinery underneath those objects: the controllers that make a Deployment produce Pods, the API conventions that make every object look alike, and the abstractions that tools like Flux and Crossplane build on top. That machinery is the subject of the series, and this first part supplies the foundation for everything after it.
+
+The thesis of this part is simple to state. Kubernetes generalizes beyond containers because a small set of principles compose into a control plane that can manage any resource. Those principles are declarative intent, level-triggered reconciliation, eventual consistency, continuous drift correction, and pull-based delivery. Each one is useful alone. The reason the design works is that they reinforce one another, and the reason good platforms built on Kubernetes tend to behave well is that they inherit all five at once. Platforms that quietly break one of the five tend to be the ones that surprise their operators.
+
+Here is how to read this part. Section 2 frames Kubernetes as a general control plane, and sections 3 through 7 introduce the five principles one at a time, starting from first principles and ending with a practical use case. Section 8 steps back and asks which design rules fall out of the model, using Flux and Crossplane as worked implementations. Section 9 collects industry use cases. Section 10 covers the pitfalls that appear in practice, and section 11 compares how Argo CD, Terraform, Cluster API, and others differ on these principles. Section 12 says where the series goes next. A short list of further reading closes the document.
+
+A word about evidence. This part rests on a research wiki whose sources are mostly tool documentation, design documents, practitioner blog posts, and a small number of public postmortems. Where the wiki has only a vendor claim, a single practitioner account, or a default value that may have changed between versions, the prose says so. Treat numeric defaults such as polling intervals as accurate for the pages that were read and verify them against the version you run.
+
+A short vocabulary note will save time later. A **controller** is a program that watches objects in the Kubernetes API and works to make the world match what those objects say. A **custom resource** is an object type that you or a tool adds to the API, and a **CRD** (CustomResourceDefinition) is the registration that teaches the API server about it; see [[concepts/custom-resource-definition]]. The **spec** of an object holds the intent a user wrote, and the **status** holds what controllers observed; see [[concepts/spec-status-split]]. Each term will be explained again where it matters.
+
+## 2. From container scheduler to universal control plane
+
+Most of us first meet Kubernetes as a way to run containers. You hand it a Deployment, and Pods appear on nodes. That experience hides the fact that Kubernetes ships two separable things together. One is a container scheduler. The other is a general, extensible API machine: an API server that handles authentication, RBAC, admission, validation, and watch, backed by etcd for storage, plus a convention for controllers that reconcile an object's `spec` toward reality and report back in `status`. The research behind this wiki makes the separation explicit: the second part has no inherent tie to Pods, so anything that can be described declaratively and reconciled by a loop can be modeled as a custom resource, whether that is a cloud database, a whole cluster, a firewall rule, or an application bundle ([[concepts/universal-control-plane]]).
+
+Consider what you get for free when you represent an external thing as a Kubernetes object. The object inherits authentication, RBAC, audit logging, watch semantics, and a large ecosystem of tooling. The API conventions fix `spec` and `status`, conditions, `resourceVersion`, and finalizers for every kind. A condition is a named true, false, or unknown flag in `status` that reports one aspect of an object's health. The `resourceVersion` is an opaque marker the API server stamps on each object so that a writer holding an out-of-date copy can be detected and rejected. A finalizer is a marker on an object that blocks its deletion until the responsible controller has finished its cleanup work, such as removing a cloud resource. Because these conventions are shared, generic tools such as GitOps engines, policy engines, and user interfaces work across all kinds without knowing anything about the particular one. That uniform contract is the real product. A team that wants a managed database to follow the same review, access control, and delivery workflow as its Deployments can get that by making the database an object.
+
+The wiki describes the resulting ecosystem as four layers ([[concepts/universal-control-plane]], [[concepts/tooling-landscape]]). The bottom layer is the primitives: controllers as control loops, CRDs stored in etcd, and the operator pattern, which packages operational knowledge into a controller paired with a custom resource ([[concepts/operator-pattern]]). Above that sit provider controllers that project an external API into Kubernetes. AWS Controllers for Kubernetes (ACK), Google's Config Connector, Azure Service Operator, and Cluster API are the examples; they follow what the Kubernetes controller documentation calls direct control, where a controller acts on an external system instead of creating Pods ([[entities/ack]], [[entities/config-connector]], [[entities/cluster-api]]). Above those are composition layers such as Crossplane and kro, which let a platform team publish a small API that expands into many resources ([[entities/crossplane]], [[entities/kro]]). At the top are delivery layers, Flux and Argo CD, which reconcile Git into the API server ([[entities/flux]], [[entities/argo-cd]]).
+
+The same sources note a consequence worth pausing on. A delivery tool and a provisioning tool are not rivals, because one moves manifests into the API and the other turns objects in the API into cloud calls. Asking whether Argo CD or Crossplane is better confuses the layers, and most production stacks pick one tool from each ([[concepts/tooling-landscape]], [[comparisons/delivery-versus-provisioning-versus-platform-layers-in-the-kubernetes-tooling-landscape]]). The wiki flags that the layers are a learning aid and not a hard taxonomy: Crossplane reaches into the platform layer through its composition API, and Kratix reaches into provisioning through pipelines.
+
+At the far edge of the idea is a project like kcp, a CNCF Sandbox project that hosts many isolated, node-less API workspaces so a SaaS provider can serve a Kubernetes-style API to tenants without giving each one a cluster ([[entities/kcp]], [[examples/multi-tenant-api-hosting-with-kcp]]). Its tenant counts come from vendors and its larger scale numbers are stated goals, not measurements. Ænix, a company that argues for purpose-built distributions that are not container platforms, makes the most explicit version of the claim in an October 2026 opinion post: the API server and controller convention are the product, and the container scheduler is optional ([[examples/non-container-appliances-on-the-kubernetes-api]]). The wiki records that vision as having limited production evidence, and Ænix lists its own risks, including a small maintaining team and limited production testing.
+
+So the claim of this part is not that Kubernetes is magically suited to everything. It is that a specific set of design decisions, taken together, produce a substrate that is unusually good at holding intent and driving the world toward it. The next five sections take those decisions one at a time.
+
+## 3. Declarative versus imperative: intent as the contract
+
+The first principle is declarative intent. To manage something declaratively means to describe the end state you want, usually as YAML in an object's `spec`, instead of writing the sequence of commands that would produce it. The Kubernetes documentation calls an object a record of intent: you store what you want, and the control plane works to make the observed `status` match the `spec`. Imperative management is the opposite. You tell the system what action to take now, as with `kubectl create`, `kubectl scale`, or a shell script ([[concepts/declarative-vs-imperative]]).
+
+The distinction matters more than it first appears, because a declared end state gives a controller something to compare against reality. An imperative script has no standing definition of correct that it can return to. If a script runs once and the world later changes, nothing in the script notices. A declared spec is a persistent statement that the system can evaluate over and over, which is what makes reconciliation, drift correction, and GitOps possible at all.
+
+The official kubectl documentation treats the choice as a spectrum, not a binary ([[comparisons/kubectl-object-management-techniques]], [[decisions/choosing-an-object-management-technique]]). Imperative commands have the lowest learning curve but leave no review or audit trail, so they suit development. Imperative object configuration, such as `kubectl replace -f`, keeps files but still issues explicit verbs, which suits a single writer in production. Declarative object configuration, `kubectl apply -f dir/`, suits multiple writers and gives reviewable files, but it is harder to debug because of the merge and patch logic underneath. The page also warns against mixing techniques on the same object, a hazard the wiki collects under [[findings/mixing-management-techniques-on-one-object]].
+
+Here is a small declarative example, a Deployment you have seen many times, read with fresh eyes.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels: { app: web }
+  template:
+    metadata:
+      labels: { app: web }
+    spec:
+      containers:
+        - name: web
+          image: registry.example.com/web:1.4.2
+```
+
+Notice that the manifest says `replicas: 3`, not "start three pods." The Deployment controller is the machine that notices when the number of ready Pods differs from three and acts. If a node dies and takes a Pod with it, no one runs a command; the next comparison finds two Pods where three were declared and creates another. The API conventions add that fields should express desired outcomes and not actions, which is what keeps a spec declarative ([[concepts/declarative-vs-imperative]]).
+
+The model repeats at every layer. Flux and Argo CD treat Git as the declared state and reconcile the cluster to it. Crossplane, Config Connector, ACK, and Cluster API extend the idea to cloud resources and whole clusters. kro and Crossplane compositions let platform teams define new declarative APIs that expand into many resources. Each layer is the same bet: write down what you want, and let a loop pursue it.
+
+The honest caveat is that pure declarative management is not absolute in practice. Kubernetes keeps imperative commands for development and one-off tasks, and tools expose escape hatches such as Flux suspend, retain or orphan deletion policies, force, and abandon. The wiki's view is that those escape hatches exist because declarative reconciliation is dangerous when ownership, deletion, or drift semantics are misunderstood. The sources also note that ordering, one-shot operations, and data migrations remain weak spots for a purely declarative model, and that the sources read so far do not explain how tools work around them beyond hooks and sync waves.
+
+## 4. Level-triggered versus edge-triggered: why state beats events
+
+The second principle answers a question that sounds technical and turns out to be fundamental: what should a controller react to? There are two answers, borrowed from electronics. An edge-triggered system reacts to a transition, such as a signal going high or a Pod being deleted. A level-triggered system reacts to the current value, such as the signal being high or three replicas being desired while two exist ([[concepts/level-triggered-vs-edge-triggered]]).
+
+The difference is easiest to see when something goes wrong. Imagine an autoscaler that receives events. The replica count changes from 1 to 5 and then from 5 to 2. An edge-triggered handler applies each event as a delta: add four, then remove three. If it misses or reorders events, it can act on the wrong deltas, and the 2018 level-triggering article the wiki relies on shows it terminating more replicas than exist and ending at zero, a state the source of truth never held ([[examples/an-edge-triggered-scaler-ends-at-zero-replicas-where-a-level-triggered-one-converges]]). A level-triggered controller compares the declared count of 2 with the observed count each time it runs, so it ends at 2 regardless of which intermediate events it saw ([[examples/deployment-replica-changes-converge-to-the-final-count]]). Joe Beda is quoted in the source explainer as saying that if you are edge triggered you run the risk of compromising your state and never being able to re-create it. An online book sums up the trade: edge-triggered systems require reliable event delivery, while level-triggered systems only require eventual state observation.
+
+This is why the Kubernetes reconcile function receives only a namespace and a name. It is not told whether the object was created, updated, or deleted. The controller-runtime documentation says reconciliation is driven by actual cluster state, read from the API server or a local cache, and not by individual events ([[concepts/reconciliation-loop]]). A sketch of the structure of such a function makes the point.
+
+```go
+func (r *WebReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+    // Read everything needed from observed state; never branch on "what event woke me".
+    var web examplev1.Web
+    if err := r.Get(ctx, req.NamespacedName, &web); err != nil {
+        return ctrl.Result{}, client.IgnoreNotFound(err)
+    }
+    // Compare web.Spec with the child objects that exist, then create, update, or delete to close the gap.
+    // Write what was observed back to web.Status.
+    return ctrl.Result{}, nil
+}
+```
+
+Read the comments rather than the Go. The function is handed a key, fetches the current object, compares desired with actual, and writes the result into status. Returning an empty result with a nil error means the object has converged. Returning an error asks the work queue to retry with exponential backoff, meaning progressively longer waits between attempts. The work queue is the deduplicating list of object keys waiting for reconciliation, so ten events for one object collapse into one pending key. A `RequeueAfter` value means the object is healthy but waiting, and it is the supported way to poll on a schedule. The wiki also records that the sources disagree about whether `Requeue: true` backs off: the pkg.go.dev documentation describes a rate-limited requeue, while an issue thread describes an immediate one. `Result.Requeue` is deprecated in current controller-runtime, so prefer returning an error for failures and `RequeueAfter` for planned polling ([[concepts/reconciliation-loop]]).
+
+It would be a mistake to conclude that Kubernetes ignores events. In practice it is a hybrid. A watch is a long-lived request that streams changes from the API server, and an informer is a client-side cache that a watch keeps up to date and that notifies the controller when something changes. Together they deliver events with low latency, which is an edge-triggered optimization, but each event is only a hint to enqueue an object key. The reconciler then reads full state and enforces all of it. The Kubernetes design archive says controllers are level-based to maximize fault tolerance and that watches restore the latency benefits of edge triggering without making correctness depend on them ([[decisions/events-as-hints-state-as-truth]]). Tim Hockin's slides are cited for the shorter version: state is more useful than events. Edge triggering is not always wrong, either, since it transmits only changes and can be made safe with periodic full resync or ordered, versioned events.
+
+Level triggering also pays off when a controller is simply offline. The sig-api-machinery guide warns that your controller may be off for an indeterminate time before running again. A controller that keys its behavior on remembered events, such as a Pod having been deleted, will miss whatever happened during the outage and then act on a stale picture. A level-driven controller starts, reads the world, and repairs it ([[findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down]]). Because a level-triggered loop may run at any time and any number of times, its logic must also be idempotent, meaning that running it again leaves the system in the same end state as running it once ([[concepts/idempotency]]).
+
+The cost is real and the wiki lists it. A cache read can lag the controller's own writes, so a controller can act twice on one gap; core controllers handle this with deterministic names or with expectations that remember in-flight actions ([[findings/stale-cache-and-double-action]]). Constant re-checking costs reads and external API calls, covered in section 6. A pattern, not just a Kubernetes detail, emerges: the ApeiroRA reference architecture recommends the same controller idiom for digital-twin systems far outside container scheduling, framing level triggering as favoring resilience over efficiency ([[examples/controller-pattern-for-digital-twins]]).
+
+## 5. Eventual consistency and convergence: what "done" means
+
+The third principle changes what we mean by finished. In a system with many independent controllers, nothing happens instantly, and nothing is applied in a strict global order. The Kubernetes answer is to accept that. Instead of building a dependency graph up front, resources are applied concurrently, and anything whose prerequisites are missing fails and retries until those prerequisites exist ([[concepts/eventual-consistency-and-convergence]]).
+
+The convergence research states the guarantee precisely. Kubernetes does not promise that the gap between desired and actual state closes instantly, or that every intermediate change is seen. It promises that the system keeps working toward the latest declared state, and convergence is the observable result: actual state settles on desired state once disruptions stop. The API conventions say the system drives toward the most recent spec regardless of previous versions. The practical lesson is the one from the replica example: if you edit a value five times quickly, treat it as one edit to the final value, because the last declared state wins.
+
+You have probably seen this when applying a large set of manifests for the first time. A custom resource may be rejected because its CRD has not been established yet, or a workload may fail because a ConfigMap has not appeared, and then everything settles on a later pass. That is not a bug in your manifests. It is the design working as intended, and it explains why platform tools lean on retries and status conditions instead of strict ordering ([[concepts/conditions]]).
+
+Status is how users learn where convergence stands. Conditions and `observedGeneration` tell you whether a given generation of the spec has been acted on. The API server increments an object's `metadata.generation` every time its spec changes, and a controller copies the value it last processed into `status.observedGeneration`, so a mismatch between the two means the controller has not yet caught up with your latest edit. Crossplane offers a clear illustration with two separate conditions on each managed resource: `Synced` says the provider can reconcile the resource, and `Ready` says the external thing is available. While a cloud database provisions, a user sees `Synced` true and `Ready` false, which means the controller is working and the thing is not usable yet. Reading only one of the two gives the wrong answer ([[examples/crossplane-database-claim-reports-synced-and-ready]]).
+
+Convergence has costs, and the wiki lists them with mitigations. Informer caches lag the API server, so reads can be stale; optimistic concurrency turns a stale write into a retried conflict. Retries can amplify load when backoff is absent or unbounded. Multiple replicas without leader election duplicate work. Kubernetes does not order dependent resources, so Flux, Argo CD, and Crossplane add health-based ordering. And drift correction is slow when the check interval is long. The ordering point deserves a concrete example, because the ordering tools show where a purely concurrent model is stretched. Flux provides `dependsOn` between Kustomizations plus health checks, so a dependent waits for the thing it needs to be Ready. Argo CD orders a sync by phase, then wave number, then kind and name, and it advances to the next wave only when the current wave is healthy ([[entities/flux]], [[entities/argo-cd]]).
+
+## 6. Self-healing and drift detection, and the cost of constant reconciliation
+
+The fourth principle is the one operators notice first. Self-healing is the continuous process by which a controller compares declared state with observed state and acts to close the gap, automatically reverting out-of-band changes such as a manual `kubectl edit` or a cloud console change. Drift is the gap itself: someone or something changed a live object or external resource away from what the source of truth says ([[concepts/self-healing-and-drift-detection]]). The mechanism is the same non-terminating control loop from section 4. Nothing new is added; the loop simply never stops, so the declared spec becomes an enforced contract instead of a suggestion.
+
+There are two layers of drift, and the wiki separates them. For in-cluster objects, Flux and Argo CD detect drift by comparing desired manifests with live objects. Flux runs a server-side apply dry run on each interval (server-side apply is the mode in which the API server itself merges a submitted manifest into the live object and records which writer owns each field, and a dry run asks it to compute the result without saving it), and Argo CD marks the application OutOfSync and, if `selfHeal` is on, syncs again. For external infrastructure such as databases, buckets, and IAM, the same loop calls a provider API. Crossplane treats the `forProvider` field of a managed resource as the source of truth, so an edit made in a cloud console is reverted on the next poll ([[examples/cloud-console-changes-reverted-by-provider-controllers]]). Cluster API extends the idea to machines, where a MachineHealthCheck replaces unhealthy Machines ([[examples/cluster-api-machine-health-check-replaces-failed-nodes]]).
+
+The scenario is easy to reproduce. Someone hand-edits a Deployment in production. With Flux, the next reconcile re-applies the manifest from Git, and with Argo CD self-heal on, the same happens after a short delay. The edit is not lost through a bug. It is lost because the system is doing exactly what a level-triggered controller does, and teams that need emergency changes must pause reconciliation first ([[examples/gitops-reverts-a-hand-edited-deployment]]).
+
+The cost side is where design judgment enters. Observing the world is not free, and detection latency equals the check interval ([[findings/drift-detection-latency-is-the-interval]]). In-cluster tools read the Kubernetes API and are cheap to run often, so their cadences are seconds to minutes. Controllers that talk to cloud APIs pay for every observation, so their cadences are hours. The table below summarizes values the wiki recorded from documentation pages; they may change by version, and some were not confirmed.
+
+| Tool | What is compared | Cadence recorded in the wiki |
+|---|---|---|
+| Flux Kustomization | Server-side apply dry run against live objects | `interval`, minimum 60 seconds |
+| Flux HelmRelease | Dry-run apply of the stored Helm manifest | Off by default (`disabled`); `warn` emits events; `enabled` corrects |
+| Argo CD | Target manifests versus live state | About 120 seconds plus up to 60 seconds of jitter, or a Git webhook; reverts only with self-heal |
+| Crossplane | `forProvider` versus external state | Configurable poll interval; default not confirmed |
+| ACK | Spec versus AWS state | About 10 hours after sync, tunable per kind |
+| kro | Instance graph versus live resources | 10-hour full resync |
+
+The cadences differ for a reason that follows from the cost argument above. In-cluster tools such as Flux and Argo CD compare against the Kubernetes API, which is cheap to read, so they poll in seconds to minutes. ACK and kro sit on top of cloud APIs or large resource graphs where every full check spends rate-limit quota and time, so they use hours. Two gaps in the table should be stated plainly. The Crossplane poll default is unconfirmed in the pages the wiki read, and the table shows only that it is configurable. Config Connector has no row because its reconcile interval was not found in the pages read, and the research dossier lists its cadence as an open gap; section 6 notes only that it accepts a value of "0" to disable periodic reconciliation. This document's status is still draft, so treat these gaps as open questions to close against your own versions.
+
+The source for the table is [[comparisons/drift-detection-mechanisms-across-tools]], and the broader cadence and off-switch comparison is [[comparisons/reconcile-cadence-and-off-switches-across-tools]]. The wiki notes that it is not stated whether ACK's and kro's ten-hour figures describe comparable mechanisms. The consequence of a ten-hour default is that a console change to an AWS resource may sit uncorrected for hours ([[decisions/choosing-a-drift-check-interval-for-external-resources]]). Shorter intervals correct faster and cost more quota, and the guidance in the sources is to choose intervals per resource class, with short ones where drift is costly ([[findings/cost-of-constant-reconciliation]]). Argo CD adds jitter to its default so that many applications do not poll at once.
+
+A second cost is that a continuous loop reverts intentional changes along with accidental ones. The wiki calls this the main operational lesson for platform teams: decide who owns each field ([[findings/continuous-loops-override-intentional-changes]]). Every tool ships an off-switch, which suggests the problem is common. Flux has `suspend`, Argo CD has a self-heal toggle, Crossplane has a pause annotation and management policies such as Observe-only, and Config Connector accepts a reconcile interval of "0" to disable periodic reconciliation. A short Flux example shows several of these knobs together.
+
+```yaml
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps
+  namespace: flux-system
+spec:
+  interval: 10m          # periodic full reconcile; drift is detected at this cadence
+  retryInterval: 2m      # separate schedule when a reconcile fails
+  path: ./apps/production
+  prune: true            # delete objects removed from Git
+  wait: true             # treat readiness of applied objects as part of success
+  suspend: false         # set to true during incident work to stop applying and drift detection
+  sourceRef:
+    kind: GitRepository
+    name: fleet
+```
+
+Read it as a set of decisions. The `interval` is how stale the cluster can be relative to Git. The `retryInterval` keeps a failing object from sharing the healthy cadence. `prune` decides whether a missing manifest means deletion, which section 10 returns to. `suspend` is the deliberate pause an operator uses during an incident. The wiki notes that Flux's concepts page gives a five-minute default interval while the Kustomization reference gives a 60-second minimum, so verify what your version uses.
+
+## 7. GitOps pull: Git as desired state and push versus pull delivery
+
+The fifth principle applies the first four to the problem of delivery. GitOps is a way of operating a system in which the whole desired state is written declaratively, stored in a versioned and immutable store (usually Git, increasingly an OCI registry), and applied by software agents instead of by humans or pipelines running commands. The OpenGitOps working group under the CNCF reduces it to four principles: the state is declarative; it is stored versioned and immutable with full history; agents automatically pull it; and agents continuously observe actual state and try to apply the desired state ([[concepts/gitops-pull-based-delivery]]).
+
+The last two principles are what separate GitOps from CI/CD that happens to read YAML from Git. A pipeline that pushes once and never looks again does not qualify, because it has no continuous loop. This is exactly the declarative-intent, level-triggered, self-healing machinery from the earlier sections, pointed at a source of truth that lives in Git.
+
+Push and pull differ in where the actor runs and what it holds. A push pipeline runs outside the target on a CI server and needs credentials for every environment it deploys to, so a compromise of that server exposes all of them. A pull agent runs in or next to the target, fetches desired state with read access to the source, and writes with in-cluster identity ([[comparisons/push-versus-pull-delivery]]). INNOQ makes the security case in an article the wiki cites, and also argues that the pattern does not require Kubernetes: a custom operator running inside a virtual machine fleet or cloud environment could read desired state from Git and reconcile it, though INNOQ warns that the hard part is continuous reconciliation and not fetching YAML ([[examples/gitops-agent-on-non-kubernetes-targets]]). The wiki found no named production deployment of that design.
+
+Pull is not a free lunch. The agent becomes a powerful identity itself, so tools add counters. Flux impersonates a per-tenant service account when applying, so a team's Kustomization can only create what that account may create ([[findings/blast-radius-and-privilege-centralization]]). ControlPlane's Flux D2 reference architecture goes further for regulated fleets: CI builds and signs artifacts and pushes them to an OCI registry, and clusters pull the signed artifacts so they never connect to the Git host ([[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]]). That is a vendor write-up, and whether Git or OCI should be the source of record is left open by the sources. Morgan Stanley's reported setup used S3 buckets as a source for another reason, which the write-up gives as availability and compliance.
+
+A useful way to hold the whole picture is the two-layer loop. GitOps controllers reconcile Git into the Kubernetes API, and domain controllers such as Crossplane or Cluster API reconcile the API into reality. Each layer is level-triggered, and the pitfalls mostly occur at the seams: custom-resource health, pruning, drift against controllers that mutate fields, and credentials.
+
+## 8. Design principles that fall out of the model, with Flux and Crossplane as worked implementations
+
+Once the five principles are on the table, a set of design rules follows from them. This section states the rules with their reasoning and then shows Flux and Crossplane obeying them.
+
+**Make intent the only input.** If the contract is a spec, then every behavior should be derivable from the spec and observed state. Anything that depends on a remembered event or an unrecorded action breaks level triggering. This is why the Kubebuilder good-practices page requires an idempotent reconcile and warns that logic keyed to specific events can leave resources stuck ([[findings/event-specific-logic-in-reconcilers]]).
+
+**Make every action safe to repeat.** A loop that runs forever will run the same operation twice, and sometimes in a crash window where it does not know whether the first attempt succeeded. The wiki describes idempotency at three layers: the controller loop, the Kubernetes API (deterministic names and server-side apply), and external cloud APIs. The third is hardest, because creating a cloud resource is not naturally idempotent. If a controller calls a create API and crashes before recording the returned ID, a blind retry can leak the first resource. The documented answers include caller-chosen names, a persisted external identity such as Crossplane's `crossplane.io/external-name` annotation, recording intent before acting and halting when the result is unknown, and server-side client tokens ([[concepts/idempotency]]).
+
+**Split work into many small controllers that coordinate through shared objects.** The Kubernetes controller documentation favors many controllers that each own one aspect. A DevOps Toolkit walkthrough shows three controllers, for ingress, certificates, and DNS, all reacting to one Ingress object with no controller calling another, each converging on its own concern ([[examples/ingress-cert-manager-and-dns-controllers-react-to-one-object]]). Reconciliation composes without orchestration code.
+
+**Give every writer an explicit identity and every field an owner.** When humans, a GitOps tool, an autoscaler, and other controllers all write to one object, someone will overwrite someone. Server-side apply tracks which manager owns each field and raises a conflict when another manager owns a differing field ([[concepts/server-side-apply-and-field-ownership]], [[findings/multiple-writers-on-one-object]]).
+
+**Ship a brake with every accelerator.** Self-healing needs a way to stop. Cluster API's `maxUnhealthy` setting short-circuits remediation when too many machines look unhealthy at once, because the cause is probably shared ([[findings/remediation-can-amplify-an-outage]]). Argo CD ships with prune and self-heal off, and Flux offers a `warn` drift mode before `enabled`.
+
+**Report state honestly.** Conditions, `observedGeneration`, and separations like `Synced` versus `Ready` let people and other tools tell the difference between a controller that is working and a thing that is usable.
+
+Now the two worked implementations. Flux is a set of single-purpose controllers for sources, Kustomize, Helm, notifications, and image automation, and they communicate through CRDs that users or other automation can also write, which makes the control plane an integration bus ([[entities/flux]]). The source controller pulls Git, OCI, Helm, and bucket content into artifacts. The kustomize and helm controllers apply them. The notification controller accepts webhooks that start a reconcile immediately, so events are a latency optimization on top of the polling interval. Image automation writes new tags back to Git, so Git remains the audit record. Notice how each rule appears: intent is in Git, the loop is level-triggered with an interval as the safety net, ordering uses `dependsOn` and health checks, and tenancy uses service-account impersonation.
+
+Crossplane is the provisioning-side example. Providers expose cloud resources as managed resources, each with a `spec.forProvider` block that is the source of truth for the external resource. Here is a trimmed sketch, with field names as documented for Crossplane managed resources.
+
+```yaml
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: Bucket
+metadata:
+  name: team-artifacts
+  annotations:
+    crossplane.io/external-name: team-artifacts-prod   # persisted external identity
+spec:
+  forProvider:
+    region: us-east-1                                   # edits made in the console are reverted
+  managementPolicies: ["*"]                             # narrow to ["Observe"] to import without modifying
+  deletionPolicy: Orphan                                # keep the real bucket if this object is deleted
+```
+
+The snippet shows three guard rails in a few lines. The external-name annotation ties the Kubernetes object to a cloud identifier so retries do not create duplicates. `managementPolicies` limits what the controller may do, so an existing resource can be observed without being changed. `deletionPolicy` decides whether deleting the Kubernetes object deletes the real bucket. The wiki notes that older advice about `deletionPolicy` and observe-only behavior needs translation to `managementPolicies`, and that the Crossplane documentation read for pitfalls was an older version, so check your release ([[findings/the-pitfalls-dossier-rests-on-index-summaries-an-older-crossplane-version-and-few-primary-incident-reports]]). Above managed resources, a Crossplane composition lets a platform team publish a small API of its own. The documentation describes a pipeline of functions that accumulate desired state, which Crossplane applies and re-observes on each reconcile, moving composition logic out of templating and into code with feedback ([[entities/crossplane]]).
+
+Together the two tools show why the principles compose. Flux uses the control plane to deliver intent, Crossplane uses it to realize intent against external systems, and both rely on the same loop, the same status conventions, and the same ownership model.
+
+## 9. Industry use cases: GitOps fleets, cloud services as Kubernetes objects, non-container appliances
+
+The strongest adopter evidence in the wiki concerns GitOps fleets. Morgan Stanley described its Flux adoption in a FluxCon NA 2025 talk, which the Flux team wrote up in March 2026. The reported footprint is over 500 clusters, over 2,000 nodes, over 100,000 containers, and tens of thousands of Flux resources, up from push pipelines that suffered from drift and made cluster rebuilds fragile. Multi-tenancy rests on service-account impersonation with Kubernetes RBAC. A self-service onboarding platform checks entitlements, registers the service, primes a namespace with a source and a Kustomization, and scaffolds a repository. At scale the platform team raised reconciliation intervals, tuned the `--concurrent` flag and resource limits, and moved the source of truth from a self-hosted Git provider to S3 buckets. The wiki is careful to call this a self-reported conference account and not an audit, and sharding and OCI artifacts were still on the roadmap, so no production sharding numbers exist ([[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]]).
+
+Intuit is the other named organization. In a Red Hat interview, Intuit said it built Argo CD to manage deployment complexity in a controlled and auditable way, with Git history as the audit trail and the cluster continuously pulled toward what Git says ([[examples/intuit-argo-cd-gitops-origin]]). The wiki notes it is a podcast-style account and not an engineering postmortem. For teams adopting GitOps, the sources describe a staged pattern: stateless applications run with automated sync and self-heal, while risky production workloads stay on manual sync so Argo CD reports drift without applying it. That example comes from a vendor blog, so it is illustrative and not benchmarked ([[examples/incremental-gitops-adoption-with-manual-sync-and-self-heal]]).
+
+For cloud services as Kubernetes objects, the scenario is a team that already uses Kubernetes and wants S3 buckets, databases, and IAM roles to follow the same RBAC, audit, and GitOps workflow as Deployments. ACK on AWS and Config Connector on Google Cloud expose these services as custom resources. ACK scopes one controller and its IAM permissions per AWS service, and both tools offer adoption of existing resources and a deletion policy ([[examples/cloud-services-as-kubernetes-objects]]). A platform team can go a step further and hide the details. Google's kro announcement, dated 2025-01-30, describes a self-service GKE cluster API where a user supplies a name, a node pool, a maximum node count, and a location, while the cluster, IAM, and policies stay behind those few parameters ([[examples/self-service-gke-cluster-with-kro]]). That source is a vendor announcement, and it said kro was not production-ready. The wiki found no named end-user organization running these provisioning layers at scale, so adoption evidence remains thin.
+
+For clusters themselves, Cluster API designates a management cluster that runs its controllers and the provider controllers for AWS, vSphere, and other infrastructure. Operators describe workload clusters as Cluster, Machine, MachineDeployment, and MachineHealthCheck resources, and Machines are treated as immutable, replaced by rollout in the way Deployments replace Pods ([[examples/cluster-fleet-lifecycle-with-cluster-api]]).
+
+The third group stretches the idea furthest. Ænix's examples include a router and firewall appliance, a KVM hypervisor, an industrial controller, and an IoT gateway speaking Modbus and MQTT, none of which exist to run containers ([[examples/non-container-appliances-on-the-kubernetes-api]]). The ApeiroRA recommendation of controllers for digital twins is a related, though differently motivated, endorsement ([[examples/controller-pattern-for-digital-twins]]). The wiki is open that this group is mostly vision with limited production evidence.
+
+## 10. Pitfalls: stale caches, revert loops, retry storms, and control-plane overload
+
+The wiki's pitfalls hub makes a point that is easy to miss: serious failures are usually cascades in which a small change meets a controller loop, a default, or a shared dependency, and the loop amplifies it ([[concepts/pitfalls-and-case-studies]]). Several of the failure modes below are the cost side of the five principles, which is why they recur.
+
+**Stale caches and double action.** A level-triggered controller reads from an informer cache, and that cache can lag the controller's own writes. If it creates a Pod and reconciles again before the cache shows it, the gap still appears to exist and it may create a second Pod. Core controllers avoid this with deterministic names, as StatefulSet and Deployment do, or with expectations that track the controller's own unseen writes, as ReplicaSet does ([[findings/stale-cache-and-double-action]]). The lesson is that pure level triggering is not enough, and mature controllers add bookkeeping about in-flight actions.
+
+**Revert loops and controllers fighting over fields.** When a mutating webhook (an admission hook that rewrites objects as they are submitted), an HPA (the HorizontalPodAutoscaler, which changes a workload's replica count based on observed load), or an image updater rewrites a field that a GitOps tool also manages, the result is endless OutOfSync status or a revert loop. A Flux blog post from 2026 recounts a SEV2 in which Flux kept resetting replicas to a high value while the HPA kept lowering it, and the cluster autoscaler added and removed nodes in a loop; in the author's words, the two controllers ping-pong indefinitely ([[examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed]]). The Kubernetes maintainers use the same scenario to explain server-side apply: because the autoscaler owns `replicas`, a CD system's apply conflicts instead of silently resetting the field ([[examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict]]). The mitigation is to decide who owns the field and tell the other tool to leave it alone, which has its own cost, since Git changes to an ignored field are no longer applied ([[findings/controllers-fighting-over-fields-cause-revert-loops]]).
+
+A quieter variant is false drift. Servers and clouds fill in defaults, so a tool that compares its own rendering with the live object can see a difference that is not real. Config Connector documented this concretely: its legacy Merge mode copied unspecified fields into the spec and produced endless reconcile loops, and Absent mode, the default from version 1.123.1, fixed it ([[findings/defaulting-and-drift-reconcile-loops]]). Argo CD's default diff has a related symptom with server-defaulted fields in StatefulSet volume claim templates, and its Server-Side Diff option addresses it according to a practitioner blog whose stability claims were not verified ([[findings/diff-is-not-apply-server-defaults-look-like-drift]]).
+
+**Unintended deletion.** A reconciler that compares full desired state with observed state treats anything observed but not desired as surplus. With prune permission, an accidental omission from the source becomes a deletion ([[findings/a-level-based-loop-deletes-what-it-no-longer-sees-in-desired-state]]). With provider controllers, the deletion can reach real cloud resources ([[findings/destructive-deletion-of-external-resources]]). The opposite risk also exists: with prune off, Flux leaves removed manifests running as orphans, which breaks the claim that Git is the source of truth ([[findings/without-prune-flux-leaves-removed-manifests-running-as-orphans]]). The wiki found no incident write-up of an accidental prune, so severity is inferred from documentation warnings ([[findings/unintended-deletion-through-prune]]).
+
+**Rollback friction.** Argo CD blocks rollback while automated sync is on, because a rollback would put live state out of line with Git and the controller would re-sync it at once. The path is a Git revert, which surprises teams used to fast imperative rollbacks ([[findings/rollback-is-blocked-while-automated-sync-is-on]]).
+
+**Retry storms.** When a controller retries a failing write against an overloaded dependency, the retries can keep it overloaded. The tools bound retries differently. kro combines exponential backoff, a token bucket, and a cap of 20 retries; Argo CD uses configurable backoff and does not repeat an automated sync of the same commit and parameters unless self-heal is active; Flux separates `retryInterval` from `interval` ([[findings/retry-storms-and-unbounded-retries]]). The most complete case in the wiki is Zalando's January 2019 outage. A downstream call timed out, clients retried, and DNS queries spiked. The `ndots:5` default (a resolver setting that makes any name with fewer than five dots be tried against each search domain first, multiplying DNS lookups) meant about ten queries for each external lookup, Node.js did not cache DNS, and CoreDNS pods with a 100Mi memory limit were OOM-killed, meaning killed by the kernel for exceeding their memory limit, together. Monitoring ran inside the cluster and depended on DNS, so it went blind. Zalando raised memory limits to 2000Mi, adopted a node-local design, and moved alerting outside the cluster ([[examples/zalando-s-2019-coredns-outage-turned-a-retry-storm-into-a-total-dns-failure]], [[findings/monitoring-that-runs-inside-the-cluster-and-depends-on-cluster-dns-goes-blind-in-the-outage-it-should-report]]). The postmortem is a first-party 2019 account, so the defaults it names may have changed.
+
+**Control-plane overload.** The shared store and API server are a single point of contention. Every custom resource lives in etcd, which has a single write leader, a backend size quota that defaults to about 2 GB and that upstream suggests should not exceed about 8 GB (the wiki's secondary source states 8 GB as the default, so verify against your etcd version), and revision growth that needs compaction ([[findings/etcd-scale-limits-of-the-shared-store]]). Commentary on a public OpenAI postmortem describes a newly deployed telemetry service whose expensive API calls from every node overloaded the API servers, which blocked the remediation operators needed; discovery that depended on the control plane then cascaded into data-plane failure. The wiki read only the commentary, and the root cause was telemetry load and not an informer bug ([[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]], [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]]). The server-side protection is API Priority and Fairness, and platform tools face their own scale dimensions, such as the number of CRDs installed by large providers ([[concepts/scale-and-sharding]]).
+
+**Privilege centralization.** A control plane that manages everything concentrates authority. ACK limits this with one controller and scoped IAM per AWS service. A Cluster API management cluster, by contrast, becomes a single point of failure for the fleet, and Crossplane applies composed resources with its own service account, so RBAC on the composite API is the main guard rail ([[findings/blast-radius-and-privilege-centralization]]).
+
+Finally, an honest note on the evidence: only three first-party postmortems were read in full for the pitfalls dossier, much of the failure index dates from 2017 to 2021, and the wiki found no pitfalls specific to kro, Config Connector, ACK, or Cluster API ([[findings/the-pitfalls-dossier-rests-on-index-summaries-an-older-crossplane-version-and-few-primary-incident-reports]]). Treat several cases as leads and not as established evidence.
+
+## 11. How Argo CD, Terraform, Cluster API and others differ on these principles
+
+Comparing tools is easier once the principles are a checklist. For each tool, ask five questions. Does it take declared intent? Does it act on state or on events? How does it handle the gap between apply and ready? Does it correct drift continuously, and how fast? Does it pull or push? The answers below come from documentation pages and practitioner sources recorded in the wiki, and several comparisons are vendor-authored, as the wiki flags ([[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]]).
+
+**Flux versus Argo CD.** Both are CNCF GitOps tools, and both run reconcile loops. The architectural contrast is that Argo CD ships as an integrated application with an API server, a repository server that renders manifests, and an application controller, while Flux is a toolkit of small controllers that each own custom resources, described in the dossier as controllers all the way down ([[comparisons/flux-versus-argo-cd-architecture]]). On drift, Flux reverts manual changes on each interval unless suspended, while Argo CD marks the application OutOfSync and reverts only when self-heal is enabled, which is off by default. On prune, Argo CD defaults to off and adds an allow-empty guard, while Flux prunes when enabled and offers a per-object opt-out annotation and a deletion policy ([[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]]). The wiki cautions that this table merges separate documentation pages and is not a head-to-head test. A minimal Argo CD sketch shows the same decisions in its vocabulary.
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: web
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.example.com/fleet.git
+    path: apps/web
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: web
+  syncPolicy:
+    automated:
+      prune: false        # off by default; turn on only once the source is trusted
+      selfHeal: true      # revert live drift back to Git
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas  # leave replicas to the autoscaler
+```
+
+The `automated` block turns on continuous correction, `prune: false` keeps the deletion brake engaged, and `ignoreDifferences` declares a field that another controller owns on purpose. Flux expresses the same ideas through `driftDetection.ignore`, the `ssa` annotation, and, since 2026 according to the Flux blog the wiki cites, field-level ignore rules in Kustomizations.
+
+**Crossplane versus Terraform.** The Crossplane project's own framing is that Crossplane is a control plane, where Terraform is a command-line tool, an interface to control planes. Crossplane runs controllers that reconcile continuously, so drift is corrected without anyone running a command. Terraform and OpenTofu compute a plan and apply it when a person or CI job invokes them, so drift shows up at the next plan, and a plan is a reviewable preview that Crossplane lacks. Terraform is simpler and more familiar, as the Crossplane blog itself concedes, and it needs no running cluster. The wiki labels both main sources partisan and records that no neutral comparison was read ([[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]], [[entities/terraform]]). The two meet in places: Crossplane can reuse the Terraform provider ecosystem through generated providers, and tofu-controller runs Terraform inside a reconcile loop with a detection-only drift model.
+
+**Provider controllers.** ACK, Config Connector, and Azure Service Operator expose roughly one CRD per cloud resource and are single-vendor, while Crossplane is multi-cloud and adds compositions so a platform team can publish its own API without writing a controller ([[concepts/tooling-landscape]]). They differ on cadence and deletion. ACK defaults to about ten hours after a resource syncs and exposes Helm values for per-kind overrides ([[examples/ack-resync-period-tuning-for-stateful-resources]]). Config Connector corrects drift periodically once a resource is UpToDate, retries failures with exponential backoff capped at two minutes, and lets you disable the interval with a value of zero. Both delete the real cloud resource by default when the Kubernetes object is deleted, and both offer a retain or abandon policy ([[comparisons/deletion-policies-across-gitops-and-provider-tools]]). Per-resource controllers do not build a Terraform-style dependency graph, so ordering falls to the delivery tool or a composition layer.
+
+**kro.** kro expands one end-user CRD into a graph of resources through a ResourceGraphDefinition, infers dependency order from CEL expressions (CEL is the Common Expression Language, a small expression syntax also used for validation rules and field references), and calls itself pre-1.0; the announcement said it was not production-ready ([[entities/kro]], [[findings/immature-abstractions-in-the-control-plane-ecosystem]]). It handles all instances from one shared rate-limited queue with a ten-hour full resync and a cap of 20 retries before an item is dropped. A reported kro bug about drift not being reconciled after creation was closed as completed on 2025-11-04, and the wiki marks that history as unverified.
+
+**Cluster API.** Cluster API applies the same loop to clusters, with infrastructure, bootstrap, and control-plane providers behind one API. Its self-healing is replacement: a MachineHealthCheck evaluates Node conditions against timeouts and remediates unhealthy Machines, with `maxUnhealthy` as a brake. The wiki's source for that behavior is the older v0.4 book, so current behavior may differ, and the wiki could not confirm Cluster API's controller details from the pages it read ([[entities/cluster-api]]).
+
+**Plain controllers.** A hand-written operator built with Kubebuilder or controller-runtime follows all five principles by default, because the framework supplies informers, a work queue, and a reconcile signature that receives only a key. The cost is that the author must supply idempotency, status conventions, and finalizer discipline, and the wiki observes that hand-written operators sometimes duplicate what a composition could express ([[concepts/operator-pattern]], [[findings/hand-written-operators-duplicate-what-composition-could-express]]).
+
+What do the differences add up to? Tools agree on the principles and differ on defaults and escape hatches. In-cluster delivery tools check often and correct quickly. External-API controllers check rarely because observation costs money. Argo CD ships with destructive actions off, Flux exposes explicit switches, and Crossplane scopes behavior with policies. Any of them can be configured into the failure modes of section 10, and any of them can be adopted safely in stages: observe first, correct selectively, and enforce broadly with documented ignore rules ([[decisions/staged-adoption-of-automated-drift-correction]]).
+
+## 12. Where the series goes next and what to carry forward
+
+This part gave you the five principles and the design rules that follow from them. The later parts in the series build on them. The next parts move down into the Kubernetes Resource Model and API machinery, which is the shared substrate that makes the uniform contract possible: type and endpoint coordinates, CRDs, the split between spec and status, server-side apply, and admission. After that, the series opens the controller itself, covering informers, work queues, finalizers, owner references, and conditions, which are the mechanics behind most of the failures in section 10. Later parts cover abstraction layers, such as managed resources, composite resources, compositions, and kro resource graphs, and give Flux and Crossplane their own ramp-ups.
+
+Here is what to carry forward. First, treat the spec as the contract and anything outside it as unmanaged. Second, remember that events are hints and state is truth, so any logic that depends on seeing every event is a bug waiting for a restart. Third, expect convergence and not instant completion, and read status conditions to tell working from ready. Fourth, remember that continuous correction is a policy: every drift-correcting tool needs an owner for each field, a pause for incidents, a deliberate answer on deletion, and an interval chosen for the cost of the thing it checks. Fifth, remember that pull-based delivery moves credentials and trust, and does not remove them; the agent is a powerful identity that deserves the same scrutiny as the pipeline it replaced.
+
+Finally, hold the wiki's own caveats in mind. Adoption evidence for the provisioning and composition layers is thin, the most detailed fleet evidence is a single self-reported Flux account, several defaults are recorded from documentation and may have changed, and the pitfalls rest on a small number of first-party postmortems. The principles are well established, and the specific numbers need checking against the versions you run.
+
+## Further reading
+
+The following wiki pages were relied on. Source URLs follow the pages.
+
+- Concepts: [[concepts/universal-control-plane]], [[concepts/declarative-vs-imperative]], [[concepts/level-triggered-vs-edge-triggered]], [[concepts/eventual-consistency-and-convergence]], [[concepts/self-healing-and-drift-detection]], [[concepts/gitops-pull-based-delivery]], [[concepts/reconciliation-loop]], [[concepts/idempotency]], [[concepts/operator-pattern]], [[concepts/tooling-landscape]], [[concepts/pitfalls-and-case-studies]], [[concepts/scale-and-sharding]]
+- Entities: [[entities/flux]], [[entities/crossplane]], [[entities/argo-cd]], [[entities/kro]], [[entities/cluster-api]], [[entities/terraform]], [[entities/kcp]], [[entities/ack]], [[entities/config-connector]]
+- Comparisons and decisions: [[comparisons/push-versus-pull-delivery]], [[comparisons/drift-detection-mechanisms-across-tools]], [[comparisons/reconcile-cadence-and-off-switches-across-tools]], [[comparisons/flux-versus-argo-cd-architecture]], [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]], [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]], [[comparisons/kubectl-object-management-techniques]], [[decisions/events-as-hints-state-as-truth]], [[decisions/staged-adoption-of-automated-drift-correction]], [[decisions/choosing-a-drift-check-interval-for-external-resources]]
+- Sources: [[sources/research-universal-control-plane]], [[sources/research-declarative-vs-imperative]], [[sources/research-level-triggered-vs-edge-triggered]], [[sources/research-eventual-consistency-and-convergence]], [[sources/research-self-healing-and-drift-detection]], [[sources/research-gitops-pull-based-delivery]], [[sources/research-reconciliation-loop]], [[sources/research-landscape]], [[sources/research-pitfalls-and-case-studies]], [[sources/krm-platform-vocabulary]]
+
+Source URLs recorded in those pages:
+
+- https://kubernetes.io/docs/concepts/architecture/controller/
+- https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md
+- https://hackernoon.com/level-triggering-and-reconciliation-in-kubernetes-1f17fe30333d
+- https://speakerdeck.com/thockin/edge-vs-level-triggered-logic
+- https://github.com/kubernetes/design-proposals-archive/blob/main/architecture/resource-management.md
+- https://github.com/kubernetes-sigs/controller-runtime/blob/main/FAQ.md
+- https://opengitops.dev/
+- https://fluxcd.io/flux/components/kustomize/kustomizations/
+- https://fluxcd.io/blog/2026/08/ignore-rules-drift-detection/
+- https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/
+- https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/
+- https://docs.crossplane.io/latest/managed-resources/managed-resources/
+- https://aws-controllers-k8s.github.io/community/docs/user-docs/drift-recovery/
+- https://docs.cloud.google.com/config-connector/docs/concepts/reconciliation
+- https://cluster-api.sigs.k8s.io/user/concepts
+- https://cloud.google.com/blog/products/containers-kubernetes/introducing-kube-resource-orchestrator
+- https://aenix.io/blog/2026/10/kubernetes-as-the-linux-kernel/
+- https://control-plane.io/posts/d2-reference-architecture-guide/
+- https://github.com/zalando-incubator/kubernetes-on-aws/blob/dev/docs/postmortems/jan-2019-dns-outage.md
+- https://ahmet.im/blog/openai-kubernetes-incident/
+- https://k8s.af/

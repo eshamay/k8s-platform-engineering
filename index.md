@@ -522,4 +522,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ## Outputs
 
-_(none yet)_
+- [[outputs/part-1-core-architectural-principles]] — tutorial Part 1: why Kubernetes works as a universal control plane (draft)
+- [[outputs/part-2-krm-and-api-machinery]] — tutorial Part 2: the Kubernetes Resource Model and API machinery (draft)
+- [[outputs/part-3-controller-and-operator-mechanics]] — tutorial Part 3: how controllers and operators work internally (draft)
+- [[outputs/part-4-platform-abstractions]] — tutorial Part 4: platform abstractions from managed resources to resource graphs (draft)
+- [[outputs/part-5-platform-architecture-principles-and-operating-at-scale]] — tutorial Part 5: principles of good platform architecture and operating at scale (draft)
+- [[outputs/flux-ramp-up]] — Flux ramp-up guide: GitOps Toolkit architecture, operation, and design principles (draft)
+- [[outputs/crossplane-ramp-up]] — Crossplane ramp-up guide: compositions, providers, and design principles for control-plane platforms (draft)
