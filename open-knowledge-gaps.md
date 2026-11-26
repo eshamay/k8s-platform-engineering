@@ -33,7 +33,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#informer-and-cache-behavior-keyed-by-gvr]] — open, unassigned
 - [[#crd-scale-limits]] — open, unassigned
 - [[#crd-handling-in-cluster-api-config-connector-ack-and-backstage]] — open, unassigned
-- [[#status-of-the-conversion-webhook-and-garbage-collection-problem]] — open, unassigned
 - [[#contents-of-the-k8saf-admission-webhook-postmortems]] — open, unassigned
 - [[#kro-status-schema-and-crossplane-v2-status-propagation]] — open, unassigned
 - [[#config-connector-and-argo-cd-status-semantics-beyond-health-checks]] — open, unassigned
@@ -435,17 +434,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cluster-api, config-connector, ack, backstage, crd
 - **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Partly settled, and the user decides whether to close it. Cluster API labels CRDs with contract versions, forbids breaking changes within a contract version, and runs a CRD migrator for storage version migration. Config Connector ships 883 CRD files with the largest at 579,353 bytes. ACK ships one Helm chart per service with its CRDs in the chart. Backstage reads custom resources only from `kubernetes.customResources` and silently skips a missing CRD. Not settled: a written ACK API-version stability policy and Backstage CRD handling beyond that configuration. See [[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration]], [[findings/config-connector-ships-883-crd-files-and-the-largest-is-579-kb-because-it-has-one-crd-per-google-cloud-resource-kind]], [[findings/ack-ships-one-helm-chart-per-service-with-its-crds-in-the-chart-and-no-written-api-version-policy-was-found]] and [[findings/backstage-reads-custom-resources-only-from-the-kubernetes-custom-resources-list-and-silently-skips-a-missing-crd]].
-
-## Status of the conversion webhook and garbage collection problem — status: open
-
-- **Question:** Is the problem in which a down CRD conversion webhook stalls the garbage collector (issue 110720, a duplicate of 101078) fixed in current Kubernetes releases?
-- **Why it matters:** The issue was closed as a duplicate and the dossier does not know the outcome. See [[findings/a-down-conversion-webhook-can-stall-garbage-collection]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read issue 101078 and the partial informer sync work.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** crd, conversion, garbage-collection
-- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Mostly settled, and the user decides whether to close it. The stall is fixed upstream: pull request 125796 merged on 2024-09-25 with milestone v1.32, issue 101078 closed as completed, and the 1.32 changelog carries the release note. The caveat is that objects in the unsynced resource type with owner references that set `blockOwnerDeletion: true` are not known to the garbage collector. Not settled: how long dependents remain after a down webhook, and any further partial-informer work. See [[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]].
 
 ## Contents of the k8s.af admission webhook postmortems — status: open
 
@@ -1820,3 +1808,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 
 - **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on mechanism only. The dossier found no named-company postmortem for stuck finalizers and says so, but it collects the causes (missing controller, always-failing cleanup, child finalizers) and the dangers of forced removal. See [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]].
 - **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Settled from Kubernetes source, and the user decides whether to close it. The static estimate limit is 10,000,000 per expression and 100,000,000 per CRD, the runtime limit is 1,000,000 per call, the runtime budget is 10,000,000 per binding or custom resource, and matchConditions have 2,500,000. The CRD docs advise `maxItems`, `maxProperties` and `maxLength` because unbounded inputs get worst-case cost. Values were read on master, not pinned to a release tag. See [[findings/cel-cost-limits-are-10-million-per-expression-and-100-million-per-crd-statically-and-1-million-per-call-and-10-million-per-request-at-runtime]] and [[findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set]].
+
+## Status of the conversion webhook and garbage collection problem — status: closed (2026-11-26)
+
+- **Question:** Is the problem in which a down CRD conversion webhook stalls the garbage collector (issue 110720, a duplicate of 101078) fixed in current Kubernetes releases?
+- **Why it matters:** The issue was closed as a duplicate and the dossier does not know the outcome. See [[findings/a-down-conversion-webhook-can-stall-garbage-collection]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read issue 101078 and the partial informer sync work.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crd, conversion, garbage-collection
+- **Resolution:** Mostly settled. The stall is fixed upstream: pull request 125796 merged on 2024-09-25 with milestone v1.32, issue 101078 closed as completed, and the 1.32 changelog carries the release note. The caveat is that objects in the unsynced resource type with owner references that set `blockOwnerDeletion: true` are not known to the garbage collector. Not settled: how long dependents remain after a down webhook, and any further partial-informer work. See [[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Mostly settled, and the user decides whether to close it. The stall is fixed upstream: pull request 125796 merged on 2024-09-25 with milestone v1.32, issue 101078 closed as completed, and the 1.32 changelog carries the release note. The caveat is that objects in the unsynced resource type with owner references that set `blockOwnerDeletion: true` are not known to the garbage collector. Not settled: how long dependents remain after a down webhook, and any further partial-informer work. See [[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]].
