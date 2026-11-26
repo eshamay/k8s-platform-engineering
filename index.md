@@ -7,7 +7,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 ### Core architectural principles
 
 - [[concepts/universal-control-plane]] — Kubernetes API and etcd as a control plane for any infrastructure (active)
-- [[concepts/declarative-vs-imperative]] — end-state specs versus command sequences (draft)
+- [[concepts/declarative-vs-imperative]] — end-state specs versus command sequences, three kubectl techniques (active)
 - [[concepts/level-triggered-vs-edge-triggered]] — state-driven versus event-driven controller logic (draft)
 - [[concepts/eventual-consistency-and-convergence]] — concurrent apply, retry, converge (draft)
 - [[concepts/self-healing-and-drift-detection]] — reverting out-of-band changes (draft)
@@ -48,11 +48,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/ack]] — AWS services as Kubernetes objects, one controller per service (draft)
 - [[entities/cluster-api]] — management cluster that creates workload clusters (draft)
 - [[entities/kcp]] — node-less multi-tenant API workspaces (draft)
+- [[entities/kubectl]] — CLI behind imperative and declarative techniques (draft)
+- [[entities/kubebuilder]] — controller framework and Reconcile tutorial (draft)
 
 ## Sources
 
 - [[sources/krm-platform-vocabulary]] — seed vocabulary note, 2026-11-25
 - [[sources/research-universal-control-plane]] — research dossier on the universal control plane idea, 19 web sources, 2026-11-25
+- [[sources/research-declarative-vs-imperative]] — research dossier on declarative versus imperative management, 22 web sources, 2026-11-25
 
 ## Examples
 
@@ -61,15 +64,23 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/cloud-services-as-kubernetes-objects]] — ACK and Config Connector (draft)
 - [[examples/non-container-appliances-on-the-kubernetes-api]] — Ænix distribution vision (draft)
 - [[examples/multi-tenant-api-hosting-with-kcp]] — workspaces for SaaS tenants (draft)
+- [[examples/intuit-argo-cd-gitops-origin]] — why Intuit built Argo CD (draft)
+- [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]] — Git as desired state (draft)
+- [[examples/database-operator-encodes-runbooks]] — SampleDB operator (draft)
+- [[examples/platform-team-self-service-apis-with-crossplane-and-kro]] — one object, many resources (draft)
 
 ## Comparisons
 
 - [[comparisons/tenancy-models-namespaces-vcluster-kcp]] — tenancy trade-offs (draft)
 - [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]] — how each tool orders work (draft)
+- [[comparisons/kubectl-object-management-techniques]] — three kubectl techniques (draft)
+- [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]] — drift and prune behavior (draft)
+- [[comparisons/deletion-policies-across-gitops-and-provider-tools]] — retain, abandon, orphan (draft)
 
 ## Decisions
 
 - [[decisions/crd-versus-aggregated-api]] — how to serve new API kinds (draft)
+- [[decisions/choosing-an-object-management-technique]] — imperative, replace, or apply (draft)
 
 ## Findings
 
@@ -79,6 +90,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/immutable-fields-and-drift-collisions]] — force, resync, and adoption hazards (draft)
 - [[findings/blast-radius-and-privilege-centralization]] — central authority risks (draft)
 - [[findings/immature-abstractions-in-the-control-plane-ecosystem]] — pre-1.0 and Sandbox tools (draft)
+- [[findings/multiple-writers-on-one-object]] — clobbering and field conflicts (draft)
+- [[findings/unintended-deletion-through-prune]] — prune deletes more than expected (draft)
+- [[findings/defaulting-and-drift-reconcile-loops]] — endless loops from server defaults (draft)
+- [[findings/mixing-management-techniques-on-one-object]] — retained live edits (draft)
 
 ## Outputs
 

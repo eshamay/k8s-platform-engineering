@@ -8,6 +8,9 @@ sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-declarative-vs-imperative
+    hash: 570767ba4094
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -23,6 +26,10 @@ ACK runs one controller per AWS service. Each controller talks to a single AWS A
 ## Pitfalls
 
 A ten-hour resync means an out-of-band change may sit uncorrected for a long time, while adoption can collide with existing resources. See [[findings/immutable-fields-and-drift-collisions]], [[findings/destructive-deletion-of-external-resources]], and [[findings/blast-radius-and-privilege-centralization]]. The dossier flags the resync default as something to re-verify against current docs.
+
+## Deletion policy documentation
+
+Deleting an ACK custom resource deletes the AWS resource first by default. A `retain` policy, set by annotation, namespace annotation, or controller flag, keeps the cloud resource, which helps with migrations or with removing ACK management. Adoption is a separate feature that the dossier did not read. [[sources/research-declarative-vs-imperative]] See [[comparisons/deletion-policies-across-gitops-and-provider-tools]].
 
 ## Related
 

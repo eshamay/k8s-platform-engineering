@@ -8,6 +8,9 @@ sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-declarative-vs-imperative
+    hash: 570767ba4094
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, deletion, finalizers, safety]
 ---
@@ -29,3 +32,7 @@ Set retain or abandon policies on critical resources, review `prune` settings, a
 ## Related
 
 [[concepts/owner-references-and-garbage-collection]], [[findings/immutable-fields-and-drift-collisions]]
+
+## Additional evidence
+
+The ACK deletion-policy page confirms that the AWS resource is deleted first by default and that a `retain` policy is available. Flux has a deletion policy including Orphan, and the kubectl tutorial warns about `apply --prune`. [[sources/research-declarative-vs-imperative]] See [[comparisons/deletion-policies-across-gitops-and-provider-tools]] and [[findings/unintended-deletion-through-prune]].

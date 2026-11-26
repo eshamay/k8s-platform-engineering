@@ -16,6 +16,10 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#kro-dependency-graph-and-readiness-mechanics]] — open, unassigned
 - [[#direct-reads-of-argo-cd-flux-ack-and-config-connector-failure-modes]] — open, unassigned
 - [[#community-direction-for-the-kubernetes-as-a-kernel-distribution-model]] — open, unassigned
+- [[#flux-default-reconcile-interval-and-drift-detection-wording]] — open, unassigned
+- [[#adoption-observe-only-and-ignore-differences-controls]] — open, unassigned
+- [[#argo-cd-versus-flux-head-to-head-behavior]] — open, unassigned
+- [[#current-crossplane-terminology-versus-the-early-claims-and-classes-model]] — open, unassigned
 
 ---
 
@@ -32,6 +36,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** flux, lifecycle, ssa, finalizers, conditions
 
 - **Possible resolution from [[sources/research-universal-control-plane]]:** The dossier covers Flux only at the component and Kustomization API level (`dependsOn`, `prune`, `healthChecks`, drift correction through server-side apply dry runs). It does not trace the source-controller to kustomize-controller handoff, so it only partly helps. See [[entities/flux]].
+- **Possible resolution from [[sources/research-declarative-vs-imperative]]:** The dossier adds Flux Kustomization details that belong in the trace: sources produce artifacts that Kustomizations apply, drift is detected with a server-side apply dry run each interval, `prune` and the deletion policy govern removal, and `suspend` pauses reconciliation. It still does not trace finalizer registration or status condition updates, so it only partly helps. See [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -46,6 +51,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** crossplane, kro, composition, abstraction
 
 - **Possible resolution from [[sources/research-universal-control-plane]]:** The dossier supplies the execution models: Crossplane uses an XRD plus a Composition that runs a pipeline of gRPC functions with observed-state feedback on each reconcile, while kro uses a ResourceGraphDefinition with CEL references from which ordering is derived. kro was pre-1.0 (0.10.0) and its dependency mechanics were not read. A first draft is in [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]]. See [[entities/crossplane]] and [[entities/kro]].
+- **Possible resolution from [[sources/research-declarative-vs-imperative]]:** The dossier adds that kro validates schemas, expressions, and references at apply time, infers dependency order from CEL expressions, waits on not-yet-existing status values, supports conditionals and forEach, and keeps CEL non-Turing-complete so definitions terminate and are auditable. Crossplane instead uses a gRPC function pipeline for flexible composition. Readiness mechanics are still not described. See [[examples/platform-team-self-service-apis-with-crossplane-and-kro]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -60,6 +66,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** scale, informers, workqueue, sharding
 
 - **Possible resolution from [[sources/research-universal-control-plane]]:** The dossier covers the etcd and API server side of scale (single write leader, 8 GB cap, list and watch amplification, Kine, separate Events etcd, per-tenant control planes), not informer, workqueue, or sharding behavior of Flux and Crossplane. See [[findings/etcd-scale-limits-of-the-shared-store]].
+- **Possible resolution from [[sources/research-declarative-vs-imperative]]:** Only marginally helpful. The dossier explains that controllers re-list and reconcile full state and that Kubebuilder controllers use the status subresource and owner references, but it has no sharding, concurrency, or rate-limit data. See [[entities/kubebuilder]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -124,3 +131,47 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find SIG discussions or KEPs and conference talks on API server aggregation, server-side apply, and streaming lists.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** distributions, aenix, kep
+
+## Flux default reconcile interval and drift-detection wording — status: open
+
+- **Question:** What is the actual default Kustomization interval in Flux, and does the concepts page's five-minute figure conflict with the Kustomization API page's 60-second minimum?
+- **Why it matters:** Drift-correction latency is a core operational property, and the two pages read as inconsistent.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Flux Kustomization reference directly and confirm that `interval` is user-set and what the minimum is.
+  - [ ] Update [[entities/flux]] and [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, drift, verification
+
+## Adoption, observe-only, and ignore-differences controls — status: open
+
+- **Question:** How do ACK resource adoption, Crossplane management policies (observe-only), Argo CD `ignoreDifferences`, and Flux server-side apply field managers let teams bring existing resources under declarative control or exempt fields from correction?
+- **Why it matters:** These controls are the main mitigation for the multiple-writer and drift pitfalls, and none was read in the dossier.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read each tool's documentation directly.
+  - [ ] Update [[findings/multiple-writers-on-one-object]] and [[findings/defaulting-and-drift-reconcile-loops]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** adoption, ignore-differences, management-policies
+
+## Argo CD versus Flux head-to-head behavior — status: open
+
+- **Question:** How do Argo CD and Flux compare in practice on drift correction, pruning, multi-tenancy, and failure behavior, according to neutral sources?
+- **Why it matters:** The current comparison page merges separate documentation pages and is not a head-to-head analysis.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find practitioner comparisons and CNCF material.
+  - [ ] Revise [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, argo-cd, comparison
+
+## Current Crossplane terminology versus the early claims-and-classes model — status: open
+
+- **Question:** Which parts of Crossplane's 2018-era claims and resource classes design survive in the current composite resource, composition, and function model?
+- **Why it matters:** The original announcement is still widely quoted, and its terminology may mislead readers of current documentation.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read current Crossplane docs on claims and compare them with the early blog post.
+  - [ ] Update [[entities/crossplane]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, terminology, history

@@ -11,6 +11,9 @@ sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-declarative-vs-imperative
+    hash: 570767ba4094
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -24,6 +27,10 @@ A GitOps tool that runs in-cluster and pulls KRM manifests from Git, then applie
 Flux is a set of single-purpose controllers (source, kustomize, helm, notification, and image automation) that communicate through CRDs. In the documentation's words, "The APIs comprise Kubernetes custom resources, which can be created and updated by a cluster user, or by other automation tooling." The Kustomization API provides `dependsOn` (apply after dependencies are Ready), `prune` (delete objects removed from Git), `healthChecks` and `wait` (readiness gating), and `force` (recreate on immutable-field change, risky for StatefulSets). Drift is corrected on an interval through server-side apply dry runs, and CRDs and their controllers must be reconciled before the custom resources that use them. [[sources/research-universal-control-plane]]
 
 See [[findings/destructive-deletion-of-external-resources]], [[findings/immutable-fields-and-drift-collisions]], [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]], and [[entities/argo-cd]].
+
+## Declarative behavior details
+
+The concepts page defines sources that produce artifacts, which Kustomization and HelmRelease objects apply, with reconciliation on an interval that reverts manual changes unless suspended. The Kustomization API adds a per-object prune opt-out annotation, a deletion policy (MirrorPrune, Delete, WaitForTermination, Orphan), and `force`, which should be set only temporarily because it can cause downtime. The concepts page says the default interval is five minutes while the API page says the minimum is 60 seconds, which needs verification. [[sources/research-declarative-vs-imperative]] See [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]] and [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]].
 
 ## Related concepts
 

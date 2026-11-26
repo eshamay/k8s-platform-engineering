@@ -8,6 +8,9 @@ sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-declarative-vs-imperative
+    hash: 570767ba4094
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, drift, immutability]
 ---
@@ -29,3 +32,7 @@ The ACK resync default may have changed and should be verified. The dossier also
 ## Related
 
 [[findings/destructive-deletion-of-external-resources]]
+
+## Additional evidence
+
+Flux `force` recreates objects when immutable fields change and should be used only temporarily because it can cause downtime. Cluster API avoids the problem by making Machines immutable and replacing them. [[sources/research-declarative-vs-imperative]] See [[findings/defaulting-and-drift-reconcile-loops]].

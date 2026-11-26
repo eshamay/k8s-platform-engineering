@@ -8,6 +8,9 @@ sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-declarative-vs-imperative
+    hash: 570767ba4094
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -23,6 +26,10 @@ Deleting a Config Connector resource deletes the associated Google Cloud resourc
 ## Role in platforms
 
 The kro announcement uses Config Connector to build a self-service GKE cluster API. See [[examples/self-service-gke-cluster-with-kro]]. It is a [[concepts/provider]] in the vocabulary of this wiki, and its objects are [[concepts/managed-resource]] instances.
+
+## Ignoring unspecified fields
+
+Config Connector offers Absent mode (default from 1.123.1), which does not copy unspecified fields into the spec, and a legacy Merge mode that caused endless reconcile loops, drift fights with Config Sync because lists are atomic, and HTTP 400 errors from GET/PUT asymmetry. Migration uses the abandon deletion policy. [[sources/research-declarative-vs-imperative]] See [[findings/defaulting-and-drift-reconcile-loops]] and [[comparisons/deletion-policies-across-gitops-and-provider-tools]].
 
 ## To research
 

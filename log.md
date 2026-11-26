@@ -41,3 +41,13 @@ Closing summary:
 - fact conflicts: 0
 - gaps drafted: 6 (plus possible-resolution notes under all three seeded gaps)
 - rationale: The dossier summarizes 19 web pages, so URLs are cited in the source page's Key claims and no per-URL source pages were created. The universal-control-plane concept was promoted from draft to active because it now has a primary-source layered account. Backstage is not mentioned in the dossier, so no page was created. Drafted inline because the page-writer subagent is not available in this session.
+
+## [2026-11-25] ingest | Research dossier: Declarative vs Imperative
+- source: [[sources/research-declarative-vs-imperative]]
+- raw: `raw/research-declarative-vs-imperative.md` (sha256: 570767ba4094)
+- pages touched: [[concepts/declarative-vs-imperative]], [[concepts/level-triggered-vs-edge-triggered]], [[concepts/server-side-apply-and-field-ownership]], [[concepts/self-healing-and-drift-detection]], [[concepts/gitops-pull-based-delivery]], [[concepts/operator-pattern]], [[entities/flux]], [[entities/argo-cd]], [[entities/crossplane]], [[entities/kro]], [[entities/config-connector]], [[entities/ack]], [[entities/cluster-api]], [[findings/destructive-deletion-of-external-resources]], [[findings/immutable-fields-and-drift-collisions]], [[examples/cluster-fleet-lifecycle-with-cluster-api]], [[open-knowledge-gaps]], [[index]]
+- new pages: [[sources/research-declarative-vs-imperative]], entities ([[entities/kubectl]], [[entities/kubebuilder]]), examples (4), findings (4), comparisons (3), [[decisions/choosing-an-object-management-technique]]
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 4 (plus possible-resolution notes under all three seeded gaps)
+- rationale: The dossier summarizes 22 web pages, so URLs are cited in the source page's Key claims and no per-URL source pages were created. The declarative-vs-imperative concept was promoted from draft to active because it now has primary-source support for the three-technique spectrum, the level-based mechanism, and the pitfall taxonomy. Argo CD, Config Connector, ACK, and Cluster API already had entity pages from the previous ingest, so they were updated; Backstage is not mentioned in the dossier, so no page was created. The Flux interval wording discrepancy is recorded as a gap and not as a contradiction because the two pages describe default and minimum separately. Drafted inline (touch budget exceeded 8 pages, but the pages are small and share one source).
