@@ -62,7 +62,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#cache-narrowing-options-in-controller-runtime]] — open, unassigned
 - [[#flux-shared-caches-and-crossplane-performance-guidance]] — open, unassigned
 - [[#informer-and-cache-choices-of-kro-config-connector-ack-and-cluster-api]] — open, unassigned
-- [[#primary-openai-kubernetes-outage-postmortem]] — open, unassigned
 - [[#argo-cd-finalizer-variants-and-non-cascading-deletes]] — open, unassigned
 - [[#flux-kustomization-finalizer-name-and-behavior]] — open, unassigned
 - [[#resolution-of-crossplane-issue-7801-on-credential-protection]] — open, unassigned
@@ -762,18 +761,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Extend [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, config-connector, ack, cluster-api, informers
-
-## Primary OpenAI Kubernetes outage postmortem — status: open
-
-- **Question:** What does the primary OpenAI postmortem say about the telemetry service, API server load, and DNS dependency, and does it involve list and watch clients?
-- **Why it matters:** The dossier read only Ahmet Alp Balkan's commentary, so the quotations and the causal chain are second-hand, and [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]] rests on them.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Locate and read the primary postmortem.
-  - [ ] Update [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** postmortem, api-server, outage
-- **Possible resolution from [[sources/research-gap-g1-outage-postmortems]]:** Settled, and the user can close it. The primary post-mortem on OpenAI's status page was read in full. A telemetry service deployed at 3:12 PM PST made every node in each cluster run API operations whose cost scaled with cluster size, which overwhelmed the API servers in large clusters. DNS relies on the control plane, cached records hid the failure for about 20 minutes, and expiring caches then multiplied the load. Impact ran from 3:16 PM to 7:38 PM PST on 2024-12-11, and the fix was blocked because engineers could not reach the control plane. The write-up does not say the calls were list or watch calls, so that part of the question is answered as not supported by the primary text. Figures are self-reported. See [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]], [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]], and [[findings/dns-caching-hid-the-control-plane-failure-for-about-twenty-minutes-before-expiring-records-added-load]].
 
 ## Argo CD finalizer variants and non-cascading deletes — status: open
 
@@ -1728,3 +1715,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** source-quality, scale, verification
 - **Resolution:** Settled: every quoted scale figure was rechecked against raw page text and matched, with three wording tightenings: about 4 MiB per CRD, the Argo CD processor defaults, and the Crossplane memory figures, which are design-doc targets, not measurements ([[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]], [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]]). Not settled: KEP-1040 was read only in part.
 - **Closed by:** Eric Shamay on 2026-11-26
+
+## Primary OpenAI Kubernetes outage postmortem — status: closed (2026-11-26)
+
+- **Question:** What does the primary OpenAI postmortem say about the telemetry service, API server load, and DNS dependency, and does it involve list and watch clients?
+- **Why it matters:** The dossier read only Ahmet Alp Balkan's commentary, so the quotations and the causal chain are second-hand, and [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]] rests on them.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Locate and read the primary postmortem.
+  - [ ] Update [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** postmortem, api-server, outage
+- **Resolution:** Settled: OpenAI's primary 2024-12-11 status-page postmortem was read in full; it does not mention list or watch calls, so that detail from earlier commentary stays unsupported ([[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]], [[findings/dns-caching-hid-the-control-plane-failure-for-about-twenty-minutes-before-expiring-records-added-load]]). Not settled: details beyond the postmortem's own wording are not established.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g1-outage-postmortems]]:** Settled, and the user can close it. The primary post-mortem on OpenAI's status page was read in full. A telemetry service deployed at 3:12 PM PST made every node in each cluster run API operations whose cost scaled with cluster size, which overwhelmed the API servers in large clusters. DNS relies on the control plane, cached records hid the failure for about 20 minutes, and expiring caches then multiplied the load. Impact ran from 3:16 PM to 7:38 PM PST on 2024-12-11, and the fix was blocked because engineers could not reach the control plane. The write-up does not say the calls were list or watch calls, so that part of the question is answered as not supported by the primary text. Figures are self-reported. See [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]], [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]], and [[findings/dns-caching-hid-the-control-plane-failure-for-about-twenty-minutes-before-expiring-records-added-load]].

@@ -590,3 +590,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Scale numbers from model digests need rechecking
 - closed by: Eric Shamay
 - resolution: Settled: every quoted scale figure was rechecked against raw page text and matched, with three wording tightenings: about 4 MiB per CRD, the Argo CD processor defaults, and the Crossplane memory figures, which are design-doc targets, not measurements ([[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]], [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]]). Not settled: KEP-1040 was read only in part.
+
+## [2026-11-26] gaps | close | Primary OpenAI Kubernetes outage postmortem
+- closed by: Eric Shamay
+- resolution: Settled: OpenAI's primary 2024-12-11 status-page postmortem was read in full; it does not mention list or watch calls, so that detail from earlier commentary stays unsupported ([[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]], [[findings/dns-caching-hid-the-control-plane-failure-for-about-twenty-minutes-before-expiring-records-added-load]]). Not settled: details beyond the postmortem's own wording are not established.
