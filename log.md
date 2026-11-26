@@ -538,3 +538,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Deprecated API scanners and Crossplane v2 GVKs
 - closed by: Eric Shamay
 - resolution: Settled: Pluto (86 Kubernetes, 24 cert-manager and 2 Istio entries) and kubent ship no Crossplane rules, so deprecated Crossplane GVKs pass unflagged unless custom entries are added ([[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]]). Not settled: the API-server warning-header behavior for the deprecated XRD v1 is inference, not observed.
+
+## [2026-11-26] gaps | close | kro released-version tuning defaults and instance conditions
+- closed by: Eric Shamay
+- resolution: Settled: the v0.10.0 docs confirm the controller tuning defaults and four instance conditions; kro reserves the right to change sub-conditions so only Ready is a stable contract, and the docs disagree on whether a Failed instance state exists ([[findings/kro-reserves-the-right-to-change-instance-sub-conditions-so-only-ready-is-a-stable-contract]], [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]]). Not settled: the v0.9.4 rate-limiter table was not fully read, and conditions come from docs, not Go source.

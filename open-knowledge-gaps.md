@@ -23,7 +23,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#reconcile-defaults-for-crossplane-ack-and-cluster-api]] — open, unassigned
 - [[#kubernetes-v136-staleness-mitigation-mechanisms-and-metrics]] — open, unassigned
 - [[#named-end-user-case-study-of-convergence-trouble]] — open, unassigned
-- [[#kro-released-version-tuning-defaults-and-instance-conditions]] — open, unassigned
 - [[#flux-helm-controller-override-manager-and-dry-run-failure-recovery]] — open, unassigned
 - [[#config-connector-reconcile-interval-and-drift-cadence]] — open, unassigned
 - [[#production-incidents-from-drift-correction]] — open, unassigned
@@ -333,20 +332,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortem, retries, case-study
 - **Possible resolution from [[sources/research-gap-g1-gitops-drift-incidents]]:** Not settled. No named-company primary postmortem of controller retry amplification, stale caches, or slow convergence was found. The nearest evidence is the anonymous Argo CD self-heal incident of 2026-11-20 and two k8s.af index entries that were not read (Skyscanner 2021 and Airbnb KubeCon NA 2020), both SECONDARY-ONLY. The GitHub primary postmortem named in this gap was not searched for separately. See [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]] and [[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]].
-
-## kro released-version tuning defaults and instance conditions — status: open
-
-- **Question:** Do the kro controller tuning defaults match the released versions, and what status conditions and per-instance reconcile semantics does kro expose?
-- **Why it matters:** The numbers in [[examples/kro-shared-queue-tunes-throughput]] come from unreleased "next" docs, and the instances concept page returned empty content.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the released kro tuning and instances documentation.
-  - [ ] Update [[entities/kro]] and [[comparisons/retry-and-backoff-controls-across-tools]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** kro, verification, conditions
-- **Possible resolution from [[sources/research-composite-resource]]:** Marginally helpful. The dossier reads v0.10.0 pages and lists the RGD conditions, and says the kro controller tuning docs were not read. It adds a version discrepancy, since a September 2026 blog cites v0.9.x. See [[#kro-graph-api-status-and-released-version-facts]].
-- **Possible resolution from [[sources/research-conditions]]:** Marginally helpful. The dossier read the v0.10.0 RGD reference and the custom status conditions page, but the Instances page returned empty content, so the built-in instance condition names are still inferred. See [[entities/kro]].
-- **Possible resolution from [[sources/research-gap-g3-kro]]:** Largely settled, and the user can close it. The v0.10.0 controller tuning page (released 2026-11-10) confirms every default the wiki took from the unreleased docs: 1 worker, a 36000 s resync, 20 retries, backoff from 200 ms to 1000 s with a bucket of 10 per second and burst 100, and client QPS 100 with burst 150. It adds a 30 s `watchSyncTimeout`, a Graph controller concurrency of 1, `applyConcurrency` 20, a collection limit of 1000 items with 10 dimensions, and a CEL cost limit of 0, and the instance requeue interval is 3 s with exponential backoff capped at five minutes (a fixed delay at v0.9.4, which is an inference from two pages). The Instances page now documents the four built-in instance conditions (`InstanceManaged`, `GraphResolved`, `ResourcesReady`, `Ready`) and says only `Ready` is a stable contract. Not settled: the full v0.9.4 rate-limiter table, and the condition names against Go source. See [[examples/kro-shared-queue-tunes-throughput]], [[findings/kro-reserves-the-right-to-change-instance-sub-conditions-so-only-ready-is-a-stable-contract]], [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]], and [[entities/kro]].
 
 ## Flux helm-controller override-manager and dry-run failure recovery — status: open
 
@@ -1717,3 +1702,19 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: Pluto (86 Kubernetes, 24 cert-manager and 2 Istio entries) and kubent ship no Crossplane rules, so deprecated Crossplane GVKs pass unflagged unless custom entries are added ([[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]]). Not settled: the API-server warning-header behavior for the deprecated XRD v1 is inference, not observed.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Pluto detects deprecated and removed versions from a bundled `versions.yaml` (86 `k8s`, 24 `cert-manager`, 2 `istio` entries, none for Crossplane), and kubent evaluates Rego rule sets for 1.16 to 1.32. Both accept custom entries. Crossplane's own scanner is `crossplane beta upgrade check` and covers removed v1 features, not GVKs. The v2 GVK changes are listed: XRD v1 deprecated beside v2, namespaced managed resources under `.m.` groups beside legacy groups, and Usage moved to `protection.crossplane.io`. The warning-header behavior for a deprecated XRD is an inference. See [[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]].
+
+## kro released-version tuning defaults and instance conditions — status: closed (2026-11-26)
+
+- **Question:** Do the kro controller tuning defaults match the released versions, and what status conditions and per-instance reconcile semantics does kro expose?
+- **Why it matters:** The numbers in [[examples/kro-shared-queue-tunes-throughput]] come from unreleased "next" docs, and the instances concept page returned empty content.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the released kro tuning and instances documentation.
+  - [ ] Update [[entities/kro]] and [[comparisons/retry-and-backoff-controls-across-tools]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, verification, conditions
+- **Resolution:** Settled: the v0.10.0 docs confirm the controller tuning defaults and four instance conditions; kro reserves the right to change sub-conditions so only Ready is a stable contract, and the docs disagree on whether a Failed instance state exists ([[findings/kro-reserves-the-right-to-change-instance-sub-conditions-so-only-ready-is-a-stable-contract]], [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]]). Not settled: the v0.9.4 rate-limiter table was not fully read, and conditions come from docs, not Go source.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-composite-resource]]:** Marginally helpful. The dossier reads v0.10.0 pages and lists the RGD conditions, and says the kro controller tuning docs were not read. It adds a version discrepancy, since a September 2026 blog cites v0.9.x. See [[#kro-graph-api-status-and-released-version-facts]].
+- **Possible resolution from [[sources/research-conditions]]:** Marginally helpful. The dossier read the v0.10.0 RGD reference and the custom status conditions page, but the Instances page returned empty content, so the built-in instance condition names are still inferred. See [[entities/kro]].
+- **Possible resolution from [[sources/research-gap-g3-kro]]:** Largely settled, and the user can close it. The v0.10.0 controller tuning page (released 2026-11-10) confirms every default the wiki took from the unreleased docs: 1 worker, a 36000 s resync, 20 retries, backoff from 200 ms to 1000 s with a bucket of 10 per second and burst 100, and client QPS 100 with burst 150. It adds a 30 s `watchSyncTimeout`, a Graph controller concurrency of 1, `applyConcurrency` 20, a collection limit of 1000 items with 10 dimensions, and a CEL cost limit of 0, and the instance requeue interval is 3 s with exponential backoff capped at five minutes (a fixed delay at v0.9.4, which is an inference from two pages). The Instances page now documents the four built-in instance conditions (`InstanceManaged`, `GraphResolved`, `ResourcesReady`, `Ready`) and says only `Ready` is a stable contract. Not settled: the full v0.9.4 rate-limiter table, and the condition names against Go source. See [[examples/kro-shared-queue-tunes-throughput]], [[findings/kro-reserves-the-right-to-change-instance-sub-conditions-so-only-ready-is-a-stable-contract]], [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]], and [[entities/kro]].
