@@ -74,6 +74,9 @@ sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-landscape
+    hash: d28204a90545
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -181,3 +184,7 @@ In JFrog's self-service environments, Argo CD sits between Git and Crossplane. D
 ## Tracking kro children and the EKS capability
 
 The kro FAQ gives an Argo CD recipe: add an owner reference and an `argocd.argoproj.io/tracking-id` annotation to each templated resource so Argo CD can track the children that kro creates, and the FAQ documents risks with the approach. The Amazon EKS guide lists Argo CD as a managed EKS capability that can deploy kro custom resources across clusters. Kustomize's site also lists Argo CD as an integrator. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]], [[findings/default-owner-references-delete-out-of-order-and-cannot-link-namespaced-to-cluster-scoped-objects-so-kro-uses-applysets]], and [[entities/kustomize]]. [[sources/research-kro-and-abstraction-models]]
+
+## Position in the tooling landscape
+
+Argo CD sits in the delivery layer of [[concepts/tooling-landscape]]. The architecture documentation describes an API server (gRPC and REST for the UI, CLI, CI, RBAC, and webhooks), a repository server that caches repositories and renders manifests from URL, revision, path, and template settings, and an application controller that "continuously monitors running applications and compares the current, live state against the desired target state" (https://argo-cd.readthedocs.io/en/stable/operator-manual/architecture/). The excerpt did not cover ApplicationSet or app-of-apps. Akuity, an Argo CD vendor, reports that it runs in nearly 60% of clusters according to the 2025 Argo CD End User Survey, that AppProjects give per-tenant RBAC, and that Kargo handles promotion, and it calls Argo CD's footprint heavier than Flux's. These are vendor claims, see [[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]]. A practitioner also reports that Argo CD deletes Config Connector children without ordering, see [[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]]. [[sources/research-landscape]]

@@ -39,6 +39,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/composite-resource]] — opinionated platform API over many resources, two implementations, per-XR controls, readiness, and pitfalls (active)
 - [[concepts/composition]] — blueprint mapping composite to managed resources, function pipelines, and the resource graph alternative (active)
 - [[concepts/provider]] — controller and CRDs for an external API, packaging models, generation, and risks (active)
+- [[concepts/tooling-landscape]] — delivery, provisioning, and platform layers, how they combine, and where the boundaries fail (active)
 
 ## Entities
 
@@ -73,6 +74,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/kpt]] — Configuration as Data toolchain and the KRM function model (draft)
 - [[entities/score]] — developer workload spec translated into Compose or Kubernetes manifests (draft)
 - [[entities/radius]] — application platform with per-environment Recipes, secondary evidence only (draft)
+- [[entities/backstage]] — developer portal framework with catalog and templates, not a provisioner (draft)
+- [[entities/kratix]] — Promise-based orchestration framework behind a portal (draft)
+- [[entities/port]] — commercial SaaS developer portal with blueprints and actions (draft)
+- [[entities/cozystack]] — packaged PaaS for building a cloud on bare metal (draft)
+- [[entities/terraform-operator]] — community CRD that starts Terraform workflow pods (draft)
 
 ## Sources
 
@@ -102,6 +108,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-flux-deep-dive]] — research dossier on Flux controllers, tenancy, scale, and adopters, 16 web sources, 2026-11-25
 - [[sources/research-crossplane-deep-dive]] — research dossier on Crossplane layers, v2 changes, adopters, and criticism, 15 web sources, 2026-11-25
 - [[sources/research-kro-and-abstraction-models]] — research dossier on kro, Crossplane, Helm, Kustomize, kpt, Score, and Radius, 14 web sources, 2026-11-25
+- [[sources/research-landscape]] — research dossier on the delivery, provisioning, and platform tooling landscape, 17 web sources, 2026-11-25
 
 ## Examples
 
@@ -248,6 +255,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/kro-cel-hash-functions-restart-a-deployment-when-a-configmap-changes]] — Helm checksum trick in CEL (draft)
 - [[examples/score-generates-docker-compose-or-kubernetes-manifests-from-one-workload-spec]] — one spec, two targets (draft)
 - [[examples/radius-recipes-let-platform-engineers-decide-what-a-redis-cache-becomes-in-each-environment]] — per-environment implementation choice (draft)
+- [[examples/google-cloud-shops-deliver-config-connector-resources-from-git-while-the-controller-s-own-identity-makes-the-cloud-calls]] — delivery tool plus controller identity (draft)
+- [[examples/single-cloud-teams-pick-ack-per-service-or-azure-service-operator-v2-with-code-generated-crds]] — AWS-only and Azure-only choices (draft)
+- [[examples/teams-with-large-terraform-estates-run-terraform-inside-the-cluster-with-tofu-controller-or-terraform-operator]] — Terraform under GitOps (draft)
+- [[examples/kratix-promises-scatter-workloads-across-standard-pci-and-terraform-destinations]] — vendor example of multi-cluster segmentation (draft)
+- [[examples/cozystack-turns-commodity-servers-into-a-cloud-with-kubernetes-databases-and-vms]] — bare-metal cloud building (draft)
+- [[examples/rtl-nederland-provisions-whole-kubernetes-clusters-with-crossplane-which-overlaps-with-cluster-api]] — self-reported adopter and layer overlap (draft)
 
 ## Comparisons
 
@@ -299,6 +312,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]] — the two families of abstraction (draft)
 - [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]] — packaging and governance table (draft)
 - [[comparisons/score-versus-radius-as-developer-facing-workload-abstractions]] — generator versus control plane (draft)
+- [[comparisons/delivery-versus-provisioning-versus-platform-layers-in-the-kubernetes-tooling-landscape]] — three layers, tools, units of work, ordering, identity (draft)
+- [[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers]] — portals and the orchestration layer behind them (draft)
+- [[comparisons/tofu-controller-versus-terraform-operator-as-terraform-in-cluster-controllers]] — two ways to run Terraform in pods (draft)
 
 ## Decisions
 
@@ -472,6 +488,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/helm-values-and-kustomize-patches-leak-the-underlying-manifests-into-the-abstraction]] — abstraction leakage (draft)
 - [[findings/go-template-compositions-need-hand-written-ordering-and-deletion-guards]] — manual order and deletion safety (draft)
 - [[findings/radius-maturity-and-governance-claims-rest-on-a-single-third-party-blog]] — weak evidence caveat (draft)
+- [[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]] — single-source ordering pitfall (draft)
+- [[findings/controllers-that-act-with-their-own-cloud-identity-give-whoever-can-create-a-resource-that-identity-s-rights]] — blast radius of controller identity (draft)
+- [[findings/terraform-in-cluster-controllers-keep-state-in-secrets-gate-apply-on-git-approval-and-couple-to-specific-versions]] — state, approval, and version coupling (draft)
+- [[findings/a-portal-alone-gives-visibility-but-not-provisioning-so-ticket-queues-can-persist-according-to-a-kratix-vendor]] — vendor claim about portals (draft)
+- [[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]] — source-quality caveat (draft)
 
 ## Outputs
 

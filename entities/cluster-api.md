@@ -50,6 +50,9 @@ sources:
   - id: research-provider
     hash: 7e43edcd71be
     ingested: 2026-11-25
+  - id: research-landscape
+    hash: d28204a90545
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -125,3 +128,7 @@ The Compositions dossier cites the Cluster API book page for ClusterClass, which
 ## Provider contracts
 
 The Providers dossier read the provider contracts overview. Cluster API defines infrastructure, bootstrap, control plane, IPAM, and addon provider types, and each implements agreed CRD fields and behaviors so the core controllers stay generic. This is a different meaning of provider from Crossplane's, see [[comparisons/crossplane-providers-versus-cluster-api-providers]]. [[sources/research-provider]]
+
+## Landscape view
+
+The Cluster API Book describes a management cluster running Cluster API and providers to manage workload clusters, with infrastructure providers creating machines and networks, bootstrap providers producing node init data (typically cloud-init), and control-plane providers managing the control plane, as in "custom resources like KubeadmControlPlane to manage control plane Machines" (https://cluster-api.sigs.k8s.io/user/concepts). The dossier calls the Deployment-to-Pod analogy the best newcomer hook. Crossplane adopters such as RTL Nederland also provision whole clusters, so the layers overlap, see [[examples/rtl-nederland-provisions-whole-kubernetes-clusters-with-crossplane-which-overlaps-with-cluster-api]] and [[concepts/tooling-landscape]]. [[sources/research-landscape]]

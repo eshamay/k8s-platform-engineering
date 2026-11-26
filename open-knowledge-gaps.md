@@ -117,6 +117,11 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#scaling-limits-of-per-rgd-kro-controllers-and-named-production-kro-adopters]] — open, unassigned
 - [[#primary-source-status-of-radius-and-score]] — open, unassigned
 - [[#krm-function-specification-and-runtime-requirements]] — open, unassigned
+- [[#config-connector-namespaced-versus-cluster-mode-and-deletion-policies]] — open, unassigned
+- [[#kratix-destination-and-gitstatestore-mechanics]] — open, unassigned
+- [[#maintenance-status-of-tofu-controller-and-terraform-operator]] — open, unassigned
+- [[#independent-benchmarks-for-argo-cd-footprint-and-portal-claims]] — open, unassigned
+- [[#direct-comparison-of-config-connector-and-crossplane]] — open, unassigned
 
 ---
 
@@ -156,6 +161,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Partly helpful. The dossier names the controller roles that the first half of the trace needs: the source controller fetches Git, OCI, Helm, and bucket content and serves it as tar.gz artifacts, the kustomize controller builds and applies it, the notification controller can trigger an immediate reconcile through a Receiver, and `dependsOn` and `healthChecks` gate readiness. It admits that source-controller internals were not covered and does not trace finalizer registration or condition updates. See [[entities/flux]] and [[examples/flux-notification-receivers-start-reconciliation-without-waiting-for-the-poll-interval]].
 - **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Not helpful. The dossier covers Crossplane's model and adoption and reads no Flux documentation. Its only GitOps pairing is Argo CD in the JFrog pipeline, where Argo CD syncs custom resources from Git and Crossplane provisions the cloud resources. See [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]].
 - **Possible resolution from [[sources/research-kro-and-abstraction-models]]:** Not helpful. The dossier covers abstraction models and does not trace a Git commit through Flux to Ready status. Its only related point is that render-time tools such as Helm and Kustomize leave continuous correction to a GitOps tool, while kro and Crossplane run their own reconcile loops beneath it.
+- **Possible resolution from [[sources/research-landscape]]:** Not helpful. The dossier lists the Flux controllers (source, kustomize, helm, notification, image automation) and says each owns a CRD and communicates through the API server and object status, but it does not trace the handoff, finalizers, or condition updates. See [[entities/flux]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -192,6 +198,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Not helpful. The dossier says Flux comparisons with Crossplane and kro were not researched and that no source confirms Flux simply deploys their custom resources.
 - **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Marginally helpful, and only for Crossplane. The dossier restates that a Composition is a pipeline of gRPC functions applied with server-side apply, that functions must carry desired state forward, and that v2 compositions can hold any Kubernetes resource. It names no kro material and says primary comparisons against kro were not read. See [[concepts/composition]] and [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]].
 - **Possible resolution from [[sources/research-kro-and-abstraction-models]]:** Largely helpful. The dossier compares the two on packaging (OCI Configuration packages versus Git, Helm, or Kustomize), logic (a function pipeline versus bounded CEL), children (managed resources versus Kubernetes objects only), maturity (versioned XRDs versus `v1alpha1`), and deletion (kro uses ApplySets and reverse-topological order and Go-template Compositions need hand-written guards). It also reports a tutorial that built one API both ways with equivalent outcomes. It gives no scale numbers or production incident, and the sources are blogs and a tutorial. See [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]], [[examples/build-the-same-storageapp-api-with-kro-and-with-a-crossplane-go-templating-composition]], and [[findings/go-template-compositions-need-hand-written-ordering-and-deletion-guards]].
+- **Possible resolution from [[sources/research-landscape]]:** Marginally helpful. The dossier describes Crossplane's side only, with providers, function pipelines in YAML, Python, Go, or KCL, XRDs, and Operations, and it did not cover kro. See [[entities/crossplane]] and [[concepts/tooling-landscape]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -230,6 +237,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Largely helpful for Flux. The dossier explains that extra replicas are failover standbys because of leader election, that label-based sharding with `sharding.fluxcd.io/key` and `--watch-label-selector` adds capacity, that the Flux Operator automates shard setup, and that Morgan Stanley raised intervals and `--concurrent` at more than 500 clusters. It has no production sharding numbers and no Crossplane data. See [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]] and [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]].
 - **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Marginally helpful on the API-server side only. The Upbound post explains why thousands of CRDs hurt (hundreds of throttled discovery requests, increasingly expensive serialization on each CRD change, about 4 MiB of memory per CRD) and lists upstream mitigations, and the upgrade guide names managed resource activation policies as the Crossplane v2 remedy without explaining them. It has no informer, workqueue, or controller sharding data. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]].
 - **Possible resolution from [[sources/research-kro-and-abstraction-models]]:** Not helpful. The dossier says the scaling limits of per-RGD dedicated controllers are not covered in the sources read and found no large-scale kro benchmark. See [[open-knowledge-gaps]] for the follow-up on kro scale.
+- **Possible resolution from [[sources/research-landscape]]:** Marginally helpful. The self-reported Crossplane adopters list gives SAP at 100 or more control planes and Akamai's provider-ceph at up to 200,000 managed resources, and Akuity claims Argo CD has a heavier footprint than Flux. All are unverified or vendor claims, so no tuning guidance follows. See [[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -245,6 +253,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-managed-resource]]:** Partly helpful. The Crossplane ADOPTERS list names Nike, Autodesk, SAP, Deutsche Kreditbank, IBM, Elastic, UiPath, VMware Tanzu, DB Systel, Nokia, and Akamai, with reported counts such as SAP's thousands of managed resources and Akamai's up to 200,000. The entries are self-reported one-liners and not verified case studies. See [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]].
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Marginally helpful. The Flux adopters page lists more than 200 organizations without use-case detail, and Morgan Stanley reports more than 500 clusters. No adopter of Crossplane, ACK, Config Connector, Cluster API, or kcp is added. See [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]].
 - **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Partly helpful. The CNCF graduation post names Nike, Nokia, Grafana, NASA Science Cloud, Elastic, Akamai, SAP, and IBM among 70 or more self-reported adopters, and InfoQ adds Autodesk. Only JFrog is described in any detail, as a Jenkins, Git, Argo CD, and Crossplane self-service pipeline with size classes and expiry tags, and the post gives no object counts. See [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]].
+- **Possible resolution from [[sources/research-landscape]]:** Partly helpful. The adopters list names Nike, Consensys, SAP, Deutsche Bahn (DB Systel), Stone Payments, RTL Nederland, and Akamai with use cases, all self-reported, and Syntasso links NatWest, The Access Group, and Veeam as Kratix case studies without detail. See [[examples/rtl-nederland-provisions-whole-kubernetes-clusters-with-crossplane-which-overlaps-with-cluster-api]].
 
 ## Independent scale benchmarks for etcd, vcluster, and kcp — status: open
 
@@ -1435,3 +1444,58 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/kpt]] and [[findings/moving-kustomize-helm-inflation-to-krm-functions-needs-a-container-runtime-that-laptops-ci-and-argo-cd-often-lack]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** krm-functions, kpt, kustomize, containers
+
+## Config Connector namespaced versus cluster mode and deletion policies — status: open
+
+- **Question:** How do Config Connector's namespaced and cluster modes differ in practice, and which deletion policies apply when a parent or child resource is removed?
+- **Why it matters:** The landscape dossier's fetched text did not detail either, and a practitioner reports unordered deletion and DeleteFailed children under Argo CD.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Config Connector mode and deletion-policy documentation.
+  - [ ] Revise [[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]] and [[entities/config-connector]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** config-connector, deletion, modes
+
+## Kratix Destination and GitStateStore mechanics — status: open
+
+- **Question:** How do Kratix Destinations and GitStateStores decide where a Promise's output is written and scheduled?
+- **Why it matters:** The fetched excerpt omitted both, and the PCI cluster example depends on them. The InfraCloud article redirected away and two other sites were unreachable.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Fetch the Kratix documentation on Destinations and GitStateStores.
+  - [ ] Expand [[entities/kratix]] and [[examples/kratix-promises-scatter-workloads-across-standard-pci-and-terraform-destinations]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kratix, destinations, gitops
+
+## Maintenance status of tofu-controller and Terraform Operator — status: open
+
+- **Question:** What is the current maintenance level of tofu-controller after Weaveworks' wind-down, and of the community Terraform Operator?
+- **Why it matters:** Teams adopting either project need to know the last release and who maintains it, and the dossier did not check.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Check release history and maintainers for both repositories.
+  - [ ] Update [[entities/tofu-controller]], [[entities/terraform-operator]], and [[comparisons/tofu-controller-versus-terraform-operator-as-terraform-in-cluster-controllers]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** terraform, tofu-controller, maintenance
+
+## Independent benchmarks for Argo CD footprint and portal claims — status: open
+
+- **Question:** Do independent measurements support the vendor claims that Argo CD has a heavier footprint than Flux, that Port goes beyond Backstage, and that a portal alone leaves ticket queues?
+- **Why it matters:** Every comparative claim in the landscape dossier comes from a vendor and none was independently checked.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Search for neutral benchmarks or end-user studies.
+  - [ ] Revise [[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** benchmarks, vendor-bias, argo-cd, flux, portals
+
+## Direct comparison of Config Connector and Crossplane — status: open
+
+- **Question:** How do Config Connector and Crossplane compare on Google Cloud for composition, ordering, identity, and deletion behavior?
+- **Why it matters:** The dossier's wiki search for a direct comparison returned nothing useful, and the existing add-on comparison is based on a Crossplane maintainer's post.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find a neutral Config Connector versus Crossplane comparison or test both on one scenario.
+  - [ ] Extend [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** config-connector, crossplane, comparison

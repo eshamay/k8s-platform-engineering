@@ -53,6 +53,9 @@ sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-landscape
+    hash: d28204a90545
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -132,3 +135,7 @@ The Providers dossier read the overview in full. Reconciliation runs as the Conf
 ## Named as a kro-compatible leaf provider
 
 The kro overview says kro works with any CRD and names ACK, Azure Service Operator, and Config Connector as examples, and the engineer's blog comparison says kro relies on them because it orchestrates only Kubernetes objects. The dossier read no primary Config Connector page. See [[entities/kro]] and [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]]. [[sources/research-kro-and-abstraction-models]]
+
+## Landscape view: identity and ordering
+
+The overview says Config Connector "reconciles the configured state against Google Cloud APIs asynchronously" and acts with its own IAM service account, which centralizes authorization, see [[findings/controllers-that-act-with-their-own-cloud-identity-give-whoever-can-create-a-resource-that-identity-s-rights]]. A single practitioner blog reports no Terraform-style dependency ordering and unordered deletion under Argo CD, worked around with sync waves and a finalizer-patching CronJob, see [[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]]. The dossier did not confirm namespaced versus cluster mode details or deletion policies. See [[examples/google-cloud-shops-deliver-config-connector-resources-from-git-while-the-controller-s-own-identity-makes-the-cloud-calls]]. [[sources/research-landscape]]

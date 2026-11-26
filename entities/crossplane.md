@@ -80,6 +80,9 @@ sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-landscape
+    hash: d28204a90545
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -203,3 +206,7 @@ The best-documented adopter pattern is self-service through Git and a GitOps age
 ## Packaging and governance in the abstraction-models dossier
 
 An engineer's July 2026 blog describes Crossplane's shape as an XRD plus a Composition function pipeline (patch-and-transform, KCL, Go templating, Python) plus managed resources, distributed as OCI Configuration packages that pin providers and functions, and notes that Upjet generates providers from Terraform providers, which kro lacks. The same post calls Crossplane CNCF Incubating, which conflicts with the graduation recorded above from the project's announcement and InfoQ. The wiki treats the blog label as a likely stale dated claim and does not change this page's status for it. Crossplane v2 XRDs default to Namespaced scope, so an XR can compose only resources in its own namespace, with Cluster and LegacyCluster as alternatives, and breaking schema changes need a new XRD or a conversion webhook. See [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]], [[findings/go-template-compositions-need-hand-written-ordering-and-deletion-guards]], and [[entities/kpt]]. [[sources/research-kro-and-abstraction-models]]
+
+## Position in the tooling landscape
+
+Crossplane is the multi-cloud member of the provisioning layer in [[concepts/tooling-landscape]]. The overview describes it as a framework to "build control planes to manage your cloud native software," with providers packaging managed resources, Compositions running function pipelines in YAML, Python, Go, or KCL, XRDs defining the new API, and Operations running pipelines to completion for tasks such as certificate checks. It positions Crossplane against Kubebuilder, where you write the controller, and against cloud CLIs, which are not declarative (https://docs.crossplane.io/latest/whats-crossplane/). The self-reported adopters list adds SAP at 100 or more KRM-based control planes as of February 2024, Stone Payments across several clouds and SaaS, and Akamai's provider-ceph at up to 200,000 managed resources, see [[examples/rtl-nederland-provisions-whole-kubernetes-clusters-with-crossplane-which-overlaps-with-cluster-api]]. [[sources/research-landscape]]

@@ -47,6 +47,9 @@ sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-landscape
+    hash: d28204a90545
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -118,3 +121,7 @@ The Providers dossier read the ACK concepts page in full. ACK reconciles immedia
 ## Managed kro pairing on EKS
 
 The Amazon EKS guide positions kro as the glue that composes workloads with ACK-managed AWS resources, such as S3 buckets, into "cloud building blocks" with default and immutable organizational settings, and the kro overview uses an ACK `Bucket` inside a `WebApp` graph. kro can wait for ACK status fields, such as a bucket ARN, that do not exist yet. See [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]]. [[sources/research-kro-and-abstraction-models]]
+
+## Landscape view
+
+In [[concepts/tooling-landscape]], ACK is the AWS-only member of the provisioning layer, shipping one controller image per service through ECR Public so a cluster installs only what it needs, with adoption of existing AWS resources, field export to ConfigMaps or Secrets, and cross-account management (https://aws-controllers-k8s.github.io/community/docs/community/overview/). The dossier notes that each service has its own release cadence. See [[examples/single-cloud-teams-pick-ack-per-service-or-azure-service-operator-v2-with-code-generated-crds]]. [[sources/research-landscape]]

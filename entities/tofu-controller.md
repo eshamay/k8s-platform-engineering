@@ -8,6 +8,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-landscape
+    hash: d28204a90545
+    ingested: 2026-11-25
 aliases: [tf-controller, flux-iac tofu-controller]
 tags: [tool, terraform, opentofu, gitops]
 ---
@@ -27,3 +30,7 @@ The README digest gave no detail on approval modes, intervals, or how drift is r
 ## Related
 
 [[entities/flux]], [[concepts/self-healing-and-drift-detection]], [[comparisons/drift-detection-mechanisms-across-tools]]
+
+## Operating model from the project documentation
+
+The project documentation says the controller "detects and fixes drift for your infrastructures, based on the Terraform resources and their TFSTATE." It runs plan and apply in runner pods, stores state as Kubernetes Secrets, and does manual approval by putting the plan ID in `.spec.approvePlan` through Git. Version 0.16 pairs with Terraform 1.5.7 and Flux 2.6.x, and Branch Planner was in technology preview (https://flux-iac.github.io/tofu-controller/). This refines the earlier "limits of what is known" section. See [[findings/terraform-in-cluster-controllers-keep-state-in-secrets-gate-apply-on-git-approval-and-couple-to-specific-versions]] and [[comparisons/tofu-controller-versus-terraform-operator-as-terraform-in-cluster-controllers]]. [[sources/research-landscape]]

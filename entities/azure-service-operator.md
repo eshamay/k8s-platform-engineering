@@ -8,6 +8,9 @@ sources:
   - id: research-provider
     hash: 7e43edcd71be
     ingested: 2026-11-25
+  - id: research-landscape
+    hash: d28204a90545
+    ingested: 2026-11-25
 aliases: []
 tags: [azure-service-operator, azure, provider, code-generation]
 ---
@@ -29,3 +32,7 @@ ASO is one of the cloud-vendor add-ons, alongside [[entities/ack]] for AWS and [
 ## Open points
 
 The dossier does not cover ASO's credential scoping, deletion policy, or drift cadence.
+
+## Landscape view
+
+The official documentation confirms that CRDs are code-generated from Azure Resource Manager schemas, that conventions such as owner references and asynchronous reconciliation are followed, and that workload identity, multi-tenant deployment modes, and reduced-permission setups are supported (https://azure.github.io/azure-service-operator/). The multi-tenant and reduced-permission modes address the blast-radius concern in [[findings/controllers-that-act-with-their-own-cloud-identity-give-whoever-can-create-a-resource-that-identity-s-rights]]. See [[examples/single-cloud-teams-pick-ack-per-service-or-azure-service-operator-v2-with-code-generated-crds]] and [[concepts/tooling-landscape]]. [[sources/research-landscape]]

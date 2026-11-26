@@ -8,6 +8,9 @@ sources:
   - id: research-crossplane-deep-dive
     hash: 44034359219f
     ingested: 2026-11-25
+  - id: research-landscape
+    hash: d28204a90545
+    ingested: 2026-11-25
 aliases: [OpenTofu]
 tags: [tool, iac, comparison]
 ---
@@ -27,3 +30,7 @@ The wiki treats Terraform mainly as the contrast case for Kubernetes-native reco
 ## To research
 
 State locking details, drift behavior in practice, and neutral comparisons with Kubernetes-native tools were not covered by the dossier.
+
+## Terraform inside the cluster
+
+Two controllers run Terraform from Kubernetes custom resources, [[entities/tofu-controller]] and [[entities/terraform-operator]], and both still require writing Terraform. See [[examples/teams-with-large-terraform-estates-run-terraform-inside-the-cluster-with-tofu-controller-or-terraform-operator]]. [[sources/research-landscape]]
