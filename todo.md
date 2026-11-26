@@ -16,31 +16,16 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#add-sticki-lint-to-the-recurring-routine]] — open
 - [[#deepen-the-dossiers-that-rest-on-model-digests]] — open
 - [[#build-the-study-guide-from-the-corpus]] — open
-- [[#update-crossplane-ramp-up-for-the-v2-5-verification-pass]] — open
-- [[#update-part-4-for-the-v2-5-verification-pass]] — open
-- [[#update-part-5-for-the-v2-5-verification-pass]] — open
-- [[#update-part-3-for-the-kro-v0-10-0-verification-pass]] — open
-- [[#update-part-4-for-the-kro-v0-10-0-verification-pass]] — open
-- [[#update-part-5-for-the-kro-v0-10-0-verification-pass]] — open
-- [[#update-part-4-for-the-scale-figures-recheck]] — open
-- [[#update-part-5-for-the-scale-figures-recheck]] — open
-- [[#update-part-1-for-the-reconcile-defaults-verification-pass]] — open
-- [[#update-part-2-for-the-reconcile-defaults-verification-pass]] — open
-- [[#update-part-3-for-the-reconcile-defaults-verification-pass]] — open
-- [[#update-part-5-for-the-reconcile-defaults-verification-pass]] — open
-- [[#update-flux-ramp-up-for-the-reconcile-defaults-verification-pass]] — open
-- [[#update-crossplane-ramp-up-for-the-reconcile-defaults-verification-pass]] — open
-- [[#update-part-1-for-the-kubernetes-and-controller-runtime-verification-pass]] — open
-- [[#update-part-2-for-the-kubernetes-and-controller-runtime-verification-pass]] — open
-- [[#update-part-3-for-the-kubernetes-and-controller-runtime-verification-pass]] — open
-- [[#update-part-5-for-the-kubernetes-and-controller-runtime-verification-pass]] — open
-- [[#update-part-3-evidence-note-with-the-operator-loop-incidents]] — open
+- [[#update-part-4-for-the-v25-verification-pass]] — open
+- [[#update-part-2-for-the-jetstack-webhook-postmortem]] — open
+- [[#update-part-1-unintended-deletion-passage-with-the-gitops-prune-incidents]] — open
 - [[#update-part-5-failure-mode-evidence-note-with-the-operator-loop-incidents]] — open
-- [[#update-part-2-observedgeneration-passage-with-the-2026-early-ready-cases]] — open
-- [[#update-part-5-webhook-outage-paragraph-with-the-jetstack-primary-post]] — open
-- [[#update-part-1-evidence-note-with-the-other-tool-pitfall-reports]] — open
-- [[#update-part-4-kro-passages-with-the-breaking-change-gate-reports]] — open
-- [[#update-part-5-deletion-guardrails-with-the-ack-and-config-connector-reports]] — open
+- [[#update-crossplane-ramp-up-adoption-passage-with-the-reproduced-adopt-or-create-failures]] — open
+- [[#update-part-3-ambiguous-create-and-adoption-passages-with-the-2026-incident-evidence]] — open
+- [[#decide-on-the-23-partial-and-4-still-open-gaps-from-the-evidence-pass]] — open
+- [[#review-claims-still-unverified-after-the-evidence-pass]] — open
+- [[#finish-the-outputs-the-revise-phase-did-not-reach]] — open
+- [[#recheck-release-candidate-and-unread-items-noted-in-the-closed-gap-resolutions]] — open
 
 ## Open
 
@@ -388,13 +373,6 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Drafted by:** agent on 2026-11-26
 - **Outcome:** 2026-11-26: revised in the evidence and fact-check pass (Revise phase); the output now cites the verified pages. Remaining unverified passages, if any, are tracked in the follow-up todos below.
 
-## Close the resolved-candidate gaps from the evidence and fact-check pass — status: open
-
-- **What:** Run `sticki-gaps` to review and close the 22 gaps marked resolved-candidate in [[findings/evidence-and-fact-check-pass-gap-dispositions]]. Start with the Crossplane v2 status gaps, the reconcile-default and controller-runtime gaps, and the OpenAI postmortem gap.
-- **Why:** Only the user closes gaps. The pass added possible-resolution notes and closed none.
-- **Acceptance:** Each resolved-candidate gap is closed with a Resolution paragraph or left open with a reason.
-- **Drafted by:** agent on 2026-11-26
-
 ## Decide on the 23 partial and 4 still-open gaps from the evidence pass — status: open
 
 - **What:** Review the partial gaps (a named remainder exists) and the four still-open gaps (forced-finalizer orphaning rate, named end-user convergence case study, named operator postmortems, named Flux sharding adopter or APF incident) in [[findings/evidence-and-fact-check-pass-gap-dispositions]]. Decide which need another targeted pass and which should be closed as unanswerable with current sources.
@@ -416,11 +394,26 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Remaining passages revised, or todos dropped with a reason.
 - **Drafted by:** agent on 2026-11-26
 
+## Recheck release-candidate and unread items noted in the closed-gap resolutions — status: open
+
+- **What:** Recheck the items the 22 newly closed gap Resolutions mark as not settled: Cluster API MachineHealthCheck and ClusterClass at v1.15.0 final (read at rc.0); kro v0.9.4 rate-limiter table and instance conditions from Go source; the body of Crossplane PR 8080 for async Synced signaling; KEP-1040 in full; helm-controller driftDetection and Helm 4 server-side apply; whether old Crossplane concepts URLs redirect; and the Kubernetes docs-versus-code stage discrepancies for Mutating Admission Policy and StorageVersionMigration.
+- **Why:** The gaps are closed with their caveats written into the Resolution, so these remainders now live only in prose and would be easy to lose.
+- **Acceptance:** Each item is rechecked and the affected pages corrected, or dropped with a reason.
+- **Drafted by:** agent on 2026-11-26
+
 ## Done
 
 ## Run build-wiki workflow — status: done
 
 - **What:** Run `workflows/build-wiki.js` to fan out web research per concept, ingest sources, plan outputs, and draft the tutorial series.
 - **Outcome:** 2026-11-25: 28 research dossiers plus the seed vocabulary were ingested (29 sources), producing 493 content pages, and the five-part series plus the Flux and Crossplane ramp-ups were drafted in `outputs/` (about 66,000 words). Review and delivery are tracked separately.
+
+## Close the resolved-candidate gaps from the evidence and fact-check pass — status: done
+
+- **What:** Run `sticki-gaps` to review and close the 22 gaps marked resolved-candidate in [[findings/evidence-and-fact-check-pass-gap-dispositions]]. Start with the Crossplane v2 status gaps, the reconcile-default and controller-runtime gaps, and the OpenAI postmortem gap.
+- **Why:** Only the user closes gaps. The pass added possible-resolution notes and closed none.
+- **Acceptance:** Each resolved-candidate gap is closed with a Resolution paragraph or left open with a reason.
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: closed all 22 resolved-candidate gaps with Resolution paragraphs the user confirmed in three batches (Closed by Eric Shamay); each Resolution states what remains unsettled. 102 gaps remain open.
 
 ## Dropped
