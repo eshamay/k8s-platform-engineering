@@ -59,7 +59,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#postmortems-of-leaked-or-duplicated-cloud-resources-from-ambiguous-creates]] — open, unassigned
 - [[#cache-narrowing-options-in-controller-runtime]] — open, unassigned
 - [[#flux-shared-caches-and-crossplane-performance-guidance]] — open, unassigned
-- [[#informer-and-cache-choices-of-kro-config-connector-ack-and-cluster-api]] — open, unassigned
 - [[#resolution-of-crossplane-issue-7801-on-credential-protection]] — open, unassigned
 - [[#how-ack-config-connector-and-kro-name-and-remove-their-finalizers]] — open, unassigned
 - [[#what-happens-when-blockownerdeletion-is-set-without-finalizers-permission]] — open, unassigned
@@ -759,18 +758,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, crossplane, sharding, scale
 - **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Partly settled, and the user decides whether to close it. Each Flux controller builds its own manager with a watch label selector, so caches are not shared, but that is an inference from the source and no document says so. The Flux docs say extra replicas add no capacity and sharding is by label selector. Crossplane core strips CRD schemas from one cache and does not cache Secrets, and its docs give poll and sync intervals. Not settled: no current Crossplane performance or sharding guide was found, and the guessed URL scraped empty. See [[findings/flux-controllers-keep-separate-caches-narrowed-by-a-watch-label-selector-and-leave-secrets-and-configmaps-uncached-by-default]] and [[findings/crossplane-core-strips-crd-schemas-from-its-cache-and-no-crossplane-performance-or-sharding-guide-was-found]].
-
-## Informer and cache choices of kro, Config Connector, ACK, and Cluster API — status: open
-
-- **Question:** What informer, cache, concurrency, and rate-limit choices do kro, Config Connector, ACK, and Cluster API make?
-- **Why it matters:** No page in the informers dossier covered these tools, so the comparison tables have empty cells for them. Backstage was also not covered by any source.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read each project's controller configuration documentation or source.
-  - [ ] Extend [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** kro, config-connector, ack, cluster-api, informers
-- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled from source for the four tools, and the user decides whether to close it. kro holds one metadata-only informer per GVR, Config Connector caches only its own configuration kinds, ACK scopes by namespace and label selector, and Cluster API caches only cluster-labelled Secrets and gives each workload cluster its own cache, with rate limits and concurrency defaults in the comparison table. Not settled: no production memory figures were found, and Backstage was not researched. See [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]].
 
 ## Resolution of Crossplane issue 7801 on credential protection — status: open
 
@@ -1812,3 +1799,18 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 
 - **Possible resolution from [[sources/research-informers-reflectors-and-workqueues]]:** Marginally helpful. One source calls periodic resync a defense against reconciler bugs that is usually disabled, and the pitfalls blog lists misunderstanding it as a common error. No source explains what resync replays or whether it refetches from the API server. See [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]].
 - **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled from client-go and controller-runtime source, and the user decides whether to close it. A resync delivers an update notification for every object in the informer's local cache and adds no interaction with the authoritative storage, `DeltaFIFO.Resync` re-queues keys from the local known-objects store, a zero period means no resync, and `HasSynced` is unrelated to resync. controller-runtime's `SyncPeriod` defaults to 10 hours with jitter, emits an artificial Update event that `GenerationChangedPredicate` filters out, and the documentation recommends `RequeueAfter` over shortening it. The word names different mechanisms in other tools: ACK's resync is a `RequeueAfter` and kro's flag text says "re list". Not settled: the source was read on default branches and not pinned to release tags. See [[findings/a-resync-replays-the-informers-local-cache-to-the-handlers-and-never-contacts-the-api-server]], [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]], and [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]].
+
+## Informer and cache choices of kro, Config Connector, ACK, and Cluster API — status: closed (2026-11-26)
+
+- **Question:** What informer, cache, concurrency, and rate-limit choices do kro, Config Connector, ACK, and Cluster API make?
+- **Why it matters:** No page in the informers dossier covered these tools, so the comparison tables have empty cells for them. Backstage was also not covered by any source.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read each project's controller configuration documentation or source.
+  - [ ] Extend [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, config-connector, ack, cluster-api, informers
+- **Resolution:** Settled from source for the four tools. kro holds one metadata-only informer per GVR, Config Connector caches only its own configuration kinds, ACK scopes by namespace and label selector, and Cluster API caches only cluster-labelled Secrets and gives each workload cluster its own cache, with rate limits and concurrency defaults in the comparison table. Not settled: no production memory figures were found, and Backstage was not researched. See [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled from source for the four tools, and the user decides whether to close it. kro holds one metadata-only informer per GVR, Config Connector caches only its own configuration kinds, ACK scopes by namespace and label selector, and Cluster API caches only cluster-labelled Secrets and gives each workload cluster its own cache, with rate limits and concurrency defaults in the comparison table. Not settled: no production memory figures were found, and Backstage was not researched. See [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]].
