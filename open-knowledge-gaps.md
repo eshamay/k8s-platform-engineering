@@ -49,7 +49,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#best-default-conflict-policy-for-teams-running-gitops-and-in-cluster-controllers]] — open, unassigned
 - [[#crossplane-v2-server-side-apply-behavior-and-external-writers]] — open, unassigned
 - [[#cluster-api-field-ownership-rules-and-argo-cd-server-side-diff-stability]] — open, unassigned
-- [[#mutating-admission-policy-release-status]] — open, unassigned
 - [[#admission-behavior-of-crossplane-kro-argo-cd-config-connector-ack-cluster-api-and-gatekeeper]] — open, unassigned
 - [[#kyverno-webhook-failure-modes-and-availability]] — open, unassigned
 - [[#cel-cost-limits-and-per-request-budgets]] — open, unassigned
@@ -621,17 +620,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Check whether `kubectl` made server-side apply the default.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cluster-api, argo-cd, server-side-diff, verification
-
-## Mutating Admission Policy release status — status: open
-
-- **Question:** Is MutatingAdmissionPolicy stable and enabled by default as of Kubernetes v1.36, as one documentation digest reports, or is it still beta?
-- **Why it matters:** The digest could not be cross-checked against release notes and earlier knowledge places the feature at beta, so a tutorial could state the wrong status. See [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Check the Kubernetes v1.36 release notes and the live Mutating Admission Policy page.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** mutating-admission-policy, verification
-- **Possible resolution from [[sources/research-gap-g3-k8s-and-controller-runtime]]:** Settled, and the user can close it. MutatingAdmissionPolicy is GA (v1) and enabled by default since Kubernetes v1.36, so the "still beta" belief is out of date and the digest was right. Three primary readings agree: the live docs page ("Stable since Kubernetes v1.36; enabled by default"), CHANGELOG-1.36 (PR 136039), and the gate table at tag v1.36.0 (Alpha 1.32, Beta 1.34, GA 1.36, default true at GA). Not settled: the docs page also says the feature "was first available in the v1.30 release", which conflicts with the gate table, so cite the gate table for the earlier stages, and the dossier did not separately check that the `admissionregistration.k8s.io/v1` REST group is served by default beyond the gate default. See [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]] and [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]].
 
 ## Admission behavior of Crossplane, kro, Argo CD, Config Connector, ACK, Cluster API, and Gatekeeper — status: open
 
@@ -1722,3 +1710,16 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: round-robin and consistent-hashing are still labelled experimental (Alpha) at v3.6.3, and legacy sharding can distribute clusters unevenly ([[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]]). Not settled: the v3.6.3 high-availability page no longer marks legacy as the default ([[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]]), so which method is the default is unconfirmed.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Settled, and the user can close it. In the Argo CD v3.6.3 docs (released 2026-11-24), both `round-robin` and `consistent-hashing` are still "an experimental feature", and the feature-maturity page lists them as Alpha, introduced in v2.8.0 and v2.12.0. The warning text is the same at v2.14.0 and v3.0.0, so the wiki label is not stale and nothing read says either algorithm graduated. The `legacy` method is "uid based distribution (non-uniform)". Not settled: whether `legacy` is still the default, because the v3.6.3 page drops the "(default)" marker shown at v3.0.0, and the CNOE benchmark blog the docs cite (secondary only) was not read. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]], and [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]].
+
+## Mutating Admission Policy release status — status: closed (2026-11-26)
+
+- **Question:** Is MutatingAdmissionPolicy stable and enabled by default as of Kubernetes v1.36, as one documentation digest reports, or is it still beta?
+- **Why it matters:** The digest could not be cross-checked against release notes and earlier knowledge places the feature at beta, so a tutorial could state the wrong status. See [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Check the Kubernetes v1.36 release notes and the live Mutating Admission Policy page.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** mutating-admission-policy, verification
+- **Resolution:** Settled: Mutating Admission Policy is GA and on by default since v1.36 per the CHANGELOG and feature-gate table ([[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]]). Not settled: the Kubernetes docs pages disagree with the code on the first-available version ([[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]]).
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-k8s-and-controller-runtime]]:** Settled, and the user can close it. MutatingAdmissionPolicy is GA (v1) and enabled by default since Kubernetes v1.36, so the "still beta" belief is out of date and the digest was right. Three primary readings agree: the live docs page ("Stable since Kubernetes v1.36; enabled by default"), CHANGELOG-1.36 (PR 136039), and the gate table at tag v1.36.0 (Alpha 1.32, Beta 1.34, GA 1.36, default true at GA). Not settled: the docs page also says the feature "was first available in the v1.30 release", which conflicts with the gate table, so cite the gate table for the earlier stages, and the dossier did not separately check that the `admissionregistration.k8s.io/v1` REST group is served by default beyond the gate default. See [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]] and [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]].

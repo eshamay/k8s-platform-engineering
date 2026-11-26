@@ -566,3 +566,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Argo CD sharding algorithm maturity in current releases
 - closed by: Eric Shamay
 - resolution: Settled: round-robin and consistent-hashing are still labelled experimental (Alpha) at v3.6.3, and legacy sharding can distribute clusters unevenly ([[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]]). Not settled: the v3.6.3 high-availability page no longer marks legacy as the default ([[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]]), so which method is the default is unconfirmed.
+
+## [2026-11-26] gaps | close | Mutating Admission Policy release status
+- closed by: Eric Shamay
+- resolution: Settled: Mutating Admission Policy is GA and on by default since v1.36 per the CHANGELOG and feature-gate table ([[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]]). Not settled: the Kubernetes docs pages disagree with the code on the first-available version ([[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]]).
