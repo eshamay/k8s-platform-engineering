@@ -522,3 +522,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Current Crossplane v2 status of deletionPolicy and managementPolicies
 - closed by: Eric Shamay
 - resolution: Settled: deletionPolicy is removed from namespaced managed resources in v2.0.0 and survives on legacy managed resources, where issue 5283 to deprecate it is still open, so there is no formal deprecation ([[comparisons/deletion-policies-across-gitops-and-provider-tools]]). Not settled: whether issue 5283 will lead to formal deprecation.
+
+## [2026-11-26] gaps | close | managementPolicies feature status and the ObserveOnly-to-policy-list mapping
+- closed by: Eric Shamay
+- resolution: Settled: managementPolicies is beta in v2.5; the mapping from older advice is an Observe list for observe-only, an empty list that pauses reconciliation, and Orphan meaning no Delete ([[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]], [[decisions/choose-management-policies-for-an-imported-resource]]). Not settled: the mapping is assembled from three sources because no single official table exists.

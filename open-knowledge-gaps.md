@@ -85,7 +85,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#keps-on-cross-namespace-ownership-and-garbage-collector-performance]] — open, unassigned
 - [[#how-a-platform-should-choose-condition-polarity]] — open, unassigned
 - [[#which-parts-of-the-config-connector-reconcile-status-design-shipped]] — open, unassigned
-- [[#managementpolicies-feature-status-and-the-observeonly-to-policy-list-mapping]] — open, unassigned
 - [[#adoption-and-orphaning-behavior-in-cluster-api-kro-and-controller-runtime-operators]] — open, unassigned
 - [[#behavior-of-namespaced-v2-managed-resources-when-a-namespace-is-deleted-while-the-provider-is-down]] — open, unassigned
 - [[#per-provider-external-name-defaults]] — open, unassigned
@@ -1053,18 +1052,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** config-connector, conditions, verification
 
-## managementPolicies feature status and the ObserveOnly-to-policy-list mapping — status: open
-
-- **Question:** Is `managementPolicies` still beta in Crossplane v2.x, and how do the older `ObserveOnly` and `deletionPolicy` terms map onto the policy list?
-- **Why it matters:** The import guide calls management policies beta while the managed resources page presents them as standard, and no page the dossier read spells out the mapping, so [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]] rests on inference.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the Crossplane feature-lifecycle page (https://docs.crossplane.io/latest/learn/feature-lifecycle/).
-  - [ ] Find a page or release note that maps the old enum to the list.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** crossplane, management-policies, verification
-- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. `managementPolicies` is beta in the v2.5 managed resources page and import guide (on by default, removal needs two releases of deprecation per the feature-lifecycle page). The mapping is `ObserveOnly` to `["Observe"]`, pause to an empty list, `deletionPolicy: Orphan` to a list without `Delete`, and default `["*"]`. No single official page tabulates it, so it is assembled from release notes, docs, and runtime code. See [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].
-
 ## Adoption and orphaning behavior in Cluster API, kro, and controller-runtime operators — status: open
 
 - **Question:** How do Cluster API, kro, and plain controller-runtime operators handle adopting an existing resource and orphaning one on delete?
@@ -1713,3 +1700,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: deletionPolicy is removed from namespaced managed resources in v2.0.0 and survives on legacy managed resources, where issue 5283 to deprecate it is still open, so there is no formal deprecation ([[comparisons/deletion-policies-across-gitops-and-provider-tools]]). Not settled: whether issue 5283 will lead to formal deprecation.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Both still exist on different kinds: namespaced managed resources (v2.0.0) have no `deletionPolicy`, legacy cluster-scoped ones keep it, and a deprecated runtime resolver combines the two fields. `managementPolicies` is still beta in the v2.5 docs. Issue 5283 is still open (opened 2024-01-25, last activity 2024-08-14), and `deletionPolicy` was never formally deprecated. See [[examples/crossplane-issue-5283-has-left-deletionpolicy-deprecation-open-since-2024]] and [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].
+
+## managementPolicies feature status and the ObserveOnly-to-policy-list mapping — status: closed (2026-11-26)
+
+- **Question:** Is `managementPolicies` still beta in Crossplane v2.x, and how do the older `ObserveOnly` and `deletionPolicy` terms map onto the policy list?
+- **Why it matters:** The import guide calls management policies beta while the managed resources page presents them as standard, and no page the dossier read spells out the mapping, so [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]] rests on inference.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Crossplane feature-lifecycle page (https://docs.crossplane.io/latest/learn/feature-lifecycle/).
+  - [ ] Find a page or release note that maps the old enum to the list.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, management-policies, verification
+- **Resolution:** Settled: managementPolicies is beta in v2.5; the mapping from older advice is an Observe list for observe-only, an empty list that pauses reconciliation, and Orphan meaning no Delete ([[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]], [[decisions/choose-management-policies-for-an-imported-resource]]). Not settled: the mapping is assembled from three sources because no single official table exists.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. `managementPolicies` is beta in the v2.5 managed resources page and import guide (on by default, removal needs two releases of deprecation per the feature-lifecycle page). The mapping is `ObserveOnly` to `["Observe"]`, pause to an empty list, `deletionPolicy: Orphan` to a list without `Delete`, and default `["*"]`. No single official page tabulates it, so it is assembled from release notes, docs, and runtime code. See [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].
