@@ -8,6 +8,9 @@ sources:
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: [storage version migration, CRD conversion]
 tags: [api-machinery, crd, versioning]
 ---
@@ -33,3 +36,9 @@ Crossplane recommends that breaking schema changes ship as new XRDs or through c
 ## Related
 
 [[concepts/custom-resource-definition]], [[concepts/gvk-and-gvr]], [[findings/removed-beta-gvks-break-pinned-manifests-and-clients]]
+
+## Additions from the CRD dossier
+
+The versioning task page separates the `served` and `storage` flags, and tells authors to check `status.storedVersions` before dropping an old version from the spec. Webhook conversion calls a service configured with `conversionReviewVersions` and a `caBundle`. The Kubebuilder hub-and-spoke pattern keeps the number of conversion functions near 2(N-1) for N versions. [[sources/research-custom-resource-definition]]
+
+The sources report that the built-in StorageVersionMigration API and controller graduated to GA and are on by default in Kubernetes v1.37, so a user creates a `StorageVersionMigration` object naming a resource and the controller rewrites stored objects. Before this, operators wrote their own migrators. Whether migration triggers automatically is unverified. URL: https://kubernetes.io/blog/2026/08/31/kubernetes-v1-37-storage-version-migration-ga/. See [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]], [[examples/kubebuilder-hub-and-spoke-conversion-for-multi-version-crds]], and [[findings/a-down-conversion-webhook-can-stall-garbage-collection]].

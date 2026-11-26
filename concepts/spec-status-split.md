@@ -8,6 +8,9 @@ sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: [Spec and status]
 tags: [api-machinery]
 ---
@@ -29,3 +32,7 @@ The split prevents a GitOps tool that re-applies manifests from overwriting what
 ## To research
 
 Subresource RBAC, the pitfalls of controllers that write spec, and how tools surface status to users.
+
+## API conventions on spec and status
+
+The Kubernetes API conventions state that the API distinguishes the specification of desired state (`spec`) from the status of objects at the current time (`status`). Status is written through the `/status` subresource, `generation` and `observedGeneration` show whether the controller has seen the latest spec, and `resourceVersion` conflicts return HTTP 409. The quote from the fetch tool is approximate. [[sources/research-custom-resource-definition]] See [[concepts/custom-resource-definition]].

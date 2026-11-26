@@ -8,6 +8,9 @@ sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: [Admission control, Common Expression Language]
 tags: [api-machinery]
 ---
@@ -29,3 +32,7 @@ Webhooks add a network dependency to every write, and an unavailable webhook can
 ## To research
 
 ValidatingAdmissionPolicy, webhook failure policies, and how policy engines fit alongside CEL.
+
+## Additions from the CRD dossier
+
+CEL rules in `x-kubernetes-validations` let a CRD express cross-field validation without a webhook, with per-rule cost limits protecting the apiserver. The dossier also shows that webhook outages recur as a failure class and that a down conversion webhook can stall garbage collection. [[sources/research-custom-resource-definition]] See [[comparisons/cel-validation-rules-versus-validating-webhooks]], [[decisions/validate-with-cel-rules-or-a-validating-webhook]], [[examples/cel-rule-replaces-a-validating-webhook-for-cross-field-checks]], [[findings/admission-webhook-outages-are-a-recurring-failure-class]], and [[findings/a-down-conversion-webhook-can-stall-garbage-collection]].

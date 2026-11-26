@@ -29,6 +29,9 @@ sources:
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -74,3 +77,7 @@ Flux is built from GitOps Toolkit controllers: source controllers fetch from Git
 ## Ordering around CRDs and discovery
 
 The Kustomization API orders work with `.spec.dependsOn`, `.spec.healthChecks`, and `.spec.wait`. The documented pattern puts CRD-providing controllers in one Kustomization and the custom resources in another that depends on it, so the dependent is applied only after the referred Kustomizations are ready. Health checks reference resources by apiVersion and kind, so they also depend on discovery. [[sources/research-gvk-and-gvr]] See [[comparisons/missing-crd-handling-flux-versus-argo-cd]], [[examples/servicemonitor-no-matches-for-kind-in-helm-and-argo-cd]], and [[findings/custom-resources-applied-before-their-crd-exists]].
+
+## CRD policies in HelmRelease
+
+A HelmRelease has `spec.install.crds` and `spec.upgrade.crds` with Skip, Create (the default), and CreateReplace policies, because Helm has no native support for upgrading or deleting CRDs. CreateReplace updates existing CRDs but does not delete removed ones, and `dependsOn` should order CRD-providing releases first. [[sources/research-custom-resource-definition]] See [[examples/flux-helmrelease-crd-policies-createreplace-and-dependson]] and [[findings/helm-does-not-upgrade-or-delete-crds]].

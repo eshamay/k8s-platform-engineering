@@ -26,6 +26,9 @@ sources:
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -69,3 +72,7 @@ Argo CD has three components: an API server that serves the UI, CLI, and CI syst
 ## Missing CRDs and sync waves
 
 Argo CD users who hit "no matches for kind" when a Helm or GitOps deployment applies a custom resource before its CRD reach for sync waves and for skipping dry-run on missing resources. These Argo-specific details come from search-result titles only, because the pages could not be read, so treat them as unverified. How Argo CD's own resource tracking keys resources by GVK across API version changes was not established. [[sources/research-gvk-and-gvr]] See [[comparisons/missing-crd-handling-flux-versus-argo-cd]] and [[examples/servicemonitor-no-matches-for-kind-in-helm-and-argo-cd]].
+
+## Large CRDs and client-side apply
+
+The ApplicationSets CRD grew large enough that its `last-applied-configuration` annotation exceeded the 262,144-byte limit under client-side apply. The reported workarounds are the `ServerSideApply=true` sync option and, for Kustomize, `ClientSideApplyMigration=false`. [[sources/research-custom-resource-definition]] See [[examples/argo-cd-applicationsets-crd-too-large-for-client-side-apply]] and [[findings/large-crds-exceed-the-client-side-apply-annotation-limit]].

@@ -8,6 +8,9 @@ sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, etcd, scale]
 ---
@@ -34,3 +37,7 @@ vCluster argues that one etcd cannot be sharded across replication groups for a 
 ## Related
 
 [[concepts/universal-control-plane]], [[concepts/informers-reflectors-and-workqueues]], [[comparisons/tenancy-models-namespaces-vcluster-kcp]], and the seeded gap on scale in [[open-knowledge-gaps]].
+
+## Additions from the CRD dossier
+
+Custom resources share the same storage and watch paths as built-in objects. A secondary source cites an object size limit near 1.5 MB, which this wiki has not confirmed against official documentation. Ant Group tuned the apiserver watch cache and etcd for a cluster of more than 10,000 nodes, cutting memory from roughly 400 GB to 100 GB, though without CRD-specific numbers. [[sources/research-custom-resource-definition]] See [[examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd]].

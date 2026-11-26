@@ -8,6 +8,9 @@ sources:
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, crd-ordering, gitops, helm]
 ---
@@ -25,3 +28,7 @@ Applying a custom resource whose CRD is missing, or present but not yet establis
 - Mapper invalidation in clients, as in [[findings/stale-restmapper-hides-newly-installed-crds]].
 
 Flux health checks reference resources by apiVersion and kind, so they also depend on discovery. See [[comparisons/missing-crd-handling-flux-versus-argo-cd]], [[findings/ordering-and-dependency-failures]], and [[examples/servicemonitor-no-matches-for-kind-in-helm-and-argo-cd]].
+
+## Additions from the CRD dossier
+
+Flux recommends `dependsOn` so that CRDs and their controllers exist before dependent releases, and Helm will not upgrade CRDs. [[sources/research-custom-resource-definition]] See [[findings/helm-does-not-upgrade-or-delete-crds]] and [[examples/flux-helmrelease-crd-policies-createreplace-and-dependson]].

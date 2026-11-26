@@ -8,6 +8,9 @@ sources:
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: []
 tags: [decision, crossplane, versioning, crd]
 ---
@@ -33,3 +36,7 @@ Crossplane documentation recommends new XRDs or conversion webhooks for breaking
 ## Consequences
 
 Either path makes the GVK a versioned product contract. See [[concepts/crd-versioning-and-storage-migration]], [[findings/group-and-plural-names-are-effectively-permanent]], and [[entities/crossplane]].
+
+## Additions from the CRD dossier
+
+A down conversion webhook can stall garbage collection, which raises the cost of the webhook option. [[sources/research-custom-resource-definition]] See [[findings/a-down-conversion-webhook-can-stall-garbage-collection]] and [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]].

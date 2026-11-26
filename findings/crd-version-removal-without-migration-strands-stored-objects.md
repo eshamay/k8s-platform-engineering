@@ -8,6 +8,9 @@ sources:
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, crd, versioning, conversion]
 ---
@@ -25,3 +28,7 @@ The dossier states the required order but does not describe a specific outage. T
 ## Related
 
 [[concepts/crd-versioning-and-storage-migration]], [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]]
+
+## Additions from the CRD dossier
+
+The versioning page tells authors to check `status.storedVersions` before dropping an old version, and the sources report a built-in StorageVersionMigration API as GA in v1.37. [[sources/research-custom-resource-definition]] See [[concepts/crd-versioning-and-storage-migration]].

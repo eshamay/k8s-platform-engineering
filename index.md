@@ -18,7 +18,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/gvk-and-gvr]] — type versus endpoint coordinates, mapping, lifecycle, and failure classes (active)
 - [[concepts/api-discovery-and-restmapper]] — discovery documents and the GVK-to-GVR translator (draft)
 - [[concepts/crd-versioning-and-storage-migration]] — served and storage versions, conversion, retirement (draft)
-- [[concepts/custom-resource-definition]] — registering new API types (draft)
+- [[concepts/custom-resource-definition]] — registering new API types, schema, versions, costs, and pitfalls (active)
 - [[concepts/spec-status-split]] — intent versus observed reality (draft)
 - [[concepts/server-side-apply-and-field-ownership]] — managedFields and shared ownership (draft)
 - [[concepts/admission-webhooks-and-cel]] — mutate and validate before persistence (draft)
@@ -56,6 +56,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/kube-rs]] — Rust controller library and single-replica availability guidance (draft)
 - [[entities/tofu-controller]] — Terraform and OpenTofu from Flux-style resources, detection-only model (draft)
 - [[entities/client-go]] — Go client library with the discovery client and RESTMapper constructors (draft)
+- [[entities/helm]] — package manager whose charts do not upgrade or delete CRDs (draft)
 
 ## Sources
 
@@ -67,6 +68,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-self-healing-and-drift-detection]] — research dossier on self-healing and drift detection, 19 web sources, 2026-11-25
 - [[sources/research-gitops-pull-based-delivery]] — research dossier on GitOps pull-based delivery, 15 web sources, 2026-11-25
 - [[sources/research-gvk-and-gvr]] — research dossier on GVK and GVR, 18 web sources, 2026-11-25
+- [[sources/research-custom-resource-definition]] — CRD mechanics, schema and CEL, versions and conversion, tool handling, and failure modes (active)
 
 ## Examples
 
@@ -103,6 +105,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/xrd-and-rgd-declare-platform-gvks]] — Crossplane and kro as GVK factories (draft)
 - [[examples/cluster-upgrades-remove-beta-gvks-in-1-25-and-1-26]] — PSP, HPA v2beta2, and flowcontrol removals (draft)
 - [[examples/kubebuilder-domain-flag-for-ambiguous-external-gvks]] — GVK is not always a unique key (draft)
+- [[examples/postgrescluster-custom-resource-reconciled-into-child-objects]] — custom resource plus controller (draft)
+- [[examples/cel-rule-replaces-a-validating-webhook-for-cross-field-checks]] — in-schema validation (draft)
+- [[examples/kubebuilder-hub-and-spoke-conversion-for-multi-version-crds]] — conversion webhook organization (draft)
+- [[examples/flux-helmrelease-crd-policies-createreplace-and-dependson]] — chart CRD handling in Flux (draft)
+- [[examples/argo-cd-applicationsets-crd-too-large-for-client-side-apply]] — annotation size limit (draft)
+- [[examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd]] — apiserver and etcd scale tuning (draft)
 
 ## Comparisons
 
@@ -120,6 +128,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/gvk-versus-gvr]] — type versus endpoint (draft)
 - [[comparisons/restmapper-strategies-static-deferred-and-dynamic]] — how mappers react to new CRDs (draft)
 - [[comparisons/missing-crd-handling-flux-versus-argo-cd]] — dependsOn versus sync waves (draft)
+- [[comparisons/cel-validation-rules-versus-validating-webhooks]] — in-schema rules versus external services (draft)
+- [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]] — how versions convert (draft)
+- [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]] — two CRD factories (draft)
 
 ## Decisions
 
@@ -131,6 +142,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/choosing-a-drift-check-interval-for-external-resources]] — freshness versus API cost (draft)
 - [[decisions/git-versus-oci-as-the-canonical-source]] — where the cluster pulls desired state from (draft)
 - [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]] — shipping breaking API changes (draft)
+- [[decisions/validate-with-cel-rules-or-a-validating-webhook]] — where CRD validation runs (draft)
 
 ## Findings
 
@@ -167,6 +179,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/group-and-plural-names-are-effectively-permanent]] — immutable names (draft)
 - [[findings/crd-version-removal-without-migration-strands-stored-objects]] — conversion and migration hazards (draft)
 - [[findings/removed-beta-gvks-break-pinned-manifests-and-clients]] — upstream removals (draft)
+- [[findings/a-down-conversion-webhook-can-stall-garbage-collection]] — webhook outage blast radius (draft)
+- [[findings/admission-webhook-outages-are-a-recurring-failure-class]] — index-level postmortem evidence (draft)
+- [[findings/unknown-fields-are-silently-pruned-under-structural-schemas]] — undeclared fields vanish (draft)
+- [[findings/helm-does-not-upgrade-or-delete-crds]] — chart CRD lifecycle gap (draft)
+- [[findings/large-crds-exceed-the-client-side-apply-annotation-limit]] — 262,144-byte annotation cap (draft)
+- [[findings/deleting-a-crd-deletes-every-custom-resource-of-that-kind]] — data loss on CRD removal (draft)
 
 ## Outputs
 

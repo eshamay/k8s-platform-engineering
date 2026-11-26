@@ -11,6 +11,9 @@ sources:
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: [Kubebuilder Book]
 tags: [tool, operators, framework]
 ---
@@ -30,3 +33,7 @@ The tutorial's Reconcile function fetches the object, lists the children it owns
 ## Groups, versions, kinds, and domains
 
 The CronJob tutorial chapter on GVKs defines group, version, kind, and resource, explains that each GVK corresponds to a root Go type registered in a Scheme, notes the `Scale` subresource exception, and argues for one Kind per concern (App and DB as separate Kinds). Issue 5872, opened 2026-07-14, proposes a `--domain` flag and erroring on ambiguous external GVK resolution, and it was still open in late October 2026. [[sources/research-gvk-and-gvr]] See [[examples/kubebuilder-domain-flag-for-ambiguous-external-gvks]] and [[examples/hpa-scales-any-workload-through-the-scale-subresource]].
+
+## Hub-and-spoke conversion
+
+The Kubebuilder book describes the hub-and-spoke pattern for multi-version CRDs, where every version converts only to and from one hub version. [[sources/research-custom-resource-definition]] See [[examples/kubebuilder-hub-and-spoke-conversion-for-multi-version-crds]].

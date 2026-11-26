@@ -11,6 +11,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: [Operator, Kubernetes operator]
 tags: [controllers]
 ---
@@ -36,3 +39,7 @@ The Kubernetes documentation says "Operators are clients of the Kubernetes API t
 ## To research
 
 Operator maturity models, frameworks (Operator SDK, Kubebuilder), and anti-patterns such as operators that hide too much.
+
+## Custom resource plus custom controller
+
+The CRD dossier states the operator pattern as a custom resource paired with a custom controller that reconciles the declared `spec` and reports in `status`, following the API conventions. [[sources/research-custom-resource-definition]] See [[examples/postgrescluster-custom-resource-reconciled-into-child-objects]] and [[concepts/custom-resource-definition]].

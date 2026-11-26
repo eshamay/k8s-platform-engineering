@@ -41,6 +41,11 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#informer-and-cache-behavior-keyed-by-gvr]] — open, unassigned
 - [[#controller-runtime-v030-dynamic-mapper-claim-and-aggregated-discovery-rationale]] — open, unassigned
 - [[#deprecated-api-scanners-and-crossplane-v2-gvks]] — open, unassigned
+- [[#crd-scale-limits]] — open, unassigned
+- [[#storageversionmigration-ga-details-in-kubernetes-v137]] — open, unassigned
+- [[#crd-handling-in-cluster-api-config-connector-ack-and-backstage]] — open, unassigned
+- [[#status-of-the-conversion-webhook-and-garbage-collection-problem]] — open, unassigned
+- [[#contents-of-the-k8saf-admission-webhook-postmortems]] — open, unassigned
 
 ---
 
@@ -63,7 +68,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Marginally helpful. The dossier shows part of the Flux flow for drift: kustomize-controller and helm-controller run a server-side apply dry-run each interval, and a failing dry-run (for example from field-manager conflicts) stops correction before apply. It does not trace source fetch, finalizers, or status conditions end to end. See [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]] and [[entities/flux]].
 - **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Only marginally helpful. The dossier names the Flux controllers (source, kustomize, helm, notification, image automation), says Kustomizations reconcile every 5 minutes and that bootstrap commits Flux's own manifests, and describes Argo CD's API server, repository server, and application controller. It does not trace the handoff between controllers, finalizers, or condition updates. See [[comparisons/flux-versus-argo-cd-architecture]] and [[entities/flux]].
 - **Possible resolution from [[sources/research-gvk-and-gvr]]:** Only marginally helpful. The dossier shows one step of the trace that depends on API discovery: Flux Kustomization `dependsOn` and `healthChecks` reference resources by apiVersion and kind, so the kustomize-controller must resolve each GVK to a resource through discovery before it can apply or assess health. It does not trace source fetch, finalizers, or status conditions. See [[comparisons/missing-crd-handling-flux-versus-argo-cd]] and [[entities/flux]].
-
+- **Possible resolution from [[sources/research-custom-resource-definition]]:** Only marginally helpful. The dossier adds one step to the trace for charts that ship CRDs: Helm will not upgrade or delete them, so Flux's HelmRelease `crds` policies (Skip, Create, CreateReplace) and `dependsOn` decide whether CRDs exist before dependent releases are applied. It does not trace the rest of the flow.
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -84,7 +89,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Only marginally helpful. The dossier adds drift behavior on each side: Crossplane managed resources enforce `forProvider` with management policies and a pause annotation, while kro's dynamic controller resyncs instances every 10 hours through one shared rate-limited queue, and a drift bug in kro was closed in late 2025. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[comparisons/drift-detection-mechanisms-across-tools]] and [[entities/kro]].
 - **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Only marginally helpful. The dossier shows that both Crossplane and kro sit beneath a GitOps agent and bring their own reconcile loops, that Crossplane needs custom health checks in Argo CD, and that kro validates CEL at creation time and composes with ACK and Config Connector. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[findings/two-reconcile-loops-hide-status-and-drift-at-two-layers]] and [[examples/crossplane-resources-hosted-by-argo-cd]].
 - **Possible resolution from [[sources/research-gvk-and-gvr]]:** Partly helpful on the API-definition side. The dossier shows that both tools are GVK factories: a Crossplane XRD declares group, kind, plural, versions, and scope and is named `<plural>.<group>` with immutable group and names, while a kro RGD `schema` declares apiVersion, kind, and an optional group (default `kro.run`), converts a SimpleSchema to OpenAPI v3, and generates the CRD. It does not compare Composition functions with RGD graphs or readiness. See [[examples/xrd-and-rgd-declare-platform-gvks]] and [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]].
-
+- **Possible resolution from [[sources/research-custom-resource-definition]]:** Partly helpful for the API-definition step only. The dossier compares how an XRD (OpenAPI v3 schema, scope options, conversion webhooks for breaking changes, immutable group and names) and a kro ResourceGraphDefinition (simple schema, CEL-inferred dependencies, definition-time validation) each generate a CRD. It does not compare execution models. See [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -105,7 +110,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Partly helpful on cost. The dossier explains that external-API controllers use long resyncs to limit API cost (ACK about 10 hours with per-kind overrides, kro 10 hours with a single rate-limited queue and one worker by default) and that Argo CD's refresh reads only the Kubernetes API and Git. It has no Flux or Crossplane sharding data. See [[decisions/choosing-a-drift-check-interval-for-external-resources]] and [[findings/cost-of-constant-reconciliation]].
 - **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Marginally helpful. The only scale datum is Crossplane's guidance to raise the Argo CD Kubernetes client QPS to 300 because of the many CRDs. It has no sharding or concurrency data for Flux or Crossplane controllers. See [[examples/crossplane-resources-hosted-by-argo-cd]].
 - **Possible resolution from [[sources/research-gvk-and-gvr]]:** Marginally helpful. The dossier shows that aggregated discovery (stable in v1.30) collapses per-group-version discovery requests into one, which lowers client startup cost, and that mappers rebuild on lookup failure behind a rate limit. It does not cover informer caches keyed by GVR, workqueues, or sharding. See [[concepts/api-discovery-and-restmapper]] and [[comparisons/restmapper-strategies-static-deferred-and-dynamic]].
-
+- **Possible resolution from [[sources/research-custom-resource-definition]]:** Partly helpful on the apiserver side. Custom resources share etcd and watch-cache paths with built-in objects, and Ant Group's 10,000-plus node write-up cut apiserver memory from roughly 400 GB to 100 GB by serving lists from the watch cache, with label indexing and etcd splitting. It has no controller sharding or workqueue data and no CRD-specific numbers. See [[examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -452,3 +457,55 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read Crossplane v2 documentation on namespaced composite resources.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** deprecation, crossplane, gvk
+
+## CRD scale limits — status: open
+
+- **Question:** What are the authoritative limits on the number of CRDs per cluster, custom resources per type, and apiserver memory per CRD, and is the roughly 1.5 MB object limit from a secondary source correct?
+- **Why it matters:** No source read gives official numbers, and the object-size figure comes from one independent explainer. See [[findings/etcd-scale-limits-of-the-shared-store]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read official scalability documentation and SIG API Machinery material.
+  - [ ] Confirm the etcd request-size default against etcd documentation.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crd, scale, etcd
+
+## StorageVersionMigration GA details in Kubernetes v1.37 — status: open
+
+- **Question:** What are the exact fields of the StorageVersionMigration API in v1.37, and does migration trigger automatically or only when a user creates the object?
+- **Why it matters:** The GA claim rests on one truncated blog extract. See [[concepts/crd-versioning-and-storage-migration]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the KEP and v1.37 release notes.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crd, versioning, storage-migration
+
+## CRD handling in Cluster API, Config Connector, ACK, and Backstage — status: open
+
+- **Question:** How do Cluster API, Config Connector, and ACK handle CRD versioning contracts, very large CRDs, and controller scoping, and how does Backstage consume CRDs?
+- **Why it matters:** The CRD dossier did not cover them because its searches returned nothing, so no entity pages were extended and no Backstage page was created. See [[entities/cluster-api]], [[entities/config-connector]], and [[entities/ack]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read each project's API versioning and CRD installation documentation.
+  - [ ] Find Backstage Kubernetes plugin documentation on custom resources.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cluster-api, config-connector, ack, backstage, crd
+
+## Status of the conversion webhook and garbage collection problem — status: open
+
+- **Question:** Is the problem in which a down CRD conversion webhook stalls the garbage collector (issue 110720, a duplicate of 101078) fixed in current Kubernetes releases?
+- **Why it matters:** The issue was closed as a duplicate and the dossier does not know the outcome. See [[findings/a-down-conversion-webhook-can-stall-garbage-collection]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read issue 101078 and the partial informer sync work.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crd, conversion, garbage-collection
+
+## Contents of the k8s.af admission webhook postmortems — status: open
+
+- **Question:** What do the linked postmortems on admission webhook outages, such as the 2019 Jetstack post and the Airbnb KubeCon NA 2020 talk, actually report?
+- **Why it matters:** The dossier read only index entries. See [[findings/admission-webhook-outages-are-a-recurring-failure-class]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Open and summarize the linked posts.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** webhooks, postmortems

@@ -8,6 +8,9 @@ sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-custom-resource-definition
+    hash: 6c26f7f89147
+    ingested: 2026-11-25
 aliases: []
 tags: [decision, crd, api-aggregation]
 ---
@@ -33,3 +36,7 @@ Choose a CRD unless the kind needs storage other than etcd or custom REST semant
 ## Consequences
 
 CRDs inherit storage, authentication, authorization, versioning, and watch from the API server, which is why [[concepts/universal-control-plane]] works with so little code.
+
+## Additions from the CRD dossier
+
+The custom resources page lists when a custom resource fits (a declarative API, kubectl and dashboard integration, RBAC and audit for free) and when it does not (a non-declarative API, unusual REST paths). It also warns that third-party CRD code adds failure points and that data lives in etcd and needs backup. [[sources/research-custom-resource-definition]] See [[concepts/custom-resource-definition]].
