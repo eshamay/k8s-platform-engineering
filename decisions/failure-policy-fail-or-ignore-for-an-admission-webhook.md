@@ -3,11 +3,14 @@ title: Failure policy Fail or Ignore for an admission webhook
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
+  - id: research-gap-g1-outage-postmortems
+    hash: 0487bcf071d6
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, webhooks, failure-policy, availability]
 ---
@@ -33,6 +36,10 @@ The vendor blog advises that security-critical validations should use `Fail` and
 ## Consequences
 
 `Fail` raises the cost of a webhook outage, as in [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]], while `Ignore` weakens guarantees. Moving a check to an in-process CEL policy sidesteps the question for simple rules; see [[decisions/validate-with-cel-rules-or-a-validating-webhook]]. ValidatingAdmissionPolicy has its own `failurePolicy` that applies to evaluation errors.
+
+## Evidence from the Jetstack incident
+
+Jetstack's 2019 post is a primary example of the `Fail` deadlock and of the scoping mitigation. It limited the webhook to namespaces where policy applies, enabled it only for Ingress and Service resources, and added a livenessProbe to OPA. It did not change the failure policy, and the post-level evidence says nothing about `Ignore`. See [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]]. [[sources/research-gap-g1-outage-postmortems]]
 
 ## Related
 

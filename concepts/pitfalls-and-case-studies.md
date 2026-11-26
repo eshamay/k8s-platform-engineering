@@ -3,11 +3,14 @@ title: Pitfalls and case studies
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-pitfalls-and-case-studies
     hash: 9407913c2448
     ingested: 2026-11-25
+  - id: research-gap-g1-outage-postmortems
+    hash: 0487bcf071d6
+    ingested: 2026-11-26
 aliases: [failure modes, postmortems, platform pitfalls]
 tags: [pitfalls, postmortems, cascades, finalizers, deletion, drift, ssa, guard-rails]
 ---
@@ -21,6 +24,8 @@ This page maps how Kubernetes platforms fail in practice and which guard rails c
 ## Failures are usually cascades
 
 The postmortems agree that most serious incidents are cascades in which a small change meets a controller loop, a default, or a shared dependency, and the loop amplifies it. Zalando's 2019 outage began with a timed-out downstream call and ended with every CoreDNS pod OOM-killed, see [[examples/zalando-s-2019-coredns-outage-turned-a-retry-storm-into-a-total-dns-failure]]. Grafana's outage came from a new cluster-wide default priority that a ReplicaSet kept re-applying to each pod it recreated, see [[examples/grafana-s-default-priorityclass-let-a-new-cluster-preempt-every-production-ingester]]. The loveholidays upgrade overran because several small problems stacked, see [[examples/loveholidays-gke-upgrade-from-1-10-to-1-12-overran-its-window-by-about-five-hours]]. The general lesson is to review cluster-scoped configuration with the rigor of code, to treat defaults and retries as part of the platform surface, and to alert from outside the cluster. https://k8s.af/ indexes many more such stories.
+
+Three later primary write-ups add control-plane cases. OpenAI's 2024-12-11 post-mortem describes a telemetry rollout that overwhelmed the API servers and locked engineers out, see [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]]. Jetstack's 2019 post describes a webhook that blocked a master upgrade and sent node auto-repair into a loop, see [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]]. Neon's May 2025 post describes a slow control-plane database that exhausted subnet IPs, see [[examples/neon-s-may-2025-delayed-start-incidents-exhausted-subnet-ips-after-a-slow-control-plane-database-query]]. No primary postmortem was found for a CRD deletion cascade or an etcd quota alarm, see [[findings/no-primary-postmortem-was-found-for-a-crd-deletion-cascade-or-an-etcd-quota-alarm]]. [[sources/research-gap-g1-outage-postmortems]]
 
 ## Three mechanisms that recur
 

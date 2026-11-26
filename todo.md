@@ -221,6 +221,27 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passages revised and citing the pages named above.
 - **Drafted by:** agent on 2026-11-26
 
+## Update part-5 for the control-plane outage postmortems — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, three passages need revision. The OpenAI paragraph (around line 212, beginning "The failure that ties this together") says the wiki read only a commentary and not the primary postmortem; it should cite the primary status-page post-mortem of 2024-12-11 (every node ran expensive API operations, DNS depended on the control plane, engineers were locked out) and drop the caveat, and the webhook sentence there should note that Jetstack's 2019 postmortem is now a verified case. The webhook paragraph (around line 254) says the wiki read only index-level descriptions; it should describe the Jetstack mechanism. The evidence paragraph (around line 292) says no control-plane-as-platform outage postmortem was found and the k8s.af webhook postmortems were not read; it should say OpenAI, Jetstack, and Neon were read, the Airbnb talk is still unread, and no CRD deletion cascade or etcd quota alarm postmortem was found.
+- **Why:** The 2026-11-26 dossier read three primary postmortems, see [[sources/research-gap-g1-outage-postmortems]]. Cite [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]], [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]], [[examples/neon-s-may-2025-delayed-start-incidents-exhausted-subnet-ips-after-a-slow-control-plane-database-query]], and [[findings/no-primary-postmortem-was-found-for-a-crd-deletion-cascade-or-an-etcd-quota-alarm]].
+- **Acceptance:** Passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-2 for the Jetstack webhook postmortem — status: open
+
+- **What:** In `outputs/part-2-krm-and-api-machinery.md`, the "Webhook outages" paragraph (around line 291) says the k8s.af index lists several webhook postmortems and that the linked posts were not opened. It should say the Jetstack 2019 post was read (an OPA validating webhook blocked the API server's own `kube-system` ConfigMap write during a GKE master upgrade, and node auto-repair then looped) and that the index has only two webhook-tagged entries, Jetstack and Airbnb, with the Airbnb talk still unread.
+- **Why:** See [[sources/research-gap-g1-outage-postmortems]]. Cite [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]] and [[findings/an-unresponsive-validating-webhook-can-block-the-api-server-s-own-startup-write-and-crash-loop-a-master-upgrade]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-1 for the primary OpenAI postmortem — status: open
+
+- **What:** In `outputs/part-1-core-architectural-principles.md`, the "Control-plane overload" paragraph (around line 276) and its source list (around line 366, which cites only the ahmet.im commentary) rest on the commentary. The paragraph should describe the OpenAI outage from the primary post-mortem and the source list should add https://status.openai.com/incidents/ctrsv3lwd797. The paragraph's etcd quota figure of about 2 GB matches the CNCF blog's "2GiB" default, which is SECONDARY-ONLY.
+- **Why:** See [[sources/research-gap-g1-outage-postmortems]]. Cite [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]] and [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]].
+- **Acceptance:** Passage and source list revised.
+- **Drafted by:** agent on 2026-11-26
+
 ## Done
 
 ## Run build-wiki workflow — status: done

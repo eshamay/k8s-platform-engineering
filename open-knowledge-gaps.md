@@ -172,6 +172,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortem, etcd, deletion
 - **Possible resolution from [[sources/research-pitfalls-and-case-studies]]:** Partly helpful. The dossier reads three first-party postmortems in full (Zalando's CoreDNS outage, Grafana's PriorityClass cascade, and loveholidays' GKE upgrade) and indexes others through k8s.af, but none is a CRD deletion cascade or an etcd quota alarm. It also could not read the Skyscanner namespace-deletion, Reddit, and Spotify reports. See [[concepts/pitfalls-and-case-studies]] and [[examples/zalando-s-2019-coredns-outage-turned-a-retry-storm-into-a-total-dns-failure]].
+- **Possible resolution from [[sources/research-gap-g1-outage-postmortems]]:** Partly settled, and the user decides whether to close it. The dossier reads two primary postmortems of control-plane failures in full: OpenAI's 2024-12-11 telemetry rollout that overwhelmed the API servers and locked engineers out (a controller or agent storm, self-reported), and Jetstack's 2019 GKE master upgrade blocked by an OPA validating webhook. It also reads Neon's May 2025 postmortem, in which a slow control-plane database exhausted subnet IPs, which is a platform control plane on Kubernetes and not the Kubernetes control plane. It found no primary postmortem of a CRD deletion cascade or an etcd quota alarm, and that absence is weak evidence because the search tool returned many empty results. The CNCF etcd blog of 2026-03-12 is a tooling article with no incident, and its 2GiB quota default is SECONDARY-ONLY. See [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]], [[examples/neon-s-may-2025-delayed-start-incidents-exhausted-subnet-ips-after-a-slow-control-plane-database-query]], and [[findings/no-primary-postmortem-was-found-for-a-crd-deletion-cascade-or-an-etcd-quota-alarm]].
 
 ## kro dependency graph and readiness mechanics — status: open
 
@@ -569,6 +570,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Open and summarize the linked posts.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** webhooks, postmortems
+- **Possible resolution from [[sources/research-gap-g1-outage-postmortems]]:** Half settled, and the user decides whether to close it. The 2019 Jetstack post was read in full through a Wayback capture of the Venafi copy: an OPA validating webhook blocked the API server's `ca-registration` write to the `extension-apiserver-authentication` ConfigMap, the master crash-looped, and node auto-repair then recreated nodes in a loop. The fix was deleting the webhook, and the follow-ups were scoping it to Ingress and Service resources and adding a livenessProbe. The Airbnb KubeCon NA 2020 talk is a video with no transcript obtained, so its contents stay unread, and the k8s.af index (78 entries, newest 2023) has only these two webhook-tagged entries. See [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]] and [[findings/an-unresponsive-validating-webhook-can-block-the-api-server-s-own-startup-write-and-crash-loop-a-master-upgrade]].
 
 ## kro status schema and Crossplane v2 status propagation — status: open
 
@@ -908,6 +910,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortem, api-server, outage
+- **Possible resolution from [[sources/research-gap-g1-outage-postmortems]]:** Settled, and the user can close it. The primary post-mortem on OpenAI's status page was read in full. A telemetry service deployed at 3:12 PM PST made every node in each cluster run API operations whose cost scaled with cluster size, which overwhelmed the API servers in large clusters. DNS relies on the control plane, cached records hid the failure for about 20 minutes, and expiring caches then multiplied the load. Impact ran from 3:16 PM to 7:38 PM PST on 2024-12-11, and the fix was blocked because engineers could not reach the control plane. The write-up does not say the calls were list or watch calls, so that part of the question is answered as not supported by the primary text. Figures are self-reported. See [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]], [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]], and [[findings/dns-caching-hid-the-control-plane-failure-for-about-twenty-minutes-before-expiring-records-added-load]].
 
 ## Argo CD finalizer variants and non-cascading deletes — status: open
 
@@ -1565,6 +1568,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add `examples/` pages for each incident.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortem, recency, evidence
+- **Possible resolution from [[sources/research-gap-g1-outage-postmortems]]:** Partly settled, and not answered for the question as asked. Two primary postmortems from the window were read: OpenAI (2024-12-11) and Neon (May 2025, read on neon.com), both self-reported. No 2024 to 2026 postmortem involving Argo CD, Flux, Crossplane, Karpenter, cert-manager, Kyverno, Gatekeeper, or a cluster upgrade was found, though several searches returned zero results. The k8s.af index lists 78 entries, and its newest dated entry is 2023, so it adds nothing for the window. See [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]] and [[examples/neon-s-may-2025-delayed-start-incidents-exhausted-subnet-ips-after-a-slow-control-plane-database-query]].
 
 ---
 

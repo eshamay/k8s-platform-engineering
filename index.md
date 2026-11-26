@@ -121,6 +121,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g3-flux-ssa-helm]] — verified dossier on the kustomize-controller --override-manager-before-dry-run flag shipped in v1.10.0 and Flux v2.10.0, 2026-11-26 (active)
 - [[sources/research-gap-g3-argocd-capi]] — verified dossier on Argo CD v3.6.3 sharding maturity, Cluster API v1beta2 MachineHealthCheck, Ready versus Available, and ClusterClass Beta at v1.15.0-rc.0, 2026-11-26 (active)
 - [[sources/research-gap-g3-scale-recheck]] — verified dossier rechecking scale figures (SIG thresholds, Gardener, Upbound, Argo CD, Crossplane, APF, workqueue defaults) against raw text, 2026-11-26 (active)
+- [[sources/research-gap-g1-outage-postmortems]] — verified dossier on the OpenAI December 2024, Jetstack 2019, and Neon May 2025 postmortems and the k8s.af webhook entries, 2026-11-26 (active)
 
 ## Examples
 
@@ -208,7 +209,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/argo-cd-application-controller-shards-clusters-and-tunes-processor-counts]] — cluster sharding and GOMEMLIMIT (active)
 - [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]] — reconcile rate as API budget (draft)
 - [[examples/kubebuilder-owns-and-a-field-indexer-wire-child-changes-to-the-owner]] — child informers and indexers (draft)
-- [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]] — public outage commentary (draft)
+- [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]] — OpenAI 2024-12-11 telemetry rollout, read from the primary post-mortem (active)
 - [[examples/pv-protection-finalizer-keeps-an-in-use-volume-from-vanishing]] — the built-in storage guard (draft)
 - [[examples/kubebuilder-reconcile-adds-a-finalizer-before-external-work-and-removes-it-after-cleanup]] — the controller-author pattern (draft)
 - [[examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads]] — cascade and preserve switches (draft)
@@ -289,6 +290,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers]] — v1beta2 checks, brake, templateRef, and CEL rules (active)
 - [[examples/cluster-api-kubeadm-control-plane-remediation-must-preserve-etcd-quorum-and-has-its-own-retry-controls]] — control plane remediation preconditions and retry fields (active)
 - [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]] — the v1.15.0-rc.0 release candidate, pre-release (active)
+- [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]] — OPA webhook blocked the master's startup write and node auto-repair looped (active)
+- [[examples/neon-s-may-2025-delayed-start-incidents-exhausted-subnet-ips-after-a-slow-control-plane-database-query]] — slow control-plane database, IP exhaustion, and a CNI regression (active)
 
 ## Comparisons
 
@@ -421,7 +424,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/crd-version-removal-without-migration-strands-stored-objects]] — conversion and migration hazards (draft)
 - [[findings/removed-beta-gvks-break-pinned-manifests-and-clients]] — upstream removals (draft)
 - [[findings/a-down-conversion-webhook-can-stall-garbage-collection]] — webhook outage blast radius (draft)
-- [[findings/admission-webhook-outages-are-a-recurring-failure-class]] — index-level postmortem evidence (draft)
+- [[findings/admission-webhook-outages-are-a-recurring-failure-class]] — k8s.af index evidence plus the read Jetstack postmortem (active)
 - [[findings/unknown-fields-are-silently-pruned-under-structural-schemas]] — undeclared fields vanish (draft)
 - [[findings/helm-does-not-upgrade-or-delete-crds]] — chart CRD lifecycle gap (draft)
 - [[findings/large-crds-exceed-the-client-side-apply-annotation-limit]] — 262,144-byte annotation cap (draft)
@@ -439,7 +442,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/forcing-conflicts-hides-disagreements-between-writers]] — blanket force versus fail (draft)
 - [[findings/managedfields-are-hidden-from-kubectl-output-by-default]] — show-managed-fields (active)
 - [[findings/applying-a-whole-read-back-object-claims-every-field]] — controller anti-pattern (draft)
-- [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]] — webhook deadlock (draft)
+- [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]] — webhook deadlock, now with a verified postmortem (active)
 - [[findings/webhooks-without-sideeffects-declared-break-dry-run-clients]] — dry-run failures in GitOps (draft)
 - [[findings/mutating-webhooks-can-run-repeatedly-and-in-no-guaranteed-order]] — idempotence requirement (draft)
 - [[findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window]] — certificates and connectivity (draft)
@@ -465,7 +468,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/an-expired-resourceversion-forces-a-relist-and-synchronized-relists-can-storm]] — 410 Gone and relist cost (draft)
 - [[findings/skipping-done-or-forget-on-the-workqueue-leaves-items-stuck-or-retrying]] — workqueue bookkeeping (draft)
 - [[findings/heavy-event-handlers-and-expensive-reconciles-waste-api-calls]] — handlers only enqueue (draft)
-- [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]] — many clients overload the API server (draft)
+- [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]] — API server overload locked engineers out of the repair (active)
 - [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]] — the dangerous shortcut (draft)
 - [[findings/a-finalizer-added-after-the-delete-request-is-too-late-and-new-ones-are-refused]] — register before the delete (draft)
 - [[findings/cleanup-that-always-errors-or-assumes-the-external-resource-exists-strands-the-object]] — idempotent cleanup (draft)
@@ -572,6 +575,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/cluster-api-v1beta1-maxunhealthy-and-unhealthyrange-are-deprecated-and-older-material-uses-the-old-names]] — v1beta2 field renames (active)
 - [[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]] — alpha, Beta, and provisional (active)
 - [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]] — default unconfirmed at v3.6.3 (active)
+- [[findings/an-unresponsive-validating-webhook-can-block-the-api-server-s-own-startup-write-and-crash-loop-a-master-upgrade]] — Jetstack's master health-check deadlock (active)
+- [[findings/intermittent-api-server-downtime-can-send-node-auto-repair-into-an-endless-recreate-loop]] — remediation amplifies a control-plane fault (active)
+- [[findings/dns-caching-hid-the-control-plane-failure-for-about-twenty-minutes-before-expiring-records-added-load]] — delayed visibility in the OpenAI outage (active)
+- [[findings/a-staging-test-passed-because-the-failure-scaled-with-cluster-size-and-resource-checks-ignored-api-server-load]] — rollout gate gap (active)
+- [[findings/a-slow-control-plane-database-stopped-pod-suspension-and-exhausted-subnet-ips-and-a-cni-setting-change-caused-a-second-outage]] — Neon's chain of failures (active)
+- [[findings/no-primary-postmortem-was-found-for-a-crd-deletion-cascade-or-an-etcd-quota-alarm]] — evidence caveat (draft)
 
 ## Outputs
 

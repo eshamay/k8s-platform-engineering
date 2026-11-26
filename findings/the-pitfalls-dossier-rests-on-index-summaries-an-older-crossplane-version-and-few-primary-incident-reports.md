@@ -3,11 +3,14 @@ title: The pitfalls dossier rests on index summaries, an older Crossplane versio
 type: finding
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-pitfalls-and-case-studies
     hash: 9407913c2448
     ingested: 2026-11-25
+  - id: research-gap-g1-outage-postmortems
+    hash: 0487bcf071d6
+    ingested: 2026-11-26
 aliases: []
 tags: [source-quality, evidence, postmortems, crossplane, caveat]
 ---
@@ -17,6 +20,8 @@ tags: [source-quality, evidence, postmortems, crossplane, caveat]
 ## Observation
 
 Only three first-party postmortems were read in full: Zalando, Grafana, and loveholidays. The Skyscanner, Reddit, Spotify, Jetstack, Monzo, and Airbnb cases appear only as k8s.af index summaries, because the scraper returned empty pages or the reports were not fetched. The Crossplane documentation page is v1.20 while the latest was v2.5, and issue 5283 on `deletionPolicy` was still open with an unknown outcome. The official Kubernetes finalizers and server-side apply pages were too large to read. The failure index is mostly 2017 to 2021 and its source repository was archived in 2020, and the Flux blog is the only 2026 primary source. [[sources/research-pitfalls-and-case-studies]] URLs: https://k8s.af/ and https://github.com/hjacobs/kubernetes-failure-stories
+
+Correction, 2026-11-26: the Jetstack case was read in full in a later dossier, so it is no longer index-only. The k8s.af index was also checked on its Codeberg copy, which lists 78 entries with the newest dated 2023 (Reddit), so the statement that the index is mostly 2017 to 2021 is incomplete. The claim that the repository was archived in 2020 was not rechecked. The Airbnb talk is still unread. See [[sources/research-gap-g1-outage-postmortems]] and [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]].
 
 ## Why it matters
 
