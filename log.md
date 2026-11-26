@@ -546,3 +546,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | kro Graph API status and released-version facts
 - closed by: Eric Shamay
 - resolution: Settled: v0.10.0 (2026-11-10) is the latest release read, and the Graph API is alpha, off by default behind the GraphKind gate; enabling it needs a manual CRD apply because Helm does not update CRDs on upgrade ([[entities/kro]], [[findings/enabling-the-kro-graph-api-needs-a-manual-crd-apply-because-helm-does-not-update-crds-on-upgrade]]). Not settled: the promotion timeline belongs to the governance gap.
+
+## [2026-11-26] gaps | close | kro dependency graph and readiness mechanics
+- closed by: Eric Shamay
+- resolution: Settled at v0.10.0: ordering is inferred from CEL references into a topologically ordered graph, and readyWhen gates dependents in a ResourceGraphDefinition but only reports health in the alpha Graph API ([[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]], [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]]). Not settled: this is read from docs, not controller source.
