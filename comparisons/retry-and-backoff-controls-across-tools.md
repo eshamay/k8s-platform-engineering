@@ -11,6 +11,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: []
 tags: [comparison, retries, backoff, convergence]
 ---
@@ -34,3 +37,7 @@ The tools disagree on who intervenes after repeated failure. Argo CD and kro eve
 ## Further reading
 
 For the load, jitter, and queue side of the same tools see [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]]. The reconciliation-loop dossier confirms the Argo CD no-retry-for-the-same-commit rule and the kro 20-retry cap. [[sources/research-reconciliation-loop]]
+
+## Retry safety from the idempotency dossier
+
+The Argo CD retry fields (`limit`, `duration`, `factor`, `maxDuration`) and Flux's `retryInterval` and jitter bound how often a retry happens, but they do not make the retried call safe. That depends on the target API being idempotent. [[sources/research-idempotency]] See [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]].

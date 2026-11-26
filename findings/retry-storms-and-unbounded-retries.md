@@ -11,6 +11,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: [Retry amplification]
 tags: [pitfall, retries, backoff, postmortem]
 ---
@@ -39,3 +42,7 @@ The dossier's lessons are to rate-limit background work, monitor the resource th
 ## Retry caps in the reconciliation-loop dossier
 
 The dossier contrasts controller-runtime, which retries failures forever with exponential backoff unless the error is terminal, with kro, which caps retries at 20, and Argo CD, which does not retry the same commit unless configured. [[sources/research-reconciliation-loop]] See [[examples/argo-cd-does-not-retry-a-failed-sync-of-the-same-commit-unless-retry-is-configured]].
+
+## Idempotency of the retried call
+
+The AWS Builders' Library article adds that blind retry is safe only when the target API is idempotent, and that Flux jitter and `retryInterval` and Argo CD's `maxDuration` cap address load and not duplicate side effects. [[sources/research-idempotency]] See [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]].

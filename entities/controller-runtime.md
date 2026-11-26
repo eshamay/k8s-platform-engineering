@@ -20,6 +20,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: [sigs.k8s.io/controller-runtime]
 tags: [tool, controllers, framework]
 ---
@@ -59,3 +62,7 @@ The operator-pattern dossier describes Kubebuilder and the Operator SDK as both 
 ## Result, TerminalError, and backoff tuning
 
 The reconcile package defines `Request` (name and namespace only), `Result` with a deprecated `Requeue`, `RequeueAfter`, and an optional `Priority`, and `TerminalError`, which is logged and counted but not retried. Backoff is tuned through the controller's `RateLimiter` option. Sources disagree on whether `Requeue: true` backs off. [[sources/research-reconciliation-loop]] See [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]] and [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
+
+## FAQ guidance on idempotent reconcilers
+
+The controller-runtime FAQ says reconcile functions must be idempotent and must read all the state they need before writing updates, so skipped or coalesced events and restarts are harmless. It recommends deterministic object names so the API server rejects a duplicate create, tracking actions and requeueing when names are generated, and testing with envtest against resulting state and not against which API calls were made. The dossier read the raw GitHub copy because the rendered page was empty. [[sources/research-idempotency]] See [[examples/built-in-controllers-use-deterministic-names-to-avoid-duplicate-children]] and [[concepts/idempotency]].

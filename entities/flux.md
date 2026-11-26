@@ -47,6 +47,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -116,3 +119,7 @@ The Flux components page describes Flux as built from the GitOps Toolkit: specia
 ## Interval, retry, and timing in the reconciliation-loop dossier
 
 The Kustomization reference describes `spec.interval` as the periodic reconcile cadence with a 60 second minimum, `retryInterval` as the delay after failures (defaulting to `interval`), `timeout` as the bound on build, apply, and health-check work, and `suspend` as the switch that pauses reconciliation and drift correction. Jitter can spread many Kustomizations, and a manual reconcile can be requested by annotation. The dossier read only the first 100,000 of about 121,600 characters of the page. [[sources/research-reconciliation-loop]] See [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]] and [[concepts/reconciliation-loop]].
+
+## Repeated apply as idempotency
+
+The idempotency dossier treats the Kustomization as scheduled, repeated apply: each `.spec.interval` runs a server-side apply dry-run to detect and correct drift, a new revision or generation is handled immediately, `.spec.prune` garbage-collects dropped objects with a `prune: disabled` annotation as protection, `.spec.retryInterval` retries failures, and jitter avoids load spikes. Conflicting field ownership is the signal that another actor changed the object. The dossier's quoted example uses a ten-minute interval, which is an example and not a stated default. [[sources/research-idempotency]] See [[concepts/idempotency]].

@@ -23,6 +23,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -62,3 +65,7 @@ ACK publishes `ResourceSynced`, but its conditions lack `observedGeneration`, so
 ## One controller image per AWS service
 
 The ACK overview says the project ships one controller image per AWS service, each reconciling custom resources into AWS API calls, with support for adopting pre-existing AWS resources and exporting fields to ConfigMaps or Secrets. The operator-pattern dossier cites it as an example of per-service controllers for an external system. [[sources/research-operator-pattern]] See [[examples/ack-ships-one-controller-per-aws-service]] and [[comparisons/how-flux-ack-and-cluster-api-split-controllers]].
+
+## Resource adoption policies
+
+The ACK adoption guide describes the `services.k8s.aws/adoption-policy` annotation with two values: `adopt-or-create` adopts an existing AWS resource or creates it, with the manifest as source of truth, and `adopt` imports strictly and fills the spec from AWS. The `adoption-fields` annotation names the identifier used to find the resource, such as a VPC ID, queue URL, SNS ARN, bucket name, or table name. Deleting the Kubernetes object deletes the AWS resource unless `deletionPolicy: Retain` is set, and the guide labels adoption a Beta feature. This fills the adoption gap noted above, though the dossier did not read ACK's idempotency behavior for creates beyond adoption. [[sources/research-idempotency]] See [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]], [[findings/adopt-or-create-can-take-over-a-look-alike-resource]], and [[decisions/adopt-or-create-or-require-explicit-import]].

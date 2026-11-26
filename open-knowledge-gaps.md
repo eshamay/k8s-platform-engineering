@@ -69,6 +69,9 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#requeue-true-backoff-behavior-in-current-controller-runtime]] — open, unassigned
 - [[#argo-cd-default-reconcile-interval-across-versions]] — open, unassigned
 - [[#named-postmortems-of-runaway-reconcile-loops]] — open, unassigned
+- [[#kro-and-cluster-api-idempotency-for-external-and-infrastructure-creates]] — open, unassigned
+- [[#production-outcomes-of-adopt-or-create-versus-explicit-import]] — open, unassigned
+- [[#postmortems-of-leaked-or-duplicated-cloud-resources-from-ambiguous-creates]] — open, unassigned
 
 ---
 
@@ -97,6 +100,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-admission-webhooks-and-cel]]:** Only marginally helpful. The dossier places admission (mutating webhooks, schema validation, validating webhooks, or in-process CEL policies) after authentication and authorization and before persistence, and notes that server-side dry-run passes through webhooks, so a missing `sideEffects` declaration can fail a Flux reconcile. It does not trace the full Git-to-Ready path. See [[examples/flux-dry-run-fails-against-webhooks-without-dry-run-support]].
 - **Possible resolution from [[sources/research-operator-pattern]]:** Only marginally helpful. The dossier names Flux's five controllers (source, kustomize, helm, notification, image automation) and the controller-guideline rules that govern each hop, but it does not trace the handoff between them, finalizer registration, or condition updates. See [[examples/flux-splits-gitops-into-single-purpose-controllers]].
 - **Possible resolution from [[sources/research-reconciliation-loop]]:** Marginally helpful. The dossier gives the Flux Kustomization loop timing (`interval`, `retryInterval`, `timeout`, `wait`, `healthChecks`, `dependsOn`, `prune`) and the controller-runtime requeue semantics that govern each hop, but it read only the first 100,000 characters of the Flux page and does not trace source-controller handoff, finalizer registration, or condition updates. See [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]].
+- **Possible resolution from [[sources/research-idempotency]]:** Only marginally helpful. The dossier confirms that kustomize-controller runs a server-side apply dry-run each interval and that conflicting field ownership signals another actor, which fits the apply step of the trace. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[concepts/idempotency]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -122,6 +126,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Marginally helpful, and only for Crossplane. The dossier shows that Crossplane propagates claim to composite resource to composed resources with server-side apply, which depends on merge markers in provider CRDs, and that moving to composition functions needed a managed-fields migration. The kro documentation returned empty content, so nothing is known about how kro applies composed resources. See [[examples/crossplane-clears-managed-fields-when-migrating-to-composition-functions]].
 - **Possible resolution from [[sources/research-operator-pattern]]:** Marginally helpful. The dossier frames both tools as replacements for a hand-written operator when a custom API is mostly composition: Crossplane through a function pipeline in a Composition, kro through CEL expressions that infer a dependency graph and generate a CRD and controller at runtime. It does not compare their execution models in depth, and the Crossplane composition concept page returned 404. See [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]].
 - **Possible resolution from [[sources/research-reconciliation-loop]]:** Marginally helpful. The dossier describes the Crossplane managed resource loop (Observe, Create, Update, Delete, `Synced` and `Ready`, create tracking) and kro's single shared rate-limited queue with its retry and resync defaults from unreleased documentation. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[entities/crossplane]], [[entities/kro]], and [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
+- **Possible resolution from [[sources/research-idempotency]]:** Marginally helpful, and only for Crossplane. The dossier covers Crossplane's managed resource idempotency (external names, `external-create-pending`, `managementPolicies`, `initProvider`) but could not read kro's instance and reconciliation pages, so kro's handling of repeated reconciliation and partial failure is unknown. See [[entities/crossplane]] and [[entities/kro]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -148,6 +153,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-admission-webhooks-and-cel]]:** Marginally helpful. Every matching write blocks on webhook calls (default timeout 10 seconds), so a slow webhook adds latency to the whole write path, and in-process CEL has a comparatively small latency impact according to KEP-3488. The dossier gives no measurements. See [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]].
 - **Possible resolution from [[sources/research-operator-pattern]]:** Marginally helpful. The dossier restates the controller guidelines (shared informers, rate-limited workqueues processing one key at a time, waiting for cache sync) and warns that blocking on errors inside the loop stalls other objects, but it has no sharding, concurrency, or scale numbers. See [[findings/blocking-on-errors-inside-the-sync-loop-stalls-every-other-object]] and [[findings/mutating-objects-from-a-shared-cache-or-reading-an-unsynced-cache-corrupts-reconcile-input]].
 - **Possible resolution from [[sources/research-reconciliation-loop]]:** Partly helpful. The dossier gives kro's shared queue, default of 1 worker, token bucket of 10 events per second, 20-retry cap, and client QPS 100 with burst 150, and notes Flux jitter and Argo CD jitter, plus the controller-runtime rate-limited workqueue. It has no sharding data and no Crossplane concurrency data. See [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
+- **Possible resolution from [[sources/research-idempotency]]:** Marginally helpful. The dossier notes that Flux jitter and `retryInterval` and Argo CD's `maxDuration` limit retry load, and that many objects sharing one interval can spike API load. It has no informer, sharding, or concurrency data. See [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -223,6 +229,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/flux]] and [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, drift, verification
+- **Possible resolution from [[sources/research-idempotency]]:** Only marginally helpful. The Kustomization reference quote ("every ten minutes, the Kustomization runs a server-side apply dry-run") uses ten minutes as an example interval, and the dossier does not state a default or the 60-second minimum. See [[entities/flux]].
 
 ## Adoption, observe-only, and ignore-differences controls — status: open
 
@@ -235,6 +242,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** adoption, ignore-differences, management-policies
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Largely helpful. The dossier covers Argo CD `ignoreDifferences` (JSON pointer, JQ path, `managedFieldsManagers`), Flux `driftDetection.ignore` and the `ssa` annotation, and Crossplane `managementPolicies` with Observe adoption and the pause annotation. ACK adoption was not read. See [[comparisons/exemption-and-ignore-controls-across-tools]].
+- **Possible resolution from [[sources/research-idempotency]]:** Partly closes the ACK adoption part. The dossier reads the ACK adoption guide (`adopt-or-create`, strict `adopt`, `adoption-fields`, Beta status), Config Connector acquisition by name, Crossplane's Observe-then-manage import flow, and SAP's explicit-intent design. It does not read Argo CD `ignoreDifferences` or Flux field managers. See [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] and [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]].
 
 
 ## Argo CD versus Flux head-to-head behavior — status: open
@@ -788,3 +796,37 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Search public postmortem collections and controller issue trackers for reconcile storms.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortems, hot-loop
+
+## kro and Cluster API idempotency for external and infrastructure creates — status: open
+
+- **Question:** How do kro (repeated reconciliation and partial failure of a resource graph) and Cluster API (provisioning infrastructure through providers) keep creates idempotent, and do they use markers, deterministic names, or adoption like Crossplane, ACK, and Config Connector?
+- **Why it matters:** The idempotency dossier could not read kro's instance and reconciliation pages (empty scrape) and found no readable Cluster API source, so two of the tools in scope are missing from [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the kro instances and reconciliation documentation.
+  - [ ] Read the current Cluster API book on infrastructure providers and machine creation.
+  - [ ] Add rows to the comparison.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, cluster-api, idempotency
+
+## Production outcomes of adopt-or-create versus explicit import — status: open
+
+- **Question:** What do production teams report when they use ACK `adopt-or-create`, Config Connector acquisition, or Crossplane Observe-then-manage, compared with SAP's explicit-intent design, and which default is safer?
+- **Why it matters:** The dossier says the sources do not compare outcomes, so [[decisions/adopt-or-create-or-require-explicit-import]] cannot be settled.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find adopter write-ups, talks, or issue threads on accidental adoption or overwritten resources.
+  - [ ] Update the decision page.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** adoption, ack, config-connector, crossplane
+
+## Postmortems of leaked or duplicated cloud resources from ambiguous creates — status: open
+
+- **Question:** Are there named postmortems or conference talks describing leaked or duplicated cloud resources after a controller crashed between a create call and recording its result?
+- **Why it matters:** The dossier's evidence is GitHub issues only, such as Crossplane issue 3037, so [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]] lacks incident accounts with cost or scale.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Search public incident reports and talks on Crossplane, ACK, and Config Connector.
+  - [ ] Check whether the Crossplane maintainers' proposed opt-out for deterministic identifiers shipped.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** postmortem, idempotency, external-resources

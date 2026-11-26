@@ -29,6 +29,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: [Kubebuilder Book]
 tags: [tool, operators, framework]
 ---
@@ -72,3 +75,7 @@ The Kubebuilder good-practices page recommends idempotent reconcile, status cond
 ## Reconcile implementation lessons
 
 The CronJob controller implementation chapter teaches idempotency, rebuilding status from observed children ("status should be able to be reconstituted from the state of the world"), updating the status subresource separately, controller owner references, field indexes for listing children, and `RequeueAfter` to wake at the next scheduled run. [[sources/research-reconciliation-loop]] See [[concepts/reconciliation-loop]].
+
+## Idempotency in the good-practices page
+
+The good-practices page says directly that the reconciliation loop needs to be idempotent, so it handles unexpected events, startup, and upgrades, and that logic keyed to specific events goes against the operator pattern and can leave resources stuck. [[sources/research-idempotency]] See [[findings/event-specific-logic-in-reconcilers]] and [[concepts/idempotency]].

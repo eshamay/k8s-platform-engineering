@@ -26,6 +26,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -69,3 +72,7 @@ The spec and status dossier fetched no primary source on Config Connector, so it
 ## Coverage gap in the operator-pattern dossier
 
 The operator-pattern dossier fetched no page on Config Connector, so its failure handling as an operator is not covered by that source. [[sources/research-operator-pattern]] See [[open-knowledge-gaps]].
+
+## Idempotent create by acquisition
+
+The managing-and-deleting-resources page says that if a resource does not exist Config Connector creates it, and if a resource with the same name already exists in the organization, project, or folder it acquires and manages it. Resources with service-generated IDs can be acquired only through the `resourceID` field. Deleting the Kubernetes object deletes the cloud resource unless `cnrm.cloud.google.com/deletion-policy: abandon` is set. The dossier read only this page for Config Connector. [[sources/research-idempotency]] See [[examples/config-connector-acquires-an-existing-google-cloud-resource-by-name]] and [[findings/adopt-or-create-can-take-over-a-look-alike-resource]].

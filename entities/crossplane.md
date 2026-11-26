@@ -47,6 +47,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -116,3 +119,7 @@ The operator-pattern dossier presents Crossplane compositions as a way to expose
 ## Observe, Create, Update, Delete and create tracking
 
 The managed resource design one-pager describes a CRUD-style external client (Observe, Create, Update, Delete) with `spec.forProvider` for desired state and `status.atProvider` for observed provider state. The managed resources documentation adds create-tracking annotations that prevent a repeated or leaked create when the status write fails, the `crossplane.io/paused` annotation, `managementPolicies`, and `deletionPolicy` with `Delete` or `Orphan`. [[sources/research-reconciliation-loop]] See [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]] and [[concepts/reconciliation-loop]].
+
+## Idempotency and external names
+
+The idempotency dossier adds detail on how Crossplane keeps creates safe. The managed resources documentation treats `spec.forProvider` as the source of truth, keeps a stable `crossplane.io/external-name` (a VPC named `my-test-vpc` has external name `vpc-01353cfe93950a8ff`) for Observe, Update, and Delete, offers `initProvider` for creation-only settings, and lets `managementPolicies` grant any subset of Observe, Create, Update, Delete, and LateInitialize, where an empty list pauses the resource. A provider writes `external-create-pending` before a cloud create and stops with "cannot determine creation result" when the outcome is unknown, which needs a human to remove the annotation. Issue 1863 on the annotation's role was closed without a decision. [[sources/research-idempotency]] See [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]], [[findings/external-identity-takes-different-forms-across-cloud-apis]], [[examples/crossplane-initprovider-lets-an-autoscaler-own-node-group-size]], [[entities/crossplane-provider-btp]], and [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]].

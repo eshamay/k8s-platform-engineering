@@ -44,6 +44,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -109,3 +112,7 @@ The kro overview says kro "parses the expressions, infers the dependency graph, 
 ## Shared queue and tuning defaults
 
 The controller tuning page says kro runs three reconcile loops, and its dynamic controller handles all instances through one shared rate-limited queue with a default of 1 worker, a bucket limit of 10 events per second, a full resync every 10 hours, up to 20 retries, instance requeue from 3 seconds to 5 minutes, and client QPS 100 with burst 150. The figures come from the `next` documentation and may differ in released versions. [[sources/research-reconciliation-loop]] See [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
+
+## Idempotency coverage gap
+
+The idempotency dossier could read only the kro home page, which claims continuous reconciliation with automatic drift detection. The instances and reconciliation sub-pages returned empty content, so how kro handles repeated reconciliation and partial failure of a resource graph is not covered. [[sources/research-idempotency]] See [[open-knowledge-gaps]].

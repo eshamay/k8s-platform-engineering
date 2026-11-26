@@ -8,6 +8,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, controllers, level-triggered]
 ---
@@ -29,3 +32,7 @@ Read all needed state at the start of each reconcile, write only the difference,
 ## Related
 
 [[concepts/level-triggered-vs-edge-triggered]], [[concepts/reconciliation-loop]], [[decisions/events-as-hints-state-as-truth]]
+
+## Corroboration from the Kubebuilder book
+
+The Kubebuilder good-practices page repeats the rule: the reconciliation loop needs to be idempotent, and logic keyed to specific events goes against the operator pattern and can leave resources stuck needing manual fixes. [[sources/research-idempotency]] See [[concepts/idempotency]].

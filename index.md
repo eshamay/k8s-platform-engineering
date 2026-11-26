@@ -27,7 +27,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 - [[concepts/operator-pattern]] — the two-domain controller, mechanics, maturity levels, ecosystem, and pitfall catalog (active)
 - [[concepts/reconciliation-loop]] — level-based contract, mechanics, requeue semantics, tool timing, and pitfalls (active)
-- [[concepts/idempotency]] — safe repeated reconciliation (draft)
+- [[concepts/idempotency]] — safe repeated reconciliation at the loop, API, and cloud-API layers (active)
 - [[concepts/informers-reflectors-and-workqueues]] — watch, cache, queue machinery (draft)
 - [[concepts/finalizers]] — block deletion until external cleanup (draft)
 - [[concepts/owner-references-and-garbage-collection]] — cascading deletion (draft)
@@ -63,6 +63,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/kyverno]] — CEL-first policy engine that can generate native admission policies (draft)
 - [[entities/cert-manager]] — operator with validation, defaulting, and conversion webhooks (draft)
 - [[entities/operator-sdk]] — Operator Framework SDK and its five capability levels (draft)
+- [[entities/crossplane-provider-btp]] — SAP provider with explicit external names and bounded create recovery (draft)
 
 ## Sources
 
@@ -80,6 +81,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-admission-webhooks-and-cel]] — research dossier on admission webhooks and CEL, 15 web sources, 2026-11-25
 - [[sources/research-operator-pattern]] — research dossier on the operator pattern, 17 web sources, 2026-11-25
 - [[sources/research-reconciliation-loop]] — research dossier on the reconciliation loop, 15 web sources, 2026-11-25
+- [[sources/research-idempotency]] — research dossier on idempotency, 15 web sources, 2026-11-25
 
 ## Examples
 
@@ -156,6 +158,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]] — a time-driven loop with off switches (draft)
 - [[examples/argo-cd-does-not-retry-a-failed-sync-of-the-same-commit-unless-retry-is-configured]] — no retry for unchanged input (draft)
 - [[examples/cluster-api-machine-controller-waits-for-infrastructure-and-bootstrap-data]] — a waiting reconciler (draft)
+- [[examples/built-in-controllers-use-deterministic-names-to-avoid-duplicate-children]] — ordinals, template hashes, and tracked creates (draft)
+- [[examples/provider-restart-blocks-a-crossplane-resource-on-external-create-pending]] — issue 3037 (draft)
+- [[examples/sap-btp-provider-recovers-lost-ids-by-business-key-and-creation-window]] — bounded semantic recovery (draft)
+- [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]] — adoption policies (draft)
+- [[examples/config-connector-acquires-an-existing-google-cloud-resource-by-name]] — acquire on name match (draft)
+- [[examples/crossplane-initprovider-lets-an-autoscaler-own-node-group-size]] — creation-only settings (draft)
+- [[examples/ec2-client-token-makes-a-retried-runinstances-call-safe]] — server-side retry contract (draft)
 
 ## Comparisons
 
@@ -185,6 +194,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]] — three ways to a custom API (draft)
 - [[comparisons/how-flux-ack-and-cluster-api-split-controllers]] — three axes of controller separation (draft)
 - [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]] — queues, jitter, workers, and resync (draft)
+- [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] — lost-create recovery and adoption (draft)
 
 ## Decisions
 
@@ -204,6 +214,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/build-a-custom-operator-or-compose-existing-resources]] — code or composition (draft)
 - [[decisions/one-controller-per-kind-or-one-multi-kind-controller]] — single responsibility versus consolidation (draft)
 - [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]] — what each reconcile return value does (draft)
+- [[decisions/adopt-or-create-or-require-explicit-import]] — adoption default for existing cloud resources (draft)
+- [[decisions/external-name-annotation-or-spec-field]] — where the external identifier lives (draft)
+- [[decisions/recover-from-an-ambiguous-create-by-halting-searching-or-tagging]] — lost-create recovery options (draft)
 
 ## Findings
 
@@ -277,6 +290,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/self-triggered-reconcile-loops-generate-their-own-events]] — hot loops from status writes and noisy children (draft)
 - [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]] — create tracking (draft)
 - [[findings/a-level-based-loop-deletes-what-it-no-longer-sees-in-desired-state]] — prune and orphan guards (draft)
+- [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]] — external-create-pending blocks (draft)
+- [[findings/external-identity-takes-different-forms-across-cloud-apis]] — names, IDs, ARNs, and compound keys (draft)
+- [[findings/adopt-or-create-can-take-over-a-look-alike-resource]] — accidental adoption (draft)
+- [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]] — retry safety depends on the API (draft)
 
 ## Outputs
 

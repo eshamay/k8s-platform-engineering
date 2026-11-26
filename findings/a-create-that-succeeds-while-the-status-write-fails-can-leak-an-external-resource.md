@@ -8,6 +8,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: [Leaked cloud resources]
 tags: [crossplane, external-resources, idempotency, reconciliation]
 ---
@@ -29,3 +32,7 @@ Idempotency for external systems cannot rest on the object's own status alone, b
 ## Related
 
 [[entities/crossplane]], [[concepts/managed-resource]], [[findings/cost-of-constant-reconciliation]], [[concepts/reconciliation-loop]]
+
+## Further evidence from the idempotency dossier
+
+Crossplane issue 3037 documents the same hazard from the provider side: the pending, succeeded, and failed annotations are written within one reconcile, and a restart in between blocks the resource until a human removes the pending marker. SAP's provider adds a bounded lookup that recovers the lost ID automatically. [[sources/research-idempotency]] See [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]] and [[examples/sap-btp-provider-recovers-lost-ids-by-business-key-and-creation-window]].

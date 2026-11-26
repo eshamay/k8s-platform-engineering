@@ -1,7 +1,7 @@
 ---
 title: Idempotency
 type: concept
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-25
 sources:
@@ -17,36 +17,56 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
-aliases: []
-tags: [controllers]
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
+aliases: [Idempotent reconciliation, Safe retries]
+tags: [controllers, idempotency, external-resources]
 ---
 
 # Idempotency
 
 ## Definition
 
-Ensuring that running the same reconciliation logic multiple times produces the same result, without duplicating resources or causing errors. [[sources/krm-platform-vocabulary]]
+Ensuring that running the same reconciliation logic multiple times produces the same result, without duplicating resources or causing errors. [[sources/krm-platform-vocabulary]] The research dossier phrases it as an operation whose second run leaves the system in the same end state as the first. It shows up at three layers: the controller loop, the Kubernetes API, and the cloud APIs that controllers call. [[sources/research-idempotency]]
 
 ## Why it matters
 
-Because a level-triggered loop can run at any time and any number of times, a non-idempotent reconcile creates duplicates or fails on the second run. External APIs that lack natural idempotency (for example, creating a resource with a generated ID) need extra bookkeeping.
+Because a level-triggered loop can run at any time and any number of times, a non-idempotent reconcile creates duplicates or fails on the second run. External APIs that lack natural idempotency (for example, creating a resource with a generated ID) need extra bookkeeping. The Kubernetes controllers page adds that "controllers can fail, so Kubernetes is designed to allow for that," which is why the loop must be a convergence process and not a script of one-shot commands. [[sources/research-idempotency]]
 
-## Reading all state first
+## Layer 1: the controller loop
 
-The controller-runtime FAQ says reconcile functions must be idempotent and must always read all the state they need before writing updates, which makes them tolerate skipped or coalesced events and restarts. [[sources/research-level-triggered-vs-edge-triggered]] See [[findings/event-specific-logic-in-reconcilers]] and [[findings/stale-cache-and-double-action]].
+The controller-runtime FAQ says reconcile functions must be idempotent and must always read all the state they need before writing updates, which makes them tolerate skipped or coalesced events and restarts. The Kubebuilder good-practices page states that the reconciliation loop needs to be idempotent and warns that logic keyed to specific events goes against the operator pattern and can leave resources stuck. [[sources/research-level-triggered-vs-edge-triggered]] [[sources/research-idempotency]] See [[findings/event-specific-logic-in-reconcilers]] and [[findings/stale-cache-and-double-action]].
 
-## Idempotency under convergence
+## Layer 2: the Kubernetes API
 
-Convergence depends on idempotence in three places. Idempotent reconcilers make extra runs harmless, which is why most controllers can run as a single replica. Argo CD hooks run on every sync and must be idempotent. Failed operations are retried with backoff, so each retry must be safe. [[sources/research-eventual-consistency-and-convergence]] See [[decisions/single-replica-versus-leader-election]].
+Deterministic object names give optimistic locking: a second create of the same name fails loudly and does not duplicate. The StatefulSet controller appends an ordinal and the Deployment controller hashes the pod template into the ReplicaSet name. When a name must be generated, the controller tracks the actions it took and requeues to repeat them if the objects have not appeared, as the ReplicaSet controller does. Server-side apply makes repeated writes safe, records field ownership in `managedFields`, and turns a clash with another manager into an explicit conflict. [[sources/research-idempotency]] See [[examples/built-in-controllers-use-deterministic-names-to-avoid-duplicate-children]] and [[concepts/server-side-apply-and-field-ownership]].
 
-## Related
+GitOps tools build on repeated apply. Flux runs a server-side apply dry-run every interval to find and correct drift, and Argo CD offers self-heal and retry with exponential backoff. Both rely on apply being safe to repeat. [[sources/research-idempotency]] See [[entities/flux]] and [[entities/argo-cd]].
 
-[[concepts/reconciliation-loop]], [[concepts/level-triggered-vs-edge-triggered]], [[concepts/provider]]
+## Layer 3: external cloud APIs
 
-## To research
+Creating a cloud resource is not naturally idempotent. If a controller calls a create API and crashes before it records the returned ID, the next reconcile cannot tell whether the resource exists, and a blind retry can leak the first one. The dossier describes four answers:
 
-Patterns for idempotent creates against cloud APIs, such as external-name annotations in Crossplane.
+- Deterministic or caller-chosen names, so the same request names the same resource. Config Connector acquires a same-named resource, and ACK adopts by identifier. See [[examples/config-connector-acquires-an-existing-google-cloud-resource-by-name]] and [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]].
+- A persisted external identity, such as Crossplane's `crossplane.io/external-name` annotation, used for Observe, Update, and Delete. See [[findings/external-identity-takes-different-forms-across-cloud-apis]].
+- Recording intent before acting and failing safe when the result is unknown. Crossplane writes `external-create-pending` and stops for a human, and SAP's provider adds a bounded lookup. See [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]] and [[examples/sap-btp-provider-recovers-lost-ids-by-business-key-and-creation-window]].
+- A server-side client token that lets the cloud recognize a retried request and return a semantically equivalent response. See [[examples/ec2-client-token-makes-a-retried-runinstances-call-safe]].
+
+[[sources/research-idempotency]] See the side-by-side view in [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]].
 
 ## Idempotency for external create calls
 
 The reconciliation-loop dossier shows that idempotency for external APIs needs more than status: Crossplane writes create-tracking annotations so a create whose status write failed is not repeated. [[sources/research-reconciliation-loop]] See [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]].
+
+## Idempotency under convergence
+
+Convergence depends on idempotence in three places. Idempotent reconcilers make extra runs harmless, which is why most controllers can run as a single replica. Argo CD hooks run on every sync and must be idempotent. Failed operations are retried with backoff, so each retry must be safe. [[sources/research-eventual-consistency-and-convergence]] See [[decisions/single-replica-versus-leader-election]]. Blind retry is safe only when the target API is idempotent, which is why retry storms and idempotency are linked. [[sources/research-idempotency]] See [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]] and [[findings/retry-storms-and-unbounded-retries]].
+
+## Design choices that remain open
+
+The dossier leaves three questions unresolved: whether the external name belongs in an annotation or a spec field, how to recover from ambiguous creates at scale, and whether adopt-or-create is a safe default. See [[decisions/external-name-annotation-or-spec-field]], [[decisions/recover-from-an-ambiguous-create-by-halting-searching-or-tagging]], and [[decisions/adopt-or-create-or-require-explicit-import]]. kro and Cluster API idempotency are not covered by any readable source. [[sources/research-idempotency]]
+
+## Related
+
+[[concepts/reconciliation-loop]], [[concepts/level-triggered-vs-edge-triggered]], [[concepts/provider]], [[concepts/managed-resource]], [[concepts/finalizers]]

@@ -41,6 +41,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -104,3 +107,7 @@ The operator-pattern dossier fetched no page on Argo CD, so how its controllers 
 ## Reconcile timing and failure policy in the reconciliation-loop dossier
 
 Automated sync polls on `timeout.reconciliation`, default 120 seconds plus 60 seconds of jitter (older material says 3 minutes), self-heal re-syncs on divergence with a default 5 second delay, and prune is off by default. Automated sync does not retry a failed sync of the same commit and parameters unless retry is configured, which differs from the controller-runtime default of retrying with backoff. [[sources/research-reconciliation-loop]] See [[examples/argo-cd-does-not-retry-a-failed-sync-of-the-same-commit-unless-retry-is-configured]].
+
+## Self-heal and retry as idempotency
+
+The automated sync page says self-heal is off by default, pruning is blocked from leaving an application empty unless `allowEmpty` is set, and a failed sync can retry with exponential backoff using `limit`, `duration`, `factor`, and `maxDuration`. In multi-source applications, disabling self-heal does not guarantee that live changes persist. [[sources/research-idempotency]] See [[concepts/idempotency]] and [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]].

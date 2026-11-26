@@ -11,6 +11,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, deletion, finalizers, safety]
 ---
@@ -36,3 +39,7 @@ Set retain or abandon policies on critical resources, review `prune` settings, a
 ## Additional evidence
 
 The ACK deletion-policy page confirms that the AWS resource is deleted first by default and that a `retain` policy is available. Flux has a deletion policy including Orphan, and the kubectl tutorial warns about `apply --prune`. [[sources/research-declarative-vs-imperative]] See [[comparisons/deletion-policies-across-gitops-and-provider-tools]] and [[findings/unintended-deletion-through-prune]].
+
+## Deletion behavior in adopted resources
+
+The idempotency dossier adds that adoption interacts with deletion: in ACK and Config Connector, deleting the Kubernetes object deletes an adopted cloud resource unless a retain or abandon policy is set, and Crossplane deletes the external resource only when its managed resource is deleted, with `managementPolicies` able to omit Delete. [[sources/research-idempotency]] See [[findings/adopt-or-create-can-take-over-a-look-alike-resource]].

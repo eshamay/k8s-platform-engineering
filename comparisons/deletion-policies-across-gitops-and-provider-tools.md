@@ -8,6 +8,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-idempotency
+    hash: 4704ffd77903
+    ingested: 2026-11-25
 aliases: []
 tags: [deletion, retain, abandon, orphan]
 ---
@@ -25,3 +28,7 @@ tags: [deletion, retain, abandon, orphan]
 ## Reading the comparison
 
 Declarative deletion semantics propagate to real infrastructure, so every tool offers an opt-out whose name differs. ACK's retain policy is useful for migrations or for removing ACK management, and Config Connector's abandon policy appears in its migration path to Absent mode. See [[findings/destructive-deletion-of-external-resources]], [[findings/unintended-deletion-through-prune]], and [[concepts/finalizers]]. [[sources/research-declarative-vs-imperative]]
+
+## Adoption and Crossplane rows from the idempotency dossier
+
+The idempotency dossier confirms ACK's `deletionPolicy: Retain` and Config Connector's `abandon` policy, and adds that Crossplane deletes an external resource only when its managed resource is deleted, with `managementPolicies` able to omit Delete and an empty list pausing the resource. [[sources/research-idempotency]] See [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]].
