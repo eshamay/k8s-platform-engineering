@@ -14,6 +14,9 @@ sources:
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
+  - id: research-operator-pattern
+    hash: eab72eca2e1b
+    ingested: 2026-11-25
 aliases: [sigs.k8s.io/controller-runtime]
 tags: [tool, controllers, framework]
 ---
@@ -45,3 +48,7 @@ Informer resync semantics and the exact cache implementation were not covered; s
 ## Dynamic RESTMapper
 
 Issue 321 documents that a client's RESTMapper built once at startup could not see CRDs created later. The fix was a dynamic, rate-limited mapper that invalidates on lookup failure, reported as the default since v0.3.0, a claim that should be checked against release notes. [[sources/research-gvk-and-gvr]] See [[findings/stale-restmapper-hides-newly-installed-crds]], [[comparisons/restmapper-strategies-static-deferred-and-dynamic]], and [[entities/client-go]].
+
+## Foundation for Kubebuilder and the Operator SDK
+
+The operator-pattern dossier describes Kubebuilder and the Operator SDK as both built on controller-runtime, which supplies the informer, cache, and workqueue plumbing that the controller guidelines require. [[sources/research-operator-pattern]] See [[entities/operator-sdk]] and [[concepts/operator-pattern]].

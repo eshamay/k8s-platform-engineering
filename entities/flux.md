@@ -41,6 +41,9 @@ sources:
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
+  - id: research-operator-pattern
+    hash: eab72eca2e1b
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -102,3 +105,7 @@ kustomize-controller applies with server-side apply and runs a server-side dry-r
 ## Admission webhooks and dry-run
 
 kustomize-controller applies with a server-side dry-run first, so a webhook that does not declare `sideEffects` of `None` or `NoneOnDryRun` makes reconciliation fail with "admission webhook does not support dry run". The cheatsheet says to fix the webhook configuration, not Flux, and it also covers the five-minute health-check timeout and `disableWait`. [[sources/research-admission-webhooks-and-cel]] See [[examples/flux-dry-run-fails-against-webhooks-without-dry-run-support]] and [[findings/webhooks-without-sideeffects-declared-break-dry-run-clients]].
+
+## One controller per concern
+
+The Flux components page describes Flux as built from the GitOps Toolkit: specialized controllers for source, kustomize, helm, notification, and image automation, each reconciling its own CRDs, plus composable APIs and reusable Go packages. The operator-pattern dossier cites this as the clearest example of the one-controller-per-concern split. [[sources/research-operator-pattern]] See [[examples/flux-splits-gitops-into-single-purpose-controllers]] and [[concepts/operator-pattern]].

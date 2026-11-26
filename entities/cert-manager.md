@@ -8,6 +8,9 @@ sources:
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
+  - id: research-operator-pattern
+    hash: eab72eca2e1b
+    ingested: 2026-11-25
 aliases: []
 tags: [operator, webhooks, tls, cncf]
 ---
@@ -25,3 +28,7 @@ It uses all three webhook roles on its own CRDs: validation, defaulting, and con
 ## Related
 
 [[concepts/admission-webhooks-and-cel]], [[concepts/operator-pattern]], and [[examples/flux-ssa-annotations-and-ignore-rules-share-fields-with-other-controllers]].
+
+## Named as a cluster add-on operator
+
+The CNCF explainer names cert-manager as an operator for TLS certificate issuance and renewal. [[sources/research-operator-pattern]] See [[examples/cluster-add-on-operators-turn-install-and-day-2-work-into-objects]].

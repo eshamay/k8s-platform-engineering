@@ -25,7 +25,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ### Controller and operator mechanics
 
-- [[concepts/operator-pattern]] — operational knowledge packaged as controller plus CRDs (draft)
+- [[concepts/operator-pattern]] — the two-domain controller, mechanics, maturity levels, ecosystem, and pitfall catalog (active)
 - [[concepts/reconciliation-loop]] — the Reconcile function (draft)
 - [[concepts/idempotency]] — safe repeated reconciliation (draft)
 - [[concepts/informers-reflectors-and-workqueues]] — watch, cache, queue machinery (draft)
@@ -62,6 +62,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/prometheus-operator]] — operator that retrofitted status onto its workload CRDs (draft)
 - [[entities/kyverno]] — CEL-first policy engine that can generate native admission policies (draft)
 - [[entities/cert-manager]] — operator with validation, defaulting, and conversion webhooks (draft)
+- [[entities/operator-sdk]] — Operator Framework SDK and its five capability levels (draft)
 
 ## Sources
 
@@ -77,6 +78,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-spec-status-split]] — research dossier on the spec and status split, 16 web sources, 2026-11-25
 - [[sources/research-server-side-apply-and-field-ownership]] — research dossier on server-side apply and field ownership, 17 web sources, 2026-11-25
 - [[sources/research-admission-webhooks-and-cel]] — research dossier on admission webhooks and CEL, 15 web sources, 2026-11-25
+- [[sources/research-operator-pattern]] — research dossier on the operator pattern, 17 web sources, 2026-11-25
 
 ## Examples
 
@@ -139,6 +141,15 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/kyverno-validatingpolicy-generates-native-vap-objects]] — engine hands enforcement to the API server (draft)
 - [[examples/flux-dry-run-fails-against-webhooks-without-dry-run-support]] — GitOps meets sideEffects (draft)
 - [[examples/kubebuilder-operator-scaffolds-defaulting-and-validating-webhooks]] — webhooks in the controller binary (draft)
+- [[examples/job-controller-acts-through-the-api-server-while-the-cluster-autoscaler-acts-directly]] — two ways a controller acts (draft)
+- [[examples/kubebuilder-cronjob-tutorial-shows-the-end-to-end-shape-of-a-go-operator]] — first hands-on operator (draft)
+- [[examples/stateful-data-services-run-on-postgres-and-elastic-operators]] — the classic operator use case (draft)
+- [[examples/cluster-add-on-operators-turn-install-and-day-2-work-into-objects]] — Prometheus, cert-manager, and Istio operators (draft)
+- [[examples/cluster-api-keeps-core-controllers-generic-with-provider-controllers]] — cluster lifecycle as an operator (draft)
+- [[examples/flux-splits-gitops-into-single-purpose-controllers]] — one controller per concern (draft)
+- [[examples/crossplane-composition-replaces-a-hand-written-controller-for-composed-apis]] — configured, not coded (draft)
+- [[examples/kro-generates-a-crd-and-controller-at-runtime-in-place-of-a-bespoke-operator]] — no-code route (draft)
+- [[examples/ack-ships-one-controller-per-aws-service]] — per-service controllers for AWS (draft)
 
 ## Comparisons
 
@@ -165,6 +176,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/client-side-apply-versus-server-side-apply]] — where the merge runs and what it remembers (draft)
 - [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]] — four admission extension mechanisms (draft)
 - [[comparisons/kyverno-versus-native-validating-admission-policy]] — engine features versus in-process policy (draft)
+- [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]] — three ways to a custom API (draft)
+- [[comparisons/how-flux-ack-and-cluster-api-split-controllers]] — three axes of controller separation (draft)
 
 ## Decisions
 
@@ -181,6 +194,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/which-crds-get-a-status-subresource]] — Prometheus Operator's line between workload and config CRDs (draft)
 - [[decisions/force-conflicts-or-surface-them-to-humans]] — controller versus CD tool defaults (draft)
 - [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]] — enforcement versus availability (draft)
+- [[decisions/build-a-custom-operator-or-compose-existing-resources]] — code or composition (draft)
+- [[decisions/one-controller-per-kind-or-one-multi-kind-controller]] — single responsibility versus consolidation (draft)
 
 ## Findings
 
@@ -242,6 +257,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window]] — certificates and connectivity (draft)
 - [[findings/api-evolution-breaks-webhooks-that-drop-unknown-fields]] — upgrade breakage (draft)
 - [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]] — limits of in-process CEL (draft)
+- [[findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down]] — why reconcile must be level-driven (draft)
+- [[findings/mutating-objects-from-a-shared-cache-or-reading-an-unsynced-cache-corrupts-reconcile-input]] — cache misuse (draft)
+- [[findings/multi-kind-controllers-break-encapsulation-and-scale-poorly]] — single responsibility per controller (draft)
+- [[findings/blocking-on-errors-inside-the-sync-loop-stalls-every-other-object]] — async sync loops (draft)
+- [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]] — stuck deletion (draft)
+- [[findings/operators-that-publish-no-standard-status-or-metrics-leave-their-state-opaque]] — observability gaps (draft)
+- [[findings/operator-privileges-and-removal-behavior-set-the-blast-radius]] — least privilege and safe removal (draft)
+- [[findings/hand-written-operators-duplicate-what-composition-could-express]] — over-building (draft)
 
 ## Outputs
 

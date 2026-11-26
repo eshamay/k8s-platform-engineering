@@ -20,6 +20,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-operator-pattern
+    hash: eab72eca2e1b
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -55,3 +58,7 @@ The ACK drift-recovery page confirms the long resync: after `ResourceSynced = tr
 ## Conditions without observedGeneration
 
 ACK publishes `ResourceSynced`, but its conditions lack `observedGeneration`, so consumers cannot distinguish a stale `ResourceSynced=True` from a current one. Issue 1583 proposes adding it, or publishing `False` at reconcile start. The issue was open with a frozen label when fetched. [[sources/research-spec-status-split]] See [[findings/missing-observedgeneration-hides-stale-status]] and [[decisions/publish-synced-false-at-reconcile-start]].
+
+## One controller image per AWS service
+
+The ACK overview says the project ships one controller image per AWS service, each reconciling custom resources into AWS API calls, with support for adopting pre-existing AWS resources and exporting fields to ConfigMaps or Secrets. The operator-pattern dossier cites it as an example of per-service controllers for an external system. [[sources/research-operator-pattern]] See [[examples/ack-ships-one-controller-per-aws-service]] and [[comparisons/how-flux-ack-and-cluster-api-split-controllers]].

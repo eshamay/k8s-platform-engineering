@@ -8,6 +8,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-operator-pattern
+    hash: eab72eca2e1b
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, operators, monitoring, status]
 ---
@@ -25,3 +28,7 @@ The project adopted a status subresource after the fact. The workload CRDs gaine
 ## Related
 
 [[concepts/spec-status-split]], [[concepts/operator-pattern]], [[examples/servicemonitor-no-matches-for-kind-in-helm-and-argo-cd]]
+
+## Named as a cluster add-on operator
+
+The CNCF explainer names Prometheus Operator as a monitoring operator whose custom resources turn install and day-2 work into declarative objects. [[sources/research-operator-pattern]] See [[examples/cluster-add-on-operators-turn-install-and-day-2-work-into-objects]].

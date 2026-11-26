@@ -61,6 +61,11 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#admission-behavior-of-crossplane-kro-argo-cd-config-connector-ack-cluster-api-and-gatekeeper]] — open, unassigned
 - [[#kyverno-webhook-failure-modes-and-availability]] — open, unassigned
 - [[#cel-cost-limits-and-per-request-budgets]] — open, unassigned
+- [[#named-operator-failure-postmortems]] — open, unassigned
+- [[#criteria-for-choosing-an-operator-framework-or-language]] — open, unassigned
+- [[#operator-sdk-capability-levels-for-composition-based-operators]] — open, unassigned
+- [[#argo-cd-and-config-connector-as-operators]] — open, unassigned
+- [[#backstage-and-the-operator-pattern]] — open, unassigned
 
 ---
 
@@ -87,6 +92,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-spec-status-split]]:** Only marginally helpful. The dossier explains the last stretch of the trace: the controller writes conditions and `observedGeneration` through the `/status` subresource, Flux reads `Ready`, `Reconciling`, and `Stalled`, and a lagging `observedGeneration` means the spec change is still pending. It does not trace source fetch or finalizers. See [[concepts/spec-status-split]] and [[examples/flux-helmrelease-status-records-attempts-and-health]].
 - **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Partly helpful for the apply step. The dossier shows that kustomize-controller applies with server-side apply and runs a dry-run each interval, that ownership is recorded in `managedFields` under the manager name, and that a failing dry-run (for example from a stale co-owner of a list entry) stops reconciliation. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].
 - **Possible resolution from [[sources/research-admission-webhooks-and-cel]]:** Only marginally helpful. The dossier places admission (mutating webhooks, schema validation, validating webhooks, or in-process CEL policies) after authentication and authorization and before persistence, and notes that server-side dry-run passes through webhooks, so a missing `sideEffects` declaration can fail a Flux reconcile. It does not trace the full Git-to-Ready path. See [[examples/flux-dry-run-fails-against-webhooks-without-dry-run-support]].
+- **Possible resolution from [[sources/research-operator-pattern]]:** Only marginally helpful. The dossier names Flux's five controllers (source, kustomize, helm, notification, image automation) and the controller-guideline rules that govern each hop, but it does not trace the handoff between them, finalizer registration, or condition updates. See [[examples/flux-splits-gitops-into-single-purpose-controllers]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -110,6 +116,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-custom-resource-definition]]:** Partly helpful for the API-definition step only. The dossier compares how an XRD (OpenAPI v3 schema, scope options, conversion webhooks for breaking changes, immutable group and names) and a kro ResourceGraphDefinition (simple schema, CEL-inferred dependencies, definition-time validation) each generate a CRD. It does not compare execution models. See [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]].
 - **Possible resolution from [[sources/research-spec-status-split]]:** Partly helpful on the status side only. A Crossplane XR reports `Synced` and `Ready`, with `Ready` meaning the function pipeline reports all composed resources ready, while kro pulls status from composed resources through CEL. kro's status schema was not read because its documentation URL returned 404. See [[examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready]] and [[entities/kro]].
 - **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Marginally helpful, and only for Crossplane. The dossier shows that Crossplane propagates claim to composite resource to composed resources with server-side apply, which depends on merge markers in provider CRDs, and that moving to composition functions needed a managed-fields migration. The kro documentation returned empty content, so nothing is known about how kro applies composed resources. See [[examples/crossplane-clears-managed-fields-when-migrating-to-composition-functions]].
+- **Possible resolution from [[sources/research-operator-pattern]]:** Marginally helpful. The dossier frames both tools as replacements for a hand-written operator when a custom API is mostly composition: Crossplane through a function pipeline in a Composition, kro through CEL expressions that infer a dependency graph and generate a CRD and controller at runtime. It does not compare their execution models in depth, and the Crossplane composition concept page returned 404. See [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -134,6 +141,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-spec-status-split]]:** Marginally helpful. Writing status through the main resource bumps generation and triggers extra reconciles, which is avoidable load on the controller and API server. The dossier gives no scale numbers. See [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]].
 - **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Marginally helpful. The dossier notes that GET-modify-PUT incurs an optimistic-concurrency retry cost when many actors update one object, which server-side apply avoids. It gives no sharding or workqueue data. See [[comparisons/client-side-apply-versus-server-side-apply]].
 - **Possible resolution from [[sources/research-admission-webhooks-and-cel]]:** Marginally helpful. Every matching write blocks on webhook calls (default timeout 10 seconds), so a slow webhook adds latency to the whole write path, and in-process CEL has a comparatively small latency impact according to KEP-3488. The dossier gives no measurements. See [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]].
+- **Possible resolution from [[sources/research-operator-pattern]]:** Marginally helpful. The dossier restates the controller guidelines (shared informers, rate-limited workqueues processing one key at a time, waiting for cache sync) and warns that blocking on errors inside the loop stalls other objects, but it has no sharding, concurrency, or scale numbers. See [[findings/blocking-on-errors-inside-the-sync-loop-stalls-every-other-object]] and [[findings/mutating-objects-from-a-shared-cache-or-reading-an-unsynced-cache-corrupts-reconcile-input]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -690,3 +698,56 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the Kubernetes CRD validation rules documentation on cost estimation.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cel, limits, crd
+
+## Named operator failure postmortems — status: open
+
+- **Question:** Which named organizations have published postmortems of operator failures such as stuck finalizers, reconcile storms, or CRD upgrade breakage, and what did they conclude?
+- **Why it matters:** The operator-pattern dossier found no named-company case study, so its pitfall catalog rests on documentation. See [[concepts/operator-pattern]] and [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find published incident write-ups for operator outages and summarize them.
+  - [ ] Link each to the matching finding page.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** operators, postmortems, finalizers
+
+## Criteria for choosing an operator framework or language — status: open
+
+- **Question:** What criteria should a team use to choose among Kubebuilder, Operator SDK, Kopf, the Java Operator SDK, kube-rs, KubeOps, and Metacontroller, given that the CNCF white paper favors Go while the Kubernetes page lists many languages?
+- **Why it matters:** No source in the dossier gives selection criteria. See [[entities/operator-sdk]] and [[entities/kube-rs]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find framework comparisons or maintainers' guidance.
+  - [ ] Write a `comparisons/` page.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** operators, frameworks, language
+
+## Operator SDK capability levels for composition-based operators — status: open
+
+- **Question:** How strictly do the five Operator SDK capability levels apply to non-Go or generic-composition operators such as kro and Crossplane?
+- **Why it matters:** The dossier calls the level descriptions high level and unclear for these tools. See [[entities/operator-sdk]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Operator Framework documentation on scope of the levels.
+  - [ ] Map each level to Crossplane and kro features if applicable.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** operators, maturity-model, crossplane, kro
+
+## Argo CD and Config Connector as operators — status: open
+
+- **Question:** How do Argo CD and Config Connector handle failures as operators, and do they follow the one-controller-per-concern guidance?
+- **Why it matters:** The operator-pattern dossier fetched no page on either tool. See [[entities/argo-cd]] and [[entities/config-connector]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Argo CD and Config Connector architecture documentation directly.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** argo-cd, config-connector, operators
+
+## Backstage and the operator pattern — status: open
+
+- **Question:** How does Backstage relate to the operator pattern, for example as a portal over operator-managed custom resources?
+- **Why it matters:** No source in the wiki covers Backstage, so the platform-engineering layer above operators is missing. See [[concepts/operator-pattern]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find Backstage documentation on Kubernetes and custom resource integration.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** backstage, platform-engineering

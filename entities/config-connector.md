@@ -23,6 +23,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-operator-pattern
+    hash: eab72eca2e1b
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -62,3 +65,7 @@ Config Connector installs CRDs and controllers that reconcile Kubernetes objects
 ## Status semantics
 
 The spec and status dossier fetched no primary source on Config Connector, so its condition vocabulary and `observedGeneration` behavior are unknown. [[sources/research-spec-status-split]] See [[open-knowledge-gaps]].
+
+## Coverage gap in the operator-pattern dossier
+
+The operator-pattern dossier fetched no page on Config Connector, so its failure handling as an operator is not covered by that source. [[sources/research-operator-pattern]] See [[open-knowledge-gaps]].

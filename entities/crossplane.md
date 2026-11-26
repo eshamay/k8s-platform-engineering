@@ -41,6 +41,9 @@ sources:
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
+  - id: research-operator-pattern
+    hash: eab72eca2e1b
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -102,3 +105,7 @@ Crossplane uses server-side apply to sync claims to composite resources (behind 
 ## Admission coverage gap
 
 The admission dossier found no primary Crossplane material, so this wiki makes no claim about Crossplane's own webhooks or about CRD-level CEL in composed APIs. [[sources/research-admission-webhooks-and-cel]] See [[concepts/admission-webhooks-and-cel]] and [[open-knowledge-gaps]].
+
+## Composition as a replacement for a bespoke controller
+
+The operator-pattern dossier presents Crossplane compositions as a way to expose a custom API without hand-writing a controller: platform teams define composite resource APIs (XRD, XR) and map them to managed resources with a Composition that runs a function pipeline, so controller logic is configured. The page at `/latest/concepts/composition/` returned 404 during the research, so current documentation paths need checking. [[sources/research-operator-pattern]] See [[examples/crossplane-composition-replaces-a-hand-written-controller-for-composed-apis]] and [[decisions/build-a-custom-operator-or-compose-existing-resources]].

@@ -26,6 +26,9 @@ sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-operator-pattern
+    hash: eab72eca2e1b
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -69,3 +72,7 @@ Cluster API is moving from the `Ready` condition to `Available`, which kstatus d
 ## Server-side apply in the topology controller
 
 The ClusterClass topology controller adopted server-side apply in pull request 6495 (merged June 2022) so the API server can arbitrate several controllers co-authoring the same object. Only the pull request description was read, so the field-level ownership rules between Cluster API and infrastructure providers are unverified. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects]].
+
+## Core and provider controllers
+
+The Cluster API concepts page describes cluster lifecycle managed as custom resources from a management cluster with pluggable infrastructure providers, and states that "Extensibility is at the core of Cluster API." The operator-pattern dossier treats it as a large-scale operator whose provider model keeps the core controllers generic. [[sources/research-operator-pattern]] See [[examples/cluster-api-keeps-core-controllers-generic-with-provider-controllers]] and [[comparisons/how-flux-ack-and-cluster-api-split-controllers]].

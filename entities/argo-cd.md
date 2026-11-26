@@ -35,6 +35,9 @@ sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-operator-pattern
+    hash: eab72eca2e1b
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -90,3 +93,7 @@ Argo CD derives health from `status`: built-in checks for core types and Lua scr
 ## Server-side apply and Server-Side Diff
 
 Argo CD applies with client-side `kubectl apply` by default. `ServerSideApply=true`, set per Application or per resource, runs `kubectl apply --server-side --force-conflicts` under the manager `argocd-controller`. `Replace=true` takes precedence over it and `Force=true` is ignored under it. A client-side apply migration feature moves ownership to Argo CD's manager, and adopting a namespace with `managedNamespaceMetadata` needs a prior upgrade to server-side apply. Applying and diffing are separate: Server-Side Diff (`ServerSideDiff=true`) avoids false OutOfSync caused by server defaults. SSA support arrived in Argo CD v2.5.0 according to one personal blog. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/argo-cd-server-side-diff-ends-false-out-of-sync-from-server-defaults]], [[findings/diff-is-not-apply-server-defaults-look-like-drift]], and [[comparisons/ssa-conflict-policy-across-tools]].
+
+## Coverage gap in the operator-pattern dossier
+
+The operator-pattern dossier fetched no page on Argo CD, so how its controllers handle failures and how it maps onto the one-controller-per-concern guidance is not covered by that source. [[sources/research-operator-pattern]] See [[open-knowledge-gaps]].
