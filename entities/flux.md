@@ -77,6 +77,9 @@ sources:
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
+  - id: research-pitfalls-and-case-studies
+    hash: 9407913c2448
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -190,3 +193,8 @@ Flux is the toolkit-style option in the delivery layer of [[concepts/tooling-lan
 ## Sharding and vertical scaling in the scale dossier
 
 The scale dossier describes two ways to add capacity to Flux. Vertical scaling raises `--concurrent` to a suggested 10 to 20, raises CPU and memory limits for the kustomize, helm, and source controllers, puts `/tmp` on a memory-backed `emptyDir` to speed up Kustomize builds, tunes the Helm index cache flags, and uses persistent volumes so artifacts survive restarts. Sharding runs several instances of the source, kustomize, and helm controllers, each started with a `--watch-label-selector`, and assigns objects to a shard through the label `sharding.fluxcd.io/key`. Notification-controller and source-watcher cannot be sharded. Multi-tenant platforms are the typical sharding scenario, and the dossier names no organization running Flux shards. See [[concepts/scale-and-sharding]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]], and [[sources/research-scale-and-sharding]]. URLs: https://fluxcd.io/flux/installation/configuration/sharding/ and https://fluxcd.io/flux/installation/configuration/vertical-scaling/.
+
+
+## Ignore rules for drift fights in the pitfalls dossier
+
+The pitfalls dossier reports that kustomize-controller reverts any field another controller changes, such as HPA replicas or a cainjector-written `caBundle`, and that a Flux user hit a SEV2 when Flux, the HPA, and the cluster autoscaler looped. Flux added a Kustomization `.spec.ignore` list of JSON Pointer paths with an optional target selector. Flux strips the field when another server-side apply manager owns it and adopts the live value when it is the sole owner. Ignored fields do not trigger reconciliation, `flux diff` honours the rules, and Git changes to an ignored field are no longer applied. See [[examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed]], [[findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied]], [[concepts/pitfalls-and-case-studies]], and [[sources/research-pitfalls-and-case-studies]]. URL: https://fluxcd.io/blog/2026/08/ignore-rules-drift-detection/.

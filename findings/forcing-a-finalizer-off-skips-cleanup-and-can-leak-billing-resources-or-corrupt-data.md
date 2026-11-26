@@ -8,6 +8,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-pitfalls-and-case-studies
+    hash: 9407913c2448
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, finalizers, deletion, safety]
 ---
@@ -33,3 +36,7 @@ The sources are practitioner and vendor blogs plus the official documentation. N
 ## Related
 
 [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]], [[findings/destructive-deletion-of-external-resources]], [[examples/stuck-terminating-namespace-fixed-through-the-finalize-subresource]]
+
+## Addition from the pitfalls dossier
+
+The Red Hat troubleshooting guide presents force removal through the namespace `/finalize` subresource as the fix, and it does not stress that this can orphan the resources the finalizer was guarding, which matters most for cloud-backed resources. Crossplane's documentation takes the opposite design stance by keeping the finalizer until the external resource is really gone. No source quantified how often forced removal orphans resources. See [[concepts/pitfalls-and-case-studies]] and [[sources/research-pitfalls-and-case-studies]]. URL: https://www.redhat.com/en/blog/troubleshooting-terminating-namespaces.

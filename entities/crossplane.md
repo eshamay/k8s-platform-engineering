@@ -86,6 +86,9 @@ sources:
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
+  - id: research-pitfalls-and-case-studies
+    hash: 9407913c2448
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -217,3 +220,8 @@ Crossplane is the multi-cloud member of the provisioning layer in [[concepts/too
 ## CRD count, provider families, and scale in the scale dossier
 
 The scale dossier records why Crossplane strains the control plane: providers installed hundreds of CRDs where most add-ons install tens, provider-aws installed more than 900, and installation could leave the API unresponsive for up to an hour. The project chose provider families over CRD filtering or lazy loading, which cuts a typical user from more than 900 CRDs to about 176 at the cost of about 9 provider pods instead of 2. The dossier found no source on cloud API rate limits or on Crossplane v2 scaling guidance after 2023. See [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]], [[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory]], [[examples/upbound-tested-a-multi-cloud-control-plane-of-about-2000-managed-resources-and-upstreamed-kubernetes-fixes]], [[concepts/scale-and-sharding]], and [[sources/research-scale-and-sharding]].
+
+
+## Deletion and drift guard rails in the pitfalls dossier
+
+The pitfalls dossier, reading the v1.20 managed resources page, records that `deletionPolicy` defaults to Delete and removes the cloud resource, that Orphan leaves it, and that `managementPolicies` (beta) override `deletionPolicy` when set. It adds that `forProvider` is the source of truth so console edits are reverted, `initProvider` holds create-only values such as an autoscaled `desiredSize`, immutable-field edits are not applied, and a paused resource cannot be deleted. The external-create annotations detect leaked creates, and the provider waits for a human instead of risking duplicates. Crossplane issue 5283 shows that `deletionPolicy` was announced as deprecated around v1.12 but never formally deprecated, and it was still open when read. The page is flagged as older than v2.5. See [[findings/a-paused-crossplane-resource-cannot-be-deleted-until-it-is-unpaused]], [[concepts/pitfalls-and-case-studies]], and [[sources/research-pitfalls-and-case-studies]]. URLs: https://docs.crossplane.io/v1.20/concepts/managed-resources/ and https://github.com/crossplane/crossplane/issues/5283.

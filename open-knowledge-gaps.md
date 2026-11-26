@@ -128,6 +128,12 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#argo-cd-sharding-algorithm-maturity-in-current-releases]] — open, unassigned
 - [[#named-flux-sharding-adopters-and-api-priority-and-fairness-incidents]] — open, unassigned
 - [[#scale-numbers-from-model-digests-need-recheck]] — open, unassigned
+- [[#first-party-pitfall-and-incident-evidence-for-kro-config-connector-ack-and-cluster-api]] — open, unassigned
+- [[#primary-incident-reports-for-skyscanner-reddit-jetstack-and-spotify]] — open, unassigned
+- [[#current-crossplane-v2-status-of-deletionpolicy-and-managementpolicies]] — open, unassigned
+- [[#force-conflicts-versus-strip-or-adopt-when-two-controllers-co-own-a-field]] — open, unassigned
+- [[#how-often-forced-finalizer-removal-orphans-guarded-resources]] — open, unassigned
+- [[#recent-2024-to-2026-platform-incident-evidence]] — open, unassigned
 
 ---
 
@@ -283,6 +289,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add `findings/` pages for each incident.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortem, etcd, deletion
+- **Possible resolution from [[sources/research-pitfalls-and-case-studies]]:** Partly helpful. The dossier reads three first-party postmortems in full (Zalando's CoreDNS outage, Grafana's PriorityClass cascade, and loveholidays' GKE upgrade) and indexes others through k8s.af, but none is a CRD deletion cascade or an etcd quota alarm. It also could not read the Skyscanner namespace-deletion, Reddit, and Spotify reports. See [[concepts/pitfalls-and-case-studies]] and [[examples/zalando-s-2019-coredns-outage-turned-a-retry-storm-into-a-total-dns-failure]].
 
 ## kro dependency graph and readiness mechanics — status: open
 
@@ -344,7 +351,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Largely helpful. The dossier covers Argo CD `ignoreDifferences` (JSON pointer, JQ path, `managedFieldsManagers`), Flux `driftDetection.ignore` and the `ssa` annotation, and Crossplane `managementPolicies` with Observe adoption and the pause annotation. ACK adoption was not read. See [[comparisons/exemption-and-ignore-controls-across-tools]].
 - **Possible resolution from [[sources/research-idempotency]]:** Partly closes the ACK adoption part. The dossier reads the ACK adoption guide (`adopt-or-create`, strict `adopt`, `adoption-fields`, Beta status), Config Connector acquisition by name, Crossplane's Observe-then-manage import flow, and SAP's explicit-intent design. It does not read Argo CD `ignoreDifferences` or Flux field managers. See [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] and [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]].
 - **Possible resolution from [[sources/research-managed-resource]]:** Largely helpful for Crossplane, ACK, and Config Connector. The dossier reads the Crossplane import guide and observe-only design document, ACK's read-only annotation, and Config Connector's acquire-by-name behavior and abandon annotation. It does not read Argo CD `ignoreDifferences` or Flux field managers. See [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]] and [[examples/crossplane-import-of-an-existing-gcp-database-observes-first-then-takes-control]].
-
+- **Possible resolution from [[sources/research-pitfalls-and-case-studies]]:** Partly helpful for the ignore and exemption side. The dossier reads Flux's new Kustomization ignore rules (strip when another server-side apply manager owns the field, adopt when Flux is the sole owner), Argo CD's `ignoreDifferences` with `RespectIgnoreDifferences` and its `--force-conflicts` server-side apply mode, and Crossplane's `initProvider` for create-only values. It does not read ACK adoption or Config Connector. See [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]].
 
 ## Argo CD versus Flux head-to-head behavior — status: open
 
@@ -1573,3 +1580,69 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Fully read the API Priority and Fairness page and KEP-1040.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** source-quality, scale, verification
+
+## First-party pitfall and incident evidence for kro, Config Connector, ACK, and Cluster API — status: open
+
+- **Question:** What deletion cascades, adoption problems, and upgrade-ordering pitfalls are documented first-hand for kro, Config Connector, ACK, and Cluster API?
+- **Why it matters:** The pitfalls dossier found no first-party material on these tools, so [[concepts/pitfalls-and-case-studies]] is strongest for Crossplane, Flux, and Argo CD only.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read each project's deletion, adoption, and upgrade documentation and issue trackers.
+  - [ ] Add `findings/` pages and extend [[concepts/pitfalls-and-case-studies]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** pitfalls, kro, config-connector, ack, cluster-api
+
+## Primary incident reports for Skyscanner, Reddit, Jetstack, and Spotify — status: open
+
+- **Question:** What do the primary reports say about the Skyscanner namespace-deletion outage, the Reddit Pi-Day outage, the Jetstack admission webhook outage, and the Spotify cluster deletion?
+- **Why it matters:** The dossier saw these only as k8s.af summaries because the scraper returned empty pages, so the deletion-cascade and webhook claims are second-hand.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Fetch the linked reports from https://k8s.af/ with another tool.
+  - [ ] Add `examples/` pages for each incident and update [[findings/admission-webhook-outages-are-a-recurring-failure-class]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** postmortem, skyscanner, reddit, jetstack, spotify
+
+## Current Crossplane v2 status of deletionPolicy and managementPolicies — status: open
+
+- **Question:** In the current Crossplane release (the dossier names v2.5), are `deletionPolicy` and `managementPolicies` still both supported, and how did issue 5283 end?
+- **Why it matters:** The dossier read the v1.20 page, and issue 5283 was still open when read, so the deletion-safety guidance may be out of date.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current managed resources page and the final state of https://github.com/crossplane/crossplane/issues/5283.
+  - [ ] Update [[entities/crossplane]] and [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, deletion-policy, management-policies, verification
+
+## Force-conflicts versus strip-or-adopt when two controllers co-own a field — status: open
+
+- **Question:** Is Argo CD's default `--force-conflicts` server-side apply or Flux's strip-or-adopt ignore rule safer when two controllers legitimately co-own a field?
+- **Why it matters:** Neither the Flux blog nor the Argo CD documentation compares the two, yet the choice decides which controller silently loses its writes. See [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find a source or experiment that compares both under a shared-field scenario.
+  - [ ] Read the official server-side apply reference directly.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** ssa, flux, argo-cd, conflicts
+
+## How often forced finalizer removal orphans guarded resources — status: open
+
+- **Question:** How often does force-removing a finalizer, such as through the namespace `/finalize` subresource, leave cloud or external resources orphaned?
+- **Why it matters:** The Red Hat guide treats force removal as the fix while other sources imply it can orphan guarded resources, and no source quantified the risk. See [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find incident reports or surveys of orphaned resources after forced finalizer removal.
+  - [ ] Read the official Kubernetes finalizers page directly.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** finalizers, orphans, deletion
+
+## Recent 2024 to 2026 platform incident evidence — status: open
+
+- **Question:** What public postmortems from 2024 to 2026 involve GitOps tools, infrastructure controllers, or cluster upgrades?
+- **Why it matters:** The k8s.af index is mostly 2017 to 2021 and its repository was archived in 2020, and the Flux ignore-rules blog is the only 2026 primary source read.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Search for recent postmortems and conference talks.
+  - [ ] Add `examples/` pages for each incident.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** postmortem, recency, evidence

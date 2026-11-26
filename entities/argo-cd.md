@@ -1,7 +1,7 @@
 ---
 title: Argo CD
 type: entity
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-25
 sources:
@@ -79,6 +79,9 @@ sources:
     ingested: 2026-11-25
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
+    ingested: 2026-11-25
+  - id: research-pitfalls-and-case-studies
+    hash: 9407913c2448
     ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
@@ -195,3 +198,8 @@ Argo CD sits in the delivery layer of [[concepts/tooling-landscape]]. The archit
 ## Cluster sharding and queue sizing in the scale dossier
 
 The scale dossier adds that Argo CD shards by destination cluster across application-controller replicas, with `ARGOCD_CONTROLLER_REPLICAS` giving each replica the total and a choice of legacy, round-robin, or consistent-hashing assignment. The digest described the last two as experimental, and the legacy algorithm can be uneven. A cluster can be pinned to a shard through its cluster secret. Each replica uses two queues, one for reconciliation that takes milliseconds and one for syncing that takes seconds, sized by `--status-processors` and `--operation-processors`. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], [[concepts/scale-and-sharding]], and [[sources/research-scale-and-sharding]]. URL: https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/.
+
+
+## Guard rails against destructive syncs in the pitfalls dossier
+
+The pitfalls dossier catalogues Argo CD's sync options against accidental damage: `Prune=false` and `Prune=confirm`, `Delete=false` and `Delete=confirm` (confirmation recommended for Namespaces), a `PrunePropagationPolicy` that is foreground by default, `PruneLast`, `FailOnSharedResource`, and `ApplyOutOfSyncOnly`. `Replace=true` and `Force=true` can recreate resources and cause outages. With `ServerSideApply=true` Argo CD runs `--force-conflicts` and moves client-side apply managers to `argocd-controller`, and `RespectIgnoreDifferences` makes `ignoreDifferences` apply at sync time. See [[findings/argo-cd-replace-and-force-sync-options-can-recreate-resources-and-cause-outages]], [[findings/unintended-deletion-through-prune]], [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]], and [[sources/research-pitfalls-and-case-studies]]. URL: https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/.

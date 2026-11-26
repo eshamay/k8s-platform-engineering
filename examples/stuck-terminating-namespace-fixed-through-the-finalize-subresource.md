@@ -8,6 +8,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-pitfalls-and-case-studies
+    hash: 9407913c2448
+    ingested: 2026-11-25
 aliases: []
 tags: [finalizers, namespaces, troubleshooting, openshift]
 ---
@@ -29,3 +32,7 @@ The namespace finalizer is a field in `spec` and has its own subresource, which 
 ## Related
 
 [[concepts/finalizers]], [[examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete]], [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]]
+
+## Addition from the pitfalls dossier
+
+The pitfalls dossier summarizes this same Red Hat guide. The namespace status condition `NamespaceFinalizersRemaining` names the culprit, here a custom resource finalizer (`tackles.tackle.io/finalizer`) whose controller was not removing it. The author's CI created and deleted namespaces, and operator finalizers left them Terminating. The dossier also notes that the guide treats force removal as the fix without warning that it can orphan guarded resources. See [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]] and [[sources/research-pitfalls-and-case-studies]].

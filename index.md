@@ -41,13 +41,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/composition]] — blueprint mapping composite to managed resources, function pipelines, and the resource graph alternative (active)
 - [[concepts/provider]] — controller and CRDs for an external API, packaging models, generation, and risks (active)
 - [[concepts/tooling-landscape]] — delivery, provisioning, and platform layers, how they combine, and where the boundaries fail (active)
+- [[concepts/pitfalls-and-case-studies]] — how platforms fail in practice: cascades, finalizers, field ownership, deletion propagation, and tool guard rails (active)
 
 ## Entities
 
 - [[entities/flux]] — in-cluster GitOps tool, controllers, tenancy, scale, and pitfalls (active)
 - [[entities/crossplane]] — control plane framework, four layers, v2 changes, adoption patterns, and costs (active)
 - [[entities/kro]] — resource-graph based platform API tool, RGD model, deletion, and maturity (active)
-- [[entities/argo-cd]] — GitOps tool with phase and wave ordering (draft)
+- [[entities/argo-cd]] — GitOps tool with phase and wave ordering (active)
 - [[entities/config-connector]] — Google Cloud resources as Kubernetes objects (draft)
 - [[entities/ack]] — AWS services as Kubernetes objects, one controller per service (draft)
 - [[entities/cluster-api]] — management cluster that creates workload clusters (draft)
@@ -112,6 +113,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-kro-and-abstraction-models]] — research dossier on kro, Crossplane, Helm, Kustomize, kpt, Score, and Radius, 14 web sources, 2026-11-25
 - [[sources/research-landscape]] — research dossier on the delivery, provisioning, and platform tooling landscape, 17 web sources, 2026-11-25
 - [[sources/research-scale-and-sharding]] — research dossier on scale limits, APF, sharding, and CRD count, 13 web sources, 2026-11-25
+- [[sources/research-pitfalls-and-case-studies]] — research dossier on postmortems, finalizers, drift fights, and deletion guard rails, 11 web sources, 2026-11-25
 
 ## Examples
 
@@ -266,6 +268,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/rtl-nederland-provisions-whole-kubernetes-clusters-with-crossplane-which-overlaps-with-cluster-api]] — self-reported adopter and layer overlap (draft)
 - [[examples/gardener-advises-keeping-most-clusters-under-about-500-nodes-and-controlling-webhooks-and-object-counts]] — operator advice below tested maximums (draft)
 - [[examples/upbound-tested-a-multi-cloud-control-plane-of-about-2000-managed-resources-and-upstreamed-kubernetes-fixes]] — what broke with thousands of CRDs and the upstream fixes (draft)
+- [[examples/zalando-s-2019-coredns-outage-turned-a-retry-storm-into-a-total-dns-failure]] — retry storm, ndots, and OOM-killed CoreDNS (active)
+- [[examples/grafana-s-default-priorityclass-let-a-new-cluster-preempt-every-production-ingester]] — a default PriorityClass amplified by a ReplicaSet (active)
+- [[examples/loveholidays-gke-upgrade-from-1-10-to-1-12-overran-its-window-by-about-five-hours]] — slow drains, a stuck node pool, and HPA saturation (active)
+- [[examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed]] — drift fight fixed by Flux ignore rules (active)
 
 ## Comparisons
 
@@ -321,6 +327,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers]] — portals and the orchestration layer behind them (draft)
 - [[comparisons/tofu-controller-versus-terraform-operator-as-terraform-in-cluster-controllers]] — two ways to run Terraform in pods (draft)
 - [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]] — label key versus cluster key for splitting controller work (draft)
+- [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]] — how each tool settles a field two writers set (draft)
 
 ## Decisions
 
@@ -505,6 +512,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory]] — cost moves from the API server to provider pods (draft)
 - [[findings/tested-scalability-maximums-and-operator-advice-differ-by-an-order-of-magnitude]] — 5,000 tested nodes versus 500 advised (draft)
 - [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]] — source-quality caveat (draft)
+- [[findings/a-retry-storm-amplified-by-ndots-and-small-coredns-memory-limits-can-take-down-cluster-dns]] — shared DNS as a blast-radius single point (active)
+- [[findings/monitoring-that-runs-inside-the-cluster-and-depends-on-cluster-dns-goes-blind-in-the-outage-it-should-report]] — alert from outside the cluster (draft)
+- [[findings/a-new-cluster-wide-default-must-wait-until-existing-workloads-carry-explicit-values]] — default PriorityClass cascade (active)
+- [[findings/a-paused-crossplane-resource-cannot-be-deleted-until-it-is-unpaused]] — pause blocks deletion (draft)
+- [[findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied]] — cost of ignore rules (active)
+- [[findings/argo-cd-replace-and-force-sync-options-can-recreate-resources-and-cause-outages]] — destructive sync options (draft)
+- [[findings/the-pitfalls-dossier-rests-on-index-summaries-an-older-crossplane-version-and-few-primary-incident-reports]] — evidence caveats (active)
 
 ## Outputs
 

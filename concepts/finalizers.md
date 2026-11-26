@@ -14,6 +14,9 @@ sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-pitfalls-and-case-studies
+    hash: 9407913c2448
+    ingested: 2026-11-25
 aliases: [metadata.finalizers, deletion gate, pre-delete hook]
 tags: [controllers, finalizers, deletion]
 ---
@@ -77,3 +80,7 @@ The dossier found no named-company postmortem, so the pitfalls rest on project d
 ## Finalizers and owner references
 
 The owner-reference dossier frames finalizers as the companion to ownership: owner references handle in-cluster, same-namespace cleanup, and finalizers handle external resources, cross-namespace cleanup, and ordered shutdown, and both rely on the same `deletionTimestamp` machinery. [[sources/research-owner-references-and-garbage-collection]] See [[concepts/owner-references-and-garbage-collection]].
+
+## Case evidence from the pitfalls dossier
+
+A namespace stuck in Terminating reports the condition `NamespaceFinalizersRemaining`, and in the Red Hat walk-through the culprit was a custom resource finalizer whose controller was not removing it. The usual cause is a controller or CRD that was uninstalled first or is failing, so the practical rule is to uninstall controllers only after their custom resources are deleted. Crossplane deliberately keeps a finalizer so the managed resource object remains until the external resource is gone, and a paused resource cannot be deleted. The trade-off is that forcing a finalizer off can orphan the cloud resource it protected. No source quantified how often that happens. See [[concepts/pitfalls-and-case-studies]], [[findings/a-paused-crossplane-resource-cannot-be-deleted-until-it-is-unpaused]], and [[sources/research-pitfalls-and-case-studies]]. URL: https://www.redhat.com/en/blog/troubleshooting-terminating-namespaces.

@@ -20,6 +20,9 @@ sources:
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
+  - id: research-pitfalls-and-case-studies
+    hash: 9407913c2448
+    ingested: 2026-11-25
 aliases: [SSA, managedFields]
 tags: [api-machinery, server-side-apply]
 ---
@@ -81,3 +84,7 @@ The dossier could not read primary sources for kro, ACK, Config Connector, or He
 ## Admission and dry-run
 
 Server-side dry-run passes through admission webhooks, so a webhook that does not declare dry-run safety breaks tools that dry-run before applying. [[sources/research-admission-webhooks-and-cel]] See [[findings/webhooks-without-sideeffects-declared-break-dry-run-clients]] and [[concepts/admission-webhooks-and-cel]].
+
+## Drift fights in the pitfalls dossier
+
+The pitfalls dossier shows the practical form of a field-ownership conflict. Flux and an HPA, or Flux and cert-manager's cainjector, overwrite one field on every reconcile, and in one reported SEV2 the cluster autoscaler joined the loop. Flux resolved it with ignore rules that strip a field when another manager owns it or adopt the live value when Flux is the sole owner, while Argo CD's server-side apply mode runs with `--force-conflicts` and so wins ownership by default. The sources do not compare the two or say which is safer when two controllers legitimately co-own a field. See [[examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed]], [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]], and [[sources/research-pitfalls-and-case-studies]].
