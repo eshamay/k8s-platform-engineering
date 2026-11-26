@@ -23,6 +23,9 @@ sources:
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: [client-go caching, controller-runtime cache]
 tags: [controllers, scale, informers, workqueue, client-go]
 ---
@@ -99,3 +102,7 @@ Resync semantics, controller sharding in Flux and Crossplane, cache-narrowing op
 ## Scale limits in the scale dossier
 
 The scale dossier adds that the workqueue never processes one key concurrently, so worker count and reconcile duration, and not object count, bound throughput, that leader election makes extra replicas standbys, and that API Priority and Fairness is the server-side counterpart to the client's QPS and burst. The wider picture is in [[concepts/scale-and-sharding]] and [[sources/research-scale-and-sharding]].
+
+## Lost-event and resync evidence from the operator loop dossier
+
+Kubernetes issue 115658 shows that a relist racing a queued CREATE could drop the DELETE event for a short-lived object, so a consumer kept the object forever, until pull requests 115620 (merged 2023-02-17) and 116623 (merged 2023-03-16, for 1.27) fixed it. See [[examples/kubernetes-issue-115658-a-client-go-relist-could-drop-the-delete-event-for-a-short-lived-object]]. KubeFleet documents a 30-minute safety resync as protection against bugs, and an Argo Rollouts user says `--rollout-resync=60` guards against missed events (SECONDARY-ONLY). What a resync replays is still not settled. See [[findings/projects-add-periodic-resync-as-a-safety-net-against-missed-events-and-bugs]] and [[sources/research-gap-g1-operator-loop-failures]].

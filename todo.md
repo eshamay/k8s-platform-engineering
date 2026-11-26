@@ -34,6 +34,9 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-part-2-for-the-kubernetes-and-controller-runtime-verification-pass]] — open
 - [[#update-part-3-for-the-kubernetes-and-controller-runtime-verification-pass]] — open
 - [[#update-part-5-for-the-kubernetes-and-controller-runtime-verification-pass]] — open
+- [[#update-part-3-evidence-note-with-the-operator-loop-incidents]] — open
+- [[#update-part-5-failure-mode-evidence-note-with-the-operator-loop-incidents]] — open
+- [[#update-part-2-observedgeneration-passage-with-the-2026-early-ready-cases]] — open
 
 ## Open
 
@@ -253,6 +256,27 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 
 - **What:** In `outputs/part-1-core-architectural-principles.md`, the "Unintended deletion" paragraph (around line 270) is based on documentation warnings. It can now cite real reports, such as Argo CD issue 15441 (a namespace recreated when its manifest was removed under `CreateNamespace=true`) and ACK issue 2911 (an Argo CD prune stranding a CR on its finalizer), and the self-heal incident in which a migration hook was skipped.
 - **Why:** See [[sources/research-gap-g1-gitops-drift-incidents]]. Cite [[findings/unintended-deletion-through-prune]], [[examples/argo-cd-issue-15441-removing-a-namespace-manifest-under-createnamespace-deleted-and-recreated-the-namespace]], and [[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 evidence note with the operator loop incidents — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the evidence paragraph (around line 318) says the wiki found no named-company postmortem for several mechanics, such as runaway reconcile loops, and that the pitfalls rest on documentation and not incident reports. It should add that issue-level reports with root causes now exist for runaway loops (Cluster API provider RKE2 issue 905, Longhorn issue 13831, kube-shard issue 121, Crossplane issue 7221), a retry loop that grew controller memory about 25 times (Longhorn issue 14121), and lost events (Kubernetes issue 115658, NVSentinel issue 1542), while no formal organization-authored operator postmortem was found and every figure is self-reported.
+- **Why:** See [[sources/research-gap-g1-operator-loop-failures]]. Cite [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]], [[findings/an-informer-relist-that-races-a-queued-create-can-drop-the-delete-event-for-the-object]], and [[findings/no-formal-organization-authored-postmortem-of-an-operator-failure-was-found]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 failure-mode evidence note with the operator loop incidents — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the fourth evidence paragraph (around line 292) says the wiki found no named-company postmortem of a runaway reconcile loop. It should say that no named-company postmortem was found, and that named issue-level incidents exist with reporter-measured rates (about 10, 6, and 13 reconciles per second in three projects).
+- **Why:** See [[sources/research-gap-g1-operator-loop-failures]]. Cite [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]], [[findings/volatile-text-in-a-condition-message-defeats-the-equality-check-and-causes-a-reconcile-storm]], and [[findings/applying-one-object-twice-in-a-reconcile-with-owns-and-no-predicate-loops-on-its-own-resource-version]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-2 observedGeneration passage with the 2026 early-Ready cases — status: open
+
+- **What:** In `outputs/part-2-krm-and-api-machinery.md`, the paragraph beginning "Missing `observedGeneration` has a different cost" (around line 211) rests on ACK issue 1583 alone. It can now add three dated 2026 cases: CloudNativePG issue 11390, restate-operator issue 216 (Flux `wait: true` marking a release healthy about 37 seconds early), and Argo CD issue 30373 (the built-in ACK health check).
+- **Why:** See [[sources/research-gap-g1-operator-loop-failures]]. Cite [[findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed]] and [[examples/restate-operator-issue-216-ready-true-before-a-statefulset-rollout-finished-let-flux-mark-the-release-healthy]].
 - **Acceptance:** Passage revised and citing the pages named above.
 - **Drafted by:** agent on 2026-11-26
 

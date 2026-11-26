@@ -14,6 +14,9 @@ sources:
   - id: research-gap-g3-argocd-capi
     hash: c3d485fa58ae
     ingested: 2026-11-26
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, kstatus, cluster-api, flux, readiness]
 ---
@@ -43,3 +46,7 @@ The conditions dossier reports that the issue became moot when Cluster API chang
 ## Update from the Cluster API v1beta2 material
 
 The 2026-11-26 dossier verified that the v1beta2 Cluster type defines `ClusterAvailableCondition` and, by text search, no Cluster ready-condition constant, and that the kstatus README treats a resource without `Ready` as "always reconciled". Whether a naive kstatus tool therefore judges a v1beta2 Cluster reconciled is an UNVERIFIED inference that was not tested on a live cluster. Flux's CEL cheatsheet still shows a v1beta1 Cluster keyed on `Ready`. See [[findings/the-flux-cel-cheatsheet-keys-cluster-api-health-on-ready-and-shows-no-v1beta2-available-variant]] and [[sources/research-gap-g3-argocd-capi]].
+
+## Update from the operator loop dossier
+
+restate-operator issue 216 shows the same early-ready effect in Flux with `wait: true`, where a release was marked healthy about 37 seconds before the last pod was Ready because the operator's status had no `observedGeneration`. See [[examples/restate-operator-issue-216-ready-true-before-a-statefulset-rollout-finished-let-flux-mark-the-release-healthy]]. Source: [[sources/research-gap-g1-operator-loop-failures]].

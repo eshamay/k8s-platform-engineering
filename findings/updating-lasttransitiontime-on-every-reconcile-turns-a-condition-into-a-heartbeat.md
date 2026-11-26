@@ -3,11 +3,14 @@ title: Updating lastTransitionTime on every reconcile turns a condition into a h
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, conditions, status-writes, api-load]
 ---
@@ -25,3 +28,7 @@ A controller-author tutorial lists bumping `lastTransitionTime` on every loop as
 ## Mitigations
 
 Use the shared helpers from KEP-1623 (`SetStatusCondition` and `FindStatusCondition`) and write status only when a condition actually changes; the dossier does not describe the helpers' exact timestamp behavior. Evaluate conditions on every reconcile, but compare before writing. See [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]], [[findings/cost-of-constant-reconciliation]], [[concepts/conditions]], and [[findings/self-triggered-reconcile-loops-generate-their-own-events]].
+
+## Related case from the operator loop dossier
+
+A volatile condition message produces the same effect as a bumped timestamp. In Longhorn issue 13831, request IDs and timestamps in a condition message made every status write differ, at about 6 reconciles per second. See [[findings/volatile-text-in-a-condition-message-defeats-the-equality-check-and-causes-a-reconcile-storm]]. Source: [[sources/research-gap-g1-operator-loop-failures]].

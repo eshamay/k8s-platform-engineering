@@ -14,6 +14,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: [failure modes, postmortems, platform pitfalls]
 tags: [pitfalls, postmortems, cascades, finalizers, deletion, drift, ssa, guard-rails]
 ---
@@ -57,3 +60,8 @@ No source read covers pitfalls specific to kro, Config Connector, ACK, or Cluste
 ## Update from the GitOps incidents dossier
 
 The 2026-11-26 GitOps dossier adds dated, anonymous reports for the GitOps pitfalls: a self-heal run that skipped a migration hook ([[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]]), cascading deletes from Argo CD parents ([[findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed]]), and an Argo CD prune that stranded an ACK resource on its finalizer ([[examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone]]). It still found no named organization's postmortem and no rate for orphaning after forced finalizer removal, see [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]] and [[findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+
+
+## Update from the operator loop dossier
+
+The 2026-11-26 operator dossier found no formal organization-authored postmortem of an operator failure, and the k8s.af index has no operator-bug entry. It adds twelve issue-level cases: five reconcile-loop reports, one retry loop that grew controller memory about 25 times, two lost-event cases, and three early-Ready status bugs, plus one resync-related report. All impact figures are self-reported by issue authors. See [[findings/no-formal-organization-authored-postmortem-of-an-operator-failure-was-found]], [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]], [[findings/an-informer-relist-that-races-a-queued-create-can-drop-the-delete-event-for-the-object]], and [[findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed]]. Source: [[sources/research-gap-g1-operator-loop-failures]].

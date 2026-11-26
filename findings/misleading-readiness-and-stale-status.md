@@ -1,9 +1,9 @@
 ---
 title: Misleading readiness and stale status
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
@@ -14,6 +14,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, conditions, observedgeneration, status]
 ---
@@ -43,3 +46,7 @@ The spec and status dossier adds three concrete cases. ACK conditions lack `obse
 ## Summary conditions that mask in-flight work
 
 Provider-aws issue 2287 adds a case where `Synced` stayed True through a 60-minute update. [[sources/research-conditions]] See [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]].
+
+## Named 2026 cases of early Ready
+
+The operator loop dossier adds three dated, open issues where Ready or Healthy was reported for an unobserved spec generation, in CloudNativePG, restate-operator, and Argo CD's ACK health check. None is a postmortem. See [[findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed]]. Source: [[sources/research-gap-g1-operator-loop-failures]].

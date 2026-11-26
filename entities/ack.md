@@ -56,6 +56,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -139,3 +142,8 @@ The ACK drift-recovery page says "By default, all ACK controllers attempt to det
 ## Incident from the GitOps incidents dossier
 
 ACK issue 2911 (2026-06) reports an Argo CD prune that deleted a WAFv2 WebACL CR, after which the CR stayed in `Terminating` because the controller did not map the AWS not-found error. See [[examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+
+
+## Missing observedGeneration seen from Argo CD
+
+Argo CD issue 30373 (2026-10-23) reports that ACK resources have no `observedGeneration`, so Argo CD's built-in ACK health check reports Healthy about 2 seconds before the controller re-stamps its conditions after a spec change (iam-controller v1.10.1). The reporter's statement that ACK issue 1583 has been open since 2022 is SECONDARY-ONLY. See [[examples/argo-cd-issue-30373-the-built-in-ack-health-check-reports-healthy-before-the-controller-observes-a-spec-change]] and [[sources/research-gap-g1-operator-loop-failures]].

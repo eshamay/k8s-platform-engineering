@@ -123,6 +123,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g3-scale-recheck]] — verified dossier rechecking scale figures (SIG thresholds, Gardener, Upbound, Argo CD, Crossplane, APF, workqueue defaults) against raw text, 2026-11-26 (active)
 - [[sources/research-gap-g1-outage-postmortems]] — verified dossier on the OpenAI December 2024, Jetstack 2019, and Neon May 2025 postmortems and the k8s.af webhook entries, 2026-11-26 (active)
 - [[sources/research-gap-g1-gitops-drift-incidents]] — verified dossier on GitOps adopters, drift-correction and prune incidents, and finalizer orphaning, 2026-11-26 (active)
+- [[sources/research-gap-g1-operator-loop-failures]] — verified dossier on issue-level operator reconcile loops, lost events, and early-Ready status bugs, with no formal operator postmortem found, 2026-11-26 (active)
 
 ## Examples
 
@@ -303,6 +304,18 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/cluster-api-issue-8172-deleting-parents-before-the-controller-adds-its-finalizer-orphans-their-resources]] — finalizer added too late (active)
 - [[examples/the-argo-cd-users-file-lists-452-self-reported-adopters]] — largest primary GitOps adopter list (active)
 - [[examples/subaru-adopted-argo-cd-with-helmfile-to-replace-manual-deployment-procedures]] — CNCF case study, no outage (active)
+- [[examples/longhorn-issue-14121-a-backup-target-outage-grew-longhorn-manager-memory-about-25-fold]] — retry loop with no backoff, OOM kills and node flaps (active)
+- [[examples/longhorn-issue-13831-volatile-text-in-a-condition-message-drove-about-six-reconciles-per-second]] — volatile condition message defeats the equality check (active)
+- [[examples/cluster-api-provider-rke2-issue-905-an-unconditional-status-patch-held-the-controller-at-about-ten-reconciles-per-second]] — unconditional status patch loop (active)
+- [[examples/konflux-kube-shard-issue-121-two-server-side-applies-of-one-configmap-looped-at-about-13-reconciles-per-second]] — double apply with an unfiltered Owns (active)
+- [[examples/crossplane-issue-7221-an-unconditional-status-update-kept-reconcile-ordering-tests-from-converging]] — Status().Update() on every pass (active)
+- [[examples/argo-cd-issue-18151-the-2-11-upgrade-raised-the-application-patch-rate-on-every-cluster]] — raised PATCH rate, cause unconfirmed (active)
+- [[examples/argo-rollouts-issue-4140-workqueue-add-rates-stayed-high-after-promotions-with-a-60-second-resync]] — high add rates with a 60 second resync (active)
+- [[examples/kubernetes-issue-115658-a-client-go-relist-could-drop-the-delete-event-for-a-short-lived-object]] — lost DELETE in client-go, fixed upstream (active)
+- [[examples/nvidia-nvsentinel-issue-1542-a-node-stayed-cordoned-after-an-object-was-deleted-while-the-monitor-was-down]] — restart-gap delete (active)
+- [[examples/cloudnativepg-issue-11390-kubectl-wait-for-ready-can-return-on-a-condition-produced-before-the-spec-change]] — Ready from before the change (active)
+- [[examples/restate-operator-issue-216-ready-true-before-a-statefulset-rollout-finished-let-flux-mark-the-release-healthy]] — Flux wait passes early (active)
+- [[examples/argo-cd-issue-30373-the-built-in-ack-health-check-reports-healthy-before-the-controller-observes-a-spec-change]] — Healthy before ACK observes the spec (active)
 
 ## Comparisons
 
@@ -416,11 +429,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/event-specific-logic-in-reconcilers]] — branching on events reintroduces fragility (draft)
 - [[findings/cost-of-constant-reconciliation]] — repeated reads and API quota (draft)
 - [[findings/continuous-loops-override-intentional-changes]] — loops revert manual changes (draft)
-- [[findings/failure-retry-loops-and-backoff]] — endless retries and terminal errors (draft)
+- [[findings/failure-retry-loops-and-backoff]] — endless retries and terminal errors (active)
 - [[findings/errors-used-as-timers-in-reconcilers]] — errors for waiting states (draft)
 - [[findings/retry-storms-and-unbounded-retries]] — retry amplification (draft)
 - [[findings/duplicate-work-from-replicas-without-leader-election]] — racing replicas (draft)
-- [[findings/misleading-readiness-and-stale-status]] — Ready versus Synced and observedGeneration (draft)
+- [[findings/misleading-readiness-and-stale-status]] — Ready versus Synced and observedGeneration (active)
 - [[findings/drift-detection-latency-is-the-interval]] — interval as correction latency (draft)
 - [[findings/field-ownership-blocks-drift-correction]] — dry-run conflicts stop correction (draft)
 - [[findings/controllers-fighting-over-fields-cause-revert-loops]] — webhooks, HPAs, and image updaters (draft)
@@ -442,7 +455,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/large-crds-exceed-the-client-side-apply-annotation-limit]] — 262,144-byte annotation cap (draft)
 - [[findings/deleting-a-crd-deletes-every-custom-resource-of-that-kind]] — data loss on CRD removal (draft)
 - [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]] — generation bumps from status writes (draft)
-- [[findings/missing-observedgeneration-hides-stale-status]] — stale versus current conditions (draft)
+- [[findings/missing-observedgeneration-hides-stale-status]] — stale versus current conditions (active)
 - [[findings/premature-readiness-in-kstatus-based-tools]] — early ready signals (draft)
 - [[findings/free-text-in-a-condition-reason-breaks-consumers]] — convention slip (draft)
 - [[findings/status-client-rbac-and-conflict-mistakes]] — operator implementation traps (draft)
@@ -460,7 +473,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window]] — certificates and connectivity (draft)
 - [[findings/api-evolution-breaks-webhooks-that-drop-unknown-fields]] — upgrade breakage (draft)
 - [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]] — limits of in-process CEL (draft)
-- [[findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down]] — why reconcile must be level-driven (draft)
+- [[findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down]] — why reconcile must be level-driven (active)
 - [[findings/mutating-objects-from-a-shared-cache-or-reading-an-unsynced-cache-corrupts-reconcile-input]] — cache misuse (draft)
 - [[findings/multi-kind-controllers-break-encapsulation-and-scale-poorly]] — single responsibility per controller (draft)
 - [[findings/blocking-on-errors-inside-the-sync-loop-stalls-every-other-object]] — async sync loops (draft)
@@ -469,7 +482,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/operator-privileges-and-removal-behavior-set-the-blast-radius]] — least privilege and safe removal (draft)
 - [[findings/hand-written-operators-duplicate-what-composition-could-express]] — over-building (draft)
 - [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]] — conflicting backoff claims, settled at v0.25.3 (active)
-- [[findings/self-triggered-reconcile-loops-generate-their-own-events]] — hot loops from status writes and noisy children (draft)
+- [[findings/self-triggered-reconcile-loops-generate-their-own-events]] — hot loops from status writes and noisy children (active)
 - [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]] — create tracking (draft)
 - [[findings/a-level-based-loop-deletes-what-it-no-longer-sees-in-desired-state]] — prune and orphan guards (draft)
 - [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]] — external-create-pending blocks (draft)
@@ -600,6 +613,15 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/resources-are-orphaned-when-a-controller-misses-the-delete-or-the-finalizer-is-added-too-late]] — orphaning without forced removal (active)
 - [[findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources]] — no rate exists in the evidence (draft)
 - [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]] — evidence caveat (draft)
+- [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]] — unconditional status writes (active)
+- [[findings/volatile-text-in-a-condition-message-defeats-the-equality-check-and-causes-a-reconcile-storm]] — message text breaks the equality check (active)
+- [[findings/applying-one-object-twice-in-a-reconcile-with-owns-and-no-predicate-loops-on-its-own-resource-version]] — double apply loop (active)
+- [[findings/a-retry-loop-with-no-backoff-or-target-health-gate-grows-controller-memory-during-a-dependency-outage]] — retry memory growth (active)
+- [[findings/an-informer-relist-that-races-a-queued-create-can-drop-the-delete-event-for-the-object]] — client-go lost DELETE (active)
+- [[findings/a-delete-that-happens-while-a-controller-is-down-is-never-delivered-so-finalizers-or-resync-must-cover-it]] — restart-gap delete (active)
+- [[findings/projects-add-periodic-resync-as-a-safety-net-against-missed-events-and-bugs]] — resync as a guard, one claim secondary-only (draft)
+- [[findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed]] — early Ready from missing observedGeneration (active)
+- [[findings/no-formal-organization-authored-postmortem-of-an-operator-failure-was-found]] — evidence caveat (draft)
 
 ## Outputs
 

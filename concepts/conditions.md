@@ -20,6 +20,9 @@ sources:
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: [status.conditions]
 tags: [controllers, api-machinery]
 ---
@@ -73,3 +76,7 @@ The clearest short explanation of `observedGeneration` is an operator best-pract
 ## Update from the v2.5 verification pass (2026-11-26)
 
 The Crossplane async `Synced` pitfall is unfixed as of 2026-11-26: provider-aws issue 2287 was closed by the stale bot without a fix, and the current upjet and crossplane-runtime source still marks `ReconcileSuccess` while an async operation runs. [[sources/research-gap-g3-crossplane-v2]] See [[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]].
+
+## Operator loop dossier additions
+
+Three open 2026 issues show Ready or Healthy reported before the controller observed the spec generation (CloudNativePG, restate-operator, and Argo CD's ACK health check), and a Longhorn issue shows a volatile condition message driving about 6 reconciles per second. None is a postmortem. See [[findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed]] and [[findings/volatile-text-in-a-condition-message-defeats-the-equality-check-and-causes-a-reconcile-storm]]. Source: [[sources/research-gap-g1-operator-loop-failures]].

@@ -3,7 +3,7 @@ title: Level-Triggered vs Edge-Triggered
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -17,6 +17,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: [State-based vs event-based]
 tags: [architecture, controllers]
 ---
@@ -66,3 +69,7 @@ The convergence dossier repeats Tim Hockin's framing, "State is more useful than
 ## To research
 
 Informer resync period semantics (replay of cached state versus relist), the original "Controller Writing Guide," and named-company incidents caused by lost-event design. See [[open-knowledge-gaps]].
+
+## Update from the operator loop dossier
+
+The 2026-11-26 dossier found no named-company outage caused by edge-triggered design. It found two primary cases of lost events: a client-go relist that could drop a DELETE for a short-lived object (Kubernetes issue 115658, fixed by pull requests 115620 and 116623) and a delete that happened while a monitor was down and was never delivered (NVSentinel issue 1542). Both support the rule that an event is a hint and that state-keyed logic or a finalizer must cover the gap. See [[findings/an-informer-relist-that-races-a-queued-create-can-drop-the-delete-event-for-the-object]], [[findings/a-delete-that-happens-while-a-controller-is-down-is-never-delivered-so-finalizers-or-resync-must-cover-it]], and [[findings/projects-add-periodic-resync-as-a-safety-net-against-missed-events-and-bugs]]. Source: [[sources/research-gap-g1-operator-loop-failures]].

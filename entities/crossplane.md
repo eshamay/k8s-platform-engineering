@@ -95,6 +95,9 @@ sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -255,3 +258,8 @@ Release v2.5.0 was published on 2026-11-24, and v1.20 reached end of life with i
 ## Poll interval defaults in the reconcile-defaults dossier
 
 The managed reconciler in crossplane-runtime defaults to a 1 minute poll interval, Crossplane core's `--poll-interval` flag defaults to 1 minute with a 1 second minimum per-resource value, and the provider-upjet-aws S3 provider overrides it with `--poll` 10m, `--sync` 1h, `--max-reconcile-rate` 100, and poll jitter of 5 percent of the interval. The `crossplane.io/poll-interval` annotation is implemented in code although its design one-pager is still marked Draft. The docs.crossplane.io page for the provider poll interval was not read. [[sources/research-gap-g3-reconcile-defaults]] See [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]] and [[entities/upjet]].
+
+
+## Issue 7221 from the operator loop dossier
+
+Crossplane issue 7221 (2026-03-19, closed 2026-05-13) reported that the CompositionRevision and composite reconcilers call `Status().Update()` on every pass, so reconcile-ordering test scenarios never converge, while the production rate limiter dampens it to slow churn. A maintainer acknowledged it, and the fix was not read. See [[examples/crossplane-issue-7221-an-unconditional-status-update-kept-reconcile-ordering-tests-from-converging]] and [[sources/research-gap-g1-operator-loop-failures]].

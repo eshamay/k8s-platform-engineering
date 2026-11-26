@@ -23,6 +23,9 @@ sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: [Reconcile, Control loop]
 tags: [controllers, reconciliation, controller-runtime]
 ---
@@ -69,8 +72,12 @@ Different stacks add timing and failure policy around the same primitive. Flux u
 
 ## Open questions
 
-The dossier found no named-company postmortem of a runaway loop, could not read ACK or Config Connector behavior, and left the `Requeue: true` conflict unresolved, which the controller-runtime v0.25.3 source later settled. See [[open-knowledge-gaps]].
+The first dossier found no named-company postmortem of a runaway loop (a later dossier found issue-level incidents and still no named-company postmortem, see [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]]), could not read ACK or Config Connector behavior, and left the `Requeue: true` conflict unresolved, which the controller-runtime v0.25.3 source later settled. See [[open-knowledge-gaps]].
 
 ## Related
 
 [[concepts/spec-status-split]], [[concepts/conditions]], [[concepts/operator-pattern]], [[concepts/finalizers]]
+
+## Update from the operator loop dossier
+
+The 2026-11-26 dossier adds named, issue-level runaway loops, still with no named-company postmortem. The causes are an unconditional status write on every pass (Cluster API provider RKE2 at about 10 reconciles per second, Crossplane issue 7221), volatile text in a condition message (Longhorn at about 6 per second), and two applies of one object with different labels under an unfiltered `Owns` (kube-shard at about 13 per second). A retry with no backoff cost Longhorn about 25 times its normal controller memory. The rates are the reporters' own. See [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]], [[findings/volatile-text-in-a-condition-message-defeats-the-equality-check-and-causes-a-reconcile-storm]], [[findings/applying-one-object-twice-in-a-reconcile-with-owns-and-no-predicate-loops-on-its-own-resource-version]], and [[findings/a-retry-loop-with-no-backoff-or-target-health-gate-grows-controller-memory-during-a-dependency-outage]]. Source: [[sources/research-gap-g1-operator-loop-failures]].

@@ -3,11 +3,14 @@ title: Status writes through the main resource retrigger reconcile loops
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, status-subresource, reconcile-loop, kubebuilder]
 ---
@@ -29,3 +32,7 @@ Enable the status subresource on every CRD that has a controller, write status o
 ## Related
 
 [[concepts/reconciliation-loop]], [[concepts/custom-resource-definition]], [[entities/kubebuilder]]
+
+## Note from the operator loop dossier
+
+The subresource removes the generation bump, but it does not by itself end a status-write loop. In the Cluster API provider RKE2 and Crossplane 7221 cases the controller wrote status on every pass, and the write's new resource version reached its own watch and re-enqueued the object. The status subresource therefore needs to be paired with a check that skips unchanged writes, and with predicates on the controller's own events. See [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]]. Source: [[sources/research-gap-g1-operator-loop-failures]].

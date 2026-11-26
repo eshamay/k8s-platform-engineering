@@ -1,13 +1,16 @@
 ---
 title: A controller that relies on seeing every event misses changes made while it is down
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, level-triggered, controllers, restarts]
 ---
@@ -25,3 +28,7 @@ Frameworks such as controller-runtime supply the informer, cache, and workqueue 
 ## Related
 
 [[concepts/level-triggered-vs-edge-triggered]], [[findings/event-specific-logic-in-reconcilers]], [[concepts/idempotency]], [[concepts/operator-pattern]]
+
+## Dated incident evidence from the operator loop dossier
+
+The 2026-11-26 dossier supplies two cases. NVIDIA NVSentinel issue 1542 shows a delete that happened while the monitor was down and was never delivered to the new informer, leaving a node cordoned ([[examples/nvidia-nvsentinel-issue-1542-a-node-stayed-cordoned-after-an-object-was-deleted-while-the-monitor-was-down]]). Kubernetes issue 115658 shows a client-go relist dropping a DELETE for a short-lived object, fixed by pull requests 115620 and 116623 ([[examples/kubernetes-issue-115658-a-client-go-relist-could-drop-the-delete-event-for-a-short-lived-object]]). No named-company outage was found, and the impact figures are self-reported. See [[findings/a-delete-that-happens-while-a-controller-is-down-is-never-delivered-so-finalizers-or-resync-must-cover-it]] and [[findings/an-informer-relist-that-races-a-queued-create-can-drop-the-delete-event-for-the-object]]. Source: [[sources/research-gap-g1-operator-loop-failures]].

@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: []
 tags: [evidence-gap, postmortem, gitops, k8s-af, skyscanner, airbnb]
 ---
@@ -29,3 +32,7 @@ The web search tool returned empty results for most queries, so this absence is 
 ## Related
 
 [[findings/retry-storms-and-unbounded-retries]], [[concepts/pitfalls-and-case-studies]], [[findings/the-pitfalls-dossier-rests-on-index-summaries-an-older-crossplane-version-and-few-primary-incident-reports]], [[examples/the-argo-cd-users-file-lists-452-self-reported-adopters]]
+
+## Update from the operator loop dossier
+
+The 2026-11-26 operator dossier also found no named-organization postmortem of controller retry amplification or stale caches. It did find issue-level cases that touch the same ground, namely [[examples/longhorn-issue-14121-a-backup-target-outage-grew-longhorn-manager-memory-about-25-fold]] for retries and [[examples/kubernetes-issue-115658-a-client-go-relist-could-drop-the-delete-event-for-a-short-lived-object]] for a lost event, and it is recorded in [[findings/no-formal-organization-authored-postmortem-of-an-operator-failure-was-found]]. Source: [[sources/research-gap-g1-operator-loop-failures]].

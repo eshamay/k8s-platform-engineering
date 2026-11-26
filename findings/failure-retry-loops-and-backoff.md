@@ -1,9 +1,9 @@
 ---
 title: Failure retry loops and backoff
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
@@ -11,6 +11,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, retries, backoff, level-triggered]
 ---
@@ -36,3 +39,7 @@ kro caps retries at 20, Argo CD will not repeat a failed sync of the same commit
 ## Related
 
 [[entities/controller-runtime]], [[concepts/eventual-consistency-and-convergence]], [[comparisons/reconcile-cadence-and-off-switches-across-tools]]
+
+## Memory cost of an unbounded retry in Longhorn
+
+Longhorn issue 14121 reports that retries against a dead S3 backup target with no backoff or target-health gate grew `longhorn-manager` memory about 25 times and led to OOM kills and node flaps. The figures and diagnosis are the reporter's, and the issue was open when read. See [[findings/a-retry-loop-with-no-backoff-or-target-health-gate-grows-controller-memory-during-a-dependency-outage]]. Source: [[sources/research-gap-g1-operator-loop-failures]].

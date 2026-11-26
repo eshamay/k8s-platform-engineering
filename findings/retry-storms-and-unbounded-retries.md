@@ -20,6 +20,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: [Retry amplification]
 tags: [pitfall, retries, backoff, postmortem]
 ---
@@ -60,3 +63,7 @@ The rate-limiting walkthrough explains why the default limiter pairs per-item ex
 ## Addition from the GitOps incidents dossier
 
 The 2026-11-26 dossier searched again for a named-company primary postmortem of Kubernetes controller retry amplification or stale caches and found none. The nearest finds are an anonymous Argo CD self-heal race and k8s.af index entries that were not read, see [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]] and [[sources/research-gap-g1-gitops-drift-incidents]].
+
+## Addition from the operator loop dossier
+
+The 2026-11-26 operator dossier adds a controller-side retry case, Longhorn issue 14121, where retries against an unreachable backup target grew the controller's own memory about 25 times. It is an issue-level report with self-reported figures and not a named-company postmortem of retry amplification across services. See [[examples/longhorn-issue-14121-a-backup-target-outage-grew-longhorn-manager-memory-about-25-fold]] and [[sources/research-gap-g1-operator-loop-failures]].

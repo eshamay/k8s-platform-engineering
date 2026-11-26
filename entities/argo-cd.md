@@ -92,6 +92,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -224,3 +227,8 @@ The 2026-11-26 dossier read the high-availability and feature-maturity pages at 
 ## Incidents and adopters from the GitOps incidents dossier
 
 Argo CD's USERS.md lists 452 self-reported organizations ([[examples/the-argo-cd-users-file-lists-452-self-reported-adopters]]), and CNCF documents Subaru's move to Argo CD with Helmfile ([[examples/subaru-adopted-argo-cd-with-helmfile-to-replace-manual-deployment-procedures]]). Reported incidents include a self-heal run that skipped a migration hook ([[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]]) and cascading deletes ([[findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed]]). Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+
+
+## Reports from the operator loop dossier
+
+Argo CD issue 18151 reports that the 2.11 upgrade raised the application controller's PATCH rate to Application objects on about 10 clusters, with no confirmed root cause and later user diagnoses ([[examples/argo-cd-issue-18151-the-2-11-upgrade-raised-the-application-patch-rate-on-every-cluster]]). Issue 30373 reports that the built-in ACK health check added in v3.6.0-rc1 reports Healthy before the ACK controller observes a spec change ([[examples/argo-cd-issue-30373-the-built-in-ack-health-check-reports-healthy-before-the-controller-observes-a-spec-change]]). Both are reporter accounts. Source: [[sources/research-gap-g1-operator-loop-failures]].

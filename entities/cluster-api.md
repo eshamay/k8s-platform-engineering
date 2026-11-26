@@ -62,6 +62,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-g1-operator-loop-failures
+    hash: baca2cdf965d
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -161,3 +164,8 @@ The `ClusterTopology` gate is Beta and enabled by default as of v1.15.0-rc.0 (20
 ## Incident from the GitOps incidents dossier
 
 Cluster API issue 8172 (2023, v1.3.0) says resources are orphaned when parent objects are deleted before the controller adds its finalizer, see [[examples/cluster-api-issue-8172-deleting-parents-before-the-controller-adds-its-finalizer-orphans-their-resources]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+
+
+## Provider reconcile loop from the operator loop dossier
+
+Rancher's cluster-api-provider-rke2 v0.22.0 onward had a self-sustaining loop of about 10 reconciles per second in the RKE2ControlPlane controller, which the reporter ties to a commit adding the v1beta2 status path. Neighbouring controllers were affected as well. See [[examples/cluster-api-provider-rke2-issue-905-an-unconditional-status-patch-held-the-controller-at-about-ten-reconciles-per-second]] and [[sources/research-gap-g1-operator-loop-failures]].
