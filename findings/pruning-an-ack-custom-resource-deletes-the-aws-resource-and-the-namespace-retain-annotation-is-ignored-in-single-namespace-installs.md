@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g1-other-tool-pitfalls
     hash: a942f0ae1b1b
     ingested: 2026-11-26
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: []
 tags: [ack, prune, deletion-policy, retain, gitops, pitfall]
 ---
@@ -31,3 +34,7 @@ Both are single-reporter claims from the same batch as [[findings/ack-records-ow
 ## Related
 
 [[examples/ack-issue-3153-pruning-a-custom-resource-from-git-deletes-the-aws-resource-irreversibly]], [[findings/unintended-deletion-through-prune]], [[findings/destructive-deletion-of-external-resources]], [[entities/ack]]
+
+## Addition from the o3 dossier
+
+The o3 pass read issue 3153 again and records the reporter's further claims: Argo CD prune, Flux Kustomization prune, and a helm-controller upgrade all send the DELETE, and a controller-wide `deletionPolicy: retain` did not protect resources because every chart-rendered custom resource carried `deletion-policy: delete`. These are SECONDARY-ONLY reporter claims with repro scripts and no maintainer reply seen. The documented lookup order, resource then namespace then controller, is in [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]]. [[sources/research-gap-o3-gitops-provider-managed]]

@@ -86,6 +86,9 @@ sources:
   - id: research-gap-m7-operators-idempotency
     hash: 6c986668a6dc
     ingested: 2026-11-26
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -205,3 +208,7 @@ Config Connector runs a separate webhook-manager with ten fail-closed handlers a
 ## Conflict handling when two objects target one resource (m7 dossier)
 
 Correction note, 2026-11-26: the "Acquire by name and the abandon annotation" section above says the dossier found nothing on conflict handling. The "Managing conflicts" page answers it. Two objects in different namespaces on one cloud resource is "possible, but not recommended", prevention is a lease stored in the labels `cnrm-lease-holder-id` and `cnrm-lease-expiration`, a loser shows `ManagementConflict`, and the annotation `cnrm.cloud.google.com/management-conflict-prevention-policy` defaults to `none`. It does not work for resources without labels. See [[findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set]], [[examples/config-connector-lease-labels-gate-two-namespaces-that-manage-one-google-cloud-resource]], and [[decisions/set-config-connector-management-conflict-prevention-to-none-or-resource-or-avoid-acquisition]]. Failure handling (backoff capped at 2 minutes, any-order convergence, the Ready condition) is in [[findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling]]. [[sources/research-gap-m7-operators-idempotency]]
+
+## Under a GitOps agent (o3 dossier)
+
+Deleting the object deletes the Google Cloud resource by default, and `cnrm.cloud.google.com/deletion-policy: abandon` must be present before the delete, which is the documented default that Argo CD prune and Flux prune trigger as ordinary deletes. The `state-into-spec` default is `Absent` for resources created from 1.123.1 and earlier versions defaulted to `Merge`, and `Merge` populates unspecified fields that Config Sync and Argo CD treat as drift because both treat lists as atomic, see [[findings/config-connector-state-into-spec-merge-populates-unspecified-fields-that-argo-cd-and-config-sync-treat-as-drift-and-absent-is-the-default-from-1-123-1]]. Argo CD ships a built-in health script for the group, and issue 30164 shows a kind stuck in Progressing, see [[findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves]] and [[examples/argo-cd-issue-30164-config-connector-customize-kinds-stayed-progressing-because-the-health-script-did-not-handle-status-healthy]]. Issue 837 is a SECONDARY-ONLY report of Argo CD 2.7.6 replacing DNSRecordSet objects, see [[examples/config-connector-issue-837-argo-cd-2-7-6-kept-replacing-dnsrecordset-objects-until-the-default-annotations-were-added-explicitly]]. Flux has no Config Connector entry in its CEL cheatsheet, see [[findings/flux-judges-provider-managed-resources-through-kstatus-or-cel-health-check-expressions-and-its-cel-cheatsheet-lists-crossplane-but-not-config-connector-or-ack]]. No test prunes a Config Connector object end to end under either agent. [[sources/research-gap-o3-gitops-provider-managed]]

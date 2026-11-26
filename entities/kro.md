@@ -95,6 +95,9 @@ sources:
   - id: research-gap-m7-operators-idempotency
     hash: 6c986668a6dc
     ingested: 2026-11-26
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -240,3 +243,7 @@ kro's watch manager owns one shared, metadata-only informer per GVR, so memory s
 ## Idempotency (m7 dossier)
 
 Correction note, 2026-11-26: the "Idempotency coverage gap" section above is superseded. The kro documents read from the GitHub source tree say kro labels children, tracks them with the ApplySet specification, records the resources it is about to create in `status.managedResources` before applying them, applies with server-side apply without force so a foreign field owner yields `FieldManagerConflict`, and retries waiting states with exponential backoff from one second to five minutes. These cover Kubernetes children and not non-Kubernetes cloud resources, which kro reaches through other operators' custom resources. See [[findings/kro-records-the-resources-it-is-about-to-create-in-status-before-applying-them-and-applies-without-force]]. [[sources/research-gap-m7-operators-idempotency]]
+
+## Wrapping ACK objects and the deletion-policy annotation (o3 dossier)
+
+The ACK documentation includes a kro guide that composes ACK Bucket and Table objects with a Deployment, waits for ACK readiness before creating dependents, and on deletion removes the Deployment first and then the AWS resources following ACK's deletion policy, see [[examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources]]. kro's alpha, feature-gated `kro.run/deletion-policy` annotation (Delete or Orphaned) applies whenever kro would remove a resource, and owner references defeat Orphaned. How it combines with ACK's own annotation is not documented in the pages read. Without `readyWhen`, a resource is ready once created and its CEL references resolve. [[sources/research-gap-o3-gitops-provider-managed]] See [[findings/crossplane-function-auto-ready-and-kro-readywhen-gate-on-the-provider-ready-condition-and-no-worked-example-of-crossplane-composing-ack-or-config-connector-was-found]].

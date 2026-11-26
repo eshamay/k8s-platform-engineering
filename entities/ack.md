@@ -80,6 +80,9 @@ sources:
   - id: research-gap-m6-admission-crds
     hash: 7cac38f11490
     ingested: 2026-11-26
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -192,3 +195,7 @@ Service controllers set the cache namespaces and label selector from `--watch-na
 ## Admission and CRD handling
 
 The ACK runtime defines only a conversion webhook type and the s3-controller chart ships no webhook ([[findings/kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only]]). Each service has its own Helm chart that carries its CRDs, and no written API-version policy was found ([[findings/ack-ships-one-helm-chart-per-service-with-its-crds-in-the-chart-and-no-written-api-version-policy-was-found]]). [[sources/research-gap-m6-admission-crds]]
+
+## Under a GitOps agent and inside compositions (o3 dossier)
+
+The deletion policy lookup is the resource annotation, then the namespace annotation, then the controller default, and first match wins, so a chart that stamps `deletion-policy: delete` on every custom resource defeats a controller-wide `retain` according to the reporter of issue 3153, see [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]]. Issue 2361 says Flux server-side apply reverts reference fields that the controller rewrote ([[findings/flux-server-side-apply-reverts-ack-reference-fields-that-the-controller-rewrote-according-to-issue-2361]]), and issue 3131 says referenced kinds are not watched so a referencing resource waits on backoff ([[findings/ack-referencing-resources-wait-on-backoff-after-the-referenced-resource-syncs-according-to-issue-3131]]). ACK's runtime source defines `Ready` as equivalent to `ResourceSynced`, and Argo CD's built-in ACK script maps `ACK.Terminal=True` to Degraded and `Ready=True` to Healthy. The ACK documentation's own kro guide waits for ACK resources to be ready before creating dependents, see [[examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources]]. All the issue-based claims are SECONDARY-ONLY and none was maintainer-confirmed. [[sources/research-gap-o3-gitops-provider-managed]]

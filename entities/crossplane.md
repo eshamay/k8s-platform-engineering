@@ -125,6 +125,9 @@ sources:
   - id: research-gap-m7-operators-idempotency
     hash: 6c986668a6dc
     ingested: 2026-11-26
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -316,3 +319,7 @@ Crossplane core strips CRD OpenAPI schemas from typed CRDs in one cache, does no
 ## External-name default by kind (m7 dossier)
 
 Correction note, 2026-11-26: the documentation's default that providers name external resources like the Kubernetes object holds for name-based kinds, and upjet providers switch it off for provider-assigned IDs such as AWS VPCs, subnets, and instances. See [[findings/crossplane-external-names-default-to-the-object-name-only-for-name-based-kinds-and-upjet-providers-switch-the-default-off-for-provider-assigned-ids]]. [[sources/research-gap-m7-operators-idempotency]]
+
+## Composing ACK or Config Connector objects (o3 dossier)
+
+`function-auto-ready` (v0.7.4) treats a non-built-in composed resource as ready only with `type: Ready`, `status: True`, which ACK defines and Config Connector reports, but no worked example or first-party test of Crossplane composing ACK or Config Connector objects was found. Argo CD now ships a built-in Lua health script for `crossplane.io` and `upbound.io`. [[sources/research-gap-o3-gitops-provider-managed]] See [[findings/crossplane-function-auto-ready-and-kro-readywhen-gate-on-the-provider-ready-condition-and-no-worked-example-of-crossplane-composing-ack-or-config-connector-was-found]].

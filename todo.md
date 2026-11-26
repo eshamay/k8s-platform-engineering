@@ -906,4 +906,18 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passage revised and citing [[findings/flux-image-automation-kinds-are-image-toolkit-fluxcd-io-v1-with-older-versions-still-in-the-api-directory]] and [[findings/the-flux-image-update-guide-offers-semver-for-production-a-separate-push-branch-for-review-and-revert-by-narrowing-the-range]].
 - **Drafted by:** agent on 2026-11-26
 
+## Update part-5 deletion passage with the ACK deletion-policy lookup order and agent-side opt-outs — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the paragraph beginning "The tools also answer a different question, which is whether deleting the Kubernetes object should delete the real thing" can add that ACK resolves its deletion policy from the resource annotation, then the namespace annotation, then the controller default, so a controller-wide retain can be overridden, and that Flux and Argo CD each have per-object prune opt-outs.
+- **Why:** The passage predates the dossier [[sources/research-gap-o3-gitops-provider-managed]].
+- **Acceptance:** Passage revised and citing [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]] and [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 GitOps health passage with the built-in Argo CD scripts and Flux's kstatus-only model — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "GitOps tools sit above all of these" says Argo CD needs Lua checks for CRDs. It should add that Argo CD v3.6.3 ships built-in scripts for the Config Connector, ACK, Crossplane, and Upbound groups, and that Flux relies on kstatus or CEL `healthCheckExprs` with no per-provider logic.
+- **Why:** The passage predates the dossier [[sources/research-gap-o3-gitops-provider-managed]].
+- **Acceptance:** Passage revised and citing [[findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves]] and [[findings/flux-judges-provider-managed-resources-through-kstatus-or-cel-health-check-expressions-and-its-cel-cheatsheet-lists-crossplane-but-not-config-connector-or-ack]].
+- **Drafted by:** agent on 2026-11-26
+
 ## Dropped

@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: [Argo CD issue 30373]
 tags: [argo-cd, ack, observedgeneration, health-check, status]
 ---
@@ -29,3 +32,7 @@ It is the delivery-tool consequence of a gap the wiki had recorded only at the A
 ## Related
 
 [[entities/ack]], [[entities/argo-cd]], [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]]
+
+## Addition from the o3 dossier
+
+The shipped ACK script maps `ACK.Terminal=True` to Degraded, `Ready=False` to Progressing, `Ready=True` to Healthy, and no conditions to Progressing, with the last commit on the path dated 2026-08-05. The script reads conditions and no `observedGeneration`, which is the gap this issue describes. See [[findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves]]. [[sources/research-gap-o3-gitops-provider-managed]]

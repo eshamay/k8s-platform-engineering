@@ -128,6 +128,9 @@ sources:
   - id: research-gap-o1-argocd-flux-gitops
     hash: 3a5f956bbd5a
     ingested: 2026-11-26
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -301,3 +304,7 @@ The architecture page splits Argo CD into an API server, a repository server, an
 ## Secrets, OCI, multi-cluster, and ignore controls (o1 dossier)
 
 Argo CD's documentation recommends destination-cluster secret operators and warns that generation plugins leave plaintext manifests in the Redis cache, see [[findings/argo-cd-recommends-destination-cluster-secret-operators-and-warns-that-generation-plugins-cache-plaintext-manifests-in-redis]]. Its OCI source support has no documented signature verification in the pages read, see [[findings/flux-verifies-cosign-and-notation-signatures-on-oci-artifacts-while-the-argo-cd-pages-read-document-no-oci-signature-verification]]. `ignoreDifferences` affects only the diff unless `RespectIgnoreDifferences=true`, see [[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]]. ApplicationSet has documented limits ([[findings/applicationset-generators-have-documented-limits-matrix-takes-two-children-nesting-is-once-and-pull-request-polling-defaults-to-30-minutes]]), a Beta RollingSync strategy ([[findings/applicationset-rollingsync-is-beta-forces-autosync-off-and-watches-only-application-health]]), and a create-only policy that does not stop owner-reference deletion ([[findings/the-applicationset-create-only-policy-does-not-stop-owner-reference-deletion-of-applications]]). A central instance reaches into registered clusters, and the Labs project argocd-agent is the pull alternative, see [[findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity]] and [[decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes]]. Release cadence on 2026-11-26 showed v3.6.3, v3.5.9 and v3.4.15 published together on 2026-11-24. [[sources/research-gap-o1-argocd-flux-gitops]]
+
+## Provider-managed resources (o3 dossier)
+
+Argo CD now ships built-in Lua health scripts for the `cnrm.cloud.google.com`, `services.k8s.aws`, `crossplane.io`, and `upbound.io` groups, for `kro.run` ResourceGraphDefinition, and for five Cluster API kinds, and an object that never reaches Healthy blocks later sync waves, see [[findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves]] and [[examples/argo-cd-issue-30164-config-connector-customize-kinds-stayed-progressing-because-the-health-script-did-not-handle-status-healthy]]. Per-resource sync options include `Prune=false`, `Prune=confirm`, `Delete=false`, `Delete=confirm`, and `PruneLast=true`, and deleting an ApplicationSet deletes its Applications' resources unless `preserveResourcesOnDeletion` is true. `RespectIgnoreDifferences=true` applies ignore rules at sync time only for resources that already exist. Prune of a provider object triggers the provider's default delete, see [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]]. [[sources/research-gap-o3-gitops-provider-managed]]

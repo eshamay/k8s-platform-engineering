@@ -146,6 +146,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-m7-operators-idempotency]] — verified dossier on operator framework options, capability levels, Argo CD and Config Connector failure handling, Backstage, kro and Cluster API creates, per-provider external names, and Config Connector conflict leases, 2026-11-26 (active)
 - [[sources/research-gap-o1-argocd-flux-gitops]] — verified dossier on Argo CD and Flux pruning, drift, ignore controls, secret management, OCI sources, ApplicationSet limits, and hub-and-spoke delivery, read from docs at main on 2026-11-26 (active)
 - [[sources/research-gap-o2-flux-internals]] — verified dossier on Flux source-controller artifact serving, sharding labels, image automation API status, and composite resource health, read from source and docs at main on 2026-11-26 (active)
+- [[sources/research-gap-o3-gitops-provider-managed]] — verified dossier on GitOps agents and provider-managed resources: deletion defaults and opt-outs, Argo CD Lua health scripts, Flux kstatus and CEL, drift fights, and ACK wrapped by kro, read from docs and source on 2026-11-26 (active)
 
 ## Examples
 
@@ -250,7 +251,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]] — four deletion policies (active)
 - [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] — ordered teardown (active)
 - [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]] — gated machine removal (active)
-- [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]] — defaults and opt-outs (draft)
+- [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]] — defaults and opt-outs (active)
 - [[examples/stuck-terminating-namespace-fixed-through-the-finalize-subresource]] — last-resort namespace fix (draft)
 - [[examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete]] — command-level runbook (draft)
 - [[examples/built-in-workload-controllers-cascade-a-deployment-delete-through-replicasets-to-pods]] — the everyday cascade (draft)
@@ -273,7 +274,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]] — answer to the CRD count (active)
 - [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]] — self-reported adopter scale (draft)
 - [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]] — self-reported platform and catalog uses (draft)
-- [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]] — AWS productizes kro with ACK (draft)
+- [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]] — AWS productizes kro with ACK (active)
 - [[examples/function-kro-runs-a-kro-resource-graph-as-a-crossplane-pipeline-step]] — the two models converge (draft)
 - [[examples/a-v1-crossplane-claim-fronts-a-cluster-scoped-composite-resource]] — the legacy claim pattern (draft)
 - [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]] — the composite pattern for clusters (active)
@@ -416,6 +417,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/cozystack-s-flux-shard-operator-creates-helm-controller-shards-at-about-100-helmreleases-per-shard]] — label-sharded helm-controllers, design targets only (active)
 - [[examples/flux2-issue-5855-kstatus-saw-crossplane-resources-without-a-ready-condition-as-ready-and-maintainers-recommended-an-observedgeneration-cel-expression]] — kstatus race on Crossplane resources (active)
 - [[examples/kro-issue-1290-external-controllers-fight-kro-over-fields-and-kro-resets-their-changes]] — open kro field-ownership issue (active)
+- [[examples/argo-cd-issue-30164-config-connector-customize-kinds-stayed-progressing-because-the-health-script-did-not-handle-status-healthy]] — closed issue, wildcard health script mismatch (active)
+- [[examples/config-connector-issue-837-argo-cd-2-7-6-kept-replacing-dnsrecordset-objects-until-the-default-annotations-were-added-explicitly]] — open issue, secondary-only (active)
+- [[examples/ack-issue-2361-flux-server-side-apply-reverted-reference-fields-and-triggered-ecs-redeploys-at-the-ten-hour-resync]] — open issue, secondary-only (active)
+- [[examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources]] — first-party readiness and deletion ordering (active)
 
 ## Comparisons
 
@@ -423,7 +428,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]] — how each tool orders work (draft)
 - [[comparisons/kubectl-object-management-techniques]] — three kubectl techniques (draft)
 - [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]] — drift and prune behavior (active)
-- [[comparisons/deletion-policies-across-gitops-and-provider-tools]] — retain, abandon, orphan (draft)
+- [[comparisons/deletion-policies-across-gitops-and-provider-tools]] — retain, abandon, orphan (active)
 - [[comparisons/reconcile-cadence-and-off-switches-across-tools]] — intervals, retries, and pause controls, with verified defaults (active)
 - [[comparisons/retry-and-backoff-controls-across-tools]] — backoff, caps, and waiting states (draft)
 - [[comparisons/drift-detection-mechanisms-across-tools]] — what each tool compares, and how often, with verified defaults (active)
@@ -524,6 +529,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/supply-gitops-secrets-from-a-destination-cluster-operator-a-generation-plugin-or-controller-side-sops]] — evidence-only options, no recommendation (active)
 - [[decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes]] — evidence-only options, no recommendation (active)
 - [[decisions/gate-flux-image-automation-with-semver-ranges-a-separate-push-branch-or-staging-only-automation]] — evidence-only options for promotion control (draft)
+- [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]] — evidence-only options, no recommendation (active)
 
 ## Findings
 
@@ -559,7 +565,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/controllers-fighting-over-fields-cause-revert-loops]] — webhooks, HPAs, and image updaters (draft)
 - [[findings/remediation-can-amplify-an-outage]] — mass replacement and the maxUnhealthy brake (active)
 - [[findings/late-initialized-fields-create-false-drift]] — provider defaults and LateInitialize (draft)
-- [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]] — Lua checks and tracking for CRDs (draft)
+- [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]] — Lua checks and tracking for CRDs, now with built-in scripts (active)
 - [[findings/rollback-is-blocked-while-automated-sync-is-on]] — rollback requires a Git revert (draft)
 - [[findings/mutable-remote-references-change-what-a-commit-renders]] — pin tags or SHAs (draft)
 - [[findings/two-reconcile-loops-hide-status-and-drift-at-two-layers]] — GitOps loop over domain loop (draft)
@@ -863,6 +869,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/flux-image-automation-kinds-are-image-toolkit-fluxcd-io-v1-with-older-versions-still-in-the-api-directory]] — image automation API version (active)
 - [[findings/the-flux-image-update-guide-offers-semver-for-production-a-separate-push-branch-for-review-and-revert-by-narrowing-the-range]] — documented image promotion controls (active)
 - [[findings/flux-tracks-composite-resources-through-its-inventory-and-kstatus-or-cel-health-checks-and-documents-no-owner-reference-recipe-or-kro-guidance]] — Flux with composites and kro instances (active)
+- [[findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves]] — built-in Lua health scripts per provider group, with condition mappings and the sync-wave stall (active)
+- [[findings/flux-judges-provider-managed-resources-through-kstatus-or-cel-health-check-expressions-and-its-cel-cheatsheet-lists-crossplane-but-not-config-connector-or-ack]] — Flux has no per-provider health logic (active)
+- [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]] — ACK lookup order and the chart-stamped delete report (active)
+- [[findings/config-connector-state-into-spec-merge-populates-unspecified-fields-that-argo-cd-and-config-sync-treat-as-drift-and-absent-is-the-default-from-1-123-1]] — state-into-spec Merge drift and the 1.123.1 default (active)
+- [[findings/flux-server-side-apply-reverts-ack-reference-fields-that-the-controller-rewrote-according-to-issue-2361]] — ACK issue 2361, secondary-only (draft)
+- [[findings/ack-referencing-resources-wait-on-backoff-after-the-referenced-resource-syncs-according-to-issue-3131]] — ACK issue 3131, secondary-only (draft)
+- [[findings/crossplane-function-auto-ready-and-kro-readywhen-gate-on-the-provider-ready-condition-and-no-worked-example-of-crossplane-composing-ack-or-config-connector-was-found]] — composition readiness gates and the missing worked example (active)
+- [[findings/the-o3-pass-found-no-flux-postmortem-and-no-new-named-gitops-outage-and-the-ack-3152-and-3153-reproductions-ran-on-kind-with-moto]] — evidence caveat (draft)
 
 ## Outputs
 

@@ -1,13 +1,16 @@
 ---
 title: "Crossplane, ACK, and Config Connector delete the cloud resource before the Kubernetes object"
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: []
 tags: [finalizers, crossplane, ack, config-connector, deletion]
 ---
@@ -33,3 +36,7 @@ The dossier found that the ACK, Config Connector, and kro pages do not say how f
 ## Related
 
 [[entities/crossplane]], [[entities/ack]], [[entities/config-connector]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]], [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]]
+
+## Verified against current documentation (o3 dossier)
+
+The ACK and Config Connector defaults and opt-outs on this page were re-read in the 2026 documentation: Config Connector says "When deleting a Config Connector resource the associated Google Cloud resource is deleted by default", and ACK deletes the AWS resource and then the custom resource. Argo CD prune and Flux prune are ordinary deletes, so the defaults apply, see [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]]. [[sources/research-gap-o3-gitops-provider-managed]]

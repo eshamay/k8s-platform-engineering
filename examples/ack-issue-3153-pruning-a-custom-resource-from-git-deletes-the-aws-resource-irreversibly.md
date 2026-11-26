@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g1-other-tool-pitfalls
     hash: a942f0ae1b1b
     ingested: 2026-11-26
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: [ACK issue 3153]
 tags: [ack, prune, gitops, deletion, feature-request]
 ---
@@ -29,3 +32,7 @@ Open when read, no incident attached, and part of one reporter's batch. See [[fi
 ## Related
 
 [[entities/ack]], [[findings/unintended-deletion-through-prune]]
+
+## Addition from the o3 dossier
+
+The reporter says Argo CD prune, Flux Kustomization prune, and a Helm upgrade run by helm-controller all send the DELETE (iam-controller v1.11.3, repro scripts supplied), and that a controller-wide `retain` did not help because every chart-rendered custom resource carried `deletion-policy: delete`. The issue also cites related issues where a DBInstance with `deletionProtection` removed from Git stays in Terminating because AWS refuses the delete. The reproduction used a kind cluster with moto as the AWS stand-in, so it is not a production incident. No maintainer reply was present. See [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]]. [[sources/research-gap-o3-gitops-provider-managed]]

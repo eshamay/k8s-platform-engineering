@@ -1,0 +1,57 @@
+---
+title: "Research dossier: GitOps agents and provider-managed resources (o3-gitops-provider-managed)"
+type: source
+status: active
+created: 2026-11-26
+updated: 2026-11-26
+sources:
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
+aliases: []
+tags: [gitops, argo-cd, flux, config-connector, ack, kro, crossplane, deletion, health, research-dossier, gap-closing, targeted-pass]
+---
+
+# Research dossier: GitOps agents and provider-managed resources (o3-gitops-provider-managed)
+
+> [!NOTE]
+> **Raw file:** `raw/research-gap-o3-gitops-provider-managed.md` (sha256 prefix 55252dbb507a)<br>
+> **Kind:** Verified research dossier for gap cluster o3-gitops-provider-managed, dated 2026-11-26<br>
+> **Ingested:** 2026-11-26 as a targeted pass over existing Argo CD, Flux, Config Connector, ACK, kro, and Crossplane pages<br>
+> **Caveat:** Documentation and source files were read at `main` or the stable docs on 2026-11-26. Latest releases seen were Argo CD v3.6.3 (2026-11-24), Flux v2.10.1 (2026-11-20), Config Connector v1.162.0 (2026-11-23), ACK runtime v0.68.0 (2026-11-09), kro v0.10.0 (2026-11-10), and function-auto-ready v0.7.4 (2026-11-24). Web search returned empty results for most long queries, so outage and adopter searches were thin.
+
+## Summary
+
+The dossier asks what happens when a GitOps agent (Argo CD or Flux) meets objects that a provider controller turns into cloud resources. Its strongest evidence comes from source files and issue trackers. Deletion is the sharp edge: Config Connector and ACK delete the cloud resource by default when the Kubernetes object is deleted, and Argo CD prune and Flux prune are ordinary Kubernetes deletes, so the defaults apply. Health assessment differs by agent. Argo CD ships Lua health checks for the Config Connector, ACK, Crossplane, Upbound, kro, and several Cluster API kinds, while Flux relies on kstatus compatibility with optional CEL `healthCheckExprs` and has no per-provider logic. Spec defaulting and controller-rewritten reference fields cause drift fights. For compositions the evidence is thinner: ACK documents a kro graph that wraps its objects, and no worked example of Crossplane composing Config Connector or ACK objects was found.
+
+The dossier's own verification pass removed no claim and corrected two: the Config Connector `state-into-spec` default (Absent for newly created resources from 1.123.1, with earlier versions defaulting to Merge) and the attribution of a quote in Config Connector issue 837. Nothing in it contradicts an existing wiki page as a stated fact, so no page was marked contradicted. One existing page that described a Crossplane guide as the way to get Argo CD health checks received a one-line update.
+
+## Key claims
+
+- Config Connector deletes the Google Cloud resource by default, and `cnrm.cloud.google.com/deletion-policy: abandon` must be set before the delete. Quote: "When deleting a Config Connector resource the associated Google Cloud resource is deleted by default." URL: https://cloud.google.com/config-connector/docs/how-to/managing-deleting-resources
+- ACK deletes the AWS resource first and then the custom resource, and the deletion policy resolves from the resource annotation, then the namespace annotation, then the controller default. Quote: "The first match wins, so resource annotations override namespace annotations, which override the controller default." URL: https://aws-controllers-k8s.github.io/docs/guides/deletion-policy/. See [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]].
+- ACK drift detection defaults to every 10 hours, and the runtime source has `defaultResyncPeriod = 10 * time.Hour`. This agrees with [[entities/ack]].
+- ACK defines a `Ready` condition "equivalent to the ResourceSynced condition type" in the runtime source.
+- Flux offers `kustomize.toolkit.fluxcd.io/prune: disabled` per object and `.spec.deletionPolicy` with MirrorPrune (default), Delete, WaitForTermination, and Orphan. Argo CD offers `Prune=false`, `Prune=confirm`, `Delete=false`, `Delete=confirm`, and `PruneLast=true`, and `preserveResourcesOnDeletion` for ApplicationSet-created Applications. See [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]].
+- Argo CD documents that "CRDs do not follow a consistent or standardized status format" and ships built-in Lua checks for the `cnrm.cloud.google.com`, `services.k8s.aws`, `crossplane.io`, and `upbound.io` groups, for `kro.run` ResourceGraphDefinition, and for five `cluster.x-k8s.io` kinds. See [[findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves]].
+- Argo CD sync waves advance only when the earlier wave is synced and healthy, and prune runs in reverse wave order. Quote: "it may be that the app can never get to healthy."
+- Argo CD issue 30164 (closed, opened 2026-10-13) reported Config Connector `customize.core.cnrm.cloud.google.com` kinds stuck in Progressing. See [[examples/argo-cd-issue-30164-config-connector-customize-kinds-stayed-progressing-because-the-health-script-did-not-handle-status-healthy]].
+- Flux Kustomization `healthChecks` accept "Custom resources that are compatible with kstatus", `healthCheckExprs` take CEL `current`, `inProgress`, and `failed`, and the Flux CEL cheatsheet library lists Crossplane and has no Config Connector or ACK entry on the page read. See [[findings/flux-judges-provider-managed-resources-through-kstatus-or-cel-health-check-expressions-and-its-cel-cheatsheet-lists-crossplane-but-not-config-connector-or-ack]].
+- Config Connector `state-into-spec` is Absent by default for newly created resources from 1.123.1 and Merge can conflict with Config Sync and Argo CD because both treat lists as atomic. See [[findings/config-connector-state-into-spec-merge-populates-unspecified-fields-that-argo-cd-and-config-sync-treat-as-drift-and-absent-is-the-default-from-1-123-1]].
+- SECONDARY-ONLY: Config Connector issue 837 (open, 2023-07-14) reports Argo CD 2.7.6 repeatedly replacing DNSRecordSet objects. See [[examples/config-connector-issue-837-argo-cd-2-7-6-kept-replacing-dnsrecordset-objects-until-the-default-annotations-were-added-explicitly]].
+- SECONDARY-ONLY: ACK issue 3153 (open, 2026-11-09) says Argo CD prune, Flux prune, and helm-controller upgrades all send the DELETE and that a controller-wide `retain` did not protect chart-rendered CRs. Quote: "every CR carried `deletion-policy: delete` from its chart." See [[examples/ack-issue-3153-pruning-a-custom-resource-from-git-deletes-the-aws-resource-irreversibly]].
+- SECONDARY-ONLY: ACK issue 3152 (open, 2026-11-09) says adoption under Argo CD or Flux overwrites adopted state with the git spec. Quote: "every spec field that is in git goes back to its value in git". See [[findings/ack-adoption-under-a-gitops-agent-overwrites-the-aws-resource-with-the-spec-in-git-and-a-failed-adoption-patch-can-write-a-stub-spec]].
+- SECONDARY-ONLY: ACK issue 2361 (open, 2025-02-26) says Flux server-side apply reverts reference fields that the ACK controller rewrote. See [[examples/ack-issue-2361-flux-server-side-apply-reverted-reference-fields-and-triggered-ecs-redeploys-at-the-ten-hour-resync]].
+- SECONDARY-ONLY: ACK issue 3131 (open, 2026-11-05) says referenced kinds are not watched, so a referencing resource may wait up to about 16 minutes 40 seconds on backoff. See [[findings/ack-referencing-resources-wait-on-backoff-after-the-referenced-resource-syncs-according-to-issue-3131]].
+- The ACK documentation includes a kro guide that composes an S3 Bucket, a DynamoDB Table, and a Deployment. Quote: "kro waits for ACK resources to become ready before creating dependent resources". See [[examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources]].
+- kro has an alpha, feature-gated `kro.run/deletion-policy` annotation (Delete or Orphaned), and owner references override Orphaned. `readyWhen` defaults to ready once created and references resolve.
+- Crossplane `function-auto-ready` treats a non-built-in composed resource as ready only with `type: Ready`, `status: True`. See [[findings/crossplane-function-auto-ready-and-kro-readywhen-gate-on-the-provider-ready-condition-and-no-worked-example-of-crossplane-composing-ack-or-config-connector-was-found]].
+- SECONDARY-ONLY: a 2025-03-15 blog lists Argo CD pruning and health-assessment failure modes with no named organization or dated incident. UNVERIFIED: no first-party Flux postmortem was found. See [[findings/the-o3-pass-found-no-flux-postmortem-and-no-new-named-gitops-outage-and-the-ack-3152-and-3153-reproductions-ran-on-kind-with-moto]].
+
+## Open questions the dossier leaves
+
+These items are UNVERIFIED or not found and are not facts. No test prunes a Config Connector or ACK object end to end under either agent. No maintainer confirmed a resolution of ACK issues 3153, 3152, or 2361. Argo CD `Prune=false` interplay with ACK finalizers was not tested. KCC's own GitOps deletion guidance beyond the deletion page was not read. Flux kstatus handling of ACK's `ACK.Terminal` condition and Flux's treatment of Cluster API objects were not read, and the Argo CD Lua files for Cluster API kinds and the tail of the Crossplane script were not read in full. Whether composition-level deletion (Crossplane composite deletion, foreground or background) honors ACK or Config Connector deletion ordering is not settled, nor how the kro and ACK deletion-policy annotations combine. No worked example of Crossplane composing ACK or Config Connector objects was found, and Crossplane's provider-kubernetes Object wrapper readiness policy was not read.
+
+## Pages touched
+
+[[entities/argo-cd]], [[entities/flux]], [[entities/config-connector]], [[entities/ack]], [[entities/kro]], [[entities/crossplane]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]], [[comparisons/health-and-readiness-models-across-tools]], [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]], [[findings/unintended-deletion-through-prune]], [[findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs]], [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]], [[examples/ack-issue-3153-pruning-a-custom-resource-from-git-deletes-the-aws-resource-irreversibly]], [[examples/argo-cd-issue-30373-the-built-in-ack-health-check-reports-healthy-before-the-controller-observes-a-spec-change]], [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]], [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]]

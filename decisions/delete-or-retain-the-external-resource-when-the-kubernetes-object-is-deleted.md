@@ -3,11 +3,14 @@ title: "Delete or retain the external resource when the Kubernetes object is del
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, deletion, retain, crossplane, ack, config-connector]
 ---
@@ -35,3 +38,7 @@ Retention protects data and enables migration, but it needs a policy applied bef
 ## Related
 
 [[findings/destructive-deletion-of-external-resources]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]], [[decisions/adopt-or-create-or-require-explicit-import]]
+
+## Update from the o3 dossier
+
+For the GitOps prune case specifically, the options by layer, with evidence and no recommendation, are on [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]]. The ACK lookup order (resource, namespace, controller default) means a controller-wide retain can be overridden by a resource-level annotation. [[sources/research-gap-o3-gitops-provider-managed]]

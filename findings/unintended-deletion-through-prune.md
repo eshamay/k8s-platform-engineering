@@ -20,6 +20,9 @@ sources:
   - id: research-gap-g1-other-tool-pitfalls
     hash: a942f0ae1b1b
     ingested: 2026-11-26
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, prune, deletion, gitops]
 ---
@@ -61,3 +64,7 @@ Correction, 2026-11-26: the Caveat above said no incident write-ups of an accide
 ## ACK prune reports from the other-tool pitfalls dossier
 
 ACK issues 3153 and 3154 (2026-11-09, open) say pruning an ACK CR from git deletes the AWS resource and cannot be undone, and that the namespace retain annotation is ignored in single `--watch-namespace` installs. See [[findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs]]. [[sources/research-gap-g1-other-tool-pitfalls]]
+
+## Provider-object evidence from the o3 dossier
+
+For provider-managed objects, prune is an ordinary delete and the provider's default then deletes the cloud resource, so the cost of a mistaken prune is the infrastructure and not only the Kubernetes object. The documented opt-outs are laid out in [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]], and the only reproduction of the path under both agents is a single reporter's ACK issue on kind with moto, see [[findings/the-o3-pass-found-no-flux-postmortem-and-no-new-named-gitops-outage-and-the-ack-3152-and-3153-reproductions-ran-on-kind-with-moto]]. [[sources/research-gap-o3-gitops-provider-managed]]

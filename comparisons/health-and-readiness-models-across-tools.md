@@ -14,6 +14,9 @@ sources:
   - id: research-gap-m3-status-conditions
     hash: 07099fedb0c8
     ingested: 2026-11-26
+  - id: research-gap-o3-gitops-provider-managed
+    hash: 55252dbb507a
+    ingested: 2026-11-26
 aliases: []
 tags: [conditions, health, readiness, flux, argo-cd, kstatus, crossplane, cluster-api]
 ---
@@ -49,3 +52,7 @@ A vocabulary-level companion to this page lists the condition types of Crossplan
 ## Evidence from the m3 dossier
 
 kstatus decides in a fixed order (deletion, top-level generation, `Reconciling` and `Stalled`, built-in rules, `Ready`, then Current), and Argo CD ships a Lua health script for Config Connector that keys on `UpToDate`, `UpdateFailed`, `DependencyNotFound`, and `DependencyNotReady`. [[sources/research-gap-m3-status-conditions]] See [[findings/kstatus-checks-deletion-then-generation-then-reconciling-and-stalled-then-ready-so-a-stale-top-level-observedgeneration-overrides-ready-true]] and [[examples/argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration]].
+
+## How the two GitOps agents read provider conditions (o3 dossier)
+
+Argo CD maps provider conditions with shipped Lua scripts: for ACK, `ACK.Terminal=True` is Degraded and `Ready` True or False is Healthy or Progressing, and for Config Connector the `Ready` reason `UpToDate` is Healthy, `UpdateFailed` and `DependencyNotFound` are Degraded, and `DependencyNotReady` is Suspended. Flux has no per-provider logic and uses kstatus or CEL `healthCheckExprs`. See [[findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves]] and [[findings/flux-judges-provider-managed-resources-through-kstatus-or-cel-health-check-expressions-and-its-cel-cheatsheet-lists-crossplane-but-not-config-connector-or-ack]]. Composition layers gate on the same condition: `function-auto-ready` wants `Ready=True` and kro `readyWhen` is author-written CEL. [[sources/research-gap-o3-gitops-provider-managed]]
