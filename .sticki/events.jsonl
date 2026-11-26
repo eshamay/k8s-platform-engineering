@@ -1,0 +1,1 @@
+{"schema_version":1,"seq":1,"ts":"2026-11-25T20:45:00-08:00","op":"ingest","git_sha":null,"source_id":"krm-platform-vocabulary","source_hash":"731a6941f9db","pages_created":["sources/krm-platform-vocabulary","entities/flux","entities/crossplane","entities/kro"],"pages_touched":["index"],"pages_superseded":[],"contradictions":0,"gaps_drafted":0}
