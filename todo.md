@@ -40,6 +40,10 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-part-4-clusterclass-maturity-passage-with-the-unreleased-v1150-final-and-the-main-branch-check]] — open
 - [[#update-flux-ramp-up-kstatus-passage-with-the-unknown-kind-fallback]] — open
 - [[#review-closed-gap-resolutions-refined-by-the-b1-recheck-of-cluster-api-and-argo-cd]] — open
+- [[#update-crossplane-ramp-up-max-reconcile-rate-passage-with-the-v2-worker-pool-meaning]] — open
+- [[#update-crossplane-ramp-up-external-writers-passage-with-the-v2-5-0-source-reading]] — open
+- [[#update-part-4-readiness-passage-with-how-a-crossplane-function-ready-signal-becomes-xr-ready]] — open
+- [[#review-closed-gap-resolutions-refined-by-the-b1-recheck-of-kro-and-crossplane]] — open
 
 ## Open
 
@@ -525,6 +529,34 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 
 - **What:** Closed gaps were not edited. Four closed Resolutions carry statements the recheck refines. "Current Cluster API MachineHealthCheck behavior" and "ClusterClass maturity and the managed topologies proposal" say a recheck is needed at v1.15.0 final, which still does not exist, and `main` matches rc.0 on the fields checked. "Argo CD sharding algorithm maturity in current releases" says the default is unconfirmed, and the default is `legacy` in code at v3.6.3. "Argo CD default reconcile interval across versions" says the v2.1 to v2.4 values were not found, and they are 180 seconds. Pages were updated instead, see [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]] and [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]]. A human decides whether to reopen any of them or leave the Resolution as a record of what was known at close.
 - **Why:** Closed Resolutions stay as the reasoning trail, and the reader should know which statements were later refined. The 2026-11-26 dossier [[sources/research-gap-b1-recheck-capi-argocd]] supplies the evidence.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up max-reconcile-rate passage with the v2 worker pool meaning — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "Level-triggered correction with a budget" and the paragraph beginning "The second pressure is reconcile load" describe `--max-reconcile-rate` as a per-second control. State that v2.1.0 renamed it to `--max-concurrent-reconciles` and that v2.5.0 treats it as a worker pool size (default 100), with the XR circuit breaker (burst 100) as the runaway guard. Cite [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]]. The same wording appears in `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, in the paragraph beginning "The sixth principle is that every loop has a budget".
+- **Why:** The passages describe the 1.6-era flag as the current v2 control. The 2026-11-26 dossier [[sources/research-gap-b1-recheck-kro-crossplane]] supplies the source evidence.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up external writers passage with the v2.5.0 source reading — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "External writers on a composite" should add that a v2.5.0 source read found no path that prunes a spec field owned by another manager (finalizer and claim paths untraced), that no one reproduced issue 7453, and that pull requests 7783 and 7787 are open and unmerged. Cite [[examples/crossplane-pull-requests-7783-and-7787-say-fromstruct-drops-managedfields-on-the-composite-resource]].
+- **Why:** The passage predates the source reading. The 2026-11-26 dossier [[sources/research-gap-b1-recheck-kro-crossplane]] supplies the evidence.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 readiness passage with how a Crossplane function ready signal becomes XR Ready — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "Ordering and readiness are two separate mechanisms" describes kro readiness. Add the Crossplane side: an XR is Ready only when functions set `READY_TRUE` for every composed resource (an unspecified value counts as not ready), shown as `Creating` with an "Unready resources" message, and `function-auto-ready` supplies the signal. Note that kro computes instance `Ready` itself and that its `FAILED` state is a deprecated legacy constant absent at v0.10.0. Cite [[findings/a-crossplane-composed-resource-counts-as-ready-only-when-the-function-sets-ready-true-so-unspecified-readiness-leaves-the-xr-creating]] and [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]].
+- **Why:** The passage covers only the kro half. The 2026-11-26 dossier [[sources/research-gap-b1-recheck-kro-crossplane]] supplies the Crossplane mechanism.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Review closed gap resolutions refined by the b1 recheck of kro and Crossplane — status: open
+
+- **What:** Closed gaps were not edited. Two closed Resolutions carry statements the recheck refines. "kro released-version tuning defaults and instance conditions" says the v0.9.4 rate-limiter table was not fully read and conditions come from docs (both are now read from source, and the `FAILED` state is a deprecated legacy constant). "Crossplane v2 condition behavior and the fix for async Synced signaling" says the body of PR 8080 was not read (it is read: it fixes stale XR condition replay and not async Synced). Review whether the user wants to reopen or annotate them through `sticki-gaps`.
+- **Why:** Closed Resolutions stay as the reasoning trail, and the reader should know which statements were later refined. The 2026-11-26 dossier [[sources/research-gap-b1-recheck-kro-crossplane]] supplies the evidence.
 - **Acceptance:** Passage revised and citing the page named above.
 - **Drafted by:** agent on 2026-11-26
 

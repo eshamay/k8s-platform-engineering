@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
@@ -33,3 +36,7 @@ Crossplane v2.0.0 made XR and claim conditions persist `observedGeneration`. An 
 ## Mitigations
 
 Poll or alert on `AsyncOperation` as well as `Synced` for upjet-based providers, and compare `observedGeneration` where it exists. Do not treat `Synced=True` as proof that no long operation is running. See [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]], [[examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update]], [[concepts/conditions]], and [[entities/crossplane]].
+
+## Pull request 8080 does not change this (2026-11-26)
+
+Correction note: the sentence above says only the title of pull request 8080 was read. Its body is now read. It fixes XR-level stale condition replay (issues 7062 and 8033), not the asynchronous managed-resource signaling described here, and it is open and unmerged, see [[examples/crossplane-pull-request-8080-guards-the-xr-status-write-with-a-resource-version-to-stop-stale-condition-replay]]. The async behavior for managed resources was not rechecked in this pass, so the finding stands. [[sources/research-gap-b1-recheck-kro-crossplane]]

@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
@@ -81,3 +84,7 @@ The 2026-11-26 dossier confirmed from the v3.6.3 docs that round-robin (Alpha si
 ## Named-adopter and kro evidence from the named-adopters dossier
 
 The 2026-11-26 dossier found no organization that says it runs sharded Flux, no incident tying Flux to API Priority and Fairness, no kro benchmark, and no named production kro adopter. It also corrected the kro model: one shared dynamic controller with a single queue and per-kind lazy informers, not a controller per ResourceGraphDefinition. See [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]], [[findings/a-kro-hard-apply-failure-discarded-watches-and-hot-looped-while-large-collections-re-listed-against-the-apiserver]], and [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]]. [[sources/research-gap-g1-named-adopters]]
+
+## Crossplane v2.5.0 scaling facts from source (2026-11-26)
+
+Correction note: the Crossplane paragraph above says the Pods guide describes `--max-reconcile-rate`. In v2.5.0 source that flag is an alias for `--max-concurrent-reconciles`, a worker pool size defaulting to 100, so the guide's per-second wording does not match the code, see [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]]. The XR circuit breaker default is burst 100, refill 1.0 per second, and cooldown 5 minutes, while the v2.1.0 notes say burst 50, see [[findings/the-crossplane-xr-circuit-breaker-default-is-burst-100-in-v2-5-0-source-while-the-v2-1-0-notes-say-burst-50]]. The v2.5 Scalable Composition guide covers the `scale` subresource and not controller capacity. No numeric per-controller limits for XRs or composed resources and no independent benchmark were found. [[sources/research-gap-b1-recheck-kro-crossplane]]

@@ -3,8 +3,11 @@ title: A scalable composition lets HPA and KEDA drive an XR through the scale su
 type: example
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-composition
     hash: f57d89652816
     ingested: 2026-11-25
@@ -29,3 +32,7 @@ A composite resource can behave like a first-class Kubernetes workload API, whic
 ## Related
 
 [[concepts/composition]], [[concepts/composite-resource]], [[entities/crossplane]]
+
+## Scope note (2026-11-26)
+
+The v2.5 Scalable Composition guide, added to the docs in 2026-04, is about exposing the Kubernetes `scale` subresource on an XR. It gives no controller capacity numbers, so it does not answer how many XRs one Crossplane control plane can serve. [[sources/research-gap-b1-recheck-kro-crossplane]]

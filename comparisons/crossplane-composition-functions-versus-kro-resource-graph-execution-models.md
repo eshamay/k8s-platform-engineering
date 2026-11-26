@@ -3,8 +3,11 @@ title: Crossplane composition functions versus kro resource graph execution mode
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
@@ -43,3 +46,7 @@ The dossier gives no performance or scale numbers for either side and no inciden
 ## Related
 
 [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]], [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]], [[concepts/composition]], [[entities/crossplane]], [[entities/kro]]
+
+## Where the readiness signal comes from (2026-11-26)
+
+Correction note: the readiness row says the XR is Ready when composed resources are. In v2.5.0 source, a composed resource counts as ready only when a function sets `READY_TRUE`, and an unspecified value counts as not ready, so the XR `Ready` is a function-authored summary that shows `Creating` with an "Unready resources" message until then, see [[findings/a-crossplane-composed-resource-counts-as-ready-only-when-the-function-sets-ready-true-so-unspecified-readiness-leaves-the-xr-creating]]. In kro the controller itself computes the instance `Ready` as the root of `InstanceManaged`, `GraphResolved`, and `ResourcesReady`. [[sources/research-gap-b1-recheck-kro-crossplane]]

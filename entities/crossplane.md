@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -280,3 +283,9 @@ Correction note: the "To research" and idempotency notes above treat the opt-out
 ## Adopters file re-read
 
 The ADOPTERS file held 87 linked rows at the 2026-11-26 read, all self-reported and unaudited, with numbers for about eight entries. See [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]]. [[sources/research-gap-g1-named-adopters]]
+
+## Source-code recheck of status, SSA, and scaling (2026-11-26)
+
+Correction note: the paragraph on issue 2595 says the `--max-reconcile-rate` flag caps reconciles per second and that present defaults are unknown. In v2.5.0 source the flag is an alias for `--max-concurrent-reconciles`, a worker pool size with a default of 100, and the other defaults are a poll interval of 1 minute, a sync interval of 1 hour, and an XR circuit breaker with burst 100, refill 1.0 per second, and cooldown 5 minutes, see [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]] and [[findings/the-crossplane-xr-circuit-breaker-default-is-burst-100-in-v2-5-0-source-while-the-v2-1-0-notes-say-burst-50]].
+
+An XR is `Ready` only when functions set `READY_TRUE` for every composed resource or for the composite itself, see [[findings/a-crossplane-composed-resource-counts-as-ready-only-when-the-function-sets-ready-true-so-unspecified-readiness-leaves-the-xr-creating]]. XR conditions can replay stale values because status is written twice per pass, see [[findings/crossplane-v2-5-0-writes-xr-status-twice-so-a-lagging-cache-can-replay-old-conditions]]. Open pull request 8080 targets that bug and not the asynchronous managed-resource `Synced` case, see [[examples/crossplane-pull-request-8080-guards-the-xr-status-write-with-a-resource-version-to-stop-stale-condition-replay]]. The composite reconciler applies references and status with force ownership under the field owner `apiextensions.crossplane.io/composite`, and composed resources use per-XR owners prefixed `apiextensions.crossplane.io/composed`. Issue 7453 stays reported, unreproduced, and open, see [[examples/crossplane-pull-requests-7783-and-7787-say-fromstruct-drops-managedfields-on-the-composite-resource]]. [[sources/research-gap-b1-recheck-kro-crossplane]]

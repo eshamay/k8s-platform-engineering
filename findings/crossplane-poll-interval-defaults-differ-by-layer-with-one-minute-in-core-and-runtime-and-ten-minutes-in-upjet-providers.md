@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
@@ -32,3 +35,7 @@ A per-resource poll interval is set with the `crossplane.io/poll-interval` annot
 ## Consequences
 
 A drift-detection latency quoted for "Crossplane" is wrong unless it names the provider: about one minute for providers that keep the runtime default and about ten minutes for Upjet-generated providers, which are most of the large cloud catalogs, see [[findings/generated-provider-catalogs-inherit-the-behavior-and-bugs-of-their-generator]]. Every poll of a managed resource can be a cloud API call, so a one-minute default across thousands of resources spends quota that the ten-minute and `--max-reconcile-rate` settings exist to protect, see [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]] and [[findings/cost-of-constant-reconciliation]]. The values above come from source files. A later pass read the docs.crossplane.io managed-resources page in full (42 KB) and found no poll interval default on it, so that page cannot be cited for the number ([[sources/research-gap-b1-unverified-claims]]). The crossplane-runtime and core defaults, and the provider-upjet-aws `10m` and `1h` defaults, were re-verified against source. The `defaultPollIntervalHook` just returns the interval, so no hidden multiplier applies in the runtime. See [[entities/crossplane]], [[entities/upjet]], and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
+
+## v2.5.0 core defaults (2026-11-26)
+
+The v2.5.0 `core.go` confirms a poll interval of 1 minute, a sync interval of 1 hour, and a minimum per-resource poll interval of 1 second. The v2.3.0 release notes say `crossplane.io/poll-interval` overrides the controller-level interval for a specific resource. [[sources/research-gap-b1-recheck-kro-crossplane]]

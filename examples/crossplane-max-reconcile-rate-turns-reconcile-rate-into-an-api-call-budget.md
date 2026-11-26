@@ -3,8 +3,11 @@ title: Crossplane max-reconcile-rate turns reconcile rate into an API call budge
 type: example
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
     ingested: 2026-11-25
@@ -25,3 +28,7 @@ The issue argues that provider performance was governed by scattered knobs (`QPS
 ## Lesson
 
 A workqueue limiter normally protects the API server. For a provider, the same queue is also the budget for someone else's API. Choosing the reconcile rate as the single control makes the cloud call rate predictable. The dossier did not read Crossplane's current performance guide, so the present defaults are unknown. See [[entities/crossplane]], [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]], [[findings/retry-storms-and-unbounded-retries]], and [[concepts/informers-reflectors-and-workqueues]].
+
+## Later history of the flag (2026-11-26)
+
+Correction note: this page describes the 2021 proposal and the Crossplane 1.6 flag. The v2.1.0 release renamed `--max-reconcile-rate` to `--max-concurrent-reconciles`, and in v2.5.0 source the old name is an alias for a worker pool size with a default of 100, not a per-second rate. See [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]]. [[sources/research-gap-b1-recheck-kro-crossplane]]

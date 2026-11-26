@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -205,3 +208,9 @@ kro has no ADOPTERS.md at the repository root and no named production adopter wi
 ## First-party pitfall reports from the other-tool pitfalls dossier
 
 The 2026-11-26 dossier read kro's issue tracker and release notes and found user reports and one fault-injection finding, but no production postmortem. kro v0.8.0 (2026-01-28) blocks breaking CRD changes by default with the `kro.run/allow-breaking-changes` override, and issue 1395 says the error did not name the override, which pushed a live-cluster user toward deleting the RGD. Issue 1391 says an added `enum=` or CEL `validation=` marker is accepted but never patched into the live CRD. See [[findings/a-kro-breaking-change-error-did-not-name-the-override-annotation-and-an-added-enum-or-cel-marker-was-not-patched-into-the-live-crd]]. Issue 886 says one misconfigured RGD blocked updates to every other RGD until it was deleted and the controller restarted ([[findings/one-unhealthy-kro-resource-graph-definition-blocked-updates-to-every-other-definition]]). Issue 1171, from the fault-injection tool kamera on v0.8.4, says a crash mid-deletion can leave the instance finalizer and children, and it was open and unconfirmed ([[findings/a-kro-controller-crash-during-instance-deletion-can-leave-the-finalizer-and-children-according-to-a-fault-injection-report]]). v0.10.0 (2026-11-10) lists graph-cleanup fixes and a per-resource deletion policy, but the dossier did not tie them to 1171. [[sources/research-gap-g1-other-tool-pitfalls]]
+
+## Source-code recheck of tuning defaults, requeue, and conditions (2026-11-26)
+
+Correction note: earlier sections of this page took the tuning defaults and instance conditions from documentation and called the v0.9.4 comparison an inference. A read of `cmd/controller/main.go` at v0.9.4 and v0.10.0 settles it. The flag defaults are identical at both tags (1 worker, 200 ms to 1000 s backoff, rate limit 10 with burst 100, a 36000 second resync, 20 retries, client QPS 100 with burst 150, instance requeue 3 s, RGD progress requeue 3 s), and v0.10.0 adds only `watch-sync-timeout` (30 s), `graph-concurrent-reconciles` (1), `apply-concurrency` (20), and `cel-cost-limit` (0, disabled). The collection limits are real flags, `rgd-max-collection-size` 1000 and `rgd-max-collection-dimension-size` 10. [[sources/research-gap-b1-recheck-kro-crossplane]]
+
+Instance requeue is a fixed delay at v0.9.4, since that tree has no backoff package, and a per-instance exponential backoff with factor 2 and a five-minute cap at v0.10.0, see [[findings/kro-v0-10-0-requeues-an-unready-instance-with-per-instance-exponential-backoff-capped-at-five-minutes-while-v0-9-4-has-no-backoff-package]]. The `FAILED` instance state is a deprecated legacy constant that v0.9.4 defines and v0.10.0 does not, so the four values at v0.10.0 are IN_PROGRESS, ACTIVE, DELETING, and ERROR, see [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]]. The four built-in instance conditions are Go constants, and author-defined conditions are validated when the graph is built, see [[findings/kro-validates-author-defined-conditions-at-build-time-so-a-bad-status-or-a-duplicate-type-is-rejected-before-an-instance-exists]].

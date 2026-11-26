@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
@@ -36,3 +39,7 @@ Two lessons follow. Always show managed fields before diagnosing an ownership pr
 ## Update from the v2.5 verification pass (2026-11-26)
 
 Issue 7453 remained open on 2026-11-26 with labels `bug` and `stale`. The maintainer comment of 2026-08-27 could not reproduce it on v2.3.1 and pointed at the hidden `managedFields`, the reporter never replied, and two community pull requests (7783 and 7787) that assume a real bug in the composite SSA path are open and unmerged. So the claim is reported, not reproduced by a maintainer, and open. [[sources/research-gap-g3-crossplane-v2]] See [[examples/crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource]].
+
+## Status of the Crossplane report (2026-11-26)
+
+The maintainer's suggestion about hidden `managedFields` is confirmed as quoted in issue 7453 ("`kubectl get -o yaml` hides `managedFields` unless you pass `--show-managed-fields`"). The reporter says `managedFields` was `[]`, which a hidden field does not explain by itself, and no one has settled it. See [[examples/crossplane-pull-requests-7783-and-7787-say-fromstruct-drops-managedfields-on-the-composite-resource]]. [[sources/research-gap-b1-recheck-kro-crossplane]]

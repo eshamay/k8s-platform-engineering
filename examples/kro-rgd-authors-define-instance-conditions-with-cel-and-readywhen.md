@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
@@ -30,3 +33,7 @@ An author can go further and declare custom instance conditions with `runtime.ne
 ## Lesson
 
 kro moves the choice of what "ready" means from the tool to the platform author, which gives precision at the cost of a new way to get it wrong: a `readyWhen` that is too lax reproduces the premature-readiness problem, and a custom condition set that omits a summary `Ready` leaves generic tools with nothing to read. See [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]], [[findings/premature-readiness-in-kstatus-based-tools]], [[entities/kro]], and [[concepts/composite-resource]].
+
+## Build-time validation (2026-11-26)
+
+The v0.10.0 source validates the declared conditions when the graph is built: the status passed to `runtime.newCondition` must be True, False, or Unknown, the type must be non-empty, declared types must be unique, and `runtime.condition(schema, ...)` must name a built-in type. A malformed definition is therefore rejected with the RGD and never reaches an instance, see [[findings/kro-validates-author-defined-conditions-at-build-time-so-a-bad-status-or-a-duplicate-type-is-rejected-before-an-instance-exists]]. [[sources/research-gap-b1-recheck-kro-crossplane]]

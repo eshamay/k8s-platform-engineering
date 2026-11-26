@@ -134,6 +134,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/reddit-pi-day-outage-postmortem]] — Reddit's postmortem of the 314-minute Pi-Day outage, 2026-11-26
 - [[sources/spotify-kubecon-2019-gke-cluster-deletion-transcript]] — transcript of Spotify's KubeCon Europe 2019 talk on deleting production GKE clusters, 2026-11-26
 - [[sources/spotify-kubecon-2019-keynote-slides-with-notes]] — David Xia's slide deck with speaker notes for the Spotify talk, dated 2019-05-22
+- [[sources/research-gap-b1-recheck-kro-crossplane]] — verified dossier rechecking kro v0.9.4 and v0.10.0 tuning, requeue, conditions, and states, and Crossplane v2.5.0 readiness, status writes, server-side apply, and scaling defaults from source (active)
+
 
 ## Examples
 
@@ -355,6 +357,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]] — Skyscanner's 2021 outage, 478 services deleted across every region (active)
 - [[examples/reddit-s-march-2023-pi-day-outage-a-kubernetes-1-24-upgrade-removed-the-master-node-label-that-calico-route-reflectors-selected]] — Reddit's Pi-Day outage, a 1.24 upgrade removed the master label Calico route reflectors selected (active)
 - [[examples/spotify-deleted-one-production-gke-cluster-by-console-click-and-two-more-through-terraform-with-no-end-user-impact]] — Spotify deleted three production GKE clusters in two incidents with no end-user impact (active)
+- [[examples/crossplane-pull-request-8080-guards-the-xr-status-write-with-a-resource-version-to-stop-stale-condition-replay]] — open pull request 8080 fixes stale XR condition replay, not async Synced signaling (active)
+- [[examples/crossplane-pull-requests-7783-and-7787-say-fromstruct-drops-managedfields-on-the-composite-resource]] — two open pull requests tied to issue 7453, which no maintainer has reproduced (active)
+
 
 ## Comparisons
 
@@ -384,7 +389,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]] — three ways to a custom API (draft)
 - [[comparisons/how-flux-ack-and-cluster-api-split-controllers]] — three axes of controller separation (draft)
 - [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]] — queues, jitter, workers, and resync (draft)
-- [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] — workers, cache, sharding, and rate caps (draft)
+- [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] — workers, cache, sharding, and rate caps (contradicted: the Crossplane rate-cap cells describe a pre-v2.1 flag meaning)
 - [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] — lost-create recovery and adoption (active)
 - [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]] — what holds a parent and how teardown is ordered (draft)
 - [[comparisons/background-foreground-and-orphan-propagation-modes]] — three modes side by side (draft)
@@ -698,6 +703,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/argo-cd-v3-6-3-still-defaults-to-legacy-sharding-because-the-source-says-so-even-though-the-docs-page-dropped-the-marker]] — default confirmed in source (active)
 - [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]] — newest tag is v1.15.0-rc.0 and newest stable is v1.14.4 (active)
 - [[findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled]] — kstatus fallback for kinds with no Ready condition (active)
+- [[findings/kro-v0-10-0-requeues-an-unready-instance-with-per-instance-exponential-backoff-capped-at-five-minutes-while-v0-9-4-has-no-backoff-package]] — fixed instance requeue at v0.9.4, doubling backoff capped at five minutes at v0.10.0 (active)
+- [[findings/kro-validates-author-defined-conditions-at-build-time-so-a-bad-status-or-a-duplicate-type-is-rejected-before-an-instance-exists]] — build-time checks on author conditions and the built-in condition constants (active)
+- [[findings/a-crossplane-composed-resource-counts-as-ready-only-when-the-function-sets-ready-true-so-unspecified-readiness-leaves-the-xr-creating]] — how function readiness becomes XR Ready and Synced in v2.5.0 (active)
+- [[findings/crossplane-v2-5-0-writes-xr-status-twice-so-a-lagging-cache-can-replay-old-conditions]] — the two-write XR status pattern behind issues 7062 and 8033 (active)
+- [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]] — docs and source disagree on what the flag means after the v2.1.0 rename (active)
+- [[findings/the-crossplane-xr-circuit-breaker-default-is-burst-100-in-v2-5-0-source-while-the-v2-1-0-notes-say-burst-50]] — circuit breaker defaults differ between the v2.1.0 notes and v2.5.0 source (active)
+
 
 ## Outputs
 

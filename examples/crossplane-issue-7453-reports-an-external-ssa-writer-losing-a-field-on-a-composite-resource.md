@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
@@ -38,3 +41,7 @@ On `main`, the composite reconciler persists `spec.crossplane.resourceRefs` with
 ## Lesson
 
 Describe the case as reported, not reproduced by a maintainer, and open. It does not show that Crossplane drops external writers, and it does not show that it is safe for them either. Always check `--show-managed-fields` first, as in [[findings/managedfields-are-hidden-from-kubectl-output-by-default]]. Compare [[findings/multiple-writers-on-one-object]], [[concepts/server-side-apply-and-field-ownership]], and [[entities/crossplane]].
+
+## Source reading at v2.5.0 (2026-11-26)
+
+Issue 7453 is still open with the labels `bug` and `stale`. A read of the v2.5.0 composite reconciler found no code path that clears `managedFields` or prunes a spec field owned by another manager: the status apply goes through the status subresource and the references patch is spec-only for `resourceRefs`. The finalizer update and claim propagation paths were not traced, so the reading is inconclusive, not a refutation. No cluster was run, so reproduction on v2.5.0 is unverified. Pull requests 7783 and 7787 are open and unmerged, see [[examples/crossplane-pull-requests-7783-and-7787-say-fromstruct-drops-managedfields-on-the-composite-resource]]. The wiki may still say only "reported, not reproduced by a maintainer, open". [[sources/research-gap-b1-recheck-kro-crossplane]]

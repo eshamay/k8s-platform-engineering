@@ -5,6 +5,9 @@ status: draft
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
@@ -43,3 +46,7 @@ A typical user drops from more than 900 CRDs to about 176, at the cost of about 
 ## Update from the v2.5 verification pass (2026-11-26)
 
 The Accepted managed resource definition design doc says families "helped alleviate the issue, but some large Crossplane deployments still work around it", and v2 doubles the managed resource types per provider because it adds namespaced types beside legacy ones. It positions MRDs and activation policies as the next answer and does not retire families: provider-upjet-aws (v2.10.0, 2026-11-20) is still built as a family with sub-packages. So the 2023 decision stands and now has an alpha alternative, activation policies with safe-start providers, plus v2.4 scale-to-zero and v2.5 memory cuts. The idea this page called filtering has therefore returned in a different form. [[sources/research-gap-g3-crossplane-v2]] See [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]] and [[examples/crossplane-v2-4-and-v2-5-cut-memory-on-clusters-with-hundreds-to-two-thousand-crds]].
+
+## Evidence update (2026-11-26)
+
+A recheck of the current Crossplane v2 material found no published numeric limit for XRs or composed resources per controller, no independent v2 benchmark, and no guidance that retires provider families. The options above are unchanged and this page still gives no recommendation beyond the evidence it cites. [[sources/research-gap-b1-recheck-kro-crossplane]]

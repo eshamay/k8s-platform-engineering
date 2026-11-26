@@ -5,6 +5,9 @@ status: draft
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
@@ -44,3 +47,7 @@ For the load, jitter, and queue side of the same tools see [[comparisons/load-an
 ## Retry safety from the idempotency dossier
 
 The Argo CD retry fields (`limit`, `duration`, `factor`, `maxDuration`) and Flux's `retryInterval` and jitter bound how often a retry happens, but they do not make the retried call safe. That depends on the target API being idempotent. [[sources/research-idempotency]] See [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]].
+
+## Source-code confirmation for kro (2026-11-26)
+
+Correction note: the kro column rests on source now. The queue backoff of 200 ms to 1000 s with a token bucket of 10 per second and burst 100 is identical at v0.9.4 and v0.10.0. The instance requeue was a fixed 3 second delay at v0.9.4 and is a per-instance exponential backoff, doubling and capped at five minutes, at v0.10.0, see [[findings/kro-v0-10-0-requeues-an-unready-instance-with-per-instance-exponential-backoff-capped-at-five-minutes-while-v0-9-4-has-no-backoff-package]]. [[sources/research-gap-b1-recheck-kro-crossplane]]

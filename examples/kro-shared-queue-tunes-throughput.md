@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-kro-crossplane
+    hash: ccee0efa5bdd
+    ingested: 2026-11-26
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
@@ -39,3 +42,7 @@ Every convergence machine has a throughput budget. A shared queue with a rate li
 ## Scaling evidence from the named-adopters dossier
 
 The tuning page on main says the dynamic controller uses lazy informers per registered RGD and metadata-only watches while the queue and workers are shared. It lists defaults of 1 dynamic-controller worker, 1 RGD worker, a 36000 second resync, `watchSyncTimeout` 30s (to be raised when a kind has tens of thousands of objects), `rgd.maxCollectionSize` 1000, and `applyConcurrency` 20. These are main-branch values and may differ from tagged releases. No measured throughput exists: issue 610 asks for continuous performance testing and issue 198 proposes weighted queues. See [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]]. [[sources/research-gap-g1-named-adopters]]
+
+## Source-code confirmation (2026-11-26)
+
+Correction note: the defaults on this page are now confirmed from `cmd/controller/main.go` at both v0.9.4 and v0.10.0, not only from the documentation. The queue is a `MaxOf` rate limiter that combines a per-item exponential failure limiter (200 ms to 1000 s) with a token bucket (10 per second, burst 100), and the code is identical at both tags. v0.10.0 adds only `watch-sync-timeout`, `graph-concurrent-reconciles`, `apply-concurrency`, and `cel-cost-limit`. The instance requeue interval flag still reads "Fixed delay" at v0.10.0, but the v0.10.0 instance controller wraps it in a per-instance exponential backoff capped at five minutes, see [[findings/kro-v0-10-0-requeues-an-unready-instance-with-per-instance-exponential-backoff-capped-at-five-minutes-while-v0-9-4-has-no-backoff-package]]. [[sources/research-gap-b1-recheck-kro-crossplane]]
