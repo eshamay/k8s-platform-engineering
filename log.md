@@ -570,3 +570,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Mutating Admission Policy release status
 - closed by: Eric Shamay
 - resolution: Settled: Mutating Admission Policy is GA and on by default since v1.36 per the CHANGELOG and feature-gate table ([[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]]). Not settled: the Kubernetes docs pages disagree with the code on the first-available version ([[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]]).
+
+## [2026-11-26] gaps | close | StorageVersionMigration GA details in Kubernetes v1.37
+- closed by: Eric Shamay
+- resolution: Settled: storagemigration.k8s.io/v1 is GA in v1.37 and is user-triggered, so a retired CRD version needs a user-created migration object ([[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]], [[concepts/crd-versioning-and-storage-migration]]). Not settled: the exact progress-condition field layout was not read.

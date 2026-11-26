@@ -35,7 +35,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#informer-and-cache-behavior-keyed-by-gvr]] — open, unassigned
 - [[#controller-runtime-v030-dynamic-mapper-claim-and-aggregated-discovery-rationale]] — open, unassigned
 - [[#crd-scale-limits]] — open, unassigned
-- [[#storageversionmigration-ga-details-in-kubernetes-v137]] — open, unassigned
 - [[#crd-handling-in-cluster-api-config-connector-ack-and-backstage]] — open, unassigned
 - [[#status-of-the-conversion-webhook-and-garbage-collection-problem]] — open, unassigned
 - [[#contents-of-the-k8saf-admission-webhook-postmortems]] — open, unassigned
@@ -461,17 +460,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Confirm the etcd request-size default against etcd documentation.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crd, scale, etcd
-
-## StorageVersionMigration GA details in Kubernetes v1.37 — status: open
-
-- **Question:** What are the exact fields of the StorageVersionMigration API in v1.37, and does migration trigger automatically or only when a user creates the object?
-- **Why it matters:** The GA claim rests on one truncated blog extract. See [[concepts/crd-versioning-and-storage-migration]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the KEP and v1.37 release notes.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** crd, versioning, storage-migration
-- **Possible resolution from [[sources/research-gap-g3-k8s-and-controller-runtime]]:** Largely settled, and the user can close it. `storagemigration.k8s.io/v1` and the `StorageVersionMigrator` controller are GA and enabled by default in v1.37 (KEP 4192 stable v1.37, CHANGELOG-1.37 PR 138560, release and GA blogs, gate Beta default false at v1.36.0 and GA default true at v1.37.0). At v1.37.0 the type is cluster-scoped with an immutable `spec.resource` (a `GroupResource`), `status.conditions` with the types Running, Succeeded, and Failed, and `status.resourceVersion`. Migration is not triggered automatically: the user creates the object, and only the migrator moved in-tree, not the out-of-tree trigger controller. After a CRD migration, `.status.storedVersions` should hold only the preferred version, and the migration should be retried if not. Post-beta changes are progress reporting in conditions, merge patch in place of server-side apply, and a panic fix. Not settled: the exact field shape of the progress-reporting conditions. The kubernetes.io task page header still reads Beta and disabled while its body says enabled, so do not cite it for stage. See [[concepts/crd-versioning-and-storage-migration]], [[examples/a-user-created-storageversionmigration-object-rewrites-stored-objects-so-a-crd-can-retire-an-old-version]], and [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]].
 
 ## CRD handling in Cluster API, Config Connector, ACK, and Backstage — status: open
 
@@ -1723,3 +1711,16 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: Mutating Admission Policy is GA and on by default since v1.36 per the CHANGELOG and feature-gate table ([[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]]). Not settled: the Kubernetes docs pages disagree with the code on the first-available version ([[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]]).
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-k8s-and-controller-runtime]]:** Settled, and the user can close it. MutatingAdmissionPolicy is GA (v1) and enabled by default since Kubernetes v1.36, so the "still beta" belief is out of date and the digest was right. Three primary readings agree: the live docs page ("Stable since Kubernetes v1.36; enabled by default"), CHANGELOG-1.36 (PR 136039), and the gate table at tag v1.36.0 (Alpha 1.32, Beta 1.34, GA 1.36, default true at GA). Not settled: the docs page also says the feature "was first available in the v1.30 release", which conflicts with the gate table, so cite the gate table for the earlier stages, and the dossier did not separately check that the `admissionregistration.k8s.io/v1` REST group is served by default beyond the gate default. See [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]] and [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]].
+
+## StorageVersionMigration GA details in Kubernetes v1.37 — status: closed (2026-11-26)
+
+- **Question:** What are the exact fields of the StorageVersionMigration API in v1.37, and does migration trigger automatically or only when a user creates the object?
+- **Why it matters:** The GA claim rests on one truncated blog extract. See [[concepts/crd-versioning-and-storage-migration]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the KEP and v1.37 release notes.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crd, versioning, storage-migration
+- **Resolution:** Settled: storagemigration.k8s.io/v1 is GA in v1.37 and is user-triggered, so a retired CRD version needs a user-created migration object ([[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]], [[concepts/crd-versioning-and-storage-migration]]). Not settled: the exact progress-condition field layout was not read.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-k8s-and-controller-runtime]]:** Largely settled, and the user can close it. `storagemigration.k8s.io/v1` and the `StorageVersionMigrator` controller are GA and enabled by default in v1.37 (KEP 4192 stable v1.37, CHANGELOG-1.37 PR 138560, release and GA blogs, gate Beta default false at v1.36.0 and GA default true at v1.37.0). At v1.37.0 the type is cluster-scoped with an immutable `spec.resource` (a `GroupResource`), `status.conditions` with the types Running, Succeeded, and Failed, and `status.resourceVersion`. Migration is not triggered automatically: the user creates the object, and only the migrator moved in-tree, not the out-of-tree trigger controller. After a CRD migration, `.status.storedVersions` should hold only the preferred version, and the migration should be retried if not. Post-beta changes are progress reporting in conditions, merge patch in place of server-side apply, and a panic fix. Not settled: the exact field shape of the progress-reporting conditions. The kubernetes.io task page header still reads Beta and disabled while its body says enabled, so do not cite it for stage. See [[concepts/crd-versioning-and-storage-migration]], [[examples/a-user-created-storageversionmigration-object-rewrites-stored-objects-so-a-crd-can-retire-an-old-version]], and [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]].
