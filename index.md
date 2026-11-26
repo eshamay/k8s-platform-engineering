@@ -26,7 +26,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 ### Controller and operator mechanics
 
 - [[concepts/operator-pattern]] — the two-domain controller, mechanics, maturity levels, ecosystem, and pitfall catalog (active)
-- [[concepts/reconciliation-loop]] — the Reconcile function (draft)
+- [[concepts/reconciliation-loop]] — level-based contract, mechanics, requeue semantics, tool timing, and pitfalls (active)
 - [[concepts/idempotency]] — safe repeated reconciliation (draft)
 - [[concepts/informers-reflectors-and-workqueues]] — watch, cache, queue machinery (draft)
 - [[concepts/finalizers]] — block deletion until external cleanup (draft)
@@ -79,6 +79,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-server-side-apply-and-field-ownership]] — research dossier on server-side apply and field ownership, 17 web sources, 2026-11-25
 - [[sources/research-admission-webhooks-and-cel]] — research dossier on admission webhooks and CEL, 15 web sources, 2026-11-25
 - [[sources/research-operator-pattern]] — research dossier on the operator pattern, 17 web sources, 2026-11-25
+- [[sources/research-reconciliation-loop]] — research dossier on the reconciliation loop, 15 web sources, 2026-11-25
 
 ## Examples
 
@@ -150,6 +151,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/crossplane-composition-replaces-a-hand-written-controller-for-composed-apis]] — configured, not coded (draft)
 - [[examples/kro-generates-a-crd-and-controller-at-runtime-in-place-of-a-bespoke-operator]] — no-code route (draft)
 - [[examples/ack-ships-one-controller-per-aws-service]] — per-service controllers for AWS (draft)
+- [[examples/an-edge-triggered-scaler-ends-at-zero-replicas-where-a-level-triggered-one-converges]] — why reconcile rereads state (draft)
+- [[examples/ingress-cert-manager-and-dns-controllers-react-to-one-object]] — three loops on one object (draft)
+- [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]] — a time-driven loop with off switches (draft)
+- [[examples/argo-cd-does-not-retry-a-failed-sync-of-the-same-commit-unless-retry-is-configured]] — no retry for unchanged input (draft)
+- [[examples/cluster-api-machine-controller-waits-for-infrastructure-and-bootstrap-data]] — a waiting reconciler (draft)
 
 ## Comparisons
 
@@ -178,6 +184,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/kyverno-versus-native-validating-admission-policy]] — engine features versus in-process policy (draft)
 - [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]] — three ways to a custom API (draft)
 - [[comparisons/how-flux-ack-and-cluster-api-split-controllers]] — three axes of controller separation (draft)
+- [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]] — queues, jitter, workers, and resync (draft)
 
 ## Decisions
 
@@ -196,6 +203,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]] — enforcement versus availability (draft)
 - [[decisions/build-a-custom-operator-or-compose-existing-resources]] — code or composition (draft)
 - [[decisions/one-controller-per-kind-or-one-multi-kind-controller]] — single responsibility versus consolidation (draft)
+- [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]] — what each reconcile return value does (draft)
 
 ## Findings
 
@@ -265,6 +273,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/operators-that-publish-no-standard-status-or-metrics-leave-their-state-opaque]] — observability gaps (draft)
 - [[findings/operator-privileges-and-removal-behavior-set-the-blast-radius]] — least privilege and safe removal (draft)
 - [[findings/hand-written-operators-duplicate-what-composition-could-express]] — over-building (draft)
+- [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]] — conflicting backoff claims (draft)
+- [[findings/self-triggered-reconcile-loops-generate-their-own-events]] — hot loops from status writes and noisy children (draft)
+- [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]] — create tracking (draft)
+- [[findings/a-level-based-loop-deletes-what-it-no-longer-sees-in-desired-state]] — prune and orphan guards (draft)
 
 ## Outputs
 

@@ -8,6 +8,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
 aliases: [Retry amplification]
 tags: [pitfall, retries, backoff, postmortem]
 ---
@@ -32,3 +35,7 @@ The dossier's lessons are to rate-limit background work, monitor the resource th
 ## Related
 
 [[concepts/eventual-consistency-and-convergence]], [[examples/kro-shared-queue-tunes-throughput]]
+
+## Retry caps in the reconciliation-loop dossier
+
+The dossier contrasts controller-runtime, which retries failures forever with exponential backoff unless the error is terminal, with kro, which caps retries at 20, and Argo CD, which does not retry the same commit unless configured. [[sources/research-reconciliation-loop]] See [[examples/argo-cd-does-not-retry-a-failed-sync-of-the-same-commit-unless-retry-is-configured]].

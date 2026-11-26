@@ -66,6 +66,9 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#operator-sdk-capability-levels-for-composition-based-operators]] — open, unassigned
 - [[#argo-cd-and-config-connector-as-operators]] — open, unassigned
 - [[#backstage-and-the-operator-pattern]] — open, unassigned
+- [[#requeue-true-backoff-behavior-in-current-controller-runtime]] — open, unassigned
+- [[#argo-cd-default-reconcile-interval-across-versions]] — open, unassigned
+- [[#named-postmortems-of-runaway-reconcile-loops]] — open, unassigned
 
 ---
 
@@ -93,6 +96,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Partly helpful for the apply step. The dossier shows that kustomize-controller applies with server-side apply and runs a dry-run each interval, that ownership is recorded in `managedFields` under the manager name, and that a failing dry-run (for example from a stale co-owner of a list entry) stops reconciliation. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].
 - **Possible resolution from [[sources/research-admission-webhooks-and-cel]]:** Only marginally helpful. The dossier places admission (mutating webhooks, schema validation, validating webhooks, or in-process CEL policies) after authentication and authorization and before persistence, and notes that server-side dry-run passes through webhooks, so a missing `sideEffects` declaration can fail a Flux reconcile. It does not trace the full Git-to-Ready path. See [[examples/flux-dry-run-fails-against-webhooks-without-dry-run-support]].
 - **Possible resolution from [[sources/research-operator-pattern]]:** Only marginally helpful. The dossier names Flux's five controllers (source, kustomize, helm, notification, image automation) and the controller-guideline rules that govern each hop, but it does not trace the handoff between them, finalizer registration, or condition updates. See [[examples/flux-splits-gitops-into-single-purpose-controllers]].
+- **Possible resolution from [[sources/research-reconciliation-loop]]:** Marginally helpful. The dossier gives the Flux Kustomization loop timing (`interval`, `retryInterval`, `timeout`, `wait`, `healthChecks`, `dependsOn`, `prune`) and the controller-runtime requeue semantics that govern each hop, but it read only the first 100,000 characters of the Flux page and does not trace source-controller handoff, finalizer registration, or condition updates. See [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -117,6 +121,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-spec-status-split]]:** Partly helpful on the status side only. A Crossplane XR reports `Synced` and `Ready`, with `Ready` meaning the function pipeline reports all composed resources ready, while kro pulls status from composed resources through CEL. kro's status schema was not read because its documentation URL returned 404. See [[examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready]] and [[entities/kro]].
 - **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Marginally helpful, and only for Crossplane. The dossier shows that Crossplane propagates claim to composite resource to composed resources with server-side apply, which depends on merge markers in provider CRDs, and that moving to composition functions needed a managed-fields migration. The kro documentation returned empty content, so nothing is known about how kro applies composed resources. See [[examples/crossplane-clears-managed-fields-when-migrating-to-composition-functions]].
 - **Possible resolution from [[sources/research-operator-pattern]]:** Marginally helpful. The dossier frames both tools as replacements for a hand-written operator when a custom API is mostly composition: Crossplane through a function pipeline in a Composition, kro through CEL expressions that infer a dependency graph and generate a CRD and controller at runtime. It does not compare their execution models in depth, and the Crossplane composition concept page returned 404. See [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]].
+- **Possible resolution from [[sources/research-reconciliation-loop]]:** Marginally helpful. The dossier describes the Crossplane managed resource loop (Observe, Create, Update, Delete, `Synced` and `Ready`, create tracking) and kro's single shared rate-limited queue with its retry and resync defaults from unreleased documentation. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[entities/crossplane]], [[entities/kro]], and [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -142,6 +147,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Marginally helpful. The dossier notes that GET-modify-PUT incurs an optimistic-concurrency retry cost when many actors update one object, which server-side apply avoids. It gives no sharding or workqueue data. See [[comparisons/client-side-apply-versus-server-side-apply]].
 - **Possible resolution from [[sources/research-admission-webhooks-and-cel]]:** Marginally helpful. Every matching write blocks on webhook calls (default timeout 10 seconds), so a slow webhook adds latency to the whole write path, and in-process CEL has a comparatively small latency impact according to KEP-3488. The dossier gives no measurements. See [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]].
 - **Possible resolution from [[sources/research-operator-pattern]]:** Marginally helpful. The dossier restates the controller guidelines (shared informers, rate-limited workqueues processing one key at a time, waiting for cache sync) and warns that blocking on errors inside the loop stalls other objects, but it has no sharding, concurrency, or scale numbers. See [[findings/blocking-on-errors-inside-the-sync-loop-stalls-every-other-object]] and [[findings/mutating-objects-from-a-shared-cache-or-reading-an-unsynced-cache-corrupts-reconcile-input]].
+- **Possible resolution from [[sources/research-reconciliation-loop]]:** Partly helpful. The dossier gives kro's shared queue, default of 1 worker, token bucket of 10 events per second, 20-retry cap, and client QPS 100 with burst 150, and notes Flux jitter and Argo CD jitter, plus the controller-runtime rate-limited workqueue. It has no sharding data and no Crossplane concurrency data. See [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -751,3 +757,34 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find Backstage documentation on Kubernetes and custom resource integration.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** backstage, platform-engineering
+
+## Requeue true backoff behavior in current controller-runtime — status: open
+
+- **Question:** Does `Result{Requeue: true}` requeue with rate-limited backoff or immediately, in the current controller-runtime source?
+- **Why it matters:** The package reference says rate-limited, while a summary of issue 808 says immediate without backoff, and the field is deprecated. A tutorial or review based on the wrong reading would teach a hot loop or a slow retry. See [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read `reconcile.go` and the controller's requeue handling in the current controller-runtime source.
+  - [ ] Check whether the deprecation notice names a replacement.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** controller-runtime, requeue, backoff
+
+## Argo CD default reconcile interval across versions — status: open
+
+- **Question:** What is the Argo CD default Git polling interval in each recent release, given that stable documentation says 120 seconds plus 60 seconds of jitter and older material says 3 minutes?
+- **Why it matters:** Drift and change latency depend on the interval, and mixed numbers in the wiki can mislead. See [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the `timeout.reconciliation` documentation for several releases.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** argo-cd, intervals
+
+## Named postmortems of runaway reconcile loops — status: open
+
+- **Question:** Which named organizations have published postmortems of a runaway or self-triggered reconcile loop, and what were the causes and fixes?
+- **Why it matters:** The dossier found only guidance and no incident reports, so the self-triggered loop finding rests on secondary sources. See [[findings/self-triggered-reconcile-loops-generate-their-own-events]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Search public postmortem collections and controller issue trackers for reconcile storms.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** postmortems, hot-loop

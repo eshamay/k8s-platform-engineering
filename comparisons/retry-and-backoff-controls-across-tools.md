@@ -8,6 +8,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
 aliases: []
 tags: [comparison, retries, backoff, convergence]
 ---
@@ -27,3 +30,7 @@ The values below are as stated on the fetched pages, and the kro values come fro
 ## Reading the table
 
 The tools disagree on who intervenes after repeated failure. Argo CD and kro eventually stop (a new commit, or a dropped item), while Flux and controller-runtime keep retrying on a schedule. The disagreement mirrors the trade-off in [[findings/retry-storms-and-unbounded-retries]]: unbounded retries risk amplification, and bounded retries risk silent non-convergence. See also [[comparisons/reconcile-cadence-and-off-switches-across-tools]], [[findings/errors-used-as-timers-in-reconcilers]], and [[findings/failure-retry-loops-and-backoff]].
+
+## Further reading
+
+For the load, jitter, and queue side of the same tools see [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]]. The reconciliation-loop dossier confirms the Argo CD no-retry-for-the-same-commit rule and the kro 20-retry cap. [[sources/research-reconciliation-loop]]

@@ -14,6 +14,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
 aliases: []
 tags: [controllers]
 ---
@@ -43,3 +46,7 @@ Convergence depends on idempotence in three places. Idempotent reconcilers make 
 ## To research
 
 Patterns for idempotent creates against cloud APIs, such as external-name annotations in Crossplane.
+
+## Idempotency for external create calls
+
+The reconciliation-loop dossier shows that idempotency for external APIs needs more than status: Crossplane writes create-tracking annotations so a create whose status write failed is not repeated. [[sources/research-reconciliation-loop]] See [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]].

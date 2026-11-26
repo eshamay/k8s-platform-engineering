@@ -29,6 +29,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -76,3 +79,7 @@ The ClusterClass topology controller adopted server-side apply in pull request 6
 ## Core and provider controllers
 
 The Cluster API concepts page describes cluster lifecycle managed as custom resources from a management cluster with pluggable infrastructure providers, and states that "Extensibility is at the core of Cluster API." The operator-pattern dossier treats it as a large-scale operator whose provider model keeps the core controllers generic. [[sources/research-operator-pattern]] See [[examples/cluster-api-keeps-core-controllers-generic-with-provider-controllers]] and [[comparisons/how-flux-ack-and-cluster-api-split-controllers]].
+
+## Machine controller as a waiting reconciler
+
+The Machine controller sets owner references, waits for infrastructure and bootstrap provisioning, and matches Nodes to provider IDs. The documentation page does not describe requeue or pause mechanics. [[sources/research-reconciliation-loop]] See [[examples/cluster-api-machine-controller-waits-for-infrastructure-and-bootstrap-data]].

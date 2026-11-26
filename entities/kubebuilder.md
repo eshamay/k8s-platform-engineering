@@ -26,6 +26,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
 aliases: [Kubebuilder Book]
 tags: [tool, operators, framework]
 ---
@@ -65,3 +68,7 @@ The Kubebuilder book scaffolds webhooks with `kubebuilder create webhook`, imple
 ## Good practices and the CronJob tutorial
 
 The Kubebuilder good-practices page recommends idempotent reconcile, status conditions following the API conventions, one controller per Kind, and Kubernetes logging conventions. The CronJob tutorial is the dossier's recommended first hands-on exercise. [[sources/research-operator-pattern]] See [[findings/multi-kind-controllers-break-encapsulation-and-scale-poorly]], [[examples/kubebuilder-cronjob-tutorial-shows-the-end-to-end-shape-of-a-go-operator]], and [[entities/operator-sdk]].
+
+## Reconcile implementation lessons
+
+The CronJob controller implementation chapter teaches idempotency, rebuilding status from observed children ("status should be able to be reconstituted from the state of the world"), updating the status subresource separately, controller owner references, field indexes for listing children, and `RequeueAfter` to wake at the next scheduled run. [[sources/research-reconciliation-loop]] See [[concepts/reconciliation-loop]].

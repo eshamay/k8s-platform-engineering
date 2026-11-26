@@ -44,6 +44,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -109,3 +112,7 @@ kustomize-controller applies with a server-side dry-run first, so a webhook that
 ## One controller per concern
 
 The Flux components page describes Flux as built from the GitOps Toolkit: specialized controllers for source, kustomize, helm, notification, and image automation, each reconciling its own CRDs, plus composable APIs and reusable Go packages. The operator-pattern dossier cites this as the clearest example of the one-controller-per-concern split. [[sources/research-operator-pattern]] See [[examples/flux-splits-gitops-into-single-purpose-controllers]] and [[concepts/operator-pattern]].
+
+## Interval, retry, and timing in the reconciliation-loop dossier
+
+The Kustomization reference describes `spec.interval` as the periodic reconcile cadence with a 60 second minimum, `retryInterval` as the delay after failures (defaulting to `interval`), `timeout` as the bound on build, apply, and health-check work, and `suspend` as the switch that pauses reconciliation and drift correction. Jitter can spread many Kustomizations, and a manual reconcile can be requested by annotation. The dossier read only the first 100,000 of about 121,600 characters of the page. [[sources/research-reconciliation-loop]] See [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]] and [[concepts/reconciliation-loop]].

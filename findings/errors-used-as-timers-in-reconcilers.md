@@ -8,6 +8,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, requeue, backoff, controller-runtime]
 ---
@@ -29,3 +32,7 @@ Use `RequeueAfter` for waiting states, record terminal errors in status so retri
 ## Related
 
 [[concepts/eventual-consistency-and-convergence]], [[concepts/reconciliation-loop]]
+
+## Corroboration from the reconciliation-loop dossier
+
+The reconciliation-loop dossier repeats the guidance: errors for failures, `RequeueAfter` for planned polling, and `TerminalError` for failures retry cannot fix, and it notes that the semantics of `Requeue: true` are described inconsistently. [[sources/research-reconciliation-loop]] See [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]].

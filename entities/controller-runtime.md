@@ -17,6 +17,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
 aliases: [sigs.k8s.io/controller-runtime]
 tags: [tool, controllers, framework]
 ---
@@ -52,3 +55,7 @@ Issue 321 documents that a client's RESTMapper built once at startup could not s
 ## Foundation for Kubebuilder and the Operator SDK
 
 The operator-pattern dossier describes Kubebuilder and the Operator SDK as both built on controller-runtime, which supplies the informer, cache, and workqueue plumbing that the controller guidelines require. [[sources/research-operator-pattern]] See [[entities/operator-sdk]] and [[concepts/operator-pattern]].
+
+## Result, TerminalError, and backoff tuning
+
+The reconcile package defines `Request` (name and namespace only), `Result` with a deprecated `Requeue`, `RequeueAfter`, and an optional `Priority`, and `TerminalError`, which is logged and counted but not retried. Backoff is tuned through the controller's `RateLimiter` option. Sources disagree on whether `Requeue: true` backs off. [[sources/research-reconciliation-loop]] See [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]] and [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].

@@ -44,6 +44,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -109,3 +112,7 @@ The admission dossier found no primary Crossplane material, so this wiki makes n
 ## Composition as a replacement for a bespoke controller
 
 The operator-pattern dossier presents Crossplane compositions as a way to expose a custom API without hand-writing a controller: platform teams define composite resource APIs (XRD, XR) and map them to managed resources with a Composition that runs a function pipeline, so controller logic is configured. The page at `/latest/concepts/composition/` returned 404 during the research, so current documentation paths need checking. [[sources/research-operator-pattern]] See [[examples/crossplane-composition-replaces-a-hand-written-controller-for-composed-apis]] and [[decisions/build-a-custom-operator-or-compose-existing-resources]].
+
+## Observe, Create, Update, Delete and create tracking
+
+The managed resource design one-pager describes a CRUD-style external client (Observe, Create, Update, Delete) with `spec.forProvider` for desired state and `status.atProvider` for observed provider state. The managed resources documentation adds create-tracking annotations that prevent a repeated or leaked create when the status write fails, the `crossplane.io/paused` annotation, `managementPolicies`, and `deletionPolicy` with `Delete` or `Orphan`. [[sources/research-reconciliation-loop]] See [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]] and [[concepts/reconciliation-loop]].

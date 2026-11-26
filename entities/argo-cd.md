@@ -38,6 +38,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -97,3 +100,7 @@ Argo CD applies with client-side `kubectl apply` by default. `ServerSideApply=tr
 ## Coverage gap in the operator-pattern dossier
 
 The operator-pattern dossier fetched no page on Argo CD, so how its controllers handle failures and how it maps onto the one-controller-per-concern guidance is not covered by that source. [[sources/research-operator-pattern]] See [[open-knowledge-gaps]].
+
+## Reconcile timing and failure policy in the reconciliation-loop dossier
+
+Automated sync polls on `timeout.reconciliation`, default 120 seconds plus 60 seconds of jitter (older material says 3 minutes), self-heal re-syncs on divergence with a default 5 second delay, and prune is off by default. Automated sync does not retry a failed sync of the same commit and parameters unless retry is configured, which differs from the controller-runtime default of retrying with backoff. [[sources/research-reconciliation-loop]] See [[examples/argo-cd-does-not-retry-a-failed-sync-of-the-same-commit-unless-retry-is-configured]].

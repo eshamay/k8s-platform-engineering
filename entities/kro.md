@@ -41,6 +41,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-reconciliation-loop
+    hash: df7d66206baf
+    ingested: 2026-11-25
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -102,3 +105,7 @@ The admission dossier found no primary kro material, so how kro handles validati
 ## A no-code alternative to a bespoke operator
 
 The kro overview says kro "parses the expressions, infers the dependency graph, generates a CRD, and stands up a controller - all at runtime." The operator-pattern dossier treats it as a route to a custom API that avoids writing an operator. [[sources/research-operator-pattern]] See [[examples/kro-generates-a-crd-and-controller-at-runtime-in-place-of-a-bespoke-operator]] and [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]].
+
+## Shared queue and tuning defaults
+
+The controller tuning page says kro runs three reconcile loops, and its dynamic controller handles all instances through one shared rate-limited queue with a default of 1 worker, a bucket limit of 10 events per second, a full resync every 10 hours, up to 20 retries, instance requeue from 3 seconds to 5 minutes, and client QPS 100 with burst 150. The figures come from the `next` documentation and may differ in released versions. [[sources/research-reconciliation-loop]] See [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
