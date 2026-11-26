@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: spotify-kubecon-2019-gke-cluster-deletion-transcript
+    hash: 335758d1f8ed
+    ingested: 2026-11-26
   - id: reddit-pi-day-outage-postmortem
     hash: 195bd85b2856
     ingested: 2026-11-26
@@ -63,3 +66,7 @@ The Skyscanner 2021 GitOps outage is no longer known only from the k8s.af index.
 ## Update from the Reddit primary post
 
 The Reddit Pi-Day outage is no longer known only from a secondary retelling. The primary post was read in full on 2026-11-26, see [[sources/reddit-pi-day-outage-postmortem]] and [[examples/reddit-s-march-2023-pi-day-outage-a-kubernetes-1-24-upgrade-removed-the-master-node-label-that-calico-route-reflectors-selected]]. Earlier statements here that Reddit rests on a secondary retelling are superseded.
+
+## Update from the Spotify primary talk
+
+The Spotify cluster-deletion incidents are no longer known only from the k8s.af index. The speaker's talk was read in full from a user-supplied transcript and slide deck on 2026-11-26, see [[sources/spotify-kubecon-2019-gke-cluster-deletion-transcript]] and [[examples/spotify-deleted-one-production-gke-cluster-by-console-click-and-two-more-through-terraform-with-no-end-user-impact]]. With Skyscanner and Reddit, all four named incident reports from the targeted pass are now read from primary sources. Earlier statements here that Spotify is index-only are superseded.

@@ -404,7 +404,7 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 
 ## Update part-5 and part-1 evidence notes with the Skyscanner and Reddit primary postmortems — status: open
 
-- **What:** Part 5 section 10 and Part 1's evidence note say the Skyscanner, Reddit and Spotify incidents are index-level or secondary-only and that no named-organization GitOps outage postmortem was found. Skyscanner (2021, Argo CD deleted 478 services) and Reddit (2023, Kubernetes 1.24 label removal and Calico route reflectors) are now primary sources. Revise those passages and cite [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]] and the Reddit example page.
+- **What:** Part 5 section 10 and Part 1's evidence note say the Skyscanner, Reddit and Spotify incidents are index-level or secondary-only and that no named-organization GitOps outage postmortem was found. Skyscanner (2021, Argo CD deleted 478 services) and Reddit (2023, Kubernetes 1.24 label removal and Calico route reflectors) are now primary sources. Spotify (2018 to 2019 cluster deletions through the console and Terraform, no end-user impact) is also now a primary source. Revise those passages and cite [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]] and the Reddit example page.
 - **Why:** The outputs currently understate the evidence and name Skyscanner as unread.
 - **Acceptance:** The passages cite the primary pages and no longer call these incidents index-only.
 - **Drafted by:** agent on 2026-11-26

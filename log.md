@@ -620,3 +620,13 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 - fact conflicts: 0
 - gaps drafted: 0 (possible-resolution notes added under two gaps)
 - rationale: Replaces the secondary-only retelling with the primary post, fetched with the user's explicit permission from a Wayback Machine capture. The secondary account's main mechanism and 314-minute figure are confirmed; its reconstructed timeline and 52 million user figure are not in the primary.
+
+## [2026-11-26] ingest | Spotify KubeCon Europe 2019 keynote transcript
+- source: [[sources/spotify-kubecon-2019-gke-cluster-deletion-transcript]]
+- raw: `raw/spotify-kubecon-2019-gke-cluster-deletion-transcript.md` (sha256: 335758d1f8ed), user-supplied auto-generated transcript
+- pages touched: [[findings/the-pitfalls-dossier-rests-on-index-summaries-an-older-crossplane-version-and-few-primary-incident-reports]], [[index]], [[todo]]
+- new pages: [[sources/spotify-kubecon-2019-gke-cluster-deletion-transcript]], [[examples/spotify-deleted-one-production-gke-cluster-by-console-click-and-two-more-through-terraform-with-no-end-user-impact]], [[findings/terraform-review-builds-that-write-a-shared-state-file-and-out-of-order-merges-deleted-production-clusters]], [[findings/partial-migration-and-pod-ip-service-discovery-let-spotify-fail-over-when-its-kubernetes-clusters-were-deleted]]
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 0 (possible-resolution note added under the primary-incident-reports gap)
+- rationale: The video page could not be scraped, so the user supplied the transcript. New pages also cite the slide deck source, which is ingested as the next entry, so one link to [[sources/spotify-kubecon-2019-keynote-slides-with-notes]] resolves only after that commit.

@@ -130,6 +130,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g1-other-tool-pitfalls]] — verified dossier on first-party pitfall issues and release notes for kro, Config Connector, ACK, and Cluster API, with no named-organization postmortem, 2026-11-26 (active)
 - [[sources/skyscanner-namespace-deletion-postmortem]] — Skyscanner's 2021 postmortem of a global outage caused by a template change reconciled by Argo CD, 2026-11-26
 - [[sources/reddit-pi-day-outage-postmortem]] — Reddit's postmortem of the 314-minute Pi-Day outage, 2026-11-26
+- [[sources/spotify-kubecon-2019-gke-cluster-deletion-transcript]] — transcript of Spotify's KubeCon Europe 2019 talk on deleting production GKE clusters, 2026-11-26
 
 ## Examples
 
@@ -349,6 +350,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/cluster-api-issue-10522-cert-manager-rotation-made-webhooks-unreachable-and-failed-a-clusterctl-upgrade-test]] — 90 second webhook window (active)
 - [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]] — Skyscanner's 2021 outage, 478 services deleted across every region (active)
 - [[examples/reddit-s-march-2023-pi-day-outage-a-kubernetes-1-24-upgrade-removed-the-master-node-label-that-calico-route-reflectors-selected]] — Reddit's Pi-Day outage, a 1.24 upgrade removed the master label Calico route reflectors selected (active)
+- [[examples/spotify-deleted-one-production-gke-cluster-by-console-click-and-two-more-through-terraform-with-no-end-user-impact]] — Spotify deleted three production GKE clusters in two incidents with no end-user impact (active)
 
 ## Comparisons
 
@@ -684,6 +686,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/templated-configuration-that-looks-like-config-is-code-and-needs-tests-and-a-regional-rollout-before-a-gitops-controller-applies-it-globally]] — templated configuration is code and needs tests and staged rollout (active)
 - [[findings/hand-edited-calico-route-reflector-configuration-that-was-committed-nowhere-outlived-everyone-who-knew-about-it]] — undeclared Calico configuration outlived its owners (active)
 - [[findings/kubernetes-has-no-supported-downgrade-so-a-failed-control-plane-upgrade-forces-a-backup-restore-and-an-untested-restore-procedure-is-the-risk]] — no supported downgrade makes an untested restore the risk (active)
+- [[findings/terraform-review-builds-that-write-a-shared-state-file-and-out-of-order-merges-deleted-production-clusters]] — shared Terraform state and out-of-order merges deleted clusters (active)
+- [[findings/partial-migration-and-pod-ip-service-discovery-let-spotify-fail-over-when-its-kubernetes-clusters-were-deleted]] — partial migration and pod-IP discovery enabled failover (active)
 
 ## Outputs
 
