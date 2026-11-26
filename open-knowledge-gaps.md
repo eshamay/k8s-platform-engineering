@@ -64,7 +64,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#informer-and-cache-choices-of-kro-config-connector-ack-and-cluster-api]] — open, unassigned
 - [[#resolution-of-crossplane-issue-7801-on-credential-protection]] — open, unassigned
 - [[#how-ack-config-connector-and-kro-name-and-remove-their-finalizers]] — open, unassigned
-- [[#how-kro-sets-ownership-and-labels-on-child-resources]] — open, unassigned
 - [[#argo-cd-prunepropagationpolicy-and-resource-tracking-methods]] — open, unassigned
 - [[#what-happens-when-blockownerdeletion-is-set-without-finalizers-permission]] — open, unassigned
 - [[#crossplane-v2-namespaced-composites-and-managementpolicies-versus-garbage-collection]] — open, unassigned
@@ -826,19 +825,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** ack, config-connector, kro, finalizers
 - **Possible resolution from [[sources/research-gap-m1-finalizers]]:** Mostly settled, and the user decides whether to close it. ACK names its finalizer from a code-generator template, `finalizers.<apiGroup>/<Kind>`, and removes it only after the AWS resource is cleaned up, with asynchronous deletes returning a requeue. Config Connector uses `cnrm.cloud.google.com/finalizer`, removed in the lifecycle handler's deleted path, and a second `cnrm.cloud.google.com/deletion-defender` finalizer, which a deletion-defender controller removes first, and on CRD uninstall it removes both and sets abandon. kro uses `kro.run/finalizer` on instances, ResourceGraphDefinitions, and GraphRevisions and `kro.run/graph-finalizer` on Graph objects, and removes it with a merge patch only when no deletion candidates remain. Not settled: the rendered ACK string for a specific service, where Config Connector adds the deletion-defender finalizer, and the Config Connector direct controllers. See [[findings/ack-config-connector-and-kro-each-name-their-finalizers-differently-and-remove-them-only-after-cleanup]] and [[findings/config-connector-has-a-second-deletion-defender-finalizer-and-removes-both-finalizers-with-an-abandon-setting-when-its-crd-is-uninstalled]].
-
-## How kro sets ownership and labels on child resources — status: open
-
-- **Question:** Does kro set owner references or labels on the resources that an instance creates, and in what order does it delete them beyond the reverse-wave behavior already recorded?
-- **Why it matters:** The owner-reference dossier could not read kro's instances or FAQ pages, so kro is the one platform tool in scope with no known ownership model. See [[entities/kro]] and [[sources/research-owner-references-and-garbage-collection]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read kro's instances and FAQ documentation or the controller source.
-  - [ ] Add a kro row to [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** kro, owner-references, deletion
-- **Possible resolution from [[sources/research-composite-resource]]:** Marginally helpful. The kro FAQ tells Argo CD users to add an ownerReference and an `argocd.argoproj.io/tracking-id` annotation to every templated resource, which suggests kro does not set these in a way Argo CD tracks by default, and the RGD overview says deletion follows reverse topological order. It does not say whether kro sets its own owner references or labels. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]].
-- **Possible resolution from [[sources/research-gap-m2-ownership-gc]]:** Largely settled, and the user decides whether to close it. kro v0.10.0 documents that it does not set owner references on instance children, for ordered deletion and because a namespaced owner cannot own a cluster-scoped child. It stamps `kro.run/owned`, instance identity labels, `app.kubernetes.io/managed-by: kro`, and `applyset.kubernetes.io/part-of`, stores each child's wave in `internal.kro.run/apply-order`, and deletes in reverse waves from the persisted ApplySet inventory. It does set an RGD owner reference on the generated CRD and GraphRevisions, and the FAQ shows manual owner references and a tracking-id annotation for Argo CD. Not settled: KREP-004 and KREP-014 were not read. See [[findings/kro-sets-no-owner-references-on-instance-children-and-tracks-them-with-labels-and-an-applyset-inventory]] and [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
 
 ## Argo CD PrunePropagationPolicy and resource tracking methods — status: open
 
@@ -1804,3 +1790,19 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Closed by:** Eric Shamay on 2026-11-26
 
 - **Possible resolution from [[sources/research-gap-m1-finalizers]]:** Settled, and the user decides whether to close it. Issue 1514 was opened 2019-10-10 and closed 2020-04-27 with a maintainer deferring to a CAEP. The thread weighed a named finalizer, a `Dependencies` list in the spec, a hook-registration CRD, and annotations. The implemented Machine Deletion Phase Hooks proposal chose annotations and rejects finalizers because "A misbehaving controller that accidentally removes finalizers could have undesirable effects." The current API defines the prefixes `pre-drain.delete.hook.machine.cluster.x-k8s.io` and `pre-terminate.delete.hook.machine.cluster.x-k8s.io`, and the control plane provider adds its own pre-terminate hook. Not settled: the Cluster API book page on the hooks could not be read, and the issue thread does not itself record the final choice. See [[examples/cluster-api-issue-1514-was-closed-in-april-2020-in-favor-of-a-proposal-that-chose-annotation-hooks]] and [[findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers]].
+
+## How kro sets ownership and labels on child resources — status: closed (2026-11-26)
+
+- **Question:** Does kro set owner references or labels on the resources that an instance creates, and in what order does it delete them beyond the reverse-wave behavior already recorded?
+- **Why it matters:** The owner-reference dossier could not read kro's instances or FAQ pages, so kro is the one platform tool in scope with no known ownership model. See [[entities/kro]] and [[sources/research-owner-references-and-garbage-collection]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read kro's instances and FAQ documentation or the controller source.
+  - [ ] Add a kro row to [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, owner-references, deletion
+- **Resolution:** Largely settled. kro v0.10.0 documents that it does not set owner references on instance children, for ordered deletion and because a namespaced owner cannot own a cluster-scoped child. It stamps `kro.run/owned`, instance identity labels, `app.kubernetes.io/managed-by: kro`, and `applyset.kubernetes.io/part-of`, stores each child's wave in `internal.kro.run/apply-order`, and deletes in reverse waves from the persisted ApplySet inventory. It does set an RGD owner reference on the generated CRD and GraphRevisions, and the FAQ shows manual owner references and a tracking-id annotation for Argo CD. Not settled: KREP-004 and KREP-014 were not read. See [[findings/kro-sets-no-owner-references-on-instance-children-and-tracks-them-with-labels-and-an-applyset-inventory]] and [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-composite-resource]]:** Marginally helpful. The kro FAQ tells Argo CD users to add an ownerReference and an `argocd.argoproj.io/tracking-id` annotation to every templated resource, which suggests kro does not set these in a way Argo CD tracks by default, and the RGD overview says deletion follows reverse topological order. It does not say whether kro sets its own owner references or labels. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]].
+- **Possible resolution from [[sources/research-gap-m2-ownership-gc]]:** Largely settled, and the user decides whether to close it. kro v0.10.0 documents that it does not set owner references on instance children, for ordered deletion and because a namespaced owner cannot own a cluster-scoped child. It stamps `kro.run/owned`, instance identity labels, `app.kubernetes.io/managed-by: kro`, and `applyset.kubernetes.io/part-of`, stores each child's wave in `internal.kro.run/apply-order`, and deletes in reverse waves from the persisted ApplySet inventory. It does set an RGD owner reference on the generated CRD and GraphRevisions, and the FAQ shows manual owner references and a tracking-id annotation for Argo CD. Not settled: KREP-004 and KREP-014 were not read. See [[findings/kro-sets-no-owner-references-on-instance-children-and-tracks-them-with-labels-and-an-applyset-inventory]] and [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
