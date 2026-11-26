@@ -32,6 +32,9 @@ sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-gap-g3-scale-recheck
+    hash: d9bd6911bff7
+    ingested: 2026-11-26
 aliases: [sigs.k8s.io/controller-runtime]
 tags: [tool, controllers, framework]
 ---
@@ -86,7 +89,7 @@ The controller-runtime FAQ says reconcile functions must be idempotent and must 
 
 ## Cache, cache-backed client, and default limiter
 
-The Kubernetes blog describes the cache as an in-memory, watch-fed copy that the manager's cache-backed client reads from, while writes and status updates go to the API server and authoritative reads need an explicit uncached reader. Memory grows with watched objects and there is no eviction. The default workqueue limiter, as extracted, takes the maximum of a per-item exponential limiter (5 ms base, 1000 s cap) and a token bucket (10 per second, burst 100). `Owns()` and `Watches()` register informers and event-to-key mappings. [[sources/research-informers-reflectors-and-workqueues]] See [[concepts/informers-reflectors-and-workqueues]], [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]], and [[findings/stale-cache-and-double-action]].
+The Kubernetes blog describes the cache as an in-memory, watch-fed copy that the manager's cache-backed client reads from, while writes and status updates go to the API server and authoritative reads need an explicit uncached reader. Memory grows with watched objects and there is no eviction. The client-go default workqueue limiter, `DefaultTypedControllerRateLimiter`, takes the maximum of a per-item exponential limiter (5 ms base, 1000 s cap) and a token bucket (10 per second, burst 100) that the source comment says applies only to the overall retry rate, not per item. Correction from the 2026-11-26 recheck: that is the client-go default, not necessarily what a controller-runtime controller uses. In the version read, controller-runtime uses only the exponential limiter when its priority queue is on, which is the default, and `MaxConcurrentReconciles` defaults to 1. [[sources/research-gap-g3-scale-recheck]] `Owns()` and `Watches()` register informers and event-to-key mappings. [[sources/research-informers-reflectors-and-workqueues]] See [[concepts/informers-reflectors-and-workqueues]], [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]], and [[findings/stale-cache-and-double-action]].
 
 ## Owner reference helpers
 

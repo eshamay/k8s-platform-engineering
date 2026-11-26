@@ -120,6 +120,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g3-k8s-and-controller-runtime]] — verified dossier on v1.36 staleness mitigation, Mutating Admission Policy GA, StorageVersionMigration GA in v1.37, and Requeue backoff in controller-runtime v0.25.3, 2026-11-26 (active)
 - [[sources/research-gap-g3-flux-ssa-helm]] — verified dossier on the kustomize-controller --override-manager-before-dry-run flag shipped in v1.10.0 and Flux v2.10.0, 2026-11-26 (active)
 - [[sources/research-gap-g3-argocd-capi]] — verified dossier on Argo CD v3.6.3 sharding maturity, Cluster API v1beta2 MachineHealthCheck, Ready versus Available, and ClusterClass Beta at v1.15.0-rc.0, 2026-11-26 (active)
+- [[sources/research-gap-g3-scale-recheck]] — verified dossier rechecking scale figures (SIG thresholds, Gardener, Upbound, Argo CD, Crossplane, APF, workqueue defaults) against raw text, 2026-11-26 (active)
 
 ## Examples
 
@@ -272,8 +273,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/kratix-promises-scatter-workloads-across-standard-pci-and-terraform-destinations]] — vendor example of multi-cluster segmentation (draft)
 - [[examples/cozystack-turns-commodity-servers-into-a-cloud-with-kubernetes-databases-and-vms]] — bare-metal cloud building (draft)
 - [[examples/rtl-nederland-provisions-whole-kubernetes-clusters-with-crossplane-which-overlaps-with-cluster-api]] — self-reported adopter and layer overlap (draft)
-- [[examples/gardener-advises-keeping-most-clusters-under-about-500-nodes-and-controlling-webhooks-and-object-counts]] — operator advice below tested maximums (draft)
-- [[examples/upbound-tested-a-multi-cloud-control-plane-of-about-2000-managed-resources-and-upstreamed-kubernetes-fixes]] — what broke with thousands of CRDs and the upstream fixes (draft)
+- [[examples/gardener-advises-keeping-most-clusters-under-about-500-nodes-and-controlling-webhooks-and-object-counts]] — operator advice below tested maximums (active)
+- [[examples/upbound-tested-a-multi-cloud-control-plane-of-about-2000-managed-resources-and-upstreamed-kubernetes-fixes]] — what broke with thousands of CRDs and the upstream fixes (active)
 - [[examples/zalando-s-2019-coredns-outage-turned-a-retry-storm-into-a-total-dns-failure]] — retry storm, ndots, and OOM-killed CoreDNS (active)
 - [[examples/grafana-s-default-priorityclass-let-a-new-cluster-preempt-every-production-ingester]] — a default PriorityClass amplified by a ReplicaSet (active)
 - [[examples/loveholidays-gke-upgrade-from-1-10-to-1-12-overran-its-window-by-about-five-hours]] — slow drains, a stuck node pool, and HPA saturation (active)
@@ -383,7 +384,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ## Findings
 
-- [[findings/etcd-scale-limits-of-the-shared-store]] — etcd limits (draft)
+- [[findings/etcd-scale-limits-of-the-shared-store]] — etcd limits (active)
+- [[findings/the-sig-scalability-thresholds-cover-built-in-types-only-and-are-not-hard-limits]] — SIG table scope, kops test setup, not hard limits (active)
+- [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]] — 600MB and 300MB are targets from a Draft doc (active)
+- [[findings/the-default-workqueue-rate-limiter-differs-between-client-go-and-controller-runtime]] — client-go bucket versus controller-runtime exponential only (active)
 - [[findings/destructive-deletion-of-external-resources]] — deleting objects deletes infrastructure (draft)
 - [[findings/ordering-and-dependency-failures]] — CRD and dependency ordering (draft)
 - [[findings/immutable-fields-and-drift-collisions]] — force, resync, and adoption hazards (draft)
@@ -485,7 +489,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/crossplane-does-not-delete-and-recreate-to-change-immutable-fields]] — immutable changes may not apply (draft)
 - [[findings/observe-based-import-has-manual-copy-steps-ambiguous-names-and-relaxed-validation]] — import hazards (draft)
 - [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]] — terminology drift (active)
-- [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] — CRD count scale cost (draft)
+- [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] — CRD count scale cost (active)
 - [[findings/a-kro-graph-revision-that-fails-compilation-stops-all-instances-with-no-fallback]] — no rollback in kro (draft)
 - [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]] — kro docs list the FAILED instance state on one page and omit it on another (draft)
 - [[findings/kro-reserves-the-right-to-change-instance-sub-conditions-so-only-ready-is-a-stable-contract]] — only the Ready instance condition is a stable contract (draft)
@@ -531,11 +535,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/terraform-in-cluster-controllers-keep-state-in-secrets-gate-apply-on-git-approval-and-couple-to-specific-versions]] — state, approval, and version coupling (draft)
 - [[findings/a-portal-alone-gives-visibility-but-not-provisioning-so-ticket-queues-can-persist-according-to-a-kratix-vendor]] — vendor claim about portals (draft)
 - [[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]] — source-quality caveat (draft)
-- [[findings/client-side-throttling-and-server-side-apf-are-separate-layers]] — two throttling layers, two places to look (draft)
+- [[findings/client-side-throttling-and-server-side-apf-are-separate-layers]] — two throttling layers, two places to look (active)
 - [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]] — cluster sharding limits and maturity label (active)
-- [[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory]] — cost moves from the API server to provider pods (draft)
-- [[findings/tested-scalability-maximums-and-operator-advice-differ-by-an-order-of-magnitude]] — 5,000 tested nodes versus 500 advised (draft)
-- [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]] — source-quality caveat (draft)
+- [[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory]] — cost moves from the API server to provider pods (active)
+- [[findings/tested-scalability-maximums-and-operator-advice-differ-by-an-order-of-magnitude]] — 5,000 tested nodes versus 500 advised (active)
+- [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]] — source-quality caveat (active)
 - [[findings/a-retry-storm-amplified-by-ndots-and-small-coredns-memory-limits-can-take-down-cluster-dns]] — shared DNS as a blast-radius single point (active)
 - [[findings/monitoring-that-runs-inside-the-cluster-and-depends-on-cluster-dns-goes-blind-in-the-outage-it-should-report]] — alert from outside the cluster (draft)
 - [[findings/a-new-cluster-wide-default-must-wait-until-existing-workloads-carry-explicit-values]] — default PriorityClass cascade (active)

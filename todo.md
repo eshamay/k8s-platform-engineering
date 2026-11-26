@@ -22,6 +22,8 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-part-3-for-the-kro-v0-10-0-verification-pass]] — open
 - [[#update-part-4-for-the-kro-v0-10-0-verification-pass]] — open
 - [[#update-part-5-for-the-kro-v0-10-0-verification-pass]] — open
+- [[#update-part-4-for-the-scale-figures-recheck]] — open
+- [[#update-part-5-for-the-scale-figures-recheck]] — open
 - [[#update-part-1-for-the-reconcile-defaults-verification-pass]] — open
 - [[#update-part-2-for-the-reconcile-defaults-verification-pass]] — open
 - [[#update-part-3-for-the-reconcile-defaults-verification-pass]] — open
@@ -203,6 +205,20 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the Argo CD sharding paragraph (around line 224) says the non-legacy algorithms "were labelled experimental in the digest". It should say they are still labelled experimental (Alpha) in the Argo CD v3.6.3 docs, with the same wording since v2.14.0, and that the current default method is unconfirmed.
 - **Why:** The 2026-11-26 dossier read the high-availability and feature-maturity pages at v3.6.3, see [[sources/research-gap-g3-argocd-capi]]. Cite [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]] and [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]].
 - **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 for the scale figures recheck — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "The most instructive operational story in this area is about counts" (around line 94) says Upbound found "several MiB of memory per CRD" and that "The figures came through digests of the posts, so check them against the originals before quoting". It should say "a little over 4 MiB" of resident memory per CRD, described as an Upbound self-report, and drop the digest caveat for these figures.
+- **Why:** The 2026-11-26 dossier reread the Upbound post and the Crossplane design doc and blog from raw text, see [[sources/research-gap-g3-scale-recheck]]. Cite [[examples/upbound-tested-a-multi-cloud-control-plane-of-about-2000-managed-resources-and-upstreamed-kubernetes-fixes]] and [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 for the scale figures recheck — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, three passages need revision. The CRD paragraph (around line 214) says "several MiB per CRD" and that the details "came through a digest and the numbers need checking"; it should say "a little over 4 MiB" per CRD (an Upbound self-report) and note the figures were rechecked against the raw post. The cluster-envelope paragraph (around line 202) should add that the SIG Scalability table covers built-in types only and says its thresholds are not hard limits. The open-questions paragraph (around line 288) says the scale dossier relies on digests for most numbers; it should say the quoted figures were rechecked on 2026-11-26 and only parts of KEP-1040 remain unread. The workqueue discussion (around line 206) may also note that controller-runtime's default limiter has no overall token bucket when its priority queue is on.
+- **Why:** The 2026-11-26 dossier reread these sources from raw text, see [[sources/research-gap-g3-scale-recheck]]. Cite [[findings/the-sig-scalability-thresholds-cover-built-in-types-only-and-are-not-hard-limits]], [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]], [[findings/the-default-workqueue-rate-limiter-differs-between-client-go-and-controller-runtime]], and [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]].
+- **Acceptance:** Passages revised and citing the pages named above.
 - **Drafted by:** agent on 2026-11-26
 
 ## Done

@@ -14,6 +14,9 @@ sources:
   - id: research-gap-g3-argocd-capi
     hash: c3d485fa58ae
     ingested: 2026-11-26
+  - id: research-gap-g3-scale-recheck
+    hash: d9bd6911bff7
+    ingested: 2026-11-26
 aliases: []
 tags: [argo-cd, sharding, cache, memory, scale]
 ---
@@ -26,7 +29,7 @@ An Argo CD installation manages many applications across many clusters. The appl
 
 ## What the operator manual says
 
-The controller keeps a lightweight cluster cache fed by Kubernetes watch APIs and does not query repeatedly. To scale it, the manual describes three levers. Clusters can be sharded across controller replicas with one of three algorithms: `legacy`, `round-robin`, or `consistent-hashing`. The `--status-processors` and `--operation-processors` flags set the worker counts, with defaults of 20 and 10 as extracted by the dossier and higher values suggested for around 1000 applications. Setting `GOMEMLIMIT` to 80 to 90 percent of the container memory limit helps the Go runtime collect garbage before the container is killed for running out of memory. URL: https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/.
+The controller keeps a lightweight cluster cache fed by Kubernetes watch APIs and does not query repeatedly. To scale it, the manual describes three levers. Clusters can be sharded across controller replicas with one of three algorithms: `legacy`, `round-robin`, or `consistent-hashing`. The `--status-processors` and `--operation-processors` flags set the worker counts, with defaults of 20 and 10. The docs give a worked example: "For 1000 applications, we use 50 for `--status-processors` and 25 for `--operation-processors`", verified in the v3.6.3 file and on master on 2026-11-26. [[sources/research-gap-g3-scale-recheck]] Setting `GOMEMLIMIT` to 80 to 90 percent of the container memory limit helps the Go runtime collect garbage before the container is killed for running out of memory. URL: https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/.
 
 ## Lesson
 
@@ -34,7 +37,7 @@ Argo CD answers the cache-memory problem by splitting the cache across replicas,
 
 ## Additional evidence from the scale dossier
 
-The scale dossier confirms the sharding description from the same high-availability page and adds the details that `ARGOCD_CONTROLLER_REPLICAS` tells each replica the total, that clusters can be pinned to a shard through the cluster secret, and that the legacy algorithm is uneven while round-robin and consistent-hashing were labelled experimental in the digest. The two internal queues handle reconciliation in milliseconds and syncing in seconds. Hub-and-spoke setups, where one control plane manages many destination clusters, are the typical scenario. Still no named adopter is given. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], and [[sources/research-scale-and-sharding]].
+The scale dossier confirms the sharding description from the same high-availability page and adds the details that `ARGOCD_CONTROLLER_REPLICAS` tells each replica the total, that clusters can be pinned to a shard through the cluster secret, and that the legacy algorithm is uneven while round-robin and consistent-hashing were labelled experimental, a label that the 2026-11-26 recheck found unchanged at v3.6.3 and on master. The two internal queues handle reconciliation in milliseconds and syncing in seconds. Hub-and-spoke setups, where one control plane manages many destination clusters, are the typical scenario. Still no named adopter is given. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], and [[sources/research-scale-and-sharding]].
 
 ## Algorithm maturity at v3.6.3
 

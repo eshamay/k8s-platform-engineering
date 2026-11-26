@@ -14,6 +14,9 @@ sources:
   - id: research-gap-g3-argocd-capi
     hash: c3d485fa58ae
     ingested: 2026-11-26
+  - id: research-gap-g3-scale-recheck
+    hash: d9bd6911bff7
+    ingested: 2026-11-26
 aliases: [sharding, controller scale, scalability envelope]
 tags: [scale, sharding, apf, informers, workqueue, crd-count, leader-election]
 ---
@@ -26,7 +29,7 @@ Scale in Kubernetes platform engineering is a set of separate limits and not a s
 
 ## Limits at the cluster level
 
-SIG Scalability publishes a tested envelope of about 5,000 nodes, 150,000 pods, 10,000 namespaces, 10,000 services, and a 1.5 MB object size cap. The envelope is not a cube, because the dimensions interact and pushing one reduces headroom in the others, and limits for smaller clusters are proportionally lower. CRD count is not one of the tested dimensions, which is the gap that platform tools fell into. https://github.com/kubernetes/community/blob/main/sig-scalability/configs-and-limits/thresholds.md Operators of many clusters give tighter advice, see [[examples/gardener-advises-keeping-most-clusters-under-about-500-nodes-and-controlling-webhooks-and-object-counts]] and [[findings/tested-scalability-maximums-and-operator-advice-differ-by-an-order-of-magnitude]]. The shared store has its own ceiling, see [[findings/etcd-scale-limits-of-the-shared-store]].
+SIG Scalability publishes a tested envelope of about 5,000 nodes, 150,000 pods, 10,000 namespaces, 10,000 services, and a 1.5 MB object size cap. The envelope is not a cube, because the dimensions interact and pushing one reduces headroom in the others, and limits for smaller clusters are proportionally lower. The page is explicitly scoped to "builtin resource types", states that the thresholds "are NOT hard limits - crossing the limit results in degraded performance", and ties them to a test setup (release-blocking scale tests have run on kops since December 2025). It also gives 150,000 non-event objects per resource type and 3 GB total size, and namespace-scope limits of 3,000 pods and 5,000 services. CRD count is not one of the tested dimensions, which is the gap that platform tools fell into, and the Crossplane project says it was "never officially included as a Kubernetes scaling threshold". These figures were rechecked against the raw page on 2026-11-26. [[sources/research-gap-g3-scale-recheck]] https://github.com/kubernetes/community/blob/main/sig-scalability/configs-and-limits/thresholds.md Operators of many clusters give tighter advice, see [[examples/gardener-advises-keeping-most-clusters-under-about-500-nodes-and-controlling-webhooks-and-object-counts]] and [[findings/tested-scalability-maximums-and-operator-advice-differ-by-an-order-of-magnitude]]. The shared store has its own ceiling, see [[findings/etcd-scale-limits-of-the-shared-store]].
 
 ## Limits inside a controller
 
@@ -34,7 +37,7 @@ A controller built on client-go has four distinct constraints. The informer cach
 
 ## Server-side protection
 
-API Priority and Fairness replaced the coarse max-in-flight limits. Requests are classified by FlowSchema into a priority level with its own concurrency share measured in seats, queued with shuffle sharding within the level, and rejected with HTTP 429 when the level is saturated, so a badly behaved controller need not starve others. Clients are expected to back off. https://kubernetes.io/docs/concepts/cluster-administration/flow-control/ The design rationale in KEP-1040 is that one subset of load, such as a thundering herd, should not crowd out requests the cluster needs to repair itself. The two throttling layers are easy to confuse, see [[findings/client-side-throttling-and-server-side-apf-are-separate-layers]], and the failure it protects against is shown in [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]].
+API Priority and Fairness replaced the coarse max-in-flight limits. Requests are classified by FlowSchema into a priority level whose nominal concurrency is set in shares that the server converts into seats, queued with shuffle sharding within the level, and rejected with HTTP 429 when the level is saturated, so a badly behaved controller need not starve others. Clients are expected to back off. https://kubernetes.io/docs/concepts/cluster-administration/flow-control/ The design rationale in KEP-1040 is stated in its Motivation section: "there can be undesirable scenarios where one subset of the request load crowds out other parts of the request load." The KEP names self-maintenance traffic as a crowded-out case: "In an overload scenario today there is no assurance of priority for these self-maintenance requests." Its status is implemented, with alpha in v1.18, beta in v1.20, and stable in v1.29. The two throttling layers are easy to confuse, see [[findings/client-side-throttling-and-server-side-apf-are-separate-layers]], and the failure it protects against is shown in [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]].
 
 ## The two levers: raise or split
 

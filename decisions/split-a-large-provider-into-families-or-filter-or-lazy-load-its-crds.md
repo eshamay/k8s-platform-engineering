@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
+  - id: research-gap-g3-scale-recheck
+    hash: d9bd6911bff7
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, crossplane, provider-family, crd-count, scale]
 ---
@@ -35,7 +38,7 @@ The community chose provider families, and Upbound's official providers shipped 
 
 ## Consequences
 
-A typical user drops from more than 900 CRDs to about 176, at the cost of about 9 provider pods instead of 2 and more per-provider memory. See [[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory]]. Crossplane later added resource-type activation in version 2, see [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]], which revisits the filtering idea. See also [[examples/crossplane-provider-families-let-operators-install-only-the-cloud-services-they-use]], [[comparisons/provider-families-versus-per-service-controllers]], and [[concepts/scale-and-sharding]].
+A typical user drops from more than 900 CRDs to about 176, at the cost of about 9 provider pods instead of 2 and more per-provider memory. The per-provider memory numbers in the design doc are targets, not measurements, see [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]]. See [[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory]]. Crossplane later added resource-type activation in version 2, see [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]], which revisits the filtering idea. See also [[examples/crossplane-provider-families-let-operators-install-only-the-cloud-services-they-use]], [[comparisons/provider-families-versus-per-service-controllers]], and [[concepts/scale-and-sharding]].
 
 ## Update from the v2.5 verification pass (2026-11-26)
 

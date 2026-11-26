@@ -1,9 +1,9 @@
 ---
 title: One CRD per external resource type overloads API server discovery and OpenAPI computation
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
@@ -14,6 +14,9 @@ sources:
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
+  - id: research-gap-g3-scale-recheck
+    hash: d9bd6911bff7
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, scale, crd, crossplane, api-server, discovery]
 ---
@@ -22,7 +25,7 @@ tags: [pitfall, scale, crd, crossplane, api-server, discovery]
 
 ## Observation
 
-Crossplane's model gives every external resource type its own CRD, so a multi-cloud provider set implies thousands of them. Upbound estimates roughly 2,000 CRDs for AWS, Azure, and GCP together, with more than 4 MiB of API server memory per CRD and about 300 API group-versions needing discovery requests. A GitHub issue reports that installing 100-plus CRD Terrajet-based providers made API servers slow. The root causes were OpenAPI recomputation each time a CRD was registered and client discovery rate limits of about 20 requests per second with a 30 burst. Reported outcomes include GKE control planes unresponsive at about 680 CRDs, `kubectl` taking more than 14 seconds, Rancher slowness, and a second large provider taking about 70 minutes to install against 20 for the first. URLs: https://github.com/crossplane/crossplane/issues/2649, https://www.upbound.io/blog/scaling-kubernetes-to-thousands-of-crds. [[sources/research-managed-resource]]
+Crossplane's model gives every external resource type its own CRD, so a multi-cloud provider set implies thousands of them. Upbound estimates roughly 2,000 CRDs for AWS, Azure, and GCP together, with "a little over 4MiB" of API server resident memory per CRD (an Upbound self-report, measured with 780 CRDs) and about 300 API group-versions needing discovery requests. A GitHub issue reports that installing 100-plus CRD Terrajet-based providers made API servers slow. The root causes were OpenAPI recomputation each time a CRD was registered and client discovery rate limits of about 20 requests per second with a 30 burst. Reported outcomes include GKE control planes unresponsive at about 680 CRDs, `kubectl` taking more than 14 seconds, Rancher slowness, and a second large provider taking about 70 minutes to install against 20 for the first. URLs: https://github.com/crossplane/crossplane/issues/2649, https://www.upbound.io/blog/scaling-kubernetes-to-thousands-of-crds. [[sources/research-managed-resource]]
 
 ## Why it matters
 
@@ -34,7 +37,7 @@ Crossplane v2 activates only needed types through ManagedResourceDefinitions and
 
 ## Upbound explanation of the mechanism
 
-The Upbound engineering post gives the mechanism in plain terms. Clients make hundreds of discovery requests and get throttled, the API server does increasingly expensive serialization work each time a CRD is added or updated, and memory reaches roughly 4 MiB per CRD. Upstream mitigations include higher kubectl discovery rate limits, cheaper client caching, lazy OpenAPI computation, and shared etcd clients and loggers. The post covers upstream fixes and does not itself detail managed resource activation policies. [[sources/research-crossplane-deep-dive]] See [[entities/crossplane]] and [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]].
+The Upbound engineering post gives the mechanism in plain terms. Clients make hundreds of discovery requests and get throttled, the API server does increasingly expensive serialization work each time a CRD is added or updated, and memory reaches a little over 4 MiB per CRD. The Upbound post also reports a logger fix expected to cut memory by about 20 percent in Kubernetes 1.25 and a garbage-collection tuning experiment that lowered peak resident memory by 25 percent on an idle API server with about 2,000 CRDs. Both are Upbound self-reports, verified against the post text on 2026-11-26 in [[sources/research-gap-g3-scale-recheck]]. Upstream mitigations include higher kubectl discovery rate limits, cheaper client caching, lazy OpenAPI computation, and shared etcd clients and loggers. The post covers upstream fixes and does not itself detail managed resource activation policies. [[sources/research-crossplane-deep-dive]] See [[entities/crossplane]] and [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]].
 
 ## Additional evidence from the scale dossier
 

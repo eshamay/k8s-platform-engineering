@@ -1,13 +1,16 @@
 ---
 title: Client-side throttling and server-side APF are separate layers
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
+  - id: research-gap-g3-scale-recheck
+    hash: d9bd6911bff7
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, scale, apf, throttling, client-go, qps]
 ---
@@ -16,7 +19,7 @@ tags: [pitfall, scale, apf, throttling, client-go, qps]
 
 ## Observation
 
-Two independent mechanisms slow a controller down. The client's own rate limiter, configured by `QPS` and `Burst` in `rest.Config`, delays requests before they leave the process. API Priority and Fairness on the server queues or rejects requests with HTTP 429 when a priority level is saturated. The client-go architecture document calls the client settings "the client's half of the contract with the server's API Priority and Fairness system" and says the client honours the 429 `Retry-After` header. https://github.com/kubernetes/client-go/blob/master/ARCHITECTURE.md [[sources/research-scale-and-sharding]]
+Two independent mechanisms slow a controller down. The client's own rate limiter, configured by `QPS` and `Burst` in `rest.Config`, delays requests before they leave the process. API Priority and Fairness on the server queues or rejects requests with HTTP 429 when a priority level is saturated: levels of type `Reject` answer excess traffic immediately with 429, and levels of type `Queue` use shuffle sharding and fair queuing. The page is feature-state stable since v1.29, and its intro says "a poorly-behaved controller need not starve others (even at the same priority level)." The recheck of 2026-11-26 read the whole page. [[sources/research-gap-g3-scale-recheck]] The client-go architecture document calls the client settings "the client's half of the contract with the server's API Priority and Fairness system" and says the client honours the 429 `Retry-After` header. https://github.com/kubernetes/client-go/blob/master/ARCHITECTURE.md [[sources/research-scale-and-sharding]]
 
 ## Why it matters
 

@@ -1,9 +1,9 @@
 ---
 title: etcd scale limits of the shared store
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
@@ -11,6 +11,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-gap-g3-scale-recheck
+    hash: d9bd6911bff7
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, etcd, scale]
 ---
@@ -40,4 +43,4 @@ vCluster argues that one etcd cannot be sharded across replication groups for a 
 
 ## Additions from the CRD dossier
 
-Custom resources share the same storage and watch paths as built-in objects. A secondary source cites an object size limit near 1.5 MB, which this wiki has not confirmed against official documentation. Ant Group tuned the apiserver watch cache and etcd for a cluster of more than 10,000 nodes, cutting memory from roughly 400 GB to 100 GB, though without CRD-specific numbers. [[sources/research-custom-resource-definition]] See [[examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd]].
+Custom resources share the same storage and watch paths as built-in objects. The SIG Scalability thresholds page, read in full on 2026-11-26, gives a 1.5 MB size per object, 150,000 non-event objects per resource type, and 3 GB total size for built-in types, and says the thresholds "are NOT hard limits". Gardener's guide independently says "ETCD has a practical space limit of 8 GB" and that a healthy database is under 3 GB. [[sources/research-gap-g3-scale-recheck]] The earlier note that the 1.5 MB figure was unconfirmed is superseded by this check. Ant Group tuned the apiserver watch cache and etcd for a cluster of more than 10,000 nodes, cutting memory from roughly 400 GB to 100 GB, though without CRD-specific numbers. [[sources/research-custom-resource-definition]] See [[examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd]].

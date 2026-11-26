@@ -1,13 +1,16 @@
 ---
 title: Upbound tested a multi-cloud control plane of about 2,000 managed resources and upstreamed Kubernetes fixes
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
+  - id: research-gap-g3-scale-recheck
+    hash: d9bd6911bff7
+    ingested: 2026-11-26
 aliases: []
 tags: [crossplane, upbound, crd-count, discovery, openapi, scale]
 ---
@@ -20,7 +23,7 @@ While testing a multi-cloud control plane with roughly 2,000 managed resources, 
 
 ## What broke
 
-On the client side, discovery needed around 300 HTTP requests and hit client-side throttling, and the kubectl disk cache was slow because of fsync use. A log line from the post reads "Waited for 1.033772408s due to client-side throttling, not priority and fairness, request". On the server side, OpenAPI computation burned CPU, memory use reached several MiB per CRD and caused out-of-memory kills on hosted control planes, and redundant etcd clients and loggers added overhead. These details came through a digest and the numbers need checking. https://www.upbound.io/blog/scaling-kubernetes-to-thousands-of-crds
+On the client side, discovery needed around 300 HTTP requests and hit client-side throttling, and the kubectl disk cache was slow because of fsync use. A log line from the post reads "Waited for 1.033772408s due to client-side throttling, not priority and fairness, request". On the server side, OpenAPI computation burned CPU, memory use reached "a little over 4MiB" of resident memory per CRD, measured with 780 CRDs in the post's screenshot, and managed services "won't begin scaling until the API server is repeatedly OOM killed". Redundant etcd clients and loggers added overhead. The 2026-11-26 recheck read the full post text and confirmed these figures, which are Upbound's own self-reported measurements, so this page's earlier "several MiB" wording is corrected to "a little over 4 MiB". The post does not describe a formal out-of-memory test, only the observation. [[sources/research-gap-g3-scale-recheck]] https://www.upbound.io/blog/scaling-kubernetes-to-thousands-of-crds
 
 ## What was fixed
 
