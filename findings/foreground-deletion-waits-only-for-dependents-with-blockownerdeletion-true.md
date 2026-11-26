@@ -8,6 +8,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-owner-references-and-garbage-collection
+    hash: bd4cc1219f2d
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, garbage-collection, finalizers, owner-references]
 ---
@@ -25,3 +28,7 @@ A parent can be stuck waiting on children, and a dependent without `blockOwnerDe
 ## Related
 
 [[concepts/finalizers]], [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]], [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]]
+
+## Additional evidence
+
+The owner-reference dossier confirms the same rule and adds that setting `blockOwnerDeletion` is guarded by an admission check on delete permission, with an unverified claim of silent dropping. [[sources/research-owner-references-and-garbage-collection]] See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]] and [[comparisons/background-foreground-and-orphan-propagation-modes]].

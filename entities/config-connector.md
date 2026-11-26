@@ -32,6 +32,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-owner-references-and-garbage-collection
+    hash: bd4cc1219f2d
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -83,3 +86,7 @@ The managing-and-deleting-resources page says that if a resource does not exist 
 ## Deletion policy and finalizer behavior
 
 Deleting a Config Connector object deletes the Google Cloud resource by default. The annotation `cnrm.cloud.google.com/deletion-policy: abandon` keeps the resource, and it must be applied before the manifest is deleted. The official page does not discuss finalizers. A consultancy blog reports that the finalizer deletes a resource that production uses, and that deleting the GKE cluster stops the controller and orphans cloud resources that keep billing. [[sources/research-finalizers]] See [[findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone]] and [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]].
+
+## Abandon policy versus owner references
+
+Deleting a Config Connector object deletes the real Google Cloud resource by default, and the annotation `cnrm.cloud.google.com/deletion-policy: abandon` keeps it. The page shows Kubernetes delete semantics reaching an external system through finalizer-style controller handling and not through owner references. [[sources/research-owner-references-and-garbage-collection]] See [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].

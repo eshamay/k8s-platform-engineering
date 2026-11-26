@@ -17,6 +17,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-owner-references-and-garbage-collection
+    hash: bd4cc1219f2d
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, deletion, finalizers, safety]
 ---
@@ -50,3 +53,7 @@ The idempotency dossier adds that adoption interacts with deletion: in ACK and C
 ## Evidence from the finalizers dossier
 
 A consultancy article reports that Config Connector deletes the Google Cloud resource through a finalizer even when production uses it, and that Crossplane, ACK, and Config Connector all delete by default with retain, abandon, or Orphan as the opt-out, applied before the delete. A GitOps prune or a mistaken manifest removal can trigger the cascade. [[sources/research-finalizers]] See [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]] and [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]].
+
+## Owner references stop at the cluster boundary
+
+Owner references only reach Kubernetes objects, so cascade deletion never covers cloud resources, which need finalizers or a provider deletion policy such as Config Connector's abandon annotation. [[sources/research-owner-references-and-garbage-collection]] See [[concepts/owner-references-and-garbage-collection]].

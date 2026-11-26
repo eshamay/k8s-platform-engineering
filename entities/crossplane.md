@@ -56,6 +56,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-owner-references-and-garbage-collection
+    hash: bd4cc1219f2d
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -137,3 +140,7 @@ Crossplane issue 2595 led to a `--max-reconcile-rate` flag, merged for Crossplan
 ## Finalizers, deletion policy, and teardown ordering
 
 A managed resource holds a finalizer until the external resource is fully gone, and `deletionPolicy` is Delete by default, with Orphan keeping the cloud resource. Enabled `managementPolicies` take precedence over `deletionPolicy`. Issue 7801 describes a failure in which, on namespace deletion, a credentials Secret without a finalizer disappears before managed resources finish cleanup and leaves them stuck Terminating. Its resolution was not confirmed. [[sources/research-finalizers]] See [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]], [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]], and [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]].
+
+## Owner references and composite deletion policy
+
+Composed resources carry owner references to their composite resource. The composite deletion policy is Background by default, with Foreground and Pipeline as options for ordered teardown, and a composed resource that a function stops returning is deleted. Claims order deletion through `compositeDeletePolicy` because the composite has no owner reference to the claim. Issue 6084 on per-resource deletion behavior was closed as stale in April 2025. [[sources/research-owner-references-and-garbage-collection]] See [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]] and [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]].

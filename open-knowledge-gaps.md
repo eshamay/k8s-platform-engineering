@@ -81,6 +81,11 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#resolution-of-crossplane-issue-7801-on-credential-protection]] — open, unassigned
 - [[#how-ack-config-connector-and-kro-name-and-remove-their-finalizers]] — open, unassigned
 - [[#cluster-api-issue-1514-on-blocking-deletion-with-a-finalizer-or-annotation]] — open, unassigned
+- [[#how-kro-sets-ownership-and-labels-on-child-resources]] — open, unassigned
+- [[#argo-cd-prunepropagationpolicy-and-resource-tracking-methods]] — open, unassigned
+- [[#what-happens-when-blockownerdeletion-is-set-without-finalizers-permission]] — open, unassigned
+- [[#crossplane-v2-namespaced-composites-and-managementpolicies-versus-garbage-collection]] — open, unassigned
+- [[#keps-on-cross-namespace-ownership-and-garbage-collector-performance]] — open, unassigned
 
 ---
 
@@ -111,6 +116,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-reconciliation-loop]]:** Marginally helpful. The dossier gives the Flux Kustomization loop timing (`interval`, `retryInterval`, `timeout`, `wait`, `healthChecks`, `dependsOn`, `prune`) and the controller-runtime requeue semantics that govern each hop, but it read only the first 100,000 characters of the Flux page and does not trace source-controller handoff, finalizer registration, or condition updates. See [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]].
 - **Possible resolution from [[sources/research-idempotency]]:** Only marginally helpful. The dossier confirms that kustomize-controller runs a server-side apply dry-run each interval and that conflicting field ownership signals another actor, which fits the apply step of the trace. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[concepts/idempotency]].
 - **Possible resolution from [[sources/research-finalizers]]:** Only marginally helpful. The dossier shows finalizer registration and teardown: Crossplane managed resources hold a finalizer until the external resource is gone, and kro keeps the instance finalizer while deleting in reverse dependency waves, but it does not trace source fetch or status conditions. See [[concepts/finalizers]] and [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]].
+- **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Only marginally helpful. The dossier adds the garbage collector side of the trace: the controller sets an owner reference on each child, the garbage collector's dependency graph deletes dependents when the owner goes, and a lost reference breaks cascade. It does not trace Flux's source fetch, apply, or condition updates, and it says Flux prunes through an inventory and not through owner references. See [[concepts/owner-references-and-garbage-collection]] and [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -138,6 +144,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-reconciliation-loop]]:** Marginally helpful. The dossier describes the Crossplane managed resource loop (Observe, Create, Update, Delete, `Synced` and `Ready`, create tracking) and kro's single shared rate-limited queue with its retry and resync defaults from unreleased documentation. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[entities/crossplane]], [[entities/kro]], and [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
 - **Possible resolution from [[sources/research-idempotency]]:** Marginally helpful, and only for Crossplane. The dossier covers Crossplane's managed resource idempotency (external names, `external-create-pending`, `managementPolicies`, `initProvider`) but could not read kro's instance and reconciliation pages, so kro's handling of repeated reconciliation and partial failure is unknown. See [[entities/crossplane]] and [[entities/kro]].
 - **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on the deletion side of the comparison only. The dossier shows that kro deletes composed resources in reverse dependency waves and that Crossplane has no equivalent ordering for namespace deletion (issue 7801), but it gives no resolution of which graph model suits which case. See [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] and [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]].
+- **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Partly helpful on the Crossplane side of deletion only. The dossier shows that composed resources are owned by their composite and that the composite deletion policy is Background, Foreground, or Pipeline, which gives Crossplane an explicit ordered-teardown knob. It could not read kro's instances page, so how kro owns and orders its children is still unknown. See [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]] and [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -167,6 +174,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-idempotency]]:** Marginally helpful. The dossier notes that Flux jitter and `retryInterval` and Argo CD's `maxDuration` limit retry load, and that many objects sharing one interval can spike API load. It has no informer, sharding, or concurrency data. See [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]].
 - **Possible resolution from [[sources/research-informers-reflectors-and-workqueues]]:** Partly helpful. The dossier explains the reflector, DeltaFIFO, indexer, and workqueue pipeline, the default limiter, cache memory growth, and relist behavior, and gives tool knobs: Flux `--concurrent` and Helm cache flags, Argo CD cluster sharding with processor counts and `GOMEMLIMIT`, and Crossplane `--max-reconcile-rate`. It has no Flux sharding data and no Crossplane performance guide. See [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] and [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]].
 - **Possible resolution from [[sources/research-finalizers]]:** Not helpful. The dossier names no adopter beyond the projects themselves, and it cannot supply scale data.
+- **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Marginally helpful. The dossier describes how the garbage collector keeps a graph built from watch events on all resources, with queues and an absent-owner cache, but it gives no scale numbers or sharding data. See [[examples/the-garbage-collector-builds-a-dependency-graph-from-watch-events-and-sorts-references-into-three-classes]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -463,6 +471,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[comparisons/deletion-policies-across-gitops-and-provider-tools]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** config-connector, ack, deletion, prune
+- **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Partly helpful for Config Connector only. Deleting the object deletes the Google Cloud resource by default, and the `abandon` annotation keeps it. The ACK search failed, so ACK is not covered. See [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
 
 ## Git versus OCI as the canonical GitOps source — status: open
 
@@ -906,6 +915,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/argo-cd]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** argo-cd, finalizers, deletion
+- **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Partly helpful. The Argo CD App Deletion page says cascade needs the `resources-finalizer.argocd.argoproj.io` finalizer, that cascade uses foreground propagation by default, and that background and non-cascading deletes are selectable. The Foreground and Background finalizer variants and `PrunePropagationPolicy` were still not read. See [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]].
 
 ## Flux Kustomization finalizer name and behavior — status: open
 
@@ -917,6 +927,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/flux]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, finalizers, verification
+- **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Marginally helpful. The dossier read about 100,000 of 121,000 characters of the Kustomization page, found `deletionPolicy` and inventory-based pruning, and did not isolate the finalizer name or say whether Flux uses owner references. See [[entities/flux]].
 
 ## Resolution of Crossplane issue 7801 on credential protection — status: open
 
@@ -950,3 +961,57 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/cluster-api]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cluster-api, finalizers, deletion
+
+## How kro sets ownership and labels on child resources — status: open
+
+- **Question:** Does kro set owner references or labels on the resources that an instance creates, and in what order does it delete them beyond the reverse-wave behavior already recorded?
+- **Why it matters:** The owner-reference dossier could not read kro's instances or FAQ pages, so kro is the one platform tool in scope with no known ownership model. See [[entities/kro]] and [[sources/research-owner-references-and-garbage-collection]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read kro's instances and FAQ documentation or the controller source.
+  - [ ] Add a kro row to [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, owner-references, deletion
+
+## Argo CD PrunePropagationPolicy and resource tracking methods — status: open
+
+- **Question:** How do the `PrunePropagationPolicy` sync option and Argo CD's label, annotation, and tracking-id methods interact with Kubernetes propagation policies when Argo CD prunes or deletes resources?
+- **Why it matters:** The dossier read only the App Deletion page, so the way Argo CD identifies the objects it owns, and how it deletes them, is incomplete. See [[entities/argo-cd]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Argo CD sync options and resource tracking documentation.
+  - [ ] Update [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** argo-cd, prune, propagation-policy
+
+## What happens when blockOwnerDeletion is set without finalizers permission — status: open
+
+- **Question:** When a controller sets `blockOwnerDeletion: true` without `update` on the owner's `/finalizers` subresource, does the API server reject the write or silently drop the flag?
+- **Why it matters:** An official page describes an admission check and a controller-author blog describes silent dropping, so the failure mode is disputed. See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Test on a cluster or read the OwnerReferencesPermissionEnforcement admission plugin source.
+  - [ ] Update the finding and [[concepts/owner-references-and-garbage-collection]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** rbac, blockownerdeletion, verification
+
+## Crossplane v2 namespaced composites and managementPolicies versus garbage collection — status: open
+
+- **Question:** How do Crossplane v2 namespaced composite resources and `managementPolicies` interact with owner-reference cascades and the composite deletion policy?
+- **Why it matters:** The dossier read the v2.4 Compositions page only through a summary that did not cover either topic. See [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Crossplane v2 documentation on composite resources, scope, and management policies.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, deletion, management-policies
+
+## KEPs on cross-namespace ownership and garbage collector performance — status: open
+
+- **Question:** Do any Kubernetes enhancement proposals or conference talks address cross-namespace ownership or garbage collector performance, and are the design archive's foreground and background labels outdated?
+- **Why it matters:** The dossier fetched no KEPs, and its summaries of the finalizers blog and the design proposal conflicted with current documentation. See [[concepts/owner-references-and-garbage-collection]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Search the kubernetes/enhancements repository and SIG API Machinery material.
+  - [ ] Re-read the finalizers blog and design proposal in full.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** keps, garbage-collection, verification

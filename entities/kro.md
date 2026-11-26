@@ -50,6 +50,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-owner-references-and-garbage-collection
+    hash: bd4cc1219f2d
+    ingested: 2026-11-25
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -123,3 +126,7 @@ The idempotency dossier could read only the kro home page, which claims continuo
 ## Instance deletion
 
 kro keeps the instance finalizer until all managed resources are gone, finds them from a persisted ApplySet inventory, and deletes them in reverse dependency order in waves, each fully gone before the next. A stuck instance shows `ResourcesReady=Unknown` with reason `UnderDeletion`, and the fix is to find finalizers on children in the active wave. [[sources/research-finalizers]] See [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] and [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
+
+## Ownership of child resources (not covered)
+
+The Google Cloud launch post says nothing about ownership or deletion mechanics, and kro's instances and FAQ pages could not be read, so how kro marks child resources with owner references or labels remains unverified. [[sources/research-owner-references-and-garbage-collection]] See [[open-knowledge-gaps]].

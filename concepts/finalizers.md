@@ -11,6 +11,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-owner-references-and-garbage-collection
+    hash: bd4cc1219f2d
+    ingested: 2026-11-25
 aliases: [metadata.finalizers, deletion gate, pre-delete hook]
 tags: [controllers, finalizers, deletion]
 ---
@@ -70,3 +73,7 @@ The dossier found no named-company postmortem, so the pitfalls rest on project d
 ## Related
 
 [[concepts/owner-references-and-garbage-collection]], [[concepts/reconciliation-loop]], [[concepts/provider]], [[concepts/idempotency]]
+
+## Finalizers and owner references
+
+The owner-reference dossier frames finalizers as the companion to ownership: owner references handle in-cluster, same-namespace cleanup, and finalizers handle external resources, cross-namespace cleanup, and ordered shutdown, and both rely on the same `deletionTimestamp` machinery. [[sources/research-owner-references-and-garbage-collection]] See [[concepts/owner-references-and-garbage-collection]].

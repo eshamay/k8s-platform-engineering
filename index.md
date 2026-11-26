@@ -30,7 +30,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/idempotency]] — safe repeated reconciliation at the loop, API, and cloud-API layers (active)
 - [[concepts/informers-reflectors-and-workqueues]] — reflector, DeltaFIFO, indexer, workqueue contract, resync, and tuning costs (active)
 - [[concepts/finalizers]] — two-phase delete, API rules, controller pattern, tool policies, and the stuck-deletion catalog (active)
-- [[concepts/owner-references-and-garbage-collection]] — cascading deletion and propagation modes (draft)
+- [[concepts/owner-references-and-garbage-collection]] — owner references, the garbage collector, propagation modes, tool behavior, and pitfalls (active)
 - [[concepts/conditions]] — machine-readable status (draft)
 
 ### Platform engineering and abstraction
@@ -84,6 +84,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-idempotency]] — research dossier on idempotency, 15 web sources, 2026-11-25
 - [[sources/research-informers-reflectors-and-workqueues]] — research dossier on informers, reflectors, and workqueues, 14 web sources, 2026-11-25
 - [[sources/research-finalizers]] — research dossier on finalizers, 17 web sources, 2026-11-25
+- [[sources/research-owner-references-and-garbage-collection]] — research dossier on owner references and garbage collection, 16 web sources, 2026-11-25
 
 ## Examples
 
@@ -181,6 +182,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]] — defaults and opt-outs (draft)
 - [[examples/stuck-terminating-namespace-fixed-through-the-finalize-subresource]] — last-resort namespace fix (draft)
 - [[examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete]] — command-level runbook (draft)
+- [[examples/built-in-workload-controllers-cascade-a-deployment-delete-through-replicasets-to-pods]] — the everyday cascade (draft)
+- [[examples/controller-runtime-sets-a-controller-reference-so-deleting-the-custom-resource-tears-down-its-children]] — operator-authored ownership (draft)
+- [[examples/the-garbage-collector-builds-a-dependency-graph-from-watch-events-and-sorts-references-into-three-classes]] — how the collector works (draft)
+- [[examples/kubectl-cascade-modes-compared-in-a-hands-on-lab]] — background, orphan, and foreground in a lab (draft)
+- [[examples/cluster-api-owner-reference-chain-drives-cluster-deletion-and-clusterctl-move]] — ownership as an API contract (draft)
+- [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]] — ordered composite teardown (draft)
+- [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]] — Flux, Argo CD, and Config Connector (draft)
 
 ## Comparisons
 
@@ -213,6 +221,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] — workers, cache, sharding, and rate caps (draft)
 - [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] — lost-create recovery and adoption (draft)
 - [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]] — what holds a parent and how teardown is ordered (draft)
+- [[comparisons/background-foreground-and-orphan-propagation-modes]] — three modes side by side (draft)
+- [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]] — owner references, inventory, and finalizers by tool (draft)
 
 ## Decisions
 
@@ -239,6 +249,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]] — cascade versus retain defaults (draft)
 - [[decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller]] — speed versus guaranteed cleanup (draft)
 - [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]] — issue 7801 options (draft)
+- [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]] — ordered teardown of composites (draft)
 
 ## Findings
 
@@ -328,6 +339,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone]] — controller gone, resources billing (draft)
 - [[findings/foreground-deletion-waits-only-for-dependents-with-blockownerdeletion-true]] — what the owner waits for (draft)
 - [[findings/machine-deletion-stalls-on-disruption-budgets-attached-volumes-and-failing-hooks]] — drain blockers (draft)
+- [[findings/cross-namespace-owner-references-are-treated-as-absent-and-the-dependent-can-be-collected]] — namespace rules (draft)
+- [[findings/api-client-default-propagation-policy-can-differ-from-kubectl-and-orphan-dependents]] — client defaults and a leaked-Pod race (draft)
+- [[findings/background-deletion-gives-no-teardown-ordering-between-dependents]] — parallel deletion (draft)
+- [[findings/orphaned-dependents-keep-running-with-empty-owner-references-until-someone-deletes-them]] — orphan mode leftovers (draft)
+- [[findings/recreating-an-owner-with-the-same-name-gives-a-new-uid-and-strands-its-old-dependents]] — UID mismatch (draft)
+- [[findings/backup-and-restore-tools-can-strip-owner-references-so-controllers-must-re-reconcile-them]] — lost references (draft)
+- [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]] — RBAC and an unverified claim (draft)
 
 ## Outputs
 

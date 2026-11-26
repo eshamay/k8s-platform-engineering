@@ -50,6 +50,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-owner-references-and-garbage-collection
+    hash: bd4cc1219f2d
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -125,3 +128,7 @@ The application controller maintains a lightweight cluster cache from watch APIs
 ## Application finalizer and deletion cascade
 
 The `resources-finalizer.argocd.argoproj.io` finalizer on an Application makes deleting the Application also delete its deployed resources. Deleting an ApplicationSet cascades to its Applications, `--cascade=orphan` leaves Applications whose finalizer still deletes workloads later, and `syncPolicy.preserveResourcesOnDeletion` stops the finalizer from being added. The dossier did not read Argo CD's Foreground and Background finalizer variants or non-cascading Application deletes. [[sources/research-finalizers]] See [[examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads]] and [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
+
+## Application finalizer instead of owner references
+
+Argo CD cascades an Application delete to its managed resources only when the Application carries the `resources-finalizer.argocd.argoproj.io` finalizer. Cascade uses foreground propagation by default, and background and non-cascading deletes are also selectable. The `PrunePropagationPolicy` sync option and the tracking methods were not read. [[sources/research-owner-references-and-garbage-collection]] See [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]].

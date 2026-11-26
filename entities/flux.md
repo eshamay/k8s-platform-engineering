@@ -56,6 +56,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-owner-references-and-garbage-collection
+    hash: bd4cc1219f2d
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -137,3 +140,7 @@ The vertical scaling page says Flux raises parallel reconciles with `--concurren
 ## Deletion policy and finalizers
 
 The Kustomization reference says garbage collection also runs when a Kustomization is deleted. `spec.deletionPolicy` takes MirrorPrune (default), Delete, WaitForTermination, or Orphan, and WaitForTermination blocks until children have left etcd, so Flux's own finalizer waits on the finalizers of its children. The per-object `kustomize.toolkit.fluxcd.io/prune: disabled` annotation opts an object out of pruning. The dossier read about 100 KB of a page of about 121 KB and did not confirm the name `finalizers.fluxcd.io` from a primary source. [[sources/research-finalizers]] See [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]] and [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
+
+## Pruning without owner references
+
+Flux garbage collection is its own mechanism. With `.spec.prune: true`, objects missing from the current source revision are removed using the inventory in `.status.inventory`, the annotation `kustomize.toolkit.fluxcd.io/prune: disabled` exempts an object, and `.spec.deletionPolicy` (MirrorPrune, Delete, WaitForTermination, Orphan) governs deletion of the Kustomization itself. Whether Flux ever relies on owner references was not stated in the part of the page that the dossier read. [[sources/research-owner-references-and-garbage-collection]] See [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]].
