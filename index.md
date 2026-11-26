@@ -131,6 +131,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/skyscanner-namespace-deletion-postmortem]] — Skyscanner's 2021 postmortem of a global outage caused by a template change reconciled by Argo CD, 2026-11-26
 - [[sources/reddit-pi-day-outage-postmortem]] — Reddit's postmortem of the 314-minute Pi-Day outage, 2026-11-26
 - [[sources/spotify-kubecon-2019-gke-cluster-deletion-transcript]] — transcript of Spotify's KubeCon Europe 2019 talk on deleting production GKE clusters, 2026-11-26
+- [[sources/spotify-kubecon-2019-keynote-slides-with-notes]] — David Xia's slide deck with speaker notes for the Spotify talk, dated 2019-05-22
 
 ## Examples
 

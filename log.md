@@ -630,3 +630,13 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 - fact conflicts: 0
 - gaps drafted: 0 (possible-resolution note added under the primary-incident-reports gap)
 - rationale: The video page could not be scraped, so the user supplied the transcript. New pages also cite the slide deck source, which is ingested as the next entry, so one link to [[sources/spotify-kubecon-2019-keynote-slides-with-notes]] resolves only after that commit.
+
+## [2026-11-26] ingest | Spotify KubeCon Europe 2019 keynote slides with speaker notes
+- source: [[sources/spotify-kubecon-2019-keynote-slides-with-notes]]
+- raw: `raw/KubeCon Europe 2019 Keynote - David Xia - How Spotify Accidentally Deleted All Its Kube Clusters with No User Impact slides with notes.pdf` (sha256: 118b356a260f), user-supplied PDF, 38 pages
+- pages touched: [[index]]
+- new pages: [[sources/spotify-kubecon-2019-keynote-slides-with-notes]]
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 0
+- rationale: The deck confirms the transcript and adds the 2019-05-22 talk date, the speaker's name (David Xia), and the 'A Month Later' timing of the second incident. The example and finding pages from the previous entry already cite it.
