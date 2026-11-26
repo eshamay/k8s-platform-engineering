@@ -31,7 +31,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#git-versus-oci-as-the-canonical-gitops-source]] — open, unassigned
 - [[#how-argo-cd-config-connector-ack-and-cluster-api-key-resources-by-gvk]] — open, unassigned
 - [[#informer-and-cache-behavior-keyed-by-gvr]] — open, unassigned
-- [[#controller-runtime-v030-dynamic-mapper-claim-and-aggregated-discovery-rationale]] — open, unassigned
 - [[#crd-scale-limits]] — open, unassigned
 - [[#crd-handling-in-cluster-api-config-connector-ack-and-backstage]] — open, unassigned
 - [[#status-of-the-conversion-webhook-and-garbage-collection-problem]] — open, unassigned
@@ -413,18 +412,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** gvr, informers, cache
 - **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Keying is settled and CRD lifecycle is not, so the user decides whether to close it. controller-runtime keys informers by GVK in structured, unstructured and metadata maps and maps to a GVR through the RESTMapper, client-go's typed factory keys by Go type, and its dynamic factory keys by GVR. Two closed controller-runtime issues (3303 and 2589) are user reports of stale CRD scope and of slow recovery when a CRD appears late. Not settled: what a running informer does when its CRD is deleted or its served versions change was not read from source or documentation. See [[findings/controller-runtime-tracks-informers-by-gvk-while-client-go-factories-key-by-go-type-or-gvr]], [[examples/controller-runtime-issue-3303-a-recreated-crd-with-a-different-scope-was-not-picked-up-by-the-client-or-restmapper]], and [[examples/controller-runtime-issue-2589-a-controller-started-before-its-crd-existed-did-not-recover-until-the-cache-sync-timeout]].
-
-## controller-runtime v0.3.0 dynamic mapper claim and aggregated discovery rationale — status: open
-
-- **Question:** Do the controller-runtime release notes confirm that the dynamic, rate-limited RESTMapper became the default in v0.3.0, and what design rationale lies behind aggregated discovery?
-- **Why it matters:** The v0.3.0 claim comes from a summarized issue thread, and no KEP for aggregated discovery was found, so the rationale rests on user-facing docs. See [[findings/stale-restmapper-hides-newly-installed-crds]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Check controller-runtime v0.3.0 release notes.
-  - [ ] Locate the aggregated discovery KEP or design discussion.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** controller-runtime, restmapper, discovery
-- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled except for one detail, and the user decides whether to close it. The v0.3.0 release notes (2019-10-10) list the `DynamicRESTMapper` (#554), and the v0.3.0 tag's `manager.go` returns it as the default. KEP-3352 gives the aggregated discovery rationale, a storm of requests with latency and throttling, with alpha v1.26, beta v1.27 and stable v1.30. Not settled: which controller-runtime release adopted aggregated discovery was not established, and the KEP does not mention controller-runtime's mapper. See [[findings/the-dynamic-restmapper-is-confirmed-as-the-controller-runtime-default-at-v0-3-0-from-the-release-notes-and-tag-source]] and [[findings/aggregated-discovery-exists-because-per-group-version-discovery-caused-a-request-storm]].
 
 ## CRD scale limits — status: open
 
@@ -1814,3 +1801,18 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Closed by:** Eric Shamay on 2026-11-26
 
 - **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled from source for the four tools, and the user decides whether to close it. kro holds one metadata-only informer per GVR, Config Connector caches only its own configuration kinds, ACK scopes by namespace and label selector, and Cluster API caches only cluster-labelled Secrets and gives each workload cluster its own cache, with rate limits and concurrency defaults in the comparison table. Not settled: no production memory figures were found, and Backstage was not researched. See [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]].
+
+## controller-runtime v0.3.0 dynamic mapper claim and aggregated discovery rationale — status: closed (2026-11-26)
+
+- **Question:** Do the controller-runtime release notes confirm that the dynamic, rate-limited RESTMapper became the default in v0.3.0, and what design rationale lies behind aggregated discovery?
+- **Why it matters:** The v0.3.0 claim comes from a summarized issue thread, and no KEP for aggregated discovery was found, so the rationale rests on user-facing docs. See [[findings/stale-restmapper-hides-newly-installed-crds]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Check controller-runtime v0.3.0 release notes.
+  - [ ] Locate the aggregated discovery KEP or design discussion.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** controller-runtime, restmapper, discovery
+- **Resolution:** Settled except for one detail. The v0.3.0 release notes (2019-10-10) list the `DynamicRESTMapper` (#554), and the v0.3.0 tag's `manager.go` returns it as the default. KEP-3352 gives the aggregated discovery rationale, a storm of requests with latency and throttling, with alpha v1.26, beta v1.27 and stable v1.30. Not settled: which controller-runtime release adopted aggregated discovery was not established, and the KEP does not mention controller-runtime's mapper. See [[findings/the-dynamic-restmapper-is-confirmed-as-the-controller-runtime-default-at-v0-3-0-from-the-release-notes-and-tag-source]] and [[findings/aggregated-discovery-exists-because-per-group-version-discovery-caused-a-request-storm]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled except for one detail, and the user decides whether to close it. The v0.3.0 release notes (2019-10-10) list the `DynamicRESTMapper` (#554), and the v0.3.0 tag's `manager.go` returns it as the default. KEP-3352 gives the aggregated discovery rationale, a storm of requests with latency and throttling, with alpha v1.26, beta v1.27 and stable v1.30. Not settled: which controller-runtime release adopted aggregated discovery was not established, and the KEP does not mention controller-runtime's mapper. See [[findings/the-dynamic-restmapper-is-confirmed-as-the-controller-runtime-default-at-v0-3-0-from-the-release-notes-and-tag-source]] and [[findings/aggregated-discovery-exists-because-per-group-version-discovery-caused-a-request-storm]].
