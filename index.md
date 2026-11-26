@@ -61,7 +61,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/tofu-controller]] — Terraform and OpenTofu from Flux-style resources, detection-only model (draft)
 - [[entities/client-go]] — Go client library with the discovery client and RESTMapper constructors (draft)
 - [[entities/helm]] — package manager whose charts do not upgrade or delete CRDs (active)
-- [[entities/kstatus]] — generic status computation for conforming resources (draft)
+- [[entities/kstatus]] — generic status computation for conforming resources (active)
 - [[entities/prometheus-operator]] — operator that retrofitted status onto its workload CRDs (draft)
 - [[entities/kyverno]] — CEL-first policy engine that can generate native admission policies (draft)
 - [[entities/cert-manager]] — operator with validation, defaulting, and conversion webhooks (draft)
@@ -129,6 +129,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g1-leaked-resources-adoption]] — verified dossier on leaked or duplicated cloud resources from ambiguous creates and on adopt-or-create versus explicit import, from GitHub issues only, 2026-11-26 (active)
 - [[sources/research-gap-g1-other-tool-pitfalls]] — verified dossier on first-party pitfall issues and release notes for kro, Config Connector, ACK, and Cluster API, with no named-organization postmortem, 2026-11-26 (active)
 - [[sources/research-gap-b1-unverified-claims]] — verified dossier re-checking about 60 unverified claims: the helm-controller flag, Crossplane docs URLs, Argo CD defaults, controller-runtime read-your-writes, and etcd quota, 2026-11-26 (active)
+- [[sources/research-gap-b1-recheck-capi-argocd]] — verified dossier rechecking Cluster API MachineHealthCheck, ClusterClass and Ready versus Available, and Argo CD sharding and reconcile defaults; v1.15.0 final unreleased on 2026-11-26 (active)
 - [[sources/skyscanner-namespace-deletion-postmortem]] — Skyscanner's 2021 postmortem of a global outage caused by a template change reconciled by Argo CD, 2026-11-26
 - [[sources/reddit-pi-day-outage-postmortem]] — Reddit's postmortem of the 314-minute Pi-Day outage, 2026-11-26
 - [[sources/spotify-kubecon-2019-gke-cluster-deletion-transcript]] — transcript of Spotify's KubeCon Europe 2019 talk on deleting production GKE clusters, 2026-11-26
@@ -233,6 +234,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/pv-protection-finalizer-keeps-an-in-use-volume-from-vanishing]] — the built-in storage guard (draft)
 - [[examples/kubebuilder-reconcile-adds-a-finalizer-before-external-work-and-removes-it-after-cleanup]] — the controller-author pattern (draft)
 - [[examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads]] — cascade and preserve switches (draft)
+- [[examples/argo-cd-pull-request-22342-added-a-60-second-default-jitter-while-keeping-the-three-minute-maximum]] — the 2025-03-13 change from a flat 180 seconds to 120 seconds plus 60 seconds of jitter (active)
 - [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]] — four deletion policies (draft)
 - [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] — ordered teardown (draft)
 - [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]] — gated machine removal (draft)
@@ -694,6 +696,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/the-old-crossplane-latest-concepts-urls-return-404-and-the-docs-redirect-rules-only-cover-end-of-life-versions]] — old docs URLs 404 and are not redirected (active)
 - [[findings/controller-runtime-v0-25-0-ships-an-experimental-opt-in-read-your-writes-client]] — experimental ReadYourWritesConsistency shipped in v0.25.0 (active)
 - [[findings/argo-cd-v3-6-3-still-defaults-to-legacy-sharding-because-the-source-says-so-even-though-the-docs-page-dropped-the-marker]] — default confirmed in source (active)
+- [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]] — newest tag is v1.15.0-rc.0 and newest stable is v1.14.4 (active)
+- [[findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled]] — kstatus fallback for kinds with no Ready condition (active)
 
 ## Outputs
 

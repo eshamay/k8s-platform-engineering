@@ -101,6 +101,9 @@ sources:
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -246,3 +249,7 @@ In Skyscanner's published account, Argo CD reconciled clusters against an incorr
 ## Polling jitter
 
 Pull request 22342 (merged 2025-03-13) added the 60 second default jitter and states that the maximum default stays at 3 minutes. The v3.6.3 FAQ gives the default as 120 seconds plus up to 60 seconds of jitter. The reason for the jitter beyond keeping that ceiling is not stated. See [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]] and [[sources/research-gap-b1-unverified-claims]].
+
+## Recheck on 2026-11-26
+
+The `legacy` default sharding algorithm is confirmed in code at v3.6.3 (the constant and the controller flag default), and round-robin and consistent-hashing are still experimental there. v3.6.3 is the newest 3.6.x release, and v3.5.9 was published later the same day on a maintenance branch. `timeout.reconciliation` was 180 seconds at v2.1.0 through v2.4.0 as well, so the 180 second era covers v2.1.0 through v2.14.0. See [[examples/argo-cd-pull-request-22342-added-a-60-second-default-jitter-while-keeping-the-three-minute-maximum]] and [[sources/research-gap-b1-recheck-capi-argocd]].

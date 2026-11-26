@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g3-argocd-capi
     hash: c3d485fa58ae
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, cluster-api, clusterclass, maturity, documentation]
 ---
@@ -25,3 +28,7 @@ Any statement of ClusterClass maturity needs a release number. The Beta label is
 ## Mitigations
 
 Cite the feature-gates table for the release in use, and recheck when v1.15.0 final is out. See [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]], [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]], [[findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes]] for a parallel docs-versus-code mismatch, and [[entities/cluster-api]].
+
+## Recheck on 2026-11-26
+
+The Beta label now holds at both v1.15.0-rc.0 and `main` (`ClusterTopology: {Default: true, PreRelease: featuregate.Beta}`, with code comments "alpha: v0.4" and "beta: v1.15"). It is still the label of a release candidate and a branch, not of a final release, and no source read calls ClusterClass GA. The proposal's `provisional` status line was not re-read in this pass. See [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]] and [[sources/research-gap-b1-recheck-capi-argocd]].

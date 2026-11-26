@@ -17,6 +17,9 @@ sources:
   - id: research-gap-g3-argocd-capi
     hash: c3d485fa58ae
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, reconciliation, intervals, backoff]
 ---
@@ -53,3 +56,7 @@ Correction 2026-11-26: the Flux interval is required and has no controller-side 
 ## Cluster API brake, 2026-11-26
 
 The Cluster API MachineHealthCheck brake is `remediation.triggerIf.unhealthyLessThanOrEqualTo` in v1beta2, with a default of 100 percent, so it is off until set. See [[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]] and [[sources/research-gap-g3-argocd-capi]].
+
+## Argo CD version range, 2026-11-26
+
+The Argo CD default was 180 seconds from v2.1.0 through v2.14.0 (manifest and controller constant agree at v2.1.0 and v2.4.0) and is 120 seconds plus up to 60 seconds of jitter from v3.0.0. See [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]] and [[sources/research-gap-b1-recheck-capi-argocd]].

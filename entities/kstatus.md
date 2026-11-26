@@ -1,9 +1,9 @@
 ---
 title: kstatus
 type: entity
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
@@ -11,6 +11,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: [cli-utils kstatus]
 tags: [tool, status, readiness, cli-utils]
 ---
@@ -36,3 +39,7 @@ kstatus can report premature readiness for a resource that has `observedGenerati
 ## Conditions README details
 
 The kstatus README computes InProgress, Failed, Current, Terminating, NotFound, and Unknown, defines `Reconciling` and `Stalled` under the abnormal-true pattern, falls back to `Ready` for other types, and lists two corner cases: a `Ready` condition that only appears once `True` is invisible, and a controller that has not yet written conditions is treated as reconciled. [[sources/research-conditions]] See [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]] and [[findings/premature-readiness-in-kstatus-based-tools]].
+
+## Unknown-kind fallback, rechecked 2026-11-26
+
+kstatus checks deletion, generation, and the `Reconciling` and `Stalled` conditions first, then type-specific rules, and for unknown kinds looks for `Ready`. A resource without `Ready` falls back to "assume they are always reconciled". Correction note: the Limits section above says kstatus "cannot follow" a provider that replaces `Ready` with `Available`. The verified behavior is narrower. kstatus does not read `Available` at all, and whether a v1beta2 Cluster is then reported as Current is an unverified inference. See [[findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled]] and [[sources/research-gap-b1-recheck-capi-argocd]].

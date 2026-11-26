@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g3-argocd-capi
     hash: c3d485fa58ae
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: []
 tags: [cluster-api, conditions, available, lifecycle]
 ---
@@ -32,3 +35,7 @@ The case shows an ecosystem converging on the shared convention, and it shows th
 ## Scope of the change in v1beta2
 
 The 2026-11-26 dossier read the proposal in full at tag v1.15.0-rc.0 (status implementable, last updated 2025-01-30). `Ready` is dropped from higher-level objects such as Cluster, MachineDeployment, and control planes, and Machine keeps `Ready` with the new meaning "machine can host workloads". The v1beta2 API shipped in v1.11.0 (2025-08-19), and Cluster `Available` combines RemoteConnectionProbe, InfrastructureReady, ControlPlaneAvailable, WorkersAvailable, TopologyReconciled, and `spec.availabilityGates`. The proposal names "Helm, Flux, Argo" as higher-level consumers, and gives no general rule for them. See [[findings/the-flux-cel-cheatsheet-keys-cluster-api-health-on-ready-and-shows-no-v1beta2-available-variant]] and [[sources/research-gap-g3-argocd-capi]].
+
+## Recheck on 2026-11-26
+
+The v1beta2 Cluster type at v1.15.0-rc.0 defines `ClusterAvailableCondition = AvailableCondition` and no `Ready` constant in the lines read, and the proposal names "tools like Helm, Flux, Argo" as consumers whose boundary with Cluster API is blurring. How a generic kstatus-style tool reads such a Cluster is unverified, see [[findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled]] and [[sources/research-gap-b1-recheck-capi-argocd]].

@@ -74,6 +74,9 @@ sources:
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -186,3 +189,7 @@ A code search of the Cluster API repository in the 2026-11-26 adopters dossier f
 ## Pitfall evidence from the other-tool pitfalls dossier
 
 The 2026-11-26 dossier found release-note breaking changes and a webhook-availability issue, but no deletion or data-loss incident from the last two years. The v1.14.0 release (2026-08-11) lists four breaking changes, including a webhook version-validation fix that rejects invalid pre-release or build tags, and says v1beta1 is on track to be unserved in v1.16 and Docker* resources are removed in v1.15 ([[findings/cluster-api-v1-14-0-lists-four-breaking-changes-and-schedules-v1beta1-and-docker-removals]]). Issue 10522 says cert-manager rotation can make webhooks unreachable for up to 90 seconds and failed a clusterctl upgrade test ([[findings/cluster-api-webhooks-can-be-unreachable-for-up-to-90-seconds-during-cert-manager-certificate-rotation]]). The latest stable releases read were v1.14.4 and v1.13.8 (2026-11-03). [[sources/research-gap-g1-other-tool-pitfalls]]
+
+## Release status and recheck on 2026-11-26
+
+A later pass found that v1.15.0 final does not exist: the newest tag is v1.15.0-rc.0 (2026-11-24, prerelease) and the newest stable release is v1.14.4 (2026-11-03). On v1.15.0-rc.0 and on `main` the v1beta2 MachineHealthCheck fields (`unhealthyExpressions`, `remediation.templateRef`, `remediation.triggerIf.unhealthyLessThanOrEqualTo`, `unhealthyInRange`) and the Beta `ClusterTopology` gate agree, and a new Alpha gate `ClusterTopologyWorkerVersionPinning` requires `ClusterTopology`. Nothing read says ClusterClass is GA. The v1beta2 Cluster type defines an `Available` condition constant and no `Ready` constant. See [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]], [[findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled]], and [[sources/research-gap-b1-recheck-capi-argocd]].

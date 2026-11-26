@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g3-argocd-capi
     hash: c3d485fa58ae
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: []
 tags: [cluster-api, clusterclass, release, feature-gates, pre-release]
 ---
@@ -25,3 +28,7 @@ The ClusterClass guide at the tag states "The `ClusterTopology` feature flag is 
 ## Lesson
 
 A feature label in a doc page is tied to a release. The wiki's earlier alpha label for ClusterClass reflected pre-v1.15 docs and is now out of date for the release candidate, while Beta is still short of GA. See [[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]], [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]], [[examples/cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers]], and [[entities/cluster-api]].
+
+## Recheck on 2026-11-26
+
+A later pass confirmed that v1.15.0 final is still unreleased, that newest stable is v1.14.4, and that `main` carries the same Beta, default-true `ClusterTopology` gate and the same MachineHealthCheck fields as rc.0. The worker version pinning gate is `ClusterTopologyWorkerVersionPinning`, Alpha, and requires `ClusterTopology`. No source says ClusterClass is GA. See [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]] and [[sources/research-gap-b1-recheck-capi-argocd]].

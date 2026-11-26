@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g3-argocd-capi
     hash: c3d485fa58ae
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: []
 tags: [cluster-api, machinehealthcheck, remediation, v1beta2, self-healing]
 ---
@@ -29,3 +32,7 @@ MachineHealthChecks cover only Machines owned by a MachineDeployment, a MachineS
 ## Lesson
 
 The self-healing loop at the machine layer has a brake, an escape hatch to external repair, and an expression language for custom health rules. The brake is off by default, which makes configuring it the operator's job. See [[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]], [[findings/cluster-api-v1beta1-maxunhealthy-and-unhealthyrange-are-deprecated-and-older-material-uses-the-old-names]], [[examples/cluster-api-machine-health-check-replaces-failed-nodes]], and [[findings/remediation-can-amplify-an-outage]].
+
+## Recheck on 2026-11-26
+
+The field names `unhealthyExpressions` (at most 10 items), `remediation.templateRef`, and `remediation.triggerIf.unhealthyLessThanOrEqualTo`, and the precedence of `unhealthyInRange`, were re-read at v1.15.0-rc.0 and on `main` and are unchanged. `DefaultNodeStartupTimeoutSeconds = 600` was also seen. The 100 percent default, the rounding rule, and the KubeadmControlPlane retry fields were not re-read. v1.15.0 final is still unreleased, see [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]] and [[sources/research-gap-b1-recheck-capi-argocd]].

@@ -17,6 +17,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, kstatus, cluster-api, flux, readiness]
 ---
@@ -50,3 +53,7 @@ The 2026-11-26 dossier verified that the v1beta2 Cluster type defines `ClusterAv
 ## Update from the operator loop dossier
 
 restate-operator issue 216 shows the same early-ready effect in Flux with `wait: true`, where a release was marked healthy about 37 seconds before the last pod was Ready because the operator's status had no `observedGeneration`. See [[examples/restate-operator-issue-216-ready-true-before-a-statefulset-rollout-finished-let-flux-mark-the-release-healthy]]. Source: [[sources/research-gap-g1-operator-loop-failures]].
+
+## Recheck on 2026-11-26
+
+The kstatus README says an unknown kind with no `Ready` condition is assumed to be always reconciled, and the v1beta2 Cluster type defines `Available` and no `Ready`. Combining the two suggests a kstatus-style tool would not see `Available=False`, but no source states it and it was not run, so it is an open question. See [[findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled]] and [[sources/research-gap-b1-recheck-capi-argocd]].

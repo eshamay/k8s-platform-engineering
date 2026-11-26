@@ -14,6 +14,9 @@ sources:
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, argo-cd, sharding, scale, algorithm]
 ---
@@ -39,3 +42,7 @@ The 2026-11-26 dossier read the docs source at Argo CD v3.6.3 (released 2026-11-
 ## Default confirmed 2026-11-26
 
 The default method is `legacy`: `DefaultShardingAlgorithm = LegacyShardingAlgorithm` in `common/common.go` at v3.0.0 and v3.6.3. The CNOE blog the docs cite (2023-11-21) was read and reports 3x better CPU utilization and 5x fewer rebalancings from the new algorithms, as the authors' own benchmark. See [[findings/argo-cd-v3-6-3-still-defaults-to-legacy-sharding-because-the-source-says-so-even-though-the-docs-page-dropped-the-marker]] and [[sources/research-gap-b1-unverified-claims]].
+
+## Recheck on 2026-11-26
+
+At v3.6.3 the high-availability page still says "The `round-robin` shard distribution algorithm is an experimental feature", says the same of `consistent-hashing`, and describes legacy as "`uid` based distribution (non-uniform)". The default is legacy, confirmed in code. See [[findings/argo-cd-v3-6-3-still-defaults-to-legacy-sharding-because-the-source-says-so-even-though-the-docs-page-dropped-the-marker]] and [[sources/research-gap-b1-recheck-capi-argocd]].

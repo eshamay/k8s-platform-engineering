@@ -14,6 +14,9 @@ sources:
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, flux, argo-cd, sharding, scale]
 ---
@@ -39,3 +42,7 @@ Label sharding lets a platform team separate tenants or noisy namespaces inside 
 ## Maturity recheck, 2026-11-26
 
 Argo CD's docs at v3.6.3 still call round-robin and consistent-hashing experimental and list both as Alpha, with the wording unchanged since v2.14.0 and v3.0.0. The default is `legacy`, confirmed in source (`DefaultShardingAlgorithm = LegacyShardingAlgorithm` at v3.6.3), although the v3.6.3 page drops the "(default)" marker beside it ([[findings/argo-cd-v3-6-3-still-defaults-to-legacy-sharding-because-the-source-says-so-even-though-the-docs-page-dropped-the-marker]]). See [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]] and [[sources/research-gap-g3-argocd-capi]].
+
+## Recheck on 2026-11-26
+
+A second reading of v3.6.3 confirms the `legacy` default in code and the experimental label on round-robin and consistent-hashing. See [[sources/research-gap-b1-recheck-capi-argocd]].

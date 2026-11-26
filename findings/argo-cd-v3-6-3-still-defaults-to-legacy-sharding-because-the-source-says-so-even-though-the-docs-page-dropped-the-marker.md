@@ -8,6 +8,9 @@ sources:
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: [argo cd default sharding]
 tags: [argo-cd, sharding, defaults, documentation-conflict, verified]
 ---
@@ -23,3 +26,7 @@ The v3.6.3 page still says "`legacy` mode uses an `uid` based distribution (non-
 ## Why it matters
 
 A team that reads only the v3.6.3 docs cannot learn the default and may assume a newer algorithm is active. The source default is legacy unless the team sets `--sharding-method` itself. The uneven distribution in [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]] therefore applies to a default install. This supersedes the "unconfirmed" statement in [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]]. See [[entities/argo-cd]] and [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]].
+
+## Recheck on 2026-11-26
+
+A second pass reread `common/common.go` and the controller flag at v3.6.3, quoting "LegacyShardingAlgorithm is the default value for Sharding Algorithm" and `env.StringFromEnv(common.EnvControllerShardingAlgorithm, common.DefaultShardingAlgorithm)`, so the default is confirmed independently. That pass did not read the CNOE blog, so the benchmark figures above rest on the earlier read and remain the authors' own results. v3.6.3 is the newest 3.6.x release, and v3.5.9 followed it the same day. See [[sources/research-gap-b1-recheck-capi-argocd]].

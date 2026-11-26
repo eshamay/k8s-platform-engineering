@@ -37,6 +37,9 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-part-5-argo-cd-sharding-passage-with-the-confirmed-legacy-default]] — open
 - [[#update-crossplane-ramp-up-unknowns-passage-with-the-docs-page-and-url-findings]] — open
 - [[#review-closed-gap-resolutions-refined-by-the-b1-recheck]] — open
+- [[#update-part-4-clusterclass-maturity-passage-with-the-unreleased-v1150-final-and-the-main-branch-check]] — open
+- [[#update-flux-ramp-up-kstatus-passage-with-the-unknown-kind-fallback]] — open
+- [[#review-closed-gap-resolutions-refined-by-the-b1-recheck-of-cluster-api-and-argo-cd]] — open
 
 ## Open
 
@@ -501,6 +504,27 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 
 - **What:** Closed gaps were not edited. Two closed Resolutions carry statements the b1 recheck refines: "Argo CD sharding algorithm maturity in current releases" says the default is unconfirmed (the default is `legacy`, confirmed in source), and "Argo CD default reconcile interval across versions" says the reason for the jitter is unverified (pull request 22342 explains only that the 3 minute ceiling was kept). Pages were updated instead, see [[findings/argo-cd-v3-6-3-still-defaults-to-legacy-sharding-because-the-source-says-so-even-though-the-docs-page-dropped-the-marker]] and [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]]. A human decides whether to reopen either gap or leave the Resolution as a record of what was known at close.
 - **Why:** Closed Resolutions stay as the reasoning trail, and the reader should know which statements were later refined. The 2026-11-26 dossier [[sources/research-gap-b1-unverified-claims]] supplies the evidence.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 ClusterClass maturity passage with the unreleased v1.15.0 final and the main branch check — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "Cluster provisioning is a second major use case" calls the Beta label a release-candidate claim. Add that `main` carries the same Beta, default-true gate, that the newest stable release is v1.14.4, and that no source calls ClusterClass GA. Cite [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]].
+- **Why:** The passage predates the check of `main` and the newest stable release. The 2026-11-26 dossier [[sources/research-gap-b1-recheck-capi-argocd]] supplies the evidence.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update flux-ramp-up kstatus passage with the unknown-kind fallback — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "Health judgment is a harder problem than it looks" says kstatus only works where conventions are followed. State what kstatus does with an unknown kind that has no `Ready` condition (it assumes the kind is always reconciled), and that whether this hides `Available=False` on a v1beta2 Cluster is an unverified inference. Cite [[findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled]].
+- **Why:** The passage describes the failure only as a premature-ready race. The 2026-11-26 dossier [[sources/research-gap-b1-recheck-capi-argocd]] supplies the evidence.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Review closed gap resolutions refined by the b1 recheck of Cluster API and Argo CD — status: open
+
+- **What:** Closed gaps were not edited. Four closed Resolutions carry statements the recheck refines. "Current Cluster API MachineHealthCheck behavior" and "ClusterClass maturity and the managed topologies proposal" say a recheck is needed at v1.15.0 final, which still does not exist, and `main` matches rc.0 on the fields checked. "Argo CD sharding algorithm maturity in current releases" says the default is unconfirmed, and the default is `legacy` in code at v3.6.3. "Argo CD default reconcile interval across versions" says the v2.1 to v2.4 values were not found, and they are 180 seconds. Pages were updated instead, see [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]] and [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]]. A human decides whether to reopen any of them or leave the Resolution as a record of what was known at close.
+- **Why:** Closed Resolutions stay as the reasoning trail, and the reader should know which statements were later refined. The 2026-11-26 dossier [[sources/research-gap-b1-recheck-capi-argocd]] supplies the evidence.
 - **Acceptance:** Passage revised and citing the page named above.
 - **Drafted by:** agent on 2026-11-26
 

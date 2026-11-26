@@ -11,6 +11,9 @@ sources:
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
+  - id: research-gap-b1-recheck-capi-argocd
+    hash: 832b86e20750
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, argo-cd, interval, defaults, version-drift, documentation-conflict]
 ---
@@ -39,3 +42,7 @@ The change is attributed to pull request 22342 ("chore!: add 60s default jitter"
 ## Consequences
 
 State which version you mean when quoting an Argo CD polling default. For v3.x say 120 seconds plus up to 60 seconds of jitter, and for v2.x say 180 seconds. Git webhooks bypass the poll, so the interval bounds only the case where no webhook arrives, see [[findings/drift-detection-latency-is-the-interval]]. See [[entities/argo-cd]], [[comparisons/reconcile-cadence-and-off-switches-across-tools]], and [[comparisons/drift-detection-mechanisms-across-tools]].
+
+## Correction 2026-11-26: v2.1.0 to v2.4.0
+
+The sentence above that says versions v2.0.0 to v2.4.0 were not sampled is out of date for v2.1.0 to v2.4.0. A later pass read `timeout.reconciliation: 180s` in `argocd-cm.yaml` at v2.1.0, v2.2.0, v2.3.0, and v2.4.0, and `defaultAppResyncPeriod = 180` in the controller at v2.1.0 and v2.4.0, so the flat 180 second default runs from v2.1.0 through v2.14.0. The v2.5.0 FAQ states "The default polling interval is 3 minutes (180 seconds)." The v2.0.0 manifest remains unchecked. The reason for lowering the base to 120 seconds is still unverified, and the pull request's linked issue and review comments were not opened. See [[examples/argo-cd-pull-request-22342-added-a-60-second-default-jitter-while-keeping-the-three-minute-maximum]] and [[sources/research-gap-b1-recheck-capi-argocd]].
