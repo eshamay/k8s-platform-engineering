@@ -694,3 +694,13 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 - fact conflicts: 0
 - gaps drafted: 0 (possible-resolution notes added under all five open finalizer gaps; none was closed, and no closed gap was involved)
 - rationale: A source-level read of five finalizer gaps. It confirms three Argo CD cascade finalizer names and the non-cascading delete routes, the Flux finalizer `finalizers.fluxcd.io` and its bounded WaitForTermination wait, the distinct finalizer names of ACK, Config Connector, and kro, and that Cluster API issue 1514 ended in annotation hooks and not finalizers. Crossplane issue 7801 is still open with no maintainer reply, so the credential protection decision stays an evidence-only option list. Two outputs todos name the Flux ramp-up and Crossplane ramp-up passages to revise, and no page in outputs/ was edited.
+
+## [2026-11-26] ingest | Re-check of unverified claims, revised snapshot (b1-unverified-claims)
+- source: [[sources/research-gap-b1-unverified-claims]]
+- raw: `raw/research-gap-b1-unverified-claims.md` (sha256: f729a143be31; supersedes content hash d152f98abb04 of the same raw file)
+- pages touched: [[sources/research-gap-b1-unverified-claims]], [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]], [[index]]
+- new pages: none
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 0
+- rationale: The raw dossier was edited after seq 50 by a second verification pass. All reproduced claims are unchanged, and one correction applies: Crossplane core's `--max-reconcile-rate` is an alias of `--max-concurrent-reconciles` (worker pool size, default 100), not a rate. The source page and the poll-interval finding now carry the new hash and a correction note. The earlier possible-resolution notes in open-knowledge-gaps.md and the todos stay valid and were not changed. No outputs were edited.

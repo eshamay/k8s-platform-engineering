@@ -12,7 +12,7 @@ sources:
     hash: b7be72012393
     ingested: 2026-11-26
   - id: research-gap-b1-unverified-claims
-    hash: d152f98abb04
+    hash: f729a143be31
     ingested: 2026-11-26
 aliases: []
 tags: [pitfall, crossplane, upjet, poll-interval, defaults, drift, api-quota]
@@ -35,6 +35,8 @@ A per-resource poll interval is set with the `crossplane.io/poll-interval` annot
 ## Consequences
 
 A drift-detection latency quoted for "Crossplane" is wrong unless it names the provider: about one minute for providers that keep the runtime default and about ten minutes for Upjet-generated providers, which are most of the large cloud catalogs, see [[findings/generated-provider-catalogs-inherit-the-behavior-and-bugs-of-their-generator]]. Every poll of a managed resource can be a cloud API call, so a one-minute default across thousands of resources spends quota that the ten-minute and `--max-reconcile-rate` settings exist to protect, see [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]] and [[findings/cost-of-constant-reconciliation]]. The values above come from source files. A later pass read the docs.crossplane.io managed-resources page in full (42 KB) and found no poll interval default on it, so that page cannot be cited for the number ([[sources/research-gap-b1-unverified-claims]]). The crossplane-runtime and core defaults, and the provider-upjet-aws `10m` and `1h` defaults, were re-verified against source. The `defaultPollIntervalHook` just returns the interval, so no hidden multiplier applies in the runtime. See [[entities/crossplane]], [[entities/upjet]], and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
+
+Correction note: a second verification pass of [[sources/research-gap-b1-unverified-claims]] found that in Crossplane core `--max-reconcile-rate` is not a rate limit. It is an alias of the `MaxConcurrentReconciles` field (flag `--max-concurrent-reconciles`, default 100, "worker pool size"), see [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]]. The `--max-reconcile-rate` 100 default quoted above for provider-upjet-aws is the provider's own flag and was read from that provider's source.
 
 ## v2.5.0 core defaults (2026-11-26)
 

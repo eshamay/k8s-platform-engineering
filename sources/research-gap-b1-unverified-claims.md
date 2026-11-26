@@ -6,7 +6,7 @@ created: 2026-11-26
 updated: 2026-11-26
 sources:
   - id: research-gap-b1-unverified-claims
-    hash: d152f98abb04
+    hash: f729a143be31
     ingested: 2026-11-26
 aliases: []
 tags: [flux, crossplane, argo-cd, controller-runtime, kubernetes, research-dossier, gap-closing, targeted-pass, verification]
@@ -15,7 +15,7 @@ tags: [flux, crossplane, argo-cd, controller-runtime, kubernetes, research-dossi
 # Research dossier: re-check of unverified claims (b1-unverified-claims)
 
 > [!NOTE]
-> **Raw file:** `raw/research-gap-b1-unverified-claims.md` (sha256 prefix d152f98abb04)<br>
+> **Raw file:** `raw/research-gap-b1-unverified-claims.md` (sha256 prefix f729a143be31; revised from d152f98abb04, see Revision note)<br>
 > **Kind:** Verified research dossier for gap cluster b1-unverified-claims, dated 2026-11-26<br>
 > **Ingested:** 2026-11-26 as a targeted pass over the pages that held UNVERIFIED, SECONDARY-ONLY, or UNREADABLE claims<br>
 > **Caveat:** Every claim was re-fetched from a primary source (source files at a tag or branch, release notes, GitHub issues and pull requests, curl status checks). GitHub API rate limiting cut off some searches, and absence claims are recorded as "searched X, found nothing", not as proof.
@@ -45,6 +45,12 @@ Several questions stay open for structural reasons. Incident-talk contents (Spot
 - Argo Rollouts exposes `--rollout-resync` ("Time period in seconds for rollouts resync."). VERIFIED. That operators use it as a guard against missed events is SECONDARY-ONLY, one user's statement in issue 4140.
 - Crossplane's function-to-claim conditions one-pager still says "Status: Draft", so the claim that a fatal function result sets the XR `Synced` condition to False is SECONDARY-ONLY design intent. On main, `--enable-operations` sits under "Alpha Features" in `core.go`.
 - The Cluster API repository root has no adopters file. VERIFIED for the root listing only.
+
+- Crossplane core's `--max-reconcile-rate` is an alias of the `MaxConcurrentReconciles` field (flag `--max-concurrent-reconciles`, default 100, "worker pool size"), not a rate limit. VERIFIED (correction made in the dossier's second verification pass). Core's other flag defaults stay as stated: `--poll-interval` 1m, `--sync-interval` 1h, `--min-poll-interval` 1s.
+
+## Revision note
+
+The raw file was revised on 2026-11-26 after a second-pass adversarial verification that re-fetched about 30 claims and reproduced all of them, with one correction, the core `--max-reconcile-rate` alias above. The ReplicaSet and StatefulSet metrics claim stays release-unpinned. Pages written from the first revision (hash d152f98abb04) keep that hash in their `sources` entry. Only the Crossplane poll-interval finding was affected by the correction.
 
 ## Not found
 
