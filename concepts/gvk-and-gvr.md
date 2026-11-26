@@ -3,7 +3,7 @@ title: GVK and GVR (Group, Version, Kind and Resource)
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -11,6 +11,9 @@ sources:
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [GVK, GVR, Group Version Kind, GroupVersionKind, GroupVersionResource]
 tags: [api-machinery, gvk, gvr, discovery]
 ---
@@ -51,4 +54,4 @@ Clients, controllers, and RBAC rules all address objects through these coordinat
 
 ## To research
 
-How Argo CD, Config Connector, ACK, and Cluster API key resources by GVK, and how informer caches are keyed by GVR, remain open. See [[open-knowledge-gaps]].
+Argo CD, ACK, Config Connector, and Cluster API identify resources by group and kind and resolve the version separately ([[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]]). Informers are keyed by GVK in controller-runtime, by Go type in client-go's typed factory, and by GVR in its dynamic factory ([[findings/controller-runtime-tracks-informers-by-gvk-while-client-go-factories-key-by-go-type-or-gvr]]). What these tools and caches do when a served CRD version is removed remains open. [[sources/research-gap-m5-informers-caches]] See [[open-knowledge-gaps]].

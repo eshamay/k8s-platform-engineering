@@ -227,6 +227,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** informers, resync, client-go
 - **Possible resolution from [[sources/research-informers-reflectors-and-workqueues]]:** Marginally helpful. One source calls periodic resync a defense against reconciler bugs that is usually disabled, and the pitfalls blog lists misunderstanding it as a common error. No source explains what resync replays or whether it refetches from the API server. See [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]].
+- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled from client-go and controller-runtime source, and the user decides whether to close it. A resync delivers an update notification for every object in the informer's local cache and adds no interaction with the authoritative storage, `DeltaFIFO.Resync` re-queues keys from the local known-objects store, a zero period means no resync, and `HasSynced` is unrelated to resync. controller-runtime's `SyncPeriod` defaults to 10 hours with jitter, emits an artificial Update event that `GenerationChangedPredicate` filters out, and the documentation recommends `RequeueAfter` over shortening it. The word names different mechanisms in other tools: ACK's resync is a `RequeueAfter` and kro's flag text says "re list". Not settled: the source was read on default branches and not pinned to release tags. See [[findings/a-resync-replays-the-informers-local-cache-to-the-handlers-and-never-contacts-the-api-server]], [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]], and [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]].
 
 ## Origin of the Level driven, not edge driven guidance — status: open
 
@@ -238,6 +239,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Verify the quote and the Joe Beda attribution to the O'Reilly book Cloud Native Infrastructure.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** level-triggered, verification, provenance
+- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Mostly settled, and the user decides whether to close it. The quote is guideline 3 in the Controller Writing Guide at `contributors/devel/sig-api-machinery/controllers.md` in kubernetes/community, which also says a controller cannot count on having seen a transition and should record its last decision in status. The old path's history begins 2016-11-30 and the file moved on 2019-01-23, the archived principles say "Edge-triggered behavior must be just an optimization", and Tim Hockin's slides date to 2017-06-02. Not settled: the Joe Beda attribution to Cloud Native Infrastructure is still SECONDARY-ONLY through the 2018 Hacker Noon post because the book was not read, and the first use of the exact phrase in the guide was not established. See [[findings/the-level-driven-not-edge-driven-guideline-is-point-3-of-the-controller-writing-guide-and-the-beda-quote-remains-second-hand]].
 
 ## Incidents caused by lost events or edge-triggered design — status: open
 
@@ -420,6 +422,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[findings/removed-beta-gvks-break-pinned-manifests-and-clients]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** gvk, argo-cd, config-connector, ack, cluster-api
+- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Partly settled, and the user decides whether to close it. Argo CD's tracking annotation and gitops-engine `ResourceKey` carry group, kind, namespace and name with no version, Config Connector registers one controller per CRD group and kind with the version taken from the CRD, ACK keys resource manager factories by `GroupKind`, and Cluster API resolves the version from CRD contract labels. Not settled: no documentation or test was read for what each tool does when a served CRD version is removed, so whether pruning or orphaning results is unknown. See [[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]] and [[examples/argo-cd-tracks-resources-by-group-kind-namespace-and-name-so-an-api-version-change-keeps-the-same-key]].
 
 ## Informer and cache behavior keyed by GVR — status: open
 
@@ -431,6 +434,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Write a finding or update [[concepts/informers-reflectors-and-workqueues]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** gvr, informers, cache
+- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Keying is settled and CRD lifecycle is not, so the user decides whether to close it. controller-runtime keys informers by GVK in structured, unstructured and metadata maps and maps to a GVR through the RESTMapper, client-go's typed factory keys by Go type, and its dynamic factory keys by GVR. Two closed controller-runtime issues (3303 and 2589) are user reports of stale CRD scope and of slow recovery when a CRD appears late. Not settled: what a running informer does when its CRD is deleted or its served versions change was not read from source or documentation. See [[findings/controller-runtime-tracks-informers-by-gvk-while-client-go-factories-key-by-go-type-or-gvr]], [[examples/controller-runtime-issue-3303-a-recreated-crd-with-a-different-scope-was-not-picked-up-by-the-client-or-restmapper]], and [[examples/controller-runtime-issue-2589-a-controller-started-before-its-crd-existed-did-not-recover-until-the-cache-sync-timeout]].
 
 ## controller-runtime v0.3.0 dynamic mapper claim and aggregated discovery rationale — status: open
 
@@ -442,6 +446,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Locate the aggregated discovery KEP or design discussion.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** controller-runtime, restmapper, discovery
+- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled except for one detail, and the user decides whether to close it. The v0.3.0 release notes (2019-10-10) list the `DynamicRESTMapper` (#554), and the v0.3.0 tag's `manager.go` returns it as the default. KEP-3352 gives the aggregated discovery rationale, a storm of requests with latency and throttling, with alpha v1.26, beta v1.27 and stable v1.30. Not settled: which controller-runtime release adopted aggregated discovery was not established, and the KEP does not mention controller-runtime's mapper. See [[findings/the-dynamic-restmapper-is-confirmed-as-the-controller-runtime-default-at-v0-3-0-from-the-release-notes-and-tag-source]] and [[findings/aggregated-discovery-exists-because-per-group-version-discovery-caused-a-request-storm]].
 
 ## CRD scale limits — status: open
 
@@ -764,6 +769,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cache, memory, controller-runtime
+- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** The options and their documented costs are settled, the memory savings are not, and the user decides whether to close it. `cache.Options` provides `ByObject`, namespace and selector defaults, transforms, `DropManagedFields` and metadata-only informers through the builder, and `client.Options.Cache.DisableFor` forces live reads. Not settled: no memory measurement was found for any option, and the blog named in the gap was not re-read. See [[findings/controller-runtime-narrows-its-cache-with-selectors-transforms-metadata-only-informers-and-disable-for-and-each-option-has-a-cost]] and [[decisions/narrow-the-controller-cache-with-selectors-transforms-or-metadata-only-informers-or-bypass-it-for-some-types]].
 
 ## Flux shared caches and Crossplane performance guidance — status: open
 
@@ -775,6 +781,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, crossplane, sharding, scale
+- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Partly settled, and the user decides whether to close it. Each Flux controller builds its own manager with a watch label selector, so caches are not shared, but that is an inference from the source and no document says so. The Flux docs say extra replicas add no capacity and sharding is by label selector. Crossplane core strips CRD schemas from one cache and does not cache Secrets, and its docs give poll and sync intervals. Not settled: no current Crossplane performance or sharding guide was found, and the guessed URL scraped empty. See [[findings/flux-controllers-keep-separate-caches-narrowed-by-a-watch-label-selector-and-leave-secrets-and-configmaps-uncached-by-default]] and [[findings/crossplane-core-strips-crd-schemas-from-its-cache-and-no-crossplane-performance-or-sharding-guide-was-found]].
 
 ## Informer and cache choices of kro, Config Connector, ACK, and Cluster API — status: open
 
@@ -786,6 +793,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Extend [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, config-connector, ack, cluster-api, informers
+- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled from source for the four tools, and the user decides whether to close it. kro holds one metadata-only informer per GVR, Config Connector caches only its own configuration kinds, ACK scopes by namespace and label selector, and Cluster API caches only cluster-labelled Secrets and gives each workload cluster its own cache, with rate limits and concurrency defaults in the comparison table. Not settled: no production memory figures were found, and Backstage was not researched. See [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]].
 
 ## Argo CD finalizer variants and non-cascading deletes — status: open
 

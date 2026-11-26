@@ -116,6 +116,9 @@ sources:
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -299,3 +302,7 @@ An XR is `Ready` only when functions set `READY_TRUE` for every composed resourc
 ## Namespace deletion and the owner-reference cascade
 
 The v2.5 docs say a managed resource stays until the external resource is fully deleted, and that uninstalling out of order can leave cloud resources running. Namespace deletion with the provider absent is not documented; a managed resource staying Terminating and holding its namespace is an inference and is unverified. Two open reports describe the neighboring case with the provider running: [[examples/crossplane-issue-7801-asks-how-to-protect-provider-credentials-during-namespace-deletion-and-is-open-with-no-maintainer-reply]] and [[examples/crossplane-runtime-issue-1150-reports-a-rejected-providerconfigusage-create-in-a-terminating-namespace-blocking-managed-resource-deletion-for-hours]]. How `managementPolicies` interact with the cascade is not stated in the docs. [[sources/research-gap-m2-ownership-gc]]
+
+## Cache and performance guidance in the m5 dossier
+
+Crossplane core strips CRD OpenAPI schemas from typed CRDs in one cache, does not cache Secrets, and defaults to 100 concurrent reconciles. The docs give a one-minute poll interval and a one-hour sync interval. No Crossplane performance or sharding guide was found. See [[findings/crossplane-core-strips-crd-schemas-from-its-cache-and-no-crossplane-performance-or-sharding-guide-was-found]]. [[sources/research-gap-m5-informers-caches]]

@@ -11,6 +11,9 @@ sources:
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [Resync as a safeguard]
 tags: [resync, informer, safety-net, argo-rollouts, kubefleet]
 ---
@@ -23,7 +26,7 @@ Two projects document a periodic resync as a deliberate guard. KubeFleet's place
 
 ## Interpretation
 
-Both uses match the wiki's existing advice that resync is a defense against reconciler bugs. They do not answer what a resync replays or whether it refetches from the API server, which remains an open gap. The Argo Rollouts thread also shows the cost side, with high workqueue add rates after promotions, see [[examples/argo-rollouts-issue-4140-workqueue-add-rates-stayed-high-after-promotions-with-a-60-second-resync]].
+Both uses match the wiki's existing advice that resync is a defense against reconciler bugs. They do not answer what a resync replays, but the client-go source does: it replays the informer's local cache and does not refetch from the API server ([[findings/a-resync-replays-the-informers-local-cache-to-the-handlers-and-never-contacts-the-api-server]]; correction note, 2026-11-26). [[sources/research-gap-m5-informers-caches]] The Argo Rollouts thread also shows the cost side, with high workqueue add rates after promotions, see [[examples/argo-rollouts-issue-4140-workqueue-add-rates-stayed-high-after-promotions-with-a-60-second-resync]].
 
 ## Related
 

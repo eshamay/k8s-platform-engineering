@@ -59,6 +59,11 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-crossplane-ramp-up-config-connector-condition-passage-with-the-shipped-updatefailed-reason]] — open
 - [[#update-part-5-config-connector-condition-passage-with-the-shipped-updatefailed-reason]] — open
 - [[#update-part-2-observedgeneration-passage-with-the-three-coexisting-placements]] — open
+- [[#update-part-2-restmapper-passage-with-the-confirmed-v030-default-and-the-kep-3352-rationale]] — open
+- [[#update-part-5-informer-cache-passage-with-the-cache-narrowing-options-and-their-costs]] — open
+- [[#update-flux-ramp-up-scaling-passage-with-flux-per-controller-caches-and-the-watch-label-selector]] — open
+- [[#update-crossplane-ramp-up-informer-cache-passage-with-the-core-cache-transform-and-the-missing-performance-guide]] — open
+- [[#update-part-1-resync-cadence-table-row-with-the-kro-and-cluster-api-resync-mechanisms]] — open
 
 ## Open
 
@@ -701,6 +706,41 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/part-2-krm-and-api-machinery.md`, the paragraph beginning "Conflicts and false drift" describes the Flux community case and Argo CD Server-Side Diff without noting that Server-Side Diff is documented stable since v3.1.0 while many issues are open, or that helm-controller's override flag acts before its dry-run. Add both, and the limit that a forced apply failed in Kubernetes issue 130292.
 - **Why:** The passage predates the dossier [[sources/research-gap-m4-ssa-conflict-policy]], which read the Argo CD documentation, tracker, and helm-controller source.
 - **Acceptance:** Passage revised and citing [[findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-2 RESTMapper passage with the confirmed v0.3.0 default and the KEP-3352 rationale — status: open
+
+- **What:** In `outputs/part-2-krm-and-api-machinery.md`, the paragraph beginning "The key operational fact is that discovery is a snapshot" needs revision: it says the v0.3.0 default "comes from a summarized issue thread and should be checked against release notes", and the release notes and the v0.3.0 tag source now confirm it. Add the KEP-3352 rationale for aggregated discovery.
+- **Why:** The passage predates the dossier [[sources/research-gap-m5-informers-caches]].
+- **Acceptance:** Passage revised and citing [[findings/the-dynamic-restmapper-is-confirmed-as-the-controller-runtime-default-at-v0-3-0-from-the-release-notes-and-tag-source]] and [[findings/aggregated-discovery-exists-because-per-group-version-discovery-caused-a-request-storm]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 informer cache passage with the cache narrowing options and their costs — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the paragraph beginning "Inside a controller there are four limits" needs revision: it says the informer cache has no eviction but does not name the narrowing options (selectors, transforms, metadata-only informers, `DisableFor`) or their costs.
+- **Why:** The passage predates the dossier [[sources/research-gap-m5-informers-caches]].
+- **Acceptance:** Passage revised and citing [[findings/controller-runtime-narrows-its-cache-with-selectors-transforms-metadata-only-informers-and-disable-for-and-each-option-has-a-cost]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update flux-ramp-up scaling passage with Flux per-controller caches and the watch label selector — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "Scale in a controller is several separate limits" needs revision: it describes the informer cache in general terms and does not say that each Flux controller runs its own cache narrowed by a watch label selector, or that Secrets and ConfigMaps are uncached unless a feature gate is on.
+- **Why:** The passage predates the dossier [[sources/research-gap-m5-informers-caches]].
+- **Acceptance:** Passage revised and citing [[findings/flux-controllers-keep-separate-caches-narrowed-by-a-watch-label-selector-and-leave-secrets-and-configmaps-uncached-by-default]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up informer cache passage with the core cache transform and the missing performance guide — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "Informer caches add a fourth, general Kubernetes pressure" needs revision: it treats the cache pressure generally and does not note that Crossplane core strips CRD schemas from one cache and does not cache Secrets, or that no Crossplane performance or sharding guide was found.
+- **Why:** The passage predates the dossier [[sources/research-gap-m5-informers-caches]].
+- **Acceptance:** Passage revised and citing [[findings/crossplane-core-strips-crd-schemas-from-its-cache-and-no-crossplane-performance-or-sharding-guide-was-found]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-1 resync cadence table row with the kro and Cluster API resync mechanisms — status: open
+
+- **What:** In `outputs/part-1-core-architectural-principles.md`, the cadence table rows for kro ("10-hour full resync") and Cluster API ("10-minute `--sync-period`") needs revision: it does not say that kro's interval is a replay of cached objects through its metadata informers and that ACK's ten hours is a `RequeueAfter`, which are different mechanisms.
+- **Why:** The passage predates the dossier [[sources/research-gap-m5-informers-caches]].
+- **Acceptance:** Passage revised and citing [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]].
 - **Drafted by:** agent on 2026-11-26
 
 ## Dropped

@@ -74,6 +74,9 @@ sources:
   - id: research-gap-m4-ssa-conflict-policy
     hash: 28e595eae3e0
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -178,3 +181,7 @@ The 2026-11-26 dossier read the ACK community tracker. Most issues below were fi
 ## Server-side apply behavior (m4 dossier)
 
 The shared ACK runtime reconciler writes with controller-runtime merge patches and `StrategicMergeFrom` for Secrets and ConfigMaps, and a search found no `ForceOwnership`, `FieldOwner`, or `client.Apply` call outside a mock, so the runtime sets no server-side apply manager. The conclusion rests on absence at runtime commit b1f8861, and the per-service controllers were not read. The latest runtime release read was v0.68.0, published 2026-11-09. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/the-ack-runtime-sends-merge-patches-and-sets-no-server-side-apply-field-manager]] and [[comparisons/ssa-conflict-policy-across-tools]].
+
+## Cache scope and what "resync" means (m5 dossier)
+
+Service controllers set the cache namespaces and label selector from `--watch-namespace` and `--watch-selectors`, default to one concurrent reconcile per resource, and filter events with `GenerationChangedPredicate` unless ignore-field-drift is on. Correction note, 2026-11-26: the 10-hour "resync" earlier on this page is a `RequeueAfter` after a successful reconcile and not an informer resync. The runtime keys its resource manager factories by `GroupKind`. See [[examples/ack-service-controllers-scope-their-cache-by-namespace-and-label-selector-and-trigger-on-generation-changes]], [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]], and [[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]]. [[sources/research-gap-m5-informers-caches]]

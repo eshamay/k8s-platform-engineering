@@ -44,6 +44,9 @@ sources:
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [sigs.k8s.io/controller-runtime]
 tags: [tool, controllers, framework]
 ---
@@ -70,7 +73,7 @@ A third-party guide summarizes the return values: nil with an empty result means
 
 ## To research
 
-Informer resync semantics and the exact cache implementation were not covered; see [[open-knowledge-gaps]].
+Correction note, 2026-11-26: resync semantics and the cache options are now covered in the section "Cache, resync, and mapper details (m5 dossier)" below. What a running informer does when its CRD is deleted remains open; see [[open-knowledge-gaps]].
 
 ## Dynamic RESTMapper
 
@@ -111,3 +114,7 @@ Update 2026-11-26: the `Requeue: true` result has been a rate-limited requeue si
 ## Adoption and refusal rules in the owner reference helpers
 
 `SetControllerReference` returns an `AlreadyOwnedError` when another controller already controls the object ("Return early with an error if the object is already controlled"), and rejects owner and dependent pairs in different namespaces and cluster-scoped dependents with namespaced owners. A plain operator therefore does not take over a controlled object, and adopting orphans is code the operator writes itself. Orphaning on delete is a client option, either the propagation policy in the request or an operator finalizer. No controller-runtime adoption helper was read, and the in-tree `ControllerRefManager` was not read. Latest release read was v0.25.3. [[sources/research-gap-m2-ownership-gc]] See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]].
+
+## Cache, resync, and mapper details (m5 dossier)
+
+`SyncPeriod` defaults to 10 hours with jitter, "does not sync between the local cache and the server", and emits an artificial Update event with the same object in both positions, so `GenerationChangedPredicate` filters it out ([[findings/a-resync-replays-the-informers-local-cache-to-the-handlers-and-never-contacts-the-api-server]]). `cache.Options` offers `ByObject`, namespace and selector defaults, transforms, `DropManagedFields`, `DefaultUnsafeDisableDeepCopy` and `ReaderFailOnMissingInformer`, and `client.Options.Cache.DisableFor` sends listed types to live reads, with unstructured reads uncached by default ([[findings/controller-runtime-narrows-its-cache-with-selectors-transforms-metadata-only-informers-and-disable-for-and-each-option-has-a-cost]]). Informers are tracked per GVK in structured, unstructured and metadata maps and mapped to a GVR through the RESTMapper ([[findings/controller-runtime-tracks-informers-by-gvk-while-client-go-factories-key-by-go-type-or-gvr]]). The dynamic RESTMapper is the default from v0.3.0 (release notes of 2019-10-10, [[findings/the-dynamic-restmapper-is-confirmed-as-the-controller-runtime-default-at-v0-3-0-from-the-release-notes-and-tag-source]]). Issues 3303 and 2589 are user reports of stale CRD state ([[examples/controller-runtime-issue-3303-a-recreated-crd-with-a-different-scope-was-not-picked-up-by-the-client-or-restmapper]], [[examples/controller-runtime-issue-2589-a-controller-started-before-its-crd-existed-did-not-recover-until-the-cache-sync-timeout]]). [[sources/research-gap-m5-informers-caches]]

@@ -20,6 +20,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [State-based vs event-based]
 tags: [architecture, controllers]
 ---
@@ -68,8 +71,12 @@ The convergence dossier repeats Tim Hockin's framing, "State is more useful than
 
 ## To research
 
-Informer resync period semantics (replay of cached state versus relist), the original "Controller Writing Guide," and named-company incidents caused by lost-event design. See [[open-knowledge-gaps]].
+Named-company incidents caused by lost-event design remain open. Resync semantics and the guide's origin were settled on 2026-11-26: a resync replays cached state and does not relist ([[findings/a-resync-replays-the-informers-local-cache-to-the-handlers-and-never-contacts-the-api-server]]), and "Level driven, not edge driven." is guideline 3 of the Controller Writing Guide ([[findings/the-level-driven-not-edge-driven-guideline-is-point-3-of-the-controller-writing-guide-and-the-beda-quote-remains-second-hand]]). See [[open-knowledge-gaps]].
 
 ## Update from the operator loop dossier
 
 The 2026-11-26 dossier found no named-company outage caused by edge-triggered design. It found two primary cases of lost events: a client-go relist that could drop a DELETE for a short-lived object (Kubernetes issue 115658, fixed by pull requests 115620 and 116623) and a delete that happened while a monitor was down and was never delivered (NVSentinel issue 1542). Both support the rule that an event is a hint and that state-keyed logic or a finalizer must cover the gap. See [[findings/an-informer-relist-that-races-a-queued-create-can-drop-the-delete-event-for-the-object]], [[findings/a-delete-that-happens-while-a-controller-is-down-is-never-delivered-so-finalizers-or-resync-must-cover-it]], and [[findings/projects-add-periodic-resync-as-a-safety-net-against-missed-events-and-bugs]]. Source: [[sources/research-gap-g1-operator-loop-failures]].
+
+## Origin of the guideline (m5 dossier)
+
+The guide the earlier sections cite second-hand is "Writing Controllers" in kubernetes/community at `contributors/devel/sig-api-machinery/controllers.md`. "Level driven, not edge driven." is its third guideline, and it adds that "you can't count on having seen it turn from `false` to `true`, only that you now observe it being `true`", and that a controller should record the information it last decided on in the object's status. The design-principle form, "Edge-triggered behavior must be just an optimization", is in the archived principles document (first commit 2017-09-06), and Tim Hockin's slides of 2017-06-02 say "State is more useful than events". The Joe Beda quotation above is known only through the 2018 Hacker Noon post and stays SECONDARY-ONLY, because Cloud Native Infrastructure was not read. [[sources/research-gap-m5-informers-caches]] See [[findings/the-level-driven-not-edge-driven-guideline-is-point-3-of-the-controller-writing-guide-and-the-beda-quote-remains-second-hand]].

@@ -29,6 +29,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [client-go caching, controller-runtime cache]
 tags: [controllers, scale, informers, workqueue, client-go]
 ---
@@ -76,7 +79,9 @@ Watch events delivered through informers are hints that enqueue an object key, a
 
 ## Resync
 
-Periodic resync is usually disabled. One dossier source calls it a defense against reconciler bugs, while the pitfalls blog lists misunderstanding it as a common error, and defaults differ by framework. No source in the wiki yet explains whether resync replays cached state to handlers or refetches from the API server. See [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]] and the resync gap in [[open-knowledge-gaps]].
+A resync replays every object in the informer's local cache to the handlers as an update event and does not contact the API server. In client-go the reflector calls `store.Resync()` on a timer, `DeltaFIFO.Resync` re-queues keys from the local known-objects store, and a zero period means no resync. `HasSynced` is unrelated to resync, because it reports that one full LIST has completed. controller-runtime's `SyncPeriod` defaults to 10 hours with jitter, emits an artificial Update event with identical old and new objects that `GenerationChangedPredicate` filters out, and the documentation recommends `RequeueAfter` to cover missed watch events. The word names different mechanisms elsewhere: ACK's "resync" is a `RequeueAfter` after success, and kro's flag text calls its resync a "re list". [[sources/research-gap-m5-informers-caches]] See [[findings/a-resync-replays-the-informers-local-cache-to-the-handlers-and-never-contacts-the-api-server]], [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]], and [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]].
+
+Correction note, 2026-11-26: this section previously said periodic resync is "usually disabled" and that no source explained what it replays. In controller-runtime it is enabled by default at 10 hours, and the replay semantics are now sourced.
 
 ## Costs and tuning knobs
 
@@ -100,7 +105,11 @@ Heavy handlers and expensive reconciles waste API calls ([[findings/heavy-event-
 
 ## To research
 
-Resync semantics, controller sharding in Flux and Crossplane, cache-narrowing options such as selectors and transforms, and the informer choices of kro, Config Connector, ACK, and Cluster API. See [[open-knowledge-gaps]].
+Open items after the 2026-11-26 informer dossier: memory measurements for any cache-narrowing option, what a running informer does when its CRD is deleted or its served versions change, and Backstage's cache behavior. See [[open-knowledge-gaps]].
+
+## Cache narrowing, per-tool caches, and keying (m5 dossier)
+
+controller-runtime narrows the cache with `ByObject`, namespace, label and field selectors, transforms such as `TransformStripManagedFields`, `DropManagedFields`, metadata-only informers, and a client-side `DisableFor` list, and each option trades memory against coverage, fields, or live API calls ([[findings/controller-runtime-narrows-its-cache-with-selectors-transforms-metadata-only-informers-and-disable-for-and-each-option-has-a-cost]], [[decisions/narrow-the-controller-cache-with-selectors-transforms-or-metadata-only-informers-or-bypass-it-for-some-types]]). Flux controllers each run their own manager with a watch label selector and leave Secrets and ConfigMaps uncached by default ([[findings/flux-controllers-keep-separate-caches-narrowed-by-a-watch-label-selector-and-leave-secrets-and-configmaps-uncached-by-default]]). Crossplane core strips CRD schemas from one cache ([[findings/crossplane-core-strips-crd-schemas-from-its-cache-and-no-crossplane-performance-or-sharding-guide-was-found]]). The choices of kro, Config Connector, ACK, and Cluster API are in [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]]. controller-runtime keys informers by GVK, client-go's typed factory by Go type, and its dynamic factory by GVR ([[findings/controller-runtime-tracks-informers-by-gvk-while-client-go-factories-key-by-go-type-or-gvr]]). [[sources/research-gap-m5-informers-caches]]
 
 ## Scale limits in the scale dossier
 

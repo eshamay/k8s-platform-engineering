@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, deprecation, upgrade]
 ---
@@ -28,3 +31,7 @@ The sources advise moving to GA versions before the upgrade. Deprecation-scannin
 ## Update from the v2.5 verification pass (2026-11-26)
 
 Deprecated-API scanners do not cover Crossplane out of the box. Pluto's bundled rules hold 86 `k8s`, 24 `cert-manager`, and 2 `istio` entries, and kubent ships Rego rules for core Kubernetes only, so a deprecated or removed Crossplane GVK (such as the v1 XRD or the old `apiextensions` Usage) needs a custom entry in either tool. [[sources/research-gap-g3-crossplane-v2]] See [[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]].
+
+## Version handling in four tools (m5 dossier)
+
+Argo CD keys resources by group, kind, namespace and name with no version, ACK and Config Connector key controllers by group and kind, and Cluster API resolves the version from CRD contract labels, so an API version change alone does not change a resource's identity in these tools. What happens when a served CRD version is removed is not documented in any source read. See [[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]]. [[sources/research-gap-m5-informers-caches]]

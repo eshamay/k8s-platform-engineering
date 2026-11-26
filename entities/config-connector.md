@@ -77,6 +77,9 @@ sources:
   - id: research-gap-m4-ssa-conflict-policy
     hash: 28e595eae3e0
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -184,3 +187,7 @@ The docs say `status` is read-only and that the `Ready` condition conveys readin
 ## Server-side apply and field managers (m4 dossier)
 
 Config Connector does not apply with server-side apply. Its lifecycle handler writes with `Update` and `Status().Update` under the field owner `cnrm-controller-manager`, skips entries from that manager when it computes the spec fields owned by others, and so reads fields set by a GitOps tool as user intent. A helper sends a tiny server-side apply patch under the manager `supports-ssa` only to create `managedFields` metadata. A repository collaborator's proposal, issue 11689 (closed 2026-10-04), says Argo CD needs server-side apply for the CRD bundle because of the annotation size limit. The public documentation page could not be read, so these statements come from source at commit 793f18c and from issues. The latest release read was v1.162.0, published 2026-11-23. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/config-connector-writes-with-update-under-cnrm-controller-manager-and-reads-other-managers-fields-as-user-intent]] and [[examples/config-connector-issue-11689-a-collaborator-proposal-says-argo-cd-needs-server-side-apply-for-config-connector-s-crds]].
+
+## Cache choices (m5 dossier)
+
+By default the manager's client caches only ConfigConnector and ConfigConnectorContext objects and CRDs, disables caching for Namespace, Secret, ConfigMap and IAM kinds, and does not cache unstructured objects. The cache-everything mode is commented "Currently only used in preview". Client rate is QPS 20 and burst 30. A registration controller watches CRDs and registers one controller per group and kind, with the version taken from the CRD. See [[examples/config-connector-caches-only-its-own-configuration-kinds-by-default]] and [[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]]. [[sources/research-gap-m5-informers-caches]]

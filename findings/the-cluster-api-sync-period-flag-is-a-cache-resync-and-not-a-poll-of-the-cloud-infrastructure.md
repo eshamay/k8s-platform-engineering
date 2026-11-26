@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, cluster-api, sync-period, resync, defaults, drift]
 ---
@@ -25,3 +28,5 @@ No per-resource drift period for infrastructure was found. The dossier also did 
 ## Consequences
 
 Do not put 10 minutes in the Cluster API cell of a drift-latency table as if it were a poll interval. Put the flag in the cadence row with a note that it is a cache resync, and leave the infrastructure drift cell open until current controller source or the current book is read. See [[entities/cluster-api]], [[concepts/informers-reflectors-and-workqueues]], and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
+
+Update 2026-11-26: the m5 dossier confirmed the flag in `core/main.go` (`"sync-period", 10*time.Minute`) and that a controller-runtime cache resync is a replay of the local cache and not a contact with the server, which supports this reading. See [[findings/a-resync-replays-the-informers-local-cache-to-the-handlers-and-never-contacts-the-api-server]] and [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]]. [[sources/research-gap-m5-informers-caches]]

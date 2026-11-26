@@ -1,7 +1,7 @@
 ---
 title: ACK resync period tuning for stateful resources
 type: example
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
@@ -10,6 +10,9 @@ sources:
     ingested: 2026-11-25
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
+    ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
     ingested: 2026-11-26
 aliases: []
 tags: [ack, aws, drift, resync, api-cost]
@@ -32,3 +35,5 @@ This is the clearest statement in the sources of the freshness-versus-API-cost t
 ## Confirmation of the default
 
 The 2026-11-26 dossier confirms the 10 hour default against the runtime constant `defaultResyncPeriod = 10 * time.Hour` as well as the drift-recovery page. [[sources/research-gap-g3-reconcile-defaults]]
+
+Correction note, 2026-11-26: ACK's "resync" is `requeue.NeededAfter(nil, r.resyncPeriod)` with `defaultResyncPeriod = 10 * time.Hour`, a requeue after a successful reconcile and not an informer resync, so each pass re-reads the AWS resource. See [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]] and [[examples/ack-service-controllers-scope-their-cache-by-namespace-and-label-selector-and-trigger-on-generation-changes]]. [[sources/research-gap-m5-informers-caches]]

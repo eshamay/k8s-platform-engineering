@@ -86,6 +86,9 @@ sources:
   - id: research-gap-m4-ssa-conflict-policy
     hash: 28e595eae3e0
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -223,3 +226,7 @@ The 2026-11-26 dossier read kro's issue tracker and release notes and found user
 Correction note: earlier sections of this page took the tuning defaults and instance conditions from documentation and called the v0.9.4 comparison an inference. A read of `cmd/controller/main.go` at v0.9.4 and v0.10.0 settles it. The flag defaults are identical at both tags (1 worker, 200 ms to 1000 s backoff, rate limit 10 with burst 100, a 36000 second resync, 20 retries, client QPS 100 with burst 150, instance requeue 3 s, RGD progress requeue 3 s), and v0.10.0 adds only `watch-sync-timeout` (30 s), `graph-concurrent-reconciles` (1), `apply-concurrency` (20), and `cel-cost-limit` (0, disabled). The collection limits are real flags, `rgd-max-collection-size` 1000 and `rgd-max-collection-dimension-size` 10. [[sources/research-gap-b1-recheck-kro-crossplane]]
 
 Instance requeue is a fixed delay at v0.9.4, since that tree has no backoff package, and a per-instance exponential backoff with factor 2 and a five-minute cap at v0.10.0, see [[findings/kro-v0-10-0-requeues-an-unready-instance-with-per-instance-exponential-backoff-capped-at-five-minutes-while-v0-9-4-has-no-backoff-package]]. The `FAILED` instance state is a deprecated legacy constant that v0.9.4 defines and v0.10.0 does not, so the four values at v0.10.0 are IN_PROGRESS, ACTIVE, DELETING, and ERROR, see [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]]. The four built-in instance conditions are Go constants, and author-defined conditions are validated when the graph is built, see [[findings/kro-validates-author-defined-conditions-at-build-time-so-a-bad-status-or-a-duplicate-type-is-rejected-before-an-instance-exists]].
+
+## Informers and cache (m5 dossier)
+
+kro's watch manager owns one shared, metadata-only informer per GVR, so memory stays bounded as the set of watched GVRs grows, and an optional warmup pre-populates caches before leader election. The 36000 second default resync is described in the flag help as a "re list", and the dossier read the mechanism as the resync argument of the metadata informer. Correction note, 2026-11-26: the "10-hour full resync" wording elsewhere on this page names a replay of cached objects and not a fresh LIST against the API server. See [[examples/kro-keeps-one-metadata-only-shared-informer-per-gvr]] and [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]]. [[sources/research-gap-m5-informers-caches]]

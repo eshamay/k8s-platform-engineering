@@ -1,13 +1,16 @@
 ---
 title: Informer caches hold every watched object and memory grows with cluster size
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
     ingested: 2026-11-25
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, cache, memory, scale, controller-runtime]
 ---
@@ -20,7 +23,7 @@ The controller-runtime cache is an in-memory copy of every object the controller
 
 ## Interpretation
 
-The cache is what makes reads cheap, so memory is the price of avoiding API calls. Narrowing what is watched, through field or label selectors, transforms that trim objects, or metadata-only informers, is a common remedy, but the sources read did not cover these in detail, and the cache blog was read only in part. See [[open-knowledge-gaps]].
+The cache is what makes reads cheap, so memory is the price of avoiding API calls. Narrowing what is watched, through field or label selectors, transforms that trim objects, or metadata-only informers, is a common remedy, and the controller-runtime source now documents them: per-type selectors, namespace scoping, transforms, metadata-only informers, and a `DisableFor` list ([[findings/controller-runtime-narrows-its-cache-with-selectors-transforms-metadata-only-informers-and-disable-for-and-each-option-has-a-cost]]). Correction note, 2026-11-26: this paragraph previously said the sources did not cover these. No memory savings were measured, so the size of the reduction is unknown. [[sources/research-gap-m5-informers-caches]]
 
 ## Mitigations seen in the dossier
 
@@ -29,3 +32,4 @@ Shard across replicas ([[examples/argo-cd-application-controller-shards-clusters
 ## Related
 
 [[concepts/informers-reflectors-and-workqueues]], [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]], [[findings/etcd-scale-limits-of-the-shared-store]]
+

@@ -116,6 +116,9 @@ sources:
   - id: research-gap-m4-ssa-conflict-policy
     hash: 28e595eae3e0
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -273,3 +276,7 @@ Argo CD tracks the resources an Application owns with `application.resourceTrack
 ## Status semantics beyond health in the m3 dossier
 
 An Application has a sync status of Unknown, Synced, or OutOfSync. Its condition list holds typed entries with no status field, named by suffix (`Error`, `Warning`, `Info`): DeletionError, InvalidSpecError, ComparisonError, SyncError, UnknownError, SharedResourceWarning, RepeatedResourceWarning, ExcludedResourceWarning, and OrphanedResourceWarning. `reconciledAt` is the live timestamp and `observedAt` is deprecated. Resource tracking defaults to the `argocd.argoproj.io/tracking-id` annotation, and an annotation that does not reference the resource it sits on affects neither sync status nor pruning. For Config Connector, a shipped Lua script maps `UpToDate` to Healthy and `UpdateFailed` to Degraded. Argo CD's operation-state docs, sync-phase docs, and controller aggregation code were not read, so how per-resource sync status is aggregated stays open. [[sources/research-gap-m3-status-conditions]] See [[examples/argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration]] and [[findings/kstatus-reads-only-the-top-level-observedgeneration-because-its-condition-struct-has-no-per-condition-field]].
+
+## Resource identity in the m5 dossier
+
+The tracking annotation and gitops-engine `ResourceKey` carry group, kind, namespace and name with no version, the cluster cache watches preferred versions, and live objects are converted to the manifest's version for comparison. See [[examples/argo-cd-tracks-resources-by-group-kind-namespace-and-name-so-an-api-version-change-keeps-the-same-key]]. [[sources/research-gap-m5-informers-caches]]

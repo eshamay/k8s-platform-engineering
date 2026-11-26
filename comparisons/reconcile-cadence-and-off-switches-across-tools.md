@@ -23,6 +23,9 @@ sources:
   - id: research-gap-b1-recheck-capi-argocd
     hash: 832b86e20750
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, reconciliation, intervals, backoff]
 ---
@@ -67,3 +70,5 @@ The Argo CD default was 180 seconds from v2.1.0 through v2.14.0 (manifest and co
 ## Flux jitter and wording, 2026-11-26 recheck
 
 Correction 2026-11-26: Flux controllers apply plus or minus 5 percent jitter to every requeue by default through `--interval-jitter-percentage` ([[findings/flux-controllers-jitter-reconcile-intervals-by-plus-or-minus-5-percent-by-default]]), so the Flux cadence is the manifest's interval with that spread, and Argo CD's jitter is a separate plus up to 60 seconds. The concepts page's five-minute sentence replaced "one minute" in a 2022 docs commit with no stated reason ([[findings/the-flux-concepts-page-five-minute-sentence-replaced-one-minute-in-an-august-2022-docs-commit-with-no-stated-reason]]). [[sources/research-gap-b1-recheck-flux-k8s]]
+
+Note 2026-11-26: the "10-hour" cells for ACK and kro name different mechanisms. ACK's is a `RequeueAfter` after success, and kro's is the resync of its metadata informers, a replay of cached objects. Cluster API's `--sync-period` is also a cache replay. See [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]]. [[sources/research-gap-m5-informers-caches]]

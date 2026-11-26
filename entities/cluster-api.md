@@ -89,6 +89,9 @@ sources:
   - id: research-gap-m4-ssa-conflict-policy
     hash: 28e595eae3e0
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -213,3 +216,7 @@ The MachineSet controller adopts Machines that match its selector and have no co
 ## Condition proposals in the m3 dossier
 
 The 2020 conditions proposal had no `observedGeneration` and leaned positive in its suffix guidance. The 2024 proposal drops Cluster API's own condition type for `metav1.Conditions` and aligns with the conventions' "neither polarity" text, and the InfraMachine contract accepts a per-condition `observedGeneration`. [[sources/research-gap-m3-status-conditions]] See [[examples/cluster-api-s-2020-conditions-proposal-had-no-observedgeneration-and-the-2024-proposal-moves-to-metav1-conditions]] and [[entities/kstatus]].
+
+## Cache choices (m5 dossier)
+
+The core manager caches only Secrets that carry the cluster-name label, keeps data only for kubeconfig Secrets, and excludes ConfigMap and Secret from its client cache. A `ClusterCache` gives each workload cluster its own cache that strips managed fields and does not cache Pods or DaemonSets, with client QPS 20 and burst 30. In v1beta2 references carry `apiGroup` and `kind` and the version is resolved from CRD contract labels. See [[examples/cluster-api-caches-only-cluster-labelled-secrets-and-gives-each-workload-cluster-its-own-cache]] and [[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]]. [[sources/research-gap-m5-informers-caches]]

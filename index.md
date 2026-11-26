@@ -16,7 +16,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 ### KRM and API machinery
 
 - [[concepts/gvk-and-gvr]] — type versus endpoint coordinates, mapping, lifecycle, and failure classes (active)
-- [[concepts/api-discovery-and-restmapper]] — discovery documents and the GVK-to-GVR translator (draft)
+- [[concepts/api-discovery-and-restmapper]] — discovery documents and the GVK-to-GVR translator (active)
 - [[concepts/crd-versioning-and-storage-migration]] — served and storage versions, conversion, retirement, and the GA StorageVersionMigration API (active)
 - [[concepts/custom-resource-definition]] — registering new API types, schema, versions, costs, and pitfalls (active)
 - [[concepts/spec-status-split]] — intent versus observed reality, the status subresource, observedGeneration, and pitfalls (active)
@@ -59,7 +59,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/controller-runtime]] — Go controller library and the level-based Reconciler contract (active)
 - [[entities/kube-rs]] — Rust controller library and single-replica availability guidance (draft)
 - [[entities/tofu-controller]] — Terraform and OpenTofu from Flux-style resources, detection-only model (draft)
-- [[entities/client-go]] — Go client library with the discovery client and RESTMapper constructors (draft)
+- [[entities/client-go]] — Go client library with the discovery client and RESTMapper constructors (active)
 - [[entities/helm]] — package manager whose charts do not upgrade or delete CRDs (active)
 - [[entities/kstatus]] — generic status computation for conforming resources (active)
 - [[entities/prometheus-operator]] — operator that retrofitted status onto its workload CRDs (draft)
@@ -140,6 +140,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-m2-ownership-gc]] — verified dossier on kro ownership and labels, Argo CD tracking and prune propagation, the blockOwnerDeletion admission plugin, KEPs, adoption and orphaning, and Crossplane namespace deletion, 2026-11-26 (active)
 - [[sources/research-gap-m3-status-conditions]] — verified dossier on the kstatus evaluation order, observedGeneration placement, condition polarity history, Config Connector reconcile-status design versus shipped code, and Argo CD status beyond health, 2026-11-26 (active)
 - [[sources/research-gap-m4-ssa-conflict-policy]] — verified dossier on server-side apply behavior in kro, ACK, Config Connector, Helm 4, and helm-controller, Cluster API field ownership, Argo CD Server-Side Diff stability, and force versus strip-or-adopt, 2026-11-26 (active)
+- [[sources/research-gap-m5-informers-caches]] — verified dossier on informer resync, cache narrowing, per-tool caches, GVK and GVR keying, and the dynamic mapper, 2026-11-26 (active)
 
 ## Examples
 
@@ -175,7 +176,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/incremental-gitops-adoption-with-manual-sync-and-self-heal]] — staged enforcement with Argo CD (draft)
 - [[examples/cluster-api-machine-health-check-replaces-failed-nodes]] — machine-level self-healing (active)
 - [[examples/tofu-controller-detects-terraform-drift-without-applying]] — detection-only Terraform drift (draft)
-- [[examples/ack-resync-period-tuning-for-stateful-resources]] — freshness versus AWS API cost (draft)
+- [[examples/ack-resync-period-tuning-for-stateful-resources]] — freshness versus AWS API cost (active)
 - [[examples/crossplane-managed-resource-enforces-forprovider-and-observes-adopted-resources]] — enforce, observe, or pause (draft)
 - [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]] — signed OCI artifacts replace Git pulls (draft)
 - [[examples/crossplane-resources-hosted-by-argo-cd]] — health checks and tracking for the seam (draft)
@@ -382,6 +383,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/argo-cd-issue-25533-server-side-diff-does-not-detect-spec-changes-to-a-custom-resource]] — open Server-Side Diff bug filed 2025-12-05 (active)
 - [[examples/kubernetes-issue-130292-a-forced-server-side-apply-could-not-revert-an-edited-service-port]] — forced apply rejected, with Argo CD issue 17717 (active)
 - [[examples/the-kube-green-case-study-says-managedfieldsmanagers-works-today-but-is-not-a-documented-contract-between-the-projects]] — secondary-only practitioner case study (draft)
+- [[examples/controller-runtime-issue-3303-a-recreated-crd-with-a-different-scope-was-not-picked-up-by-the-client-or-restmapper]] — user report of stale CRD scope in the client and mapper (active)
+- [[examples/controller-runtime-issue-2589-a-controller-started-before-its-crd-existed-did-not-recover-until-the-cache-sync-timeout]] — user report of slow recovery when a CRD appears late (active)
+- [[examples/kro-keeps-one-metadata-only-shared-informer-per-gvr]] — one metadata-only informer per GVR (active)
+- [[examples/config-connector-caches-only-its-own-configuration-kinds-by-default]] — narrow default cache and uncached sensitive kinds (active)
+- [[examples/ack-service-controllers-scope-their-cache-by-namespace-and-label-selector-and-trigger-on-generation-changes]] — flag-scoped cache and generation filter (active)
+- [[examples/cluster-api-caches-only-cluster-labelled-secrets-and-gives-each-workload-cluster-its-own-cache]] — label-limited Secret cache and per-workload-cluster cache (active)
+- [[examples/argo-cd-tracks-resources-by-group-kind-namespace-and-name-so-an-api-version-change-keeps-the-same-key]] — version-free resource identity (active)
 
 ## Comparisons
 
@@ -396,8 +404,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/exemption-and-ignore-controls-across-tools]] — ignore, observe, and pause controls (draft)
 - [[comparisons/push-versus-pull-delivery]] — credentials, reach, and reconciliation (draft)
 - [[comparisons/flux-versus-argo-cd-architecture]] — controllers versus three components (draft)
-- [[comparisons/gvk-versus-gvr]] — type versus endpoint (draft)
-- [[comparisons/restmapper-strategies-static-deferred-and-dynamic]] — how mappers react to new CRDs (draft)
+- [[comparisons/gvk-versus-gvr]] — type versus endpoint (active)
+- [[comparisons/restmapper-strategies-static-deferred-and-dynamic]] — how mappers react to new CRDs (active)
 - [[comparisons/missing-crd-handling-flux-versus-argo-cd]] — dependsOn versus sync waves (draft)
 - [[comparisons/cel-validation-rules-versus-validating-webhooks]] — in-schema rules versus external services (draft)
 - [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]] — how versions convert (draft)
@@ -438,13 +446,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/tofu-controller-versus-terraform-operator-as-terraform-in-cluster-controllers]] — two ways to run Terraform in pods (draft)
 - [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]] — label key versus cluster key for splitting controller work (draft)
 - [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]] — how each tool settles a field two writers set (active)
+- [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]] — cache scope, rate limits, and resync mechanism per tool (active)
 
 ## Decisions
 
 - [[decisions/crd-versus-aggregated-api]] — how to serve new API kinds (draft)
 - [[decisions/choosing-an-object-management-technique]] — imperative, replace, or apply (draft)
 - [[decisions/events-as-hints-state-as-truth]] — level-based correctness with watch-based latency (draft)
-- [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]] — safety net versus steady-state load (draft)
+- [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]] — safety net versus steady-state load (active)
 - [[decisions/single-replica-versus-leader-election]] — controller availability trade-off (draft)
 - [[decisions/staged-adoption-of-automated-drift-correction]] — observe, correct selectively, then enforce (draft)
 - [[decisions/choosing-a-drift-check-interval-for-external-resources]] — freshness versus API cost (draft)
@@ -481,6 +490,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/choose-an-argo-cd-resource-tracking-method-annotation-annotation-plus-label-or-label]] — evidence-only options for the three tracking methods (draft)
 - [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]] — evidence-only options, no recommendation (active)
 - [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]] — evidence-only options, no recommendation (active)
+- [[decisions/narrow-the-controller-cache-with-selectors-transforms-or-metadata-only-informers-or-bypass-it-for-some-types]] — four narrowing options, evidence only (active)
 
 ## Findings
 
@@ -520,7 +530,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/rollback-is-blocked-while-automated-sync-is-on]] — rollback requires a Git revert (draft)
 - [[findings/mutable-remote-references-change-what-a-commit-renders]] — pin tags or SHAs (draft)
 - [[findings/two-reconcile-loops-hide-status-and-drift-at-two-layers]] — GitOps loop over domain loop (draft)
-- [[findings/stale-restmapper-hides-newly-installed-crds]] — mapper built once cannot see later CRDs (draft)
+- [[findings/stale-restmapper-hides-newly-installed-crds]] — mapper built once cannot see later CRDs (active)
 - [[findings/custom-resources-applied-before-their-crd-exists]] — no matches for kind (draft)
 - [[findings/group-and-plural-names-are-effectively-permanent]] — immutable names (draft)
 - [[findings/crd-version-removal-without-migration-strands-stored-objects]] — conversion and migration hazards (draft)
@@ -566,7 +576,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/external-identity-takes-different-forms-across-cloud-apis]] — names, IDs, ARNs, and compound keys (draft)
 - [[findings/adopt-or-create-can-take-over-a-look-alike-resource]] — accidental adoption (active)
 - [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]] — retry safety depends on the API (draft)
-- [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]] — cache memory has no eviction (draft)
+- [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]] — cache memory has no eviction (active)
 - [[findings/an-expired-resourceversion-forces-a-relist-and-synchronized-relists-can-storm]] — 410 Gone and relist cost (draft)
 - [[findings/skipping-done-or-forget-on-the-workqueue-leaves-items-stuck-or-retrying]] — workqueue bookkeeping (draft)
 - [[findings/heavy-event-handlers-and-expensive-reconciles-waste-api-calls]] — handlers only enqueue (draft)
@@ -760,6 +770,16 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/kro-deletion-policy-orphaned-releases-a-resource-by-stripping-kro-labels-but-leaves-template-owner-references-in-place]] — alpha orphan release and its owner-reference pitfall (active)
 - [[findings/argo-cd-tracks-resources-by-annotation-by-default-and-label-mode-truncates-and-collides-with-other-tools]] — tracking methods and prune propagation (active)
 - [[findings/no-kep-covers-cross-namespace-ownership-or-garbage-collector-performance-and-the-nearest-proposals-are-5080-and-2336]] — no dedicated KEP, adjacent KEPs, outdated design archive default (active)
+- [[findings/a-resync-replays-the-informers-local-cache-to-the-handlers-and-never-contacts-the-api-server]] — resync is a local replay (active)
+- [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]] — informer replay, kro re-list wording, ACK requeue (active)
+- [[findings/controller-runtime-narrows-its-cache-with-selectors-transforms-metadata-only-informers-and-disable-for-and-each-option-has-a-cost]] — cache options and their costs (active)
+- [[findings/flux-controllers-keep-separate-caches-narrowed-by-a-watch-label-selector-and-leave-secrets-and-configmaps-uncached-by-default]] — per-controller Flux caches (active)
+- [[findings/crossplane-core-strips-crd-schemas-from-its-cache-and-no-crossplane-performance-or-sharding-guide-was-found]] — Crossplane cache transform, no performance guide found (active)
+- [[findings/controller-runtime-tracks-informers-by-gvk-while-client-go-factories-key-by-go-type-or-gvr]] — three informer keying schemes (active)
+- [[findings/the-dynamic-restmapper-is-confirmed-as-the-controller-runtime-default-at-v0-3-0-from-the-release-notes-and-tag-source]] — v0.3.0 claim confirmed (active)
+- [[findings/aggregated-discovery-exists-because-per-group-version-discovery-caused-a-request-storm]] — KEP-3352 rationale (active)
+- [[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]] — version-free identity across four tools (active)
+- [[findings/the-level-driven-not-edge-driven-guideline-is-point-3-of-the-controller-writing-guide-and-the-beda-quote-remains-second-hand]] — guideline origin and provenance (active)
 
 ## Outputs
 

@@ -3,11 +3,14 @@ title: Events as hints, state as truth
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [Hybrid level and edge triggering]
 tags: [controllers, architecture, level-triggered]
 ---
@@ -37,3 +40,5 @@ Edge-triggered handling is not always wrong. The HackerNoon explainer and the de
 ## Related
 
 [[concepts/reconciliation-loop]], [[concepts/idempotency]], [[concepts/eventual-consistency-and-convergence]]
+
+The principle's wording traces to the Controller Writing Guide and the archived design principles ("Edge-triggered behavior must be just an optimization"), see [[findings/the-level-driven-not-edge-driven-guideline-is-point-3-of-the-controller-writing-guide-and-the-beda-quote-remains-second-hand]]. [[sources/research-gap-m5-informers-caches]]

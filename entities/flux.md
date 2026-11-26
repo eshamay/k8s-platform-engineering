@@ -104,6 +104,9 @@ sources:
   - id: research-gap-m4-ssa-conflict-policy
     hash: 28e595eae3e0
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -246,3 +249,7 @@ Flux's condition setter stamps the current generation on every condition, its Ku
 ## helm-controller and kustomize-controller takeover order (m4 dossier)
 
 The two controllers order the field-manager takeover differently. helm-controller's `--override-manager` (v1.5.0, 2026-02-20) patches `managedFields` on the live objects before its server-side dry-run diff, while kustomize-controller's `--override-manager` acts only after a successful dry-run and its `--override-manager-before-dry-run` flag (v1.10.0) is the documented recovery for objects whose dry-run fails. No helm-controller counterpart to the recovery flag was found, and helm-controller always forces conflicts under server-side apply. Flux's Strip and Adopt rules are confirmed by the kustomize-controller specification, which also says changes to ignored fields alone do not trigger a reconciliation. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/helm-controller-takes-over-override-manager-fields-before-its-dry-run-diff-the-reverse-of-kustomize-controller]] and [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]].
+
+## Caches and sharding in the m5 dossier
+
+The source-, kustomize- and helm-controller each build their own manager and narrow the cache for their own kinds with a watch label selector. Secrets and ConfigMaps are excluded from the client cache unless the `CacheSecretsAndConfigMaps` gate is on. The Flux docs say extra replicas are failover standbys that add no capacity and that sharding is by a unique label selector per controller instance. See [[findings/flux-controllers-keep-separate-caches-narrowed-by-a-watch-label-selector-and-leave-secrets-and-configmaps-uncached-by-default]]. [[sources/research-gap-m5-informers-caches]]

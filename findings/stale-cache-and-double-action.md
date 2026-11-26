@@ -23,6 +23,9 @@ sources:
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
+  - id: research-gap-m5-informers-caches
+    hash: 1a6a4969c0c2
+    ingested: 2026-11-26
 aliases: [Expectations problem]
 tags: [pitfall, controllers, cache, level-triggered]
 ---
@@ -43,7 +46,7 @@ The controller-runtime FAQ lists two approaches used by built-in controllers. St
 
 ## Caveat
 
-The Ayson post was read only through a summarizing fetch, and the "Kubernetes Controller Writing Guide" it cites was not located. See [[open-knowledge-gaps]].
+The Ayson post was read only through a summarizing fetch. Correction note, 2026-11-26: the "Kubernetes Controller Writing Guide" it cites has since been located at `contributors/devel/sig-api-machinery/controllers.md` in kubernetes/community, see [[findings/the-level-driven-not-edge-driven-guideline-is-point-3-of-the-controller-writing-guide-and-the-beda-quote-remains-second-hand]]. [[sources/research-gap-m5-informers-caches]]
 
 ## Kubernetes v1.36 staleness work
 
