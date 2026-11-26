@@ -3,8 +3,11 @@ title: controller-runtime
 type: entity
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-g3-k8s-and-controller-runtime
+    hash: 2b4e3378c119
+    ingested: 2026-11-26
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
@@ -47,7 +50,7 @@ The FAQ recommends one controller per root object type, with other objects mappe
 
 ## Requeue semantics
 
-A third-party guide summarizes the return values: nil with an empty result means converged, `RequeueAfter` means waiting, and an error means failure with exponential backoff. [[sources/research-eventual-consistency-and-convergence]] See [[findings/errors-used-as-timers-in-reconcilers]].
+A third-party guide summarizes the return values: nil with an empty result means converged, `RequeueAfter` means waiting, and an error means failure with exponential backoff. [[sources/research-eventual-consistency-and-convergence]] See [[findings/errors-used-as-timers-in-reconcilers]]. The source-level behavior of `Requeue: true` is in the section "Result, TerminalError, and backoff tuning" below.
 
 ## Related
 
@@ -67,7 +70,15 @@ The operator-pattern dossier describes Kubebuilder and the Operator SDK as both 
 
 ## Result, TerminalError, and backoff tuning
 
-The reconcile package defines `Request` (name and namespace only), `Result` with a deprecated `Requeue`, `RequeueAfter`, and an optional `Priority`, and `TerminalError`, which is logged and counted but not retried. Backoff is tuned through the controller's `RateLimiter` option. Sources disagree on whether `Requeue: true` backs off. [[sources/research-reconciliation-loop]] See [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]] and [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
+The reconcile package defines `Request` (name and namespace only), `Result` with a deprecated `Requeue`, `RequeueAfter`, and an optional `Priority`, and `TerminalError`, which is logged and counted but not retried. Backoff is tuned through the controller's `RateLimiter` option. [[sources/research-reconciliation-loop]] See [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]] and [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
+
+At v0.25.3 (published 2026-11-16), `Requeue: true` with a nil error is a rate-limited requeue with per-item exponential backoff that keeps the failure history, while `RequeueAfter > 0` calls `Queue.Forget(req)` and adds the item after exactly that duration. `UsePriorityQueue` defaults to true, and its default limiter is the per-item exponential limiter (5 ms base, 1000 s cap) alone, with no overall bucket. With it disabled the default is client-go's `DefaultTypedControllerRateLimiter`, which adds a 10 qps, 100 burst bucket. The `reconcile_total` metric labels results `error`, `requeue_after`, `requeue`, and `success`. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]].
+
+Correction note, 2026-11-26: this section previously said that sources disagree on whether `Requeue: true` backs off. The v0.25.3 source settles it, and it does back off.
+
+## Read-your-own-writes design
+
+controller-runtime PR 3473, "Read your own write client design", merged on 2026-10-05, and issue 3320 ("Feature: ReadYourWritesConsistency") was still open on 2026-11-26. No release up to v0.25.3 is confirmed to ship the behavior. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[examples/controller-runtime-merged-a-read-your-own-write-client-design-in-october-2026-but-no-release-is-confirmed-to-ship-it]].
 
 ## FAQ guidance on idempotent reconcilers
 

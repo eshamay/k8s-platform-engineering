@@ -3,8 +3,11 @@ title: Admission mechanisms compared - webhooks, ValidatingAdmissionPolicy, Muta
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-g3-k8s-and-controller-runtime
+    hash: 2b4e3378c119
+    ingested: 2026-11-26
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
@@ -29,7 +32,7 @@ Four mechanisms let operators and authors extend admission. Webhooks are the gen
 | Configuration split | One configuration object | Policy, binding, optional parameter resource | Policy, binding, optional parameter resource | Rules inside the schema |
 | External data or code | Yes | No | No | No |
 | Failure handling | `failurePolicy` (`Fail` default for `v1`), `timeoutSeconds` (10 s default) | `failurePolicy` for evaluation errors, `validationActions` | `failurePolicy`, `reinvocationPolicy` | Rule errors caught per rule |
-| Status | Long established | Stable since v1.30 | Reported stable since v1.36 (unverified) | Beta in 1.25, per the announcement |
+| Status | Long established | Stable since v1.30 | Stable (GA) since v1.36, enabled by default | Beta in 1.25, per the announcement |
 
 ## What the sources say
 
@@ -37,7 +40,9 @@ The Kubernetes documentation says webhooks that must see the final object should
 
 ## Caveats
 
-The Mutating Admission Policy status comes from a digest and conflicts with earlier knowledge that it was beta, so verify before relying on it. Cost limits and type checking restrict CEL; see [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]]. Webhook availability is the main risk on the other side; see [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]].
+Mutating Admission Policy is GA and enabled by default from Kubernetes v1.36. The live docs page says "Stable since Kubernetes v1.36; enabled by default", CHANGELOG-1.36 records the promotion (PR 136039), and the gate table at tag v1.36.0 shows Alpha 1.32, Beta 1.34, and GA 1.36 with default true. The docs page also says it "was first available in the v1.30 release", which conflicts with the gate table, so cite the gate table for the alpha and beta versions. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]].
+
+Correction note, 2026-11-26: this page previously said the status came from a digest and might still be beta. The primary sources confirm GA. Cost limits and type checking restrict CEL; see [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]]. Webhook availability is the main risk on the other side; see [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]].
 
 ## Related
 

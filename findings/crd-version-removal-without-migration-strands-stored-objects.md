@@ -3,8 +3,11 @@ title: Removing a CRD version without migration strands stored objects
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-g3-k8s-and-controller-runtime
+    hash: 2b4e3378c119
+    ingested: 2026-11-26
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
@@ -32,3 +35,5 @@ The dossier states the required order but does not describe a specific outage. T
 ## Additions from the CRD dossier
 
 The versioning page tells authors to check `status.storedVersions` before dropping an old version, and the sources report a built-in StorageVersionMigration API as GA in v1.37. [[sources/research-custom-resource-definition]] See [[concepts/crd-versioning-and-storage-migration]].
+
+The v1.37 migration is verified as GA but is not automatic: the user must create the `StorageVersionMigration` object, so skipping that step still strands objects. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]].

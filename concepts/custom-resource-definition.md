@@ -3,8 +3,11 @@ title: Custom Resource Definition (CRD)
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-g3-k8s-and-controller-runtime
+    hash: 2b4e3378c119
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -47,7 +50,7 @@ CEL rules in `x-kubernetes-validations` express cross-field checks inside the sc
 
 A CRD can list several versions, exactly one of which is the storage version while any number can be served, and conversion is either `None` or a webhook. A CRD adds new kinds and resources to the existing API server, and it gives each Kind exactly one resource, unlike subresources such as `Scale`. The generated GVK and GVR become known to clients through API discovery, so a CRD installed at runtime can be invisible to a client whose mapper was built earlier. [[sources/research-gvk-and-gvr]] See [[concepts/crd-versioning-and-storage-migration]], [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]], [[concepts/api-discovery-and-restmapper]], [[findings/stale-restmapper-hides-newly-installed-crds]], and [[findings/crd-version-removal-without-migration-strands-stored-objects]].
 
-The sources report that moving stored objects to a new storage version is now handled by the built-in StorageVersionMigration API, described as GA in Kubernetes v1.37 by a single blog extract that this wiki has not yet cross-checked.
+The sources report that moving stored objects to a new storage version is now handled by the built-in StorageVersionMigration API, which is GA and on by default in Kubernetes v1.37 and is triggered by a user-created object and not automatically. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[concepts/crd-versioning-and-storage-migration]] and [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]].
 
 ## CRDs as a product surface
 

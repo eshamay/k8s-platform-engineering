@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-g3-k8s-and-controller-runtime
+    hash: 2b4e3378c119
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -50,7 +53,7 @@ In controller-runtime and Kubebuilder, informers keep a local cache of watched o
 
 The convergence dossier maps reconcile return values to behavior: an empty result and a nil error mean the object has converged, `RequeueAfter` means healthy but waiting, and an error means the attempt failed and triggers workqueue exponential backoff. Errors should not be used as timers. [[sources/research-eventual-consistency-and-convergence]] See [[findings/errors-used-as-timers-in-reconcilers]].
 
-The reconcile package adds `TerminalError`, which is logged and counted but not retried, and marks `Requeue` as deprecated. Sources disagree on whether `Requeue: true` backs off. [[sources/research-reconciliation-loop]] See [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]] and [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
+The reconcile package adds `TerminalError`, which is logged and counted but not retried, and marks `Requeue` as deprecated. At controller-runtime v0.25.3, `Requeue: true` is a rate-limited requeue with per-item exponential backoff that keeps the failure history, and `RequeueAfter` forgets that history before waiting the exact duration. [[sources/research-reconciliation-loop]] [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]], [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]] and [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
 
 ## How tools wrap the loop
 
@@ -66,7 +69,7 @@ Different stacks add timing and failure policy around the same primitive. Flux u
 
 ## Open questions
 
-The dossier found no named-company postmortem of a runaway loop, could not read ACK or Config Connector behavior, and left the `Requeue: true` conflict unresolved. See [[open-knowledge-gaps]].
+The dossier found no named-company postmortem of a runaway loop, could not read ACK or Config Connector behavior, and left the `Requeue: true` conflict unresolved, which the controller-runtime v0.25.3 source later settled. See [[open-knowledge-gaps]].
 
 ## Related
 

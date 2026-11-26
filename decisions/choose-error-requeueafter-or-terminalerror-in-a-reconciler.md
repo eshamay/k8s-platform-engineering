@@ -1,10 +1,13 @@
 ---
 title: Choose error, RequeueAfter, or TerminalError in a reconciler
 type: decision
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-g3-k8s-and-controller-runtime
+    hash: 2b4e3378c119
+    ingested: 2026-11-26
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
@@ -16,7 +19,7 @@ tags: [controller-runtime, requeue, backoff, decision]
 
 ## Status
 
-Recommended practice assembled from the dossier's sources. It is not an ADR authored by this wiki, and the `Requeue: true` semantics remain unverified.
+Recommended practice assembled from the dossier's sources. It is not an ADR authored by this wiki. The `Requeue: true` semantics were verified against controller-runtime v0.25.3 on 2026-11-26. [[sources/research-gap-g3-k8s-and-controller-runtime]]
 
 ## Context
 
@@ -28,7 +31,7 @@ Every pass of a controller-runtime reconciler must end by telling the workqueue 
 - Return nil with `RequeueAfter`. The item is requeued after a fixed delay.
 - Return nil with nothing set. The work is done until the next watch event or resync.
 - Return a `TerminalError`. It is logged and counted in metrics but not retried.
-- Return `Requeue: true`. It is deprecated and described inconsistently. See [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
+- Return `Requeue: true`. It is deprecated. At v0.25.3 it is a rate-limited requeue with per-item exponential backoff that keeps the failure history, while `RequeueAfter` calls `Queue.Forget(req)` before it waits, so only `RequeueAfter` gives a steady cadence. See [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]] and [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
 
 ## Decision
 

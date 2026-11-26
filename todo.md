@@ -28,6 +28,10 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-part-5-for-the-reconcile-defaults-verification-pass]] — open
 - [[#update-flux-ramp-up-for-the-reconcile-defaults-verification-pass]] — open
 - [[#update-crossplane-ramp-up-for-the-reconcile-defaults-verification-pass]] — open
+- [[#update-part-1-for-the-kubernetes-and-controller-runtime-verification-pass]] — open
+- [[#update-part-2-for-the-kubernetes-and-controller-runtime-verification-pass]] — open
+- [[#update-part-3-for-the-kubernetes-and-controller-runtime-verification-pass]] — open
+- [[#update-part-5-for-the-kubernetes-and-controller-runtime-verification-pass]] — open
 
 ## Open
 
@@ -143,6 +147,34 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/crossplane-ramp-up.md`, the reconcile-load paragraph says the managed resource poll interval "is the one the wiki did not confirm from the sources it read", and the unknowns paragraph says "The default poll interval and backoff values for managed resources were not confirmed". The poll interval is now verified at 1 minute in crossplane-runtime and core and 10 minutes in Upjet providers (with a 1 hour sync period, `--max-reconcile-rate` 100, and 5 percent jitter), and the per-resource `crossplane.io/poll-interval` annotation is implemented. Backoff values remain unverified. Cite [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]] and [[entities/upjet]].
 - **Why:** The 2026-11-26 reconcile defaults dossier corrected or settled the cadence figures this passage states, see [[sources/research-gap-g3-reconcile-defaults]].
 - **Acceptance:** Passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-1 for the Kubernetes and controller-runtime verification pass — status: open
+
+- **What:** In `outputs/part-1-core-architectural-principles.md`, revise the reconcile-return-values passage (around line 133) that says "the sources disagree about whether `Requeue: true` backs off ... an issue thread describes an immediate one". At controller-runtime v0.25.3 it is a rate-limited requeue with per-item exponential backoff, and `RequeueAfter` forgets the failure history before waiting.
+- **Why:** The 2026-11-26 dossier read the v0.25.3 source and settled the conflict, see [[sources/research-gap-g3-k8s-and-controller-runtime]]. Cite [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]].
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-2 for the Kubernetes and controller-runtime verification pass — status: open
+
+- **What:** In `outputs/part-2-krm-and-api-machinery.md`, revise two passages. The storage migration paragraph (around line 191) says one uncross-checked blog reports StorageVersionMigration as GA in 1.37 and that automatic triggering is unknown, and it should say the API is GA and on by default in v1.37 and is triggered by a user-created object. The admission paragraph (around line 263) says one digest reports MutatingAdmissionPolicy as stable since 1.36 and asks for a cross-check, and it should say it is GA and enabled by default since v1.36, with Alpha 1.32 and Beta 1.34 from the gate table.
+- **Why:** The 2026-11-26 dossier verified both against CHANGELOGs and feature-gate tables, see [[sources/research-gap-g3-k8s-and-controller-runtime]]. Cite [[concepts/crd-versioning-and-storage-migration]], [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]], and [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]].
+- **Acceptance:** Both passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 for the Kubernetes and controller-runtime verification pass — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, revise two passages. The `Result{Requeue: true}` paragraph (around line 183) says sources disagree and that an issue summary reads it as immediate, and it should say it is a rate-limited requeue with exponential backoff at v0.25.3. The cache-lag paragraph (around line 153) can now add the v1.36 built-in fix, in which four kube-controller-manager controllers skip a sync until the cache has seen their own write.
+- **Why:** The 2026-11-26 dossier verified both against controller-runtime v0.25.3 and the Kubernetes v1.36 and v1.37 CHANGELOGs, see [[sources/research-gap-g3-k8s-and-controller-runtime]]. Cite [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]] and [[examples/kubernetes-v1-36-daemonset-statefulset-replicaset-and-job-controllers-skip-a-sync-until-the-cache-catches-up-with-their-own-write]].
+- **Acceptance:** Both passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 for the Kubernetes and controller-runtime verification pass — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the controller-mechanics paragraph (around line 290) says `Requeue: true` is "deprecated and described inconsistently across sources", and it should say the behavior is settled at controller-runtime v0.25.3 (rate-limited, exponential backoff).
+- **Why:** The 2026-11-26 dossier read the v0.25.3 source, see [[sources/research-gap-g3-k8s-and-controller-runtime]]. Cite [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]].
+- **Acceptance:** Passage revised and citing the page named above.
 - **Drafted by:** agent on 2026-11-26
 
 ## Done

@@ -3,8 +3,11 @@ title: client-go
 type: entity
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-g3-k8s-and-controller-runtime
+    hash: 2b4e3378c119
+    ingested: 2026-11-26
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
@@ -39,3 +42,7 @@ client-go's `tools/cache` package implements the Reflector (LIST then WATCH), th
 ## Client-side throttling, metadata-only watches, and leader election
 
 The client-go architecture document, as summarized in the scale dossier, says `QPS` and `Burst` in `rest.Config` are the client's half of the contract with API Priority and Fairness, that the client honours 429 `Retry-After`, and that the workqueue separates event detection from reconciliation so retries with exponential backoff do not block the watch stream. It also describes metadata-only `PartialObjectMetadata` requests that cut memory and bandwidth, list pagination, watch bookmarks, and leader election through a Lease. Dynamic clients depend on discovery and OpenAPI, which is where a high CRD count hurts. See [[findings/client-side-throttling-and-server-side-apf-are-separate-layers]], [[concepts/scale-and-sharding]], and [[sources/research-scale-and-sharding]].
+
+## Atomic FIFO and store resource version
+
+In Kubernetes v1.36 the feature gate `AtomicFIFO` (Beta, default true) makes the informer FIFO process list and relist batches atomically, and a `Store` gained `LastStoreSyncResourceVersion()`, the latest resource version the cache has seen, which can be an empty string before the first sync. A `ConsistencyStore` helper offers `WroteAt`, `EnsureReady`, and `Clear` so that a controller can skip work until its cache has seen its own write. The package registers the alpha gauge `informer_store_resource_version` with labels name, group, version, and resource. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[examples/kubernetes-v1-36-daemonset-statefulset-replicaset-and-job-controllers-skip-a-sync-until-the-cache-catches-up-with-their-own-write]] and [[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source]].

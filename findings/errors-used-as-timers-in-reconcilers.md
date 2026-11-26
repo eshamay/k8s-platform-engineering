@@ -3,8 +3,11 @@ title: Errors used as timers in reconcilers
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-g3-k8s-and-controller-runtime
+    hash: 2b4e3378c119
+    ingested: 2026-11-26
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
@@ -36,3 +39,7 @@ Use `RequeueAfter` for waiting states, record terminal errors in status so retri
 ## Corroboration from the reconciliation-loop dossier
 
 The reconciliation-loop dossier repeats the guidance: errors for failures, `RequeueAfter` for planned polling, and `TerminalError` for failures retry cannot fix, and it notes that the semantics of `Requeue: true` are described inconsistently. [[sources/research-reconciliation-loop]] See [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]].
+
+## Source-level backoff behavior at controller-runtime v0.25.3
+
+Reading the source settles the `Requeue: true` question the sections above leave open. A nil error with `Requeue: true` is a rate-limited requeue that keeps the per-item failure history, so it backs off exponentially, while `RequeueAfter > 0` calls `Queue.Forget(req)` first and waits exactly the given duration. An error also backs off, and an error ignores both `Result` fields. A reconciler that wants a fixed cadence should return `RequeueAfter`. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]].

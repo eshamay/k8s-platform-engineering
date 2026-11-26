@@ -3,8 +3,11 @@ title: Admission Webhooks and CEL
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-g3-k8s-and-controller-runtime
+    hash: 2b4e3378c119
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -30,7 +33,7 @@ Built-in admission plugins run inside the API server. Dynamic admission control 
 
 A webhook configuration says which requests match, using `rules`, `namespaceSelector`, `objectSelector`, `matchPolicy`, and CEL `matchConditions`, and how to behave on trouble. `failurePolicy` defaults to `Fail` for `v1`, `timeoutSeconds` defaults to 10 seconds, `sideEffects` declares whether dry-run requests are safe, and `reinvocationPolicy` lets a mutating webhook be called again after later mutations. The API server authenticates to a webhook with kubeconfig-based credentials and mutual TLS.
 
-The second route is in-process CEL. ValidatingAdmissionPolicy, stable since v1.30, splits the work into a policy that holds the CEL `validations`, a binding that sets scope and `validationActions` (`Deny`, `Warn`, `Audit`), and an optional parameter resource that supplies configuration. MutatingAdmissionPolicy extends the same shape to mutation using `ApplyConfiguration` or `JSONPatch`; the digest of the Kubernetes docs reports it as stable since v1.36, but that is unverified. CRD validation rules (`x-kubernetes-validations`) put CEL directly in the schema, with `self` and `oldSelf` for transition rules. See [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]].
+The second route is in-process CEL. ValidatingAdmissionPolicy, stable since v1.30, splits the work into a policy that holds the CEL `validations`, a binding that sets scope and `validationActions` (`Deny`, `Warn`, `Audit`), and an optional parameter resource that supplies configuration. MutatingAdmissionPolicy extends the same shape to mutation using `ApplyConfiguration` or `JSONPatch`; it is stable (GA) and enabled by default since v1.36, confirmed by the live docs page, CHANGELOG-1.36, and the gate table, which shows Alpha 1.32 and Beta 1.34 before it. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]]. CRD validation rules (`x-kubernetes-validations`) put CEL directly in the schema, with `self` and `oldSelf` for transition rules. See [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]].
 
 ## Why it matters
 

@@ -3,8 +3,11 @@ title: Informers, Reflectors, and Workqueues
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-g3-k8s-and-controller-runtime
+    hash: 2b4e3378c119
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -75,7 +78,11 @@ The cache holds every watched object with no eviction, so memory grows with the 
 
 ## Staleness and observability in v1.36
 
-Informer caches can lag the API server when watch events are delayed or missed, so controllers may act on outdated state. The Kubernetes v1.36 blog describes staleness mitigation and metrics for cache synchronization and watch latency, which makes the lag observable. The dossier's summary of the specific mechanisms was generic and needs verification. The work queue deduplicates keys and applies exponential backoff to failures, and kro's tuning page gives concrete queue numbers. [[sources/research-eventual-consistency-and-convergence]] See [[findings/stale-cache-and-double-action]] and [[examples/kro-shared-queue-tunes-throughput]].
+Informer caches can lag the API server when watch events are delayed or missed, so controllers may act on outdated state. The work queue deduplicates keys and applies exponential backoff to failures, and kro's tuning page gives concrete queue numbers. [[sources/research-eventual-consistency-and-convergence]] See [[findings/stale-cache-and-double-action]] and [[examples/kro-shared-queue-tunes-throughput]].
+
+Kubernetes v1.36 made the lag both observable and actionable (KEP 5647). In client-go, the `AtomicFIFO` gate (Beta, default true from 1.36) makes the FIFO process list and relist batches atomically, and a `Store` can report `LastStoreSyncResourceVersion()`, the latest resource version the cache has seen, which may be an empty string before the first sync. Four kube-controller-manager controllers (DaemonSet, StatefulSet, ReplicaSet, Job) record the resource version of their own writes and skip a sync until the cache has caught up, each behind a `StaleControllerConsistency<API type>` gate (Beta, default true from 1.36). A `ConsistencyStore` helper with `WroteAt`, `EnsureReady`, and `Clear` serves other informer authors. The lag shows up in the alpha gauge `informer_store_resource_version` (labels name, group, version, resource, carrying the 15 least significant digits of the resource version) and in per-controller skip counters such as `daemonset_controller_stale_sync_skips_total`. Kubernetes v1.37 adds the HorizontalPodAutoscaler controller (`StaleControllerConsistencyHPA`, Beta) and publishes the informer metrics from the scheduler. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[examples/kubernetes-v1-36-daemonset-statefulset-replicaset-and-job-controllers-skip-a-sync-until-the-cache-catches-up-with-their-own-write]] and [[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source]].
+
+Correction note, 2026-11-26: this section previously called the dossier's summary of the v1.36 mechanisms generic and in need of verification. The paragraph above replaces it.
 
 ## Pitfalls
 

@@ -1,10 +1,13 @@
 ---
 title: Stale cache and double action
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-g3-k8s-and-controller-runtime
+    hash: 2b4e3378c119
+    ingested: 2026-11-26
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
@@ -38,7 +41,11 @@ The Ayson post was read only through a summarizing fetch, and the "Kubernetes Co
 
 ## Kubernetes v1.36 staleness work
 
-Kubernetes v1.36 adds staleness mitigation and metrics for cache synchronization and watch latency, and optimistic concurrency through `resourceVersion` turns a write based on stale data into a 409 conflict that the controller retries. [[sources/research-eventual-consistency-and-convergence]] See [[concepts/informers-reflectors-and-workqueues]].
+Optimistic concurrency through `resourceVersion` turns a write based on stale data into a 409 conflict that the controller retries. [[sources/research-eventual-consistency-and-convergence]] See [[concepts/informers-reflectors-and-workqueues]].
+
+Kubernetes v1.36 added a built-in mitigation (KEP 5647) that gates on resource version. The DaemonSet, StatefulSet, ReplicaSet, and Job controllers record the resource version of their own writes and skip a sync when the informer cache has not caught up, with each controller behind a `StaleControllerConsistency<API type>` gate that is Beta and on by default from 1.36 and depends on the client-go `AtomicFIFO` gate. The built-in fix is therefore resource-version gating with a skip and a later retry, and it is not a sleep or a time-based wait. Lag is observable through the client-go gauge `informer_store_resource_version` and per-controller skip counters such as `daemonset_controller_stale_sync_skips_total`, and the blog's shorter metric names differ from the code. Kubernetes v1.37 extends the gating to the HorizontalPodAutoscaler controller. For controller-runtime, a read-your-own-write client design merged on 2026-10-05, and no release is confirmed to ship it. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[examples/kubernetes-v1-36-daemonset-statefulset-replicaset-and-job-controllers-skip-a-sync-until-the-cache-catches-up-with-their-own-write]], [[examples/controller-runtime-merged-a-read-your-own-write-client-design-in-october-2026-but-no-release-is-confirmed-to-ship-it]], and [[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source]].
+
+Correction note, 2026-11-26: this section previously said only that v1.36 "adds staleness mitigation and metrics for cache synchronization and watch latency". The mechanisms and names above replace that generic summary.
 
 ## Related
 

@@ -17,7 +17,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 - [[concepts/gvk-and-gvr]] — type versus endpoint coordinates, mapping, lifecycle, and failure classes (active)
 - [[concepts/api-discovery-and-restmapper]] — discovery documents and the GVK-to-GVR translator (draft)
-- [[concepts/crd-versioning-and-storage-migration]] — served and storage versions, conversion, retirement (draft)
+- [[concepts/crd-versioning-and-storage-migration]] — served and storage versions, conversion, retirement, and the GA StorageVersionMigration API (active)
 - [[concepts/custom-resource-definition]] — registering new API types, schema, versions, costs, and pitfalls (active)
 - [[concepts/spec-status-split]] — intent versus observed reality, the status subresource, observedGeneration, and pitfalls (active)
 - [[concepts/server-side-apply-and-field-ownership]] — managedFields, conflicts, shared ownership, merge markers, and tool policies (active)
@@ -117,6 +117,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g3-crossplane-v2]] — verified dossier on Crossplane v2.5 claims, conditions, SSA, deletion policies, Operations, activation policies, scaling, and scanners, 2026-11-26 (active)
 - [[sources/research-gap-g3-kro]] — verified dossier on kro v0.10.0 tuning defaults, instance conditions, Graph API, readiness mechanics, status schema, and governance, 2026-11-26 (active)
 - [[sources/research-gap-g3-reconcile-defaults]] — verified dossier on default reconcile intervals for Flux, Argo CD, Crossplane, ACK, Cluster API, and Config Connector, 2026-11-26 (active)
+- [[sources/research-gap-g3-k8s-and-controller-runtime]] — verified dossier on v1.36 staleness mitigation, Mutating Admission Policy GA, StorageVersionMigration GA in v1.37, and Requeue backoff in controller-runtime v0.25.3, 2026-11-26 (active)
 
 ## Examples
 
@@ -278,6 +279,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource]] — open, unreproduced report of an external SSA writer losing a field (draft)
 - [[examples/crossplane-issue-5283-has-left-deletionpolicy-deprecation-open-since-2024]] — deletionPolicy never formally deprecated (draft)
 - [[examples/crossplane-v2-4-and-v2-5-cut-memory-on-clusters-with-hundreds-to-two-thousand-crds]] — project-reported memory reductions (draft)
+- [[examples/kubernetes-v1-36-daemonset-statefulset-replicaset-and-job-controllers-skip-a-sync-until-the-cache-catches-up-with-their-own-write]] — built-in controllers gate on resource version (active)
+- [[examples/controller-runtime-merged-a-read-your-own-write-client-design-in-october-2026-but-no-release-is-confirmed-to-ship-it]] — design merged, release unconfirmed (active)
+- [[examples/a-user-created-storageversionmigration-object-rewrites-stored-objects-so-a-crd-can-retire-an-old-version]] — user-triggered migration walkthrough (active)
 
 ## Comparisons
 
@@ -353,7 +357,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]] — enforcement versus availability (draft)
 - [[decisions/build-a-custom-operator-or-compose-existing-resources]] — code or composition (draft)
 - [[decisions/one-controller-per-kind-or-one-multi-kind-controller]] — single responsibility versus consolidation (draft)
-- [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]] — what each reconcile return value does (draft)
+- [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]] — what each reconcile return value does, verified at v0.25.3 (active)
 - [[decisions/adopt-or-create-or-require-explicit-import]] — adoption default for existing cloud resources (draft)
 - [[decisions/external-name-annotation-or-spec-field]] — where the external identifier lives (draft)
 - [[decisions/recover-from-an-ambiguous-create-by-halting-searching-or-tagging]] — lost-create recovery options (draft)
@@ -382,7 +386,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/unintended-deletion-through-prune]] — prune deletes more than expected (draft)
 - [[findings/defaulting-and-drift-reconcile-loops]] — endless loops from server defaults (draft)
 - [[findings/mixing-management-techniques-on-one-object]] — retained live edits (draft)
-- [[findings/stale-cache-and-double-action]] — cache lag causes duplicate work (draft)
+- [[findings/stale-cache-and-double-action]] — cache lag causes duplicate work, with the v1.36 resource-version gating fix (active)
 - [[findings/event-specific-logic-in-reconcilers]] — branching on events reintroduces fragility (draft)
 - [[findings/cost-of-constant-reconciliation]] — repeated reads and API quota (draft)
 - [[findings/continuous-loops-override-intentional-changes]] — loops revert manual changes (draft)
@@ -438,7 +442,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/operators-that-publish-no-standard-status-or-metrics-leave-their-state-opaque]] — observability gaps (draft)
 - [[findings/operator-privileges-and-removal-behavior-set-the-blast-radius]] — least privilege and safe removal (draft)
 - [[findings/hand-written-operators-duplicate-what-composition-could-express]] — over-building (draft)
-- [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]] — conflicting backoff claims (draft)
+- [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]] — conflicting backoff claims, settled at v0.25.3 (active)
 - [[findings/self-triggered-reconcile-loops-generate-their-own-events]] — hot loops from status writes and noisy children (draft)
 - [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]] — create tracking (draft)
 - [[findings/a-level-based-loop-deletes-what-it-no-longer-sees-in-desired-state]] — prune and orphan guards (draft)
@@ -544,6 +548,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]] — one minute versus ten minutes by layer (active)
 - [[findings/the-cluster-api-sync-period-flag-is-a-cache-resync-and-not-a-poll-of-the-cloud-infrastructure]] — a 10 minute figure that is not a drift poll (active)
 - [[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]] — jittered 10 minute mean and a one-way off switch (active)
+- [[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source]] — blog and code metric names differ (active)
+- [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]] — stage claims need the gate table (active)
+- [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]] — Requeue true is rate-limited and keeps history (active)
+- [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]] — GA does not mean automatic (active)
 
 ## Outputs
 
