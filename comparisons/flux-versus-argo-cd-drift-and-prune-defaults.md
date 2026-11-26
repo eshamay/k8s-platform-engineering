@@ -8,6 +8,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: []
 tags: [gitops, flux, argo-cd, prune, drift]
 ---
@@ -28,3 +31,7 @@ tags: [gitops, flux, argo-cd, prune, drift]
 ## Reading the comparison
 
 The dossier did not read the two tools side by side, so this table merges separate documentation pages and should not be treated as a head-to-head test. The overall pattern is that Argo CD ships with destructive actions off, while Flux exposes explicit switches and policies for each. The Flux concepts page states a default five-minute interval while the Kustomization page states a minimum of 60 seconds, and the user sets the interval, so the default needs verification. See [[findings/unintended-deletion-through-prune]], [[findings/immutable-fields-and-drift-collisions]], [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]], and [[open-knowledge-gaps]]. [[sources/research-declarative-vs-imperative]]
+
+## Helm drift mode and diffing controls
+
+Flux HelmRelease drift detection is off by default (`mode: disabled`), with `warn` as a middle stage, while Argo CD self-heal is also off by default and its `prune` is off by default. Argo CD documents `ignoreDifferences` and Flux documents `driftDetection.ignore` and the `ssa` annotation. [[sources/research-self-healing-and-drift-detection]] See [[comparisons/exemption-and-ignore-controls-across-tools]] and [[comparisons/drift-detection-mechanisms-across-tools]].

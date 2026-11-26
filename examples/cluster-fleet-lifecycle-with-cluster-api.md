@@ -11,6 +11,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: []
 tags: [use-case, cluster-api, fleet]
 ---
@@ -32,3 +35,7 @@ The management cluster concentrates authority over the entire fleet, so it becom
 ## Immutable Machines and rolling replacement
 
 The Cluster API concepts page says Machines are immutable and are replaced and not updated, so upgrades become rolling replacement, in the same declarative spirit as a Deployment replacing Pods. The user base includes platform operators with many clusters and infrastructure providers such as AWS, Azure, and vSphere. [[sources/research-declarative-vs-imperative]] See [[concepts/declarative-vs-imperative]].
+
+## Automatic node replacement
+
+MachineHealthCheck replaces unhealthy Machines automatically. [[sources/research-self-healing-and-drift-detection]] See [[examples/cluster-api-machine-health-check-replaces-failed-nodes]].

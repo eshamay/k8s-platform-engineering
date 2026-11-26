@@ -14,6 +14,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, drift, immutability]
 ---
@@ -43,3 +46,7 @@ Level-triggered drift correction cannot fix what it cannot read or change. Confi
 ## Additional evidence
 
 Flux `force` recreates objects when immutable fields change and should be used only temporarily because it can cause downtime. Cluster API avoids the problem by making Machines immutable and replacing them. [[sources/research-declarative-vs-imperative]] See [[findings/defaulting-and-drift-reconcile-loops]].
+
+## Verification of the ACK default
+
+The ACK drift-recovery page states the roughly 10-hour default directly, so the caveat above is partly resolved, although the dossier read it through a digest. Flux `force` is documented as something to use temporarily. [[sources/research-self-healing-and-drift-detection]] See [[entities/ack]].

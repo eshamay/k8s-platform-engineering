@@ -11,6 +11,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: [SSA, managedFields]
 tags: [api-machinery]
 ---
@@ -36,3 +39,7 @@ The API server records which manager owns each field and flags a conflict when a
 ## To research
 
 Conflict behavior, `force` semantics, migration from client-side apply, and how Flux and Crossplane use SSA.
+
+## Field ownership and drift correction
+
+Flux and Argo CD rely on server-side apply to decide what is theirs, and the Kubernetes documentation says conflicting writes can be forced (ownership transfers), can drop the field, or can abort. In practice another manager's edit shows up as drift or as a conflict, and a leftover manager entry such as `kubectl-edit` can make Flux's dry-run fail so that no correction happens. Argo CD's `managedFieldsManagers` ignores chosen managers when diffing. [[sources/research-self-healing-and-drift-detection]] See [[findings/field-ownership-blocks-drift-correction]], [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]], and [[comparisons/exemption-and-ignore-controls-across-tools]].

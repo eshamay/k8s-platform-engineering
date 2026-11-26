@@ -8,6 +8,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, scale, quota, level-triggered]
 ---
@@ -33,3 +36,7 @@ Default values are as stated on the pages and may change by version, and the Cro
 ## Related
 
 [[concepts/self-healing-and-drift-detection]], [[concepts/level-triggered-vs-edge-triggered]]
+
+## Cloud API cost
+
+The ACK drift-recovery page ties its 10-hour default directly to AWS API cost and throttling, and exposes per-kind overrides. kro uses the same figure with a shared rate-limited queue. Argo CD's short refresh is cheaper because it reads the Kubernetes API and Git. [[sources/research-self-healing-and-drift-detection]] See [[examples/ack-resync-period-tuning-for-stateful-resources]].

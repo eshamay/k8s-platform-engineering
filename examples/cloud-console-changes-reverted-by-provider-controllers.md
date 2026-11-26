@@ -8,6 +8,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: []
 tags: [config-connector, crossplane, drift, cloud]
 ---
@@ -29,3 +32,7 @@ A Crossplane provider re-reconciles each managed resource and compares `forProvi
 ## Others
 
 ACK and Cluster API follow the same shape according to the dossier, but their drift behavior could not be confirmed from the pages fetched. See [[entities/ack]], [[entities/cluster-api]], [[examples/cloud-services-as-kubernetes-objects]], and [[findings/continuous-loops-override-intentional-changes]].
+
+## Further detail from the self-healing dossier
+
+The Crossplane documentation says `forProvider` is the source of truth, and ACK documents that drift is found by continued reconciliation with a roughly 10-hour default, so a console change to an AWS resource may sit for hours. [[sources/research-self-healing-and-drift-detection]] See [[examples/crossplane-managed-resource-enforces-forprovider-and-observes-adopted-resources]] and [[examples/ack-resync-period-tuning-for-stateful-resources]].

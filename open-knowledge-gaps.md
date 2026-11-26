@@ -27,6 +27,11 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#kubernetes-v136-staleness-mitigation-mechanisms-and-metrics]] — open, unassigned
 - [[#named-end-user-case-study-of-convergence-trouble]] — open, unassigned
 - [[#kro-released-version-tuning-defaults-and-instance-conditions]] — open, unassigned
+- [[#flux-helm-controller-override-manager-and-dry-run-failure-recovery]] — open, unassigned
+- [[#config-connector-reconcile-interval-and-drift-cadence]] — open, unassigned
+- [[#production-incidents-from-drift-correction]] — open, unassigned
+- [[#current-cluster-api-machinehealthcheck-behavior]] — open, unassigned
+- [[#kro-drift-issue-history-and-comparability-of-ten-hour-resyncs]] — open, unassigned
 
 ---
 
@@ -46,6 +51,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-declarative-vs-imperative]]:** The dossier adds Flux Kustomization details that belong in the trace: sources produce artifacts that Kustomizations apply, drift is detected with a server-side apply dry run each interval, `prune` and the deletion policy govern removal, and `suspend` pauses reconciliation. It still does not trace finalizer registration or status condition updates, so it only partly helps. See [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]].
 - **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Only marginally helpful. The dossier shows that Flux's Kustomization reconciles on its interval and immediately on source revision changes, runs a server-side apply dry run each cycle, and uses `retryInterval` on failure, which fits the trigger and retry steps of the trace. It does not trace source-controller handoff, finalizers, or condition updates. See [[entities/flux]] and [[examples/gitops-reverts-a-hand-edited-deployment]].
 - **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Only marginally helpful. The dossier adds Flux Kustomization behavior that belongs in the trace: reconcile at `spec.interval`, immediate reconcile on a generation or source revision change, a server-side apply dry run for drift, `dependsOn` and `healthChecks` for readiness, and `retryInterval` for failures. It does not trace source-controller handoff, finalizers, or condition updates. See [[entities/flux]] and [[examples/flux-dependson-and-health-checks-gate-rollout]].
+- **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Marginally helpful. The dossier shows part of the Flux flow for drift: kustomize-controller and helm-controller run a server-side apply dry-run each interval, and a failing dry-run (for example from field-manager conflicts) stops correction before apply. It does not trace source fetch, finalizers, or status conditions end to end. See [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]] and [[entities/flux]].
+
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -63,6 +70,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-declarative-vs-imperative]]:** The dossier adds that kro validates schemas, expressions, and references at apply time, infers dependency order from CEL expressions, waits on not-yet-existing status values, supports conditionals and forEach, and keeps CEL non-Turing-complete so definitions terminate and are auditable. Crossplane instead uses a gRPC function pipeline for flexible composition. Readiness mechanics are still not described. See [[examples/platform-team-self-service-apis-with-crossplane-and-kro]].
 - **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Only marginally helpful. The dossier adds Crossplane's reconcile mechanics (`forProvider` compared to the external resource, `managementPolicies`, pause annotation) but does not mention kro or composition functions, and the default poll interval was not confirmed. See [[entities/crossplane]] and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
 - **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Partly helpful. The dossier adds that a Crossplane composite resource is Ready only when its composition function pipeline reports every composed resource ready, and gives kro's controller numbers (single shared queue, backoff, token bucket, 20-retry cap) from unreleased docs. It could not read kro's instance semantics, so readiness comparison is still incomplete. See [[comparisons/retry-and-backoff-controls-across-tools]] and [[examples/kro-shared-queue-tunes-throughput]].
+- **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Only marginally helpful. The dossier adds drift behavior on each side: Crossplane managed resources enforce `forProvider` with management policies and a pause annotation, while kro's dynamic controller resyncs instances every 10 hours through one shared rate-limited queue, and a drift bug in kro was closed in late 2025. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[comparisons/drift-detection-mechanisms-across-tools]] and [[entities/kro]].
+
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -80,6 +89,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-declarative-vs-imperative]]:** Only marginally helpful. The dossier explains that controllers re-list and reconcile full state and that Kubebuilder controllers use the status subresource and owner references, but it has no sharding, concurrency, or rate-limit data. See [[entities/kubebuilder]].
 - **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Partly helpful. The dossier explains why events are hints that enqueue keys, how cache lag causes double action, how errors requeue with exponential backoff, and how intervals and jitter limit API load. It has no sharding or concurrency data and does not explain informer resync semantics. See [[findings/stale-cache-and-double-action]], [[findings/cost-of-constant-reconciliation]], and [[concepts/informers-reflectors-and-workqueues]].
 - **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Partly helpful. The dossier gives kro's workqueue and client rate limits (default one worker, token bucket 10 per second with burst 100, QPS 100 with burst 150), explains Kubernetes v1.36 staleness metrics, and describes leader election for multi-replica controllers. It has no Flux or Crossplane sharding data. See [[examples/kro-shared-queue-tunes-throughput]], [[findings/duplicate-work-from-replicas-without-leader-election]], and [[concepts/informers-reflectors-and-workqueues]].
+- **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Partly helpful on cost. The dossier explains that external-API controllers use long resyncs to limit API cost (ACK about 10 hours with per-kind overrides, kro 10 hours with a single rate-limited queue and one worker by default) and that Argo CD's refresh reads only the Kubernetes API and Git. It has no Flux or Crossplane sharding data. See [[decisions/choosing-a-drift-check-interval-for-external-resources]] and [[findings/cost-of-constant-reconciliation]].
+
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -166,6 +177,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[findings/multiple-writers-on-one-object]] and [[findings/defaulting-and-drift-reconcile-loops]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** adoption, ignore-differences, management-policies
+- **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Largely helpful. The dossier covers Argo CD `ignoreDifferences` (JSON pointer, JQ path, `managedFieldsManagers`), Flux `driftDetection.ignore` and the `ssa` annotation, and Crossplane `managementPolicies` with Observe adoption and the pause annotation. ACK adoption was not read. See [[comparisons/exemption-and-ignore-controls-across-tools]].
+
 
 ## Argo CD versus Flux head-to-head behavior — status: open
 
@@ -232,6 +245,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Fill the rows in [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, ack, cluster-api, intervals
+- **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Partly helpful. ACK defaults to about 10 hours after `ResourceSynced` with per-kind overrides. Crossplane's poll interval is configurable but its default is still not stated, and the Cluster API source is the v0.4 book. See [[comparisons/drift-detection-mechanisms-across-tools]].
+
 
 ## Kubernetes v1.36 staleness mitigation mechanisms and metrics — status: open
 
@@ -266,3 +281,59 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/kro]] and [[comparisons/retry-and-backoff-controls-across-tools]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, verification, conditions
+
+## Flux helm-controller override-manager and dry-run failure recovery — status: open
+
+- **Question:** Does official Flux documentation confirm the `--override-manager` flag, its availability since helm-controller v1.5.0, and the recommended recovery when the server-side dry-run fails on a conflicting field manager?
+- **Why it matters:** The only source is a community reply, and the dry-run failure stops all drift correction. See [[findings/field-ownership-blocks-drift-correction]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the helm-controller documentation and release notes.
+  - [ ] Check the linked Argo CD issue 17717 and Kubernetes issue 130292.
+  - [ ] Update [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, helm, server-side-apply, verification
+
+## Config Connector reconcile interval and drift cadence — status: open
+
+- **Question:** What are Config Connector's default reconcile interval and drift-check cadence for direct, Terraform-based, and DCL-based controllers?
+- **Why it matters:** The controller-types page says nothing about cadence, so the drift comparison has an unconfirmed row. See [[comparisons/drift-detection-mechanisms-across-tools]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Config Connector reconcile-interval and state-into-spec documentation.
+  - [ ] Fill the Config Connector row in [[comparisons/drift-detection-mechanisms-across-tools]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** config-connector, intervals, verification
+
+## Production incidents from drift correction — status: open
+
+- **Question:** Which named companies run drift-correcting controllers in production, and has any published postmortem described a revert loop, a blocked correction, or a remediation storm?
+- **Why it matters:** The dossier found no named adopters or incident accounts, so the pitfalls rest on documentation and issue threads. See [[findings/controllers-fighting-over-fields-cause-revert-loops]] and [[findings/remediation-can-amplify-an-outage]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Search for conference talks and postmortems on GitOps revert loops and Cluster API remediation.
+  - [ ] Add `examples/` or `findings/` pages for each documented incident.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** postmortem, drift, case-study
+
+## Current Cluster API MachineHealthCheck behavior — status: open
+
+- **Question:** How does MachineHealthCheck behave in current Cluster API releases, including remediation templates, newer fields, and the semantics of `maxUnhealthy`?
+- **Why it matters:** The dossier read the v0.4 book only. See [[examples/cluster-api-machine-health-check-replaces-failed-nodes]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current Cluster API book.
+  - [ ] Update [[entities/cluster-api]] and [[findings/remediation-can-amplify-an-outage]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cluster-api, remediation, verification
+
+## kro drift issue history and comparability of ten-hour resyncs — status: open
+
+- **Question:** What is the true history of kro issue 753 (reported bug, duplicate of issue 323, closed 2025-11-04), and are ACK's 10-hour resync and kro's 10-hour resync comparable mechanisms (informer resync versus explicit requeue)?
+- **Why it matters:** The digest of the issue was internally inconsistent, and the comparison table treats the two figures side by side. See [[comparisons/drift-detection-mechanisms-across-tools]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read issue 753, issue 323, and the fixing commits directly.
+  - [ ] Read the kro and ACK source for how the resync is scheduled.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, ack, resync, verification

@@ -8,6 +8,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: [Fighting humans and other controllers]
 tags: [pitfall, drift, operations, level-triggered]
 ---
@@ -29,3 +32,7 @@ Document which system owns each field, use [[concepts/server-side-apply-and-fiel
 ## Related
 
 [[concepts/self-healing-and-drift-detection]], [[examples/gitops-reverts-a-hand-edited-deployment]]
+
+## Staged adoption as the mitigation
+
+Teams reduce surprise reverts by observing drift before correcting it. [[sources/research-self-healing-and-drift-detection]] See [[decisions/staged-adoption-of-automated-drift-correction]] and [[findings/controllers-fighting-over-fields-cause-revert-loops]].

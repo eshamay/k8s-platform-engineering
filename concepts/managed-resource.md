@@ -8,6 +8,9 @@ sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: [MR]
 tags: [abstraction, crossplane]
 ---
@@ -29,3 +32,7 @@ Managed resources are the building blocks that a [[concepts/composition]] assemb
 ## To research
 
 Deletion and management policies, external-name handling, import of existing resources, and provider generation approaches.
+
+## Source of truth and management policies
+
+Crossplane treats `spec.forProvider` as the source of truth and reverts external edits. The `Ready` and `Synced` conditions separate existence from last-reconcile success, and `managementPolicies` (Observe, Create, Update, Delete, LateInitialize) scope what the controller may do. [[sources/research-self-healing-and-drift-detection]] See [[examples/crossplane-managed-resource-enforces-forprovider-and-observes-adopted-resources]] and [[findings/late-initialized-fields-create-false-drift]].

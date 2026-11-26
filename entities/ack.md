@@ -14,6 +14,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -41,3 +44,7 @@ The level-triggered dossier could not confirm ACK's resync or drift-recovery beh
 ## Related
 
 [[concepts/provider]], [[concepts/managed-resource]], [[entities/config-connector]], [[examples/cloud-services-as-kubernetes-objects]]
+
+## Drift recovery
+
+The ACK drift-recovery page confirms the long resync: after `ResourceSynced = true` controllers keep reconciling about every 10 hours by default to limit AWS API cost and throttling, and the Helm values `reconcile.defaultResyncPeriod` and `reconcile.resourceResyncPeriods` shorten it per kind. This confirms the default noted earlier through a digest of the primary page. [[sources/research-self-healing-and-drift-detection]] See [[examples/ack-resync-period-tuning-for-stateful-resources]] and [[decisions/choosing-a-drift-check-interval-for-external-resources]].

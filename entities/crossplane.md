@@ -20,6 +20,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -53,3 +56,7 @@ Managed resources report `Synced` and `Ready`, can set a poll interval per resou
 ## To research
 
 Architecture, composition functions, provider scaling, claims, adoption stories, pitfalls, and a ramp-up tutorial. See the Compositions versus kro gap in [[open-knowledge-gaps]].
+
+## Drift behavior of managed resources
+
+`spec.forProvider` is the source of truth and external edits are reverted. `managementPolicies` limit actions (Observe gives read-only adoption), the poll interval is configurable, `crossplane.io/paused` stops reconciliation, and finalizers delete external resources first. The design one-pager keeps provider-defaulted fields optional in spec, with `LateInitialize` filling them without false drift. [[sources/research-self-healing-and-drift-detection]] See [[examples/crossplane-managed-resource-enforces-forprovider-and-observes-adopted-resources]], [[findings/late-initialized-fields-create-false-drift]], and [[comparisons/drift-detection-mechanisms-across-tools]]. Crossplane drift pitfalls such as conflicts with autoscalers were not covered.

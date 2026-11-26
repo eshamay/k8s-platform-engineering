@@ -17,6 +17,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: [GitOps, Pull-based delivery]
 tags: [architecture, principle, gitops]
 ---
@@ -50,3 +53,7 @@ Flux uses `dependsOn` and health checks, and Argo CD uses health-gated sync wave
 ## To research
 
 The OpenGitOps principles, push versus pull trade-offs, and the lifecycle trace tracked in [[open-knowledge-gaps]].
+
+## Drift correction in practice
+
+Automated sync in Argo CD applies Git changes without CI needing cluster credentials, and `selfHeal` re-syncs when live state deviates. Teams commonly adopt in stages, keeping manual sync for risky production workloads. Flux's Helm drift detection is a per-release option, disabled by default. [[sources/research-self-healing-and-drift-detection]] See [[decisions/staged-adoption-of-automated-drift-correction]], [[comparisons/drift-detection-mechanisms-across-tools]], and [[concepts/self-healing-and-drift-detection]].

@@ -8,6 +8,9 @@ sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, maturity, kro, kcp]
 ---
@@ -25,3 +28,7 @@ Plain operators are flexible but costly to build and maintain, and the kro annou
 ## Caveat
 
 Maturity labels such as 0.10.0 may have changed since the dossier was written. See [[entities/kro]] and [[examples/non-container-appliances-on-the-kubernetes-api]].
+
+## Drift handling has matured recently
+
+A reported kro bug that drift in managed resources was not reconciled after creation was closed as completed on 2025-11-04, so drift handling in younger projects has matured recently. The issue history is unverified. [[sources/research-self-healing-and-drift-detection]] See [[entities/kro]].

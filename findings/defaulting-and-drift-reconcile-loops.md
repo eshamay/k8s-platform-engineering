@@ -8,6 +8,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, drift, defaulting, config-connector]
 ---
@@ -33,3 +36,7 @@ Argo CD `ignoreDifferences` and Flux field-manager behavior were not read. See [
 ## Related
 
 [[findings/immutable-fields-and-drift-collisions]]
+
+## Crossplane's late initialization
+
+Crossplane keeps provider-defaulted fields optional in spec and uses a `LateInitialize` policy to avoid false drift. Argo CD's `ignoreDifferences` is the GitOps-side answer, which was unread when this page was first drafted. [[sources/research-self-healing-and-drift-detection]] See [[findings/late-initialized-fields-create-false-drift]] and [[comparisons/exemption-and-ignore-controls-across-tools]].

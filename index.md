@@ -10,7 +10,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/declarative-vs-imperative]] — end-state specs versus command sequences, three kubectl techniques (active)
 - [[concepts/level-triggered-vs-edge-triggered]] — state-driven versus event-driven controller logic (active)
 - [[concepts/eventual-consistency-and-convergence]] — concurrent apply, retry, converge, with costs and mitigations (active)
-- [[concepts/self-healing-and-drift-detection]] — reverting out-of-band changes (draft)
+- [[concepts/self-healing-and-drift-detection]] — reverting out-of-band changes, with tool controls and failure modes (active)
 - [[concepts/gitops-pull-based-delivery]] — in-cluster agent pulls from Git (draft)
 
 ### KRM and API machinery
@@ -52,6 +52,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/kubebuilder]] — controller framework and Reconcile tutorial (draft)
 - [[entities/controller-runtime]] — Go controller library and the level-based Reconciler contract (draft)
 - [[entities/kube-rs]] — Rust controller library and single-replica availability guidance (draft)
+- [[entities/tofu-controller]] — Terraform and OpenTofu from Flux-style resources, detection-only model (draft)
 
 ## Sources
 
@@ -60,6 +61,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-declarative-vs-imperative]] — research dossier on declarative versus imperative management, 22 web sources, 2026-11-25
 - [[sources/research-level-triggered-vs-edge-triggered]] — research dossier on level-triggered versus edge-triggered reconciliation, 14 web sources, 2026-11-25
 - [[sources/research-eventual-consistency-and-convergence]] — research dossier on eventual consistency and convergence, 15 web sources, 2026-11-25
+- [[sources/research-self-healing-and-drift-detection]] — research dossier on self-healing and drift detection, 19 web sources, 2026-11-25
 
 ## Examples
 
@@ -81,6 +83,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]] — self-heal and waves (draft)
 - [[examples/crossplane-database-claim-reports-synced-and-ready]] — Synced and Ready during slow provisioning (draft)
 - [[examples/kro-shared-queue-tunes-throughput]] — kro queue and rate-limit numbers (draft)
+- [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]] — dry-run failure stops correction (draft)
+- [[examples/argo-cd-app-of-apps-out-of-sync-from-image-updater]] — a second writer looks like drift (draft)
+- [[examples/incremental-gitops-adoption-with-manual-sync-and-self-heal]] — staged enforcement with Argo CD (draft)
+- [[examples/cluster-api-machine-health-check-replaces-failed-nodes]] — machine-level self-healing (draft)
+- [[examples/tofu-controller-detects-terraform-drift-without-applying]] — detection-only Terraform drift (draft)
+- [[examples/ack-resync-period-tuning-for-stateful-resources]] — freshness versus AWS API cost (draft)
+- [[examples/crossplane-managed-resource-enforces-forprovider-and-observes-adopted-resources]] — enforce, observe, or pause (draft)
 
 ## Comparisons
 
@@ -91,6 +100,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/deletion-policies-across-gitops-and-provider-tools]] — retain, abandon, orphan (draft)
 - [[comparisons/reconcile-cadence-and-off-switches-across-tools]] — intervals, retries, and pause controls (draft)
 - [[comparisons/retry-and-backoff-controls-across-tools]] — backoff, caps, and waiting states (draft)
+- [[comparisons/drift-detection-mechanisms-across-tools]] — what each tool compares, and how often (draft)
+- [[comparisons/exemption-and-ignore-controls-across-tools]] — ignore, observe, and pause controls (draft)
 
 ## Decisions
 
@@ -98,6 +109,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/choosing-an-object-management-technique]] — imperative, replace, or apply (draft)
 - [[decisions/events-as-hints-state-as-truth]] — level-based correctness with watch-based latency (draft)
 - [[decisions/single-replica-versus-leader-election]] — controller availability trade-off (draft)
+- [[decisions/staged-adoption-of-automated-drift-correction]] — observe, correct selectively, then enforce (draft)
+- [[decisions/choosing-a-drift-check-interval-for-external-resources]] — freshness versus API cost (draft)
 
 ## Findings
 
@@ -121,6 +134,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/duplicate-work-from-replicas-without-leader-election]] — racing replicas (draft)
 - [[findings/misleading-readiness-and-stale-status]] — Ready versus Synced and observedGeneration (draft)
 - [[findings/drift-detection-latency-is-the-interval]] — interval as correction latency (draft)
+- [[findings/field-ownership-blocks-drift-correction]] — dry-run conflicts stop correction (draft)
+- [[findings/controllers-fighting-over-fields-cause-revert-loops]] — webhooks, HPAs, and image updaters (draft)
+- [[findings/remediation-can-amplify-an-outage]] — mass replacement and the maxUnhealthy brake (draft)
+- [[findings/late-initialized-fields-create-false-drift]] — provider defaults and LateInitialize (draft)
 
 ## Outputs
 

@@ -8,6 +8,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: []
 tags: [drift, intervals, api-load, trade-off]
 ---
@@ -29,3 +32,7 @@ Choose intervals per resource class, with shorter intervals for critical objects
 ## Related
 
 [[concepts/eventual-consistency-and-convergence]]
+
+## External API latencies
+
+For external resources the interval is long: ACK defaults to about 10 hours and kro to 10 hours, against Argo CD's roughly 2 minutes plus jitter or near-immediate detection with Git webhooks. [[sources/research-self-healing-and-drift-detection]] See [[decisions/choosing-a-drift-check-interval-for-external-resources]] and [[comparisons/drift-detection-mechanisms-across-tools]].

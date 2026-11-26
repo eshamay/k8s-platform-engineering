@@ -1,0 +1,35 @@
+---
+title: Field ownership can block drift correction
+type: finding
+status: draft
+created: 2026-11-25
+updated: 2026-11-25
+sources:
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
+aliases: []
+tags: [pitfall, server-side-apply, drift, flux, argo-cd]
+---
+
+# Field ownership can block drift correction
+
+## Observation
+
+When another field manager owns a field, server-side apply can block or distort correction. In the Flux community case, an edited Service port made the helm-controller dry-run fail with duplicate port names, so the controller stopped at "unable to determine cluster state" and never corrected anything. The `driftDetection.ignore` setting did not help because ignores apply after the dry-run. The thread links the same class of bug in Argo CD server-side diff (issue 17717) and Kubernetes issue 130292. [[sources/research-self-healing-and-drift-detection]] See [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]].
+
+## Interpretation
+
+The Kubernetes documentation says writes to objects with managed fields can be forced, in which case ownership transfers, and a conflicting apply can also drop the field or abort. A drift-correcting tool therefore needs a policy for conflicts, and the policy decides whether a manual edit is reverted, tolerated, or breaks the diff. See [[concepts/server-side-apply-and-field-ownership]] and [[findings/multiple-writers-on-one-object]].
+
+## Mitigations
+
+The reported Flux mitigation is running helm-controller with `--override-manager=<manager>` so that the named manager's fields are transferred before diffing. Argo CD offers `managedFieldsManagers` in `ignoreDifferences` to ignore chosen managers. See [[comparisons/exemption-and-ignore-controls-across-tools]].
+
+## Caveat
+
+The override flag and its "since v1.5.0" claim come from a community reply, not official documentation, and should be verified. See [[open-knowledge-gaps]].
+
+## Related
+
+[[concepts/self-healing-and-drift-detection]], [[entities/flux]], [[entities/argo-cd]]

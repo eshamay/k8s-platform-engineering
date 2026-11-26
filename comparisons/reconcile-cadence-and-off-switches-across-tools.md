@@ -8,6 +8,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: []
 tags: [comparison, reconciliation, intervals, backoff]
 ---
@@ -27,3 +30,12 @@ Each tool exposes the cost of level-triggering through its own cadence and pause
 ## Reading the table
 
 All five treat the periodic pass as the safety net and events as a latency optimization, which is the hybrid in [[decisions/events-as-hints-state-as-truth]]. They differ in who is expected to intervene when reconciliation fails: Argo CD waits for a new revision, while Config Connector and controller-runtime keep retrying with backoff. See [[findings/failure-retry-loops-and-backoff]], [[findings/cost-of-constant-reconciliation]], [[findings/continuous-loops-override-intentional-changes]], and [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
+
+## Additional rows from the self-healing dossier
+
+| Behavior | [[entities/ack]] | [[entities/kro]] | [[entities/cluster-api]] |
+|---|---|---|---|
+| Periodic cadence | About 10 hours after `ResourceSynced`, per-kind overrides | 36,000 seconds (10 hours) full resync | Timeout-based health checks (v0.4 book) |
+| Pause or brake | Not described | Single rate-limited queue | `maxUnhealthy` |
+
+Flux HelmRelease drift detection is separately gated by `mode` (`disabled`, `warn`, `enabled`). [[sources/research-self-healing-and-drift-detection]] See [[comparisons/drift-detection-mechanisms-across-tools]].

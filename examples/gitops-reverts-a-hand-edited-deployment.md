@@ -8,6 +8,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-self-healing-and-drift-detection
+    hash: 98edc2019c6b
+    ingested: 2026-11-25
 aliases: []
 tags: [gitops, drift, flux, argo-cd]
 ---
@@ -29,3 +32,7 @@ Argo CD compares Git manifests to live state and marks the Application OutOfSync
 ## Lesson
 
 The edit is not lost through a bug, it is lost because the system is doing what a level-triggered controller does. Teams that need emergency changes must pause reconciliation first. See [[findings/continuous-loops-override-intentional-changes]], [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]], and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
+
+## When the revert does not happen
+
+A hand edit can also disable correction instead of being reverted, as in the Helm Service port case. [[sources/research-self-healing-and-drift-detection]] See [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]].
