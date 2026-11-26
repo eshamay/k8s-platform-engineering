@@ -16,8 +16,6 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#deepen-the-dossiers-that-rest-on-model-digests]] — open
 - [[#build-the-study-guide-from-the-corpus]] — open
 - [[#decide-on-the-23-partial-and-4-still-open-gaps-from-the-evidence-pass]] — open
-- [[#batch-2-p3-other-tool-coverage-research-pass]] — open
-- [[#batch-2-p3b-residual-partial-gaps-from-the-targeted-pass]] — open
 - [[#batch-3-p4-benchmarks-and-scale-by-controller-gaps]] — open
 - [[#batch-3-p4b-turn-design-choice-evidence-into-decision-pages]] — open
 - [[#review-closed-gap-resolutions-refined-by-the-b1-recheck]] — open
@@ -27,20 +25,13 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#close-the-resolved-candidate-gaps-from-the-mechanics-and-accuracy-pass]] — open
 - [[#decide-on-the-26-partial-and-3-still-open-mechanics-gaps]] — open
 - [[#fetch-the-sources-the-mechanics-and-accuracy-pass-could-not-read]] — open
-- [[#recheck-cluster-api-machinehealthcheck-and-clusterclass-once-v1150-final-ships]] — open
+- [[#recheck-cluster-api-machinehealthcheck-and-clusterclass-once-v1-15-0-final-ships]] — open
 - [[#review-the-unrevised-passages-that-kept-their-caveats-in-the-seven-outputs]] — open
-- [[#update-flux-ramp-up-git-versus-oci-passage-with-the-signature-verification-evidence]] — open
-- [[#update-part-1-ignoredifferences-passage-with-the-diff-only-default-and-the-flux-target-rule]] — open
-- [[#update-flux-ramp-up-source-controller-passage-with-leader-election-artifact-serving]] — open
-- [[#update-flux-ramp-up-sharding-passage-with-the-verified-helmchart-labeling-rule]] — open
-- [[#update-flux-ramp-up-image-automation-passage-with-the-v1-api-and-promotion-options]] — open
-- [[#update-part-4-function-kro-passage-with-the-documented-upstream-differences]] — open
-- [[#update-crossplane-ramp-up-function-kro-passage-with-the-documented-upstream-differences]] — open
-- [[#update-part-4-radius-and-score-passage-with-the-primary-source-status]] — open
-- [[#update-part-4-kratix-passage-with-the-destination-mechanics]] — open
-- [[#update-part-4-terraform-in-a-cluster-passage-with-the-maintenance-status]] — open
-- [[#update-crossplane-ramp-up-terraform-passage-with-the-maintenance-status]] — open
-- [[#update-crossplane-ramp-up-function-pinning-passage-with-the-functionref-limit]] — open
+- [[#update-flux-ramp-up-waitfortermination-passage-with-the-timeout-behavior]] — open
+- [[#close-the-resolved-candidate-gaps-from-the-other-tool-coverage-pass]] — open
+- [[#decide-on-the-19-partial-and-5-still-open-other-tool-gaps]] — open
+- [[#fetch-the-sources-the-other-tool-coverage-pass-could-not-read]] — open
+- [[#review-the-radius-single-blog-finding-that-the-other-tool-pass-marked-contradicted]] — open
 
 ## Open
 
@@ -73,20 +64,6 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** Review the partial gaps (a named remainder exists) and the four still-open gaps (forced-finalizer orphaning rate, named end-user convergence case study, named operator postmortems, named Flux sharding adopter or APF incident) in [[findings/evidence-and-fact-check-pass-gap-dispositions]]. Decide which need another targeted pass and which should be closed as unanswerable with current sources.
 - **Why:** The Skyscanner, Reddit and Spotify primaries were unreadable with the tools available, so those need a different retrieval route.
 - **Acceptance:** Each gap has a decision recorded.
-- **Drafted by:** agent on 2026-11-26
-
-## Batch 2 (P3): other-tool coverage research pass — status: open
-
-- **What:** Research the roughly 30 open gaps about other tools: Argo CD versus Flux head to head, secrets in GitOps agents, Git versus OCI as the source, ApplicationSets and hub-and-spoke, Config Connector versus Crossplane, Kratix, Radius, Score, the KRM function specification, tofu-controller and the Terraform operator, Backstage, and how Flux and Argo CD handle provider-managed resources.
-- **Why:** Adds breadth to Parts 4 and 5 and the landscape comparisons. Not blocking accuracy, so it follows Batch 1.
-- **Acceptance:** Verified dossiers ingested, comparison pages written or updated, and affected tutorial passages revised.
-- **Drafted by:** agent on 2026-11-26
-
-## Batch 2 (P3b): residual partial gaps from the targeted pass — status: open
-
-- **What:** Settle the narrow remainders that Batch 1 does not cover: Crossplane v2 scaling guidance and function-runner history, Config Connector per-kind reconcile cadence, ReplicaSet and StatefulSet staleness metric names, kro-to-Crossplane status propagation, Upjet runtime cost, and package dependency and upgrade policy.
-- **Why:** Each is a named caveat inside a closed or partial gap.
-- **Acceptance:** Each remainder is settled with a primary source or recorded as unanswerable.
 - **Drafted by:** agent on 2026-11-26
 
 ## Batch 3 (P4): benchmarks and scale-by-controller gaps — status: open
@@ -173,11 +150,32 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passage revised and citing [[findings/a-flux-waitfortermination-deletion-policy-gives-up-at-spec-timeout-and-lets-the-kustomization-be-deleted-while-a-provider-resource-may-still-be-finalizing]].
 - **Drafted by:** agent on 2026-11-26
 
-## Update part-4 cloud-vendor add-on passage with Config Connector modes, deletion, and the lack of a neutral Crossplane comparison — status: open
+## Close the resolved-candidate gaps from the other-tool coverage pass — status: open
 
-- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "The cloud vendors ship their own provisioning controllers" can add that Config Connector's CRD default is namespaced mode with one `ConfigConnectorContext` per namespace, that its deletion policy has two source values and only `abandon` changes the path, that the GKE add-on can lag releases by 12 months or more, and that no neutral Config Connector versus Crossplane comparison exists, only two vendor positions.
-- **Why:** The passage predates the dossier [[sources/research-gap-o4-config-connector-ack]].
-- **Acceptance:** Passage revised and citing [[findings/config-connector-namespaced-mode-is-the-crd-default-and-needs-one-configconnectorcontext-per-namespace-while-cluster-mode-takes-exactly-one-credential]], [[findings/config-connector-deletion-policy-has-two-source-values-and-only-abandon-changes-the-delete-path-and-the-terraform-based-controller-path-is-unverified]], and [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]].
+- **What:** Run `sticki-gaps` to review and close the 11 gaps marked resolved-candidate in [[findings/other-tool-coverage-pass-gap-dispositions]]. The strongest candidates are the Config Connector controller-kind, reconcile-cadence and namespaced-mode gaps, the Kubernetes v1.36 staleness gap, the Radius and Score status gap, the Kratix and tofu-controller maintenance gaps, the two Crossplane and KRM function history gaps, and the Argo CD ignore-differences gap.
+- **Why:** Only the user closes gaps. The pass added possible-resolution notes and closed none.
+- **Acceptance:** Each resolved-candidate gap is closed with a Resolution paragraph or left open with a reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Decide on the 19 partial and 5 still-open other-tool gaps — status: open
+
+- **What:** Review the 19 partial and 5 still-open rows in [[findings/other-tool-coverage-pass-gap-dispositions]]. Anything needing a neutral third party (an independent Argo CD versus Flux benchmark, a neutral Config Connector versus Crossplane study, a named kro adopter) or a measured number (Flux shard outcomes, Upjet memory and CPU, Crossplane capacity limits) is unlikely to be found with current public sources.
+- **Why:** Each needs a user decision: another targeted pass, close as unanswerable with current sources, or accept the relevant decision page.
+- **Acceptance:** Each gap has a decision recorded.
+- **Drafted by:** agent on 2026-11-26
+
+## Fetch the sources the other-tool coverage pass could not read — status: open
+
+- **What:** Save the pages listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] into `raw/`, then ingest them. They include the Medium posts on Terraform, OpenTofu and Crossplane and on Config Connector pitfalls, the Crossplane composition-functions docs page, the KubeCon kcp talk, the AWS EKS kro page, and the Flux and Argo CD docs paths that returned 404.
+- **Why:** The scrape tools returned empty bodies, 404s, or no results.
+- **Acceptance:** Each source is saved and ingested, or recorded as unavailable.
+- **Drafted by:** agent on 2026-11-26
+
+## Review the Radius single-blog finding that the other-tool pass marked contradicted — status: open
+
+- **What:** [[findings/radius-maturity-and-governance-claims-rest-on-a-single-third-party-blog]] moved to `contradicted` because primary listings now settle Radius status and governance. Decide whether to narrow it to the Bicep-dependency claim, which still rests on one blog, or archive it, and resolve its Contradictions block.
+- **Why:** The contradiction is documented, but the lifecycle transition is a judgment call.
+- **Acceptance:** The page is `active` (narrowed) or `archived`, with the Contradictions block resolved.
 - **Drafted by:** agent on 2026-11-26
 
 ## Done
@@ -892,137 +890,180 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Each output reviewed by a human, status active, `delivered:` set.
 - **Outcome:** 2026-11-26: the user read the published site locally and approved it. All seven outputs are status active with delivered 2026-11-26, and the draft setting was removed from the publish config so only active outputs publish. The banned-word and prose checks were done by the review phases.
 
-## Update flux-ramp-up Git versus OCI passage with the signature verification evidence — status: open
+## Update flux-ramp-up Git versus OCI passage with the signature verification evidence — status: done
 
 - **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "The choice between Git and OCI is open in the wiki's sources" can add that Flux verifies Cosign and Notation signatures with keyless identity matching and that the Argo CD pages read document OCI sources without signature verification, with no independent benefit evidence found.
 - **Why:** The passage predates the dossier [[sources/research-gap-o1-argocd-flux-gitops]].
 - **Acceptance:** Passage revised and citing [[findings/flux-verifies-cosign-and-notation-signatures-on-oci-artifacts-while-the-argo-cd-pages-read-document-no-oci-signature-verification]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update part-1 ignoreDifferences passage with the diff-only default and the Flux target rule — status: open
+## Update part-1 ignoreDifferences passage with the diff-only default and the Flux target rule — status: done
 
 - **What:** In `outputs/part-1-core-architectural-principles.md`, the paragraph beginning "The `automated` block turns on continuous correction" says `ignoreDifferences` declares a field another controller owns. It should add that the rule is diff-only unless `RespectIgnoreDifferences=true`, and that a Flux ignore rule without a target selector matches every object.
 - **Why:** The passage predates the dossier [[sources/research-gap-o1-argocd-flux-gitops]].
 - **Acceptance:** Passage revised and citing [[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]] and [[findings/a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update flux-ramp-up source controller passage with leader-election artifact serving — status: open
+## Update flux-ramp-up source controller passage with leader-election artifact serving — status: done
 
 - **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "The source controller fetches content from outside the cluster" says other controllers read the archive from inside the cluster. It can add that the artifact server starts only after leader election, standbys fail readiness, and the stock manifest uses one replica with emptyDir storage.
 - **Why:** The passage predates the dossier [[sources/research-gap-o2-flux-internals]].
 - **Acceptance:** Passage revised and citing [[findings/flux-source-controller-starts-its-artifact-server-only-after-winning-leader-election-and-standbys-fail-readiness]] and [[findings/the-stock-flux-source-controller-keeps-artifacts-in-an-emptydir-with-one-minute-retention-so-a-restart-rebuilds-them]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update flux-ramp-up sharding passage with the verified HelmChart labeling rule — status: open
+## Update flux-ramp-up sharding passage with the verified HelmChart labeling rule — status: done
 
 - **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "The label places the release on the controller instance watching `shard1`" says the exact HelmChart labeling rule was not verified. It should state that the chart label is set through the HelmRelease's `.spec.chart.metadata.labels` and that notification-controller and source-watcher cannot be sharded.
 - **Why:** The passage predates the dossier [[sources/research-gap-o2-flux-internals]].
 - **Acceptance:** Passage revised and citing [[findings/a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels]] and [[findings/flux-notification-controller-and-source-watcher-do-not-support-sharding-and-the-documented-recipe-leaves-image-automation-unsharded]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update flux-ramp-up image automation passage with the v1 API and promotion options — status: open
+## Update flux-ramp-up image automation passage with the v1 API and promotion options — status: done
 
 - **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "**Image automation.**" should add that the kinds are `image.toolkit.fluxcd.io/v1` and name the guide's promotion options (semver for production, a separate push branch for pull-request approval, revert by narrowing the range), noting that no adopter write-up was found.
 - **Why:** The passage predates the dossier [[sources/research-gap-o2-flux-internals]].
 - **Acceptance:** Passage revised and citing [[findings/flux-image-automation-kinds-are-image-toolkit-fluxcd-io-v1-with-older-versions-still-in-the-api-directory]] and [[findings/the-flux-image-update-guide-offers-semver-for-production-a-separate-push-branch-for-review-and-revert-by-narrowing-the-range]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update part-5 deletion passage with the ACK deletion-policy lookup order and agent-side opt-outs — status: open
+## Update part-5 deletion passage with the ACK deletion-policy lookup order and agent-side opt-outs — status: done
 
 - **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the paragraph beginning "The tools also answer a different question, which is whether deleting the Kubernetes object should delete the real thing" can add that ACK resolves its deletion policy from the resource annotation, then the namespace annotation, then the controller default, so a controller-wide retain can be overridden, and that Flux and Argo CD each have per-object prune opt-outs.
 - **Why:** The passage predates the dossier [[sources/research-gap-o3-gitops-provider-managed]].
 - **Acceptance:** Passage revised and citing [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]] and [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update part-4 GitOps health passage with the built-in Argo CD scripts and Flux's kstatus-only model — status: open
+## Update part-4 GitOps health passage with the built-in Argo CD scripts and Flux's kstatus-only model — status: done
 
 - **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "GitOps tools sit above all of these" says Argo CD needs Lua checks for CRDs. It should add that Argo CD v3.6.3 ships built-in scripts for the Config Connector, ACK, Crossplane, and Upbound groups, and that Flux relies on kstatus or CEL `healthCheckExprs` with no per-provider logic.
 - **Why:** The passage predates the dossier [[sources/research-gap-o3-gitops-provider-managed]].
 - **Acceptance:** Passage revised and citing [[findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves]] and [[findings/flux-judges-provider-managed-resources-through-kstatus-or-cel-health-check-expressions-and-its-cel-cheatsheet-lists-crossplane-but-not-config-connector-or-ack]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update part-4 function-kro passage with the documented upstream differences — status: open
+## Update part-4 function-kro passage with the documented upstream differences — status: done
 
 - **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "The wiki also notes that the Crossplane project's `function-kro`" says the feature-parity claim is the project's own and unverified. It should add that the repository lists behavioral differences from kro and that v0.4.0 runs kro v0.10.0's graph engine.
 - **Why:** The passage predates the dossier [[sources/research-gap-o5-kro-ecosystem]].
 - **Acceptance:** Passage revised and citing [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update crossplane-ramp-up function-kro passage with the documented upstream differences — status: open
+## Update crossplane-ramp-up function-kro passage with the documented upstream differences — status: done
 
 - **What:** In `outputs/crossplane-ramp-up.md`, the paragraph after the `${vpc.status.atProvider.id}` example says "The project claims full feature parity". It should add the documented behavioral differences and the v0.4.0 engine change.
 - **Why:** The passage predates the dossier [[sources/research-gap-o5-kro-ecosystem]].
 - **Acceptance:** Passage revised and citing [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]] and [[examples/function-kro-v0-4-0-moved-onto-the-kro-v0-10-0-graph-engine-on-2026-11-26-with-one-listed-maintainer]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update part-4 Radius and Score passage with the primary-source status — status: open
+## Update part-4 Radius and Score passage with the primary-source status — status: done
 
 - **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "Score and Radius move the abstraction higher" says everything the wiki knows about Radius comes from one third-party review, and the sentence beginning "The table is the wiki's synthesis" says the Radius and Score rows rest on one review and the project's own site. Both should state that CNCF Sandbox status, Microsoft-only maintainers, and the one-channel support policy are now verified from primary listings.
 - **Why:** The passage predates the dossier [[sources/research-gap-o6-platform-landscape]].
 - **Acceptance:** Passage revised and citing [[findings/radius-and-score-are-both-cncf-sandbox-projects-per-the-landscape-file-and-both-passed-sandbox-votes]] and [[findings/all-four-radius-maintainers-are-microsoft-employees-and-only-the-newest-minor-channel-is-supported]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update part-4 Kratix passage with the Destination mechanics — status: open
+## Update part-4 Kratix passage with the Destination mechanics — status: done
 
 - **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "Kratix, from the vendor Syntasso" says the wiki did not retrieve details of how Destinations work. It should describe label-matched two-stage scheduling and the state-store layout.
 - **Why:** The passage predates the dossier [[sources/research-gap-o6-platform-landscape]].
 - **Acceptance:** Passage revised and citing [[findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match]] and [[findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update part-4 Terraform-in-a-cluster passage with the maintenance status — status: open
+## Update part-4 Terraform-in-a-cluster passage with the maintenance status — status: done
 
 - **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "Terraform in a cluster is the pragmatic route" says tofu-controller's maintenance status is unchecked. It should say tofu-controller released v0.17.0 on 2026-11-16 and that the Terraform Operator has had no release since 2024-05-17.
 - **Why:** The passage predates the dossier [[sources/research-gap-o6-platform-landscape]].
 - **Acceptance:** Passage revised and citing [[findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api]] and [[findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update crossplane-ramp-up Terraform passage with the maintenance status — status: open
+## Update crossplane-ramp-up Terraform passage with the maintenance status — status: done
 
 - **What:** In `outputs/crossplane-ramp-up.md`, section 13, the paragraph beginning "Terraform and tofu-controller" ends with "The wiki did not check maintenance levels after Weaveworks' wind-down." It should state the verified maintenance status of both controllers and note that the plan-preview claim rests on a dated 2022 source.
 - **Why:** The passage predates the dossier [[sources/research-gap-o6-platform-landscape]].
 - **Acceptance:** Passage revised and citing [[findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api]], [[findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer]], and [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update crossplane-ramp-up function-pinning passage with the functionRef limit — status: open
+## Update crossplane-ramp-up function-pinning passage with the functionRef limit — status: done
 
 - **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "Finally, functions are packages" says each Composition revision can reference specific function digests so composites pinned to older revisions keep running the old function. Only the alpha `--enable-pipeline-oci-references` digest feature does that, and a `functionRef` step follows the active Function revision for every CompositionRevision, including Manual pins.
 - **Why:** The passage conflicts with [[sources/research-gap-o7-krm-functions]].
 - **Acceptance:** Passage revised and citing [[findings/upgrading-a-crossplane-function-changes-every-composition-revision-that-uses-functionref-including-manual-pins]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update crossplane-ramp-up Upjet runtime passage with the three execution modes — status: open
+## Update crossplane-ramp-up Upjet runtime passage with the three execution modes — status: done
 
 - **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "Writing hundreds of resource types by hand is impractical" says the dossier did not confirm whether the Upjet runtime calls Terraform as a subprocess or in-process. The o8 dossier settles it: three execution modes are chosen per resource, with a shared forked provider process in CLI mode, and no official memory or CPU figures exist.
 - **Why:** The passage predates [[sources/research-gap-o8-crossplane-residuals]].
 - **Acceptance:** Passage revised and citing [[findings/upjet-supports-three-terraform-execution-modes-selected-per-resource-configuration]] and [[findings/no-official-upjet-memory-or-cpu-figures-exist-and-the-memory-footprint-issue-was-closed-as-outdated-by-provider-families]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update crossplane-ramp-up open-items passage on package dependency resolution and function-pipeline status — status: open
+## Update crossplane-ramp-up open-items passage on package dependency resolution and function-pipeline status — status: done
 
 - **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "What is still open is narrower" says package dependency resolution was not checked, that no source covered whether the Upjet runtime runs Terraform as a subprocess, and that function-pipeline status propagation rests on reconciler source reading. The o8 dossier covers the first two and part of the third through function-kro.
 - **Why:** The passage predates [[sources/research-gap-o8-crossplane-residuals]].
 - **Acceptance:** Passage revised and citing [[findings/the-crossplane-lock-resolver-never-modifies-the-lock-and-creates-only-the-first-missing-dependency]], [[findings/crossplane-dependency-version-upgrades-and-downgrades-are-alpha-and-downgrades-need-both-feature-flags]], and [[findings/function-kro-approximates-kro-built-in-conditions-from-one-run-and-writes-only-declared-status-paths-to-the-desired-xr]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update part-1 Config Connector cadence row with the per-kind overrides — status: open
+## Update part-1 Config Connector cadence row with the per-kind overrides — status: done
 
 - **What:** In `outputs/part-1-core-architectural-principles.md`, the cadence table row for Config Connector says "About 10 minutes on average, jittered between 0.5 and 1.5 times that; a value of "0" disables it and the docs call that irreversible". The row stays correct as the default, but it should add that the default is the same for the direct, Terraform-based and DCL-based controllers and that five Terraform-mapped kinds override it (two at 0, three at 3600).
 - **Why:** The passage predates [[sources/research-gap-o9-cadence-and-staleness]].
 - **Acceptance:** Row revised and citing [[findings/config-connector-direct-terraform-and-dcl-reconcilers-share-one-jittered-requeue-so-the-controller-kind-alone-does-not-change-the-cadence]] and [[findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update part-3 staleness-metrics passage with the absent MonitorInformerStaleness and BookmarkFunc — status: open
+## Update part-3 staleness-metrics passage with the absent MonitorInformerStaleness and BookmarkFunc — status: done
 
 - **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the paragraph beginning "When a DaemonSet or Job sync is deferred, the controller increments a skip counter" covers the skip counters and gauge. It should state that `MonitorInformerStaleness` and the handler `BookmarkFunc` described by KEP 5647 are absent from v1.36.0, v1.37.0 and master source, that the HPA gate is in v1.37.0, and that the gauge fix for reporting 0 is in the 1.38 changelog.
 - **Why:** The passage predates [[sources/research-gap-o9-cadence-and-staleness]].
 - **Acceptance:** Passage revised and citing [[findings/monitorinformerstaleness-and-the-handler-bookmarkfunc-are-absent-from-kubernetes-v1-36-0-v1-37-0-and-master-source]], [[findings/kubernetes-v1-37-0-already-carries-the-horizontal-pod-autoscaler-staleness-gate-and-every-per-controller-gate-depends-on-atomicfifo]], [[findings/kep-5647-is-implementable-with-a-beta-v1-37-target-and-an-open-tracking-issue-labelled-lifecycle-stale]], and [[examples/kubernetes-pull-request-143314-fixed-the-informer-store-resource-version-gauge-reporting-zero-before-a-store-recorded-a-version]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
-## Update crossplane-ramp-up Config Connector controller passage with the per-kind mapping — status: open
+## Update crossplane-ramp-up Config Connector controller passage with the per-kind mapping — status: done
 
 - **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "ACK, Config Connector and ASO" says Config Connector covers Google Cloud with direct, Terraform-based and DCL-based controllers. It can now say that a source table maps 814 kinds, with direct the default for 539, and that new resources use direct by default.
 - **Why:** The passage predates [[sources/research-gap-o9-cadence-and-staleness]].
 - **Acceptance:** Passage revised and citing [[findings/config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them]] and [[findings/config-connector-routes-a-kind-to-its-controller-by-namespace-override-then-static-default-and-a-live-crd-label-shows-which-one-runs]].
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
+
+## Batch 2 (P3): other-tool coverage research pass — status: done
+
+- **What:** Research the roughly 30 open gaps about other tools: Argo CD versus Flux head to head, secrets in GitOps agents, Git versus OCI as the source, ApplicationSets and hub-and-spoke, Config Connector versus Crossplane, Kratix, Radius, Score, the KRM function specification, tofu-controller and the Terraform operator, Backstage, and how Flux and Argo CD handle provider-managed resources.
+- **Why:** Adds breadth to Parts 4 and 5 and the landscape comparisons. Not blocking accuracy, so it follows Batch 1.
+- **Acceptance:** Verified dossiers ingested, comparison pages written or updated, and affected tutorial passages revised.
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: the nine o1 to o9 dossiers were ingested (seq 67 to 75, 121 pages with the triage page) and every output todo they raised was checked against the output diffs. Of the 35 gaps, 11 are resolved-candidate, 19 partial, and 5 still-open, with none closed; see [[findings/other-tool-coverage-pass-gap-dispositions]]. The remaining work is tracked in the follow-up todos below.
+
+## Batch 2 (P3b): residual partial gaps from the targeted pass — status: done
+
+- **What:** Settle the narrow remainders that Batch 1 does not cover: Crossplane v2 scaling guidance and function-runner history, Config Connector per-kind reconcile cadence, ReplicaSet and StatefulSet staleness metric names, kro-to-Crossplane status propagation, Upjet runtime cost, and package dependency and upgrade policy.
+- **Why:** Each is a named caveat inside a closed or partial gap.
+- **Acceptance:** Each remainder is settled with a primary source or recorded as unanswerable.
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: the o7, o8 and o9 dossiers settled the named remainders: Crossplane function-runner history and functionRef upgrades (o7), Upjet execution modes, v2 worker-pool meaning and package dependency resolution (o8), and Config Connector per-kind cadence plus the Kubernetes staleness metric names and gates (o9). The kro-to-Crossplane status propagation remainder is partly settled through function-kro and keeps a caveat; Upjet memory and CPU figures are recorded as nonexistent. See [[findings/other-tool-coverage-pass-gap-dispositions]].
+
+## Update part-4 cloud-vendor add-on passage with Config Connector modes, deletion, and the lack of a neutral Crossplane comparison — status: done
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "The cloud vendors ship their own provisioning controllers" can add that Config Connector's CRD default is namespaced mode with one `ConfigConnectorContext` per namespace, that its deletion policy has two source values and only `abandon` changes the path, that the GKE add-on can lag releases by 12 months or more, and that no neutral Config Connector versus Crossplane comparison exists, only two vendor positions.
+- **Why:** The passage predates the dossier [[sources/research-gap-o4-config-connector-ack]].
+- **Acceptance:** Passage revised and citing [[findings/config-connector-namespaced-mode-is-the-crd-default-and-needs-one-configconnectorcontext-per-namespace-while-cluster-mode-takes-exactly-one-credential]], [[findings/config-connector-deletion-policy-has-two-source-values-and-only-abandon-changes-the-delete-path-and-the-terraform-based-controller-path-is-unverified]], and [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]].
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
 ## Dropped

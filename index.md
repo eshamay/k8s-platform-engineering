@@ -807,6 +807,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]] — evidence caveat (draft)
 - [[findings/evidence-and-fact-check-pass-gap-dispositions]] — triage of the 49 group 1 and 3 gaps against the 14 research dossiers: 22 resolved-candidate, 23 partial, 4 still-open (active)
 - [[findings/mechanics-and-accuracy-pass-gap-dispositions]] — triage of the 43 mechanics gaps (m1 to m7) and the four b1 accuracy rechecks: 14 resolved-candidate, 26 partial, 3 still-open, plus the manual-fetch list (active)
+- [[findings/other-tool-coverage-pass-gap-dispositions]] — triage of the 35 other-tool gaps after the nine o1 to o9 dossiers: 11 resolved-candidate, 19 partial, 5 still-open, plus the manual-fetch list (active)
 - [[findings/templated-configuration-that-looks-like-config-is-code-and-needs-tests-and-a-regional-rollout-before-a-gitops-controller-applies-it-globally]] — templated configuration is code and needs tests and staged rollout (active)
 - [[findings/hand-edited-calico-route-reflector-configuration-that-was-committed-nowhere-outlived-everyone-who-knew-about-it]] — undeclared Calico configuration outlived its owners (active)
 - [[findings/kubernetes-has-no-supported-downgrade-so-a-failed-control-plane-upgrade-forces-a-backup-restore-and-an-untested-restore-procedure-is-the-risk]] — no supported downgrade makes an untested restore the risk (active)
