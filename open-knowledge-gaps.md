@@ -56,7 +56,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#operator-sdk-capability-levels-for-composition-based-operators]] — open, unassigned
 - [[#argo-cd-and-config-connector-as-operators]] — open, unassigned
 - [[#backstage-and-the-operator-pattern]] — open, unassigned
-- [[#requeue-true-backoff-behavior-in-current-controller-runtime]] — open, unassigned
 - [[#named-postmortems-of-runaway-reconcile-loops]] — open, unassigned
 - [[#kro-and-cluster-api-idempotency-for-external-and-infrastructure-creates]] — open, unassigned
 - [[#production-outcomes-of-adopt-or-create-versus-explicit-import]] — open, unassigned
@@ -698,18 +697,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** backstage, platform-engineering
 - **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier does not mention Backstage, although it notes that composite kinds are consumed as products by other teams and that Kratix uses Crossplane as a component.
-
-## Requeue true backoff behavior in current controller-runtime — status: open
-
-- **Question:** Does `Result{Requeue: true}` requeue with rate-limited backoff or immediately, in the current controller-runtime source?
-- **Why it matters:** The package reference says rate-limited, while a summary of issue 808 says immediate without backoff, and the field is deprecated. A tutorial or review based on the wrong reading would teach a hot loop or a slow retry. See [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read `reconcile.go` and the controller's requeue handling in the current controller-runtime source.
-  - [ ] Check whether the deprecation notice names a replacement.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** controller-runtime, requeue, backoff
-- **Possible resolution from [[sources/research-gap-g3-k8s-and-controller-runtime]]:** Settled, and the user can close it. At controller-runtime v0.25.3 (published 2026-11-16), `Result{Requeue: true}` with a nil error is a rate-limited requeue with per-item exponential backoff, so the package reference was right. The handler adds the request with `RateLimited: true` and does not reset the failure counter, while `RequeueAfter > 0` calls `Queue.Forget(req)` and then waits exactly that duration, and a non-nil error ignores both fields. The deprecation notice names the replacement: "Deprecated: Use `RequeueAfter` instead." With the default priority queue the limiter is per-item exponential (5 ms to 1000 s) with no overall bucket. Not settled: where the "immediate requeue" reading came from, because issue 808's body does not claim it and its comment thread was not read. See [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]] and [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
 
 ## Named postmortems of runaway reconcile loops — status: open
 
@@ -1724,3 +1711,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: storagemigration.k8s.io/v1 is GA in v1.37 and is user-triggered, so a retired CRD version needs a user-created migration object ([[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]], [[concepts/crd-versioning-and-storage-migration]]). Not settled: the exact progress-condition field layout was not read.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-k8s-and-controller-runtime]]:** Largely settled, and the user can close it. `storagemigration.k8s.io/v1` and the `StorageVersionMigrator` controller are GA and enabled by default in v1.37 (KEP 4192 stable v1.37, CHANGELOG-1.37 PR 138560, release and GA blogs, gate Beta default false at v1.36.0 and GA default true at v1.37.0). At v1.37.0 the type is cluster-scoped with an immutable `spec.resource` (a `GroupResource`), `status.conditions` with the types Running, Succeeded, and Failed, and `status.resourceVersion`. Migration is not triggered automatically: the user creates the object, and only the migrator moved in-tree, not the out-of-tree trigger controller. After a CRD migration, `.status.storedVersions` should hold only the preferred version, and the migration should be retried if not. Post-beta changes are progress reporting in conditions, merge patch in place of server-side apply, and a panic fix. Not settled: the exact field shape of the progress-reporting conditions. The kubernetes.io task page header still reads Beta and disabled while its body says enabled, so do not cite it for stage. See [[concepts/crd-versioning-and-storage-migration]], [[examples/a-user-created-storageversionmigration-object-rewrites-stored-objects-so-a-crd-can-retire-an-old-version]], and [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]].
+
+## Requeue true backoff behavior in current controller-runtime — status: closed (2026-11-26)
+
+- **Question:** Does `Result{Requeue: true}` requeue with rate-limited backoff or immediately, in the current controller-runtime source?
+- **Why it matters:** The package reference says rate-limited, while a summary of issue 808 says immediate without backoff, and the field is deprecated. A tutorial or review based on the wrong reading would teach a hot loop or a slow retry. See [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read `reconcile.go` and the controller's requeue handling in the current controller-runtime source.
+  - [ ] Check whether the deprecation notice names a replacement.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** controller-runtime, requeue, backoff
+- **Resolution:** Settled: at controller-runtime v0.25.3 returning Requeue true is a rate-limited requeue with per-item exponential backoff, and only RequeueAfter forgets the failure history ([[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]], [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]]). Not settled: the origin of the older claim of an immediate requeue (issue 808) was not located.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-k8s-and-controller-runtime]]:** Settled, and the user can close it. At controller-runtime v0.25.3 (published 2026-11-16), `Result{Requeue: true}` with a nil error is a rate-limited requeue with per-item exponential backoff, so the package reference was right. The handler adds the request with `RateLimited: true` and does not reset the failure counter, while `RequeueAfter > 0` calls `Queue.Forget(req)` and then waits exactly that duration, and a non-nil error ignores both fields. The deprecation notice names the replacement: "Deprecated: Use `RequeueAfter` instead." With the default priority queue the limiter is per-item exponential (5 ms to 1000 s) with no overall bucket. Not settled: where the "immediate requeue" reading came from, because issue 808's body does not claim it and its comment thread was not read. See [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]] and [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].

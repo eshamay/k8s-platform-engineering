@@ -574,3 +574,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | StorageVersionMigration GA details in Kubernetes v1.37
 - closed by: Eric Shamay
 - resolution: Settled: storagemigration.k8s.io/v1 is GA in v1.37 and is user-triggered, so a retired CRD version needs a user-created migration object ([[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]], [[concepts/crd-versioning-and-storage-migration]]). Not settled: the exact progress-condition field layout was not read.
+
+## [2026-11-26] gaps | close | Requeue true backoff behavior in current controller-runtime
+- closed by: Eric Shamay
+- resolution: Settled: at controller-runtime v0.25.3 returning Requeue true is a rate-limited requeue with per-item exponential backoff, and only RequeueAfter forgets the failure history ([[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]], [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]]). Not settled: the origin of the older claim of an immediate requeue (issue 808) was not located.
