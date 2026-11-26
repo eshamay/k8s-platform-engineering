@@ -85,6 +85,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ## Sources
 
+- [[sources/research-gap-g1-named-adopters]] — verified dossier on self-reported adopters of Crossplane, ACK, and kcp, absent sharded-Flux adopters and APF incidents, and kro scaling and adopters, from repository files and GitHub issues (active)
 - [[sources/krm-platform-vocabulary]] — seed vocabulary note, 2026-11-25
 - [[sources/research-universal-control-plane]] — research dossier on the universal control plane idea, 19 web sources, 2026-11-25
 - [[sources/research-declarative-vs-imperative]] — research dossier on declarative versus imperative management, 22 web sources, 2026-11-25
@@ -128,6 +129,15 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ## Examples
 
+- [[examples/sap-reports-more-than-100-crossplane-based-control-planes-and-thousands-of-managed-resources-as-of-february-2024]] — SAP's self-reported Crossplane fleet (active)
+- [[examples/consensys-reports-managing-more-than-1000-resources-with-crossplane]] — Consensys's self-reported Crossplane count (active)
+- [[examples/built-technologies-reports-peaks-above-10000-aws-resources-managed-by-crossplane-in-a-developer-environment]] — Built Technologies's self-reported developer-environment peak (active)
+- [[examples/sparebank-1-utvikling-reports-a-self-service-migration-of-over-a-thousand-production-microservices-with-crossplane]] — SpareBank 1 Utvikling's self-reported production migration (active)
+- [[examples/adobe-lists-ack-for-global-kubernetes-cluster-provisioning-and-stateful-service-infrastructure]] — Adobe's entry in the ACK adopters file (active)
+- [[examples/upbound-is-the-only-kcp-adopter-marked-production-in-the-adopters-file]] — kcp adopters file maturity labels (active)
+- [[examples/an-unnamed-user-with-300-namespaces-saw-5-minute-delays-and-a-flux-maintainer-cited-1k-kustomizations-in-about-3-minutes]] — kustomize-controller issue 1174 (active)
+- [[examples/a-hub-and-spoke-flux-user-reported-nightly-reconciliation-storms-and-was-told-to-shard-or-tune]] — flux2 issue 5470 (active)
+- [[examples/the-flux-benchmark-reconciles-1000-kustomizations-in-4-minutes-13-seconds-on-flux-v2-10-0]] — project-run Flux scale benchmark (active)
 - [[examples/self-service-gke-cluster-with-kro]] — self-service cluster API (draft)
 - [[examples/cluster-fleet-lifecycle-with-cluster-api]] — management cluster and workload clusters (draft)
 - [[examples/cloud-services-as-kubernetes-objects]] — ACK and Config Connector (draft)
@@ -422,6 +432,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ## Findings
 
+- [[findings/a-flux-dependson-across-shards-failed-with-dependency-not-found-until-a-2024-fix]] — cross-shard dependsOn failure, kustomize-controller issue 1175 (active)
+- [[findings/objects-that-leave-a-flux-shard-keep-stale-artifacts-on-the-old-source-controller]] — source-controller issue 2150, anonymous report (draft)
+- [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]] — kro shared queue and issue 198, with the per-RGD controller correction (active)
+- [[findings/a-kro-hard-apply-failure-discarded-watches-and-hot-looped-while-large-collections-re-listed-against-the-apiserver]] — kro issue 1464 (active)
+- [[findings/flux-turns-off-client-side-throttling-when-apf-is-enabled-but-a-custom-kubeconfig-path-kept-it-until-2026]] — Flux APF awareness and the 2026 kubeconfig fix (active)
 - [[findings/etcd-scale-limits-of-the-shared-store]] — etcd limits (active)
 - [[findings/the-sig-scalability-thresholds-cover-built-in-types-only-and-are-not-hard-limits]] — SIG table scope, kops test setup, not hard limits (active)
 - [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]] — 600MB and 300MB are targets from a Draft doc (active)

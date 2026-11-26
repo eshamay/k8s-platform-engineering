@@ -1,13 +1,16 @@
 ---
 title: Sharded Flux dependents must carry the same shard label as their parents
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-flux-deep-dive
     hash: e640ec8046bc
     ingested: 2026-11-25
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, flux, sharding, labels, helm]
 ---
@@ -25,3 +28,7 @@ Label the whole chain from one parent, and verify each shard's objects after the
 ## Related
 
 [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]], [[entities/flux-operator]], [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]], [[entities/flux]]
+
+## Reported failure with dependsOn
+
+The label rule applies to `dependsOn` targets too. kustomize-controller issue 1175 (2024-05-30) reports "dependency 'application2-namespace/app' not found" in a sharded setup, fixed by PR 1248 on 2024-09-26. See [[findings/a-flux-dependson-across-shards-failed-with-dependency-not-found-until-a-2024-fix]]. [[sources/research-gap-g1-named-adopters]]

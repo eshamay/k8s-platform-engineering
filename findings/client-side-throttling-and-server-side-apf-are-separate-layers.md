@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g3-scale-recheck
     hash: d9bd6911bff7
     ingested: 2026-11-26
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, scale, apf, throttling, client-go, qps]
 ---
@@ -28,3 +31,7 @@ A log line quoted by Upbound shows the confusion. It says a request waited "due 
 ## What to check first
 
 When a controller is slow, the first question is which layer is waiting. Client-side waits appear in the client's own logs, while server-side waits appear in the APF metrics and as 429 responses. The tool-specific knobs are compared in [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]]. The overload case that APF is meant to contain is [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]], and the mechanism in context is [[concepts/scale-and-sharding]]. See also [[examples/upbound-tested-a-multi-cloud-control-plane-of-about-2000-managed-resources-and-upstreamed-kubernetes-fixes]].
+
+## Flux as a worked case
+
+Flux controllers have been APF-aware since mid-2022, and a custom-kubeconfig path that still throttled on the client was fixed in 2026. See [[findings/flux-turns-off-client-side-throttling-when-apf-is-enabled-but-a-custom-kubeconfig-path-kept-it-until-2026]]. No published incident ties Flux to APF throttling. [[sources/research-gap-g1-named-adopters]]

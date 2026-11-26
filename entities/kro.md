@@ -68,6 +68,9 @@ sources:
   - id: research-gap-g3-kro
     hash: e8d7c5923d98
     ingested: 2026-11-26
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -189,3 +192,9 @@ The latest stable release is v0.10.0, published 2026-11-10. The previous stable 
 **The Graph API.** `Graph` (`kro.run/v1alpha1`) is alpha, off by default behind the `GraphKind` gate, and carries no compatibility guarantee. It has no schema, no generated API, and no instances, and its nodes come in five kinds. The RGD controller now runs on the graph engine unconditionally and issues `GraphRevision` objects, while RGD stays a separate Kind that is not deprecated. In a Graph, `readyWhen` feeds status only and does not gate downstream nodes. See [[findings/enabling-the-kro-graph-api-needs-a-manual-crd-apply-because-helm-does-not-update-crds-on-upgrade]], [[findings/a-kro-graph-has-no-revision-history-and-sets-no-owner-references-on-the-resources-it-creates]], and [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]].
 
 **Governance.** The kro README, kro.run, and the Kubernetes community SIG Cloud Provider README all say kro is a subproject of Kubernetes SIG Cloud Provider, and the repository is under kubernetes-sigs. The kro.run footer adds that Kubernetes is a CNCF graduated project, which is a statement about Kubernetes and not about kro. No first-party page read calls kro a CNCF sandbox, incubating, or graduated project, and absence from the CNCF landscape was not verified. On main, the maintainers are a-hilaly, jakobmoellerdev, and jlbutler, with four reviewers, and a 2026-11-23 commit moved one maintainer to emeritus. The in-repo roadmap is dated 2026-04-03 and lags the release, and no promotion timeline for Graph was found. See [[findings/the-kro-in-repo-roadmap-predates-the-v0-10-0-release-and-gives-no-graph-promotion-timeline]].
+
+## Correction on the controller model and adoption evidence
+
+Correction note: this page says above that kro "starts a dedicated controller" for each ResourceGraphDefinition and that the scaling limits of one dedicated controller per RGD are uncovered. The tuning page on main describes one shared dynamic controller with a single shared queue, lazy informers per registered RGD, and metadata-only watches, and says per-RGD queues are a possible future change. The scaling question is therefore about one shared queue. No kro benchmark was found, and issue 1464 reports a watch teardown and hot loop on a Graph. See [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]] and [[findings/a-kro-hard-apply-failure-discarded-watches-and-hot-looped-while-large-collections-re-listed-against-the-apiserver]].
+
+kro has no ADOPTERS.md at the repository root and no named production adopter with a reported scale was found. A third-party blog (bex.co, 2026-07-29) says the CNCF and SlashData Q1 2026 Platform Engineering Radar placed kro in "Adopt" from a Q4 2025 survey of 400 or more developers, and that AWS's EKS documentation ships a kro concepts page. These are secondary-only claims and the radar was not read. [[sources/research-gap-g1-named-adopters]]

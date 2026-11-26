@@ -1,13 +1,16 @@
 ---
 title: Crossplane adopters report managed resource counts from thousands to two hundred thousand
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: []
 tags: [crossplane, adopters, internal-developer-platform, scale, self-reported]
 ---
@@ -25,3 +28,7 @@ The entries are self-reported one-liners and not verified case studies. Nike des
 ## Lesson
 
 The reported counts are well beyond what people manage by hand, which is why the scale costs of one CRD per type and per-resource polling matter. Treat the entries as pointers for further research and not as evidence of behavior. This wiki still lacks named, verified case studies, which is tracked in the adopters gap in [[open-knowledge-gaps]]. See also [[entities/crossplane]] and [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]].
+
+## Re-read of the adopters file
+
+The 2026-11-26 dossier counted 87 linked rows in the ADOPTERS file (last file commit 2026-10-27) and found numeric entries for about eight organizations, all self-reported. Quoted figures: SAP "100+ KRM based control planes" and "1000s of Managed Resources" as of February 2024, Consensys "more than 1,000 resources", Built Technologies "over 10,000 AWS resources" in a developer environment, Akamai provider-ceph "up to 200k Managed Resources" as a capability, DKB "more than 10+ EKS clusters", Nike "thousands of resources", SpareBank 1 Utvikling "over a thousand production microservices", and Jellysmack hundreds of IAM roles. See [[examples/sap-reports-more-than-100-crossplane-based-control-planes-and-thousands-of-managed-resources-as-of-february-2024]], [[examples/consensys-reports-managing-more-than-1000-resources-with-crossplane]], [[examples/built-technologies-reports-peaks-above-10000-aws-resources-managed-by-crossplane-in-a-developer-environment]], and [[examples/sparebank-1-utvikling-reports-a-self-service-migration-of-over-a-thousand-production-microservices-with-crossplane]]. [[sources/research-gap-g1-named-adopters]]

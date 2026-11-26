@@ -3,7 +3,7 @@ title: Shard Flux controllers or tune intervals and concurrency first
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-flux-deep-dive
     hash: e640ec8046bc
@@ -11,6 +11,9 @@ sources:
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, flux, scale, sharding]
 ---
@@ -40,3 +43,7 @@ Tuning first keeps the system simple and delays label bookkeeping, at the price 
 ## Additional evidence from the scale dossier
 
 The scale dossier states the documented order: for hundreds of applications deployed many times a day, the Flux documentation first raises `--concurrent` to a suggested 10 to 20 and the resource limits, and sharding comes next. It still names no threshold and no organization running Flux shards. See [[concepts/scale-and-sharding]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], and [[sources/research-scale-and-sharding]].
+
+## Correction and evidence from the named-adopters dossier
+
+Correction note: the Status section above says no source states a threshold at which sharding becomes necessary. The Flux sharding page does state one qualitative threshold, advising sharding "when Flux is managing tens of thousands of applications", and a maintainer wrote that "A single kustomize-controller instance can do 1K reconciliation in about 3m". The flux-benchmark table shows 1000 Kustomizations in 4m13s on Flux v2.10.0. These are documentation and benchmark statements and not a validated production rule. See [[examples/the-flux-benchmark-reconciles-1000-kustomizations-in-4-minutes-13-seconds-on-flux-v2-10-0]] and [[examples/an-unnamed-user-with-300-namespaces-saw-5-minute-delays-and-a-flux-maintainer-cited-1k-kustomizations-in-about-3-minutes]]. The dossier still found no organization running sharded Flux, and Morgan Stanley confirms sharding as future work. [[sources/research-gap-g1-named-adopters]]

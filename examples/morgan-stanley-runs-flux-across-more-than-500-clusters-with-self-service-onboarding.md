@@ -1,13 +1,16 @@
 ---
 title: Morgan Stanley runs Flux across more than 500 clusters with self-service onboarding
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-flux-deep-dive
     hash: e640ec8046bc
     ingested: 2026-11-25
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: []
 tags: [use-case, flux, gitops, scale, multi-tenancy, case-study]
 ---
@@ -31,3 +34,7 @@ This is the clearest evidence in the wiki that Flux's vertical tuning and per-te
 ## Related
 
 [[entities/flux]], [[examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation]], [[examples/flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs]], [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]], [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]], [[decisions/git-versus-oci-as-the-canonical-source]]
+
+## Confirmation from the named-adopters dossier
+
+The 2026-11-26 dossier re-read the Flux blog post (dated 2026-03-15) and confirmed the footprint figures, which are self-reported by Morgan Stanley and relayed by the Flux maintainers. It also confirmed that "Exploring sharding Flux controllers to distribute load across multiple instances within a cluster" sits under "Looking Ahead", so Morgan Stanley is not a documented sharding user. Their scaling work was reconciliation intervals, `--concurrent` flags, and resource limits. No other organization was found that says it runs sharded Flux. [[sources/research-gap-g1-named-adopters]] URL: https://fluxcd.io/blog/2026/03/stairway-to-gitops-morgan-stanley/.

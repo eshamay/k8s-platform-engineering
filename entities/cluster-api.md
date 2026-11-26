@@ -65,6 +65,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -169,3 +172,7 @@ Cluster API issue 8172 (2023, v1.3.0) says resources are orphaned when parent ob
 ## Provider reconcile loop from the operator loop dossier
 
 Rancher's cluster-api-provider-rke2 v0.22.0 onward had a self-sustaining loop of about 10 reconciles per second in the RKE2ControlPlane controller, which the reporter ties to a commit adding the v1beta2 status path. Neighbouring controllers were affected as well. See [[examples/cluster-api-provider-rke2-issue-905-an-unconditional-status-patch-held-the-controller-at-about-ten-reconciles-per-second]] and [[sources/research-gap-g1-operator-loop-failures]].
+
+## Adopters file
+
+A code search of the Cluster API repository in the 2026-11-26 adopters dossier found only a providers reference page and no adopters page. The repository root was not read, so this negative result is unverified. [[sources/research-gap-g1-named-adopters]]

@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g3-kro
     hash: e8d7c5923d98
     ingested: 2026-11-26
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: []
 tags: [kro, workqueue, backoff, tuning]
 ---
@@ -32,3 +35,7 @@ Correction note: the earlier caveat that these defaults came only from unrelease
 ## Lesson
 
 Every convergence machine has a throughput budget. A shared queue with a rate limiter and a retry cap keeps one noisy graph from starving the rest, at the cost of slower convergence under load. See [[entities/kro]], [[comparisons/retry-and-backoff-controls-across-tools]], [[findings/retry-storms-and-unbounded-retries]], and [[concepts/informers-reflectors-and-workqueues]].
+
+## Scaling evidence from the named-adopters dossier
+
+The tuning page on main says the dynamic controller uses lazy informers per registered RGD and metadata-only watches while the queue and workers are shared. It lists defaults of 1 dynamic-controller worker, 1 RGD worker, a 36000 second resync, `watchSyncTimeout` 30s (to be raised when a kind has tens of thousands of objects), `rgd.maxCollectionSize` 1000, and `applyConcurrency` 20. These are main-branch values and may differ from tagged releases. No measured throughput exists: issue 610 asks for continuous performance testing and issue 198 proposes weighted queues. See [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]]. [[sources/research-gap-g1-named-adopters]]

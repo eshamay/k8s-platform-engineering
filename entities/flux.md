@@ -89,6 +89,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -215,3 +218,7 @@ The 2026-11-26 verification settles the default question. `.spec.interval` is re
 ## Incident from the GitOps incidents dossier
 
 Flux issue 2514 (2022) reports replicas dropping to 1 on the first reconciliation over an HPA-managed Deployment, see [[examples/flux-issue-2514-the-first-reconciliation-over-an-hpa-managed-deployment-reset-replicas-to-one]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+
+## Adopters page re-read
+
+Correction note: the adopters sentence above says the page lists more than 200 organizations. The 2026-11-26 dossier read the data file `1-flux-v2.yaml` and counted 127 `name:` lines, a few of which may not be companies, and the page front matter calls the list "a selection of organisations who self-identified as using any of the Flux projects in production". The earlier figure was not reproduced from that file, so treat it as unverified. The dossier also found that Morgan Stanley lists sharding as future work and that no organization was found running sharded Flux. See [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]]. [[sources/research-gap-g1-named-adopters]]

@@ -3,11 +3,14 @@ title: kcp
 type: entity
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: [kcp.io]
 tags: [tool, multi-tenancy, api-server]
 ---
@@ -27,3 +30,7 @@ kcp isolates only the API, so it provides no compute and its tooling is less mat
 ## Related
 
 [[concepts/universal-control-plane]], [[findings/etcd-scale-limits-of-the-shared-store]]
+
+## Adopters
+
+The kcp ADOPTERS file marks Upbound "Production" and SAP, SNCF Group, Kubermatic, Faros.sh, and KubeStellar "Development", all self-reported. See [[examples/upbound-is-the-only-kcp-adopter-marked-production-in-the-adopters-file]]. [[sources/research-gap-g1-named-adopters]]

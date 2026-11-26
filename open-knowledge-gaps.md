@@ -142,6 +142,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **How to close:**
   - [ ] Collect CNCF project pages, ADOPTERS files, and KubeCon talks.
   - [ ] Write `examples/` pages for each documented adopter.
+- **Possible resolution from [[sources/research-gap-g1-named-adopters]]:** Partly settled, and the user decides whether to close it. The dossier names adopters from the project's own self-reported files: 87 rows in Crossplane's ADOPTERS file with about eight carrying figures (SAP, Consensys, Built Technologies, SpareBank 1 Utvikling, Akamai, DKB, Nike, Jellysmack), Adobe, BT, and Continuum Industries in ACK's file, and Upbound as the only kcp adopter marked "Production". Every entry is an unaudited self-listing. No adopters file exists for Config Connector, none was found for Cluster API (an unverified negative result from a code search), and no object counts were found for ACK or kcp. See [[examples/sap-reports-more-than-100-crossplane-based-control-planes-and-thousands-of-managed-resources-as-of-february-2024]], [[examples/adobe-lists-ack-for-global-kubernetes-cluster-provisioning-and-stateful-service-infrastructure]], and [[examples/upbound-is-the-only-kcp-adopter-marked-production-in-the-adopters-file]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** adoption, crossplane, ack, kcp
 - **Possible resolution from [[sources/research-composite-resource]]:** Partly helpful. The same self-reported adopters list adds Renault, Wellhub, Wildlife Studios, Consensys, Grafana Labs, VSHN, Millennium bcp, Continental, and Syntasso (Kratix) as users of composite resources for self-service platforms. The entries are unaudited one-liners and add no counts for composites. No adopter of kro, ACK, Config Connector, or Cluster API is named beyond AWS offering kro on EKS. See [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]].
@@ -1361,6 +1362,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **How to close:**
   - [ ] Search for kro production case studies and benchmarks.
   - [ ] Extend [[examples/kro-shared-queue-tunes-throughput]] with measured results.
+- **Possible resolution from [[sources/research-gap-g1-named-adopters]]:** Partly settled, and the user decides whether to close it. The premise needs correcting: the released docs describe one shared dynamic controller with a single queue and not a dedicated controller per RGD, with per-RGD queues as a possible future change, see [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]]. No measured scaling limit and no named production kro adopter were found, and kro has no ADOPTERS.md. The adoption evidence is secondary-only (a bex.co summary of the CNCF and SlashData radar placing kro in "Adopt", and an AWS EKS concepts page). The only scale-related failure report is [[findings/a-kro-hard-apply-failure-discarded-watches-and-hot-looped-while-large-collections-re-listed-against-the-apiserver]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, scale, adopters, production
 
@@ -1496,6 +1498,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **How to close:**
   - [ ] Search adopter lists, conference talks, and postmortem collections.
   - [ ] Extend [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]] if a case is found.
+- **Possible resolution from [[sources/research-gap-g1-named-adopters]]:** Mostly answered in the negative, and the user decides whether to close it. No organization was found that publicly says it runs sharded Flux at a stated scale. Morgan Stanley, with over 500 clusters, lists sharding under "Looking Ahead". Only anonymous issue reporters use sharding, and their reports are recorded in [[findings/a-flux-dependson-across-shards-failed-with-dependency-not-found-until-a-2024-fix]] and [[findings/objects-that-leave-a-flux-shard-keep-stale-artifacts-on-the-old-source-controller]]. No postmortem ties APF throttling to Flux. What exists is the 2022 change that made Flux controllers APF-aware and a 2026 fix for a remaining client-side path, see [[findings/flux-turns-off-client-side-throttling-when-apf-is-enabled-but-a-custom-kubeconfig-path-kept-it-until-2026]]. Talks by KLM, NatWest Group, and Orange at FluxCon Europe 2026 were not read.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, sharding, apf, incidents
 

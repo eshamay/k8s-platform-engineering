@@ -62,6 +62,9 @@ sources:
   - id: research-gap-g1-leaked-resources-adoption
     hash: 472b18eb451a
     ingested: 2026-11-26
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -153,3 +156,7 @@ The reconciliation page says resources reconcile on every update and "after a ji
 ## Acquisition side effects and a failed create in the leaked-resources dossier
 
 The dossier adds two dated Config Connector reports. Issue 14236 (2026-10-21, v1.117.0, open) says acquiring an existing StorageBucket removed its CSEK `FullyRestricted` enforcement config because the CRD has no field for it, a reporter claim not confirmed by maintainers in the text read ([[examples/config-connector-issue-14236-acquiring-an-existing-storage-bucket-removed-its-encryption-enforcement-config]]). Issue 648 (2022, v1.76.0) shows a MonitoringAlertPolicy created on every reconcile although the create returned HTTP 400, which a Config Connector engineer attributed to the GCP API ([[examples/config-connector-issue-648-an-alert-policy-was-created-on-every-reconcile-although-the-create-returned-http-400]]). Issue 12740 (open) proposes that server-generated-ID resources fail terminally instead of being re-created, and issue 13840 shows a 409 when the server-generated ID was not set. See [[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]]. [[sources/research-gap-g1-leaked-resources-adoption]]
+
+## Adopters file
+
+The 2026-11-26 adopters dossier found no adopters file at the root of the GoogleCloudPlatform/k8s-config-connector repository, so no named Config Connector adopter is recorded from the project itself. [[sources/research-gap-g1-named-adopters]]

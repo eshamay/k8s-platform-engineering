@@ -17,6 +17,9 @@ sources:
   - id: research-gap-g3-scale-recheck
     hash: d9bd6911bff7
     ingested: 2026-11-26
+  - id: research-gap-g1-named-adopters
+    hash: 9f6a50098233
+    ingested: 2026-11-26
 aliases: [sharding, controller scale, scalability envelope]
 tags: [scale, sharding, apf, informers, workqueue, crd-count, leader-election]
 ---
@@ -74,3 +77,7 @@ Crossplane v2 scaling guidance is spread across the Pods guide (default polling 
 ## Argo CD sharding maturity, rechecked at v3.6.3
 
 The 2026-11-26 dossier confirmed from the v3.6.3 docs that round-robin (Alpha since v2.8.0) and consistent-hashing (Alpha since v2.12.0) remain experimental, with the same warning as at v2.14.0 and v3.0.0. See [[entities/argo-cd]], [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], and [[sources/research-gap-g3-argocd-capi]].
+
+## Named-adopter and kro evidence from the named-adopters dossier
+
+The 2026-11-26 dossier found no organization that says it runs sharded Flux, no incident tying Flux to API Priority and Fairness, no kro benchmark, and no named production kro adopter. It also corrected the kro model: one shared dynamic controller with a single queue and per-kind lazy informers, not a controller per ResourceGraphDefinition. See [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]], [[findings/a-kro-hard-apply-failure-discarded-watches-and-hot-looped-while-large-collections-re-listed-against-the-apiserver]], and [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]]. [[sources/research-gap-g1-named-adopters]]

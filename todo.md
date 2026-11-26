@@ -301,6 +301,27 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passages revised and citing the pages named above.
 - **Drafted by:** agent on 2026-11-26
 
+## Update flux-ramp-up adopters and sharding passages with the named-adopters evidence — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the adopters paragraph (around line 49) says the adopters page lists "more than 200 organizations", which the 2026-11-26 dossier could not reproduce (127 `name:` lines in the data file), and the sharding and Morgan Stanley passages can now state that no organization was found running sharded Flux and that Morgan Stanley lists sharding as future work.
+- **Why:** See [[sources/research-gap-g1-named-adopters]]. Cite [[entities/flux]], [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]], and [[findings/a-flux-dependson-across-shards-failed-with-dependency-not-found-until-a-2024-fix]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 scale passages with adopter, sharding, APF, and kro evidence — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the Flux sharding paragraph (around line 220) says no source states a threshold, but the sharding docs advise sharding at "tens of thousands of applications" and the project benchmark gives 1000 Kustomizations in 4m13s. The open-evidence paragraph (around line 288) can cite named self-reported adopters, the missing sharded-Flux adopter, the APF-aware Flux change, and the kro corrections. The kro queue paragraph (around line 226) can cite the starvation proposal.
+- **Why:** See [[sources/research-gap-g1-named-adopters]]. Cite [[examples/the-flux-benchmark-reconciles-1000-kustomizations-in-4-minutes-13-seconds-on-flux-v2-10-0]], [[findings/flux-turns-off-client-side-throttling-when-apf-is-enabled-but-a-custom-kubeconfig-path-kept-it-until-2026]], and [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]].
+- **Acceptance:** Passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up and part-4 adopter passages with the numeric entries — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md` (around line 60) and `outputs/part-4-platform-abstractions.md` (around line 265), the adopter paragraphs can name Consensys, Built Technologies, and SpareBank 1 Utvikling with their self-reported figures. The kro paragraph in `outputs/crossplane-ramp-up.md` (around line 346) can note that kro has no adopters file and no named production adopter.
+- **Why:** See [[sources/research-gap-g1-named-adopters]]. Cite [[examples/built-technologies-reports-peaks-above-10000-aws-resources-managed-by-crossplane-in-a-developer-environment]] and [[entities/kro]].
+- **Acceptance:** Passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
 ## Done
 
 ## Run build-wiki workflow — status: done
