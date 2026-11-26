@@ -152,6 +152,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-o6-platform-landscape]] — verified dossier on Radius and Score primary status, Kratix Destinations and GitStateStores, Backstage and the operator pattern, neutral Crossplane comparisons, and tofu-controller and Terraform Operator maintenance, 2026-11-26 (active)
 - [[sources/research-gap-o7-krm-functions]] — verified dossier on the KRM function specification and runtime requirements and the Crossplane function runner history, 2026-11-26
 - [[sources/research-gap-o8-crossplane-residuals]] — verified dossier on Crossplane scaling guidance, Upjet runtime, package dependency resolution, and function-kro status, 2026-11-26
+- [[sources/research-gap-o9-cadence-and-staleness]] — verified dossier on Config Connector controller kind per resource, reconcile cadence and per-kind overrides, and Kubernetes v1.36 staleness gates, metrics and KEP 5647 status, 2026-11-26
 
 ## Examples
 
@@ -444,6 +445,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/upjet-issue-263-reports-a-shared-terraform-provider-stuck-at-its-invocation-limit]] — closed user report of a stuck shared provider (active)
 - [[examples/upjet-issue-754-reports-the-plugin-framework-connector-re-running-provider-configure-on-every-reconcile]] — open reporter claim about per-reconcile Configure cost (active)
 - [[examples/crossplane-v2-5-0-released-2026-11-24-with-alpha-compositionrevision-garbage-collection-and-an-upgrade-ownership-fix]] — v2.5.0 GC, ownership fix, and reserved status.crossplane (active)
+- [[examples/config-connector-computesslcertificate-and-serviceidentity-set-a-reconcile-interval-of-zero-in-their-terraform-service-mappings]] — two kinds with drift correction off by mapping (active)
+- [[examples/config-connector-serviceusage-service-and-bigtable-instance-and-table-reconcile-hourly-by-service-mapping]] — three kinds with an hourly mean interval (active)
+- [[examples/config-connector-alloydbcluster-and-billingbudgetsbudget-show-kinds-that-support-more-than-one-controller]] — kinds that default to Terraform or DCL and also support direct (active)
+- [[examples/kubernetes-pull-request-143314-fixed-the-informer-store-resource-version-gauge-reporting-zero-before-a-store-recorded-a-version]] — 1.38 changelog fix for the gauge reporting 0 (active)
 
 ## Comparisons
 
@@ -512,7 +517,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]] — safety net versus steady-state load (active)
 - [[decisions/single-replica-versus-leader-election]] — controller availability trade-off (draft)
 - [[decisions/staged-adoption-of-automated-drift-correction]] — observe, correct selectively, then enforce (draft)
-- [[decisions/choosing-a-drift-check-interval-for-external-resources]] — freshness versus API cost (draft)
+- [[decisions/choosing-a-drift-check-interval-for-external-resources]] — freshness versus API cost (active)
 - [[decisions/git-versus-oci-as-the-canonical-source]] — where the cluster pulls desired state from (active)
 - [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]] — shipping breaking API changes (draft)
 - [[decisions/validate-with-cel-rules-or-a-validating-webhook]] — where CRD validation runs (draft)
@@ -558,6 +563,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane]] — options and evidence, no recommendation (draft)
 - [[decisions/run-a-krm-function-as-a-container-or-as-an-exec-binary]] — options and evidence, no recommendation (draft)
 - [[decisions/let-crossplane-resolve-package-dependencies-or-pin-versions-and-skip-resolution]] — four options for package dependency handling, evidence only (draft)
+- [[decisions/accept-the-build-time-controller-for-a-config-connector-kind-or-override-it-per-namespace-or-per-resource]] — three options for controller selection, evidence only (draft)
 
 ## Findings
 
@@ -588,7 +594,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/retry-storms-and-unbounded-retries]] — retry amplification (draft)
 - [[findings/duplicate-work-from-replicas-without-leader-election]] — racing replicas (draft)
 - [[findings/misleading-readiness-and-stale-status]] — Ready versus Synced and observedGeneration (active)
-- [[findings/drift-detection-latency-is-the-interval]] — interval as correction latency (draft)
+- [[findings/drift-detection-latency-is-the-interval]] — interval as correction latency (active)
 - [[findings/field-ownership-blocks-drift-correction]] — dry-run conflicts stop correction (active)
 - [[findings/controllers-fighting-over-fields-cause-revert-loops]] — webhooks, HPAs, and image updaters (draft)
 - [[findings/remediation-can-amplify-an-outage]] — mass replacement and the maxUnhealthy brake (active)
@@ -943,6 +949,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/crossplane-activation-policy-and-history-defaults-are-documented-for-providers-and-configurations-and-were-not-found-for-functions]] — Automatic and Manual activation, one Inactive revision, Function case unconfirmed (active)
 - [[findings/function-kro-approximates-kro-built-in-conditions-from-one-run-and-writes-only-declared-status-paths-to-the-desired-xr]] — function-kro status and condition handling (active)
 - [[findings/no-documentation-was-found-of-a-standalone-kro-controller-feeding-a-crossplane-composite-and-function-kro-s-readiness-link-is-unlocated]] — negative finding on kro-to-Crossplane status propagation (active)
+- [[findings/config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them]] — 814-entry source table with default and supported controllers (active)
+- [[findings/config-connector-routes-a-kind-to-its-controller-by-namespace-override-then-static-default-and-a-live-crd-label-shows-which-one-runs]] — routing precedence, annotation, and live CRD labels (active)
+- [[findings/config-connector-direct-terraform-and-dcl-reconcilers-share-one-jittered-requeue-so-the-controller-kind-alone-does-not-change-the-cadence]] — one jittered requeue for all three controller kinds (active)
+- [[findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds]] — five service-mapping overrides, no DCL override, 262 of 267 pages at 600 (active)
+- [[findings/config-connector-has-no-separate-drift-poll-and-the-failure-backoff-annotation-works-only-for-direct-controllers-from-1-160-0]] — drift check is the reconcile, backoff ceiling annotation is direct-only (active)
+- [[findings/kubernetes-v1-37-0-already-carries-the-horizontal-pod-autoscaler-staleness-gate-and-every-per-controller-gate-depends-on-atomicfifo]] — HPA gate in v1.37.0 and AtomicFIFO dependency (active)
+- [[findings/monitorinformerstaleness-and-the-handler-bookmarkfunc-are-absent-from-kubernetes-v1-36-0-v1-37-0-and-master-source]] — confirmed absence at three refs (active)
+- [[findings/kep-5647-is-implementable-with-a-beta-v1-37-target-and-an-open-tracking-issue-labelled-lifecycle-stale]] — KEP and tracking-issue status (active)
 
 ## Outputs
 

@@ -1,10 +1,13 @@
 ---
 title: Drift detection latency is the interval
 type: finding
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-o9-cadence-and-staleness
+    hash: eb353fed45cd
+    ingested: 2026-11-26
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
@@ -43,3 +46,7 @@ For external resources the interval is long: ACK defaults to about 10 hours and 
 ## Verified defaults behind the latency figures
 
 The 2026-11-26 dossier fixes the interval values behind this finding: Flux has no default and the author sets it, Argo CD v3.x polls every 120 to 180 seconds (180 seconds flat in v2.x), Crossplane polls managed resources every 1 minute by default in core and runtime and every 10 minutes in Upjet providers, Config Connector uses a 10 minute mean with jitter, and ACK resyncs after 10 hours. [[sources/research-gap-g3-reconcile-defaults]] See [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]], [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]], and [[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]].
+
+## Config Connector latency bounds from the o9 dossier
+
+Update 2026-11-26: for Config Connector the default bound is the 5 to 15 minute jittered requeue, and the hourly kinds have a bound of 30 to 90 minutes ([[findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds]]). No measured latency on a live cluster exists in the sources read. [[sources/research-gap-o9-cadence-and-staleness]]

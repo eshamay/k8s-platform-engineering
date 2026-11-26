@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-o9-cadence-and-staleness
+    hash: eb353fed45cd
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-flux-k8s
     hash: c78dc9a9635e
     ingested: 2026-11-26
@@ -68,4 +71,8 @@ Correction 2026-11-26: for controller-runtime operators, the v0.25.0 release add
 
 ## Update from the Flux and Kubernetes recheck
 
-Update 2026-11-26: on v1.36.0 the StatefulSet skip counter was not registered, so an absent counter does not prove that no syncs were skipped ([[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]]). `MonitorInformerStaleness` and `BookmarkFunc` are described by the KEP and blog but were not found in shipped code ([[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]]). Whether any controller-runtime release ships read-your-writes was not rechecked here. [[sources/research-gap-b1-recheck-flux-k8s]]
+Update 2026-11-26: on v1.36.0 the StatefulSet skip counter was not registered, so an absent counter does not prove that no syncs were skipped ([[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]]). `MonitorInformerStaleness` and `BookmarkFunc` are described by the KEP and blog but were not found in shipped code (confirmed absent at v1.36.0, v1.37.0 and master by the o9 dossier, see [[findings/monitorinformerstaleness-and-the-handler-bookmarkfunc-are-absent-from-kubernetes-v1-36-0-v1-37-0-and-master-source]]) ([[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]]). Whether any controller-runtime release ships read-your-writes was not rechecked here. [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Update from the o9 dossier
+
+Update 2026-11-26: the built-in read-your-writes gates are per controller and Beta, with the HPA gate already in v1.37.0 ([[findings/kubernetes-v1-37-0-already-carries-the-horizontal-pod-autoscaler-staleness-gate-and-every-per-controller-gate-depends-on-atomicfifo]]). The monitoring gate and handler hook that the KEP describes are not in released source, so there is no built-in staleness monitor to enable ([[findings/monitorinformerstaleness-and-the-handler-bookmarkfunc-are-absent-from-kubernetes-v1-36-0-v1-37-0-and-master-source]]). [[sources/research-gap-o9-cadence-and-staleness]]

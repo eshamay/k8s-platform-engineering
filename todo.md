@@ -1004,4 +1004,25 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passage revised and citing [[findings/the-crossplane-lock-resolver-never-modifies-the-lock-and-creates-only-the-first-missing-dependency]], [[findings/crossplane-dependency-version-upgrades-and-downgrades-are-alpha-and-downgrades-need-both-feature-flags]], and [[findings/function-kro-approximates-kro-built-in-conditions-from-one-run-and-writes-only-declared-status-paths-to-the-desired-xr]].
 - **Drafted by:** agent on 2026-11-26
 
+## Update part-1 Config Connector cadence row with the per-kind overrides — status: open
+
+- **What:** In `outputs/part-1-core-architectural-principles.md`, the cadence table row for Config Connector says "About 10 minutes on average, jittered between 0.5 and 1.5 times that; a value of "0" disables it and the docs call that irreversible". The row stays correct as the default, but it should add that the default is the same for the direct, Terraform-based and DCL-based controllers and that five Terraform-mapped kinds override it (two at 0, three at 3600).
+- **Why:** The passage predates [[sources/research-gap-o9-cadence-and-staleness]].
+- **Acceptance:** Row revised and citing [[findings/config-connector-direct-terraform-and-dcl-reconcilers-share-one-jittered-requeue-so-the-controller-kind-alone-does-not-change-the-cadence]] and [[findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 staleness-metrics passage with the absent MonitorInformerStaleness and BookmarkFunc — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the paragraph beginning "When a DaemonSet or Job sync is deferred, the controller increments a skip counter" covers the skip counters and gauge. It should state that `MonitorInformerStaleness` and the handler `BookmarkFunc` described by KEP 5647 are absent from v1.36.0, v1.37.0 and master source, that the HPA gate is in v1.37.0, and that the gauge fix for reporting 0 is in the 1.38 changelog.
+- **Why:** The passage predates [[sources/research-gap-o9-cadence-and-staleness]].
+- **Acceptance:** Passage revised and citing [[findings/monitorinformerstaleness-and-the-handler-bookmarkfunc-are-absent-from-kubernetes-v1-36-0-v1-37-0-and-master-source]], [[findings/kubernetes-v1-37-0-already-carries-the-horizontal-pod-autoscaler-staleness-gate-and-every-per-controller-gate-depends-on-atomicfifo]], [[findings/kep-5647-is-implementable-with-a-beta-v1-37-target-and-an-open-tracking-issue-labelled-lifecycle-stale]], and [[examples/kubernetes-pull-request-143314-fixed-the-informer-store-resource-version-gauge-reporting-zero-before-a-store-recorded-a-version]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up Config Connector controller passage with the per-kind mapping — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "ACK, Config Connector and ASO" says Config Connector covers Google Cloud with direct, Terraform-based and DCL-based controllers. It can now say that a source table maps 814 kinds, with direct the default for 539, and that new resources use direct by default.
+- **Why:** The passage predates [[sources/research-gap-o9-cadence-and-staleness]].
+- **Acceptance:** Passage revised and citing [[findings/config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them]] and [[findings/config-connector-routes-a-kind-to-its-controller-by-namespace-override-then-static-default-and-a-live-crd-label-shows-which-one-runs]].
+- **Drafted by:** agent on 2026-11-26
+
 ## Dropped

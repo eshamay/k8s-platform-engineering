@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-o9-cadence-and-staleness
+    hash: eb353fed45cd
+    ingested: 2026-11-26
   - id: research-gap-m1-finalizers
     hash: 014549e333b6
     ingested: 2026-11-26
@@ -118,11 +121,11 @@ Config Connector offers Absent mode (default from 1.123.1), which does not copy 
 
 ## To research
 
-The dossier read only the delete and manage page, through a summarizing fetch. Resource coverage, reconcile interval, and scale behavior are unknown. See [[open-knowledge-gaps]].
+The dossier read only the delete and manage page, through a summarizing fetch. Scale behavior is unknown. Correction note 2026-11-26: resource coverage by controller and the reconcile interval are now read from source, see the o9 section below. See [[open-knowledge-gaps]].
 
 ## Controller types
 
-Config Connector has direct (Go SDK), Terraform-based, DCL-based, and IAM controllers behind a routing controller whose namespace-level overrides beat build-time defaults. Direct controllers use less CPU and memory and give better latency and status. The controller-types page says nothing about reconcile intervals or drift cadence, so that remains a gap. [[sources/research-self-healing-and-drift-detection]] See [[comparisons/drift-detection-mechanisms-across-tools]] and [[open-knowledge-gaps]].
+Config Connector has direct (Go SDK), Terraform-based, DCL-based, and IAM controllers behind a routing controller whose namespace-level overrides beat build-time defaults. Direct controllers use less CPU and memory and give better latency and status. The controller-types page says nothing about reconcile intervals or drift cadence. Correction note 2026-11-26: the intervals and the per-kind controller table are now read from source, see the o9 section below. [[sources/research-self-healing-and-drift-detection]] See [[comparisons/drift-detection-mechanisms-across-tools]] and [[open-knowledge-gaps]].
 
 ## Credentials and GitOps role
 
@@ -219,3 +222,9 @@ Deleting the object deletes the Google Cloud resource by default, and `cnrm.clou
 ## Install modes, deletion policy, and known issues (o4 dossier)
 
 The 2026-11-26 o4 dossier replaces the earlier "dossier did not confirm namespaced versus cluster mode details or deletion policies" statements in this page. Namespaced mode is the default in the operator CRD and Google's recommendation, it needs one `ConfigConnectorContext` per namespace, and cluster mode takes exactly one of `googleServiceAccount` or `credentialSecretName`, see [[findings/config-connector-namespaced-mode-is-the-crd-default-and-needs-one-configconnectorcontext-per-namespace-while-cluster-mode-takes-exactly-one-credential]]. The deletion policy has two constants in source, `delete` and `abandon`, and only `abandon` changes the path, with the Terraform-based controller path unverified, see [[findings/config-connector-deletion-policy-has-two-source-values-and-only-abandon-changes-the-delete-path-and-the-terraform-based-controller-path-is-unverified]]. A Google design document describes a child stuck on `DependencyNotFound` after its parent was deleted first, and no read documentation describes ordered teardown, see [[findings/a-config-connector-design-document-says-a-child-whose-parent-was-deleted-first-sticks-on-dependencynotfound-and-no-read-documentation-describes-ordered-teardown]]. Known issues for versions 1.132.0 to 1.134.1 are in [[findings/config-connector-known-issues-record-a-webhook-tls-race-before-1-134-1-and-direct-reconciler-regressions-in-1-132-0-and-1-134-0]], and the GKE add-on lag is in [[findings/the-gke-config-connector-add-on-can-lag-the-latest-release-by-12-months-or-more-and-google-discourages-it-for-production]]. Open issues 534, 479, and 2894 are reporter claims, see [[examples/config-connector-issue-534-deleting-a-bigquerydataset-before-its-tables-left-both-in-failure-and-the-issue-has-been-open-since-2021]], [[examples/config-connector-issue-479-a-containernodepool-delete-stuck-after-a-quota-error-on-kcc-1-46-0]], and [[examples/config-connector-issue-2894-a-reporter-says-kcc-lacks-terraform-s-dependency-graph-and-owner-reference-cleanup-left-ghost-tag-bindings]]. Direct comparison with Crossplane: [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]]. [[sources/research-gap-o4-config-connector-ack]]
+
+## Controller kind per resource and cadence from the o9 dossier
+
+Update 2026-11-26: the per-kind mapping is a Go table, `ControllerConfigStatic` in `pkg/controller/resourceconfig/static_config.go`, with 814 entries at master commit 5cce7c7e. By default controller it has Direct 539, Terraform 206, DCL 65 and 4 IAM-specific kinds, and 110 kinds support more than one controller ([[findings/config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them]]). The controller-types page says new resources use the direct controller by default and existing ones are migrated regularly, a namespace override beats the build-time default, and the live CRD labels `cnrm.cloud.google.com/tf2crd` and `cnrm.cloud.google.com/dcl2crd` identify Terraform and DCL, with neither meaning direct ([[findings/config-connector-routes-a-kind-to-its-controller-by-namespace-override-then-static-default-and-a-live-crd-label-shows-which-one-runs]]). The table lives only in source and the release in which any kind migrated is not established.
+
+The three reconcilers requeue after success through the same jittered function, so the controller kind alone does not change the default cadence of a 10-minute mean with a 5 to 15 minute spread ([[findings/config-connector-direct-terraform-and-dcl-reconcilers-share-one-jittered-requeue-so-the-controller-kind-alone-does-not-change-the-cadence]]). Per-kind overrides exist only as five Terraform service-mapping entries, ComputeSSLCertificate 0, ServiceIdentity 0, and ServiceUsage `Service`, BigtableInstance and BigtableTable at 3600, and no DCL entry sets a value ([[findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds]]). Drift detection is the reconcile itself, and the failure backoff ceiling annotation works only for direct controllers from 1.160.0 ([[findings/config-connector-has-no-separate-drift-poll-and-the-failure-backoff-annotation-works-only-for-direct-controllers-from-1-160-0]]). See [[decisions/accept-the-build-time-controller-for-a-config-connector-kind-or-override-it-per-namespace-or-per-resource]]. [[sources/research-gap-o9-cadence-and-staleness]]

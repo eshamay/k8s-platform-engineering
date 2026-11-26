@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-o9-cadence-and-staleness
+    hash: eb353fed45cd
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-flux-k8s
     hash: c78dc9a9635e
     ingested: 2026-11-26
@@ -51,3 +54,7 @@ Update 2026-11-26: master source defines `stale_sync_skips_total` for the Replic
 ## Update from the Flux and Kubernetes recheck
 
 Update 2026-11-26: the earlier update that left the release of the ReplicaSet and StatefulSet metrics unpinned is superseded. Both counters are defined at v1.36.0 and v1.37.0, but the StatefulSet counter was only registered from v1.37 through pull request 138451 ([[examples/kubernetes-pull-request-138451-registered-the-statefulset-stale-sync-skip-metric-in-v1-37]]; [[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]]). KEP 5647's `kep.yaml` lists a different gate shape ([[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]]). [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Update from the o9 dossier
+
+Update 2026-11-26: the four controller counters were read again under their subsystems, and the HPA gate was found in the v1.37.0 tag and not only on master ([[findings/kubernetes-v1-37-0-already-carries-the-horizontal-pod-autoscaler-staleness-gate-and-every-per-controller-gate-depends-on-atomicfifo]]). The informer gauge fix in 1.38 is in [[examples/kubernetes-pull-request-143314-fixed-the-informer-store-resource-version-gauge-reporting-zero-before-a-store-recorded-a-version]]. [[sources/research-gap-o9-cadence-and-staleness]]

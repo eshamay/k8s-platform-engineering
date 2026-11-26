@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-o9-cadence-and-staleness
+    hash: eb353fed45cd
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-flux-k8s
     hash: c78dc9a9635e
     ingested: 2026-11-26
@@ -26,7 +29,7 @@ The README (858 lines, last commit 2026-04-30, read in full) adds a `BookmarkFun
 
 ## What is not found in code
 
-A code search for `MonitorInformerStaleness` in kubernetes/kubernetes returned no match, so the name appears only in the KEP `kep.yaml` and in blog-derived material. Whether `MonitorInformerStaleness` and `BookmarkFunc` exist in shipped code at v1.36.0 is unverified, and the verification search itself was limited because gh code search returned 404 when retried. The wiki therefore treats both as described by the KEP and the v1.37 release blog and not as confirmed features.
+A code search for `MonitorInformerStaleness` in kubernetes/kubernetes returned no match, so the name appears only in the KEP `kep.yaml` and in blog-derived material. Whether `MonitorInformerStaleness` and `BookmarkFunc` exist in shipped code at v1.36.0 is unverified, and the verification search itself was limited because gh code search returned 404 when retried. Correction note 2026-11-26: both are now confirmed absent from v1.36.0, v1.37.0 and master source, see [[findings/monitorinformerstaleness-and-the-handler-bookmarkfunc-are-absent-from-kubernetes-v1-36-0-v1-37-0-and-master-source]]. The wiki therefore treats both as described by the KEP and the v1.37 release blog and not as confirmed features.
 
 ## What to do
 
@@ -35,3 +38,7 @@ Cite the per-controller gates from the feature-gate table at the release tag, ci
 ## Related
 
 [[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source]], [[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]], [[examples/kubernetes-v1-36-daemonset-statefulset-replicaset-and-job-controllers-skip-a-sync-until-the-cache-catches-up-with-their-own-write]], [[concepts/informers-reflectors-and-workqueues]]
+
+## Update from the o9 dossier
+
+Update 2026-11-26: file reads at v1.36.0, v1.37.0 and master confirm that `MonitorInformerStaleness` is not in `kube_features.go` and that the handler `BookmarkFunc` is not in `ResourceEventHandlerFuncs` ([[findings/monitorinformerstaleness-and-the-handler-bookmarkfunc-are-absent-from-kubernetes-v1-36-0-v1-37-0-and-master-source]]). The KEP file status and the tracking issue are in [[findings/kep-5647-is-implementable-with-a-beta-v1-37-target-and-an-open-tracking-issue-labelled-lifecycle-stale]], and the HPA gate is already in v1.37.0 ([[findings/kubernetes-v1-37-0-already-carries-the-horizontal-pod-autoscaler-staleness-gate-and-every-per-controller-gate-depends-on-atomicfifo]]). [[sources/research-gap-o9-cadence-and-staleness]]

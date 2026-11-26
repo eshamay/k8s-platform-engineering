@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-o9-cadence-and-staleness
+    hash: eb353fed45cd
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-flux-k8s
     hash: c78dc9a9635e
     ingested: 2026-11-26
@@ -72,3 +75,7 @@ The Argo CD default was 180 seconds from v2.1.0 through v2.14.0 (manifest and co
 Correction 2026-11-26: Flux controllers apply plus or minus 5 percent jitter to every requeue by default through `--interval-jitter-percentage` ([[findings/flux-controllers-jitter-reconcile-intervals-by-plus-or-minus-5-percent-by-default]]), so the Flux cadence is the manifest's interval with that spread, and Argo CD's jitter is a separate plus up to 60 seconds. The concepts page's five-minute sentence replaced "one minute" in a 2022 docs commit with no stated reason ([[findings/the-flux-concepts-page-five-minute-sentence-replaced-one-minute-in-an-august-2022-docs-commit-with-no-stated-reason]]). [[sources/research-gap-b1-recheck-flux-k8s]]
 
 Note 2026-11-26: the "10-hour" cells for ACK and kro name different mechanisms. ACK's is a `RequeueAfter` after success, and kro's is the resync of its metadata informers, a replay of cached objects. Cluster API's `--sync-period` is also a cache replay. See [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]]. [[sources/research-gap-m5-informers-caches]]
+
+## Config Connector off switch and per-kind values from the o9 dossier
+
+Update 2026-11-26: the Config Connector off switch is the annotation `cnrm.cloud.google.com/reconcile-interval-in-seconds` set to 0, which the docs call irreversible, and two kinds (ComputeSSLCertificate and ServiceIdentity) ship with 0 in their service mappings ([[findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds]]). The annotation does not change failure retries, and the backoff ceiling annotation is for direct controllers only from 1.160.0 ([[findings/config-connector-has-no-separate-drift-poll-and-the-failure-backoff-annotation-works-only-for-direct-controllers-from-1-160-0]]). [[sources/research-gap-o9-cadence-and-staleness]]

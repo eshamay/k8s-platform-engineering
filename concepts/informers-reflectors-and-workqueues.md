@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-o9-cadence-and-staleness
+    hash: eb353fed45cd
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-flux-k8s
     hash: c78dc9a9635e
     ingested: 2026-11-26
@@ -122,3 +125,7 @@ Kubernetes issue 115658 shows that a relist racing a queued CREATE could drop th
 ## Staleness metrics pinned to releases
 
 Update 2026-11-26: the per-controller skip counter `stale_sync_skips_total` is read at v1.36.0 and v1.37.0, with full names under the subsystems `daemonset_controller`, `job_controller`, `replicaset_controller`, `statefulset_controller`, and from v1.37 `horizontal_pod_autoscaler_controller`. The StatefulSet counter was defined but not registered at v1.36.0 and registered from v1.37 ([[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]]). KEP 5647's `kep.yaml` lists a different gate shape from the code, and `MonitorInformerStaleness` was not found in Kubernetes source ([[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]]). [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Staleness gates and absent mechanisms from the o9 dossier
+
+Update 2026-11-26: the per-controller gates depend on client-go `AtomicFIFO`, the HPA gate is in v1.37.0 ([[findings/kubernetes-v1-37-0-already-carries-the-horizontal-pod-autoscaler-staleness-gate-and-every-per-controller-gate-depends-on-atomicfifo]]), and `MonitorInformerStaleness` and a handler-level `BookmarkFunc` are absent from v1.36.0, v1.37.0 and master ([[findings/monitorinformerstaleness-and-the-handler-bookmarkfunc-are-absent-from-kubernetes-v1-36-0-v1-37-0-and-master-source]]). The `Store` interface has a different `Bookmark(rv string)` method. KEP 5647 status is in [[findings/kep-5647-is-implementable-with-a-beta-v1-37-target-and-an-open-tracking-issue-labelled-lifecycle-stale]]. [[sources/research-gap-o9-cadence-and-staleness]]

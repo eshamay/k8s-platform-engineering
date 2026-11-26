@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-o9-cadence-and-staleness
+    hash: eb353fed45cd
+    ingested: 2026-11-26
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
@@ -28,8 +31,12 @@ On errors the retry uses exponential backoff up to a default ceiling of 120 seco
 
 ## What stays open
 
-The per-kind interval values from the Terraform service mapping and DCL metadata were not read, so it is UNVERIFIED whether the direct, Terraform-based, and DCL-based controllers differ by default.
+The per-kind interval values from the Terraform service mapping and DCL metadata were not read, so it is UNVERIFIED whether the direct, Terraform-based, and DCL-based controllers differ by default. Correction note 2026-11-26: they were read later and the controller kind alone does not change the default, see [[findings/config-connector-direct-terraform-and-dcl-reconcilers-share-one-jittered-requeue-so-the-controller-kind-alone-does-not-change-the-cadence]] and [[findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds]].
 
 ## Consequences
 
 An operator who sets the interval to 0 to quiet API quota or a revert loop loses drift correction for good on that object, which turns a reversible tuning choice into a one-way one. Lengthen the interval instead, and weigh it against freshness as in [[decisions/choosing-a-drift-check-interval-for-external-resources]]. See [[entities/config-connector]], [[findings/cost-of-constant-reconciliation]], and [[comparisons/drift-detection-mechanisms-across-tools]].
+
+## Per-kind values from the o9 dossier
+
+Update 2026-11-26: two kinds, ComputeSSLCertificate and ServiceIdentity, have a mapping value of 0, so drift correction is off for them without any annotation ([[examples/config-connector-computesslcertificate-and-serviceidentity-set-a-reconcile-interval-of-zero-in-their-terraform-service-mappings]]). The annotation is available from Config Connector 1.102 and does not affect failure retry intervals ([[findings/config-connector-has-no-separate-drift-poll-and-the-failure-backoff-annotation-works-only-for-direct-controllers-from-1-160-0]]). [[sources/research-gap-o9-cadence-and-staleness]]

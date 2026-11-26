@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-o9-cadence-and-staleness
+    hash: eb353fed45cd
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-flux-k8s
     hash: c78dc9a9635e
     ingested: 2026-11-26
@@ -46,3 +49,7 @@ Take metric names from the CHANGELOG or from the source at the tag in use, and c
 ## Update from the Flux and Kubernetes recheck
 
 Correction note, 2026-11-26: the ReplicaSet and StatefulSet names above are now pinned to tags. The source at v1.36.0 and v1.37.0 defines `stale_sync_skips_total` under `replicaset_controller` and `statefulset_controller`, but the StatefulSet counter was not registered at v1.36.0 and was registered from v1.37 ([[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]]). The blog's list has four controllers (DaemonSet, StatefulSet, ReplicaSet, Job). The KEP names no metrics ([[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]]). [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Update from the o9 dossier
+
+Update 2026-11-26: the counter subsystems `replicaset_controller`, `statefulset_controller`, `daemonset_controller` and `job_controller` and the gauge `informer_store_resource_version` (ALPHA, labels `name`, `group`, `version`, `resource`) were read again at v1.36.0 and v1.37.0. The KEP README names no metrics. A 1.38 changelog entry fixes the gauge reporting 0 before a store records a version ([[examples/kubernetes-pull-request-143314-fixed-the-informer-store-resource-version-gauge-reporting-zero-before-a-store-recorded-a-version]]). The text of the blog post itself was not re-read in this pass. [[sources/research-gap-o9-cadence-and-staleness]]
