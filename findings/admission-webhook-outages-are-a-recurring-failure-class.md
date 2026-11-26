@@ -14,6 +14,9 @@ sources:
   - id: research-gap-g1-outage-postmortems
     hash: 0487bcf071d6
     ingested: 2026-11-26
+  - id: research-gap-g1-named-incident-reports
+    hash: 3c7df7bb12f1
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, webhooks, postmortems, availability]
 ---
@@ -39,3 +42,7 @@ Correction, 2026-11-26: the Jetstack post has now been read, through a Wayback c
 ## Additions from the admission dossier
 
 The admission dossier did not close the evidence gap: its searches for the Venafi and Jetstack GKE outage post, an InfraForge ConfigMap deadlock post, and a Kyverno and Talos recovery note returned nothing readable. It does supply the mechanism and the official mitigations. See [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]], [[findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window]], and [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]]. [[sources/research-admission-webhooks-and-cel]]
+
+## Update from the named-incident dossier
+
+The Jetstack account was re-verified against a second capture of the post, and the post does not recommend or mention `failurePolicy`, so that recommendation must not be attributed to Jetstack. The Reddit Pi-Day, Skyscanner, and Spotify incidents are not webhook cases and remain index-level, apart from a secondary-only retelling of Reddit's. See [[sources/research-gap-g1-named-incident-reports]] and [[examples/reddit-s-march-2023-pi-day-outage-is-known-only-from-the-k8s-af-index-and-a-secondary-retelling]].

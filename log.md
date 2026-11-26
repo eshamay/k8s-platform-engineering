@@ -473,3 +473,14 @@ Closing summary:
 - status changes: four pages promoted from draft to active ([[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]], [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]], [[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents]], [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]])
 - outputs: three open todos appended for `outputs/flux-ramp-up.md`, `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, `outputs/crossplane-ramp-up.md`, and `outputs/part-4-platform-abstractions.md`; no output edited
 - rationale: Targeted pass over existing adopter, Flux sharding, APF, and kro pages using a verified dossier built from repository files and GitHub issues. Adopter figures are self-reported and labeled so, no sharded-Flux adopter or APF incident exists in the evidence, and kro adoption evidence is secondary-only and attributed. The UNVERIFIED Cluster API negative result is recorded as unverified.
+
+## [2026-11-26] ingest | Research dossier: primary reports for the Skyscanner, Reddit, Jetstack, and Spotify incidents (g1-named-incident-reports)
+- source: [[sources/research-gap-g1-named-incident-reports]]
+- raw: `raw/research-gap-g1-named-incident-reports.md` (sha256: 3c7df7bb12f1)
+- pages touched: [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]], [[findings/admission-webhook-outages-are-a-recurring-failure-class]], [[findings/intermittent-api-server-downtime-can-send-node-auto-repair-into-an-endless-recreate-loop]], [[findings/the-pitfalls-dossier-rests-on-index-summaries-an-older-crossplane-version-and-few-primary-incident-reports]], [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]]
+- new pages: [[sources/research-gap-g1-named-incident-reports]], [[examples/reddit-s-march-2023-pi-day-outage-is-known-only-from-the-k8s-af-index-and-a-secondary-retelling]]
+- contradictions raised: 0 (the dossier confirmed existing Jetstack claims; no page set to contradicted)
+- fact conflicts: 0
+- gaps drafted: 0 (possible-resolution note added under the incident-reports gap, left open: Jetstack answered, Reddit secondary-only, Skyscanner and Spotify unanswered)
+- outputs: one open todo appended for `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`; no output edited
+- rationale: Targeted pass. Only one of four primaries was readable. Jetstack claims were re-verified and two details added (rejected disabling auto-repair; no failurePolicy mention). Reddit is recorded as a draft secondary-only example with the reconstructed timeline excluded. No Skyscanner or Spotify pages were created because no content beyond index entries exists.

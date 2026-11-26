@@ -37,6 +37,7 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-part-3-evidence-note-with-the-operator-loop-incidents]] — open
 - [[#update-part-5-failure-mode-evidence-note-with-the-operator-loop-incidents]] — open
 - [[#update-part-2-observedgeneration-passage-with-the-2026-early-ready-cases]] — open
+- [[#update-part-5-webhook-outage-paragraph-with-the-jetstack-primary-post]] — open
 
 ## Open
 
@@ -320,6 +321,13 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/crossplane-ramp-up.md` (around line 60) and `outputs/part-4-platform-abstractions.md` (around line 265), the adopter paragraphs can name Consensys, Built Technologies, and SpareBank 1 Utvikling with their self-reported figures. The kro paragraph in `outputs/crossplane-ramp-up.md` (around line 346) can note that kro has no adopters file and no named production adopter.
 - **Why:** See [[sources/research-gap-g1-named-adopters]]. Cite [[examples/built-technologies-reports-peaks-above-10000-aws-resources-managed-by-crossplane-in-a-developer-environment]] and [[entities/kro]].
 - **Acceptance:** Passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 webhook-outage paragraph with the Jetstack primary post — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the paragraph beginning "Webhook outages are a recurring class in the k8s.af index" (around line 254) says the wiki read only index-level descriptions. The Jetstack post has now been read in full, and the paragraph should say so, name its mechanism, and avoid attributing any `failurePolicy` advice to Jetstack.
+- **Why:** See [[sources/research-gap-g1-named-incident-reports]]. Cite [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]].
+- **Acceptance:** Passage revised and citing the page named above.
 - **Drafted by:** agent on 2026-11-26
 
 ## Done

@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g1-outage-postmortems
     hash: 0487bcf071d6
     ingested: 2026-11-26
+  - id: research-gap-g1-named-incident-reports
+    hash: 3c7df7bb12f1
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, node-auto-repair, gke, remediation, postmortem]
 ---
@@ -21,3 +24,7 @@ In Jetstack's 2019 outage, the failing master made the API intermittently unavai
 ## Why it matters
 
 This is a second example, beside the Cluster API case in [[findings/remediation-can-amplify-an-outage]], of automated remediation turning a control-plane fault into a data-plane outage. The remediation acts on node health that is reported through the same API that has failed. The wiki has no evidence on how GKE auto-repair bounds this today. See [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]] and [[findings/an-unresponsive-validating-webhook-can-block-the-api-server-s-own-startup-write-and-crash-loop-a-master-upgrade]].
+
+## Jetstack kept auto-repair on
+
+A second read of the post confirms that Jetstack "considered but decided against disabling GKE node auto-repair". The mitigation it chose was to stop the webhook from breaking the master, not to remove the remediation loop. See [[sources/research-gap-g1-named-incident-reports]].

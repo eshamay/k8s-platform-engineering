@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g1-outage-postmortems
     hash: 0487bcf071d6
     ingested: 2026-11-26
+  - id: research-gap-g1-named-incident-reports
+    hash: 3c7df7bb12f1
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, webhooks, failure-policy, availability]
 ---
@@ -44,3 +47,7 @@ Jetstack's 2019 post is a primary example of the `Fail` deadlock and of the scop
 ## Related
 
 [[concepts/admission-webhooks-and-cel]] and [[findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window]].
+
+## Correction note from the named-incident dossier
+
+A second read confirmed that Jetstack's post never mentions `failurePolicy`. The evidence above is about scoping and probes only, and no `failurePolicy` recommendation should be cited to Jetstack. [[sources/research-gap-g1-named-incident-reports]]

@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g1-outage-postmortems
     hash: 0487bcf071d6
     ingested: 2026-11-26
+  - id: research-gap-g1-named-incident-reports
+    hash: 3c7df7bb12f1
+    ingested: 2026-11-26
 aliases: [Jetstack GKE webhook outage]
 tags: [postmortem, admission-webhook, gke, opa, node-auto-repair, jetstack]
 ---
@@ -27,3 +30,7 @@ The fix was to delete the validating webhook resource, which worked only because
 ## Why it belongs here
 
 This is the first primary read of a k8s.af webhook postmortem in the wiki, and it turns the index-level description "ValidatingWebhookConfiguration, GKE node auto-repair" into a mechanism. It is the concrete case behind [[findings/an-unresponsive-validating-webhook-can-block-the-api-server-s-own-startup-write-and-crash-loop-a-master-upgrade]] and [[findings/intermittent-api-server-downtime-can-send-node-auto-repair-into-an-endless-recreate-loop]]. It also supports the general pattern in [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]] and the trade-off in [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]]. See also [[findings/admission-webhook-outages-are-a-recurring-failure-class]] and [[concepts/admission-webhooks-and-cel]].
+
+## Confirmation from a second read
+
+A later dossier re-read the same post through another Wayback capture of the original URL, https://web.archive.org/web/2023/https://blog.jetstack.io/blog/gke-webhook-outage/ (captured 2023-09-30), and confirmed the mechanism above. It adds two details. Jetstack states "We also considered but decided against disabling GKE node auto-repair", so keeping auto-repair on was a deliberate choice. The post also never mentions `failurePolicy`, so its fixes were scoping, a liveness probe, and alerting, not a change of failure policy. Its closing lesson is "It also hammers home the value of configuring probes for all workloads." [[sources/research-gap-g1-named-incident-reports]]

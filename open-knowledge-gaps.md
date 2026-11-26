@@ -1535,6 +1535,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add `examples/` pages for each incident and update [[findings/admission-webhook-outages-are-a-recurring-failure-class]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortem, skyscanner, reddit, jetstack, spotify
+- **Possible resolution from [[sources/research-gap-g1-named-incident-reports]]:** Partly settled, and it stays open. Jetstack is answered from the primary post, read through a Wayback capture of the original URL: the mechanism, recovery, scoping fixes, the rejected option of disabling node auto-repair, and the absence of any `failurePolicy` recommendation are all verified (see [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]]). Reddit is not answered from its primary; only a secondary Kubezilla retelling was read, and it is attributed and not trusted for its timeline (see [[examples/reddit-s-march-2023-pi-day-outage-is-known-only-from-the-k8s-af-index-and-a-secondary-retelling]]). Skyscanner and Spotify are not answered at all, because the Medium, YouTube, and sched pages returned nothing and some fetch routes were blocked. Reading those three needs a permission change or another access path chosen by the user.
 
 ## Current Crossplane v2 status of deletionPolicy and managementPolicies — status: open
 

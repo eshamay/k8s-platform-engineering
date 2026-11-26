@@ -14,6 +14,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-g1-named-incident-reports
+    hash: 3c7df7bb12f1
+    ingested: 2026-11-26
 aliases: []
 tags: [source-quality, evidence, postmortems, crossplane, caveat]
 ---
@@ -37,3 +40,7 @@ Claims about deletion cascades and webhook outages in the unread cases are secon
 ## Update from the GitOps incidents dossier
 
 The 2026-11-26 GitOps dossier adds reporter-level incident evidence but still no named-organization postmortem, and the Skyscanner 2021 GitOps outage remains known only from the k8s.af index. See [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]] and [[sources/research-gap-g1-gitops-drift-incidents]].
+
+## Update from the named-incident dossier
+
+The 2026-11-26 named-incident pass tried to read the Skyscanner, Reddit, Spotify, and Jetstack primaries. Only Jetstack could be read. Reddit is now known from a secondary retelling that matches the index on the Calico and label mechanism, and Skyscanner and Spotify remain index-only because the scraper returned empty pages and some fetch routes were blocked. See [[sources/research-gap-g1-named-incident-reports]] and [[examples/reddit-s-march-2023-pi-day-outage-is-known-only-from-the-k8s-af-index-and-a-secondary-retelling]].
