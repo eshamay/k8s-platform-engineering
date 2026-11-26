@@ -26,6 +26,9 @@ sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
     ingested: 2026-11-25
+  - id: research-gvk-and-gvr
+    hash: 5c56bb1e05a8
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -67,3 +70,7 @@ Architecture, composition functions, provider scaling, claims, adoption stories,
 ## Hosting Crossplane under a GitOps agent
 
 Crossplane's own guide for Argo CD requires annotation-based resource tracking, custom Lua health checks for `crossplane.io` and `upbound.io` resources, exclusion of `ProviderConfigUsage` objects, and a client QPS of 300 because of the many CRDs. A generic GitOps agent does not understand custom-resource health unless told. [[sources/research-gitops-pull-based-delivery]] See [[examples/crossplane-resources-hosted-by-argo-cd]] and [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]].
+
+## XRDs as GVK factories
+
+An XRD declares `group`, `kind`, `plural`, a version list, and a `scope`, and Crossplane generates the CRD from it, so the platform team authors a new GVK and GVR. The XRD name must be `<plural>.<group>`, group and names are immutable, breaking schema changes should ship as new XRDs or through conversion webhooks, and schema edits need a Crossplane pod restart. How v1 claims differ from v2 namespaced composite resources was not clarified. [[sources/research-gvk-and-gvr]] See [[examples/xrd-and-rgd-declare-platform-gvks]], [[findings/group-and-plural-names-are-effectively-permanent]], and [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]].

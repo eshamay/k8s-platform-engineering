@@ -26,6 +26,9 @@ sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
     ingested: 2026-11-25
+  - id: research-gvk-and-gvr
+    hash: 5c56bb1e05a8
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -67,3 +70,7 @@ A HelmRelease has `spec.driftDetection.mode` with `disabled` (the default), `war
 ## Components, sources, and tenancy
 
 Flux is built from GitOps Toolkit controllers: source controllers fetch from Git, OCI, Helm repositories, and buckets and expose artifacts; the Kustomize and Helm controllers apply them; the notification controller handles alerts and webhooks; and image automation controllers update manifests. Kustomizations reconcile every 5 minutes by default and revert manual changes unless suspended. Bootstrap installs Flux and commits its own manifests so Flux manages itself. The Kustomize controller adds SOPS and KMS decryption, health assessment, `dependsOn` ordering, garbage collection, and service-account impersonation for multi-tenant RBAC isolation. In the ControlPlane D2 design, Flux pulls signed OCI artifacts through a FluxInstance and ResourceSet resources so that clusters never connect to Git. [[sources/research-gitops-pull-based-delivery]] See [[comparisons/flux-versus-argo-cd-architecture]], [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]], and [[decisions/git-versus-oci-as-the-canonical-source]].
+
+## Ordering around CRDs and discovery
+
+The Kustomization API orders work with `.spec.dependsOn`, `.spec.healthChecks`, and `.spec.wait`. The documented pattern puts CRD-providing controllers in one Kustomization and the custom resources in another that depends on it, so the dependent is applied only after the referred Kustomizations are ready. Health checks reference resources by apiVersion and kind, so they also depend on discovery. [[sources/research-gvk-and-gvr]] See [[comparisons/missing-crd-handling-flux-versus-argo-cd]], [[examples/servicemonitor-no-matches-for-kind-in-helm-and-argo-cd]], and [[findings/custom-resources-applied-before-their-crd-exists]].

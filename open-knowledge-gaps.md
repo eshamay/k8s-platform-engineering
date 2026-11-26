@@ -37,6 +37,10 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#named-gitops-adopters-and-gitops-caused-outages]] — open, unassigned
 - [[#config-connector-and-ack-behavior-under-a-gitops-agent]] — open, unassigned
 - [[#git-versus-oci-as-the-canonical-gitops-source]] — open, unassigned
+- [[#how-argo-cd-config-connector-ack-and-cluster-api-key-resources-by-gvk]] — open, unassigned
+- [[#informer-and-cache-behavior-keyed-by-gvr]] — open, unassigned
+- [[#controller-runtime-v030-dynamic-mapper-claim-and-aggregated-discovery-rationale]] — open, unassigned
+- [[#deprecated-api-scanners-and-crossplane-v2-gvks]] — open, unassigned
 
 ---
 
@@ -58,6 +62,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Only marginally helpful. The dossier adds Flux Kustomization behavior that belongs in the trace: reconcile at `spec.interval`, immediate reconcile on a generation or source revision change, a server-side apply dry run for drift, `dependsOn` and `healthChecks` for readiness, and `retryInterval` for failures. It does not trace source-controller handoff, finalizers, or condition updates. See [[entities/flux]] and [[examples/flux-dependson-and-health-checks-gate-rollout]].
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Marginally helpful. The dossier shows part of the Flux flow for drift: kustomize-controller and helm-controller run a server-side apply dry-run each interval, and a failing dry-run (for example from field-manager conflicts) stops correction before apply. It does not trace source fetch, finalizers, or status conditions end to end. See [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]] and [[entities/flux]].
 - **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Only marginally helpful. The dossier names the Flux controllers (source, kustomize, helm, notification, image automation), says Kustomizations reconcile every 5 minutes and that bootstrap commits Flux's own manifests, and describes Argo CD's API server, repository server, and application controller. It does not trace the handoff between controllers, finalizers, or condition updates. See [[comparisons/flux-versus-argo-cd-architecture]] and [[entities/flux]].
+- **Possible resolution from [[sources/research-gvk-and-gvr]]:** Only marginally helpful. The dossier shows one step of the trace that depends on API discovery: Flux Kustomization `dependsOn` and `healthChecks` reference resources by apiVersion and kind, so the kustomize-controller must resolve each GVK to a resource through discovery before it can apply or assess health. It does not trace source fetch, finalizers, or status conditions. See [[comparisons/missing-crd-handling-flux-versus-argo-cd]] and [[entities/flux]].
 
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
@@ -78,6 +83,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Partly helpful. The dossier adds that a Crossplane composite resource is Ready only when its composition function pipeline reports every composed resource ready, and gives kro's controller numbers (single shared queue, backoff, token bucket, 20-retry cap) from unreleased docs. It could not read kro's instance semantics, so readiness comparison is still incomplete. See [[comparisons/retry-and-backoff-controls-across-tools]] and [[examples/kro-shared-queue-tunes-throughput]].
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Only marginally helpful. The dossier adds drift behavior on each side: Crossplane managed resources enforce `forProvider` with management policies and a pause annotation, while kro's dynamic controller resyncs instances every 10 hours through one shared rate-limited queue, and a drift bug in kro was closed in late 2025. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[comparisons/drift-detection-mechanisms-across-tools]] and [[entities/kro]].
 - **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Only marginally helpful. The dossier shows that both Crossplane and kro sit beneath a GitOps agent and bring their own reconcile loops, that Crossplane needs custom health checks in Argo CD, and that kro validates CEL at creation time and composes with ACK and Config Connector. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[findings/two-reconcile-loops-hide-status-and-drift-at-two-layers]] and [[examples/crossplane-resources-hosted-by-argo-cd]].
+- **Possible resolution from [[sources/research-gvk-and-gvr]]:** Partly helpful on the API-definition side. The dossier shows that both tools are GVK factories: a Crossplane XRD declares group, kind, plural, versions, and scope and is named `<plural>.<group>` with immutable group and names, while a kro RGD `schema` declares apiVersion, kind, and an optional group (default `kro.run`), converts a SimpleSchema to OpenAPI v3, and generates the CRD. It does not compare Composition functions with RGD graphs or readiness. See [[examples/xrd-and-rgd-declare-platform-gvks]] and [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]].
 
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
@@ -98,6 +104,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Partly helpful. The dossier gives kro's workqueue and client rate limits (default one worker, token bucket 10 per second with burst 100, QPS 100 with burst 150), explains Kubernetes v1.36 staleness metrics, and describes leader election for multi-replica controllers. It has no Flux or Crossplane sharding data. See [[examples/kro-shared-queue-tunes-throughput]], [[findings/duplicate-work-from-replicas-without-leader-election]], and [[concepts/informers-reflectors-and-workqueues]].
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Partly helpful on cost. The dossier explains that external-API controllers use long resyncs to limit API cost (ACK about 10 hours with per-kind overrides, kro 10 hours with a single rate-limited queue and one worker by default) and that Argo CD's refresh reads only the Kubernetes API and Git. It has no Flux or Crossplane sharding data. See [[decisions/choosing-a-drift-check-interval-for-external-resources]] and [[findings/cost-of-constant-reconciliation]].
 - **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Marginally helpful. The only scale datum is Crossplane's guidance to raise the Argo CD Kubernetes client QPS to 300 because of the many CRDs. It has no sharding or concurrency data for Flux or Crossplane controllers. See [[examples/crossplane-resources-hosted-by-argo-cd]].
+- **Possible resolution from [[sources/research-gvk-and-gvr]]:** Marginally helpful. The dossier shows that aggregated discovery (stable in v1.30) collapses per-group-version discovery requests into one, which lowers client startup cost, and that mappers rebuild on lookup failure behind a rate limit. It does not cover informer caches keyed by GVR, workqueues, or sharding. See [[concepts/api-discovery-and-restmapper]] and [[comparisons/restmapper-strategies-static-deferred-and-dynamic]].
 
 
 ## Named production adopters of control-plane tools — status: open
@@ -400,3 +407,48 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Check Argo CD's OCI source support in current documentation.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** oci, git, supply-chain
+
+## How Argo CD, Config Connector, ACK, and Cluster API key resources by GVK — status: open
+
+- **Question:** How do Argo CD's resource tracking, Config Connector, ACK, and Cluster API identify and prune resources by GVK, especially across API version changes?
+- **Why it matters:** The dossier read no source on this, and the answer determines whether an upstream API version removal or a CRD version change orphans or mis-prunes resources under these tools. See [[concepts/gvk-and-gvr]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find Argo CD documentation on resource tracking and pruning across API versions.
+  - [ ] Find Config Connector, ACK, and Cluster API documentation on CRD version handling.
+  - [ ] Update [[findings/removed-beta-gvks-break-pinned-manifests-and-clients]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** gvk, argo-cd, config-connector, ack, cluster-api
+
+## Informer and cache behavior keyed by GVR — status: open
+
+- **Question:** How do informers and client caches key their watches and stores by GVR or GVK, and what happens to them when a CRD is added, removed, or changes served versions?
+- **Why it matters:** The dossier's source on clients and caches returned empty content, so cache behavior is uncovered. See [[concepts/informers-reflectors-and-workqueues]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find controller-runtime and client-go documentation on informer keying and CRD lifecycle.
+  - [ ] Write a finding or update [[concepts/informers-reflectors-and-workqueues]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** gvr, informers, cache
+
+## controller-runtime v0.3.0 dynamic mapper claim and aggregated discovery rationale — status: open
+
+- **Question:** Do the controller-runtime release notes confirm that the dynamic, rate-limited RESTMapper became the default in v0.3.0, and what design rationale lies behind aggregated discovery?
+- **Why it matters:** The v0.3.0 claim comes from a summarized issue thread, and no KEP for aggregated discovery was found, so the rationale rests on user-facing docs. See [[findings/stale-restmapper-hides-newly-installed-crds]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Check controller-runtime v0.3.0 release notes.
+  - [ ] Locate the aggregated discovery KEP or design discussion.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** controller-runtime, restmapper, discovery
+
+## Deprecated API scanners and Crossplane v2 GVKs — status: open
+
+- **Question:** How do deprecation scanners such as pluto and kubent detect removed GVKs, and how do Crossplane v2 namespaced composite resources change the GVKs that XRDs and claims create compared with v1 claims?
+- **Why it matters:** Both were seen only as search results or passing mentions in the dossier. See [[findings/removed-beta-gvks-break-pinned-manifests-and-clients]] and [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read pluto and kubent documentation.
+  - [ ] Read Crossplane v2 documentation on namespaced composite resources.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** deprecation, crossplane, gvk

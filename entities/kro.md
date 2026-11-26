@@ -23,6 +23,9 @@ sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
     ingested: 2026-11-25
+  - id: research-gvk-and-gvr
+    hash: 5c56bb1e05a8
+    ingested: 2026-11-25
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -60,3 +63,7 @@ kro's dynamic controller resyncs all instances every 36,000 seconds (10 hours) t
 ## Relationship to GitOps
 
 A platform team defines a ResourceGraphDefinition that becomes a new CRD, and developers commit one small instance to Git that kro expands into underlying resources, composing with ACK, Config Connector, and Azure Service Operator. kro brings its own in-cluster dynamic controller with continuous reconciliation and drift detection, so it runs a second loop beneath the GitOps agent's loop, and it validates CEL expressions at creation time. [[sources/research-gitops-pull-based-delivery]] See [[findings/two-reconcile-loops-hide-status-and-drift-at-two-layers]] and [[concepts/gitops-pull-based-delivery]].
+
+## ResourceGraphDefinition schema as a GVK factory
+
+In an RGD, `schema` declares `apiVersion`, `kind`, and an optional `group` that defaults to `kro.run`. kro converts a SimpleSchema into an OpenAPI v3 schema, generates a CRD named `<plural>.<group>`, and infers status field types from CEL expressions. This is the same GVK-factory idea as Crossplane with a lighter authoring syntax. [[sources/research-gvk-and-gvr]] See [[examples/xrd-and-rgd-declare-platform-gvks]] and [[concepts/gvk-and-gvr]].

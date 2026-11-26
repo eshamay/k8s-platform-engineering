@@ -23,6 +23,9 @@ sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
     ingested: 2026-11-25
+  - id: research-gvk-and-gvr
+    hash: 5c56bb1e05a8
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -62,3 +65,7 @@ Self-heal syncs after a default delay of about 5 seconds when live state drifts 
 ## Architecture and best practices
 
 Argo CD has three components: an API server that serves the UI, CLI, and CI systems and handles RBAC, credentials, and webhooks; a repository server that caches Git and renders manifests; and an application controller that compares live to target state, flags OutOfSync, optionally corrects it, and runs PreSync, Sync, and PostSync hooks. Its best practices recommend separate repositories for config and application source, pinning remote Helm and Kustomize references to tags or SHAs, and leaving fields owned by other controllers (such as HPA replica counts) out of Git. Rollback is blocked while automated sync is on. Hosting Crossplane needs custom Lua health checks and annotation tracking. [[sources/research-gitops-pull-based-delivery]] See [[comparisons/flux-versus-argo-cd-architecture]], [[findings/rollback-is-blocked-while-automated-sync-is-on]], [[findings/mutable-remote-references-change-what-a-commit-renders]], and [[examples/crossplane-resources-hosted-by-argo-cd]].
+
+## Missing CRDs and sync waves
+
+Argo CD users who hit "no matches for kind" when a Helm or GitOps deployment applies a custom resource before its CRD reach for sync waves and for skipping dry-run on missing resources. These Argo-specific details come from search-result titles only, because the pages could not be read, so treat them as unverified. How Argo CD's own resource tracking keys resources by GVK across API version changes was not established. [[sources/research-gvk-and-gvr]] See [[comparisons/missing-crd-handling-flux-versus-argo-cd]] and [[examples/servicemonitor-no-matches-for-kind-in-helm-and-argo-cd]].

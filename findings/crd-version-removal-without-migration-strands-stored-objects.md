@@ -1,0 +1,27 @@
+---
+title: Removing a CRD version without migration strands stored objects
+type: finding
+status: draft
+created: 2026-11-25
+updated: 2026-11-25
+sources:
+  - id: research-gvk-and-gvr
+    hash: 5c56bb1e05a8
+    ingested: 2026-11-25
+aliases: []
+tags: [pitfall, crd, versioning, conversion]
+---
+
+# Removing a CRD version without migration strands stored objects
+
+## Observation
+
+Two hazards come from the Kubernetes versioning pages. First, `conversion.strategy: None` only rewrites the `apiVersion`, so versions whose schemas differ need a conversion webhook. Second, an old version must stop being served and have its stored objects migrated before it is removed. The documented sequence is to add the new version, migrate clients, set the old version `served: false`, upgrade stored objects, and then remove the old version. A StorageVersionMigration object does the rewriting. URLs: https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definition-versioning/ and https://kubernetes.io/docs/tasks/manage-kubernetes-objects/storage-version-migration/. [[sources/research-gvk-and-gvr]]
+
+## Inference
+
+The dossier states the required order but does not describe a specific outage. The consequence of skipping migration, objects persisted in a version the CRD no longer lists, is an inference from the documented sequence and not an incident the dossier reports.
+
+## Related
+
+[[concepts/crd-versioning-and-storage-migration]], [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]]

@@ -11,6 +11,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-gvk-and-gvr
+    hash: 5c56bb1e05a8
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, ordering, dependencies]
 ---
@@ -33,3 +36,7 @@ Because the system is eventually consistent (see [[concepts/eventual-consistency
 ## Health-gated ordering in the convergence dossier
 
 Kubernetes does not order dependent resources itself. Flux uses `dependsOn` with health checks, Argo CD uses health-gated waves and hooks that must be idempotent, and Crossplane uses composition function readiness. [[sources/research-eventual-consistency-and-convergence]] See [[examples/flux-dependson-and-health-checks-gate-rollout]] and [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]].
+
+## CRD-before-custom-resource ordering in the GVK dossier
+
+Applying a custom resource before its CRD is established fails with "no matches for kind" in Helm, Argo CD, and Flux. Flux orders with `dependsOn` and health checks, and Argo CD users rely on sync waves, though the Argo detail is unverified. [[sources/research-gvk-and-gvr]] See [[findings/custom-resources-applied-before-their-crd-exists]] and [[comparisons/missing-crd-handling-flux-versus-argo-cd]].

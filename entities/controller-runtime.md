@@ -11,6 +11,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-gvk-and-gvr
+    hash: 5c56bb1e05a8
+    ingested: 2026-11-25
 aliases: [sigs.k8s.io/controller-runtime]
 tags: [tool, controllers, framework]
 ---
@@ -38,3 +41,7 @@ A third-party guide summarizes the return values: nil with an empty result means
 ## To research
 
 Informer resync semantics and the exact cache implementation were not covered; see [[open-knowledge-gaps]].
+
+## Dynamic RESTMapper
+
+Issue 321 documents that a client's RESTMapper built once at startup could not see CRDs created later. The fix was a dynamic, rate-limited mapper that invalidates on lookup failure, reported as the default since v0.3.0, a claim that should be checked against release notes. [[sources/research-gvk-and-gvr]] See [[findings/stale-restmapper-hides-newly-installed-crds]], [[comparisons/restmapper-strategies-static-deferred-and-dynamic]], and [[entities/client-go]].
