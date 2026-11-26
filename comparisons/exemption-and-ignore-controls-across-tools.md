@@ -1,7 +1,7 @@
 ---
 title: Exemption and ignore controls across tools
 type: comparison
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
@@ -16,6 +16,9 @@ sources:
     ingested: 2026-11-26
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
+    ingested: 2026-11-26
+  - id: research-gap-o1-argocd-flux-gitops
+    hash: 3a5f956bbd5a
     ingested: 2026-11-26
 aliases: []
 tags: [comparison, drift, ignore, adoption]
@@ -41,3 +44,7 @@ An important limit is order of operations: Flux's `driftDetection.ignore` applie
 ## Server-side apply controls
 
 Server-side apply adds Flux's `ssa` annotation values and Strip and Adopt ignore rules, Argo CD's Server-Side Diff as an alternative to `ignoreDifferences` for server defaults, and Kluctl's per-field force annotations. [[sources/research-server-side-apply-and-field-ownership]] See [[comparisons/ssa-conflict-policy-across-tools]].
+
+## Update from the o1 dossier, 2026-11-26
+
+Argo CD `ignoreDifferences` takes JSON patches, JQ and `managedFieldsManagers`, can be set system-wide in `argocd-cm`, and by default changes only the diff, see [[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]]. Flux `.spec.ignore` takes JSON Pointer paths and, without a target selector, matches every object, see [[findings/a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages]]. Flux also has the per-object `force` and `prune: disabled` annotations. Neither tool's pages read describe an observe-only mode like Crossplane's Observe. Argo CD's closest equivalents are manual sync with automation off and the ApplicationSet create-only policy, whose limit is in [[findings/the-applicationset-create-only-policy-does-not-stop-owner-reference-deletion-of-applications]]. [[sources/research-gap-o1-argocd-flux-gitops]]

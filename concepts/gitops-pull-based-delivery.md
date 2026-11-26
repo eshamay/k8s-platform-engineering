@@ -32,6 +32,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-o1-argocd-flux-gitops
+    hash: 3a5f956bbd5a
+    ingested: 2026-11-26
 aliases: [GitOps, Pull-based delivery]
 tags: [architecture, principle, gitops]
 ---
@@ -101,3 +104,7 @@ Correction, 2026-11-26: the closing note above says named production adopters an
 ## Evidence from a named global outage
 
 Skyscanner's 2021 postmortem shows both edges of pull-based delivery. Argo CD enforced a broken desired state in every region within about half an hour of the merge, deleting 478 services, and the same pull model let clusters reconfigure themselves once correct configuration returned. The lesson the team drew was to avoid global configuration deploys and to treat templated configuration as code. See [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]] and [[findings/templated-configuration-that-looks-like-config-is-code-and-needs-tests-and-a-regional-rollout-before-a-gitops-controller-applies-it-globally]].
+
+## Hub reach, secrets, and sources in practice (o1 dossier)
+
+Pull-based in the principles does not mean the agent runs inside each target cluster. A central Argo CD instance pulls from Git but reaches into registered clusters ([[findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity]]). The two main agents also differ on where secret plaintext may exist ([[decisions/supply-gitops-secrets-from-a-destination-cluster-operator-a-generation-plugin-or-controller-side-sops]]) and on whether the source artifact is signature-verified ([[findings/flux-verifies-cosign-and-notation-signatures-on-oci-artifacts-while-the-argo-cd-pages-read-document-no-oci-signature-verification]]). [[sources/research-gap-o1-argocd-flux-gitops]]

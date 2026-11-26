@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-o1-argocd-flux-gitops
+    hash: 3a5f956bbd5a
+    ingested: 2026-11-26
 aliases: [Argo CD adopters list]
 tags: [argo-cd, adopters, gitops, adoption, self-reported]
 ---
@@ -31,3 +34,7 @@ It answers "who uses it" at the level of names and counts, and it cannot answer 
 ## Related
 
 [[entities/argo-cd]], [[examples/intuit-argo-cd-gitops-origin]], [[examples/subaru-adopted-argo-cd-with-helmfile-to-replace-manual-deployment-procedures]]
+
+## Update 2026-11-26 (o1 dossier)
+
+A later read of the same file counted 461 lines, naming Adobe, IBM, Intuit, Red Hat and Tesla among others. The difference from 452 is probably header and non-entry lines, and the dossier did not re-count entries, so the 452 count stands as the entry count. See [[examples/the-flux-adopters-data-file-lists-xenit-sortlist-tietoevry-nexxiot-soulcycle-and-luma-health-among-others-with-no-write-ups]] and [[sources/research-gap-o1-argocd-flux-gitops]].

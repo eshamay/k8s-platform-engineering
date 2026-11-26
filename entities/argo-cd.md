@@ -125,6 +125,9 @@ sources:
   - id: research-gap-m7-operators-idempotency
     hash: 6c986668a6dc
     ingested: 2026-11-26
+  - id: research-gap-o1-argocd-flux-gitops
+    hash: 3a5f956bbd5a
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -294,3 +297,7 @@ No admission webhook configuration was found under the v3.6.3 manifests and char
 ## Failure handling as an operator (m7 dossier)
 
 The architecture page splits Argo CD into an API server, a repository server, and an application controller, with ApplicationSet as a separate controller. Failed syncs retry with exponential backoff (`limit`, `duration`, `factor`, `maxDuration`, `-1` for unlimited), self-heal re-attempts after a 5 second default timeout, and health rules mark error-state containers Degraded. The pages read do not reference one-controller-per-concern guidance. See [[findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling]]. [[sources/research-gap-m7-operators-idempotency]]
+
+## Secrets, OCI, multi-cluster, and ignore controls (o1 dossier)
+
+Argo CD's documentation recommends destination-cluster secret operators and warns that generation plugins leave plaintext manifests in the Redis cache, see [[findings/argo-cd-recommends-destination-cluster-secret-operators-and-warns-that-generation-plugins-cache-plaintext-manifests-in-redis]]. Its OCI source support has no documented signature verification in the pages read, see [[findings/flux-verifies-cosign-and-notation-signatures-on-oci-artifacts-while-the-argo-cd-pages-read-document-no-oci-signature-verification]]. `ignoreDifferences` affects only the diff unless `RespectIgnoreDifferences=true`, see [[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]]. ApplicationSet has documented limits ([[findings/applicationset-generators-have-documented-limits-matrix-takes-two-children-nesting-is-once-and-pull-request-polling-defaults-to-30-minutes]]), a Beta RollingSync strategy ([[findings/applicationset-rollingsync-is-beta-forces-autosync-off-and-watches-only-application-health]]), and a create-only policy that does not stop owner-reference deletion ([[findings/the-applicationset-create-only-policy-does-not-stop-owner-reference-deletion-of-applications]]). A central instance reaches into registered clusters, and the Labs project argocd-agent is the pull alternative, see [[findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity]] and [[decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes]]. Release cadence on 2026-11-26 showed v3.6.3, v3.5.9 and v3.4.15 published together on 2026-11-24. [[sources/research-gap-o1-argocd-flux-gitops]]

@@ -1,7 +1,7 @@
 ---
 title: Flux versus Argo CD drift and prune defaults
 type: comparison
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
@@ -16,6 +16,9 @@ sources:
     ingested: 2026-11-25
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
+    ingested: 2026-11-26
+  - id: research-gap-o1-argocd-flux-gitops
+    hash: 3a5f956bbd5a
     ingested: 2026-11-26
 aliases: []
 tags: [gitops, flux, argo-cd, prune, drift]
@@ -45,3 +48,7 @@ Flux HelmRelease drift detection is off by default (`mode: disabled`), with `war
 ## Interval default and jitter, 2026-11-26 recheck
 
 Correction note, 2026-11-26: Flux supplies no controller default for the interval, and it jitters every requeue by plus or minus 5 percent by default ([[findings/flux-controllers-jitter-reconcile-intervals-by-plus-or-minus-5-percent-by-default]]). The concepts page's five-minute wording is a 2022 docs edit and not a default ([[findings/the-flux-concepts-page-five-minute-sentence-replaced-one-minute-in-an-august-2022-docs-commit-with-no-stated-reason]]). HelmRelease drift detection defaults to disabled and, when enabled, corrects drift from a server-side dry-run apply ([[findings/helm-4-defaults-to-server-side-apply-for-new-releases-and-helm-controller-keeps-the-previous-method-on-upgrade]]). [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Update from the o1 dossier, 2026-11-26
+
+This table is now backed by primary documentation read at `main` on 2026-11-26. Flux `.spec.prune` is a required boolean with a per-object `prune: disabled` annotation, drift is checked by a server-side apply dry-run on each user-set interval, and `.spec.ignore` rules exempt fields. Argo CD prune and self-heal are opt-in under `syncPolicy.automated`, a manual sync does not prune unless `manualDefaults` says so, and `ignoreDifferences` affects only the diff unless `RespectIgnoreDifferences=true`. The earlier caveat that the table is not a head-to-head test still holds, because no neutral benchmark was found, see [[findings/no-neutral-benchmark-or-cncf-comparison-of-argo-cd-and-flux-was-found-so-the-comparison-rests-on-each-project-s-own-documentation]] and [[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]]. [[sources/research-gap-o1-argocd-flux-gitops]]

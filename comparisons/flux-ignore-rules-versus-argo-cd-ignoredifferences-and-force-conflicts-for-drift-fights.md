@@ -11,6 +11,9 @@ sources:
   - id: research-gap-m4-ssa-conflict-policy
     hash: 28e595eae3e0
     ingested: 2026-11-26
+  - id: research-gap-o1-argocd-flux-gitops
+    hash: 3a5f956bbd5a
+    ingested: 2026-11-26
 aliases: []
 tags: [flux, argo-cd, crossplane, ssa, drift, ignore, conflict]
 ---
@@ -42,3 +45,7 @@ Neither the Flux nor the Argo CD source compares the approaches directly, and ne
 ## Update from the m4 dossier
 
 Update 2026-11-26: the Flux and Argo CD rows are now backed by primary documentation. The Flux Strip and Adopt wording is in the kustomize-controller specification, Argo CD's server-side apply mode is documented to run `kubectl apply --server-side --force-conflicts` and to ignore `Force=true`, and `managedFieldsManagers` is documented in the diffing page. The comparison the sources lacked is still absent: no source or experiment compares the policies under a shared-field scenario. The options are laid out without a recommendation in [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]]. [[sources/research-gap-m4-ssa-conflict-policy]] See also [[examples/the-kube-green-case-study-says-managedfieldsmanagers-works-today-but-is-not-a-documented-contract-between-the-projects]].
+
+## Update from the o1 dossier, 2026-11-26
+
+Two scoping details sharpen the comparison. Argo CD ignore rules are diff-only by default, and `RespectIgnoreDifferences=true` applies only to resources that already exist ([[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]]). A Flux ignore rule with no `target` matches all objects in the Kustomization ([[findings/a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages]]). [[sources/research-gap-o1-argocd-flux-gitops]]

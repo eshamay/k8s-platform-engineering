@@ -3,7 +3,7 @@ title: Flux versus Argo CD architecture
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
@@ -11,6 +11,9 @@ sources:
   - id: research-flux-deep-dive
     hash: e640ec8046bc
     ingested: 2026-11-25
+  - id: research-gap-o1-argocd-flux-gitops
+    hash: 3a5f956bbd5a
+    ingested: 2026-11-26
 aliases: []
 tags: [gitops, flux, argo-cd, architecture]
 ---
@@ -40,3 +43,7 @@ The Flux deep dive adds that Flux isolates tenants with ServiceAccount impersona
 ## Related
 
 [[concepts/gitops-pull-based-delivery]], [[decisions/git-versus-oci-as-the-canonical-source]]
+
+## Update from the o1 dossier, 2026-11-26
+
+Documentation-level differences now read from primary files: ApplicationSet generators and the hub model on the Argo CD side ([[findings/applicationset-generators-have-documented-limits-matrix-takes-two-children-nesting-is-once-and-pull-request-polling-defaults-to-30-minutes]]), per-cluster controller sets, `--no-cross-namespace-refs` and ServiceAccount impersonation on the Flux side. No neutral head-to-head exists, see [[findings/no-neutral-benchmark-or-cncf-comparison-of-argo-cd-and-flux-was-found-so-the-comparison-rests-on-each-project-s-own-documentation]]. [[sources/research-gap-o1-argocd-flux-gitops]]

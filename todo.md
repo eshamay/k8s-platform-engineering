@@ -29,6 +29,8 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#fetch-the-sources-the-mechanics-and-accuracy-pass-could-not-read]] — open
 - [[#recheck-cluster-api-machinehealthcheck-and-clusterclass-once-v1150-final-ships]] — open
 - [[#review-the-unrevised-passages-that-kept-their-caveats-in-the-seven-outputs]] — open
+- [[#update-flux-ramp-up-git-versus-oci-passage-with-the-signature-verification-evidence]] — open
+- [[#update-part-1-ignoredifferences-passage-with-the-diff-only-default-and-the-flux-target-rule]] — open
 
 ## Open
 
@@ -865,5 +867,19 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Why:** All seven are `status: draft` and unreviewed; delivered outputs are frozen and exempt from staleness checks.
 - **Acceptance:** Each output reviewed by a human, status active, `delivered:` set.
 - **Outcome:** 2026-11-26: the user read the published site locally and approved it. All seven outputs are status active with delivered 2026-11-26, and the draft setting was removed from the publish config so only active outputs publish. The banned-word and prose checks were done by the review phases.
+
+## Update flux-ramp-up Git versus OCI passage with the signature verification evidence — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "The choice between Git and OCI is open in the wiki's sources" can add that Flux verifies Cosign and Notation signatures with keyless identity matching and that the Argo CD pages read document OCI sources without signature verification, with no independent benefit evidence found.
+- **Why:** The passage predates the dossier [[sources/research-gap-o1-argocd-flux-gitops]].
+- **Acceptance:** Passage revised and citing [[findings/flux-verifies-cosign-and-notation-signatures-on-oci-artifacts-while-the-argo-cd-pages-read-document-no-oci-signature-verification]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-1 ignoreDifferences passage with the diff-only default and the Flux target rule — status: open
+
+- **What:** In `outputs/part-1-core-architectural-principles.md`, the paragraph beginning "The `automated` block turns on continuous correction" says `ignoreDifferences` declares a field another controller owns. It should add that the rule is diff-only unless `RespectIgnoreDifferences=true`, and that a Flux ignore rule without a target selector matches every object.
+- **Why:** The passage predates the dossier [[sources/research-gap-o1-argocd-flux-gitops]].
+- **Acceptance:** Passage revised and citing [[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]] and [[findings/a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages]].
+- **Drafted by:** agent on 2026-11-26
 
 ## Dropped

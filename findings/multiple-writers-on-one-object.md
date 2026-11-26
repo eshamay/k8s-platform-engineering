@@ -3,7 +3,7 @@ title: Multiple writers on one object
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
@@ -14,6 +14,9 @@ sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-gap-o1-argocd-flux-gitops
+    hash: 3a5f956bbd5a
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, server-side-apply, ownership]
 ---
@@ -47,3 +50,7 @@ Field ownership can block correction altogether, and a second automation tool ca
 ## Server-side apply mechanics and policy
 
 The mechanics behind this pitfall are field managers and conflicts: the later apply errors unless the applier forces, drops the field, or shares ownership by setting the same value. Tools resolve the tension differently, and the dossier records that the best default is unsettled. [[sources/research-server-side-apply-and-field-ownership]] See [[comparisons/ssa-conflict-policy-across-tools]], [[decisions/force-conflicts-or-surface-them-to-humans]], and [[findings/forcing-conflicts-hides-disagreements-between-writers]].
+
+## Ignore and exemption controls (o1 dossier)
+
+The documented mitigations for a second writer differ in scope. Argo CD `ignoreDifferences` changes only the diff by default ([[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]]), and a Flux ignore rule needs a target selector to stay narrow ([[findings/a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages]]). [[sources/research-gap-o1-argocd-flux-gitops]]

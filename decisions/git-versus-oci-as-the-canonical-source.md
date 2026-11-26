@@ -1,9 +1,9 @@
 ---
 title: Git versus OCI as the canonical source
 type: decision
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
@@ -11,6 +11,9 @@ sources:
   - id: research-flux-deep-dive
     hash: e640ec8046bc
     ingested: 2026-11-25
+  - id: research-gap-o1-argocd-flux-gitops
+    hash: 3a5f956bbd5a
+    ingested: 2026-11-26
 aliases: []
 tags: [gitops, oci, git, supply-chain]
 ---
@@ -40,3 +43,7 @@ Morgan Stanley moved the source of truth from a self-hosted Git provider to S3 b
 ## Related
 
 [[comparisons/flux-versus-argo-cd-architecture]], [[concepts/gitops-pull-based-delivery]], [[entities/flux]]
+
+## Evidence from primary documentation (o1 dossier)
+
+Flux OCIRepository reconciles on digest change and verifies Cosign and Notation signatures, with keyless identity matching and a pinnable trust root. Argo CD documents `oci://` Application sources and an OCI ApplicationSet generator, and its source-integrity page covers Git GPG only, with no OCI signature verification found in the pages read. Flux's own cheatsheet frames OCI as useful when Git does not hold the final manifests. No independent security review or measured benefit of signed OCI over Git was found, and no registry rate limits were documented in the pages read. This page presents options and evidence and makes no recommendation. See [[findings/flux-verifies-cosign-and-notation-signatures-on-oci-artifacts-while-the-argo-cd-pages-read-document-no-oci-signature-verification]] and [[sources/research-gap-o1-argocd-flux-gitops]].

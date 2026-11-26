@@ -144,6 +144,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-m5-informers-caches]] — verified dossier on informer resync, cache narrowing, per-tool caches, GVK and GVR keying, and the dynamic mapper, 2026-11-26 (active)
 - [[sources/research-gap-m6-admission-crds]] — Research dossier: admission and CRD gaps (m6-admission-crds) (active)
 - [[sources/research-gap-m7-operators-idempotency]] — verified dossier on operator framework options, capability levels, Argo CD and Config Connector failure handling, Backstage, kro and Cluster API creates, per-provider external names, and Config Connector conflict leases, 2026-11-26 (active)
+- [[sources/research-gap-o1-argocd-flux-gitops]] — verified dossier on Argo CD and Flux pruning, drift, ignore controls, secret management, OCI sources, ApplicationSet limits, and hub-and-spoke delivery, read from docs at main on 2026-11-26 (active)
 
 ## Examples
 
@@ -410,18 +411,19 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/provider-upjet-azure-and-provider-upjet-gcp-template-resource-ids-from-a-user-chosen-name]] — templated IDs built from the name (active)
 - [[examples/red-hat-developer-hub-operator-deploys-backstage-on-kubernetes-and-openshift]] — an operator for Backstage, verified from the repository description (active)
 - [[examples/config-connector-lease-labels-gate-two-namespaces-that-manage-one-google-cloud-resource]] — 40 minute lease and ManagementConflict (active)
+- [[examples/the-flux-adopters-data-file-lists-xenit-sortlist-tietoevry-nexxiot-soulcycle-and-luma-health-among-others-with-no-write-ups]] — Flux adopter list, names only (active)
 
 ## Comparisons
 
 - [[comparisons/tenancy-models-namespaces-vcluster-kcp]] — tenancy trade-offs (draft)
 - [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]] — how each tool orders work (draft)
 - [[comparisons/kubectl-object-management-techniques]] — three kubectl techniques (draft)
-- [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]] — drift and prune behavior (draft)
+- [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]] — drift and prune behavior (active)
 - [[comparisons/deletion-policies-across-gitops-and-provider-tools]] — retain, abandon, orphan (draft)
 - [[comparisons/reconcile-cadence-and-off-switches-across-tools]] — intervals, retries, and pause controls, with verified defaults (active)
 - [[comparisons/retry-and-backoff-controls-across-tools]] — backoff, caps, and waiting states (draft)
 - [[comparisons/drift-detection-mechanisms-across-tools]] — what each tool compares, and how often, with verified defaults (active)
-- [[comparisons/exemption-and-ignore-controls-across-tools]] — ignore, observe, and pause controls (draft)
+- [[comparisons/exemption-and-ignore-controls-across-tools]] — ignore, observe, and pause controls (active)
 - [[comparisons/push-versus-pull-delivery]] — credentials, reach, and reconciliation (draft)
 - [[comparisons/flux-versus-argo-cd-architecture]] — controllers versus three components (draft)
 - [[comparisons/gvk-versus-gvr]] — type versus endpoint (active)
@@ -479,7 +481,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/single-replica-versus-leader-election]] — controller availability trade-off (draft)
 - [[decisions/staged-adoption-of-automated-drift-correction]] — observe, correct selectively, then enforce (draft)
 - [[decisions/choosing-a-drift-check-interval-for-external-resources]] — freshness versus API cost (draft)
-- [[decisions/git-versus-oci-as-the-canonical-source]] — where the cluster pulls desired state from (draft)
+- [[decisions/git-versus-oci-as-the-canonical-source]] — where the cluster pulls desired state from (active)
 - [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]] — shipping breaking API changes (draft)
 - [[decisions/validate-with-cel-rules-or-a-validating-webhook]] — where CRD validation runs (draft)
 - [[decisions/publish-synced-false-at-reconcile-start]] — ACK stale-status options (draft)
@@ -515,6 +517,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/narrow-the-controller-cache-with-selectors-transforms-or-metadata-only-informers-or-bypass-it-for-some-types]] — four narrowing options, evidence only (active)
 - [[decisions/choose-an-operator-framework-or-language-from-kubebuilder-operator-sdk-josdk-kopf-shell-operator-metacontroller-or-composition]] — evidence-only options, no recommendation (active)
 - [[decisions/set-config-connector-management-conflict-prevention-to-none-or-resource-or-avoid-acquisition]] — evidence-only options, no recommendation (active)
+- [[decisions/supply-gitops-secrets-from-a-destination-cluster-operator-a-generation-plugin-or-controller-side-sops]] — evidence-only options, no recommendation (active)
+- [[decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes]] — evidence-only options, no recommendation (active)
 
 ## Findings
 
@@ -837,6 +841,16 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/operator-sdk-capability-levels-keep-delegating-operators-at-level-1-and-say-nothing-about-composition-tools]] — Level 1 rule for delegating operators (active)
 - [[findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern]] — portal over operator-produced resources (active)
 - [[findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling]] — documented retry and health behavior (active)
+- [[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]] — Argo CD `ignoreDifferences` is diff-only unless `RespectIgnoreDifferences` is set, and then only for existing resources (active)
+- [[findings/a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages]] — a Flux ignore rule with no target selector matches every managed object (active)
+- [[findings/argo-cd-recommends-destination-cluster-secret-operators-and-warns-that-generation-plugins-cache-plaintext-manifests-in-redis]] — Argo CD secret-management stance and the plaintext Redis cache caution (active)
+- [[findings/flux-kustomize-controller-decrypts-only-sops-and-requires-metadata-kind-and-apiversion-to-stay-in-plaintext]] — Flux SOPS-only decryption and the plaintext-field requirement (active)
+- [[findings/flux-verifies-cosign-and-notation-signatures-on-oci-artifacts-while-the-argo-cd-pages-read-document-no-oci-signature-verification]] — OCI signature verification in Flux versus the Argo CD pages read (active)
+- [[findings/applicationset-generators-have-documented-limits-matrix-takes-two-children-nesting-is-once-and-pull-request-polling-defaults-to-30-minutes]] — ApplicationSet generator limits and polling defaults (active)
+- [[findings/applicationset-rollingsync-is-beta-forces-autosync-off-and-watches-only-application-health]] — Progressive Syncs maturity and behavior (active)
+- [[findings/the-applicationset-create-only-policy-does-not-stop-owner-reference-deletion-of-applications]] — create-only policy limit (active)
+- [[findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity]] — hub push versus the argocd-agent pull model (active)
+- [[findings/no-neutral-benchmark-or-cncf-comparison-of-argo-cd-and-flux-was-found-so-the-comparison-rests-on-each-project-s-own-documentation]] — no neutral comparison found, documented default differences, release cadence (active)
 
 ## Outputs
 
