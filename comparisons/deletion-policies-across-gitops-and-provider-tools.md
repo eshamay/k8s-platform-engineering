@@ -29,6 +29,9 @@ sources:
   - id: research-gap-o3-gitops-provider-managed
     hash: 55252dbb507a
     ingested: 2026-11-26
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: []
 tags: [deletion, retain, abandon, orphan]
 ---
@@ -74,3 +77,7 @@ Reporter claims from 2026 qualify the opt-outs in this table. ACK's namespace-le
 ## Verified lookup order and agent-side controls (o3 dossier)
 
 ACK resolves its policy from the resource annotation, then the namespace annotation, then the controller default, and first match wins, so the controller-wide setting is the weakest layer, see [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]]. Config Connector's `abandon` must be set before the delete. On the agent side, Flux offers the per-object `kustomize.toolkit.fluxcd.io/prune: disabled` annotation and a Kustomization `.spec.deletionPolicy` of MirrorPrune (default), Delete, WaitForTermination, or Orphan, and Argo CD offers `Prune=false`, `Prune=confirm`, `Delete=false`, `Delete=confirm`, and `preserveResourcesOnDeletion` for ApplicationSet-created Applications. The options are laid out in [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]]. All of these rest on documentation read at current versions, and no end-to-end prune test of a provider object was found. [[sources/research-gap-o3-gitops-provider-managed]]
+
+## Update from the o4 dossier
+
+Config Connector's policy has two source values, `delete` and `abandon`, and only `abandon` changes the path ([[findings/config-connector-deletion-policy-has-two-source-values-and-only-abandon-changes-the-delete-path-and-the-terraform-based-controller-path-is-unverified]]). kro gains an alpha per-resource `Delete` or `Orphaned` policy behind an off-by-default gate ([[findings/kro-v0-10-0-fixes-partial-apply-cleanup-and-duplicate-rgd-identities-and-pull-request-1445-adds-an-alpha-deletion-policy-behind-an-off-by-default-gate]]). Flux `WaitForTermination` gives up at `.spec.timeout` ([[findings/a-flux-waitfortermination-deletion-policy-gives-up-at-spec-timeout-and-lets-the-kustomization-be-deleted-while-a-provider-resource-may-still-be-finalizing]]). ACK resolves resource, then namespace, then controller flag, with `delete` as the default in both documentation sites. [[sources/research-gap-o4-config-connector-ack]]

@@ -159,6 +159,20 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Each remaining caveat is accepted, researched, or dropped.
 - **Drafted by:** agent on 2026-11-26
 
+## Update flux-ramp-up WaitForTermination passage with the timeout behavior — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "The `spec.deletionPolicy` takes four values" says WaitForTermination waits for the children to leave etcd. It should add that the wait is bounded by `.spec.timeout`, after which the controller logs an error and lets the Kustomization be deleted, which matters for provider-managed resources with finalizers.
+- **Why:** The passage predates the dossier [[sources/research-gap-o4-config-connector-ack]].
+- **Acceptance:** Passage revised and citing [[findings/a-flux-waitfortermination-deletion-policy-gives-up-at-spec-timeout-and-lets-the-kustomization-be-deleted-while-a-provider-resource-may-still-be-finalizing]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 cloud-vendor add-on passage with Config Connector modes, deletion, and the lack of a neutral Crossplane comparison — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "The cloud vendors ship their own provisioning controllers" can add that Config Connector's CRD default is namespaced mode with one `ConfigConnectorContext` per namespace, that its deletion policy has two source values and only `abandon` changes the path, that the GKE add-on can lag releases by 12 months or more, and that no neutral Config Connector versus Crossplane comparison exists, only two vendor positions.
+- **Why:** The passage predates the dossier [[sources/research-gap-o4-config-connector-ack]].
+- **Acceptance:** Passage revised and citing [[findings/config-connector-namespaced-mode-is-the-crd-default-and-needs-one-configconnectorcontext-per-namespace-while-cluster-mode-takes-exactly-one-credential]], [[findings/config-connector-deletion-policy-has-two-source-values-and-only-abandon-changes-the-delete-path-and-the-terraform-based-controller-path-is-unverified]], and [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]].
+- **Drafted by:** agent on 2026-11-26
+
 ## Done
 
 ## Update crossplane-ramp-up for the v2.5 verification pass — status: done

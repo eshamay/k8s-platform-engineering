@@ -3,11 +3,14 @@ title: "Scope provider credentials per namespace or cluster-wide"
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-provider
     hash: 7e43edcd71be
     ingested: 2026-11-25
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, credentials, multi-tenancy, provider, crossplane, ack, config-connector]
 ---
@@ -35,3 +38,7 @@ A single identity needs the union of everyone's permissions and, in Config Conne
 ## Consequences to plan for
 
 Applying manifests only from a trusted repository through GitOps narrows who can create objects at all. See [[concepts/provider]], [[entities/crossplane]], [[entities/ack]], and [[entities/config-connector]].
+
+## Update from the o4 dossier
+
+For Config Connector the CRD default is namespaced mode, and cluster mode requires exactly one credential, see [[findings/config-connector-namespaced-mode-is-the-crd-default-and-needs-one-configconnectorcontext-per-namespace-while-cluster-mode-takes-exactly-one-credential]]. The option's evidence was previously a best-practices summary, and it now rests on Google's installation-types page and the operator source. No recommendation is added. [[sources/research-gap-o4-config-connector-ack]]

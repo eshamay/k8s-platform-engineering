@@ -83,6 +83,9 @@ sources:
   - id: research-gap-o3-gitops-provider-managed
     hash: 55252dbb507a
     ingested: 2026-11-26
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -199,3 +202,7 @@ The ACK runtime defines only a conversion webhook type and the s3-controller cha
 ## Under a GitOps agent and inside compositions (o3 dossier)
 
 The deletion policy lookup is the resource annotation, then the namespace annotation, then the controller default, and first match wins, so a chart that stamps `deletion-policy: delete` on every custom resource defeats a controller-wide `retain` according to the reporter of issue 3153, see [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]]. Issue 2361 says Flux server-side apply reverts reference fields that the controller rewrote ([[findings/flux-server-side-apply-reverts-ack-reference-fields-that-the-controller-rewrote-according-to-issue-2361]]), and issue 3131 says referenced kinds are not watched so a referencing resource waits on backoff ([[findings/ack-referencing-resources-wait-on-backoff-after-the-referenced-resource-syncs-according-to-issue-3131]]). ACK's runtime source defines `Ready` as equivalent to `ResourceSynced`, and Argo CD's built-in ACK script maps `ACK.Terminal=True` to Degraded and `Ready=True` to Healthy. The ACK documentation's own kro guide waits for ACK resources to be ready before creating dependents, see [[examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources]]. All the issue-based claims are SECONDARY-ONLY and none was maintainer-confirmed. [[sources/research-gap-o3-gitops-provider-managed]]
+
+## Documentation sites and defaults (o4 dossier)
+
+The o4 dossier found that ACK's old and new documentation sites disagree on adoption maturity (alpha with gates off versus Beta enabled by default), that a contributor calls the old site deprecated, and that controller releases on or after 2026-10-08 default `--enable-cross-namespace` to false, see [[findings/the-ack-old-and-new-documentation-sites-disagree-on-adoption-maturity-and-cross-namespace-references-default-to-blocked-from-2026-10-08-releases]]. The deletion-policy order (resource, namespace, controller flag, default `delete`) was re-read in both sites' source files. The ACK issue reports 3142, 3152, 3153, 3154, and 3122 were re-read: 3142, 3153, and 3154 are one reporter's audit with no maintainer root cause, while 3152 and 3122 each carry a contributor reply, see [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]]. [[sources/research-gap-o4-config-connector-ack]]

@@ -98,6 +98,9 @@ sources:
   - id: research-gap-m7-operators-idempotency
     hash: 6c986668a6dc
     ingested: 2026-11-26
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -234,3 +237,7 @@ Cluster API core ships mutating and validating webhooks that all use failure pol
 ## Provider idempotency guidance (m7 dossier)
 
 The provider best-practices page says not to use a derived infrastructure name as the sole lookup key, requires provider-owned tags or labels, and asks for deterministic hashed names where names are truncated. The InfraMachine contract has the provider surface `spec.providerID`, and v1beta2 names `status.initialization.provisioned`. No page states an algorithm for a lost create response, and no provider repository was read. See [[findings/cluster-api-tells-providers-not-to-use-a-derived-name-as-the-only-lookup-key-and-states-no-lost-create-algorithm]]. [[sources/research-gap-m7-operators-idempotency]]
+
+## Release and troubleshooting evidence (o4 dossier)
+
+Cluster API v1.15.0-rc.0 (2026-11-24, a pre-release) lists two breaking changes and says v1beta1 is on track to be unserved in v1.16, and the troubleshooting page documents infinite reconcile with co-authored slices and server-side apply failing to remove list items after atomic-to-map transitions, see [[findings/cluster-api-co-authored-list-slices-can-reconcile-forever-and-server-side-apply-can-fail-to-remove-list-items]] and [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]]. No named-organization postmortem was found. [[sources/research-gap-o4-config-connector-ack]]

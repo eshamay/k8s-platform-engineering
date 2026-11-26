@@ -147,6 +147,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-o1-argocd-flux-gitops]] — verified dossier on Argo CD and Flux pruning, drift, ignore controls, secret management, OCI sources, ApplicationSet limits, and hub-and-spoke delivery, read from docs at main on 2026-11-26 (active)
 - [[sources/research-gap-o2-flux-internals]] — verified dossier on Flux source-controller artifact serving, sharding labels, image automation API status, and composite resource health, read from source and docs at main on 2026-11-26 (active)
 - [[sources/research-gap-o3-gitops-provider-managed]] — verified dossier on GitOps agents and provider-managed resources: deletion defaults and opt-outs, Argo CD Lua health scripts, Flux kstatus and CEL, drift fights, and ACK wrapped by kro, read from docs and source on 2026-11-26 (active)
+- [[sources/research-gap-o4-config-connector-ack]] — verified dossier on Config Connector modes and deletion, Config Connector versus Crossplane, GitOps and ACK failure modes, and first-party pitfalls for kro, ACK, and Cluster API, read 2026-11-26 (active)
 
 ## Examples
 
@@ -421,6 +422,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/config-connector-issue-837-argo-cd-2-7-6-kept-replacing-dnsrecordset-objects-until-the-default-annotations-were-added-explicitly]] — open issue, secondary-only (active)
 - [[examples/ack-issue-2361-flux-server-side-apply-reverted-reference-fields-and-triggered-ecs-redeploys-at-the-ten-hour-resync]] — open issue, secondary-only (active)
 - [[examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources]] — first-party readiness and deletion ordering (active)
+- [[examples/config-connector-issue-534-deleting-a-bigquerydataset-before-its-tables-left-both-in-failure-and-the-issue-has-been-open-since-2021]] — KCC issue 534 dataset before tables (active)
+- [[examples/config-connector-issue-2894-a-reporter-says-kcc-lacks-terraform-s-dependency-graph-and-owner-reference-cleanup-left-ghost-tag-bindings]] — KCC issue 2894 ghost tag bindings, secondary-only (active)
+- [[examples/config-connector-issue-479-a-containernodepool-delete-stuck-after-a-quota-error-on-kcc-1-46-0]] — KCC issue 479 stuck node pool delete, secondary-only (active)
+- [[examples/crossplane-provider-gcp-issue-283-a-crossplane-maintainer-says-config-connector-through-the-kubernetes-provider-is-not-a-replacement-for-a-provider]] — provider-gcp issue 283 maintainer position (active)
+- [[examples/crossplane-provider-gcp-issue-518-asked-why-provider-gcp-is-needed-when-config-connector-exists-and-had-no-comments]] — provider-gcp issue 518 unanswered question (active)
 
 ## Comparisons
 
@@ -530,6 +536,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes]] — evidence-only options, no recommendation (active)
 - [[decisions/gate-flux-image-automation-with-semver-ranges-a-separate-push-branch-or-staging-only-automation]] — evidence-only options for promotion control (draft)
 - [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]] — evidence-only options, no recommendation (active)
+- [[decisions/use-config-connector-directly-wrap-it-in-crossplane-through-the-kubernetes-provider-or-use-a-crossplane-gcp-provider]] — options without a recommendation (draft)
 
 ## Findings
 
@@ -877,6 +884,15 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/ack-referencing-resources-wait-on-backoff-after-the-referenced-resource-syncs-according-to-issue-3131]] — ACK issue 3131, secondary-only (draft)
 - [[findings/crossplane-function-auto-ready-and-kro-readywhen-gate-on-the-provider-ready-condition-and-no-worked-example-of-crossplane-composing-ack-or-config-connector-was-found]] — composition readiness gates and the missing worked example (active)
 - [[findings/the-o3-pass-found-no-flux-postmortem-and-no-new-named-gitops-outage-and-the-ack-3152-and-3153-reproductions-ran-on-kind-with-moto]] — evidence caveat (draft)
+- [[findings/config-connector-namespaced-mode-is-the-crd-default-and-needs-one-configconnectorcontext-per-namespace-while-cluster-mode-takes-exactly-one-credential]] — Config Connector namespaced default and per-namespace context (active)
+- [[findings/config-connector-deletion-policy-has-two-source-values-and-only-abandon-changes-the-delete-path-and-the-terraform-based-controller-path-is-unverified]] — delete and abandon constants, Terraform path unverified (active)
+- [[findings/a-config-connector-design-document-says-a-child-whose-parent-was-deleted-first-sticks-on-dependencynotfound-and-no-read-documentation-describes-ordered-teardown]] — KCC graceful-orphan-deletion design document (active)
+- [[findings/the-ack-old-and-new-documentation-sites-disagree-on-adoption-maturity-and-cross-namespace-references-default-to-blocked-from-2026-10-08-releases]] — ACK two doc sites and cross-namespace default (active)
+- [[findings/config-connector-known-issues-record-a-webhook-tls-race-before-1-134-1-and-direct-reconciler-regressions-in-1-132-0-and-1-134-0]] — KCC known-issues page (active)
+- [[findings/the-gke-config-connector-add-on-can-lag-the-latest-release-by-12-months-or-more-and-google-discourages-it-for-production]] — GKE add-on lag and pricing (active)
+- [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]] — two vendor positions, no neutral comparison (active)
+- [[findings/kro-v0-10-0-fixes-partial-apply-cleanup-and-duplicate-rgd-identities-and-pull-request-1445-adds-an-alpha-deletion-policy-behind-an-off-by-default-gate]] — kro v0.10.0 fixes and alpha deletion policy (active)
+- [[findings/a-flux-waitfortermination-deletion-policy-gives-up-at-spec-timeout-and-lets-the-kustomization-be-deleted-while-a-provider-resource-may-still-be-finalizing]] — Flux WaitForTermination timeout (active)
 
 ## Outputs
 

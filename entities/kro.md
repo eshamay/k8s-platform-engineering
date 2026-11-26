@@ -98,6 +98,9 @@ sources:
   - id: research-gap-o3-gitops-provider-managed
     hash: 55252dbb507a
     ingested: 2026-11-26
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -247,3 +250,7 @@ Correction note, 2026-11-26: the "Idempotency coverage gap" section above is sup
 ## Wrapping ACK objects and the deletion-policy annotation (o3 dossier)
 
 The ACK documentation includes a kro guide that composes ACK Bucket and Table objects with a Deployment, waits for ACK readiness before creating dependents, and on deletion removes the Deployment first and then the AWS resources following ACK's deletion policy, see [[examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources]]. kro's alpha, feature-gated `kro.run/deletion-policy` annotation (Delete or Orphaned) applies whenever kro would remove a resource, and owner references defeat Orphaned. How it combines with ACK's own annotation is not documented in the pages read. Without `readyWhen`, a resource is ready once created and its CEL references resolve. [[sources/research-gap-o3-gitops-provider-managed]] See [[findings/crossplane-function-auto-ready-and-kro-readywhen-gate-on-the-provider-ready-condition-and-no-worked-example-of-crossplane-composing-ack-or-config-connector-was-found]].
+
+## v0.10.0 fixes and the alpha deletion policy (o4 dossier)
+
+kro v0.10.0 (2026-11-10) fixes Graph cleanup after partial apply failures, rejects duplicate RGD identities before adopting objects, and fails closed on schema changes, and pull request 1445 (merged 2026-10-29) adds an alpha per-resource `deletionPolicy` behind an off-by-default gate, see [[findings/kro-v0-10-0-fixes-partial-apply-cleanup-and-duplicate-rgd-identities-and-pull-request-1445-adds-an-alpha-deletion-policy-behind-an-off-by-default-gate]]. [[sources/research-gap-o4-config-connector-ack]]

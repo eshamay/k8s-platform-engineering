@@ -23,6 +23,9 @@ sources:
   - id: research-gap-g1-other-tool-pitfalls
     hash: a942f0ae1b1b
     ingested: 2026-11-26
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: [failure modes, postmortems, platform pitfalls]
 tags: [pitfalls, postmortems, cascades, finalizers, deletion, drift, ssa, guard-rails]
 ---
@@ -79,3 +82,7 @@ A third gap on the evidence side is partly filled. The 2026-11-26 dossier found 
 ## Update from the other-tool pitfalls dossier
 
 Correction, 2026-11-26: the statement above that no source covers pitfalls specific to kro, Config Connector, ACK, or Cluster API is out of date. The 2026-11-26 dossier read first-party issues and release notes for all four. It found open reporter claims, not named-organization postmortems: kro's breaking-change gate and crash-during-deletion report ([[findings/a-kro-breaking-change-error-did-not-name-the-override-annotation-and-an-added-enum-or-cel-marker-was-not-patched-into-the-live-crd]], [[findings/a-kro-controller-crash-during-instance-deletion-can-leave-the-finalizer-and-children-according-to-a-fault-injection-report]]), Config Connector's stale deletion after failover and stuck Terminating resources ([[findings/config-connector-leader-election-across-clusters-can-run-a-stale-deletion-against-live-google-cloud-resources]], [[findings/config-connector-direct-controller-resources-stick-in-terminating-when-a-parent-is-deleted-first-and-abandon-does-not-release-them]]), ACK's ownership, adoption, and prune issues ([[findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource]], [[findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs]]), and Cluster API's webhook window and breaking changes ([[findings/cluster-api-webhooks-can-be-unreachable-for-up-to-90-seconds-during-cert-manager-certificate-rotation]], [[findings/cluster-api-v1-14-0-lists-four-breaking-changes-and-schedules-v1beta1-and-docker-removals]]). The evidence caveat is in [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]]. [[sources/research-gap-g1-other-tool-pitfalls]]
+
+## Update from the Config Connector and ACK dossier
+
+The 2026-11-26 o4 dossier adds first-party documentation and release-note evidence for the tools this page called thin: Config Connector's stuck-deletion design document and known-issues page, kro v0.10.0 fixes and the alpha orphan policy, ACK's two documentation sites, and Cluster API's troubleshooting page. No named-organization postmortem exists for any of the four. See [[findings/a-config-connector-design-document-says-a-child-whose-parent-was-deleted-first-sticks-on-dependencynotfound-and-no-read-documentation-describes-ordered-teardown]], [[findings/config-connector-known-issues-record-a-webhook-tls-race-before-1-134-1-and-direct-reconciler-regressions-in-1-132-0-and-1-134-0]], [[findings/kro-v0-10-0-fixes-partial-apply-cleanup-and-duplicate-rgd-identities-and-pull-request-1445-adds-an-alpha-deletion-policy-behind-an-off-by-default-gate]], [[findings/the-ack-old-and-new-documentation-sites-disagree-on-adoption-maturity-and-cross-namespace-references-default-to-blocked-from-2026-10-08-releases]], and [[findings/a-flux-waitfortermination-deletion-policy-gives-up-at-spec-timeout-and-lets-the-kustomization-be-deleted-while-a-provider-resource-may-still-be-finalizing]]. [[sources/research-gap-o4-config-connector-ack]]

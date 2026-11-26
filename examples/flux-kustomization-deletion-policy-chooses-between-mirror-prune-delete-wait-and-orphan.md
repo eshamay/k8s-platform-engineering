@@ -11,6 +11,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: []
 tags: [finalizers, flux, gitops, deletion, prune]
 ---
@@ -32,3 +35,7 @@ A later dossier read the kustomize-controller source and confirmed the finalizer
 ## Related
 
 [[entities/flux]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]], [[findings/unintended-deletion-through-prune]], [[concepts/finalizers]]
+
+## Timeout behavior (o4 dossier)
+
+`WaitForTermination` is bounded by `.spec.timeout`, after which the controller logs an error and lets the Kustomization be deleted, see [[findings/a-flux-waitfortermination-deletion-policy-gives-up-at-spec-timeout-and-lets-the-kustomization-be-deleted-while-a-provider-resource-may-still-be-finalizing]]. [[sources/research-gap-o4-config-connector-ack]]

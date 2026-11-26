@@ -128,6 +128,9 @@ sources:
   - id: research-gap-o3-gitops-provider-managed
     hash: 55252dbb507a
     ingested: 2026-11-26
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -323,3 +326,7 @@ Correction note, 2026-11-26: the documentation's default that providers name ext
 ## Composing ACK or Config Connector objects (o3 dossier)
 
 `function-auto-ready` (v0.7.4) treats a non-built-in composed resource as ready only with `type: Ready`, `status: True`, which ACK defines and Config Connector reports, but no worked example or first-party test of Crossplane composing ACK or Config Connector objects was found. Argo CD now ships a built-in Lua health script for `crossplane.io` and `upbound.io`. [[sources/research-gap-o3-gitops-provider-managed]] See [[findings/crossplane-function-auto-ready-and-kro-readywhen-gate-on-the-provider-ready-condition-and-no-worked-example-of-crossplane-composing-ack-or-config-connector-was-found]].
+
+## Config Connector comparison and poll defaults (o4 dossier)
+
+A Crossplane maintainer holds that a purpose-built provider is better than Config Connector through the Kubernetes provider, and no neutral comparison exists, see [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]] and [[decisions/use-config-connector-directly-wrap-it-in-crossplane-through-the-kubernetes-provider-or-use-a-crossplane-gcp-provider]]. The crossplane-runtime default poll interval constant is 1 minute with a per-resource `crossplane.io/poll-interval` annotation, and `managementPolicies` is beta and provider-dependent. The 2021 blog statement that managed resources are cluster scoped is dated for Crossplane v2, whose docs show a namespaced `.m.` API group example. [[sources/research-gap-o4-config-connector-ack]]

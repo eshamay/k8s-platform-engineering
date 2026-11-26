@@ -116,6 +116,9 @@ sources:
   - id: research-gap-o3-gitops-provider-managed
     hash: 55252dbb507a
     ingested: 2026-11-26
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -276,3 +279,7 @@ For sharding, a HelmChart generated from a HelmRelease takes its shard label fro
 ## Provider-managed resources (o3 dossier)
 
 Flux has no per-provider health logic. Provider objects are judged through kstatus compatibility or CEL `healthCheckExprs`, and the Flux CEL cheatsheet lists Crossplane and no Config Connector or ACK entry on the page read, see [[findings/flux-judges-provider-managed-resources-through-kstatus-or-cel-health-check-expressions-and-its-cel-cheatsheet-lists-crossplane-but-not-config-connector-or-ack]]. Prune is an ordinary delete, so the provider's default applies. The per-object opt-out is `kustomize.toolkit.fluxcd.io/prune: disabled` and `.spec.deletionPolicy` offers MirrorPrune (default), Delete, WaitForTermination, and Orphan. ACK issue 2361 is a SECONDARY-ONLY report that Flux server-side apply reverts controller-rewritten reference fields, see [[findings/flux-server-side-apply-reverts-ack-reference-fields-that-the-controller-rewrote-according-to-issue-2361]]. No Flux postmortem was found, see [[findings/the-o3-pass-found-no-flux-postmortem-and-no-new-named-gitops-outage-and-the-ack-3152-and-3153-reproductions-ran-on-kind-with-moto]]. [[sources/research-gap-o3-gitops-provider-managed]]
+
+## Deletion and apply edges re-read (o4 dossier)
+
+The o4 dossier re-read the kustomize-controller reference (release v1.10.2, 2026-11-20). `WaitForTermination` gives up at `.spec.timeout` and still lets the Kustomization be deleted, see [[findings/a-flux-waitfortermination-deletion-policy-gives-up-at-spec-timeout-and-lets-the-kustomization-be-deleted-while-a-provider-resource-may-still-be-finalizing]]. `ssa: Merge` cannot preserve edits to atomic list fields, and forcing a StatefulSet may lose data. [[sources/research-gap-o4-config-connector-ack]]

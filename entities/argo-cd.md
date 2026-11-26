@@ -131,6 +131,9 @@ sources:
   - id: research-gap-o3-gitops-provider-managed
     hash: 55252dbb507a
     ingested: 2026-11-26
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -308,3 +311,7 @@ Argo CD's documentation recommends destination-cluster secret operators and warn
 ## Provider-managed resources (o3 dossier)
 
 Argo CD now ships built-in Lua health scripts for the `cnrm.cloud.google.com`, `services.k8s.aws`, `crossplane.io`, and `upbound.io` groups, for `kro.run` ResourceGraphDefinition, and for five Cluster API kinds, and an object that never reaches Healthy blocks later sync waves, see [[findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves]] and [[examples/argo-cd-issue-30164-config-connector-customize-kinds-stayed-progressing-because-the-health-script-did-not-handle-status-healthy]]. Per-resource sync options include `Prune=false`, `Prune=confirm`, `Delete=false`, `Delete=confirm`, and `PruneLast=true`, and deleting an ApplicationSet deletes its Applications' resources unless `preserveResourcesOnDeletion` is true. `RespectIgnoreDifferences=true` applies ignore rules at sync time only for resources that already exist. Prune of a provider object triggers the provider's default delete, see [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]]. [[sources/research-gap-o3-gitops-provider-managed]]
+
+## Automated-sync and deletion defaults re-read (o4 dossier)
+
+The o4 dossier re-read the automated-sync, sync-options, and application-deletion pages at `master` (v3.6.3 released 2026-11-24). Prune and self-heal are off unless set, a failed sync is not retried for the same commit and parameters, the self-heal delay is 5 seconds, `manualDefaults` turns manual prune on, and prune and cascade deletion default to foreground propagation. Pruning reverses wave order, but whether cascade application deletion honors waves was not found, see [[findings/a-config-connector-design-document-says-a-child-whose-parent-was-deleted-first-sticks-on-dependencynotfound-and-no-read-documentation-describes-ordered-teardown]]. [[sources/research-gap-o4-config-connector-ack]]

@@ -1,13 +1,16 @@
 ---
 title: "Config Connector namespaced mode maps namespaces to projects and service accounts"
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-provider
     hash: 7e43edcd71be
     ingested: 2026-11-25
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: []
 tags: [config-connector, google-cloud, multi-tenancy, credentials, quota]
 ---
@@ -25,3 +28,7 @@ Google's best-practices page recommends namespaced mode. Each namespace binds to
 ## Lesson
 
 Because reconciliation runs as the controller's service account and not as the person who applied the manifest, the namespace to service account mapping is the real access boundary, see [[findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions]]. The choice of scope is generalized in [[decisions/scope-provider-credentials-per-namespace-or-cluster-wide]], and the same idea appears for AWS in [[examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management]]. See [[entities/config-connector]].
+
+## Verification from the o4 dossier
+
+The recommendation and the per-namespace service account model are now confirmed from Google's installation-types page (updated 2026-11-19) and the operator source, which adds the `ConfigConnectorContext` object, the `managerNamespace` setting, and the CRD default, see [[findings/config-connector-namespaced-mode-is-the-crd-default-and-needs-one-configconnectorcontext-per-namespace-while-cluster-mode-takes-exactly-one-credential]]. Whether the project-annotation behavior differs by mode was not read. [[sources/research-gap-o4-config-connector-ack]]

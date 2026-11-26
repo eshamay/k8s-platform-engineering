@@ -3,11 +3,14 @@ title: "Config Connector has no Terraform-style dependency graph, and Argo CD de
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-landscape
     hash: d28204a90545
     ingested: 2026-11-25
+  - id: research-gap-o4-config-connector-ack
+    hash: c0d708f1d445
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, config-connector, argo-cd, ordering, single-source]
 ---
@@ -29,3 +32,7 @@ Per-resource provisioning controllers push ordering onto the delivery tool, and 
 ## Related
 
 [[entities/config-connector]], [[entities/argo-cd]], [[concepts/tooling-landscape]]
+
+## Update from the o4 dossier
+
+Corroboration, not confirmation. A Google design document confirms the mechanism that blocks a child when its parent is deleted first, and no read documentation describes ordered teardown, see [[findings/a-config-connector-design-document-says-a-child-whose-parent-was-deleted-first-sticks-on-dependencynotfound-and-no-read-documentation-describes-ordered-teardown]]. Open issues 534 and 2894 repeat the ordering claim as reporter reports. The Argo CD half is not confirmed: Argo CD reverses wave order when pruning, and whether cascade application deletion honors waves was not found. The page stays draft until that half is read. [[sources/research-gap-o4-config-connector-ack]]
