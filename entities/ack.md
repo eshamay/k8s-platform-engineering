@@ -32,6 +32,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-managed-resource
+    hash: 09ca2f9dcdc6
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -83,3 +86,7 @@ By default ACK deletes the AWS resource and then the Kubernetes object. The `ser
 ## Conditions
 
 ACK uses `ACK.Recoverable` for transient errors such as throttling, `ACK.Terminal` for errors that need a spec change, `ACK.ResourceSynced` for whether the AWS resource matches the spec, `ACK.Adopted`, `ACK.ReferencesResolved`, and `Ready` as the top-level indicator. [[sources/research-conditions]] See [[examples/ack-splits-terminal-and-recoverable-errors-into-separate-conditions]] and [[concepts/conditions]].
+
+## Read-only annotation versus adoption
+
+ACK offers the annotation `services.k8s.aws/read-only: "true"`, under which the controller syncs status from AWS, ignores spec, never creates, updates, or deletes, and shows an error if the AWS resource is missing. ACK's separate adoption feature gives full management, which mirrors the observe-versus-promote split in Crossplane's management policies. [[sources/research-managed-resource]] See [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]].

@@ -14,6 +14,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-managed-resource
+    hash: 09ca2f9dcdc6
+    ingested: 2026-11-25
 aliases: [CRD]
 tags: [api-machinery]
 ---
@@ -67,3 +70,7 @@ Authoritative numbers for the maximum CRDs per cluster or custom resources per t
 ## Related
 
 [[concepts/gvk-and-gvr]], [[concepts/admission-webhooks-and-cel]], [[concepts/operator-pattern]], [[concepts/finalizers]]
+
+## CRD count as an architectural cost of one type per external resource
+
+The managed resource dossier shows the cost of generating one CRD per external resource type: multi-cloud provider sets imply roughly 2,000 CRDs, with more than 4 MiB of API server memory per CRD and discovery requests for about 300 group-versions, and Upbound and the Crossplane community reported slow or unresponsive API servers at several hundred CRDs. [[sources/research-managed-resource]] See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]].

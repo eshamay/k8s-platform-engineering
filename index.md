@@ -35,7 +35,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ### Platform engineering and abstraction
 
-- [[concepts/managed-resource]] — one-to-one cloud primitive (draft)
+- [[concepts/managed-resource]] — one-to-one cloud primitive, anatomy, management policies, import, deletion, and scale (active)
 - [[concepts/composite-resource]] — opinionated platform API over many resources (draft)
 - [[concepts/composition]] — blueprint mapping composite to managed resources (draft)
 - [[concepts/provider]] — controller and CRDs for an external API (draft)
@@ -86,6 +86,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-finalizers]] — research dossier on finalizers, 17 web sources, 2026-11-25
 - [[sources/research-owner-references-and-garbage-collection]] — research dossier on owner references and garbage collection, 16 web sources, 2026-11-25
 - [[sources/research-conditions]] — research dossier on status conditions, 16 web sources, 2026-11-25
+- [[sources/research-managed-resource]] — Research dossier: Managed Resources (active)
 
 ## Examples
 
@@ -196,6 +197,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] — one condition, three reasons (draft)
 - [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]] — beyond one mandatory Ready (draft)
 - [[examples/deployment-progress-deadline-sets-progressing-false-for-a-stalled-rollout]] — the built-in model (draft)
+- [[examples/crossplane-import-of-an-existing-gcp-database-observes-first-then-takes-control]] — Observe, inspect, then promote (draft)
+- [[examples/an-observe-only-managed-resource-lets-a-composition-read-a-database-owned-by-another-team]] — permanent Observe as a reference (draft)
+- [[examples/crossplane-usages-order-deletion-and-guard-against-accidental-removal]] — deletion ordering and protection (draft)
+- [[examples/provider-authors-implement-an-external-client-behind-the-shared-managed-reconciler]] — shared reconciler and external client (draft)
+- [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]] — answer to the CRD count (draft)
+- [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]] — self-reported adopter scale (draft)
 
 ## Comparisons
 
@@ -232,6 +239,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]] — owner references, inventory, and finalizers by tool (draft)
 - [[comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api]] — condition types by tool (draft)
 - [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]] — who defines Ready (draft)
+- [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]] — import, read-only, and keep controls (draft)
 
 ## Decisions
 
@@ -260,6 +268,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]] — issue 7801 options (draft)
 - [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]] — ordered teardown of composites (draft)
 - [[decisions/choose-abnormal-true-or-positive-polarity-for-new-condition-types]] — what True means in a new condition (draft)
+- [[decisions/choose-management-policies-for-an-imported-resource]] — Observe, promote, or omit Delete (draft)
 
 ## Findings
 
@@ -361,6 +370,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/updating-lasttransitiontime-on-every-reconcile-turns-a-condition-into-a-heartbeat]] — noisy status writes (draft)
 - [[findings/one-mandatory-ready-condition-that-summarizes-everything-is-too-rigid]] — why Cluster API added Available (draft)
 - [[findings/condition-polarity-guidance-conflicts-between-kstatus-and-the-api-conventions]] — unresolved guidance tension (draft)
+- [[findings/synced-false-with-ready-true-is-a-silent-failure-where-drift-correction-stops]] — quiet loss of management (draft)
+- [[findings/crossplane-does-not-delete-and-recreate-to-change-immutable-fields]] — immutable changes may not apply (draft)
+- [[findings/observe-based-import-has-manual-copy-steps-ambiguous-names-and-relaxed-validation]] — import hazards (draft)
+- [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]] — terminology drift (draft)
+- [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] — CRD count scale cost (draft)
 
 ## Outputs
 

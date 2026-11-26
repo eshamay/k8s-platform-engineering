@@ -8,6 +8,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-managed-resource
+    hash: 09ca2f9dcdc6
+    ingested: 2026-11-25
 aliases: []
 tags: [comparison, idempotency, adoption, external-name, crossplane, ack, config-connector]
 ---
@@ -27,3 +30,7 @@ The table summarizes how each approach handles a create whose result is unknown 
 ## Reading the comparison
 
 Crossplane optimizes for never duplicating or leaking a resource and accepts a human step, ACK and Config Connector optimize for convergence and accept the chance of adopting something unintended, and SAP's design sits between them by requiring explicit intent and bounding recovery. The dossier does not compare production outcomes, and it did not read kro or Cluster API material. See [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]], [[findings/adopt-or-create-can-take-over-a-look-alike-resource]], [[decisions/adopt-or-create-or-require-explicit-import]], and [[concepts/idempotency]].
+
+## Observe-only import and read-only controls
+
+The managed resource dossier reads the Crossplane import guide and observe-only design document, ACK's read-only annotation, and Config Connector's acquire-by-name behavior in more depth. The explicit Observe-then-promote flow and ACK's read-only versus adoption split are compared in [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]], and the import steps are in [[examples/crossplane-import-of-an-existing-gcp-database-observes-first-then-takes-control]]. [[sources/research-managed-resource]]

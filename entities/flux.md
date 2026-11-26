@@ -62,6 +62,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-managed-resource
+    hash: 09ca2f9dcdc6
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -151,3 +154,7 @@ Flux garbage collection is its own mechanism. With `.spec.prune: true`, objects 
 ## Conditions and health checks
 
 Flux's kustomize-controller reports `Ready`, `Reconciling`, and `Stalled` plus `observedGeneration`. It waits for applied resources to become healthy before marking a Kustomization `Ready`, which unblocks Kustomizations that `dependsOn` it. Compatible custom resources are judged through kstatus, and for kinds that do not follow kstatus, `healthCheckExprs` supplies CEL expressions. Flux added CEL checks for Cluster API resources after kstatus misjudged new objects. The dossier read only the first 100 KB of the Kustomization page. [[sources/research-conditions]] See [[concepts/conditions]], [[findings/premature-readiness-in-kstatus-based-tools]], and [[examples/flux-dependson-and-health-checks-gate-rollout]].
+
+## Prune cascades into managed resource deletion
+
+With `spec.prune: true`, a Kustomization deletes objects that disappeared from Git, tracked through `.status.inventory`, and the annotation `kustomize.toolkit.fluxcd.io/prune: disabled` exempts an object. For managed resources a Git removal becomes a prune of the object followed by a provider delete of the cloud resource, unless Delete is excluded from `managementPolicies`. The dossier read only the first 100,000 of about 121,000 characters of the Flux page. [[sources/research-managed-resource]] See [[findings/unintended-deletion-through-prune]] and [[decisions/choose-management-policies-for-an-imported-resource]].

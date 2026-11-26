@@ -17,6 +17,9 @@ sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-managed-resource
+    hash: 09ca2f9dcdc6
+    ingested: 2026-11-25
 aliases: []
 tags: [deletion, retain, abandon, orphan]
 ---
@@ -46,3 +49,7 @@ Crossplane belongs in the table: its default is Delete, and `deletionPolicy: Orp
 ## Owner-reference-based tools
 
 Cluster API and Crossplane add owner-reference-driven cascades, and Crossplane composites offer Background, Foreground, and Pipeline policies. See [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]] and [[comparisons/background-foreground-and-orphan-propagation-modes]]. [[sources/research-owner-references-and-garbage-collection]]
+
+## Crossplane policy list and Usages
+
+The managed resource dossier adds that in Crossplane v2 the way to keep the cloud resource is to leave Delete out of `managementPolicies`, that the v1 `deletionPolicy: Orphan` is absent on namespaced managed resources, and that a Usage blocks deletion while a dependent resource still uses the target. [[sources/research-managed-resource]] See [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]] and [[examples/crossplane-usages-order-deletion-and-guard-against-accidental-removal]].

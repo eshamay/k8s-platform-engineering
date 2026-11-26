@@ -20,6 +20,9 @@ sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-managed-resource
+    hash: 09ca2f9dcdc6
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, deletion, finalizers, safety]
 ---
@@ -57,3 +60,7 @@ A consultancy article reports that Config Connector deletes the Google Cloud res
 ## Owner references stop at the cluster boundary
 
 Owner references only reach Kubernetes objects, so cascade deletion never covers cloud resources, which need finalizers or a provider deletion policy such as Config Connector's abandon annotation. [[sources/research-owner-references-and-garbage-collection]] See [[concepts/owner-references-and-garbage-collection]].
+
+## Managed resource dossier additions
+
+The managed resource dossier confirms that deleting the Kubernetes object deletes the cloud resource by default in Crossplane, Config Connector, and ACK, and adds two Crossplane guardrails: policies that omit Delete (the v2 orphan idiom, since namespaced managed resources have no `deletionPolicy`) and Usages, which block deletion of a resource that is in use. It also records that a Git removal chains through Flux prune and then the provider delete unless Delete is excluded. [[sources/research-managed-resource]] See [[examples/crossplane-usages-order-deletion-and-guard-against-accidental-removal]] and [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]].

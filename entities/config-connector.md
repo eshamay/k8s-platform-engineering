@@ -38,6 +38,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-managed-resource
+    hash: 09ca2f9dcdc6
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -97,3 +100,7 @@ Deleting a Config Connector object deletes the real Google Cloud resource by def
 ## Conditions
 
 Config Connector uses a single `Ready` condition: `False` with reason `Updating` while it calls Google APIs (the message names the first changed field), `True` with reason `UpToDate`, and `False` with reason `UpdateFailure` carrying the error. The source is a design document, so the dossier does not say which parts shipped, including the idea of putting long-running operation IDs in the reason. [[sources/research-conditions]] See [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] and [[concepts/conditions]].
+
+## Acquire by name and the abandon annotation
+
+Config Connector acquires an existing Google Cloud resource when the manifest name or ID matches it, so import is implicit and not flagged. Deleting the Kubernetes object deletes the cloud resource by default, and the annotation `cnrm.cloud.google.com/deletion-policy: abandon` must be set before deletion to keep it. The dossier read this page through a summarized fetch and found nothing on conflict handling when two objects target the same cloud resource. [[sources/research-managed-resource]] See [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]].

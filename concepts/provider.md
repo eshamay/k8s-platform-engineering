@@ -8,6 +8,9 @@ sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
+  - id: research-managed-resource
+    hash: 09ca2f9dcdc6
+    ingested: 2026-11-25
 aliases: []
 tags: [abstraction, crossplane]
 ---
@@ -29,3 +32,7 @@ Providers are how the [[concepts/universal-control-plane]] reaches outside the c
 ## To research
 
 Provider families and sharding, credential handling, and the cost of CRD count.
+
+## Managed reconciler and activation policies
+
+Every provider reuses the shared managed reconciler (Connect, Observe, Create, Update, Delete) and implements the external client interface, see [[examples/provider-authors-implement-an-external-client-behind-the-shared-managed-reconciler]]. Because each external resource type is a CRD, large providers strain the API server, and Crossplane v2 lets clusters activate only the types they need, see [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]]. [[sources/research-managed-resource]]

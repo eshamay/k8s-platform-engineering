@@ -62,6 +62,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-managed-resource
+    hash: 09ca2f9dcdc6
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -151,3 +154,7 @@ Composed resources carry owner references to their composite resource. The compo
 ## Conditions: Synced and Ready
 
 Crossplane managed resources use `Ready` (reasons `Available`, `Creating`, `Unavailable`, `Deleting`) for whether the external resource is operational and `Synced` (reasons `ReconcileSuccess`, `ReconcileError`, `ReconcilePaused`) for whether the provider reconcile succeeded. Read together, `Synced=False` points to credentials, configuration, or provider problems, and `Ready=False` with `Synced=True` points to the cloud side. Upjet-based providers add `AsyncOperation`. The semantics are fixed by the framework, and provider-aws issue 2287 shows that a framework-level overwrite can leave `Synced=True` through a 60-minute update. The page read was v1.20, so Crossplane v2 behavior is unconfirmed. [[sources/research-conditions]] See [[examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update]], [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]], and [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]].
+
+## Managed resource management policies, usages, and scale
+
+The managed resource dossier adds the operating details of Crossplane's lowest layer. `spec.managementPolicies` lists the permitted verbs (Observe, Create, Update, Delete, LateInitialize, or `*`), so import, read-only reference, orphan-on-delete, and pause are all one field, and the import recipe sets the external-name annotation and Observe before promoting to `["*"]`. Usages block deletion of a resource that is in use, which gives deletion ordering and accidental-deletion protection. Crossplane v2 represents each managed resource type as a ManagedResourceDefinition and activates only the needed ones through activation policies, which answers the CRD-count scale problem. Self-reported adopters range from thousands of managed resources to Akamai's reported 200,000. [[sources/research-managed-resource]] See [[concepts/managed-resource]], [[examples/crossplane-import-of-an-existing-gcp-database-observes-first-then-takes-control]], [[examples/crossplane-usages-order-deletion-and-guard-against-accidental-removal]], [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]], [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]], and [[findings/synced-false-with-ready-true-is-a-silent-failure-where-drift-correction-stops]].

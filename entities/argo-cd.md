@@ -56,6 +56,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-managed-resource
+    hash: 09ca2f9dcdc6
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -139,3 +142,7 @@ Argo CD cascades an Application delete to its managed resources only when the Ap
 ## Health from conditions
 
 Argo CD assigns each resource Healthy, Progressing, Degraded, Suspended, Missing, or Unknown, takes the worst health among an application's immediate children, and needs custom Lua checks (`resource.customizations.health.<group>_<kind>`) for CRDs because status formats are not standardized. [[sources/research-conditions]] See [[examples/argo-cd-rolls-up-child-health-with-lua-checks]] and [[concepts/conditions]].
+
+## Hosting Crossplane managed resources
+
+Crossplane's integration guide says Argo CD should use annotation-based resource tracking because label tracking collides with Crossplane's own labels on composed resources, should have custom Lua health checks that read the `Ready` and `Synced` conditions, should hide ProviderConfigUsage objects, and may need `ARGOCD_K8S_CLIENT_QPS` raised to 300 as CRDs multiply. [[sources/research-managed-resource]] See [[examples/crossplane-resources-hosted-by-argo-cd]] and [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]].

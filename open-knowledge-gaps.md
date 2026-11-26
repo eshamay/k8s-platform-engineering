@@ -89,6 +89,11 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#crossplane-v2-condition-behavior-and-the-fix-for-async-synced-signaling]] — open, unassigned
 - [[#how-a-platform-should-choose-condition-polarity]] — open, unassigned
 - [[#which-parts-of-the-config-connector-reconcile-status-design-shipped]] — open, unassigned
+- [[#managementpolicies-feature-status-and-the-observeonly-to-policy-list-mapping]] — open, unassigned
+- [[#adoption-and-orphaning-behavior-in-cluster-api-kro-and-controller-runtime-operators]] — open, unassigned
+- [[#behavior-of-namespaced-v2-managed-resources-when-a-namespace-is-deleted-while-the-provider-is-down]] — open, unassigned
+- [[#per-provider-external-name-defaults]] — open, unassigned
+- [[#config-connector-conflict-handling-when-two-objects-target-one-cloud-resource]] — open, unassigned
 
 ---
 
@@ -121,6 +126,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-finalizers]]:** Only marginally helpful. The dossier shows finalizer registration and teardown: Crossplane managed resources hold a finalizer until the external resource is gone, and kro keeps the instance finalizer while deleting in reverse dependency waves, but it does not trace source fetch or status conditions. See [[concepts/finalizers]] and [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]].
 - **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Only marginally helpful. The dossier adds the garbage collector side of the trace: the controller sets an owner reference on each child, the garbage collector's dependency graph deletes dependents when the owner goes, and a lost reference breaks cascade. It does not trace Flux's source fetch, apply, or condition updates, and it says Flux prunes through an inventory and not through owner references. See [[concepts/owner-references-and-garbage-collection]] and [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]].
 - **Possible resolution from [[sources/research-conditions]]:** Partly helpful on the last step. The dossier shows that kustomize-controller waits for applied resources to become healthy (kstatus for compatible custom resources, CEL `healthCheckExprs` for others) before marking a Kustomization `Ready`, that Flux publishes `Ready`, `Reconciling`, and `Stalled` with `observedGeneration`, and that this gating unblocks `dependsOn` dependents. It does not trace source fetch or finalizers. See [[concepts/conditions]] and [[entities/flux]].
+- **Possible resolution from [[sources/research-managed-resource]]:** Only marginally helpful. The dossier shows one downstream step, that a Flux prune of a managed resource object triggers the provider's delete of the cloud resource unless Delete is excluded from `managementPolicies`, and that Crossplane's reconciler phases are Connect, Observe, Create, Update, Delete. It does not trace source fetch, apply, or condition updates. See [[entities/flux]] and [[concepts/managed-resource]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -150,6 +156,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on the deletion side of the comparison only. The dossier shows that kro deletes composed resources in reverse dependency waves and that Crossplane has no equivalent ordering for namespace deletion (issue 7801), but it gives no resolution of which graph model suits which case. See [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] and [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]].
 - **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Partly helpful on the Crossplane side of deletion only. The dossier shows that composed resources are owned by their composite and that the composite deletion policy is Background, Foreground, or Pipeline, which gives Crossplane an explicit ordered-teardown knob. It could not read kro's instances page, so how kro owns and orders its children is still unknown. See [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]] and [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]].
 - **Possible resolution from [[sources/research-conditions]]:** Partly helpful on the status side. Crossplane fixes the meaning of `Synced` and `Ready` in the framework, while kro lets the RGD author define `readyWhen` and custom instance conditions in CEL, which hides kro's built-in conditions. kro's instance-level built-in names were not read. See [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]].
+- **Possible resolution from [[sources/research-managed-resource]]:** Not helpful. The dossier covers the managed resource layer under compositions and says kro adoption and orphaning behavior was not read, so it cannot compare Compositions with kro.
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -181,6 +188,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-finalizers]]:** Not helpful. The dossier names no adopter beyond the projects themselves, and it cannot supply scale data.
 - **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Marginally helpful. The dossier describes how the garbage collector keeps a graph built from watch events on all resources, with queues and an absent-owner cache, but it gives no scale numbers or sharding data. See [[examples/the-garbage-collector-builds-a-dependency-graph-from-watch-events-and-sorts-references-into-three-classes]].
 - **Possible resolution from [[sources/research-conditions]]:** Marginally helpful. The dossier notes that bumping `lastTransitionTime` on every reconcile adds API traffic, but it gives no scale numbers or sharding data. See [[findings/updating-lasttransitiontime-on-every-reconcile-turns-a-condition-into-a-heartbeat]].
+- **Possible resolution from [[sources/research-managed-resource]]:** Partly helpful on the CRD side. The dossier gives numbers for the cost of one CRD per external resource type (roughly 2,000 CRDs for three clouds, more than 4 MiB of API server memory per CRD, about 300 group-versions to discover, GKE control planes unresponsive at about 680 CRDs) and the Crossplane v2 remedy of activation policies, plus Argo CD's client QPS of 300. It has no informer, workqueue, or sharding data for Flux or Crossplane controllers. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -192,6 +200,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Write `examples/` pages for each documented adopter.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** adoption, crossplane, ack, kcp
+- **Possible resolution from [[sources/research-managed-resource]]:** Partly helpful. The Crossplane ADOPTERS list names Nike, Autodesk, SAP, Deutsche Kreditbank, IBM, Elastic, UiPath, VMware Tanzu, DB Systel, Nokia, and Akamai, with reported counts such as SAP's thousands of managed resources and Akamai's up to 200,000. The entries are self-reported one-liners and not verified case studies. See [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]].
 
 ## Independent scale benchmarks for etcd, vcluster, and kcp — status: open
 
@@ -271,6 +280,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** adoption, ignore-differences, management-policies
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Largely helpful. The dossier covers Argo CD `ignoreDifferences` (JSON pointer, JQ path, `managedFieldsManagers`), Flux `driftDetection.ignore` and the `ssa` annotation, and Crossplane `managementPolicies` with Observe adoption and the pause annotation. ACK adoption was not read. See [[comparisons/exemption-and-ignore-controls-across-tools]].
 - **Possible resolution from [[sources/research-idempotency]]:** Partly closes the ACK adoption part. The dossier reads the ACK adoption guide (`adopt-or-create`, strict `adopt`, `adoption-fields`, Beta status), Config Connector acquisition by name, Crossplane's Observe-then-manage import flow, and SAP's explicit-intent design. It does not read Argo CD `ignoreDifferences` or Flux field managers. See [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] and [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]].
+- **Possible resolution from [[sources/research-managed-resource]]:** Largely helpful for Crossplane, ACK, and Config Connector. The dossier reads the Crossplane import guide and observe-only design document, ACK's read-only annotation, and Config Connector's acquire-by-name behavior and abandon annotation. It does not read Argo CD `ignoreDifferences` or Flux field managers. See [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]] and [[examples/crossplane-import-of-an-existing-gcp-database-observes-first-then-takes-control]].
 
 
 ## Argo CD versus Flux head-to-head behavior — status: open
@@ -1060,3 +1070,57 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the Config Connector resource status documentation or inspect a live resource.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** config-connector, conditions, verification
+
+## managementPolicies feature status and the ObserveOnly-to-policy-list mapping — status: open
+
+- **Question:** Is `managementPolicies` still beta in Crossplane v2.x, and how do the older `ObserveOnly` and `deletionPolicy` terms map onto the policy list?
+- **Why it matters:** The import guide calls management policies beta while the managed resources page presents them as standard, and no page the dossier read spells out the mapping, so [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]] rests on inference.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Crossplane feature-lifecycle page (https://docs.crossplane.io/latest/learn/feature-lifecycle/).
+  - [ ] Find a page or release note that maps the old enum to the list.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, management-policies, verification
+
+## Adoption and orphaning behavior in Cluster API, kro, and controller-runtime operators — status: open
+
+- **Question:** How do Cluster API, kro, and plain controller-runtime operators handle adopting an existing resource and orphaning one on delete?
+- **Why it matters:** The managed resource dossier found no readable primary source for these tools, so [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]] covers only Crossplane, Config Connector, and ACK.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Cluster API and kro documentation on adoption and deletion.
+  - [ ] Read the ACK introduction blog.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** adoption, orphan, cluster-api, kro
+
+## Behavior of namespaced v2 managed resources when a namespace is deleted while the provider is down — status: open
+
+- **Question:** What happens to namespaced Crossplane v2 managed resources when their namespace is deleted while the provider is absent, beyond the finalizer note?
+- **Why it matters:** The dossier says deletion hangs without the provider and that hand-removing the finalizer orphans the real resource, but the Crossplane docs do not state the namespace-deletion case clearly.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find Crossplane documentation or an issue that describes the namespace-deletion case in v2.
+  - [ ] Add the result to [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, finalizers, namespaces, deletion
+
+## Per-provider external-name defaults — status: open
+
+- **Question:** What is the default `crossplane.io/external-name` for each major provider and resource kind?
+- **Why it matters:** One source says the default is the object name for S3 and another says external resources are named like the Kubernetes object by default, and per-provider variation is not documented in one place.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the provider documentation for AWS, Azure, and GCP kinds.
+  - [ ] Update [[decisions/external-name-annotation-or-spec-field]] if defaults differ.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, external-name, providers
+
+## Config Connector conflict handling when two objects target one cloud resource — status: open
+
+- **Question:** What does Config Connector do when two Kubernetes objects acquire the same cloud resource?
+- **Why it matters:** The acquire-by-name behavior was read through a summarized fetch and lacks conflict handling detail, which matters for [[findings/adopt-or-create-can-take-over-a-look-alike-resource]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Config Connector resource acquisition documentation directly.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** config-connector, adoption, conflicts
