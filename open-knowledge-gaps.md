@@ -60,7 +60,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#argo-cd-and-config-connector-as-operators]] — open, unassigned
 - [[#backstage-and-the-operator-pattern]] — open, unassigned
 - [[#requeue-true-backoff-behavior-in-current-controller-runtime]] — open, unassigned
-- [[#argo-cd-default-reconcile-interval-across-versions]] — open, unassigned
 - [[#named-postmortems-of-runaway-reconcile-loops]] — open, unassigned
 - [[#kro-and-cluster-api-idempotency-for-external-and-infrastructure-creates]] — open, unassigned
 - [[#production-outcomes-of-adopt-or-create-versus-explicit-import]] — open, unassigned
@@ -749,18 +748,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** controller-runtime, requeue, backoff
 - **Possible resolution from [[sources/research-gap-g3-k8s-and-controller-runtime]]:** Settled, and the user can close it. At controller-runtime v0.25.3 (published 2026-11-16), `Result{Requeue: true}` with a nil error is a rate-limited requeue with per-item exponential backoff, so the package reference was right. The handler adds the request with `RateLimited: true` and does not reset the failure counter, while `RequeueAfter > 0` calls `Queue.Forget(req)` and then waits exactly that duration, and a non-nil error ignores both fields. The deprecation notice names the replacement: "Deprecated: Use `RequeueAfter` instead." With the default priority queue the limiter is per-item exponential (5 ms to 1000 s) with no overall bucket. Not settled: where the "immediate requeue" reading came from, because issue 808's body does not claim it and its comment thread was not read. See [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]] and [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
-
-## Argo CD default reconcile interval across versions — status: open
-
-- **Question:** What is the Argo CD default Git polling interval in each recent release, given that stable documentation says 120 seconds plus 60 seconds of jitter and older material says 3 minutes?
-- **Why it matters:** Drift and change latency depend on the interval, and mixed numbers in the wiki can mislead. See [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the `timeout.reconciliation` documentation for several releases.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** argo-cd, intervals
-- **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Settled for the versions sampled, and the user can close it. `timeout.reconciliation` is 180s from v2.5.0 through v2.14.0 (the jitter key appears from v2.10.0 with default 0) and 120s plus 60s of jitter from v3.0.0 through v3.6.0, in both the manifest and the controller constants. The v3.0.0 FAQ restates 3 minutes as a "default maximum polling interval", and the v3.2.0 high-availability page still says 3m. Not settled: why the default changed (the upgrade notes and pull request searches found nothing) and the values for v2.0.0 to v2.4.0, which were not sampled. See [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]] and [[entities/argo-cd]].
-
 
 ## Named postmortems of runaway reconcile loops — status: open
 
@@ -1720,3 +1707,16 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-idempotency]]:** Only marginally helpful. The Kustomization reference quote ("every ten minutes, the Kustomization runs a server-side apply dry-run") uses ten minutes as an example interval, and the dossier does not state a default or the 60-second minimum. See [[entities/flux]].
 - **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Settled, and the user can close it. The concepts page's "every five minutes by default" matches no controller behavior. `.spec.interval` is required on the Kustomization and the HelmRelease, the CRD Go type has only a duration-format pattern with no default and no minimum, and the reference says "The minimum value should be 60 seconds", a recommendation and not an enforced floor. The only default found is the `flux create` global `--interval` flag at one minute. The ten-minute figure is an example of drift-check cadence, and a guide example uses `60m0s` for hourly drift correction. Drift is corrected on the interval, and source or spec changes are handled instantly outside it. Not settled: the origin of the five-minute wording and the controller jitter value. See [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[entities/flux]], and [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
+
+## Argo CD default reconcile interval across versions — status: closed (2026-11-26)
+
+- **Question:** What is the Argo CD default Git polling interval in each recent release, given that stable documentation says 120 seconds plus 60 seconds of jitter and older material says 3 minutes?
+- **Why it matters:** Drift and change latency depend on the interval, and mixed numbers in the wiki can mislead. See [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the `timeout.reconciliation` documentation for several releases.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** argo-cd, intervals
+- **Resolution:** Settled: Argo CD's default is 180 seconds through v2.14 and 120 seconds plus 60 seconds of jitter from v3.0, and some docs still say three minutes ([[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]], [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]]). Not settled: the reason for the change and the v2.1 to v2.4 values were not found.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Settled for the versions sampled, and the user can close it. `timeout.reconciliation` is 180s from v2.5.0 through v2.14.0 (the jitter key appears from v2.10.0 with default 0) and 120s plus 60s of jitter from v3.0.0 through v3.6.0, in both the manifest and the controller constants. The v3.0.0 FAQ restates 3 minutes as a "default maximum polling interval", and the v3.2.0 high-availability page still says 3m. Not settled: why the default changed (the upgrade notes and pull request searches found nothing) and the values for v2.0.0 to v2.4.0, which were not sampled. See [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]] and [[entities/argo-cd]].

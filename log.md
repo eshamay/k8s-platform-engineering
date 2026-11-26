@@ -554,3 +554,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Flux default reconcile interval and drift-detection wording
 - closed by: Eric Shamay
 - resolution: Settled: the Flux Kustomization and HelmRelease references require the interval and set no controller default; 60 seconds is the recommended minimum and the CLI default is one minute, so the concepts page's five-minute wording is unsupported ([[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[comparisons/reconcile-cadence-and-off-switches-across-tools]]). Not settled: the jitter value and the origin of the five-minute wording were not read.
+
+## [2026-11-26] gaps | close | Argo CD default reconcile interval across versions
+- closed by: Eric Shamay
+- resolution: Settled: Argo CD's default is 180 seconds through v2.14 and 120 seconds plus 60 seconds of jitter from v3.0, and some docs still say three minutes ([[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]], [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]]). Not settled: the reason for the change and the v2.1 to v2.4 values were not found.
