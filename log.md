@@ -582,3 +582,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Current Cluster API MachineHealthCheck behavior
 - closed by: Eric Shamay
 - resolution: Settled at Cluster API v1.15.0-rc.0: the v1beta2 names, a 100 percent default that leaves the short-circuit guard off so remediation is unbounded until a threshold is set, and an external remediation reference; v1beta1 maxUnhealthy and unhealthyRange are deprecated ([[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]], [[findings/cluster-api-v1beta1-maxunhealthy-and-unhealthyrange-are-deprecated-and-older-material-uses-the-old-names]]). Not settled: these were read from a release candidate and need a recheck at v1.15.0 final.
+
+## [2026-11-26] gaps | close | ClusterClass maturity and the managed topologies proposal
+- closed by: Eric Shamay
+- resolution: Settled at Cluster API v1.15.0-rc.0: ClusterTopology is Beta and on by default, while maturity labels disagree across doc versions and the original proposal still says provisional ([[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]], [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]]). Not settled: only rc.0 existed, so the label needs a recheck at v1.15.0 final.

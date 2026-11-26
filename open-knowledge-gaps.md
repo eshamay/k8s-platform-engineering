@@ -80,7 +80,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#per-provider-external-name-defaults]] — open, unassigned
 - [[#config-connector-conflict-handling-when-two-objects-target-one-cloud-resource]] — open, unassigned
 - [[#flux-handling-of-composite-resources-and-kro-instances]] — open, unassigned
-- [[#clusterclass-maturity-and-the-managed-topologies-proposal]] — open, unassigned
 - [[#scale-of-composite-resources-per-controller]] — open, unassigned
 - [[#feature-parity-of-function-kro-with-standalone-kro]] — open, unassigned
 - [[#crossplane-function-runner-architecture-history]] — open, unassigned
@@ -968,18 +967,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** flux, crossplane, kro, health-checks
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Not helpful. The dossier does not research Flux with composites or kro instances.
 
-## ClusterClass maturity and the managed topologies proposal — status: open
-
-- **Question:** What is the current maturity of Cluster API's ClusterClass and what does the CAEP "ClusterClass and Managed Topologies" specify?
-- **Why it matters:** The dossier read only a short landing page that labels the feature alpha, which may be stale. See [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the current Cluster API book on ClusterClass and the CAEP.
-  - [ ] Update [[entities/cluster-api]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** cluster-api, clusterclass, verification
-- **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Settled for the release candidate, and the user can close it. The `ClusterTopology` gate is Beta and enabled by default as of v1.15.0-rc.0 (2026-11-24), while the v1.14.4 docs still say alpha, so the wiki's alpha label reflects older docs. Beta is not GA, and v1.15.0 final was not released on 2026-11-26. The proposal describes ClusterClass as a collection of template references and the Cluster as a single control point with continuous reconciliation, and its frontmatter still says `provisional` despite later additions (MachineHealthChecks in 2022, upgrade plans in 2025). Recheck at the v1.15.0 release. See [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]] and [[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]].
-
 ## Scale of composite resources per controller — status: open
 
 - **Question:** How many composites and composed children can a Crossplane function pipeline or a kro dynamic controller reconcile, and what do the tuning pages report?
@@ -1726,3 +1713,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled at Cluster API v1.15.0-rc.0: the v1beta2 names, a 100 percent default that leaves the short-circuit guard off so remediation is unbounded until a threshold is set, and an external remediation reference; v1beta1 maxUnhealthy and unhealthyRange are deprecated ([[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]], [[findings/cluster-api-v1beta1-maxunhealthy-and-unhealthyrange-are-deprecated-and-older-material-uses-the-old-names]]). Not settled: these were read from a release candidate and need a recheck at v1.15.0 final.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Largely settled, and the user can close it. The v1beta2 API (v1.11.0, 2025-08-19) moves checks under `spec.checks` and replaces `maxUnhealthy` and `unhealthyRange` with `remediation.triggerIf.unhealthyLessThanOrEqualTo` and `unhealthyInRange` (which takes precedence, percentages round down). The default is 100 percent, so the short-circuit is off until set. External remediation uses `remediation.templateRef`, v1.15.0-rc.0 adds CEL `unhealthyExpressions` (OR-combined, at most 10), and KubeadmControlPlane remediation must preserve etcd quorum with its own `maxRetry`, `retryPeriodSeconds`, and `minHealthyPeriodSeconds` controls. Not settled: v1.15.0 final was not released on 2026-11-26, so the v1.15 items are pre-release, and no real-world remediation-storm incident was found. See [[examples/cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers]], [[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]], and [[entities/cluster-api]].
+
+## ClusterClass maturity and the managed topologies proposal — status: closed (2026-11-26)
+
+- **Question:** What is the current maturity of Cluster API's ClusterClass and what does the CAEP "ClusterClass and Managed Topologies" specify?
+- **Why it matters:** The dossier read only a short landing page that labels the feature alpha, which may be stale. See [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current Cluster API book on ClusterClass and the CAEP.
+  - [ ] Update [[entities/cluster-api]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cluster-api, clusterclass, verification
+- **Resolution:** Settled at Cluster API v1.15.0-rc.0: ClusterTopology is Beta and on by default, while maturity labels disagree across doc versions and the original proposal still says provisional ([[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]], [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]]). Not settled: only rc.0 existed, so the label needs a recheck at v1.15.0 final.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Settled for the release candidate, and the user can close it. The `ClusterTopology` gate is Beta and enabled by default as of v1.15.0-rc.0 (2026-11-24), while the v1.14.4 docs still say alpha, so the wiki's alpha label reflects older docs. Beta is not GA, and v1.15.0 final was not released on 2026-11-26. The proposal describes ClusterClass as a collection of template references and the Cluster as a single control point with continuous reconciliation, and its frontmatter still says `provisional` despite later additions (MachineHealthChecks in 2022, upgrade plans in 2025). Recheck at the v1.15.0 release. See [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]] and [[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]].
