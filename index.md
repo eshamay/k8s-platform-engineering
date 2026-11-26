@@ -8,7 +8,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 - [[concepts/universal-control-plane]] — Kubernetes API and etcd as a control plane for any infrastructure (active)
 - [[concepts/declarative-vs-imperative]] — end-state specs versus command sequences, three kubectl techniques (active)
-- [[concepts/level-triggered-vs-edge-triggered]] — state-driven versus event-driven controller logic (draft)
+- [[concepts/level-triggered-vs-edge-triggered]] — state-driven versus event-driven controller logic (active)
 - [[concepts/eventual-consistency-and-convergence]] — concurrent apply, retry, converge (draft)
 - [[concepts/self-healing-and-drift-detection]] — reverting out-of-band changes (draft)
 - [[concepts/gitops-pull-based-delivery]] — in-cluster agent pulls from Git (draft)
@@ -50,12 +50,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/kcp]] — node-less multi-tenant API workspaces (draft)
 - [[entities/kubectl]] — CLI behind imperative and declarative techniques (draft)
 - [[entities/kubebuilder]] — controller framework and Reconcile tutorial (draft)
+- [[entities/controller-runtime]] — Go controller library and the level-based Reconciler contract (draft)
 
 ## Sources
 
 - [[sources/krm-platform-vocabulary]] — seed vocabulary note, 2026-11-25
 - [[sources/research-universal-control-plane]] — research dossier on the universal control plane idea, 19 web sources, 2026-11-25
 - [[sources/research-declarative-vs-imperative]] — research dossier on declarative versus imperative management, 22 web sources, 2026-11-25
+- [[sources/research-level-triggered-vs-edge-triggered]] — research dossier on level-triggered versus edge-triggered reconciliation, 14 web sources, 2026-11-25
 
 ## Examples
 
@@ -68,6 +70,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]] — Git as desired state (draft)
 - [[examples/database-operator-encodes-runbooks]] — SampleDB operator (draft)
 - [[examples/platform-team-self-service-apis-with-crossplane-and-kro]] — one object, many resources (draft)
+- [[examples/how-core-controllers-handle-cache-lag]] — ReplicaSet, StatefulSet, and Deployment (draft)
+- [[examples/gitops-reverts-a-hand-edited-deployment]] — Flux and Argo CD drift reversion (draft)
+- [[examples/cloud-console-changes-reverted-by-provider-controllers]] — Config Connector and Crossplane drift reversion (draft)
+- [[examples/controller-pattern-for-digital-twins]] — ApeiroRA reference architecture (draft)
 
 ## Comparisons
 
@@ -76,11 +82,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/kubectl-object-management-techniques]] — three kubectl techniques (draft)
 - [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]] — drift and prune behavior (draft)
 - [[comparisons/deletion-policies-across-gitops-and-provider-tools]] — retain, abandon, orphan (draft)
+- [[comparisons/reconcile-cadence-and-off-switches-across-tools]] — intervals, retries, and pause controls (draft)
 
 ## Decisions
 
 - [[decisions/crd-versus-aggregated-api]] — how to serve new API kinds (draft)
 - [[decisions/choosing-an-object-management-technique]] — imperative, replace, or apply (draft)
+- [[decisions/events-as-hints-state-as-truth]] — level-based correctness with watch-based latency (draft)
 
 ## Findings
 
@@ -94,6 +102,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/unintended-deletion-through-prune]] — prune deletes more than expected (draft)
 - [[findings/defaulting-and-drift-reconcile-loops]] — endless loops from server defaults (draft)
 - [[findings/mixing-management-techniques-on-one-object]] — retained live edits (draft)
+- [[findings/stale-cache-and-double-action]] — cache lag causes duplicate work (draft)
+- [[findings/event-specific-logic-in-reconcilers]] — branching on events reintroduces fragility (draft)
+- [[findings/cost-of-constant-reconciliation]] — repeated reads and API quota (draft)
+- [[findings/continuous-loops-override-intentional-changes]] — loops revert manual changes (draft)
+- [[findings/failure-retry-loops-and-backoff]] — endless retries and terminal errors (draft)
 
 ## Outputs
 

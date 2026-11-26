@@ -11,6 +11,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-level-triggered-vs-edge-triggered
+    hash: 27a34aa0de59
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -30,6 +33,10 @@ A ten-hour resync means an out-of-band change may sit uncorrected for a long tim
 ## Deletion policy documentation
 
 Deleting an ACK custom resource deletes the AWS resource first by default. A `retain` policy, set by annotation, namespace annotation, or controller flag, keeps the cloud resource, which helps with migrations or with removing ACK management. Adoption is a separate feature that the dossier did not read. [[sources/research-declarative-vs-imperative]] See [[comparisons/deletion-policies-across-gitops-and-provider-tools]].
+
+## Reconcile behavior
+
+The level-triggered dossier could not confirm ACK's resync or drift-recovery behavior, because the overview page lacked those details. ACK is expected to follow the same reconcile shape as other provider controllers. [[sources/research-level-triggered-vs-edge-triggered]] See [[examples/cloud-console-changes-reverted-by-provider-controllers]] and [[open-knowledge-gaps]].
 
 ## Related
 

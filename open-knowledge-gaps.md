@@ -20,6 +20,10 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#adoption-observe-only-and-ignore-differences-controls]] — open, unassigned
 - [[#argo-cd-versus-flux-head-to-head-behavior]] — open, unassigned
 - [[#current-crossplane-terminology-versus-the-early-claims-and-classes-model]] — open, unassigned
+- [[#informer-resync-semantics]] — open, unassigned
+- [[#origin-of-level-driven-not-edge-driven-guidance]] — open, unassigned
+- [[#incidents-caused-by-lost-events-or-edge-triggered-design]] — open, unassigned
+- [[#reconcile-defaults-for-crossplane-ack-and-cluster-api]] — open, unassigned
 
 ---
 
@@ -37,6 +41,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 
 - **Possible resolution from [[sources/research-universal-control-plane]]:** The dossier covers Flux only at the component and Kustomization API level (`dependsOn`, `prune`, `healthChecks`, drift correction through server-side apply dry runs). It does not trace the source-controller to kustomize-controller handoff, so it only partly helps. See [[entities/flux]].
 - **Possible resolution from [[sources/research-declarative-vs-imperative]]:** The dossier adds Flux Kustomization details that belong in the trace: sources produce artifacts that Kustomizations apply, drift is detected with a server-side apply dry run each interval, `prune` and the deletion policy govern removal, and `suspend` pauses reconciliation. It still does not trace finalizer registration or status condition updates, so it only partly helps. See [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]].
+- **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Only marginally helpful. The dossier shows that Flux's Kustomization reconciles on its interval and immediately on source revision changes, runs a server-side apply dry run each cycle, and uses `retryInterval` on failure, which fits the trigger and retry steps of the trace. It does not trace source-controller handoff, finalizers, or condition updates. See [[entities/flux]] and [[examples/gitops-reverts-a-hand-edited-deployment]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -52,6 +57,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 
 - **Possible resolution from [[sources/research-universal-control-plane]]:** The dossier supplies the execution models: Crossplane uses an XRD plus a Composition that runs a pipeline of gRPC functions with observed-state feedback on each reconcile, while kro uses a ResourceGraphDefinition with CEL references from which ordering is derived. kro was pre-1.0 (0.10.0) and its dependency mechanics were not read. A first draft is in [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]]. See [[entities/crossplane]] and [[entities/kro]].
 - **Possible resolution from [[sources/research-declarative-vs-imperative]]:** The dossier adds that kro validates schemas, expressions, and references at apply time, infers dependency order from CEL expressions, waits on not-yet-existing status values, supports conditionals and forEach, and keeps CEL non-Turing-complete so definitions terminate and are auditable. Crossplane instead uses a gRPC function pipeline for flexible composition. Readiness mechanics are still not described. See [[examples/platform-team-self-service-apis-with-crossplane-and-kro]].
+- **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Only marginally helpful. The dossier adds Crossplane's reconcile mechanics (`forProvider` compared to the external resource, `managementPolicies`, pause annotation) but does not mention kro or composition functions, and the default poll interval was not confirmed. See [[entities/crossplane]] and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -67,6 +73,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 
 - **Possible resolution from [[sources/research-universal-control-plane]]:** The dossier covers the etcd and API server side of scale (single write leader, 8 GB cap, list and watch amplification, Kine, separate Events etcd, per-tenant control planes), not informer, workqueue, or sharding behavior of Flux and Crossplane. See [[findings/etcd-scale-limits-of-the-shared-store]].
 - **Possible resolution from [[sources/research-declarative-vs-imperative]]:** Only marginally helpful. The dossier explains that controllers re-list and reconcile full state and that Kubebuilder controllers use the status subresource and owner references, but it has no sharding, concurrency, or rate-limit data. See [[entities/kubebuilder]].
+- **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Partly helpful. The dossier explains why events are hints that enqueue keys, how cache lag causes double action, how errors requeue with exponential backoff, and how intervals and jitter limit API load. It has no sharding or concurrency data and does not explain informer resync semantics. See [[findings/stale-cache-and-double-action]], [[findings/cost-of-constant-reconciliation]], and [[concepts/informers-reflectors-and-workqueues]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -175,3 +182,47 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/crossplane]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, terminology, history
+
+## Informer resync semantics — status: open
+
+- **Question:** What does an informer resync period actually do in client-go and controller-runtime, and how does it differ from a relist against the API server?
+- **Why it matters:** Tutorials say controllers re-list or resync periodically, but the dossier found no source that explains that resync replays cached state to handlers and does not refetch from the API server.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Walk through the client-go shared informer and reflector source.
+  - [ ] Update [[concepts/informers-reflectors-and-workqueues]] and [[concepts/level-triggered-vs-edge-triggered]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** informers, resync, client-go
+
+## Origin of the Level driven, not edge driven guidance — status: open
+
+- **Question:** Where is the Kubernetes Controller Writing Guide that the Ayson post quotes as "Level driven, not edge driven," and does it say more about expectations?
+- **Why it matters:** The quote is cited second-hand, and the original guide URL was not located.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Locate the guide in the kubernetes/community repository or a successor.
+  - [ ] Verify the quote and the Joe Beda attribution to the O'Reilly book Cloud Native Infrastructure.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** level-triggered, verification, provenance
+
+## Incidents caused by lost events or edge-triggered design — status: open
+
+- **Question:** Are there named-company postmortems or case studies where a lost event, stale cache, or edge-triggered design caused an outage?
+- **Why it matters:** The pitfalls pages rely on explainers and framework docs. The Render informer blog post and the ondemandenv.dev Thermostat article could not be fetched, so they may hold evidence.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Retry the Render informer post and search for operator bugs tied to missed events.
+  - [ ] Add `findings/` pages for each documented incident.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** postmortem, informers, level-triggered
+
+## Reconcile defaults for Crossplane, ACK, and Cluster API — status: open
+
+- **Question:** What are the default poll or resync intervals and drift-recovery behaviors of Crossplane providers, ACK controllers, and Cluster API controllers?
+- **Why it matters:** The cadence comparison has empty cells for these tools because the pages fetched did not state the values.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read each project's documentation or source directly.
+  - [ ] Fill the rows in [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, ack, cluster-api, intervals

@@ -14,6 +14,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-level-triggered-vs-edge-triggered
+    hash: 27a34aa0de59
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -31,6 +34,10 @@ See [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]] and [[findings/b
 ## Declarative framing
 
 The Crossplane documentation says a Composition "composes individual resources together into a larger, reusable, solution," with an XRD defining the composite schema and functions computing desired composed resources. The 2018-era announcement described a "universal declarative-style API for cloud computing" built on claims and classes, which differs from the current composite resource, composition, and function model. [[sources/research-declarative-vs-imperative]] See [[examples/platform-team-self-service-apis-with-crossplane-and-kro]].
+
+## Reconcile cadence
+
+A provider re-reconciles each managed resource, compares `forProvider` to the external resource, and acts according to `managementPolicies` such as Observe, Update, and LateInitialize. A poll interval and a pause annotation control cadence, but the default poll interval was not confirmed from a thin fetch. [[sources/research-level-triggered-vs-edge-triggered]] See [[comparisons/reconcile-cadence-and-off-switches-across-tools]] and [[examples/cloud-console-changes-reverted-by-provider-controllers]].
 
 ## Related concepts
 

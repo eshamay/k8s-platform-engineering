@@ -11,6 +11,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-level-triggered-vs-edge-triggered
+    hash: 27a34aa0de59
+    ingested: 2026-11-25
 aliases: [GitOps, Pull-based delivery]
 tags: [architecture, principle, gitops]
 ---
@@ -28,6 +31,10 @@ Pull-based delivery keeps cluster credentials inside the cluster, gives an audit
 ## Principles and implementations
 
 A Red Hat interview with Intuit states the GitOps principle that desired state is declarative, versioned, immutable, pulled automatically, and continuously reconciled. Flux defines GitOps as ensuring that a given state matches a desired state declaratively defined somewhere, and Argo CD automated sync applies Git state when an application is OutOfSync. [[sources/research-declarative-vs-imperative]] See [[examples/intuit-argo-cd-gitops-origin]], [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]], and [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
+
+## Level-triggered reconciliation in GitOps tools
+
+GitOps tools turn "Git is truth" into a repeating comparison between Git and the cluster, with interval polling as the safety net and source-change events as a latency optimization. [[sources/research-level-triggered-vs-edge-triggered]] See [[examples/gitops-reverts-a-hand-edited-deployment]] and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
 
 ## Related
 

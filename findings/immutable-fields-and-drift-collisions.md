@@ -11,6 +11,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-level-triggered-vs-edge-triggered
+    hash: 27a34aa0de59
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, drift, immutability]
 ---
@@ -28,6 +31,10 @@ Self-healing is helpful when the spec is right and harmful when the live change 
 ## Caveat
 
 The ACK resync default may have changed and should be verified. The dossier also notes that failure-mode details such as Flux server-side-apply conflicts deserve a direct read of the docs.
+
+## Unreadable and immutable fields
+
+Level-triggered drift correction cannot fix what it cannot read or change. Config Connector actuates unreadable fields only on spec change and needs recreation for immutable ones, and Flux offers `force` to replace objects on immutable conflicts. [[sources/research-level-triggered-vs-edge-triggered]] See [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
 
 ## Related
 

@@ -11,6 +11,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-level-triggered-vs-edge-triggered
+    hash: 27a34aa0de59
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -30,6 +33,10 @@ Because authority is centralized in the management cluster, that cluster becomes
 ## Declarative lifecycle and immutable Machines
 
 The Cluster API book states the goal as managing the lifecycle (create, scale, upgrade, destroy) of Kubernetes-conformant clusters using a declarative API. Machines are immutable: once created they are never updated except for labels, annotations, and status, and changes replace machines, a deliberate rollout design like Pod versus Deployment. [[sources/research-declarative-vs-imperative]] See [[examples/cluster-fleet-lifecycle-with-cluster-api]] and [[findings/immutable-fields-and-drift-collisions]].
+
+## Reconcile behavior
+
+The level-triggered dossier could not confirm Cluster API controller details, because the page URL tried returned 404. Cluster API is expected to follow the same reconcile shape as other controllers. [[sources/research-level-triggered-vs-edge-triggered]] See [[examples/cloud-console-changes-reverted-by-provider-controllers]] and [[open-knowledge-gaps]].
 
 ## Related
 
