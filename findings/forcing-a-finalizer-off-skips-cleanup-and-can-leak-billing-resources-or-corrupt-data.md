@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
@@ -47,3 +50,7 @@ The Red Hat troubleshooting guide presents force removal through the namespace `
 ## Addition from the GitOps incidents dossier
 
 Still no rate: the Kubernetes finalizers page was re-read on 2026-11-26 and it warns that "forcefully removing them can lead to issues in your cluster" without a frequency, see [[findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources]]. Primary issues document orphaning by other routes, see [[findings/resources-are-orphaned-when-a-controller-misses-the-delete-or-the-finalizer-is-added-too-late]]. ACK issue 2911 shows the case where a manual patch is safe because the AWS resource was already gone, see [[examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+
+## Namespace-deletion evidence from Crossplane v2
+
+Crossplane issue 7801 states that when a namespace is deleted and the credentials Secret goes first, "The only way out today is to remove finalizers by hand, which orphans the external resources." That is a statement in the issue, not a release note. Whether the same happens with the provider absent is not documented. [[sources/research-gap-m2-ownership-gc]] See [[examples/crossplane-issue-7801-asks-how-to-protect-provider-credentials-during-namespace-deletion-and-is-open-with-no-maintainer-reply]].

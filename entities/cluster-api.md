@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-gap-m1-finalizers
     hash: 014549e333b6
     ingested: 2026-11-26
@@ -196,3 +199,7 @@ The 2026-11-26 dossier found release-note breaking changes and a webhook-availab
 ## Release status and recheck on 2026-11-26
 
 A later pass found that v1.15.0 final does not exist: the newest tag is v1.15.0-rc.0 (2026-11-24, prerelease) and the newest stable release is v1.14.4 (2026-11-03). On v1.15.0-rc.0 and on `main` the v1beta2 MachineHealthCheck fields (`unhealthyExpressions`, `remediation.templateRef`, `remediation.triggerIf.unhealthyLessThanOrEqualTo`, `unhealthyInRange`) and the Beta `ClusterTopology` gate agree, and a new Alpha gate `ClusterTopologyWorkerVersionPinning` requires `ClusterTopology`. Nothing read says ClusterClass is GA. The v1beta2 Cluster type defines an `Available` condition constant and no `Ready` constant. See [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]], [[findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled]], and [[sources/research-gap-b1-recheck-capi-argocd]].
+
+## Adoption and orphaning
+
+The MachineSet controller adopts Machines that match its selector and have no controller reference, by patching a controller owner reference, and emits `SuccessfulAdopt` or `FailedAdopt` events. The book lists adoption duties for MachineSet and MachineDeployment, and says owner references should be created with the object, re-reconciled if lost, and kept on the latest apiVersion. `clusterctl move` pauses the Cluster first. No explicit orphan propagation was found in non-test source. [[sources/research-gap-m2-ownership-gc]] See [[examples/cluster-api-machineset-adopts-machines-that-have-no-controller-reference]].

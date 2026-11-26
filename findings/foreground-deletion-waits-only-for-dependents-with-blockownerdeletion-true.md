@@ -1,10 +1,13 @@
 ---
 title: "Foreground deletion waits only for dependents with blockOwnerDeletion true"
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
@@ -31,4 +34,4 @@ A parent can be stuck waiting on children, and a dependent without `blockOwnerDe
 
 ## Additional evidence
 
-The owner-reference dossier confirms the same rule and adds that setting `blockOwnerDeletion` is guarded by an admission check on delete permission, with an unverified claim of silent dropping. [[sources/research-owner-references-and-garbage-collection]] See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]] and [[comparisons/background-foreground-and-orphan-propagation-modes]].
+The owner-reference dossier confirms the same rule and adds that setting `blockOwnerDeletion` is guarded by an admission check on delete permission, with an unverified claim of silent dropping. [[sources/research-owner-references-and-garbage-collection]] Correction 2026-11-26: the plugin source requires `update` on the owner's `finalizers` subresource and rejects the write with Forbidden, and the plugin is off by default upstream. [[sources/research-gap-m2-ownership-gc]] See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]] and [[comparisons/background-foreground-and-orphan-propagation-modes]].

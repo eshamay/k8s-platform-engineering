@@ -3,7 +3,7 @@ title: Owner References and Garbage Collection
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -14,6 +14,9 @@ sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
 aliases: [ownerReferences, cascading deletion]
 tags: [controllers, garbage-collection, deletion, owner-references]
 ---
@@ -30,7 +33,7 @@ Ownership is how a [[concepts/composite-resource]] cleans up its [[concepts/mana
 
 ## The reference entry
 
-Two optional booleans refine an entry. `controller: true` marks the single managing owner, and a dependent can have many owners but only one controller owner. `blockOwnerDeletion: true` lets a dependent hold up foreground deletion of its owner. The Kubernetes documentation says an admission controller restricts who can set `blockOwnerDeletion`, based on delete permission on the owner. One controller-author tutorial adds that the controller needs `update` on the owner's `/finalizers` subresource, but that claim is unverified. See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]].
+Two optional booleans refine an entry. `controller: true` marks the single managing owner, and a dependent can have many owners but only one controller owner. `blockOwnerDeletion: true` lets a dependent hold up foreground deletion of its owner. The Kubernetes documentation says an admission controller restricts who can set `blockOwnerDeletion`. Correction 2026-11-26: the `OwnerReferencesPermissionEnforcement` plugin source requires `update` on the `finalizers` subresource of each owner, not delete permission on the owner, and rejects a failing write with a Forbidden error. The plugin is not default-on in upstream kube-apiserver, so where it is off the flag is stored with no check. One controller-author blog's claim that the flag is silently dropped is still unverified. [[sources/research-gap-m2-ownership-gc]] See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]].
 
 Kubernetes sets owner references automatically for ReplicaSets, DaemonSets, Deployments, Jobs, CronJobs, and ReplicationControllers. Operators written with controller-runtime set them through `controllerutil.SetControllerReference`, which also lets `Owns()` watches map child events back to the owner. See [[examples/built-in-workload-controllers-cascade-a-deployment-delete-through-replicasets-to-pods]] and [[examples/controller-runtime-sets-a-controller-reference-so-deleting-the-custom-resource-tears-down-its-children]].
 
@@ -48,7 +51,7 @@ The Kubernetes garbage collection page defines three propagation modes, chosen b
 
 ## Tool behavior
 
-Platform tools use the mechanism in different ways. Cluster API uses owner references for cluster teardown and `clusterctl move`. Crossplane uses them between composite and composed resources and adds its own composite deletion policies. Flux and Argo CD mostly avoid owner references for pruning and use an inventory or tracking labels plus finalizers on their own top-level object. Config Connector adds an abandon policy so deleting the Kubernetes object need not delete the cloud resource. See [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
+Platform tools use the mechanism in different ways. Cluster API uses owner references for cluster teardown and `clusterctl move`, and its MachineSet controller adopts Machines that have no controller reference, see [[examples/cluster-api-machineset-adopts-machines-that-have-no-controller-reference]]. Crossplane uses them between composite and composed resources and adds its own composite deletion policies. kro sets none on instance children and tracks them with labels and an ApplySet inventory, see [[findings/kro-sets-no-owner-references-on-instance-children-and-tracks-them-with-labels-and-an-applyset-inventory]]. Flux and Argo CD mostly avoid owner references for pruning and use an inventory or tracking annotations or labels plus finalizers on their own top-level object, see [[findings/argo-cd-tracks-resources-by-annotation-by-default-and-label-mode-truncates-and-collides-with-other-tools]]. controller-runtime's `SetControllerReference` refuses to re-parent an object another controller already controls, so adopting orphans is something an operator must write itself. Config Connector adds an abandon policy so deleting the Kubernetes object need not delete the cloud resource. See [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
 
 ## Pitfalls
 
@@ -65,4 +68,4 @@ Platform tools use the mechanism in different ways. Cluster API uses owner refer
 
 ## Open questions
 
-How kro sets ownership or labels on child resources, how ACK handles deletion, how Argo CD's `PrunePropagationPolicy` interacts with the modes, and whether Flux relies on owner references anywhere are unverified. See [[open-knowledge-gaps]].
+How ACK handles deletion and whether Flux relies on owner references anywhere are unverified. How kro marks children and how Argo CD's prune propagation and tracking methods work are now read from source, with the caveats on the linked findings. No KEP covers cross-namespace ownership or garbage collector performance, see [[findings/no-kep-covers-cross-namespace-ownership-or-garbage-collector-performance-and-the-nearest-proposals-are-5080-and-2336]]. See [[open-knowledge-gaps]].

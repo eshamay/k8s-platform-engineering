@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
@@ -33,3 +36,7 @@ A composition that sets `managementPolicies` without Delete on its composed MRs 
 ## Mitigations
 
 Decide per composed resource whether it is meant to outlive the XR, and record that in the Composition. Check the policy list before deleting an XR. See [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]], [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]], [[concepts/owner-references-and-garbage-collection]], [[concepts/managed-resource]], and [[entities/crossplane]].
+
+## Docs status as of the m2 pass
+
+The v2.5 docs say `managementPolicies` is beta, on by default, and provider-dependent, that the default policy grants full control, and that without `Delete` Crossplane "doesn't delete the external resource when deleting the managed resource", with an empty list pausing the resource. They do not connect the policies to the owner-reference cascade, and the managed reconciler source was not re-read in this pass, so the claim above still rests on the earlier source read. Composition functions do not run on composite deletion, and the alpha deletion policy (Background by default, Foreground, Pipeline) needs `--enable-function-controlled-deletion`. Docs on namespaced composite scope rules and Observe-only handling in compositions were not found. [[sources/research-gap-m2-ownership-gc]]

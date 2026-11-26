@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-flux-k8s
     hash: c78dc9a9635e
     ingested: 2026-11-26
@@ -104,3 +107,7 @@ The Kubernetes blog describes the cache as an in-memory, watch-fed copy that the
 ## Requeue history and issue 808
 
 Update 2026-11-26: the `Requeue: true` result has been a rate-limited requeue since at least v0.4.0 (source at v0.4.0, v0.7.0, and v0.15.0 calls `AddRateLimited`), issue 808 never claims it is immediate ([[findings/controller-runtime-issue-808-is-a-documentation-request-and-does-not-claim-that-requeue-true-is-immediate]]), and the field was deprecated by pull request 3107 on 2025-02-24, with pull request 3574 to document the behavior still open ([[examples/controller-runtime-pull-request-3107-deprecated-requeue-true-on-2025-02-24-and-pull-request-3574-to-document-it-is-still-open]]). Whether any release ships read-your-writes was not rechecked in this pass. The page moves from draft to active because its Reconciler contract and requeue behavior are now read from source at four tags. [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Adoption and refusal rules in the owner reference helpers
+
+`SetControllerReference` returns an `AlreadyOwnedError` when another controller already controls the object ("Return early with an error if the object is already controlled"), and rejects owner and dependent pairs in different namespaces and cluster-scoped dependents with namespaced owners. A plain operator therefore does not take over a controlled object, and adopting orphans is code the operator writes itself. Orphaning on delete is a client option, either the propagation policy in the request or an operator finalizer. No controller-runtime adoption helper was read, and the in-tree `ControllerRefManager` was not read. Latest release read was v0.25.3. [[sources/research-gap-m2-ownership-gc]] See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]].

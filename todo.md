@@ -52,6 +52,8 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#review-closed-gap-resolutions-refined-by-the-b1-recheck-of-flux-and-kubernetes]] — open
 - [[#update-flux-ramp-up-waitfortermination-passage-with-the-confirmed-finalizer-name-and-timeout-behavior]] — open
 - [[#update-crossplane-ramp-up-issue-7801-passage-with-the-open-state-and-the-merged-providerconfig-protection]] — open
+- [[#update-part-3-blockownerdeletion-passage-with-the-admission-plugin-permission-rule]] — open
+- [[#update-part-4-kro-deletion-passage-with-the-label-set-and-the-rgd-owner-references]] — open
 
 ## Open
 
@@ -624,6 +626,20 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "Related ordering problems: a credentials Secret with no finalizer" says the final resolution of issue 7801 was not confirmed. Revise it to say the issue is open on 2026-11-26 with no maintainer reply, that ProviderConfig protection (crossplane-runtime pull request 1113) merged on 2026-09-08, and that the Secret behind the ProviderConfig is still unprotected.
 - **Why:** The passage predates the dossier [[sources/research-gap-m1-finalizers]], which read the source and the issue thread.
 - **Acceptance:** Passage revised and citing [[findings/crossplane-protects-providerconfigs-while-managed-resources-terminate-but-the-credentials-secret-behind-them-is-still-unprotected]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 blockOwnerDeletion passage with the admission plugin permission rule — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the paragraph beginning "The snippet shows the reference a controller writes on a child it creates" explains `blockOwnerDeletion: true` but omits the permission rule. Add that where the `OwnerReferencesPermissionEnforcement` admission plugin is enabled, a write that adds the flag needs `update` on the owner's `finalizers` subresource and otherwise fails with Forbidden, and that upstream kube-apiserver does not enable the plugin by default. Cite [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]].
+- **Why:** The passage predates the dossier [[sources/research-gap-m2-ownership-gc]], which read the plugin source.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 kro deletion passage with the label set and the RGD owner references — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "Deletion is where kro made a deliberate departure" says kro tracks children with an ApplySet and that the FAQ tells Argo CD users to add an owner reference and a tracking-id annotation. Add that kro labels each child (`kro.run/owned`, instance identity labels, `applyset.kubernetes.io/part-of`), that it does set an owner reference on the generated CRD and on GraphRevisions, and that the FAQ example uses `controller: false` and `blockOwnerDeletion: true` and warns of out-of-order garbage collection. Cite [[findings/kro-sets-no-owner-references-on-instance-children-and-tracks-them-with-labels-and-an-applyset-inventory]].
+- **Why:** The passage predates the dossier [[sources/research-gap-m2-ownership-gc]], which read the v0.10.0 docs and source.
+- **Acceptance:** Passage revised and citing the page named above.
 - **Drafted by:** agent on 2026-11-26
 
 ## Dropped

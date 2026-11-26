@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-gap-m1-finalizers
     hash: 014549e333b6
     ingested: 2026-11-26
@@ -256,3 +259,7 @@ Pull request 22342 (merged 2025-03-13) added the 60 second default jitter and st
 ## Recheck on 2026-11-26
 
 The `legacy` default sharding algorithm is confirmed in code at v3.6.3 (the constant and the controller flag default), and round-robin and consistent-hashing are still experimental there. v3.6.3 is the newest 3.6.x release, and v3.5.9 was published later the same day on a maintenance branch. `timeout.reconciliation` was 180 seconds at v2.1.0 through v2.4.0 as well, so the 180 second era covers v2.1.0 through v2.14.0. See [[examples/argo-cd-pull-request-22342-added-a-60-second-default-jitter-while-keeping-the-three-minute-maximum]] and [[sources/research-gap-b1-recheck-capi-argocd]].
+
+## Resource tracking and prune propagation
+
+Argo CD tracks the resources an Application owns with `application.resourceTrackingMethod`: `annotation` (default, `argocd.argoproj.io/tracking-id`), `annotation+label`, or `label`. In `annotation+label` the instance label is informational only and truncated at 63 characters, and label mode collides with other tools that write the same label. A tracking annotation that does not reference its own resource keeps the resource out of sync status and pruning. Pruned resources use foreground deletion by default, and `PrunePropagationPolicy` accepts background, foreground, and orphan. Docs were read from `master`, and the latest release was v3.6.3. [[sources/research-gap-m2-ownership-gc]] See [[findings/argo-cd-tracks-resources-by-annotation-by-default-and-label-mode-truncates-and-collides-with-other-tools]] and [[decisions/choose-an-argo-cd-resource-tracking-method-annotation-annotation-plus-label-or-label]].

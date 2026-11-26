@@ -1,10 +1,13 @@
 ---
 title: kro resources need owner references and tracking IDs to be tracked by Argo CD
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
@@ -20,7 +23,7 @@ A team commits a kro instance to Git and lets Argo CD apply it. Argo CD sees onl
 
 ## How it works
 
-The kro FAQ gives a recipe: add an `ownerReference` and an `argocd.argoproj.io/tracking-id` annotation to every templated resource, with a warning about owner reference limits. With those markers Argo CD attributes the children to the Application. The same FAQ shows a Helm-style checksum trick that restarts a Deployment when a ConfigMap changes. URL: https://kro.run/docs/faq. The dossier found no Flux-specific guidance.
+The kro FAQ gives a recipe: add an `ownerReference` and an `argocd.argoproj.io/tracking-id` annotation to every templated resource, with a warning about owner reference limits. The v0.10.0 FAQ example sets `controller: false` and `blockOwnerDeletion: true` and copies the tracking annotation from the instance. The instances page warns that resources "may be garbage collected out of order", that cross-namespace or cluster-scoped children fail validation, and that timing can conflict with kro's reconciliation, and the sample assumes the default annotation tracking method. [[sources/research-gap-m2-ownership-gc]] See [[decisions/give-kro-children-manual-owner-references-or-leave-them-to-applyset-labels]]. With those markers Argo CD attributes the children to the Application. The same FAQ shows a Helm-style checksum trick that restarts a Deployment when a ConfigMap changes. URL: https://kro.run/docs/faq. The dossier found no Flux-specific guidance.
 
 ## Why the example matters
 

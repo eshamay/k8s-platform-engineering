@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-gap-m1-finalizers
     hash: 014549e333b6
     ingested: 2026-11-26
@@ -292,3 +295,7 @@ The ADOPTERS file held 87 linked rows at the 2026-11-26 read, all self-reported 
 Correction note: the paragraph on issue 2595 says the `--max-reconcile-rate` flag caps reconciles per second and that present defaults are unknown. In v2.5.0 source the flag is an alias for `--max-concurrent-reconciles`, a worker pool size with a default of 100, and the other defaults are a poll interval of 1 minute, a sync interval of 1 hour, and an XR circuit breaker with burst 100, refill 1.0 per second, and cooldown 5 minutes, see [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]] and [[findings/the-crossplane-xr-circuit-breaker-default-is-burst-100-in-v2-5-0-source-while-the-v2-1-0-notes-say-burst-50]].
 
 An XR is `Ready` only when functions set `READY_TRUE` for every composed resource or for the composite itself, see [[findings/a-crossplane-composed-resource-counts-as-ready-only-when-the-function-sets-ready-true-so-unspecified-readiness-leaves-the-xr-creating]]. XR conditions can replay stale values because status is written twice per pass, see [[findings/crossplane-v2-5-0-writes-xr-status-twice-so-a-lagging-cache-can-replay-old-conditions]]. Open pull request 8080 targets that bug and not the asynchronous managed-resource `Synced` case, see [[examples/crossplane-pull-request-8080-guards-the-xr-status-write-with-a-resource-version-to-stop-stale-condition-replay]]. The composite reconciler applies references and status with force ownership under the field owner `apiextensions.crossplane.io/composite`, and composed resources use per-XR owners prefixed `apiextensions.crossplane.io/composed`. Issue 7453 stays reported, unreproduced, and open, see [[examples/crossplane-pull-requests-7783-and-7787-say-fromstruct-drops-managedfields-on-the-composite-resource]]. [[sources/research-gap-b1-recheck-kro-crossplane]]
+
+## Namespace deletion and the owner-reference cascade
+
+The v2.5 docs say a managed resource stays until the external resource is fully deleted, and that uninstalling out of order can leave cloud resources running. Namespace deletion with the provider absent is not documented; a managed resource staying Terminating and holding its namespace is an inference and is unverified. Two open reports describe the neighboring case with the provider running: [[examples/crossplane-issue-7801-asks-how-to-protect-provider-credentials-during-namespace-deletion-and-is-open-with-no-maintainer-reply]] and [[examples/crossplane-runtime-issue-1150-reports-a-rejected-providerconfigusage-create-in-a-terminating-namespace-blocking-managed-resource-deletion-for-hours]]. How `managementPolicies` interact with the cascade is not stated in the docs. [[sources/research-gap-m2-ownership-gc]]

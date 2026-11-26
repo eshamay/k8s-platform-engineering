@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-gap-m1-finalizers
     hash: 014549e333b6
     ingested: 2026-11-26
@@ -154,9 +157,9 @@ The idempotency dossier could read only the kro home page, which claims continuo
 
 kro keeps the instance finalizer until all managed resources are gone, finds them from a persisted ApplySet inventory, and deletes them in reverse dependency order in waves, each fully gone before the next. A stuck instance shows `ResourcesReady=Unknown` with reason `UnderDeletion`, and the fix is to find finalizers on children in the active wave. [[sources/research-finalizers]] The instance finalizer is `kro.run/finalizer`, and it is removed by a merge patch only when no deletion candidates remain, see [[findings/ack-config-connector-and-kro-each-name-their-finalizers-differently-and-remove-them-only-after-cleanup]]. [[sources/research-gap-m1-finalizers]] See [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] and [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
 
-## Ownership of child resources (not covered)
+## Ownership of child resources
 
-The Google Cloud launch post says nothing about ownership or deletion mechanics, and kro's instances and FAQ pages could not be read, so how kro marks child resources with owner references or labels remains unverified. [[sources/research-owner-references-and-garbage-collection]] See [[open-knowledge-gaps]].
+Correction 2026-11-26: the earlier "not covered" statement is superseded. The v0.10.0 docs and source say kro does not set owner references on instance children by default, because owner references delete without ordering and a namespaced owner cannot own a cluster-scoped child. It stamps labels (`kro.run/owned`, instance identity labels, `app.kubernetes.io/managed-by: kro`, `applyset.kubernetes.io/part-of`) and tracks children in an ApplySet inventory. It does set an RGD owner reference on the generated CRD and on GraphRevision objects. The alpha annotation `kro.run/deletion-policy: Orphaned`, behind the `DeletionPolicy` gate, releases a resource by stripping kro's labels, and a later instance can adopt it. KREP-004 and KREP-014 were not read. [[sources/research-gap-m2-ownership-gc]] See [[findings/kro-sets-no-owner-references-on-instance-children-and-tracks-them-with-labels-and-an-applyset-inventory]], [[findings/kro-deletion-policy-orphaned-releases-a-resource-by-stripping-kro-labels-but-leaves-template-owner-references-in-place]], [[examples/kro-moves-a-resource-between-graphs-by-orphaning-it-and-letting-a-later-instance-adopt-it]], and [[decisions/give-kro-children-manual-owner-references-or-leave-them-to-applyset-labels]].
 
 ## Conditions and readyWhen
 
@@ -170,7 +173,7 @@ Each spec change becomes an immutable GraphRevision, and if the latest revision 
 
 ## Hosting under Argo CD and use inside Crossplane
 
-For Argo CD, the FAQ says to add an ownerReference and an `argocd.argoproj.io/tracking-id` annotation to every templated resource, which also partly answers how kro marks children. AWS offers kro as a managed EKS capability that composes ACK resources. The Crossplane project's `function-kro` embeds kro's graph builder in a pipeline step. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]], [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]], [[entities/function-kro]], and [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]]. [[sources/research-composite-resource]]
+For Argo CD, the FAQ says to add an ownerReference and an `argocd.argoproj.io/tracking-id` annotation to every templated resource, which also partly answers how kro marks children. The FAQ example uses `controller: false` and `blockOwnerDeletion: true`. [[sources/research-gap-m2-ownership-gc]] AWS offers kro as a managed EKS capability that composes ACK resources. The Crossplane project's `function-kro` embeds kro's graph builder in a pipeline step. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]], [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]], [[entities/function-kro]], and [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]]. [[sources/research-composite-resource]]
 
 ## Compositions dossier: CEL bounds, ordering, and maturity
 

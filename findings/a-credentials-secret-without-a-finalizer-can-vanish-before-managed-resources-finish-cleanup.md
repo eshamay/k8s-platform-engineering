@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-gap-m1-finalizers
     hash: 014549e333b6
     ingested: 2026-11-26
@@ -32,3 +35,7 @@ The issue is a proposal discussion, and it is still open on 2026-11-26 with no m
 ## Related
 
 [[entities/crossplane]], [[concepts/finalizers]], [[findings/ordering-and-dependency-failures]]
+
+## Namespace deletion with the provider absent
+
+No Crossplane documentation or issue was found that describes a namespaced managed resource when its namespace is deleted while the provider is not running. A managed resource staying Terminating and holding the namespace open follows from the documented finalizer behavior, but it is an inference and unverified. The documented neighbor is the provider-running race above and [[examples/crossplane-runtime-issue-1150-reports-a-rejected-providerconfigusage-create-in-a-terminating-namespace-blocking-managed-resource-deletion-for-hours]]. The v2.5 uninstall guide says resources created by Crossplane "aren't deleted if Crossplane isn't uninstalled in order". [[sources/research-gap-m2-ownership-gc]]

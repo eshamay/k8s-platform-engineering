@@ -1,10 +1,13 @@
 ---
 title: Argo CD foreground deletion makes Crossplane ignore the composite deletion policy
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25

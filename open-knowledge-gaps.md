@@ -850,6 +850,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, owner-references, deletion
 - **Possible resolution from [[sources/research-composite-resource]]:** Marginally helpful. The kro FAQ tells Argo CD users to add an ownerReference and an `argocd.argoproj.io/tracking-id` annotation to every templated resource, which suggests kro does not set these in a way Argo CD tracks by default, and the RGD overview says deletion follows reverse topological order. It does not say whether kro sets its own owner references or labels. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]].
+- **Possible resolution from [[sources/research-gap-m2-ownership-gc]]:** Largely settled, and the user decides whether to close it. kro v0.10.0 documents that it does not set owner references on instance children, for ordered deletion and because a namespaced owner cannot own a cluster-scoped child. It stamps `kro.run/owned`, instance identity labels, `app.kubernetes.io/managed-by: kro`, and `applyset.kubernetes.io/part-of`, stores each child's wave in `internal.kro.run/apply-order`, and deletes in reverse waves from the persisted ApplySet inventory. It does set an RGD owner reference on the generated CRD and GraphRevisions, and the FAQ shows manual owner references and a tracking-id annotation for Argo CD. Not settled: KREP-004 and KREP-014 were not read. See [[findings/kro-sets-no-owner-references-on-instance-children-and-tracks-them-with-labels-and-an-applyset-inventory]] and [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
 
 ## Argo CD PrunePropagationPolicy and resource tracking methods — status: open
 
@@ -861,6 +862,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** argo-cd, prune, propagation-policy
+- **Possible resolution from [[sources/research-gap-m2-ownership-gc]]:** Largely settled, and the user decides whether to close it. Prune uses foreground deletion by default, and `PrunePropagationPolicy` accepts background, foreground, and orphan, with foreground as the fallback in source. Tracking is `annotation` (default), `annotation+label` (label informational, truncated at 63 characters), or `label`, set by `application.resourceTrackingMethod`, and a tracking annotation that does not reference its own resource keeps the resource out of sync status and pruning. Not settled: the docs were read from `master` (latest release v3.6.3), and nothing states how tracking methods interact with owner-reference-based child discovery. See [[findings/argo-cd-tracks-resources-by-annotation-by-default-and-label-mode-truncates-and-collides-with-other-tools]] and [[decisions/choose-an-argo-cd-resource-tracking-method-annotation-annotation-plus-label-or-label]].
 
 ## What happens when blockOwnerDeletion is set without finalizers permission — status: open
 
@@ -872,6 +874,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update the finding and [[concepts/owner-references-and-garbage-collection]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** rbac, blockownerdeletion, verification
+- **Possible resolution from [[sources/research-gap-m2-ownership-gc]]:** Settled for the plugin, and the user decides whether to close it. With `OwnerReferencesPermissionEnforcement` enabled, adding `blockOwnerDeletion: true` without `update` on the owner's `finalizers` subresource is rejected with Forbidden, and no code drops the flag. The plugin is not default-on in upstream kube-apiserver, so where it is off the flag is stored with no check. Not settled: the blog's silent-drop claim could not be located and stays unverified, managed-distribution defaults were not read, and the no-strip-code search was negative. See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]].
 
 ## Crossplane v2 namespaced composites and managementPolicies versus garbage collection — status: open
 
@@ -884,6 +887,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** crossplane, deletion, management-policies
 - **Possible resolution from [[sources/research-composite-resource]]:** Partly helpful. The current composite resources page documents the alpha deletion policy and its bypass under Argo CD foreground deletion, and the upgrade guide describes namespaced XRs and managed resources under `.m.` groups. Neither source covers how `managementPolicies` interact with the cascade. See [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]].
 - **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Partly settled, from source and not from a docs page. A namespaced XR composes only into its own namespace, composed resources carry a controller owner reference, and deletion defaults to Background. The managed reconciler deletes the external resource only when the policy allows `Delete`, so a cascade over a managed resource without `Delete` removes the Kubernetes object and leaves the cloud resource. No v2 docs page explains this interaction. Not covered: namespace deletion while the provider is down, and special handling of Observe-only managed resources inside compositions. See [[findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays]].
+- **Possible resolution from [[sources/research-gap-m2-ownership-gc]]:** Partly settled. The v2.5 docs say composition functions do not run on composite deletion, the alpha deletion policy (Background default, Foreground, Pipeline, behind `--enable-function-controlled-deletion`) is bypassed by `--cascade` flags and by Argo CD foreground propagation, and composed resources carry a controller owner reference with `blockOwnerDeletion: true`. `managementPolicies` is beta, default-on, and provider-dependent, and without `Delete` Crossplane does not delete the external resource. Not settled: the docs do not connect `managementPolicies` to the owner-reference cascade, namespaced composite scope rules and Observe-only handling in compositions were not found, and the managed reconciler source was not re-read. See [[findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays]].
 
 ## KEPs on cross-namespace ownership and garbage collector performance — status: open
 
@@ -895,6 +899,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Re-read the finalizers blog and design proposal in full.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** keps, garbage-collection, verification
+- **Possible resolution from [[sources/research-gap-m2-ownership-gc]]:** Partly settled. No KEP dedicated to cross-namespace ownership or garbage collector performance was found in the kubernetes/enhancements master tree, which is a negative search. Adjacent are KEP-5080 (ordered namespace deletion, stable in v1.34) and KEP-2336 (a `resource` field on owner references, alpha, milestone 0.0, shipping unconfirmed). The documented v1.20 behavior followed closed issues 65200 and 94631, linked by timing only. The design archive's `OrphanDependents` default of true is outdated. Not settled: conference talks were not searchable, and the finalizers blog was not re-read. See [[findings/no-kep-covers-cross-namespace-ownership-or-garbage-collector-performance-and-the-nearest-proposals-are-5080-and-2336]] and [[examples/kubernetes-issues-65200-and-94631-asked-for-defined-cross-namespace-owner-reference-behavior-and-both-are-closed]].
 
 ## How a platform should choose condition polarity — status: open
 
@@ -927,6 +932,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the ACK introduction blog.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** adoption, orphan, cluster-api, kro
+- **Possible resolution from [[sources/research-gap-m2-ownership-gc]]:** Partly settled. The Cluster API MachineSet controller adopts Machines with no controller reference, and no non-test source uses orphan propagation (a negative search). kro releases resources with the alpha `kro.run/deletion-policy: Orphaned` annotation and a later instance can adopt them, and v0.10.0 adopts existing children in place. controller-runtime's `SetControllerReference` refuses to re-parent a controlled object and rejects cross-namespace owners, so adoption is operator code. Not settled: no controller-runtime adoption helper and the in-tree `ControllerRefManager` was not read, and the ACK introduction blog was not read. See [[examples/cluster-api-machineset-adopts-machines-that-have-no-controller-reference]] and [[examples/kro-moves-a-resource-between-graphs-by-orphaning-it-and-letting-a-later-instance-adopt-it]].
 
 ## Behavior of namespaced v2 managed resources when a namespace is deleted while the provider is down — status: open
 
@@ -938,6 +944,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add the result to [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, finalizers, namespaces, deletion
+- **Possible resolution from [[sources/research-gap-m2-ownership-gc]]:** Not settled. No Crossplane documentation or issue describes the provider-absent case, and a managed resource staying Terminating and holding its namespace is only an inference. The dossier found the neighboring failure with the provider running: issue 7801 (open) says the credentials Secret can go first and hand-removing finalizers orphans external resources, and crossplane-runtime issue 1150 (open) reports a rejected `ProviderConfigUsage` create in a terminating namespace blocking deletion. A comment's provider-gitlab counts (0 of 5 and 1 of 5 with a namespaced ProviderConfig) are SECONDARY-ONLY. See [[examples/crossplane-issue-7801-asks-how-to-protect-provider-credentials-during-namespace-deletion-and-is-open-with-no-maintainer-reply]] and [[examples/crossplane-runtime-issue-1150-reports-a-rejected-providerconfigusage-create-in-a-terminating-namespace-blocking-managed-resource-deletion-for-hours]].
 
 ## Per-provider external-name defaults — status: open
 

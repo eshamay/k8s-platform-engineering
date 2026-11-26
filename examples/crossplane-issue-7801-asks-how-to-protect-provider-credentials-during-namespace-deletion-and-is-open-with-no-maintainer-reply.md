@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-gap-m1-finalizers
     hash: 014549e333b6
     ingested: 2026-11-26
@@ -31,3 +34,7 @@ The issue is open with no linked fix. The neighboring ProviderConfig protection 
 ## Related
 
 [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]], [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]], [[entities/crossplane]]
+
+## Test data in the thread
+
+The comment of 2026-10-14 reports finalization counts from provider-gitlab tests. With a namespaced `ProviderConfig` and Secret in the namespace, finalization succeeded 0 of 5 times on provider-gitlab master with crossplane-runtime v2.4.2, and 1 of 5 with the runtime fix for ProviderConfigUsage protection merged. With a `ClusterProviderConfig`, it succeeded 3 of 3 to 5 of 5 times depending on the build, and the commenter wrote "We lost that race in 6 of 8 runs." These are user-run measurements in an issue thread (SECONDARY-ONLY), not release-note facts, and whether the fixes ship in a given release was not checked. The pull request 7594 one-pager (merged) lists the Secret case as an explicit limitation. See [[examples/crossplane-runtime-issue-1150-reports-a-rejected-providerconfigusage-create-in-a-terminating-namespace-blocking-managed-resource-deletion-for-hours]]. [[sources/research-gap-m2-ownership-gc]]

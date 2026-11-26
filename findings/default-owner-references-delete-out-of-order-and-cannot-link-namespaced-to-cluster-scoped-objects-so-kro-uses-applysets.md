@@ -1,10 +1,13 @@
 ---
 title: Default owner references delete out of order and cannot link namespaced to cluster-scoped objects, so kro uses ApplySets
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
@@ -23,6 +26,10 @@ The kro instances documentation says kro deliberately avoids the default Kuberne
 The garbage collector deletes dependents without regard to dependency order among siblings, so a graph that needs a database removed only after the application that uses it cannot rely on owner references alone. The Kubernetes rule that a cluster-scoped dependent cannot have a namespaced owner is the second limit, and it matters for any abstraction that mixes both scopes. See [[concepts/owner-references-and-garbage-collection]] and [[findings/cross-namespace-owner-references-are-treated-as-absent-and-the-dependent-can-be-collected]].
 
 The cost is at the GitOps seam. A GitOps agent that decides what it owns from ownership metadata cannot see kro's children the usual way, so the kro FAQ tells Argo CD users to add an owner reference and an `argocd.argoproj.io/tracking-id` annotation to each templated resource, and it documents risks with doing so. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]] and [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]].
+
+## Confirmed against v0.10.0
+
+Correction note 2026-11-26: the first read used a summarizing fetch. The v0.10.0 instances page and source now confirm both reasons verbatim, the label set, and the `internal.kro.run/apply-order` wave annotation. See [[findings/kro-sets-no-owner-references-on-instance-children-and-tracks-them-with-labels-and-an-applyset-inventory]]. [[sources/research-gap-m2-ownership-gc]]
 
 ## Evidence strength
 

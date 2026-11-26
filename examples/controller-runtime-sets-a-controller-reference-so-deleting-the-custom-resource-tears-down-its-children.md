@@ -1,10 +1,13 @@
 ---
 title: "controller-runtime sets a controller reference so deleting the custom resource tears down its children"
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
@@ -24,7 +27,7 @@ An operator author writes a controller for a custom resource that creates a Depl
 
 ## Cautions
 
-The tutorials list three traps: cross-namespace references, recreating the custom resource under the same name so the UID no longer matches, and assuming that cascade covers cloud resources. One of them claims that `blockOwnerDeletion` is silently ignored without `update` permission on the owner's `/finalizers` subresource, and the dossier flags that claim as unverified. See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]], [[findings/cross-namespace-owner-references-are-treated-as-absent-and-the-dependent-can-be-collected]], and [[findings/recreating-an-owner-with-the-same-name-gives-a-new-uid-and-strands-its-old-dependents]].
+The tutorials list three traps: cross-namespace references, recreating the custom resource under the same name so the UID no longer matches, and assuming that cascade covers cloud resources. One of them claims that `blockOwnerDeletion` is silently ignored without `update` permission on the owner's `/finalizers` subresource, and the dossier flags that claim as unverified. Correction 2026-11-26: the admission plugin source rejects the write with Forbidden when the plugin is enabled, the plugin is off by default upstream, and `SetControllerReference` refuses to re-parent an object another controller controls and rejects cross-namespace owners. [[sources/research-gap-m2-ownership-gc]] See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]], [[findings/cross-namespace-owner-references-are-treated-as-absent-and-the-dependent-can-be-collected]], and [[findings/recreating-an-owner-with-the-same-name-gives-a-new-uid-and-strands-its-old-dependents]].
 
 ## Related
 

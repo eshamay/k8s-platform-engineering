@@ -137,6 +137,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-b1-recheck-kro-crossplane]] — verified dossier (revised snapshot, second verification pass) rechecking kro v0.9.4 and v0.10.0 tuning, requeue, conditions, and states, and Crossplane v2.5.0 readiness, status writes, server-side apply, and scaling defaults from source (active)
 - [[sources/research-gap-b1-recheck-flux-k8s]] — verified dossier (revised snapshot, second verification pass) rechecking the Flux jitter default and the five-minute wording origin, helm-controller and Helm 4 server-side apply, the Mutating Admission Policy v1.30 gate, StorageVersionMigration progress, Requeue and issue 808, v1.36 staleness metrics, and KEP-1040 (active)
 - [[sources/research-gap-m1-finalizers]] — verified dossier on Argo CD, Flux, ACK, Config Connector, and kro finalizer names and removal, Crossplane issue 7801, and Cluster API issue 1514, 2026-11-26 (active)
+- [[sources/research-gap-m2-ownership-gc]] — verified dossier on kro ownership and labels, Argo CD tracking and prune propagation, the blockOwnerDeletion admission plugin, KEPs, adoption and orphaning, and Crossplane namespace deletion, 2026-11-26 (active)
 
 ## Examples
 
@@ -245,7 +246,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/stuck-terminating-namespace-fixed-through-the-finalize-subresource]] — last-resort namespace fix (draft)
 - [[examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete]] — command-level runbook (draft)
 - [[examples/built-in-workload-controllers-cascade-a-deployment-delete-through-replicasets-to-pods]] — the everyday cascade (draft)
-- [[examples/controller-runtime-sets-a-controller-reference-so-deleting-the-custom-resource-tears-down-its-children]] — operator-authored ownership (draft)
+- [[examples/controller-runtime-sets-a-controller-reference-so-deleting-the-custom-resource-tears-down-its-children]] — operator-authored ownership (active)
 - [[examples/the-garbage-collector-builds-a-dependency-graph-from-watch-events-and-sorts-references-into-three-classes]] — how the collector works (draft)
 - [[examples/kubectl-cascade-modes-compared-in-a-hands-on-lab]] — background, orphan, and foreground in a lab (draft)
 - [[examples/cluster-api-owner-reference-chain-drives-cluster-deletion-and-clusterctl-move]] — ownership as an API contract (draft)
@@ -269,7 +270,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/a-v1-crossplane-claim-fronts-a-cluster-scoped-composite-resource]] — the legacy claim pattern (draft)
 - [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]] — the composite pattern for clusters (active)
 - [[examples/a-platform-api-hides-provider-features-to-enforce-tagging-and-tenant-segregation]] — governance through a platform API (draft)
-- [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]] — the seam between two loops (draft)
+- [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]] — the seam between two loops (active)
 - [[examples/a-composition-function-pipeline-turns-observed-state-into-desired-state]] — how function pipelines work (draft)
 - [[examples/a-microservice-xr-creates-a-database-and-its-workload-from-one-namespaced-object]] — Crossplane 2.0 illustration of one object creating database and workload (draft)
 - [[examples/a-scalable-composition-lets-hpa-and-keda-drive-an-xr-through-the-scale-subresource]] — XR exposes the scale subresource for HPA and KEDA (active)
@@ -364,6 +365,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/kubernetes-pull-request-138451-registered-the-statefulset-stale-sync-skip-metric-in-v1-37]] — StatefulSet skip metric defined but unregistered at v1.36.0 (active)
 - [[examples/crossplane-issue-7801-asks-how-to-protect-provider-credentials-during-namespace-deletion-and-is-open-with-no-maintainer-reply]] — open issue with no maintainer reply and a third-party measurement (active)
 - [[examples/cluster-api-issue-1514-was-closed-in-april-2020-in-favor-of-a-proposal-that-chose-annotation-hooks]] — finalizer, dependency list, CRD, or annotation debate and its outcome (active)
+- [[examples/kro-moves-a-resource-between-graphs-by-orphaning-it-and-letting-a-later-instance-adopt-it]] — orphan then adopt across ResourceGraphDefinitions (active)
+- [[examples/cluster-api-machineset-adopts-machines-that-have-no-controller-reference]] — MachineSet adoption and the owner-reference guidelines (active)
+- [[examples/crossplane-runtime-issue-1150-reports-a-rejected-providerconfigusage-create-in-a-terminating-namespace-blocking-managed-resource-deletion-for-hours]] — open issue on namespace deletion with a rejected usage create (active)
+- [[examples/kubernetes-issues-65200-and-94631-asked-for-defined-cross-namespace-owner-reference-behavior-and-both-are-closed]] — closed issues behind the v1.20 cross-namespace rule (active)
 
 ## Comparisons
 
@@ -396,8 +401,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] — workers, cache, sharding, and rate caps (contradicted: the Crossplane rate-cap cells describe a pre-v2.1 flag meaning)
 - [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] — lost-create recovery and adoption (active)
 - [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]] — what holds a parent and how teardown is ordered (active)
-- [[comparisons/background-foreground-and-orphan-propagation-modes]] — three modes side by side (draft)
-- [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]] — owner references, inventory, and finalizers by tool (draft)
+- [[comparisons/background-foreground-and-orphan-propagation-modes]] — three modes side by side (active)
+- [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]] — owner references, inventory, and finalizers by tool (active)
 - [[comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api]] — condition types by tool (draft)
 - [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]] — who defines Ready (draft)
 - [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]] — import, read-only, and keep controls (draft)
@@ -459,6 +464,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off]] — two mitigations for hooks skipped by self-heal (draft)
 - [[decisions/set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses]] — opt out of the create-pending guard per provider (draft)
 - [[decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout]] — options from ACK issue 3122 (draft)- [[decisions/block-an-object-s-deletion-with-a-finalizer-a-spec-dependency-list-or-an-annotation-hook]] — options from Cluster API issue 1514, no recommendation (draft)
+- [[decisions/give-kro-children-manual-owner-references-or-leave-them-to-applyset-labels]] — evidence-only options for GitOps tracking of kro children (draft)
+- [[decisions/choose-an-argo-cd-resource-tracking-method-annotation-annotation-plus-label-or-label]] — evidence-only options for the three tracking methods (draft)
 
 ## Findings
 
@@ -554,7 +561,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/cleanup-that-always-errors-or-assumes-the-external-resource-exists-strands-the-object]] — idempotent cleanup (draft)
 - [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]] — namespace delete ordering (active)
 - [[findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone]] — controller gone, resources billing (draft)
-- [[findings/foreground-deletion-waits-only-for-dependents-with-blockownerdeletion-true]] — what the owner waits for (draft)
+- [[findings/foreground-deletion-waits-only-for-dependents-with-blockownerdeletion-true]] — what the owner waits for (active)
 - [[findings/machine-deletion-stalls-on-disruption-budgets-attached-volumes-and-failing-hooks]] — drain blockers (draft)
 - [[findings/cross-namespace-owner-references-are-treated-as-absent-and-the-dependent-can-be-collected]] — namespace rules (draft)
 - [[findings/api-client-default-propagation-policy-can-differ-from-kubectl-and-orphan-dependents]] — client defaults and a leaked-Pod race (draft)
@@ -562,7 +569,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/orphaned-dependents-keep-running-with-empty-owner-references-until-someone-deletes-them]] — orphan mode leftovers (draft)
 - [[findings/recreating-an-owner-with-the-same-name-gives-a-new-uid-and-strands-its-old-dependents]] — UID mismatch (draft)
 - [[findings/backup-and-restore-tools-can-strip-owner-references-so-controllers-must-re-reconcile-them]] — lost references (draft)
-- [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]] — RBAC and an unverified claim (draft)
+- [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]] — update permission on owner finalizers, plugin rejects with Forbidden, silent-drop claim unverified (active)
 - [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]] — Synced True for an hour (active)
 - [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]] — absence of problems looks healthy (draft)
 - [[findings/updating-lasttransitiontime-on-every-reconcile-turns-a-condition-into-a-heartbeat]] — noisy status writes (draft)
@@ -583,7 +590,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/a-kro-graph-has-no-revision-history-and-sets-no-owner-references-on-the-resources-it-creates]] — Graph has no revisions and no owner references (draft)
 - [[findings/editing-a-live-composition-can-disrupt-or-replace-existing-composed-resources]] — shared Composition edits propagate (draft)
 - [[findings/crossplane-v2-removed-features-and-offers-no-automated-migration-for-v1-composites]] — v2 removals and manual migration (draft)
-- [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]] — GitOps overrides ordered teardown (draft)
+- [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]] — GitOps overrides ordered teardown (active)
 - [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]] — same field, different work (active)
 - [[findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion]] — schema as contract (draft)
 - [[findings/composition-functions-add-moving-parts-that-must-be-healthy]] — operational cost of functions (draft)
@@ -609,7 +616,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]] — mega-Compositions and provider-shaped APIs (draft)
 - [[findings/early-crossplane-evaluations-reported-sparse-docs-alpha-apis-and-hard-multi-layer-troubleshooting]] — a 2022 evaluation, historical (draft)
 - [[findings/moving-kustomize-helm-inflation-to-krm-functions-needs-a-container-runtime-that-laptops-ci-and-argo-cd-often-lack]] — where function code runs (draft)
-- [[findings/default-owner-references-delete-out-of-order-and-cannot-link-namespaced-to-cluster-scoped-objects-so-kro-uses-applysets]] — why kro avoids owner references (draft)
+- [[findings/default-owner-references-delete-out-of-order-and-cannot-link-namespaced-to-cluster-scoped-objects-so-kro-uses-applysets]] — why kro avoids owner references (active)
 - [[findings/helm-values-and-kustomize-patches-leak-the-underlying-manifests-into-the-abstraction]] — abstraction leakage (draft)
 - [[findings/go-template-compositions-need-hand-written-ordering-and-deletion-guards]] — manual order and deletion safety (draft)
 - [[findings/radius-maturity-and-governance-claims-rest-on-a-single-third-party-blog]] — weak evidence caveat (draft)
@@ -729,6 +736,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/config-connector-has-a-second-deletion-defender-finalizer-and-removes-both-finalizers-with-an-abandon-setting-when-its-crd-is-uninstalled]] — the second finalizer and the CRD uninstall path (active)
 - [[findings/crossplane-protects-providerconfigs-while-managed-resources-terminate-but-the-credentials-secret-behind-them-is-still-unprotected]] — pull request 1113 merged, Secret still open under issue 7801 (active)
 - [[findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers]] — the implemented proposal's reason (active)
+- [[findings/kro-sets-no-owner-references-on-instance-children-and-tracks-them-with-labels-and-an-applyset-inventory]] — kro label set, ApplySet inventory, and RGD-level owner references (active)
+- [[findings/kro-deletion-policy-orphaned-releases-a-resource-by-stripping-kro-labels-but-leaves-template-owner-references-in-place]] — alpha orphan release and its owner-reference pitfall (active)
+- [[findings/argo-cd-tracks-resources-by-annotation-by-default-and-label-mode-truncates-and-collides-with-other-tools]] — tracking methods and prune propagation (active)
+- [[findings/no-kep-covers-cross-namespace-ownership-or-garbage-collector-performance-and-the-nearest-proposals-are-5080-and-2336]] — no dedicated KEP, adjacent KEPs, outdated design archive default (active)
 
 ## Outputs
 

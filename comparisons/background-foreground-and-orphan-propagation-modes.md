@@ -1,10 +1,13 @@
 ---
 title: "Background, foreground, and orphan propagation modes"
 type: comparison
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
@@ -29,3 +32,7 @@ Background suits most deletes because it returns quickly. Foreground is the only
 ## Related
 
 [[concepts/owner-references-and-garbage-collection]], [[examples/kubectl-cascade-modes-compared-in-a-hands-on-lab]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]]
+
+## Tool defaults and the old design archive
+
+Argo CD prunes with foreground deletion by default and accepts `PrunePropagationPolicy` values of background, foreground, and orphan. Namespace deletion uses background propagation, according to KEP-5080. The archived garbage collection design says `OrphanDependents` defaulted to true because pre-1.2 controllers expected orphaning, which is outdated against current documentation. [[sources/research-gap-m2-ownership-gc]] See [[findings/argo-cd-tracks-resources-by-annotation-by-default-and-label-mode-truncates-and-collides-with-other-tools]] and [[findings/no-kep-covers-cross-namespace-ownership-or-garbage-collector-performance-and-the-nearest-proposals-are-5080-and-2336]].

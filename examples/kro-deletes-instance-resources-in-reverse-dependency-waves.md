@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m2-ownership-gc
+    hash: 62aafaded9c0
+    ingested: 2026-11-26
   - id: research-gap-m1-finalizers
     hash: 014549e333b6
     ingested: 2026-11-26
@@ -28,6 +31,10 @@ kro keeps the instance finalizer until every managed resource is gone. It finds 
 ## Why the example matters
 
 The ordering removes a class of failure in which a dependency vanishes before a dependent finishes its own cleanup. See [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]] for the Crossplane case that lacks this ordering. Source read on 2026-11-26 shows the instance finalizer is `kro.run/finalizer`, the highest apply-order wave is deleted first, and the finalizer is removed by a merge patch only when no deletion candidates remain, see [[findings/ack-config-connector-and-kro-each-name-their-finalizers-differently-and-remove-them-only-after-cleanup]]. Nothing was inspected on a live object. [[sources/research-gap-m1-finalizers]]
+
+## Wave mechanics from the v0.10.0 docs
+
+kro stores each child's wave in the `internal.kro.run/apply-order` annotation. "A wave must disappear completely before the next wave starts", so a finalizer on a child in one wave pauses the rest of the deletion. Children with no valid annotation, such as those created before an upgrade, are deleted in a final unordered wave. [[sources/research-gap-m2-ownership-gc]] See [[findings/kro-sets-no-owner-references-on-instance-children-and-tracks-them-with-labels-and-an-applyset-inventory]].
 
 ## Related
 
