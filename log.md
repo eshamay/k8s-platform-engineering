@@ -530,3 +530,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Crossplane Operations maturity and API stability
 - closed by: Eric Shamay
 - resolution: Settled: Operations are alpha with v1alpha1 CRDs behind --enable-operations, and cannot delete resources or set owner references ([[findings/crossplane-operations-are-alpha-and-cannot-delete-resources-or-set-owner-references]]). Not settled: no beta graduation plan or tracking issue was found.
+
+## [2026-11-26] gaps | close | Managed resource activation policy mechanism and defaults
+- closed by: Eric Shamay
+- resolution: Settled: the ManagedResourceDefinition, ManagedResourceActivationPolicy and safe-start mechanism, and that the default Helm install activates every managed resource so the default must be turned off to use policies ([[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]]). Not settled: no with-versus-without-policy API server measurement exists, and the docs say alpha where the code says beta.

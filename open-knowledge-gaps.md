@@ -103,7 +103,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#flux-sharding-in-production-and-the-helmchart-labeling-rule]] — open, unassigned
 - [[#flux-image-automation-api-status-and-safe-promotion-policy]] — open, unassigned
 - [[#crossplane-package-dependency-resolution-revision-activation-and-upgrade-policy]] — open, unassigned
-- [[#managed-resource-activation-policy-mechanism-and-defaults]] — open, unassigned
 - [[#neutral-comparisons-of-crossplane-with-terraform-and-single-cloud-operators]] — open, unassigned
 - [[#kro-governance-status-and-the-future-of-the-graph-api]] — open, unassigned
 - [[#scaling-limits-of-per-rgd-kro-controllers-and-named-production-kro-adopters]] — open, unassigned
@@ -1253,18 +1252,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, packages, upgrades, verification
 
-## Managed resource activation policy mechanism and defaults — status: open
-
-- **Question:** How do managed resource activation policies decide which CRDs a provider installs, and what are their defaults and failure modes?
-- **Why it matters:** The upgrade guide and the Upbound scaling post connect activation policies to the CRD scale problem, but neither explains the mechanism. See [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]] and [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the Crossplane documentation page on activation policies.
-  - [ ] Add measurements of CRD counts and API server memory with and without policies.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** crossplane, crd-scale, activation-policies, verification
-- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Mechanism and defaults settled, measurements not. An MRAP matches MRD names with prefix-only wildcards, activates one way only, and the Helm chart creates a default MRAP with `"*"`, so a stock install activates everything. MRDs start Inactive only for providers with `safe-start`, and MRDs and MRAPs are alpha in the docs. Failure modes are documented. Not settled: no measurement of CRD counts or API server memory with versus without policies, only the docs' ~3 MiB per CRD estimate and project-reported runtime-side figures. See [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]].
-
 ## Neutral comparisons of Crossplane with Terraform and single-cloud operators — status: open
 
 - **Question:** What do neutral sources, such as practitioner benchmarks or independent write-ups, say about Crossplane versus Terraform, OpenTofu, Pulumi, CDK, Config Connector, ACK, and Azure Service Operator?
@@ -1715,3 +1702,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: Operations are alpha with v1alpha1 CRDs behind --enable-operations, and cannot delete resources or set owner references ([[findings/crossplane-operations-are-alpha-and-cannot-delete-resources-or-set-owner-references]]). Not settled: no beta graduation plan or tracking issue was found.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Operations are alpha in v2.5 (`state: alpha`, `--enable-operations`, only `ops.crossplane.io/v1alpha1` CRDs), arrived in v2.0.0, and differ from composition functions by running once to completion, force-applying without owner references, and being unable to delete resources. Not settled: no beta graduation plan or tracking issue was found. See [[findings/crossplane-operations-are-alpha-and-cannot-delete-resources-or-set-owner-references]].
+
+## Managed resource activation policy mechanism and defaults — status: closed (2026-11-26)
+
+- **Question:** How do managed resource activation policies decide which CRDs a provider installs, and what are their defaults and failure modes?
+- **Why it matters:** The upgrade guide and the Upbound scaling post connect activation policies to the CRD scale problem, but neither explains the mechanism. See [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]] and [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Crossplane documentation page on activation policies.
+  - [ ] Add measurements of CRD counts and API server memory with and without policies.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, crd-scale, activation-policies, verification
+- **Resolution:** Settled: the ManagedResourceDefinition, ManagedResourceActivationPolicy and safe-start mechanism, and that the default Helm install activates every managed resource so the default must be turned off to use policies ([[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]]). Not settled: no with-versus-without-policy API server measurement exists, and the docs say alpha where the code says beta.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Mechanism and defaults settled, measurements not. An MRAP matches MRD names with prefix-only wildcards, activates one way only, and the Helm chart creates a default MRAP with `"*"`, so a stock install activates everything. MRDs start Inactive only for providers with `safe-start`, and MRDs and MRAPs are alpha in the docs. Failure modes are documented. Not settled: no measurement of CRD counts or API server memory with versus without policies, only the docs' ~3 MiB per CRD estimate and project-reported runtime-side figures. See [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]].
