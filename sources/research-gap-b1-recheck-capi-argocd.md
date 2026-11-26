@@ -6,7 +6,7 @@ created: 2026-11-26
 updated: 2026-11-26
 sources:
   - id: research-gap-b1-recheck-capi-argocd
-    hash: 832b86e20750
+    hash: 8ddfe827b22b
     ingested: 2026-11-26
 aliases: []
 tags: [cluster-api, argo-cd, kstatus, research-dossier, gap-closing, targeted-pass, verification]
@@ -15,7 +15,7 @@ tags: [cluster-api, argo-cd, kstatus, research-dossier, gap-closing, targeted-pa
 # Research dossier: recheck of Cluster API and Argo CD gaps (b1-recheck-capi-argocd)
 
 > [!NOTE]
-> **Raw file:** `raw/research-gap-b1-recheck-capi-argocd.md` (sha256 prefix 832b86e20750)<br>
+> **Raw file:** `raw/research-gap-b1-recheck-capi-argocd.md` (sha256 prefix 8ddfe827b22b; revised from 832b86e20750, see Revision note)<br>
 > **Kind:** Verified research dossier for gap cluster b1-recheck-capi-argocd, dated 2026-11-26<br>
 > **Ingested:** 2026-11-26 as a targeted pass over the Cluster API and Argo CD pages that rested on a release candidate or an older page<br>
 > **Caveat:** All evidence came from `gh api` reads of source and documentation files at named tags. No web search was run, the CNOE sharding blog was not read in this pass, and the kstatus-on-Cluster conclusion is an inference.
@@ -45,6 +45,10 @@ For Argo CD, `legacy` is the default sharding algorithm at v3.6.3 in both the co
 - `timeout.reconciliation: 180s` appears in `argocd-cm.yaml` at v2.1.0, v2.2.0, v2.3.0, and v2.4.0, and `defaultAppResyncPeriod = 180` appears in the controller at v2.1.0 and v2.4.0. The v2.5.0 FAQ says "The default polling interval is 3 minutes (180 seconds)." VERIFIED.
 - The v3.0.0 `argocd-cm.yaml` says "Two minutes by default with additional jitter" and adds `timeout.reconciliation.jitter: 60s`. Pull request 22342 (merged 2025-03-13) added the jitter and says "the maximum default is the same (at least every 3 minutes)." VERIFIED. https://github.com/argoproj/argo-cd/pull/22342
 - Why the base value dropped from 180 to 120 seconds is UNVERIFIED. The linked issue and review comments of the pull request were not opened.
+
+## Revision note
+
+The raw file was revised on 2026-11-26 after a second adversarial verification pass that re-fetched the release listings, `features.go`, the MachineHealthCheck types, the feature-gates and ClusterClass pages, the status proposal, `cluster_types.go`, the kstatus README and `generic.go`, the Argo CD sharding constants and HA docs, `argocd-cm.yaml` at v2.1.0 to v2.4.0 and v3.0.0, the controller constants, the v2.5.0 FAQ, and pull request 22342. Every checked quote and version reproduced and no further corrections were needed. The pass did not re-check the "Alpha Features" note wording in the Argo CD HA page, the CNOE blog (still SECONDARY-ONLY), or the kstatus-on-Cluster inference (still UNVERIFIED). Pages written from the first revision (hash 832b86e20750) keep that hash in their `sources` entry, because no claim changed.
 
 ## Not found
 

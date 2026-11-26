@@ -97,4 +97,6 @@ None. Every URL above was read through the GitHub API or raw file contents. The 
 
 ## Verification summary
 
+Second adversarial pass (2026-11-26): re-fetched via `gh` raw contents all release listings, features.go, MHC types, feature-gates and ClusterClass pages, status proposal, cluster_types.go, kstatus README and generic.go, Argo CD common.go, controller flag, HA docs, argocd-cm.yaml (v2.1.0 to v2.4.0, v3.0.0), controller constants, v2.5.0 FAQ, PR 22342. All checked quotes and versions reproduced; no further corrections. Not re-checked: the "Alpha Features" note wording in the HA page, and CNOE blog (still SECONDARY-ONLY).
+
 Re-fetched with `gh api` raw contents on 2026-11-26: release listings, MHC types (rc.0 and main), features.go, feature-gates and ClusterClass book pages, status proposal, cluster_types.go, kstatus README and generic.go, Argo CD common.go, controller flag, HA docs, argocd-cm.yaml at v2.1.0 to v2.4.0 and v3.0.0, controller constant at v2.1.0 and v2.4.0, v2.5.0 FAQ, PR 22342. All other quotes reproduced. Not re-read: CNOE blog (still SECONDARY-ONLY), kstatus-on-Cluster inference (still UNVERIFIED).

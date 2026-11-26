@@ -704,3 +704,13 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 - fact conflicts: 0
 - gaps drafted: 0
 - rationale: The raw dossier was edited after seq 50 by a second verification pass. All reproduced claims are unchanged, and one correction applies: Crossplane core's `--max-reconcile-rate` is an alias of `--max-concurrent-reconciles` (worker pool size, default 100), not a rate. The source page and the poll-interval finding now carry the new hash and a correction note. The earlier possible-resolution notes in open-knowledge-gaps.md and the todos stay valid and were not changed. No outputs were edited.
+
+## [2026-11-26] ingest | Recheck of Cluster API and Argo CD gaps, revised snapshot (b1-recheck-capi-argocd)
+- source: [[sources/research-gap-b1-recheck-capi-argocd]]
+- raw: `raw/research-gap-b1-recheck-capi-argocd.md` (sha256: 8ddfe827b22b; supersedes content hash 832b86e20750 of the same raw file)
+- pages touched: [[sources/research-gap-b1-recheck-capi-argocd]], [[index]]
+- new pages: none
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 0 (the possible-resolution note under the open Ready-versus-Available gap, the updates to the closed MachineHealthCheck, ClusterClass, sharding, and reconcile-interval gaps, and the follow-up todos from seq 51 all stand unchanged)
+- rationale: The raw dossier was edited after seq 51 by a second adversarial verification pass. It re-fetched the release listings, feature gates, MachineHealthCheck types, status proposal, kstatus sources, Argo CD sharding and interval sources, and pull request 22342, and all checked quotes reproduced with no further corrections. No claim changed, so the source page carries the new hash and a revision note, and the pages written at seq 51 keep their original hash. Nothing under outputs/ was touched.
