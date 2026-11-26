@@ -144,28 +144,36 @@ const topics = [
 ]
 log(`Research fan-out: ${topics.length} agents (${CONCEPTS.length} concepts + ${CROSS.length} cross-cutting topics)`)
 
+// args.skipResearch: slugs whose raw/research-<slug>.md dossier already exists on disk.
+// Research agents must be able to Write, so use general-purpose (the web-researcher type has no Write tool).
+const skip = new Set((args && args.skipResearch) || [])
+const toResearch = topics.filter(t => !skip.has(t.slug))
+if (skip.size) log(`Skipping research for ${skip.size} existing dossiers; researching ${toResearch.length}`)
+
 const research = (await parallel(
-  topics.map(t => () =>
+  toResearch.map(t => () =>
     agent(researchPrompt(t.slug, t.title, t.topic, t.kind), {
       label: `research:${t.slug}`,
       phase: 'Research',
       schema: RESEARCH_SCHEMA,
-      agentType: 'deep-research:web-researcher',
+      agentType: 'general-purpose',
     }),
   ),
 )).filter(Boolean)
 
-const missing = topics.filter(t => !research.find(r => r.slug === t.slug))
+const missing = toResearch.filter(t => !research.find(r => r.slug === t.slug))
 if (missing.length) log(`WARNING: no research result for: ${missing.map(m => m.slug).join(', ')}`)
-log(`Research complete: ${research.length}/${topics.length} dossiers, ${research.reduce((n, r) => n + (r.sourceCount || 0), 0)} sources read`)
+log(`Research complete: ${research.length}/${toResearch.length} new dossiers, ${research.reduce((n, r) => n + (r.sourceCount || 0), 0)} sources read`)
 
 // ---------- Phase 2: serial ingest (one source, one commit) ----------
 phase('Ingest')
 const ingested = []
-for (const r of research) {
-  const topic = topics.find(t => t.slug === r.slug)
+const skipIngest = new Set((args && args.skipIngest) || [])
+for (const topic of topics) {
+  if (skipIngest.has(topic.slug)) continue
+  const r = { slug: topic.slug, dossierPath: `${WIKI}/raw/research-${topic.slug}.md` }
   const res = await agent(
-    `Ingest one source into the sticki-wiki at ${WIKI}. Invoke the Skill tool with skill "sticki-wiki:sticki-ingest" and follow it exactly, with the source file ${r.dossierPath}. Treat this research dossier as ONE markdown source (it summarizes many web pages, each with a URL). Notes for this ingest:
+    `Ingest one source into the sticki-wiki at ${WIKI}. Invoke the Skill tool with skill "sticki-wiki:sticki-ingest" and follow it exactly, with the source file ${r.dossierPath}. If that file does not exist, do not invent it: make no changes and report the problem. Treat this research dossier as ONE markdown source (it summarizes many web pages, each with a URL). Notes for this ingest:
 - The file is already in raw/. Do not duplicate it; compute its hash and use its filename slug as the source id.
 - The size override rule does not apply; do not refuse on size. The dossier is under 50 KB.
 - The wiki is large-volume and already holds draft concept pages for ${CONCEPTS.length} seeded concepts and entity pages for Flux, Crossplane, and kro. Update the matching concept page(s) for "${topic.title}" with the new claims and promote them from draft to active when well sourced. Create new pages where warranted: examples/ pages for each distinct real-world use case, findings/ pages for each distinct pitfall or failure mode, comparisons/ pages for tool-versus-tool analyses, decisions/ pages only for genuine architecture decision points, and extra entities/ pages for tools such as Argo CD, Config Connector, ACK, Cluster API, Backstage. Create one sources/ page per web URL cited in the dossier only when it is rich enough to deserve its own page; otherwise cite the dossier source page and give URLs in its Key claims.
@@ -179,7 +187,7 @@ Return the commit short SHA, pages created, pages touched, and any problems.`,
   if (res) ingested.push(res)
   else log(`WARNING: ingest failed or skipped for ${r.slug}`)
 }
-log(`Ingest complete: ${ingested.length}/${research.length} dossiers committed`)
+log(`Ingest complete: ${ingested.length}/ dossiers committed`)
 
 // ---------- Phase 3: plan outputs ----------
 phase('Plan')
@@ -256,7 +264,7 @@ Return: the commit SHA, counts of pages by folder, lint findings left for the us
 )
 
 return {
-  dossiers: research.length,
+  dossiers: topics.length,
   sourcesRead: research.reduce((n, r) => n + (r.sourceCount || 0), 0),
   ingestsCommitted: ingested.length,
   documents: plan.docs.map(d => d.slug),
