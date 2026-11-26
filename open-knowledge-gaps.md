@@ -44,7 +44,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#best-default-conflict-policy-for-teams-running-gitops-and-in-cluster-controllers]] — open, unassigned
 - [[#crossplane-v2-server-side-apply-behavior-and-external-writers]] — open, unassigned
 - [[#cluster-api-field-ownership-rules-and-argo-cd-server-side-diff-stability]] — open, unassigned
-- [[#admission-behavior-of-crossplane-kro-argo-cd-config-connector-ack-cluster-api-and-gatekeeper]] — open, unassigned
 - [[#kyverno-webhook-failure-modes-and-availability]] — open, unassigned
 - [[#cel-cost-limits-and-per-request-budgets]] — open, unassigned
 - [[#named-operator-failure-postmortems]] — open, unassigned
@@ -576,18 +575,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cluster-api, argo-cd, server-side-diff, verification
 - **Possible resolution from [[sources/research-gap-m4-ssa-conflict-policy]]:** Partly settled, and the user decides whether to close it. Cluster API's topology controller applies under the manager `capi-topology` with force ownership, the book says this lets other controllers co-author generated objects, and the troubleshooting page documents infinite reconcile for co-authored list slices and a failure to remove list items after atomic-to-map transitions. A per-field table of fields owned by the topology controller versus providers was searched for and not found, so that half stays open. Argo CD's diff-strategies page says Server-Side Diff is "Stable (Since v3.1.0)", which confirms the blog claim, but 20 or more Server-Side Diff issues remain open, and no maintainer statement reconciles the label with them. Whether `kubectl` made server-side apply the default was not answered. See [[findings/cluster-api-co-authored-list-slices-can-reconcile-forever-and-server-side-apply-can-fail-to-remove-list-items]], [[findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs]], and [[examples/argo-cd-issue-28861-stale-managedfields-leave-an-application-permanently-out-of-sync-under-server-side-diff]].
-
-## Admission behavior of Crossplane, kro, Argo CD, Config Connector, ACK, Cluster API, and Gatekeeper — status: open
-
-- **Question:** What webhooks and CEL validation do these tools ship or rely on, such as Crossplane's own conversion and validation webhooks, CRD-level CEL in composed APIs, kro's validation of generated CRDs, and Gatekeeper's policy model?
-- **Why it matters:** The admission dossier found no primary source for any of them, so admission treatment of the platform tools is unknown. See [[concepts/admission-webhooks-and-cel]] and [[entities/crossplane]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read each project's webhook and validation documentation.
-  - [ ] Read a primary Gatekeeper source.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** crossplane, kro, argo-cd, config-connector, ack, cluster-api, gatekeeper
-- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Largely settled, and the user decides whether to close it. Crossplane ships one Fail Usage webhook and uses CEL for XRD and Composition validation. kro and ACK ship no webhook in the files read, and kro relies on CRD schema and CEL. Config Connector and Cluster API ship many webhooks, all Fail. Gatekeeper defaults to Ignore with a documented fail-closed path. Not settled: Argo CD webhook absence is UNVERIFIED because only tree paths were searched, and namespace exclusions in the Cluster API and Config Connector manifests were not searched exhaustively. See [[comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno]].
 
 ## Kyverno webhook failure modes and availability — status: open
 
@@ -1816,3 +1803,18 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Closed by:** Eric Shamay on 2026-11-26
 
 - **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled except for one detail, and the user decides whether to close it. The v0.3.0 release notes (2019-10-10) list the `DynamicRESTMapper` (#554), and the v0.3.0 tag's `manager.go` returns it as the default. KEP-3352 gives the aggregated discovery rationale, a storm of requests with latency and throttling, with alpha v1.26, beta v1.27 and stable v1.30. Not settled: which controller-runtime release adopted aggregated discovery was not established, and the KEP does not mention controller-runtime's mapper. See [[findings/the-dynamic-restmapper-is-confirmed-as-the-controller-runtime-default-at-v0-3-0-from-the-release-notes-and-tag-source]] and [[findings/aggregated-discovery-exists-because-per-group-version-discovery-caused-a-request-storm]].
+
+## Admission behavior of Crossplane, kro, Argo CD, Config Connector, ACK, Cluster API, and Gatekeeper — status: closed (2026-11-26)
+
+- **Question:** What webhooks and CEL validation do these tools ship or rely on, such as Crossplane's own conversion and validation webhooks, CRD-level CEL in composed APIs, kro's validation of generated CRDs, and Gatekeeper's policy model?
+- **Why it matters:** The admission dossier found no primary source for any of them, so admission treatment of the platform tools is unknown. See [[concepts/admission-webhooks-and-cel]] and [[entities/crossplane]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read each project's webhook and validation documentation.
+  - [ ] Read a primary Gatekeeper source.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, kro, argo-cd, config-connector, ack, cluster-api, gatekeeper
+- **Resolution:** Largely settled. Crossplane ships one Fail Usage webhook and uses CEL for XRD and Composition validation. kro and ACK ship no webhook in the files read, and kro relies on CRD schema and CEL. Config Connector and Cluster API ship many webhooks, all Fail. Gatekeeper defaults to Ignore with a documented fail-closed path. Not settled: Argo CD webhook absence is UNVERIFIED because only tree paths were searched, and namespace exclusions in the Cluster API and Config Connector manifests were not searched exhaustively. See [[comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Largely settled, and the user decides whether to close it. Crossplane ships one Fail Usage webhook and uses CEL for XRD and Composition validation. kro and ACK ship no webhook in the files read, and kro relies on CRD schema and CEL. Config Connector and Cluster API ship many webhooks, all Fail. Gatekeeper defaults to Ignore with a documented fail-closed path. Not settled: Argo CD webhook absence is UNVERIFIED because only tree paths were searched, and namespace exclusions in the Cluster API and Config Connector manifests were not searched exhaustively. See [[comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno]].
