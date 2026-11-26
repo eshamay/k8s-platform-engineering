@@ -1,13 +1,16 @@
 ---
 title: Argo CD Server-Side Diff ends false OutOfSync from server defaults
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: []
 tags: [argo-cd, server-side-apply, diff, out-of-sync]
 ---
@@ -29,3 +32,7 @@ The author recommends proving the cause with `kubectl diff --server-side`, which
 ## Lesson
 
 The author prefers this fix over `ignoreDifferences`, because ignoring a field also hides real drift, and writes that "Server-Side Diff hides nothing." `ignoreDifferences` remains the right tool for fields a controller rewrites on purpose, such as `replicas` under an autoscaler. See [[findings/diff-is-not-apply-server-defaults-look-like-drift]], [[entities/argo-cd]], [[comparisons/exemption-and-ignore-controls-across-tools]], and [[concepts/server-side-apply-and-field-ownership]].
+
+## Update from the m4 dossier
+
+Correction note, 2026-11-26: the article's claim that Server-Side Diff is stable since Argo CD 3.1.0, which the first dossier did not verify, is confirmed by the diff-strategies page ("Stable (Since v3.1.0)"), which also says it is used automatically with the Server-Side Apply sync option. Stable does not mean issue-free, because 20 or more Server-Side Diff issues are open, among them 28861 and 25533. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs]], [[examples/argo-cd-issue-28861-stale-managedfields-leave-an-application-permanently-out-of-sync-under-server-side-diff]], and [[examples/argo-cd-issue-25533-server-side-diff-does-not-detect-spec-changes-to-a-custom-resource]].

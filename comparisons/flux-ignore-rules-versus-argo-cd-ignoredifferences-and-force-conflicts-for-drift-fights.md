@@ -1,13 +1,16 @@
 ---
 title: Flux ignore rules versus Argo CD ignoreDifferences and force-conflicts for drift fights
 type: comparison
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-pitfalls-and-case-studies
     hash: 9407913c2448
     ingested: 2026-11-25
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: []
 tags: [flux, argo-cd, crossplane, ssa, drift, ignore, conflict]
 ---
@@ -35,3 +38,7 @@ Neither the Flux nor the Argo CD source compares the approaches directly, and ne
 ## Related
 
 [[examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed]], [[concepts/server-side-apply-and-field-ownership]]
+
+## Update from the m4 dossier
+
+Update 2026-11-26: the Flux and Argo CD rows are now backed by primary documentation. The Flux Strip and Adopt wording is in the kustomize-controller specification, Argo CD's server-side apply mode is documented to run `kubectl apply --server-side --force-conflicts` and to ignore `Force=true`, and `managedFieldsManagers` is documented in the diffing page. The comparison the sources lacked is still absent: no source or experiment compares the policies under a shared-field scenario. The options are laid out without a recommendation in [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]]. [[sources/research-gap-m4-ssa-conflict-policy]] See also [[examples/the-kube-green-case-study-says-managedfieldsmanagers-works-today-but-is-not-a-documented-contract-between-the-projects]].

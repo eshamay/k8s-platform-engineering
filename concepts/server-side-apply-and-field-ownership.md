@@ -29,6 +29,9 @@ sources:
   - id: research-gap-g3-flux-ssa-helm
     hash: e825557fc5c4
     ingested: 2026-11-26
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: [SSA, managedFields]
 tags: [api-machinery, server-side-apply]
 ---
@@ -81,7 +84,11 @@ Most problems appear at boundaries. The documented ones are stale co-owners afte
 
 ## Open edges
 
-The dossier could not read primary sources for kro, ACK, Config Connector, or Helm 4, so this page makes no claim about how those tools set field managers. See [[open-knowledge-gaps]].
+Correction note, 2026-11-26: this section used to say that no primary source was read for kro, ACK, Config Connector, or Helm 4. The m4 dossier read their source, and the results are summarized in the next section. What remains unread is the public Config Connector documentation, the per-service ACK controllers, the Helm v4.0.0 tag, and any table of fields that Cluster API's topology controller owns. See [[open-knowledge-gaps]].
+
+## Server-side apply behavior by tool (m4 dossier)
+
+The tools differ more than the shared vocabulary suggests. kro applies template resources with server-side apply and force and applies patch contributions without force ([[findings/kro-applies-template-resources-with-server-side-apply-and-force-and-applies-patch-contributions-without-force]]). The ACK runtime sends merge patches and sets no server-side apply manager ([[findings/the-ack-runtime-sends-merge-patches-and-sets-no-server-side-apply-field-manager]]). Config Connector writes with Update under `cnrm-controller-manager` and reads other managers' fields as user intent ([[findings/config-connector-writes-with-update-under-cnrm-controller-manager-and-reads-other-managers-fields-as-user-intent]]). Helm 4 installs with server-side apply by default on main, names its manager after the binary, and forces only when `--force-conflicts` is set, while helm-controller always forces ([[findings/helm-4-install-defaults-to-server-side-apply-names-its-manager-after-the-binary-and-forces-conflicts-only-when-asked]]). Cluster API's topology controller forces under `capi-topology`, and its co-authored list slices can reconcile forever ([[findings/cluster-api-co-authored-list-slices-can-reconcile-forever-and-server-side-apply-can-fail-to-remove-list-items]]). Argo CD documents Server-Side Diff as stable since v3.1.0 while many bugs stay open ([[findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs]]). A forced apply is not a universal fix, as Kubernetes issue 130292 shows ([[examples/kubernetes-issue-130292-a-forced-server-side-apply-could-not-revert-an-edited-service-port]]). The two policy questions are recorded as evidence-only decisions: [[decisions/force-conflicts-or-surface-them-to-humans]] and [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]]. [[sources/research-gap-m4-ssa-conflict-policy]]
 
 ## Related
 

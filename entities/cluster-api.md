@@ -86,6 +86,9 @@ sources:
   - id: research-gap-m3-status-conditions
     hash: 07099fedb0c8
     ingested: 2026-11-26
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -128,7 +131,7 @@ Cluster API is moving from the `Ready` condition to `Available`, which kstatus d
 
 ## Server-side apply in the topology controller
 
-The ClusterClass topology controller adopted server-side apply in pull request 6495 (merged June 2022) so the API server can arbitrate several controllers co-authoring the same object. Only the pull request description was read, so the field-level ownership rules between Cluster API and infrastructure providers are unverified. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects]].
+The ClusterClass topology controller adopted server-side apply in pull request 6495 (merged June 2022) so the API server can arbitrate several controllers co-authoring the same object. Only the pull request description was read, so the field-level ownership rules between Cluster API and infrastructure providers are unverified. Update 2026-11-26: source and the book now show that the controller applies under the manager `capi-topology` with force ownership, and that the book documents infinite reconcile for co-authored list slices. A per-field ownership table still was not found. [[sources/research-server-side-apply-and-field-ownership]] [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/cluster-api-co-authored-list-slices-can-reconcile-forever-and-server-side-apply-can-fail-to-remove-list-items]]. See [[examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects]].
 
 ## Core and provider controllers
 

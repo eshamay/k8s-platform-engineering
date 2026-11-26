@@ -113,6 +113,9 @@ sources:
   - id: research-gap-m3-status-conditions
     hash: 07099fedb0c8
     ingested: 2026-11-26
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -167,7 +170,7 @@ Argo CD derives health from `status`: built-in checks for core types and Lua scr
 
 ## Server-side apply and Server-Side Diff
 
-Argo CD applies with client-side `kubectl apply` by default. `ServerSideApply=true`, set per Application or per resource, runs `kubectl apply --server-side --force-conflicts` under the manager `argocd-controller`. `Replace=true` takes precedence over it and `Force=true` is ignored under it. A client-side apply migration feature moves ownership to Argo CD's manager, and adopting a namespace with `managedNamespaceMetadata` needs a prior upgrade to server-side apply. Applying and diffing are separate: Server-Side Diff (`ServerSideDiff=true`) avoids false OutOfSync caused by server defaults. SSA support arrived in Argo CD v2.5.0 according to one personal blog. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/argo-cd-server-side-diff-ends-false-out-of-sync-from-server-defaults]], [[findings/diff-is-not-apply-server-defaults-look-like-drift]], and [[comparisons/ssa-conflict-policy-across-tools]].
+Argo CD applies with client-side `kubectl apply` by default. `ServerSideApply=true`, set per Application or per resource, runs `kubectl apply --server-side --force-conflicts` under the manager `argocd-controller`. `Replace=true` takes precedence over it and `Force=true` is ignored under it. A client-side apply migration feature moves ownership to Argo CD's manager, and adopting a namespace with `managedNamespaceMetadata` needs a prior upgrade to server-side apply. Applying and diffing are separate: Server-Side Diff (`ServerSideDiff=true`) avoids false OutOfSync caused by server defaults. SSA support arrived in Argo CD v2.5.0 according to one personal blog. Update 2026-11-26: the diff-strategies page now confirms that Server-Side Diff is "Stable (Since v3.1.0)" and is used automatically when the Server-Side Apply sync option is on, yet 20 or more Server-Side Diff issues remain open, and the sync-options page does not name `argocd-controller` as the manager. [[sources/research-server-side-apply-and-field-ownership]] [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs]]. See [[examples/argo-cd-server-side-diff-ends-false-out-of-sync-from-server-defaults]], [[findings/diff-is-not-apply-server-defaults-look-like-drift]], and [[comparisons/ssa-conflict-policy-across-tools]].
 
 ## Coverage gap in the operator-pattern dossier
 

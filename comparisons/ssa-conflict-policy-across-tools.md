@@ -1,7 +1,7 @@
 ---
 title: Server-side apply conflict policy across tools
 type: comparison
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
@@ -10,6 +10,9 @@ sources:
     ingested: 2026-11-25
   - id: research-gap-g3-flux-ssa-helm
     hash: e825557fc5c4
+    ingested: 2026-11-26
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
     ingested: 2026-11-26
 aliases: []
 tags: [comparison, server-side-apply, conflict, gitops]
@@ -27,6 +30,12 @@ Every tool that applies with SSA must decide what happens when another manager o
 | [[entities/kluctl]] | Decides per field, overwriting known interactive managers | `--force-apply`, `kluctl.io/force-apply`, `kluctl.io/force-apply-field` | Kluctl's own manager |
 | Controllers (Kubebuilder) | Force ownership of fields they manage | Specify only the fields you manage | Named with `client.FieldOwner` |
 | [[entities/crossplane]] | Uses SSA to propagate claim to composite to composed resources | Merge markers on provider CRDs; managed-field cleanup on migration | Prefix `apiextensions.crossplane.io/composed/` |
+| [[entities/kro]] | Applies templates with force; applies patch contributions without force; opt-in conflict detection refuses to steal from another Graph | `ConflictDetection` (standalone Graph controller only) | `kro.run/applyset`, `kro-instance-status`, per-Graph prefix `kro-graphengine.tmpl.` |
+| [[entities/ack]] | No server-side apply in the runtime; sends merge patches (Update-type, no conflicts raised) | None found | None set by the runtime |
+| [[entities/config-connector]] | No server-side apply; `Update` writes, and fields set by other managers are read as user intent | None found in docs (public page unreadable) | `cnrm-controller-manager`, plus `supports-ssa` for a metadata-only apply |
+| [[entities/helm]] (CLI, Helm 4) | Server-side apply by default on install; conflicts error unless `--force-conflicts` | `--server-side` true, false, auto; `--force-conflicts` | Binary base name, normally `helm` |
+| helm-controller | Always forces conflicts under server-side apply | `--override-manager` (takes over before its dry-run diff) | The controller's own manager |
+| [[entities/cluster-api]] (topology controller) | Force ownership | Avoid co-authored list slices | `capi-topology` |
 
 ## Reading the table
 
@@ -36,4 +45,4 @@ The Flux Strip and Adopt rules differ in direction. Strip removes a field from F
 
 ## Gaps
 
-Argo CD's `Replace=true` takes precedence over SSA and `Force=true` is ignored under SSA. kro, ACK, Config Connector, and Helm 4 are absent because the dossier could not read primary sources for them. The Flux flag semantics should be verified against current documentation. See [[comparisons/exemption-and-ignore-controls-across-tools]] and [[open-knowledge-gaps]].
+Argo CD's `Replace=true` takes precedence over SSA and `Force=true` is ignored under SSA. Correction note, 2026-11-26: kro, ACK, Config Connector, Helm 4, and helm-controller used to be absent because no primary source had been read, and the m4 dossier now supplies the rows above from source at named commits. The Argo CD manager name `argocd-controller` in the table comes from earlier sources, because the sync-options page says client-side apply migration is enabled by default but does not name the manager. The Flux flag semantics are now confirmed by the controller options pages, and the helm-controller flag acts before its dry-run diff while the kustomize-controller default flag acts after it. Config Connector claims rest on source and issues only, since its public docs page was unreadable, and the ACK row rests on absence in the shared runtime. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/helm-controller-takes-over-override-manager-fields-before-its-dry-run-diff-the-reverse-of-kustomize-controller]], [[comparisons/exemption-and-ignore-controls-across-tools]] and [[open-knowledge-gaps]].

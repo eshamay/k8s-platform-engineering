@@ -101,6 +101,9 @@ sources:
   - id: research-gap-m3-status-conditions
     hash: 07099fedb0c8
     ingested: 2026-11-26
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -239,3 +242,7 @@ Correction note, 2026-11-26: the sentence in the components section that Kustomi
 ## Condition and generation practice in the m3 dossier
 
 Flux's condition setter stamps the current generation on every condition, its Kustomization status also keeps a top-level `observedGeneration`, and it mixes abnormal-true `Stalled` and `Reconciling` with a positive `Ready`. [[sources/research-gap-m3-status-conditions]] See [[examples/flux-stamps-the-current-generation-on-every-condition-and-also-keeps-a-top-level-observedgeneration]] and [[entities/kstatus]].
+
+## helm-controller and kustomize-controller takeover order (m4 dossier)
+
+The two controllers order the field-manager takeover differently. helm-controller's `--override-manager` (v1.5.0, 2026-02-20) patches `managedFields` on the live objects before its server-side dry-run diff, while kustomize-controller's `--override-manager` acts only after a successful dry-run and its `--override-manager-before-dry-run` flag (v1.10.0) is the documented recovery for objects whose dry-run fails. No helm-controller counterpart to the recovery flag was found, and helm-controller always forces conflicts under server-side apply. Flux's Strip and Adopt rules are confirmed by the kustomize-controller specification, which also says changes to ignored fields alone do not trigger a reconciliation. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/helm-controller-takes-over-override-manager-fields-before-its-dry-run-diff-the-reverse-of-kustomize-controller]] and [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]].

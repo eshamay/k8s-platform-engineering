@@ -8,6 +8,9 @@ sources:
   - id: research-gap-b1-recheck-flux-k8s
     hash: c78dc9a9635e
     ingested: 2026-11-26
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: [Helm 4 server-side apply default]
 tags: [helm, helm-4, helm-controller, flux, server-side-apply, defaults, verified]
 ---
@@ -41,3 +44,7 @@ Force-always server-side apply makes a HelmRelease take fields from other manage
 ## Related
 
 [[entities/helm]], [[entities/flux]], [[findings/client-side-to-server-side-migration-leaves-stale-co-owners]], [[findings/forcing-conflicts-hides-disagreements-between-writers]]
+
+## Update from the m4 dossier
+
+Update 2026-11-26: source on Helm main now answers the points left open earlier. The field manager is the binary's base name unless `ManagedFieldsManager` is set, and a client-side to server-side upgrade also upgrades the client-side manager. The command line does not force conflicts unless `--force-conflicts` is set, whereas helm-controller sets `ForceConflicts = ServerSideApply`. The v4.0.0 tag was not read, and Helm issue 32706 reports an install conflict on a CRD installed client-side. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/helm-4-install-defaults-to-server-side-apply-names-its-manager-after-the-binary-and-forces-conflicts-only-when-asked]].

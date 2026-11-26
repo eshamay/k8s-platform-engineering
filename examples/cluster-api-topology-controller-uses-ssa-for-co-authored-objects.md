@@ -1,13 +1,16 @@
 ---
 title: The Cluster API topology controller uses SSA for co-authored objects
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: []
 tags: [cluster-api, server-side-apply, topology, co-authoring]
 ---
@@ -29,3 +32,7 @@ This is a thin source. The dossier read only the description and file list, so i
 ## Lesson
 
 A platform controller that generates objects other controllers also edit is a natural fit for SSA, because the API server arbitrates ownership instead of the controller guessing. See [[entities/cluster-api]], [[concepts/server-side-apply-and-field-ownership]], and [[findings/multiple-writers-on-one-object]].
+
+## Update from the m4 dossier
+
+Update 2026-11-26: the limits named above are partly lifted. Source shows the controller applies under the manager `capi-topology` with force ownership, the book says server-side apply lets other controllers co-author the generated objects and advises against ad hoc edits, and the troubleshooting page documents infinite reconcile for slices co-authored by templates and an infrastructure controller (issue 6320). A per-field ownership table was searched for and not found, so field-level rules are still not established. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/cluster-api-co-authored-list-slices-can-reconcile-forever-and-server-side-apply-can-fail-to-remove-list-items]].

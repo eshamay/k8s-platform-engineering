@@ -83,6 +83,9 @@ sources:
   - id: research-gap-g1-other-tool-pitfalls
     hash: a942f0ae1b1b
     ingested: 2026-11-26
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -135,7 +138,7 @@ kro lets a platform author define a schema that users fill in and wire resources
 
 ## Server-side apply coverage gap
 
-The server-side apply dossier could not read kro's documentation (the page returned empty content), so this wiki makes no claim about how kro sets field managers or forces conflicts. [[sources/research-server-side-apply-and-field-ownership]] See [[concepts/server-side-apply-and-field-ownership]] and [[open-knowledge-gaps]].
+Correction note, 2026-11-26: the earlier server-side apply dossier could not read kro's documentation, so this page used to make no claim about how kro sets field managers or forces conflicts. A source-level read now settles it. kro applies template resources with server-side apply and force, applies patch contributions without force under a per-node manager, uses the managers `kro.run/applyset` and `kro-instance-status`, and has an opt-in conflict-detection mode that refuses to take a field from another kro Graph while still reclaiming external drift. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/kro-applies-template-resources-with-server-side-apply-and-force-and-applies-patch-contributions-without-force]], [[concepts/server-side-apply-and-field-ownership]], and [[comparisons/ssa-conflict-policy-across-tools]].
 
 ## Admission coverage gap
 

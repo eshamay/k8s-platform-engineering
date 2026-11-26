@@ -3,11 +3,14 @@ title: Forcing conflicts hides disagreements between writers
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, server-side-apply, force, gitops]
 ---
@@ -29,3 +32,7 @@ The dossier states that the sources do not settle the best default for platform 
 ## Related
 
 [[comparisons/ssa-conflict-policy-across-tools]], [[findings/multiple-writers-on-one-object]], [[concepts/server-side-apply-and-field-ownership]]
+
+## Update from the m4 dossier
+
+Update 2026-11-26: the evidence is now grouped by position without a recommendation in [[decisions/force-conflicts-or-surface-them-to-humans]]. Forcing is not a complete answer either: Kubernetes issue 130292 shows a forced apply failing to revert a Service port edit ([[examples/kubernetes-issue-130292-a-forced-server-side-apply-could-not-revert-an-edited-service-port]]), and a practitioner blog says that under Argo CD "the conflict mechanism protects nobody" (SECONDARY-ONLY). [[sources/research-gap-m4-ssa-conflict-policy]]

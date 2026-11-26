@@ -1,13 +1,16 @@
 ---
 title: Flux SSA annotations and ignore rules share fields with other controllers
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: []
 tags: [flux, server-side-apply, ignore, annotations]
 ---
@@ -33,3 +36,7 @@ Atomic lists such as `.spec.tolerations` cannot be shared between managers under
 ## Lesson
 
 Flux force-applies by default and then offers escape hatches in SSA vocabulary. See [[comparisons/ssa-conflict-policy-across-tools]], [[comparisons/exemption-and-ignore-controls-across-tools]], and [[entities/flux]].
+
+## Update from the m4 dossier
+
+Update 2026-11-26: the Strip and Adopt wording above is confirmed by the kustomize-controller specification. Strip removes the field from the apply payload, which "relinquishes the controller's ownership". Adopt "preserves the current value without reverting changes made by Update-type operations", and changes to ignored fields alone do not trigger a reconciliation. Because Strip applies only to Apply-type managers, a controller that writes with Update, such as Config Connector's `cnrm-controller-manager`, would be covered by Adopt. That last point is an inference from the specification and the source, not a project statement. [[sources/research-gap-m4-ssa-conflict-policy]] See [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]].

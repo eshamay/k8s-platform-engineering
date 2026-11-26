@@ -74,6 +74,9 @@ sources:
   - id: research-gap-m3-status-conditions
     hash: 07099fedb0c8
     ingested: 2026-11-26
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -177,3 +180,7 @@ The 2026-11-26 dossier read the Config Connector issue tracker (latest release v
 ## Status semantics read from source in the m3 dossier
 
 The docs say `status` is read-only and that the `Ready` condition conveys readiness plus error or information through its reason and message, and important changes also appear as Kubernetes events. The lifecycle handler replaces the whole conditions list with one `Ready` entry and keeps `lastTransitionTime` unless the status value changes. Shipped reasons include `Updating`, `UpToDate`, `UpdateFailed`, `DependencyNotReady`, `DependencyNotFound`, `DependencyInvalid`, `ManagementConflict`, and `Unmanaged`. The docs label these as event types, but the same strings are used as `Ready` reasons in code. A top-level `status.observedGeneration` is written on every status update, and the per-condition line is commented out with a TODO. [[sources/research-gap-m3-status-conditions]] See [[findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code]], [[examples/config-connector-direct-controllers-write-a-top-level-observedgeneration-and-leave-the-per-condition-line-commented-out]], and [[examples/argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration]].
+
+## Server-side apply and field managers (m4 dossier)
+
+Config Connector does not apply with server-side apply. Its lifecycle handler writes with `Update` and `Status().Update` under the field owner `cnrm-controller-manager`, skips entries from that manager when it computes the spec fields owned by others, and so reads fields set by a GitOps tool as user intent. A helper sends a tiny server-side apply patch under the manager `supports-ssa` only to create `managedFields` metadata. A repository collaborator's proposal, issue 11689 (closed 2026-10-04), says Argo CD needs server-side apply for the CRD bundle because of the annotation size limit. The public documentation page could not be read, so these statements come from source at commit 793f18c and from issues. The latest release read was v1.162.0, published 2026-11-23. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/config-connector-writes-with-update-under-cnrm-controller-manager-and-reads-other-managers-fields-as-user-intent]] and [[examples/config-connector-issue-11689-a-collaborator-proposal-says-argo-cd-needs-server-side-apply-for-config-connector-s-crds]].

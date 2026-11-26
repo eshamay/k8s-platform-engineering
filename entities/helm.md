@@ -17,6 +17,9 @@ sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: [Helm charts]
 tags: [tool, packaging, crd]
 ---
@@ -44,3 +47,7 @@ A chart is "a collection of files that describe a related set of Kubernetes reso
 ## Recheck of the Helm 4 server-side apply default
 
 Correction note, 2026-11-26: the section above called the Helm 4 server-side apply default unconfirmed. The helm.sh overview now confirms that Helm 4 defaults to server-side apply when installing a new release, that upgrades and rollbacks follow the previous release's method, and that releases created by Helm 3 keep client-side apply after the upgrade. The CLI flag `--server-side` takes true, false, or auto, and helm-controller maps the choice onto `.spec.install.serverSideApply` and `.spec.upgrade.serverSideApply`. The field manager name and the behavior of an upgrade that switches method were not read. See [[findings/helm-4-defaults-to-server-side-apply-for-new-releases-and-helm-controller-keeps-the-previous-method-on-upgrade]]. [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Field manager and conflict flags (m4 dossier)
+
+Correction note, 2026-11-26: the two notes above said the field manager name and the method-switch behavior were not read. Source on main now shows that Helm names its manager after the binary, normally `helm`, upgrades the client-side manager when a release moves from client-side to server-side apply, and forces conflicts only when `--force-conflicts` is set (default false). `helm install --server-side` defaults to true and `helm upgrade --server-side` to "auto". helm-controller, by contrast, always forces. Helm issue 32706 reports an install failing with a conflict on a CRD installed client-side. The v4.0.0 tag itself was not read, only main. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/helm-4-install-defaults-to-server-side-apply-names-its-manager-after-the-binary-and-forces-conflicts-only-when-asked]] and [[examples/helm-issue-32706-helm-4-install-fails-on-a-crd-previously-installed-client-side]].

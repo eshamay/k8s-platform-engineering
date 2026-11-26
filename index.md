@@ -139,6 +139,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-m1-finalizers]] — verified dossier on Argo CD, Flux, ACK, Config Connector, and kro finalizer names and removal, Crossplane issue 7801, and Cluster API issue 1514, 2026-11-26 (active)
 - [[sources/research-gap-m2-ownership-gc]] — verified dossier on kro ownership and labels, Argo CD tracking and prune propagation, the blockOwnerDeletion admission plugin, KEPs, adoption and orphaning, and Crossplane namespace deletion, 2026-11-26 (active)
 - [[sources/research-gap-m3-status-conditions]] — verified dossier on the kstatus evaluation order, observedGeneration placement, condition polarity history, Config Connector reconcile-status design versus shipped code, and Argo CD status beyond health, 2026-11-26 (active)
+- [[sources/research-gap-m4-ssa-conflict-policy]] — verified dossier on server-side apply behavior in kro, ACK, Config Connector, Helm 4, and helm-controller, Cluster API field ownership, Argo CD Server-Side Diff stability, and force versus strip-or-adopt, 2026-11-26 (active)
 
 ## Examples
 
@@ -196,14 +197,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/argo-cd-rolls-up-child-health-with-lua-checks]] — health from child status (draft)
 - [[examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready]] — platform-layer split (draft)
 - [[examples/cluster-api-readiness-gates-flux-dependents]] — provider status gating ordering (draft)
-- [[examples/argo-cd-server-side-diff-ends-false-out-of-sync-from-server-defaults]] — diff is separate from apply (draft)
+- [[examples/argo-cd-server-side-diff-ends-false-out-of-sync-from-server-defaults]] — diff is separate from apply (active)
 - [[examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict]] — canonical conflict example (draft)
 - [[examples/kluctl-decides-field-level-conflicts-with-known-manager-heuristics]] — per-field conflict policy (draft)
 - [[examples/flux-migration-from-client-side-apply-strands-removed-fields]] — Flux 0.17 to 0.18 (draft)
 - [[examples/crossplane-clears-managed-fields-when-migrating-to-composition-functions]] — four-step managed-fields migration (draft)
 - [[examples/kubebuilder-controller-applies-status-with-a-field-owner]] — FieldOwner and ForceOwnership (draft)
-- [[examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects]] — API server arbitrates co-authors (draft)
-- [[examples/flux-ssa-annotations-and-ignore-rules-share-fields-with-other-controllers]] — Merge, IfNotPresent, Strip, and Adopt (draft)
+- [[examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects]] — API server arbitrates co-authors (active)
+- [[examples/flux-ssa-annotations-and-ignore-rules-share-fields-with-other-controllers]] — Merge, IfNotPresent, Strip, and Adopt (active)
 - [[examples/vap-minimum-replicas-policy-with-per-environment-parameters]] — policy, binding, and parameter guardrail (draft)
 - [[examples/cel-transition-rules-enforce-crd-immutability]] — oldSelf rules for immutable and append-only fields (draft)
 - [[examples/cert-manager-runs-validation-defaulting-and-conversion-webhooks]] — an operator's three webhook roles (draft)
@@ -375,6 +376,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration]] — reason-to-health mapping in the shipped Lua script (active)
 - [[examples/cluster-api-s-2020-conditions-proposal-had-no-observedgeneration-and-the-2024-proposal-moves-to-metav1-conditions]] — the two proposals and the InfraMachine contract (active)
 - [[examples/config-connector-direct-controllers-write-a-top-level-observedgeneration-and-leave-the-per-condition-line-commented-out]] — top-level only, with a TODO (active)
+- [[examples/config-connector-issue-11689-a-collaborator-proposal-says-argo-cd-needs-server-side-apply-for-config-connector-s-crds]] — contributor proposal on CRD annotation size, closed 2026-10-04 (active)
+- [[examples/helm-issue-32706-helm-4-install-fails-on-a-crd-previously-installed-client-side]] — open Helm 4 install conflict, title only (draft)
+- [[examples/argo-cd-issue-28861-stale-managedfields-leave-an-application-permanently-out-of-sync-under-server-side-diff]] — open Server-Side Diff bug filed 2026-07-22 (active)
+- [[examples/argo-cd-issue-25533-server-side-diff-does-not-detect-spec-changes-to-a-custom-resource]] — open Server-Side Diff bug filed 2025-12-05 (active)
+- [[examples/kubernetes-issue-130292-a-forced-server-side-apply-could-not-revert-an-edited-service-port]] — forced apply rejected, with Argo CD issue 17717 (active)
+- [[examples/the-kube-green-case-study-says-managedfieldsmanagers-works-today-but-is-not-a-documented-contract-between-the-projects]] — secondary-only practitioner case study (draft)
 
 ## Comparisons
 
@@ -397,7 +404,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]] — two CRD factories (draft)
 - [[comparisons/health-and-readiness-models-across-tools]] — status vocabularies of five tools (draft)
 - [[comparisons/observedgeneration-top-level-versus-per-condition]] — where the generation marker lives (active)
-- [[comparisons/ssa-conflict-policy-across-tools]] — conflict defaults and escape hatches (draft)
+- [[comparisons/ssa-conflict-policy-across-tools]] — conflict defaults and escape hatches (active)
 - [[comparisons/client-side-apply-versus-server-side-apply]] — where the merge runs and what it remembers (draft)
 - [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]] — four admission extension mechanisms (draft)
 - [[comparisons/kyverno-versus-native-validating-admission-policy]] — engine features versus in-process policy (draft)
@@ -430,7 +437,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers]] — portals and the orchestration layer behind them (draft)
 - [[comparisons/tofu-controller-versus-terraform-operator-as-terraform-in-cluster-controllers]] — two ways to run Terraform in pods (draft)
 - [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]] — label key versus cluster key for splitting controller work (draft)
-- [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]] — how each tool settles a field two writers set (draft)
+- [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]] — how each tool settles a field two writers set (active)
 
 ## Decisions
 
@@ -446,7 +453,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/validate-with-cel-rules-or-a-validating-webhook]] — where CRD validation runs (draft)
 - [[decisions/publish-synced-false-at-reconcile-start]] — ACK stale-status options (draft)
 - [[decisions/which-crds-get-a-status-subresource]] — Prometheus Operator's line between workload and config CRDs (draft)
-- [[decisions/force-conflicts-or-surface-them-to-humans]] — controller versus CD tool defaults (draft)
+- [[decisions/force-conflicts-or-surface-them-to-humans]] — controller versus CD tool defaults (active)
 - [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]] — enforcement versus availability (draft)
 - [[decisions/build-a-custom-operator-or-compose-existing-resources]] — code or composition (draft)
 - [[decisions/one-controller-per-kind-or-one-multi-kind-controller]] — single responsibility versus consolidation (draft)
@@ -473,6 +480,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/give-kro-children-manual-owner-references-or-leave-them-to-applyset-labels]] — evidence-only options for GitOps tracking of kro children (draft)
 - [[decisions/choose-an-argo-cd-resource-tracking-method-annotation-annotation-plus-label-or-label]] — evidence-only options for the three tracking methods (draft)
 - [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]] — evidence-only options, no recommendation (active)
+- [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]] — evidence-only options, no recommendation (active)
 
 ## Findings
 
@@ -762,3 +770,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[outputs/part-5-platform-architecture-principles-and-operating-at-scale]] — tutorial Part 5: principles of good platform architecture and operating at scale (draft)
 - [[outputs/flux-ramp-up]] — Flux ramp-up guide: GitOps Toolkit architecture, operation, and design principles (draft)
 - [[outputs/crossplane-ramp-up]] — Crossplane ramp-up guide: compositions, providers, and design principles for control-plane platforms (draft)
+- [[findings/kro-applies-template-resources-with-server-side-apply-and-force-and-applies-patch-contributions-without-force]] — kro managers, force, and conflict detection (active)
+- [[findings/the-ack-runtime-sends-merge-patches-and-sets-no-server-side-apply-field-manager]] — ACK runtime uses merge patches (active)
+- [[findings/config-connector-writes-with-update-under-cnrm-controller-manager-and-reads-other-managers-fields-as-user-intent]] — Update writes and managedFields reads (active)
+- [[findings/helm-4-install-defaults-to-server-side-apply-names-its-manager-after-the-binary-and-forces-conflicts-only-when-asked]] — Helm manager name and force flags (active)
+- [[findings/helm-controller-takes-over-override-manager-fields-before-its-dry-run-diff-the-reverse-of-kustomize-controller]] — takeover order by controller (active)
+- [[findings/cluster-api-co-authored-list-slices-can-reconcile-forever-and-server-side-apply-can-fail-to-remove-list-items]] — topology controller limits (active)
+- [[findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs]] — stable label versus open issues (active)

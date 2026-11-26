@@ -14,6 +14,9 @@ sources:
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: []
 tags: [flux, helm, drift, server-side-apply, debugging]
 ---
@@ -35,3 +38,7 @@ The community answer is to run helm-controller with `--override-manager=kubectl-
 ## Lesson
 
 Self-healing depends on the diff succeeding, and the diff depends on clean field ownership. A manual edit can therefore disable correction instead of being corrected. See [[findings/field-ownership-blocks-drift-correction]], [[concepts/server-side-apply-and-field-ownership]], and [[entities/flux]].
+
+## Update from the m4 dossier
+
+Update 2026-11-26: the question left open above, whether the helm-controller flag acts before or after its dry-run, is answered by source. `action.Diff` patches `managedFields` to remove the disallowed managers before the dry-run client computes the diff, so `--override-manager=kubectl-edit` acts before the dry-run and matches the community answer. Argo CD issue 17717 and Kubernetes issue 130292 were read and describe the same Service-port validation case, which is not specific to Flux. No documented recovery for a HelmRelease stuck at its dry-run was found beyond the flag. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/helm-controller-takes-over-override-manager-fields-before-its-dry-run-diff-the-reverse-of-kustomize-controller]] and [[examples/kubernetes-issue-130292-a-forced-server-side-apply-could-not-revert-an-edited-service-port]].

@@ -682,4 +682,25 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passage revised and citing [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]].
 - **Drafted by:** agent on 2026-11-26
 
+## Update Flux ramp-up field-ownership passage with the helm-controller flag order and confirmed version — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "Field ownership blocks drift correction" says the reported fix `--override-manager=kubectl-edit` comes from a community member and should be verified. Revise it to say the flag and its v1.5.0 version are confirmed by the changelog, and that helm-controller takes the fields over before its dry-run diff, unlike kustomize-controller's default flag.
+- **Why:** The passage predates the dossier [[sources/research-gap-m4-ssa-conflict-policy]], which read the helm-controller source.
+- **Acceptance:** Passage revised and citing [[findings/helm-controller-takes-over-override-manager-fields-before-its-dry-run-diff-the-reverse-of-kustomize-controller]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update Flux ramp-up second-writer table and paragraph with the confirmed Strip and Adopt rules — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the table row "Second writer on a field" marks `.spec.ignore` Strip and Adopt as "single-blog claim, unverified", and the paragraph beginning "The table is a quick reference" describes the two policies without evidence. Revise both to say the kustomize-controller specification confirms Strip and Adopt, and that no source compares force with strip-or-adopt.
+- **Why:** The passage predates the dossier [[sources/research-gap-m4-ssa-conflict-policy]], which read the Flux specification and the Kubernetes server-side apply reference.
+- **Acceptance:** Passage revised and citing [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-2 conflicts and false drift passage with the Server-Side Diff stability evidence and helm-controller order — status: open
+
+- **What:** In `outputs/part-2-krm-and-api-machinery.md`, the paragraph beginning "Conflicts and false drift" describes the Flux community case and Argo CD Server-Side Diff without noting that Server-Side Diff is documented stable since v3.1.0 while many issues are open, or that helm-controller's override flag acts before its dry-run. Add both, and the limit that a forced apply failed in Kubernetes issue 130292.
+- **Why:** The passage predates the dossier [[sources/research-gap-m4-ssa-conflict-policy]], which read the Argo CD documentation, tracker, and helm-controller source.
+- **Acceptance:** Passage revised and citing [[findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs]].
+- **Drafted by:** agent on 2026-11-26
+
 ## Dropped

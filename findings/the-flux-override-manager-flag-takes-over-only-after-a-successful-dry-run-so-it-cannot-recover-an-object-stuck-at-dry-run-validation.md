@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g3-flux-ssa-helm
     hash: e825557fc5c4
     ingested: 2026-11-26
+  - id: research-gap-m4-ssa-conflict-policy
+    hash: 28e595eae3e0
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, flux, kustomize-controller, server-side-apply, dry-run, field-manager]
 ---
@@ -36,3 +39,7 @@ Taking over after the dry-run means a failed apply never reassigns ownership, wh
 ## Update from the Flux and Kubernetes recheck
 
 Update 2026-11-26: the kustomize-controller options page was re-read and documents both flags. It says `--override-manager` takes over "only after a successful server-side apply dry-run" and that `--override-manager-before-dry-run` takes over before it, to be removed after a stuck object is recovered. The helm-controller flag of the same name is scoped to drift detection ([[findings/helm-4-defaults-to-server-side-apply-for-new-releases-and-helm-controller-keeps-the-previous-method-on-upgrade]]). [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Scope note from the m4 dossier
+
+Update 2026-11-26: this finding describes kustomize-controller. helm-controller's `--override-manager` runs the other way, taking over before its dry-run diff. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/helm-controller-takes-over-override-manager-fields-before-its-dry-run-diff-the-reverse-of-kustomize-controller]].
