@@ -71,6 +71,9 @@ sources:
   - id: research-composition
     hash: f57d89652816
     ingested: 2026-11-25
+  - id: research-provider
+    hash: 7e43edcd71be
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -176,3 +179,7 @@ The project also shipped `function-kro` in March 2026. See [[concepts/composite-
 The Compositions dossier traces patch and transform, then composition functions, then Crossplane 2.0. Functions are long-running gRPC servers deployed by the package manager, reached through a headless Service and secured with mTLS. Composites pin to a CompositionRevision, are polled every 60 seconds by default, and function calls therefore scale with composite count. Composition functions do not run on deletion. Version 2.0 (12 August 2025) made XRs namespaced by default, removed the claim and XR split, added the `Operation` type, and added activation policies so a cluster installs only the managed resource CRDs it needs. [[sources/research-composition]]
 
 Operationally, a function that omits a resource from desired state deletes it, see [[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]], and load and memory are discussed in [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]]. Case studies are [[examples/vshn-appcat-sells-self-service-databases-queues-and-object-storage-through-composition-functions]] and [[examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function]]. Running under Argo CD needs annotation-based resource tracking, custom Lua health checks, and a higher client QPS (50 by default, 300 suggested), see [[entities/argo-cd]].
+
+## Providers as installable packages
+
+The Providers dossier adds the package view of Crossplane providers. A `Provider` object installs an OCI package, each upgrade creates a `ProviderRevision`, `ProviderConfig` and `ClusterProviderConfig` select credentials, and install policies control pull behavior and revision activation. Provider families answered the CRD scaling problem, see [[examples/crossplane-provider-families-let-operators-install-only-the-cloud-services-they-use]]. Removing a provider before its managed resources abandons them, see [[findings/removing-a-crossplane-provider-before-its-managed-resources-abandons-the-cloud-resources]]. Generated providers come from [[entities/upjet]]. A maintainer-authored positioning against the cloud add-ons is in [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]]. [[sources/research-provider]]

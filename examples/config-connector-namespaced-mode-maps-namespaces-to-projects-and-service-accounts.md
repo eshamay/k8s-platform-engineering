@@ -1,0 +1,27 @@
+---
+title: "Config Connector namespaced mode maps namespaces to projects and service accounts"
+type: example
+status: draft
+created: 2026-11-25
+updated: 2026-11-25
+sources:
+  - id: research-provider
+    hash: 7e43edcd71be
+    ingested: 2026-11-25
+aliases: []
+tags: [config-connector, google-cloud, multi-tenancy, credentials, quota]
+---
+
+# Config Connector namespaced mode maps namespaces to projects and service accounts
+
+## Scenario
+
+An organization on Google Cloud runs several teams on one Kubernetes cluster, and each team owns a separate Google Cloud project. A single Config Connector identity in cluster mode would give every team the same permissions and would charge every API call to one quota project. [[sources/research-provider]]
+
+## How it works
+
+Google's best-practices page recommends namespaced mode. Each namespace binds to its own Google service account and project, so a team's manifests can only act with that team's permissions, and API quota is spread across projects instead of being exhausted in one. The same page describes the abandon deletion policy and the acquire workflow, which let a resource move between projects or namespaces without being deleted. [[sources/research-provider]]
+
+## Lesson
+
+Because reconciliation runs as the controller's service account and not as the person who applied the manifest, the namespace to service account mapping is the real access boundary, see [[findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions]]. The choice of scope is generalized in [[decisions/scope-provider-credentials-per-namespace-or-cluster-wide]], and the same idea appears for AWS in [[examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management]]. See [[entities/config-connector]].

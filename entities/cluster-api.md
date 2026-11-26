@@ -47,6 +47,9 @@ sources:
   - id: research-composition
     hash: f57d89652816
     ingested: 2026-11-25
+  - id: research-provider
+    hash: 7e43edcd71be
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -118,3 +121,7 @@ ClusterClass is a reusable class plus a small `topology` on a Cluster that a con
 ## ClusterClass status in the Compositions dossier
 
 The Compositions dossier cites the Cluster API book page for ClusterClass, which says it reduces boilerplate and enables flexible customization through a `topology` on the Cluster, gated by `ClusterTopology`. The author and consumer split mirrors Crossplane's XRD and Composition versus XR split. The page is labelled alpha and may be stale, so confirm current status before presenting it as stable. [[sources/research-composition]]
+
+## Provider contracts
+
+The Providers dossier read the provider contracts overview. Cluster API defines infrastructure, bootstrap, control plane, IPAM, and addon provider types, and each implements agreed CRD fields and behaviors so the core controllers stay generic. This is a different meaning of provider from Crossplane's, see [[comparisons/crossplane-providers-versus-cluster-api-providers]]. [[sources/research-provider]]

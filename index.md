@@ -38,7 +38,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/managed-resource]] — one-to-one cloud primitive, anatomy, management policies, import, deletion, and scale (active)
 - [[concepts/composite-resource]] — opinionated platform API over many resources, two implementations, per-XR controls, readiness, and pitfalls (active)
 - [[concepts/composition]] — blueprint mapping composite to managed resources, function pipelines, and the resource graph alternative (active)
-- [[concepts/provider]] — controller and CRDs for an external API (draft)
+- [[concepts/provider]] — controller and CRDs for an external API, packaging models, generation, and risks (active)
 
 ## Entities
 
@@ -65,6 +65,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/operator-sdk]] — Operator Framework SDK and its five capability levels (draft)
 - [[entities/crossplane-provider-btp]] — SAP provider with explicit external names and bounded create recovery (draft)
 - [[entities/function-kro]] — Crossplane function that runs kro-style resource graphs in a pipeline step (draft)
+- [[entities/upjet]] — generator of Crossplane providers from Terraform providers (draft)
+- [[entities/azure-service-operator]] — Azure resources as Kubernetes objects, CRDs generated from ARM schemas (draft)
 
 ## Sources
 
@@ -90,6 +92,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-managed-resource]] — Research dossier: Managed Resources (active)
 - [[sources/research-composite-resource]] — research dossier on composite resources and resource graphs, 16 web sources, 2026-11-25
 - [[sources/research-composition]] — research dossier on Crossplane Compositions, kro graphs, and neighbouring tools, 19 web sources, 2026-11-25
+- [[sources/research-provider]] — research dossier on providers across Crossplane, ACK, Config Connector, ASO, and Cluster API, 14 web sources, 2026-11-25
 
 ## Examples
 
@@ -218,6 +221,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/a-scalable-composition-lets-hpa-and-keda-drive-an-xr-through-the-scale-subresource]] — XR exposes the scale subresource for HPA and KEDA (active)
 - [[examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function]] — 1,000-line RDS files replaced by a looping function (active)
 - [[examples/vshn-appcat-sells-self-service-databases-queues-and-object-storage-through-composition-functions]] — VSHN's AppCat service catalogue on composition functions (active)
+- [[examples/crossplane-provider-families-let-operators-install-only-the-cloud-services-they-use]] — splitting provider-aws to fix 900-plus CRDs (draft)
+- [[examples/upjet-generates-crossplane-providers-from-terraform-providers]] — generating a provider from a Terraform provider (draft)
+- [[examples/config-connector-namespaced-mode-maps-namespaces-to-projects-and-service-accounts]] — per-namespace identity and quota (draft)
+- [[examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management]] — per-namespace IAM roles (draft)
+- [[examples/azure-service-operator-generates-crds-from-azure-resource-manager-schemas]] — schema-driven Azure coverage (draft)
 
 ## Comparisons
 
@@ -260,6 +268,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] — claims versus namespaced XRs (draft)
 - [[comparisons/helm-versus-kro-versus-crossplane-as-platform-abstraction-layers]] — three altitudes of abstraction (draft)
 - [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]] — per-instance pinning versus one latest revision (draft)
+- [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]] — composition versus one-to-one exposure (draft)
+- [[comparisons/provider-families-versus-per-service-controllers]] — two routes to installable slices of a cloud API (draft)
+- [[comparisons/crossplane-providers-versus-cluster-api-providers]] — catalog versus contract (draft)
 
 ## Decisions
 
@@ -291,6 +302,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/choose-management-policies-for-an-imported-resource]] — Observe, promote, or omit Delete (draft)
 - [[decisions/choose-automatic-or-manual-composition-update-policy]] — follow the latest revision or pin one (draft)
 - [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]] — which composite layer to adopt (draft)
+- [[decisions/scope-provider-credentials-per-namespace-or-cluster-wide]] — one identity or many (draft)
 
 ## Findings
 
@@ -408,6 +420,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/patch-and-transform-cannot-branch-loop-or-patch-between-composed-resources]] — why teams left patch and transform for code (active)
 - [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]] — function load and memory limits (draft)
 - [[findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane]] — stale learning material (draft)
+- [[findings/removing-a-crossplane-provider-before-its-managed-resources-abandons-the-cloud-resources]] — provider removal order (draft)
+- [[findings/provider-upgrades-leave-old-revisions-and-block-automatic-downgrades]] — ProviderRevision retention and downgrade safety (draft)
+- [[findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions]] — credential blast radius (draft)
+- [[findings/disabling-ack-cross-namespace-references-is-not-tenant-isolation]] — references are not a security boundary (draft)
+- [[findings/deleting-stateful-resources-through-a-provider-can-lose-data]] — Spanner and Bigtable deletion risk (draft)
+- [[findings/generated-provider-catalogs-inherit-the-behavior-and-bugs-of-their-generator]] — shared behavior across generated providers (draft)
+- [[findings/hand-written-providers-that-treat-not-found-as-an-error-break-the-create-flow]] — Observe must report missing resources, not errors (draft)
 
 ## Outputs
 

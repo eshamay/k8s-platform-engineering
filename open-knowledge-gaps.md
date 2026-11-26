@@ -102,6 +102,9 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#feature-parity-of-function-kro-with-standalone-kro]] — open, unassigned
 - [[#crossplane-function-runner-architecture-history]] — open, unassigned
 - [[#config-connector-and-ack-behavior-when-wrapped-by-compositions]] — open, unassigned
+- [[#upjet-runtime-execution-model-and-cost]] — open, unassigned
+- [[#config-connector-controller-kind-per-resource]] — open, unassigned
+- [[#flux-and-argo-cd-handling-of-provider-managed-resources]] — open, unassigned
 
 ---
 
@@ -137,6 +140,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-managed-resource]]:** Only marginally helpful. The dossier shows one downstream step, that a Flux prune of a managed resource object triggers the provider's delete of the cloud resource unless Delete is excluded from `managementPolicies`, and that Crossplane's reconciler phases are Connect, Observe, Create, Update, Delete. It does not trace source fetch, apply, or condition updates. See [[entities/flux]] and [[concepts/managed-resource]].
 - **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier read no Flux documentation and says nothing about Flux health checks, `dependsOn`, or CRD ordering with composites. It covers only the Argo CD interaction. A new gap, [[#flux-handling-of-composite-resources-and-kro-instances]], tracks this.
 - **Possible resolution from [[sources/research-composition]]:** Only marginally helpful. The dossier adds Flux `dependsOn`, health checks, and pruning and Argo CD sync waves, hooks, and reversed prune order for the ordering and readiness steps of the trace. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[entities/argo-cd]].
+- **Possible resolution from [[sources/research-provider]]:** Marginally helpful. The dossier describes the provider end of the trace for Crossplane: a `Provider` installs CRDs and a controller, a managed resource is reconciled by the observe, compare, act loop, and `Ready` and `Synced` conditions report the result. It says nothing about the Flux source fetch, finalizer registration for these objects, or the handoff from a GitOps agent. See [[concepts/provider]] and [[entities/crossplane]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -169,6 +173,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-managed-resource]]:** Not helpful. The dossier covers the managed resource layer under compositions and says kro adoption and orphaning behavior was not read, so it cannot compare Compositions with kro.
 - **Possible resolution from [[sources/research-composite-resource]]:** Largely helpful. The dossier reads the primary pages for both sides. Crossplane runs a pipeline of gRPC functions that receive observed state and return desired state, with CompositionRevisions that XRs can pin, while kro puts schema and implementation in one RGD, infers a DAG from CEL references, validates at creation, creates in topological order, deletes in reverse, gates dependents with `readyWhen`, and snapshots immutable GraphRevisions with no fallback. It also shows the two converging through `function-kro`. It gives no scale numbers and no incident evidence, and the v2 claim details and the kro Graph API remain unverified. See [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]], and [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]].
 - **Possible resolution from [[sources/research-composition]]:** Partly helpful. The dossier traces Crossplane's three authoring models and kro's CEL-based RGD and states that no source compares them head to head, so the first-draft synthesis is in [[comparisons/where-the-expressiveness-bound-sits-in-crossplane-functions-and-kro-cel]]. kro's Readiness page and the Graph versus RGD readiness difference were not read.
+- **Possible resolution from [[sources/research-provider]]:** Marginally helpful. A maintainer-authored Crossplane blog argues that Composition is what separates Crossplane from the cloud add-ons, and the Amazon EKS ACK guide points to kro for composing ACK resources. Neither is an independent head-to-head of Compositions and kro. See [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]] and [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -203,6 +208,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-managed-resource]]:** Partly helpful on the CRD side. The dossier gives numbers for the cost of one CRD per external resource type (roughly 2,000 CRDs for three clouds, more than 4 MiB of API server memory per CRD, about 300 group-versions to discover, GKE control planes unresponsive at about 680 CRDs) and the Crossplane v2 remedy of activation policies, plus Argo CD's client QPS of 300. It has no informer, workqueue, or sharding data for Flux or Crossplane controllers. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]].
 - **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier says no page gives numbers for how many composites or children a single controller handles, and kro's tuning pages were not read. A new gap, [[#scale-of-composite-resources-per-controller]], tracks this.
 - **Possible resolution from [[sources/research-composition]]:** Marginally helpful. The dossier gives function-call arithmetic for Crossplane (60-second poll, so 100 XRs with one function step make 100 calls per minute) and the Argo CD client QPS advice (50 by default, 300 suggested for many CRDs), but no informer or sharding detail. See [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]].
+- **Possible resolution from [[sources/research-provider]]:** Partly helpful for the API-server side of scale. The Crossplane blog reports that provider-aws installing more than 900 CRDs made the API server unresponsive for up to an hour during scale-up, and that provider families fix it by installing only the services in use. ACK avoids the problem with one controller per service. The dossier does not cover informer cache cost, workqueue rate limiting, or controller sharding. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[comparisons/provider-families-versus-per-service-controllers]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -1235,3 +1241,36 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find a worked example of a graph wrapping ACK or Config Connector resources and record how readiness propagates.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** ack, config-connector, composition, readiness
+
+## Upjet runtime execution model and cost — status: open
+
+- **Question:** How do Upjet-generated Crossplane controllers run Terraform logic at runtime, as a CLI subprocess or in-process, and what do they cost in memory and performance?
+- **Why it matters:** The Upjet repository summary says controllers reuse Terraform's resource logic, but the runtime shape was not confirmed, and the generated official AWS, Azure, and GCP providers depend on it. See [[sources/research-provider]], [[entities/upjet]], and [[findings/generated-provider-catalogs-inherit-the-behavior-and-bugs-of-their-generator]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Upjet architecture and performance documentation.
+  - [ ] Update [[entities/upjet]] with the runtime model and resource costs.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** upjet, crossplane, terraform, performance
+
+## Config Connector controller kind per resource — status: open
+
+- **Question:** Which Config Connector resources use the direct, Terraform-based, or DCL-based controller, and what is the direction of travel between them?
+- **Why it matters:** The controller kind decides backoff defaults (2 minutes maximum for Terraform and DCL, tunable for direct) and drift behavior, but the reconciliation page does not map resources to kinds. See [[sources/research-provider]] and [[entities/config-connector]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find a per-resource list or the Config Connector release notes on direct controllers.
+  - [ ] Update [[entities/config-connector]] with the mapping.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** config-connector, reconciliation, verification
+
+## Flux and Argo CD handling of provider-managed resources — status: open
+
+- **Question:** How do Flux and Argo CD treat provider-managed resources in terms of health checks, pruning, ordering, and deletion, and does a provider's own condition model interact with their health assessment?
+- **Why it matters:** Provider objects delete cloud resources when removed, and the Providers dossier only mentions GitOps through Config Connector's trusted-repository advice. Both agents are a layer that can prune a managed resource. See [[sources/research-provider]], [[concepts/provider]], and [[findings/unintended-deletion-through-prune]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Flux and Argo CD documentation on health checks, prune, and finalizers for custom resources.
+  - [ ] Find a worked example of a managed resource under each agent.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** gitops, flux, argo-cd, provider

@@ -47,6 +47,9 @@ sources:
   - id: research-composition
     hash: f57d89652816
     ingested: 2026-11-25
+  - id: research-provider
+    hash: 7e43edcd71be
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -118,3 +121,7 @@ The composite resources dossier shows Config Connector as a leaf provider. The G
 ## Permission model beneath compositions
 
 Config Connector reconciles with its own service account identity, not the submitter's, so the right to create objects in a Config Connector namespace is effectively the right to change cloud resources. Google recommends tightly controlling who can create them, for example by applying them from a trusted repository. The dossier states this for Config Connector only and calls its extension to Crossplane and kro an inference. It also describes Config Connector as a managed-resource layer that compositions and kro graphs wrap, and says nothing about readiness or deletion-policy interplay when wrapped. [[sources/research-composition]] See [[findings/blast-radius-and-privilege-centralization]].
+
+## Provider behavior in the Providers dossier
+
+The Providers dossier read the overview in full. Reconciliation runs as the Config Connector IAM service account, so creating the Kubernetes object is effectively permission to change cloud resources, see [[findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions]]. Namespaced mode binds namespaces to separate service accounts and projects, see [[examples/config-connector-namespaced-mode-maps-namespaces-to-projects-and-service-accounts]]. Terraform and DCL controllers use a default 2-minute maximum backoff, and setting the `reconcile-interval-in-seconds` annotation to 0 disables drift correction. Deleting stateful resources such as Spanner instances can lose data, see [[findings/deleting-stateful-resources-through-a-provider-can-lose-data]]. [[sources/research-provider]]

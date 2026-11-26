@@ -41,6 +41,9 @@ sources:
   - id: research-composition
     hash: f57d89652816
     ingested: 2026-11-25
+  - id: research-provider
+    hash: 7e43edcd71be
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -104,3 +107,7 @@ The composite resources dossier shows ACK as a leaf provider. The Amazon EKS gui
 ## Operational topics inherited by a composition layer
 
 The ACK overview says ACK "lets you define and use AWS service resources directly from Kubernetes" and ships one controller image per AWS service, which avoids CRD sprawl by construction. Its sidebar lists drift recovery, adoption, retention after deletion, field export into ConfigMaps or Secrets, and multi-account and multi-region management, which are the problems a composition layer inherits. The page is thin and the site is marked deprecated, so verify against the current site. [[sources/research-composition]]
+
+## Provider behavior in the Providers dossier
+
+The Providers dossier read the ACK concepts page in full. ACK reconciles immediately on a spec change and resyncs every 10 hours on the Amazon EKS managed capability, with exponential backoff on retries and no retry for permanent errors. Its conditions include `ACK.Terminal`, `ACK.Recoverable`, `ACK.Adopted`, `ACK.ReferencesResolved`, and `ACK.IAMRoleSelected`. Namespaces map to IAM roles through `IAMRoleSelector`, see [[examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management]], and cross-namespace references are off by default but are not tenant isolation, see [[findings/disabling-ack-cross-namespace-references-is-not-tenant-isolation]]. The per-service packaging is compared with Crossplane families in [[comparisons/provider-families-versus-per-service-controllers]]. [[sources/research-provider]]
