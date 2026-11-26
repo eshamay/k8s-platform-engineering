@@ -17,6 +17,9 @@ sources:
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [MR]
 tags: [abstraction, crossplane]
 ---
@@ -64,3 +67,7 @@ Open questions are tracked in [[open-knowledge-gaps]]: the feature-lifecycle sta
 ## Update from the v2.5 verification pass (2026-11-26)
 
 `managementPolicies` is still beta in the v2.5 docs and on by default, with values `*` (the default), Create, Delete, LateInitialize, Observe, and Update, and an empty list pauses the resource. Namespaced managed resources, new in v2.0.0, have no `deletionPolicy`, while cluster-scoped ones keep it and a deprecated resolver combines the two fields. Managed resource definitions and activation policies are alpha, and the default Helm install activates every definition. [[sources/research-gap-g3-crossplane-v2]] See [[examples/crossplane-issue-5283-has-left-deletionpolicy-deprecation-open-since-2024]], [[findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays]], [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]], and [[findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes]].
+
+## Update from the m7 dossier
+
+Correction note, 2026-11-26: the per-provider external-name defaults named as open above are answered at the mechanism level. The default is the object name for name-based kinds and a provider-assigned ID for kinds such as AWS VPCs. See [[findings/crossplane-external-names-default-to-the-object-name-only-for-name-based-kinds-and-upjet-providers-switch-the-default-off-for-provider-assigned-ids]]. [[sources/research-gap-m7-operators-idempotency]]

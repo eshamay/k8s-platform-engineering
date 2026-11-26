@@ -3,11 +3,14 @@ title: Build a custom operator or compose existing resources
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, operators, composition, build-versus-buy]
 ---
@@ -37,3 +40,7 @@ A hand-written operator brings the full set of pitfalls: cache handling, idempot
 ## Related
 
 [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]], [[decisions/crd-versus-aggregated-api]], [[concepts/operator-pattern]]
+
+## Update from the m7 dossier
+
+The framework side of this choice, with evidence and no recommendation, is in [[decisions/choose-an-operator-framework-or-language-from-kubebuilder-operator-sdk-josdk-kopf-shell-operator-metacontroller-or-composition]]. [[sources/research-gap-m7-operators-idempotency]]

@@ -11,6 +11,9 @@ sources:
   - id: research-gap-m6-admission-crds
     hash: 7cac38f11490
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, portal, catalog, cncf]
 ---
@@ -34,3 +37,7 @@ The Kubernetes plugin reads custom resources only from the `kubernetes.customRes
 ## Related
 
 [[concepts/tooling-landscape]], [[entities/port]], [[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers]]
+
+## Backstage and the operator pattern (m7 dossier)
+
+The "Open points" section above is extended. The Kubernetes plugin matches entities to cluster objects by the `backstage.io/kubernetes-id` label, offers a proxy for custom resource access beyond the defaults, and supports watching. No Backstage document read describes an operator pattern, and Software Templates were not read. An operator that deploys Backstage exists as a Red Hat product, see [[examples/red-hat-developer-hub-operator-deploys-backstage-on-kubernetes-and-openshift]]. See [[findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern]]. [[sources/research-gap-m7-operators-idempotency]]

@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g1-leaked-resources-adoption
     hash: 472b18eb451a
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [Adoption default]
 tags: [decision, adoption, ack, crossplane, idempotency]
 ---
@@ -46,3 +49,7 @@ Whatever the policy, set a retain, abandon, or Orphan policy before adopting a r
 ## Update from the leaked-resources dossier
 
 The dossier adds failure evidence and still does not settle the default. It records reproduced failures of `adopt-or-create` in ACK (a missing foreign-owner guard, inconsistent semantics across kinds, adopted resources that never reach `Synced`) and one Config Connector acquisition that removed unmodeled settings, and it found no production comparison of the policies. Its reading is that explicit adopt or import fails closed and loud, `adopt-or-create` fails open and quiet, and strict create-only duplicates resources when the create result is lost. Config Connector issue 12740 (open) proposes the explicit-intent posture for server-generated-ID resources, and ACK issue 3143 (open) proposes owner tags in AWS. The evidence supports caution about `adopt-or-create` as a default, and the choice stays a judgment. See [[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]], [[findings/ack-adoption-semantics-are-inconsistent-across-kinds-and-adopted-resources-can-fail-to-converge]], [[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]], and [[findings/no-named-postmortem-or-production-comparison-was-found-for-leaked-resources-or-adopt-or-create-versus-explicit-import]]. [[sources/research-gap-g1-leaked-resources-adoption]]
+
+## Update from the m7 dossier
+
+Config Connector has an opt-in guard against two objects owning one resource, the lease policy that defaults to `none`. See [[findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set]] and [[decisions/set-config-connector-management-conflict-prevention-to-none-or-resource-or-avoid-acquisition]]. [[sources/research-gap-m7-operators-idempotency]]

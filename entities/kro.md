@@ -92,6 +92,9 @@ sources:
   - id: research-gap-m6-admission-crds
     hash: 7cac38f11490
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -233,3 +236,7 @@ Instance requeue is a fixed delay at v0.9.4, since that tree has no backoff pack
 ## Informers and cache (m5 dossier)
 
 kro's watch manager owns one shared, metadata-only informer per GVR, so memory stays bounded as the set of watched GVRs grows, and an optional warmup pre-populates caches before leader election. The 36000 second default resync is described in the flag help as a "re list", and the dossier read the mechanism as the resync argument of the metadata informer. Correction note, 2026-11-26: the "10-hour full resync" wording elsewhere on this page names a replay of cached objects and not a fresh LIST against the API server. See [[examples/kro-keeps-one-metadata-only-shared-informer-per-gvr]] and [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]]. [[sources/research-gap-m5-informers-caches]]
+
+## Idempotency (m7 dossier)
+
+Correction note, 2026-11-26: the "Idempotency coverage gap" section above is superseded. The kro documents read from the GitHub source tree say kro labels children, tracks them with the ApplySet specification, records the resources it is about to create in `status.managedResources` before applying them, applies with server-side apply without force so a foreign field owner yields `FieldManagerConflict`, and retries waiting states with exponential backoff from one second to five minutes. These cover Kubernetes children and not non-Kubernetes cloud resources, which kro reaches through other operators' custom resources. See [[findings/kro-records-the-resources-it-is-about-to-create-in-status-before-applying-them-and-applies-without-force]]. [[sources/research-gap-m7-operators-idempotency]]

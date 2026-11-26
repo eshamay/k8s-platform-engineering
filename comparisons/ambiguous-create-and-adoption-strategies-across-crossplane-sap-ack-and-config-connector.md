@@ -14,6 +14,9 @@ sources:
   - id: research-gap-g1-leaked-resources-adoption
     hash: 472b18eb451a
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, idempotency, adoption, external-name, crossplane, ack, config-connector]
 ---
@@ -41,3 +44,16 @@ The managed resource dossier reads the Crossplane import guide and observe-only 
 ## Update from the leaked-resources dossier
 
 Correction note: the "Lost create response" cell for ACK above describes adoption as the recovery, and the dossier shows it is not one when the identifier was never recorded. ACK issue 3177 audits 48 resources in 22 controllers where a lost Create response duplicates the AWS resource (28) or wedges the custom resource because the name is taken (20) ([[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]]). The "Main risk" cells are now backed by reproduced cases: ACK adopt-or-create has no foreign-owner guard ([[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]]), and Config Connector acquisition removed unmodeled bucket settings ([[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]]). On the Crossplane side the deterministic-name opt-out exists in the runtime and upjet providers do not set it ([[findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error]]). The dossier found no production comparison of the policies. [[sources/research-gap-g1-leaked-resources-adoption]]
+
+## Update from the m7 dossier
+
+Correction note, 2026-11-26: the "Stable identity" cell for Crossplane says the annotation defaults to `metadata.name`, which holds for name-based kinds only. Upjet providers disable the default for provider-assigned IDs ([[findings/crossplane-external-names-default-to-the-object-name-only-for-name-based-kinds-and-upjet-providers-switch-the-default-off-for-provider-assigned-ids]]). The "did not read kro or Cluster API" statement above is superseded. Two rows can now be added from primary text.
+
+| Question | [[entities/kro]] | [[entities/cluster-api]] |
+|---|---|---|
+| Stable identity | Labels `kro.run/owned` and `kro.run/instance-id`, an ApplySet inventory, and `status.managedResources` for Kubernetes children; names only as templated by the graph author | `spec.providerID` on the InfraMachine, plus provider-owned tags or labels; names must not be the only lookup key |
+| Lost create response | Intent is recorded in `status.managedResources` before apply, so a restart does not lose track of Kubernetes children; cloud creates go through other operators | No algorithm stated; relies on tags and the provider ID, and provider code was not read |
+| Existing resource | Applies without force, and a foreign field owner yields `FieldManagerConflict` | Not stated in the pages read |
+| Main risk | Scope is Kubernetes objects, not external clouds | Enforcement is left to each provider |
+
+Config Connector's conflict row is also refined: two objects can target one resource, and a lease policy that defaults to `none` is the only guard ([[findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set]]). See [[findings/kro-records-the-resources-it-is-about-to-create-in-status-before-applying-them-and-applies-without-force]] and [[findings/cluster-api-tells-providers-not-to-use-a-derived-name-as-the-only-lookup-key-and-states-no-lost-create-algorithm]]. [[sources/research-gap-m7-operators-idempotency]]

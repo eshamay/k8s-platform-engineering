@@ -3,11 +3,14 @@ title: Keep the external name in an annotation or in a spec field
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [External name placement]
 tags: [decision, crossplane, external-name, api-design]
 ---
@@ -34,3 +37,7 @@ The annotation approach keeps cross-resource references simple through external 
 ## Related
 
 [[entities/crossplane]], [[concepts/managed-resource]], [[concepts/idempotency]]
+
+## Update from the m7 dossier
+
+The option text above says the external name defaults from `metadata.name`. The provider source shows that default is switched off for provider-assigned IDs and replaced by templated or parameter-based identifiers for others, which is evidence for both options and a recommendation for neither. See [[findings/crossplane-external-names-default-to-the-object-name-only-for-name-based-kinds-and-upjet-providers-switch-the-default-off-for-provider-assigned-ids]], [[examples/provider-upjet-aws-maps-s3-buckets-to-a-bucket-parameter-and-vpcs-to-provider-assigned-ids]], and [[examples/provider-upjet-azure-and-provider-upjet-gcp-template-resource-ids-from-a-user-chosen-name]]. [[sources/research-gap-m7-operators-idempotency]]

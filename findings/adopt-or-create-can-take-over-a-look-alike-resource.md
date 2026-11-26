@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g1-leaked-resources-adoption
     hash: 472b18eb451a
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [Accidental adoption]
 tags: [pitfall, ack, config-connector, adoption, crossplane]
 ---
@@ -40,3 +43,7 @@ Use strict adoption or Observe-only first, read the populated spec, and only the
 ## Update from the leaked-resources dossier
 
 The dossier turns the documented risk into reproduced cases. ACK `adopt-or-create` adopts a found resource with no check on whether another custom resource manages it, so two custom resources overwrote one IAM role and deleting either deleted it ([[examples/ack-issue-3149-adopt-or-create-let-two-custom-resources-overwrite-one-iam-role-and-deleting-either-deleted-it]], reproduced against moto, not real AWS). Config Connector acquisition of an existing bucket removed settings the CRD does not model ([[examples/config-connector-issue-14236-acquiring-an-existing-storage-bucket-removed-its-encryption-enforcement-config]]). See [[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]], [[findings/ack-adoption-semantics-are-inconsistent-across-kinds-and-adopted-resources-can-fail-to-converge]], and [[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]]. No production frequencies were found, so the page still cannot say how often this happens. [[sources/research-gap-g1-leaked-resources-adoption]]
+
+## Update from the m7 dossier
+
+Config Connector documents a lease-based guard against two objects managing one resource, off by default, with limits for unlabeled resources. See [[findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set]], [[examples/config-connector-lease-labels-gate-two-namespaces-that-manage-one-google-cloud-resource]], and [[decisions/set-config-connector-management-conflict-prevention-to-none-or-resource-or-avoid-acquisition]]. [[sources/research-gap-m7-operators-idempotency]]

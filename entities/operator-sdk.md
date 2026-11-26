@@ -1,13 +1,16 @@
 ---
 title: Operator SDK and Operator Framework
 type: entity
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [Operator SDK, Operator Framework]
 tags: [tool, operators, framework, maturity-model]
 ---
@@ -29,3 +32,7 @@ The dossier says the level descriptions are fairly high level and that it is unc
 ## Related
 
 [[concepts/operator-pattern]], [[findings/operators-that-publish-no-standard-status-or-metrics-leave-their-state-opaque]]
+
+## Capability levels and delegating operators (m7 dossier)
+
+Correction note, 2026-11-26: the "Limits of the model" section above says it is unclear how the levels apply to composition-based operators. The levels page now read in full says an operator that does "not manage a workload and/or [is] delegating to off-clusters orchestration services would remain at Level 1", that capabilities "may be independent of each other", and that it never mentions Crossplane, kro, or composition. A level-by-level mapping for those tools is not in any Operator Framework source, so it remains the wiki's inference. See [[findings/operator-sdk-capability-levels-keep-delegating-operators-at-level-1-and-say-nothing-about-composition-tools]]. The SDK provides workflows for Go, Ansible, or Helm, and it is a framework on controller-runtime. Latest release v1.42.3 (2026-06-26). [[sources/research-gap-m7-operators-idempotency]] See [[comparisons/operator-frameworks-by-self-description-kubebuilder-operator-sdk-java-operator-sdk-kopf-shell-operator-and-metacontroller]] and [[decisions/choose-an-operator-framework-or-language-from-kubebuilder-operator-sdk-josdk-kopf-shell-operator-metacontroller-or-composition]].

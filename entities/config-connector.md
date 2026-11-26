@@ -83,6 +83,9 @@ sources:
   - id: research-gap-m6-admission-crds
     hash: 7cac38f11490
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -198,3 +201,7 @@ By default the manager's client caches only ConfigConnector and ConfigConnectorC
 ## Admission and CRD footprint
 
 Config Connector runs a separate webhook-manager with ten fail-closed handlers and an HPA of 2 to 20 replicas ([[findings/config-connector-and-cluster-api-register-many-webhooks-and-every-one-uses-failure-policy-fail]]), and ships 883 CRD files, the largest 579,353 bytes ([[findings/config-connector-ships-883-crd-files-and-the-largest-is-579-kb-because-it-has-one-crd-per-google-cloud-resource-kind]]). [[sources/research-gap-m6-admission-crds]]
+
+## Conflict handling when two objects target one resource (m7 dossier)
+
+Correction note, 2026-11-26: the "Acquire by name and the abandon annotation" section above says the dossier found nothing on conflict handling. The "Managing conflicts" page answers it. Two objects in different namespaces on one cloud resource is "possible, but not recommended", prevention is a lease stored in the labels `cnrm-lease-holder-id` and `cnrm-lease-expiration`, a loser shows `ManagementConflict`, and the annotation `cnrm.cloud.google.com/management-conflict-prevention-policy` defaults to `none`. It does not work for resources without labels. See [[findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set]], [[examples/config-connector-lease-labels-gate-two-namespaces-that-manage-one-google-cloud-resource]], and [[decisions/set-config-connector-management-conflict-prevention-to-none-or-resource-or-avoid-acquisition]]. Failure handling (backoff capped at 2 minutes, any-order convergence, the Ready condition) is in [[findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling]]. [[sources/research-gap-m7-operators-idempotency]]

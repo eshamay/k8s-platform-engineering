@@ -122,6 +122,9 @@ sources:
   - id: research-gap-m6-admission-crds
     hash: 7cac38f11490
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -309,3 +312,7 @@ The v2.5 docs say a managed resource stays until the external resource is fully 
 ## Cache and performance guidance in the m5 dossier
 
 Crossplane core strips CRD OpenAPI schemas from typed CRDs in one cache, does not cache Secrets, and defaults to 100 concurrent reconciles. The docs give a one-minute poll interval and a one-hour sync interval. No Crossplane performance or sharding guide was found. See [[findings/crossplane-core-strips-crd-schemas-from-its-cache-and-no-crossplane-performance-or-sharding-guide-was-found]]. [[sources/research-gap-m5-informers-caches]]
+
+## External-name default by kind (m7 dossier)
+
+Correction note, 2026-11-26: the documentation's default that providers name external resources like the Kubernetes object holds for name-based kinds, and upjet providers switch it off for provider-assigned IDs such as AWS VPCs, subnets, and instances. See [[findings/crossplane-external-names-default-to-the-object-name-only-for-name-based-kinds-and-upjet-providers-switch-the-default-off-for-provider-assigned-ids]]. [[sources/research-gap-m7-operators-idempotency]]

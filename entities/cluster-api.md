@@ -95,6 +95,9 @@ sources:
   - id: research-gap-m6-admission-crds
     hash: 7cac38f11490
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -227,3 +230,7 @@ The core manager caches only Secrets that carry the cluster-name label, keeps da
 ## Admission and CRD handling
 
 Cluster API core ships mutating and validating webhooks that all use failure policy Fail, plus conversion webhooks ([[findings/config-connector-and-cluster-api-register-many-webhooks-and-every-one-uses-failure-policy-fail]]). Providers label CRDs with contract versions and a CRD migrator handles storage version migration ([[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration]]). [[sources/research-gap-m6-admission-crds]]
+
+## Provider idempotency guidance (m7 dossier)
+
+The provider best-practices page says not to use a derived infrastructure name as the sole lookup key, requires provider-owned tags or labels, and asks for deterministic hashed names where names are truncated. The InfraMachine contract has the provider surface `spec.providerID`, and v1beta2 names `status.initialization.provisioned`. No page states an algorithm for a lost create response, and no provider repository was read. See [[findings/cluster-api-tells-providers-not-to-use-a-derived-name-as-the-only-lookup-key-and-states-no-lost-create-algorithm]]. [[sources/research-gap-m7-operators-idempotency]]

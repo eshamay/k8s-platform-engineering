@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g1-leaked-resources-adoption
     hash: 472b18eb451a
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: []
 tags: [config-connector, gcp, acquire, idempotency, bigquery]
 ---
@@ -40,3 +43,7 @@ Same-name-means-same-resource works well when the cloud API accepts caller-chose
 ## Update from the leaked-resources dossier
 
 A reported side effect of acquisition is that settings the CRD does not model can be removed: issue 14236 says acquiring an existing StorageBucket removed its encryption enforcement config ([[examples/config-connector-issue-14236-acquiring-an-existing-storage-bucket-removed-its-encryption-enforcement-config]], a reporter claim, open). Issue 13840 shows the opposite failure, a 409 when the server-generated ID was not set. See [[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]]. [[sources/research-gap-g1-leaked-resources-adoption]]
+
+## Update from the m7 dossier
+
+When two objects name the same resource, conflict prevention is opt-in through a lease policy that defaults to `none`. See [[examples/config-connector-lease-labels-gate-two-namespaces-that-manage-one-google-cloud-resource]]. [[sources/research-gap-m7-operators-idempotency]]

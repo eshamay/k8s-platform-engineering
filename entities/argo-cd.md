@@ -122,6 +122,9 @@ sources:
   - id: research-gap-m6-admission-crds
     hash: 7cac38f11490
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -287,3 +290,7 @@ The tracking annotation and gitops-engine `ResourceKey` carry group, kind, names
 ## Admission behavior
 
 No admission webhook configuration was found under the v3.6.3 manifests and charts paths, but that is a tree-path search with no file contents read, so it is UNVERIFIED. The sync-options document names the 262144-byte annotation limit as a client-side apply failure mode. See [[findings/kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only]]. [[sources/research-gap-m6-admission-crds]]
+
+## Failure handling as an operator (m7 dossier)
+
+The architecture page splits Argo CD into an API server, a repository server, and an application controller, with ApplicationSet as a separate controller. Failed syncs retry with exponential backoff (`limit`, `duration`, `factor`, `maxDuration`, `-1` for unlimited), self-heal re-attempts after a 5 second default timeout, and health rules mark error-state containers Degraded. The pages read do not reference one-controller-per-concern guidance. See [[findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling]]. [[sources/research-gap-m7-operators-idempotency]]

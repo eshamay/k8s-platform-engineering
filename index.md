@@ -65,10 +65,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/prometheus-operator]] — operator that retrofitted status onto its workload CRDs (draft)
 - [[entities/kyverno]] — CEL-first policy engine that can generate native admission policies (active)
 - [[entities/cert-manager]] — operator with validation, defaulting, and conversion webhooks (draft)
-- [[entities/operator-sdk]] — Operator Framework SDK and its five capability levels (draft)
+- [[entities/operator-sdk]] — Operator Framework SDK and its five capability levels (active)
 - [[entities/crossplane-provider-btp]] — SAP provider with explicit external names and bounded create recovery (draft)
 - [[entities/function-kro]] — Crossplane function that runs kro-style resource graphs in a pipeline step (draft)
-- [[entities/upjet]] — generator of Crossplane providers from Terraform providers (draft)
+- [[entities/upjet]] — generator of Crossplane providers from Terraform providers (active)
 - [[entities/azure-service-operator]] — Azure resources as Kubernetes objects, CRDs generated from ARM schemas (draft)
 - [[entities/flux-operator]] — operator that installs Flux and automates controller sharding (draft)
 - [[entities/terraform]] — plan-and-apply infrastructure tool and the contrast case for reconciliation (draft)
@@ -142,6 +142,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-m4-ssa-conflict-policy]] — verified dossier on server-side apply behavior in kro, ACK, Config Connector, Helm 4, and helm-controller, Cluster API field ownership, Argo CD Server-Side Diff stability, and force versus strip-or-adopt, 2026-11-26 (active)
 - [[sources/research-gap-m5-informers-caches]] — verified dossier on informer resync, cache narrowing, per-tool caches, GVK and GVR keying, and the dynamic mapper, 2026-11-26 (active)
 - [[sources/research-gap-m6-admission-crds]] — Research dossier: admission and CRD gaps (m6-admission-crds) (active)
+- [[sources/research-gap-m7-operators-idempotency]] — verified dossier on operator framework options, capability levels, Argo CD and Config Connector failure handling, Backstage, kro and Cluster API creates, per-provider external names, and Config Connector conflict leases, 2026-11-26 (active)
 
 ## Examples
 
@@ -402,6 +403,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/kubernetes-issue-127105-a-failing-resource-sync-stalled-garbage-collection-of-other-resources-in-an-ha-kind-cluster]] — Kubernetes issue 127105, a failing resource sync stalled garbage collection of other resources in an HA kind cluster (active)
 - [[examples/kubernetes-issue-82292-crd-size-trouble-includes-a-5-519-crd-size-distribution-and-a-1-23-mb-strimzi-crd]] — Kubernetes issue 82292, CRD size trouble includes a 5,519-CRD size distribution and a 1.23 MB Strimzi CRD (active)
 - [[examples/kubernetes-pull-request-125796-let-the-garbage-collector-proceed-after-a-failed-cache-sync-and-closed-issue-101078-in-v1-32]] — Kubernetes pull request 125796 let the garbage collector proceed after a failed cache sync and closed issue 101078 in v1.32 (active)
+- [[examples/provider-upjet-aws-maps-s3-buckets-to-a-bucket-parameter-and-vpcs-to-provider-assigned-ids]] — S3 by name parameter, VPC by provider ID (active)
+- [[examples/provider-upjet-azure-and-provider-upjet-gcp-template-resource-ids-from-a-user-chosen-name]] — templated IDs built from the name (active)
+- [[examples/red-hat-developer-hub-operator-deploys-backstage-on-kubernetes-and-openshift]] — an operator for Backstage, verified from the repository description (active)
+- [[examples/config-connector-lease-labels-gate-two-namespaces-that-manage-one-google-cloud-resource]] — 40 minute lease and ManagementConflict (active)
 
 ## Comparisons
 
@@ -460,6 +465,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]] — how each tool settles a field two writers set (active)
 - [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]] — cache scope, rate limits, and resync mechanism per tool (active)
 - [[comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno]] — Admission webhooks and failure policies across Crossplane, kro, Argo CD, Config Connector, ACK, Cluster API, Gatekeeper, and Kyverno (active)
+- [[comparisons/operator-frameworks-by-self-description-kubebuilder-operator-sdk-java-operator-sdk-kopf-shell-operator-and-metacontroller]] — framework options by self-description, no ranking (active)
 
 ## Decisions
 
@@ -504,6 +510,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]] — evidence-only options, no recommendation (active)
 - [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]] — evidence-only options, no recommendation (active)
 - [[decisions/narrow-the-controller-cache-with-selectors-transforms-or-metadata-only-informers-or-bypass-it-for-some-types]] — four narrowing options, evidence only (active)
+- [[decisions/choose-an-operator-framework-or-language-from-kubebuilder-operator-sdk-josdk-kopf-shell-operator-metacontroller-or-composition]] — evidence-only options, no recommendation (active)
+- [[decisions/set-config-connector-management-conflict-prevention-to-none-or-resource-or-avoid-acquisition]] — evidence-only options, no recommendation (active)
 
 ## Findings
 
@@ -586,7 +594,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]] — create tracking (active)
 - [[findings/a-level-based-loop-deletes-what-it-no-longer-sees-in-desired-state]] — prune and orphan guards (draft)
 - [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]] — external-create-pending blocks (active)
-- [[findings/external-identity-takes-different-forms-across-cloud-apis]] — names, IDs, ARNs, and compound keys (draft)
+- [[findings/external-identity-takes-different-forms-across-cloud-apis]] — names, IDs, ARNs, and compound keys (active)
 - [[findings/adopt-or-create-can-take-over-a-look-alike-resource]] — accidental adoption (active)
 - [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]] — retry safety depends on the API (draft)
 - [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]] — cache memory has no eviction (active)
@@ -808,6 +816,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/kyverno-defaults-to-failure-policy-fail-with-a-10-second-timeout-and-needs-three-admission-replicas-for-high-availability]] — Kyverno defaults to failure policy Fail with a 10 second timeout and needs three admission replicas for high availability (active)
 - [[findings/kyverno-fail-closed-policies-time-out-api-requests-when-all-kyverno-pods-are-down-unless-the-kyverno-namespace-is-excluded]] — Kyverno fail-closed policies time out API requests when all Kyverno pods are down unless the Kyverno namespace is excluded (active)
 - [[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]] — Since Kubernetes 1.32 the garbage collector proceeds after a failed cache sync, but cannot see blockOwnerDeletion owners of the unsynced type (active)
+- [[findings/crossplane-external-names-default-to-the-object-name-only-for-name-based-kinds-and-upjet-providers-switch-the-default-off-for-provider-assigned-ids]] — external-name default by kind (active)
+- [[findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set]] — opt-in lease policy (active)
+- [[findings/kro-records-the-resources-it-is-about-to-create-in-status-before-applying-them-and-applies-without-force]] — intent recorded before apply (active)
+- [[findings/cluster-api-tells-providers-not-to-use-a-derived-name-as-the-only-lookup-key-and-states-no-lost-create-algorithm]] — provider-owned tags guidance (active)
+- [[findings/operator-sdk-capability-levels-keep-delegating-operators-at-level-1-and-say-nothing-about-composition-tools]] — Level 1 rule for delegating operators (active)
+- [[findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern]] — portal over operator-produced resources (active)
+- [[findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling]] — documented retry and health behavior (active)
 
 ## Outputs
 

@@ -783,4 +783,39 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passage revised and citing [[findings/etcd-limits-requests-to-1-5-mib-and-storage-to-2-gib-by-default-and-8-gib-is-a-suggested-maximum-not-the-default]].
 - **Drafted by:** agent on 2026-11-26
 
+## Update part-3 frameworks passage with the capability-level delegation rule and the framework self-descriptions — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the paragraph beginning "Frameworks exist so that nobody writes the plumbing by hand" says it is unclear how strictly the capability levels apply to composition-based operators. The Operator SDK page says delegating operators remain at Level 1 and does not mention composition tools, and the paragraph can cite the options laid out without a ranking.
+- **Why:** The passage predates the dossier [[sources/research-gap-m7-operators-idempotency]].
+- **Acceptance:** Passage revised and citing [[findings/operator-sdk-capability-levels-keep-delegating-operators-at-level-1-and-say-nothing-about-composition-tools]] and [[comparisons/operator-frameworks-by-self-description-kubebuilder-operator-sdk-java-operator-sdk-kopf-shell-operator-and-metacontroller]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 ambiguous-create passage with the per-kind external-name default and Config Connector conflict policy — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the paragraph beginning "How they handle ambiguous creates and existing resources" says Crossplane defaults the external name to the object name for many kinds or an ID the cloud assigns, and that Config Connector acquires a same-named resource automatically. It needs the upjet mechanism (name initializer, disabled for provider-assigned IDs) and the opt-in lease policy that defaults to none.
+- **Why:** The passage predates the dossier [[sources/research-gap-m7-operators-idempotency]].
+- **Acceptance:** Passage revised and citing [[findings/crossplane-external-names-default-to-the-object-name-only-for-name-based-kinds-and-upjet-providers-switch-the-default-off-for-provider-assigned-ids]] and [[findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 idempotency passage with kro and Cluster API mechanisms — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the paragraph beginning "This is where idempotency stops being a theoretical virtue" lists four answers and does not mention kro or Cluster API. It needs kro's intent record in `status.managedResources` before apply and Cluster API's provider-owned tags guidance.
+- **Why:** The passage predates the dossier [[sources/research-gap-m7-operators-idempotency]].
+- **Acceptance:** Passage revised and citing [[findings/kro-records-the-resources-it-is-about-to-create-in-status-before-applying-them-and-applies-without-force]] and [[findings/cluster-api-tells-providers-not-to-use-a-derived-name-as-the-only-lookup-key-and-states-no-lost-create-algorithm]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up Config Connector acquisition passage with the conflict policy — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "Other tools answer the same two questions" says Config Connector acquires a resource implicitly and can take over something never meant to be managed. It needs the opt-in management conflict policy (default none) and its label and resourceID limits.
+- **Why:** The passage predates the dossier [[sources/research-gap-m7-operators-idempotency]].
+- **Acceptance:** Passage revised and citing [[findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 portal passage with how Backstage reads operator-managed custom resources — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the paragraph beginning "The platform and portal layer defines what application teams see" names Backstage as a catalog and portal. It can add that the Kubernetes plugin reads configured custom resources by entity label and that no Backstage document describes an operator pattern.
+- **Why:** The passage predates the dossier [[sources/research-gap-m7-operators-idempotency]].
+- **Acceptance:** Passage revised and citing [[findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern]].
+- **Drafted by:** agent on 2026-11-26
+
 ## Dropped

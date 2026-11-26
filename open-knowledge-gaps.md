@@ -683,6 +683,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Write a `comparisons/` page.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** operators, frameworks, language
+- **Possible resolution from [[sources/research-gap-m7-operators-idempotency]]:** Not settled, and the user decides whether anything changes. The dossier searched project READMEs and the Kubebuilder book introduction and found no selection criteria, only each project's self-description, so the question of how to choose is still unanswered. It did supply verified self-descriptions for Kubebuilder, the Operator SDK (Go, Ansible, or Helm), the Java Operator SDK, Kopf (maintainer says no major new functionality is in development), shell-operator, and Metacontroller (a JSON webhook in any language), which are laid out without a ranking in [[comparisons/operator-frameworks-by-self-description-kubebuilder-operator-sdk-java-operator-sdk-kopf-shell-operator-and-metacontroller]] and [[decisions/choose-an-operator-framework-or-language-from-kubebuilder-operator-sdk-josdk-kopf-shell-operator-metacontroller-or-composition]]. The claim that the CNCF white paper favors Go is UNVERIFIED, and kube-rs and KubeOps were not searched.
 
 ## Operator SDK capability levels for composition-based operators — status: open
 
@@ -695,6 +696,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** operators, maturity-model, crossplane, kro
 - **Possible resolution from [[sources/research-finalizers]]:** Marginally helpful. The dossier shows how Argo CD's Application finalizer and Config Connector's deletion policy behave at deletion, but not how either handles failures more broadly. See [[entities/argo-cd]] and [[entities/config-connector]].
+- **Possible resolution from [[sources/research-gap-m7-operators-idempotency]]:** Partly settled, and the user decides whether to close it. The levels page says an operator that does not manage a workload or delegates to off-cluster orchestration services "would remain at Level 1", and that capabilities "may be independent of each other". It never mentions Crossplane, kro, or composition, so a level-by-level mapping for those tools exists in no Operator Framework source and would be the wiki's own inference. See [[findings/operator-sdk-capability-levels-keep-delegating-operators-at-level-1-and-say-nothing-about-composition-tools]] and [[entities/operator-sdk]].
 
 ## Argo CD and Config Connector as operators — status: open
 
@@ -706,6 +708,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** argo-cd, config-connector, operators
 - **Possible resolution from [[sources/research-finalizers]]:** Not helpful. The dossier does not cover Backstage.
+- **Possible resolution from [[sources/research-gap-m7-operators-idempotency]]:** Partly settled, and the user decides whether to close it. Failure handling is answered from primary documentation: Argo CD retries failed syncs with exponential backoff and retries self-heal after 5 seconds by default, and Config Connector retries with exponential backoff capped at 2 minutes and converges in any creation order. The one-controller-per-concern question is not answered, because the pages read describe the component split without citing that guidance and the Config Connector controller-types page was not read. See [[findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling]].
 
 ## Backstage and the operator pattern — status: open
 
@@ -717,6 +720,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** backstage, platform-engineering
 - **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier does not mention Backstage, although it notes that composite kinds are consumed as products by other teams and that Kratix uses Crossplane as a component.
+- **Possible resolution from [[sources/research-gap-m7-operators-idempotency]]:** Partly settled, and the user decides whether to close it. The Kubernetes plugin is documented as entity-label driven and read-oriented, with configured custom resources, a proxy endpoint, and silent skipping of a missing CRD, so Backstage is a portal over operator-produced resources and not an operator. No Backstage document describes an operator pattern, Software Templates were not read, and the community Crossplane and Argo CD plugins are SECONDARY-ONLY. See [[findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern]] and [[examples/red-hat-developer-hub-operator-deploys-backstage-on-kubernetes-and-openshift]].
 
 ## Named postmortems of runaway reconcile loops — status: open
 
@@ -740,6 +744,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add rows to the comparison.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, cluster-api, idempotency
+- **Possible resolution from [[sources/research-gap-m7-operators-idempotency]]:** Largely settled for kro and at contract level for Cluster API, and the user decides whether to close it. kro labels children, tracks them with ApplySet, records intended children in `status.managedResources` before applying, applies without force, and retries with bounded backoff, but only for Kubernetes children. Cluster API tells providers to use provider-owned tags and deterministic hashed names and states no lost-create algorithm. How specific Cluster API infrastructure providers recover after a lost create response was not read (UNVERIFIED). Rows were added to [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]]. See [[findings/kro-records-the-resources-it-is-about-to-create-in-status-before-applying-them-and-applies-without-force]] and [[findings/cluster-api-tells-providers-not-to-use-a-derived-name-as-the-only-lookup-key-and-states-no-lost-create-algorithm]].
 
 ## Production outcomes of adopt-or-create versus explicit import — status: open
 
@@ -984,6 +989,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[decisions/external-name-annotation-or-spec-field]] if defaults differ.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, external-name, providers
+- **Possible resolution from [[sources/research-gap-m7-operators-idempotency]]:** Settled at the mechanism level and not as a complete table, and the user decides whether to close it. The Crossplane default is the object name, an upjet name initializer implements it, and `IdentifierFromProvider` disables it for provider-assigned IDs. Sampled kinds: S3 buckets use a `bucket` parameter, IAM roles and EKS clusters use the name, and VPCs, subnets, security groups, instances, database instances, and KMS keys use provider IDs; Azure and GCP sample kinds use templated IDs from the name. Provider-aws and the native Azure repositories were not read, and no full per-kind table was built. See [[findings/crossplane-external-names-default-to-the-object-name-only-for-name-based-kinds-and-upjet-providers-switch-the-default-off-for-provider-assigned-ids]].
 
 ## Config Connector conflict handling when two objects target one cloud resource — status: open
 
@@ -994,6 +1000,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the Config Connector resource acquisition documentation directly.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** config-connector, adoption, conflicts
+- **Possible resolution from [[sources/research-gap-m7-operators-idempotency]]:** Settled from documentation, and the user decides whether to close it. Config Connector documents a namespace-scoped lease in the labels `cnrm-lease-holder-id` and `cnrm-lease-expiration` (40 minutes), the status `ManagementConflict`, and the annotation `cnrm.cloud.google.com/management-conflict-prevention-policy` with the values `resource` or `none` and a default of `none`. Prevention does not work for resources without label support, and same-namespace `resourceID` conflicts cannot be managed. The behavior was read, not tested, and the same-namespace different-name case is undocumented. See [[findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set]] and [[decisions/set-config-connector-management-conflict-prevention-to-none-or-resource-or-avoid-acquisition]].
 
 
 ## Flux handling of composite resources and kro instances — status: open

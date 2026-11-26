@@ -20,6 +20,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [Operator, Kubernetes operator]
 tags: [controllers]
 ---
@@ -85,3 +88,7 @@ The dossier found no named-organization postmortem, so the failure modes above r
 ## Correction from the operator loop dossier (2026-11-26)
 
 The statement above that the failure modes rest on documentation and not incident reports needs a qualifier. A later dossier found no formal organization-authored operator postmortem, which still holds, but it did find issue-level reports with root causes for operator failures, such as a reconcile storm in Cluster API provider RKE2 and a retry loop that grew Longhorn's controller memory about 25 times. Their figures are self-reported. See [[findings/no-formal-organization-authored-postmortem-of-an-operator-failure-was-found]], [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]], and [[findings/a-retry-loop-with-no-backoff-or-target-health-gate-grows-controller-memory-during-a-dependency-outage]]. Source: [[sources/research-gap-g1-operator-loop-failures]].
+
+## Frameworks, maturity levels, and portals (m7 dossier)
+
+The "To research" note above is partly answered. No source gives criteria for choosing a framework or language, and the options with their self-descriptions are in [[comparisons/operator-frameworks-by-self-description-kubebuilder-operator-sdk-java-operator-sdk-kopf-shell-operator-and-metacontroller]] and [[decisions/choose-an-operator-framework-or-language-from-kubebuilder-operator-sdk-josdk-kopf-shell-operator-metacontroller-or-composition]]. The Operator SDK levels keep delegating operators at Level 1 and do not mention composition tools, see [[findings/operator-sdk-capability-levels-keep-delegating-operators-at-level-1-and-say-nothing-about-composition-tools]]. Argo CD and Config Connector failure handling is in [[findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling]]. Backstage reads operator-produced custom resources and is not an operator, see [[findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern]]. [[sources/research-gap-m7-operators-idempotency]]

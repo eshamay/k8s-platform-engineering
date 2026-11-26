@@ -3,7 +3,7 @@ title: Kubebuilder
 type: entity
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
@@ -38,6 +38,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [Kubebuilder Book]
 tags: [tool, operators, framework]
 ---
@@ -93,3 +96,7 @@ The CronJob implementation page registers an informer on child Jobs with `Owns(&
 ## Finalizer pattern in the book
 
 The Kubebuilder Book's finalizer reference shows the Reconcile pattern: add the finalizer and update when the object is live and lacks it, and when the object is being deleted run cleanup, remove the finalizer, and update. It stresses idempotent cleanup and the extra RBAC update verb on `resources/finalizers`. [[sources/research-finalizers]] See [[examples/kubebuilder-reconcile-adds-a-finalizer-before-external-work-and-removes-it-after-cleanup]] and [[concepts/finalizers]].
+
+## Framework choice (m7 dossier)
+
+The Kubebuilder book introduction (v4.16.0, 2026-09-10) says "API extension developers will learn the principles and concepts behind implementing canonical Kubernetes APIs". It gives no criteria for choosing Kubebuilder over other frameworks. See [[comparisons/operator-frameworks-by-self-description-kubebuilder-operator-sdk-java-operator-sdk-kopf-shell-operator-and-metacontroller]]. [[sources/research-gap-m7-operators-idempotency]]

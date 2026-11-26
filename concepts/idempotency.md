@@ -23,6 +23,9 @@ sources:
   - id: research-gap-g1-leaked-resources-adoption
     hash: 472b18eb451a
     ingested: 2026-11-26
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [Idempotent reconciliation, Safe retries]
 tags: [controllers, idempotency, external-resources]
 ---
@@ -77,3 +80,7 @@ The dossier leaves three questions unresolved: whether the external name belongs
 ## Update from the leaked-resources dossier
 
 The cloud-layer mechanisms above now have incident-grade evidence from GitHub issues, none from a named postmortem. A lost create result leads to a leaked or duplicated resource (an ACK CI run with a second VPC endpoint, an audit of 48 resources in 22 ACK controllers), to a stuck retry loop (a reported $155 over 15 days in an upjet provider), or to a halted resource that needs a human (Crossplane issue 3037). Caller-chosen names help only if the controller does not retry blindly: a 409 stopped a duplicate in one case, and a failed HTTP 400 create still produced a policy in another. Adoption as a convergence tool has its own failures, because `adopt-or-create` removes the foreign-owner guard. See [[examples/ack-issue-3122-a-controller-restart-during-a-rollout-created-a-second-vpc-endpoint-and-blocked-subnet-deletion-for-about-two-hours]], [[examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days]], [[examples/config-connector-issue-648-an-alert-policy-was-created-on-every-reconcile-although-the-create-returned-http-400]], [[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]], and [[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]]. The unresolved question about the safer adoption default stays open in [[decisions/adopt-or-create-or-require-explicit-import]]. [[sources/research-gap-g1-leaked-resources-adoption]]
+
+## Update from the m7 dossier
+
+Correction note, 2026-11-26: the sentence above that kro and Cluster API idempotency are not covered by any readable source is superseded. kro records intended children in `status.managedResources` before applying and applies without force ([[findings/kro-records-the-resources-it-is-about-to-create-in-status-before-applying-them-and-applies-without-force]]). Cluster API tells providers to use provider-owned tags and deterministic hashed names and states no lost-create algorithm ([[findings/cluster-api-tells-providers-not-to-use-a-derived-name-as-the-only-lookup-key-and-states-no-lost-create-algorithm]]). The external name defaults to the object name only for name-based kinds ([[findings/crossplane-external-names-default-to-the-object-name-only-for-name-based-kinds-and-upjet-providers-switch-the-default-off-for-provider-assigned-ids]]). Config Connector's conflict policy is opt-in ([[findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set]]). [[sources/research-gap-m7-operators-idempotency]]

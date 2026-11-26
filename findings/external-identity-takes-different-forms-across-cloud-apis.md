@@ -1,13 +1,16 @@
 ---
 title: External identity takes different forms across cloud APIs
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-gap-m7-operators-idempotency
+    hash: 6c986668a6dc
+    ingested: 2026-11-26
 aliases: [External name inconsistency]
 tags: [pitfall, crossplane, external-name, identity]
 ---
@@ -29,3 +32,7 @@ The identity form decides which idempotency strategy is available: caller-chosen
 ## Related
 
 [[concepts/idempotency]], [[entities/crossplane]], [[entities/config-connector]], [[entities/crossplane-provider-btp]]
+
+## Update from the m7 dossier
+
+The provider source now shows the forms per kind: a bucket parameter for S3, provider-assigned IDs for AWS VPCs and instances, and templated IDs from a user-chosen name for Azure and GCP kinds. The default from `metadata.name` is real for name-based kinds and disabled for provider-assigned ones. See [[findings/crossplane-external-names-default-to-the-object-name-only-for-name-based-kinds-and-upjet-providers-switch-the-default-off-for-provider-assigned-ids]], [[examples/provider-upjet-aws-maps-s3-buckets-to-a-bucket-parameter-and-vpcs-to-provider-assigned-ids]], and [[examples/provider-upjet-azure-and-provider-upjet-gcp-template-resource-ids-from-a-user-chosen-name]]. [[sources/research-gap-m7-operators-idempotency]]
