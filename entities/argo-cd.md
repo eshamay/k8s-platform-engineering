@@ -86,6 +86,9 @@ sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
+  - id: research-gap-g3-argocd-capi
+    hash: c3d485fa58ae
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -200,7 +203,7 @@ Argo CD sits in the delivery layer of [[concepts/tooling-landscape]]. The archit
 
 ## Cluster sharding and queue sizing in the scale dossier
 
-The scale dossier adds that Argo CD shards by destination cluster across application-controller replicas, with `ARGOCD_CONTROLLER_REPLICAS` giving each replica the total and a choice of legacy, round-robin, or consistent-hashing assignment. The digest described the last two as experimental, and the legacy algorithm can be uneven. A cluster can be pinned to a shard through its cluster secret. Each replica uses two queues, one for reconciliation that takes milliseconds and one for syncing that takes seconds, sized by `--status-processors` and `--operation-processors`. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], [[concepts/scale-and-sharding]], and [[sources/research-scale-and-sharding]]. URL: https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/.
+The scale dossier adds that Argo CD shards by destination cluster across application-controller replicas, with `ARGOCD_CONTROLLER_REPLICAS` giving each replica the total and a choice of legacy, round-robin, or consistent-hashing assignment. The digest described the last two as experimental, and the legacy algorithm can be uneven. Correction 2026-11-26: the label is confirmed current, since the v3.6.3 docs still call both non-legacy algorithms experimental (see below). A cluster can be pinned to a shard through its cluster secret. Each replica uses two queues, one for reconciliation that takes milliseconds and one for syncing that takes seconds, sized by `--status-processors` and `--operation-processors`. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], [[concepts/scale-and-sharding]], and [[sources/research-scale-and-sharding]]. URL: https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/.
 
 
 ## Guard rails against destructive syncs in the pitfalls dossier
@@ -210,3 +213,7 @@ The pitfalls dossier catalogues Argo CD's sync options against accidental damage
 ## Default polling across versions in the reconcile-defaults dossier
 
 The default `timeout.reconciliation` was 180 seconds from v2.5.0 through v2.14.0 (the `timeout.reconciliation.jitter` key appears from v2.10.0 with default 0) and is 120 seconds plus 60 seconds of jitter from v3.0.0 through v3.6.0, in both the manifest example and the controller constants. The v3.0.0 FAQ calls it a "default maximum polling interval ... 3 minutes (120 seconds + 60 seconds jitter)", so a polling pass lands between 120 and 180 seconds in v3.x, and the v3.2.0 high-availability page still says 3m. The reason for the change is not verified, and a pull request merged on 2026-07-31 changes how a value of 0 is handled (title only read). [[sources/research-gap-g3-reconcile-defaults]] See [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]].
+
+## Sharding algorithm maturity at v3.6.3
+
+The 2026-11-26 dossier read the high-availability and feature-maturity pages at Argo CD v3.6.3 (released 2026-11-24). Both `round-robin` and `consistent-hashing` are still described as "an experimental feature", and the maturity page lists them as Alpha, introduced in v2.8.0 and v2.12.0. The warning text is the same as at v2.14.0 and v3.0.0, so no graduation happened across that span. The `legacy` method is "uid based distribution (non-uniform)". The v3.6.3 page no longer marks `legacy` as the default, so the current default is unconfirmed. Dynamic Cluster Distribution is a separate Alpha feature from v2.9.0. The docs cite a CNOE benchmark blog with "encouraging results" for consistent hashing, which was not read and is secondary only. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]], and [[sources/research-gap-g3-argocd-capi]].

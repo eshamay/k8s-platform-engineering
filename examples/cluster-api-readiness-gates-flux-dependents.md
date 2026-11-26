@@ -3,11 +3,14 @@ title: Cluster API readiness gates Flux dependents
 type: example
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-gap-g3-argocd-capi
+    hash: c3d485fa58ae
+    ingested: 2026-11-26
 aliases: []
 tags: [cluster-api, flux, kstatus, ordering]
 ---
@@ -25,3 +28,7 @@ Flux uses kstatus to judge readiness without per-kind logic. kstatus reads `obse
 ## Lesson
 
 Generic readiness depends on every provider following one convention. When a project changes its condition vocabulary, the consumers need explicit per-kind checks again. See [[findings/premature-readiness-in-kstatus-based-tools]], [[entities/cluster-api]], [[entities/kstatus]], and [[examples/flux-dependson-and-health-checks-gate-rollout]].
+
+## Current state of the CEL guidance
+
+Flux's community CEL cheatsheet (last changed 2026-04-21) still shows a `cluster.x-k8s.io/v1beta1` Cluster keyed on `Ready`, and no v1beta2 variant keyed on `Available` was found. Kustomization and HelmRelease take expressions through `.spec.healthCheckExprs`. See [[findings/the-flux-cel-cheatsheet-keys-cluster-api-health-on-ready-and-shows-no-v1beta2-available-variant]] and [[sources/research-gap-g3-argocd-capi]].

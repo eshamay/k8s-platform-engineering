@@ -399,6 +399,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/cluster-api]] and [[findings/remediation-can-amplify-an-outage]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cluster-api, remediation, verification
+- **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Largely settled, and the user can close it. The v1beta2 API (v1.11.0, 2025-08-19) moves checks under `spec.checks` and replaces `maxUnhealthy` and `unhealthyRange` with `remediation.triggerIf.unhealthyLessThanOrEqualTo` and `unhealthyInRange` (which takes precedence, percentages round down). The default is 100 percent, so the short-circuit is off until set. External remediation uses `remediation.templateRef`, v1.15.0-rc.0 adds CEL `unhealthyExpressions` (OR-combined, at most 10), and KubeadmControlPlane remediation must preserve etcd quorum with its own `maxRetry`, `retryPeriodSeconds`, and `minHealthyPeriodSeconds` controls. Not settled: v1.15.0 final was not released on 2026-11-26, so the v1.15 items are pre-release, and no real-world remediation-storm incident was found. See [[examples/cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers]], [[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]], and [[entities/cluster-api]].
 
 ## kro drift issue history and comparability of ten-hour resyncs — status: open
 
@@ -624,6 +625,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cluster-api, kstatus, flux
 - **Possible resolution from [[sources/research-conditions]]:** Partly helpful. The Cluster API proposal explains the move to `Available` and operation conditions and says Flux uses CEL health checks for Cluster API, but it offers no general rule for generic tools. See [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]].
+- **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Partly settled, and not answered in full. The change is narrower than the title implies: the proposal drops `Ready` from higher-level objects such as Cluster and control planes and adds `Available`, while Machine keeps `Ready` meaning "machine can host workloads", and v1beta2 shipped in v1.11.0. No Cluster API or Flux page gives a general rule for kstatus-style tools, and Flux's community CEL cheatsheet still keys a v1beta1 Cluster on `Ready` with no v1beta2 variant found. The evidence supports per-kind CEL expressions that check `Available` plus `spec.availabilityGates`. The claim that a naive kstatus tool sees a v1beta2 Cluster as reconciled is an UNVERIFIED inference. See [[findings/the-flux-cel-cheatsheet-keys-cluster-api-health-on-ready-and-shows-no-v1beta2-available-variant]], [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]], and [[findings/premature-readiness-in-kstatus-based-tools]].
 
 ## Named case studies and postmortems for status problems — status: open
 
@@ -1156,6 +1158,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/cluster-api]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cluster-api, clusterclass, verification
+- **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Settled for the release candidate, and the user can close it. The `ClusterTopology` gate is Beta and enabled by default as of v1.15.0-rc.0 (2026-11-24), while the v1.14.4 docs still say alpha, so the wiki's alpha label reflects older docs. Beta is not GA, and v1.15.0 final was not released on 2026-11-26. The proposal describes ClusterClass as a collection of template references and the Cluster as a single control point with continuous reconciliation, and its frontmatter still says `provisional` despite later additions (MachineHealthChecks in 2022, upgrade plans in 2025). Recheck at the v1.15.0 release. See [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]] and [[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]].
 
 ## Scale of composite resources per controller — status: open
 
@@ -1471,6 +1474,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Revise the finding and [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** argo-cd, sharding, maturity
+- **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Settled, and the user can close it. In the Argo CD v3.6.3 docs (released 2026-11-24), both `round-robin` and `consistent-hashing` are still "an experimental feature", and the feature-maturity page lists them as Alpha, introduced in v2.8.0 and v2.12.0. The warning text is the same at v2.14.0 and v3.0.0, so the wiki label is not stale and nothing read says either algorithm graduated. The `legacy` method is "uid based distribution (non-uniform)". Not settled: whether `legacy` is still the default, because the v3.6.3 page drops the "(default)" marker shown at v3.0.0, and the CNOE benchmark blog the docs cite (secondary only) was not read. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]], and [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]].
 
 ## Named Flux sharding adopters and API Priority and Fairness incidents — status: open
 

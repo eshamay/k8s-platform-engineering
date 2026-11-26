@@ -1,13 +1,16 @@
 ---
 title: Argo CD legacy sharding can be uneven and the other algorithms were labelled experimental
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
+  - id: research-gap-g3-argocd-capi
+    hash: c3d485fa58ae
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, argo-cd, sharding, scale, algorithm]
 ---
@@ -20,8 +23,12 @@ Argo CD assigns each destination cluster to one application-controller replica. 
 
 ## Why it matters
 
-Because the unit of sharding is a whole cluster, one very large cluster cannot be split, and an uneven assignment leaves one replica with most of the load while others idle. The experimental label means a team choosing a better distribution accepts maturity risk. The label may be out of date, since the dossier says the current release was not rechecked. This is tracked as a gap in [[open-knowledge-gaps]].
+Because the unit of sharding is a whole cluster, one very large cluster cannot be split, and an uneven assignment leaves one replica with most of the load while others idle. The experimental label means a team choosing a better distribution accepts maturity risk. Correction 2026-11-26: the label is not out of date. The v3.6.3 docs still call both algorithms experimental, as described below. The remaining gap is tracked in [[open-knowledge-gaps]].
 
 ## Related pages
 
 [[examples/argo-cd-application-controller-shards-clusters-and-tunes-processor-counts]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], [[entities/argo-cd]], [[concepts/scale-and-sharding]].
+
+## Recheck at v3.6.3
+
+The 2026-11-26 dossier read the docs source at Argo CD v3.6.3 (released 2026-11-24). "The `round-robin` shard distribution algorithm is an experimental feature." and "The `consistent-hashing` shard distribution algorithm is an experimental feature." The feature-maturity page lists "Cluster Sharding: consistent-hashing | v2.12.0 | Alpha" and round-robin as introduced in v2.8.0. The same warning appears at v2.14.0 and v3.0.0, and nothing read says either algorithm graduated or that the default changed. The docs cite a CNOE benchmark blog with encouraging results for consistent hashing, which the dossier did not read. See [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]] and [[sources/research-gap-g3-argocd-capi]].

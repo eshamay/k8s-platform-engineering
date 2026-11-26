@@ -1,13 +1,16 @@
 ---
 title: Cluster API adds Available and operation conditions beside Ready
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-gap-g3-argocd-capi
+    hash: c3d485fa58ae
+    ingested: 2026-11-26
 aliases: []
 tags: [cluster-api, conditions, available, lifecycle]
 ---
@@ -25,3 +28,7 @@ The 2024 proposal "Improve status in CAPI resources" abandons Cluster API's cust
 ## Lesson
 
 The case shows an ecosystem converging on the shared convention, and it shows the cost for consumers. Flux's kstatus-based health checks relied on `Ready`, so Flux added CEL health checks for Cluster API resources. See [[findings/one-mandatory-ready-condition-that-summarizes-everything-is-too-rigid]], [[examples/cluster-api-readiness-gates-flux-dependents]], [[findings/premature-readiness-in-kstatus-based-tools]], and [[entities/cluster-api]].
+
+## Scope of the change in v1beta2
+
+The 2026-11-26 dossier read the proposal in full at tag v1.15.0-rc.0 (status implementable, last updated 2025-01-30). `Ready` is dropped from higher-level objects such as Cluster, MachineDeployment, and control planes, and Machine keeps `Ready` with the new meaning "machine can host workloads". The v1beta2 API shipped in v1.11.0 (2025-08-19), and Cluster `Available` combines RemoteConnectionProbe, InfrastructureReady, ControlPlaneAvailable, WorkersAvailable, TopologyReconciled, and `spec.availabilityGates`. The proposal names "Helm, Flux, Argo" as higher-level consumers, and gives no general rule for them. See [[findings/the-flux-cel-cheatsheet-keys-cluster-api-health-on-ready-and-shows-no-v1beta2-available-variant]] and [[sources/research-gap-g3-argocd-capi]].

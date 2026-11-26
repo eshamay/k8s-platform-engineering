@@ -14,6 +14,9 @@ sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
+  - id: research-gap-g3-argocd-capi
+    hash: c3d485fa58ae
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, reconciliation, intervals, backoff]
 ---
@@ -39,10 +42,14 @@ All five treat the periodic pass as the safety net and events as a latency optim
 | Behavior | [[entities/ack]] | [[entities/kro]] | [[entities/cluster-api]] |
 |---|---|---|---|
 | Periodic cadence | 10 hours after `ResourceSynced`, per-kind overrides | 36,000 seconds (10 hours) full resync | Core `--sync-period` of 10 minutes (a cache resync, not an infrastructure poll); timeout-based health checks (v0.4 book) |
-| Pause or brake | Not described | Single rate-limited queue | `maxUnhealthy` |
+| Pause or brake | Not described | Single rate-limited queue | `unhealthyLessThanOrEqualTo` in v1beta2 (`maxUnhealthy` in v1beta1), off by default |
 
 Flux HelmRelease drift detection is separately gated by `mode` (`disabled`, `warn`, `enabled`). [[sources/research-self-healing-and-drift-detection]] See [[comparisons/drift-detection-mechanisms-across-tools]].
 
 ## Corrections from the reconcile-defaults dossier
 
 Correction 2026-11-26: the Flux interval is required and has no controller-side default ([[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]]), Argo CD changed from a flat 180 seconds to 120 seconds plus 60 seconds of jitter at v3.0.0 ([[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]]), Crossplane's poll interval differs by layer ([[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]]), the Cluster API 10 minute figure is a cache resync ([[findings/the-cluster-api-sync-period-flag-is-a-cache-resync-and-not-a-poll-of-the-cloud-infrastructure]]), and Config Connector's default mean is 10 minutes with jitter ([[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]]). Config Connector's per-kind Terraform and DCL values and any Cluster API infrastructure drift cadence remain unread. [[sources/research-gap-g3-reconcile-defaults]]
+
+## Cluster API brake, 2026-11-26
+
+The Cluster API MachineHealthCheck brake is `remediation.triggerIf.unhealthyLessThanOrEqualTo` in v1beta2, with a default of 100 percent, so it is off until set. See [[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]] and [[sources/research-gap-g3-argocd-capi]].

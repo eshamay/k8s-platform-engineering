@@ -184,6 +184,27 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Both passages revised and citing the pages named above.
 - **Drafted by:** agent on 2026-11-26
 
+## Update part-1 for the Cluster API v1beta2 MachineHealthCheck behavior — status: open
+
+- **What:** In `outputs/part-1-core-architectural-principles.md`, the brake paragraph (around line 222) says Cluster API's `maxUnhealthy` "short-circuits remediation", and the Cluster API paragraph (around line 322) says the v0.4 book is the source and "current behavior may differ". Both should use the v1beta2 name `remediation.triggerIf.unhealthyLessThanOrEqualTo` (v1.11.0 onward, `maxUnhealthy` deprecated) and say the brake is off by default, with a default threshold of 100 percent.
+- **Why:** The 2026-11-26 dossier read the v1beta2 types and guide at v1.15.0-rc.0, see [[sources/research-gap-g3-argocd-capi]]. Cite [[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]] and [[findings/cluster-api-v1beta1-maxunhealthy-and-unhealthyrange-are-deprecated-and-older-material-uses-the-old-names]].
+- **Acceptance:** Both passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 for ClusterClass maturity — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the cluster provisioning paragraph (around line 263) says the Cluster API landing page "labels the feature experimental" and that the label "may be out of date". It should say the `ClusterTopology` gate is Beta and enabled by default as of v1.15.0-rc.0 (2026-11-24), that v1.14.4 docs still say alpha, and that v1.15.0 final was not yet released.
+- **Why:** The 2026-11-26 dossier read the v1.15.0-rc.0 docs and feature-gates table, see [[sources/research-gap-g3-argocd-capi]]. Cite [[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]] and [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 for the Argo CD sharding maturity recheck — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the Argo CD sharding paragraph (around line 224) says the non-legacy algorithms "were labelled experimental in the digest". It should say they are still labelled experimental (Alpha) in the Argo CD v3.6.3 docs, with the same wording since v2.14.0, and that the current default method is unconfirmed.
+- **Why:** The 2026-11-26 dossier read the high-availability and feature-maturity pages at v3.6.3, see [[sources/research-gap-g3-argocd-capi]]. Cite [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]] and [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
 ## Done
 
 ## Run build-wiki workflow — status: done

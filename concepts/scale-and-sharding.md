@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
+  - id: research-gap-g3-argocd-capi
+    hash: c3d485fa58ae
+    ingested: 2026-11-26
 aliases: [sharding, controller scale, scalability envelope]
 tags: [scale, sharding, apf, informers, workqueue, crd-count, leader-election]
 ---
@@ -43,7 +46,7 @@ The first lever is vertical. Flux documents raising `--concurrent` to a range of
 | Argo CD | Destination cluster | Application-controller replicas told the replica total, with legacy, round-robin, or consistent-hashing assignment |
 | Crossplane | API group or cloud service | Provider families install only the scoped providers a user needs, so fewer CRDs and controllers load |
 
-The comparison is worked through in [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]]. The limits of sharding are that Flux shards only three controllers and leaves the notification controller as a singleton, dependent sources must carry matching labels, and Argo CD's legacy algorithm can distribute clusters unevenly. See [[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents]] and [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]]. Whether to tune or shard first is framed in [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]].
+The comparison is worked through in [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]]. The limits of sharding are that Flux shards only three controllers and leaves the notification controller as a singleton, dependent sources must carry matching labels, and Argo CD's legacy algorithm can distribute clusters unevenly. Correction 2026-11-26: the round-robin and consistent-hashing algorithms are still labelled experimental (Alpha) in the Argo CD v3.6.3 docs, so that label is current. See [[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents]] and [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]]. Whether to tune or shard first is framed in [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]].
 
 ## CRD count as a scaling dimension
 
@@ -64,3 +67,7 @@ The wiki has no sourced data on how cloud provider API limits constrain Crosspla
 ## Update from the v2.5 verification pass (2026-11-26)
 
 Crossplane v2 scaling guidance is spread across the Pods guide (default polling of one minute, hourly full re-check, `--max-reconcile-rate`), the v2.1.0 release (custom client-side rate limiting replaced by API Priority and Fairness, an XR circuit breaker, and `--max-concurrent-reconciles`), and design docs. No numeric limits for XRs or composed resources per controller are documented. The CRD-count problem is now addressed on both sides: alpha activation policies reduce served CRDs, and v2.4 and v2.5 cut provider and core memory, with figures that are self-reported. [[sources/research-gap-g3-crossplane-v2]] See [[examples/crossplane-v2-4-and-v2-5-cut-memory-on-clusters-with-hundreds-to-two-thousand-crds]] and [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]].
+
+## Argo CD sharding maturity, rechecked at v3.6.3
+
+The 2026-11-26 dossier confirmed from the v3.6.3 docs that round-robin (Alpha since v2.8.0) and consistent-hashing (Alpha since v2.12.0) remain experimental, with the same warning as at v2.14.0 and v3.0.0. See [[entities/argo-cd]], [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], and [[sources/research-gap-g3-argocd-capi]].

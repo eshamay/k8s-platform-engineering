@@ -1,7 +1,7 @@
 ---
 title: Cluster API
 type: entity
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
@@ -56,6 +56,9 @@ sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
+  - id: research-gap-g3-argocd-capi
+    hash: c3d485fa58ae
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -86,7 +89,7 @@ The level-triggered dossier could not confirm Cluster API controller details, be
 
 ## MachineHealthCheck
 
-A MachineHealthCheck evaluates Node conditions against timeouts and remediates unhealthy Machines, typically by replacement, with `maxUnhealthy` as a brake. Only machines owned by a MachineSet or KubeadmControlPlane are supported. The source is the older v0.4 book, so current behavior may differ. [[sources/research-self-healing-and-drift-detection]] See [[examples/cluster-api-machine-health-check-replaces-failed-nodes]] and [[findings/remediation-can-amplify-an-outage]].
+A MachineHealthCheck evaluates Node conditions against timeouts and remediates unhealthy Machines, typically by replacement, with `maxUnhealthy` as a brake. Only machines owned by a MachineSet or KubeadmControlPlane are supported. The source is the older v0.4 book. Correction 2026-11-26: current v1beta2 behavior is described in the section below, and `maxUnhealthy` is the deprecated v1beta1 name. [[sources/research-self-healing-and-drift-detection]] See [[examples/cluster-api-machine-health-check-replaces-failed-nodes]] and [[findings/remediation-can-amplify-an-outage]].
 
 ## Fleets as GitOps targets
 
@@ -122,11 +125,11 @@ Cluster API replaced its custom condition model (a mandatory all-summarizing `Re
 
 ## ClusterClass as the composite pattern for clusters
 
-ClusterClass is a reusable class plus a small `topology` on a Cluster that a controller expands into machine and infrastructure objects. It is described as "a powerful abstraction implemented on top of existing interfaces" and gated by `ClusterTopology`. The page read labels the feature experimental or alpha, which may be stale, and the CAEP was not read. [[sources/research-composite-resource]] See [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]] and [[concepts/composite-resource]].
+ClusterClass is a reusable class plus a small `topology` on a Cluster that a controller expands into machine and infrastructure objects. It is described as "a powerful abstraction implemented on top of existing interfaces" and gated by `ClusterTopology`. The page read labels the feature experimental or alpha. Correction 2026-11-26: the label is out of date for the v1.15 release candidate, where `ClusterTopology` is Beta and on by default (see below). [[sources/research-composite-resource]] See [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]] and [[concepts/composite-resource]].
 
 ## ClusterClass status in the Compositions dossier
 
-The Compositions dossier cites the Cluster API book page for ClusterClass, which says it reduces boilerplate and enables flexible customization through a `topology` on the Cluster, gated by `ClusterTopology`. The author and consumer split mirrors Crossplane's XRD and Composition versus XR split. The page is labelled alpha and may be stale, so confirm current status before presenting it as stable. [[sources/research-composition]]
+The Compositions dossier cites the Cluster API book page for ClusterClass, which says it reduces boilerplate and enables flexible customization through a `topology` on the Cluster, gated by `ClusterTopology`. The author and consumer split mirrors Crossplane's XRD and Composition versus XR split. The page is labelled alpha. Correction 2026-11-26: that is the pre-v1.15 label, see the maturity section below. [[sources/research-composition]]
 
 ## Provider contracts
 
@@ -139,3 +142,15 @@ The Cluster API Book describes a management cluster running Cluster API and prov
 ## Sync period in the reconcile-defaults dossier
 
 The core controller flag `--sync-period` defaults to 10 minutes and is described as "The minimum interval at which watched resources are reconciled (e.g. 15m)". It is a cache resync and not an infrastructure poll, and no per-resource drift period or MachineHealthCheck requeue period was found. [[sources/research-gap-g3-reconcile-defaults]] See [[findings/the-cluster-api-sync-period-flag-is-a-cache-resync-and-not-a-poll-of-the-cloud-infrastructure]].
+
+## MachineHealthCheck in the v1beta2 API
+
+The v1beta2 API (introduced in v1.11.0, 2025-08-19) moves the checks under `spec.checks` and replaces `maxUnhealthy` and `unhealthyRange` with `remediation.triggerIf.unhealthyLessThanOrEqualTo` and `unhealthyInRange`, which takes precedence when both are set. Percentages round down. The default threshold is 100 percent, so the short-circuit is off until set. External remediation uses `remediation.templateRef`, and v1.15 adds CEL `checks.unhealthyExpressions` (OR-combined, at most 10). Only Machines owned by a MachineSet, MachineDeployment, or KubeadmControlPlane are covered. KubeadmControlPlane remediation must preserve etcd quorum and has `maxRetry` (unset means retry forever), `retryPeriodSeconds`, and `minHealthyPeriodSeconds` (default 3600). With ClusterClass the checks come from the class and direct edits are overridden. v1.15.0 final was not released on 2026-11-26, so the v1.15 items are pre-release. See [[examples/cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers]], [[examples/cluster-api-kubeadm-control-plane-remediation-must-preserve-etcd-quorum-and-has-its-own-retry-controls]], [[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]], [[findings/a-non-working-kubelet-on-the-etcd-leader-blocks-cluster-api-control-plane-remediation]], [[findings/cluster-api-v1beta1-maxunhealthy-and-unhealthyrange-are-deprecated-and-older-material-uses-the-old-names]], and [[sources/research-gap-g3-argocd-capi]].
+
+## Ready and Available in v1beta2
+
+The proposal "Improving status in CAPI resources" drops `Ready` from higher-level objects such as Cluster, MachineDeployment, and control planes and adds `Available`, modelled on Deployments. Machine keeps both `Available` and `Ready`, and Machine `Ready` now means the machine can host workloads. Cluster `Available` requires RemoteConnectionProbe, InfrastructureReady, ControlPlaneAvailable, WorkersAvailable, and TopologyReconciled, plus anything in `spec.availabilityGates`. v1beta1 removal is tentatively April 2027. No Cluster API or Flux page gives a general rule for generic tools. See [[findings/the-flux-cel-cheatsheet-keys-cluster-api-health-on-ready-and-shows-no-v1beta2-available-variant]] and [[sources/research-gap-g3-argocd-capi]].
+
+## ClusterClass maturity at v1.15.0-rc.0
+
+The `ClusterTopology` gate is Beta and enabled by default as of v1.15.0-rc.0 (2026-11-24), while the v1.14.4 docs still say alpha. The original proposal (2021-05-26) frames ClusterClass as a collection of template references and the Cluster as "a single control point" for version, worker pools, labels, and replicas, with continuous reconciliation, and its frontmatter still says `provisional`. Beta is not GA, and v1.15.0 final had not shipped. See [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]], [[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]], and [[sources/research-gap-g3-argocd-capi]].

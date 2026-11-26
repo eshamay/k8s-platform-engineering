@@ -1,13 +1,16 @@
 ---
 title: One mandatory Ready condition that summarizes everything is too rigid
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-gap-g3-argocd-capi
+    hash: c3d485fa58ae
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, conditions, cluster-api, ready, available]
 ---
@@ -25,3 +28,7 @@ A single summary has to pick one meaning, and an object that is working but chan
 ## Mitigations
 
 Publish a small set of orthogonal conditions (availability, in-progress operations) and derive any summary from them, and tell generic consumers which condition to read. See [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]], [[findings/premature-readiness-in-kstatus-based-tools]], [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]], and [[entities/cluster-api]].
+
+## Update from the v1beta2 API
+
+The change landed as the v1beta2 API in Cluster API v1.11.0 (2025-08-19). Higher-level objects drop `Ready` and gain `Available`, and Machine keeps `Ready` redefined as the ability to host workloads. See [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]] and [[sources/research-gap-g3-argocd-capi]].

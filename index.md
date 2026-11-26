@@ -51,7 +51,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/argo-cd]] — GitOps tool with phase and wave ordering (active)
 - [[entities/config-connector]] — Google Cloud resources as Kubernetes objects (active)
 - [[entities/ack]] — AWS services as Kubernetes objects, one controller per service (active)
-- [[entities/cluster-api]] — management cluster that creates workload clusters (draft)
+- [[entities/cluster-api]] — management cluster that creates workload clusters (active)
 - [[entities/kcp]] — node-less multi-tenant API workspaces (draft)
 - [[entities/kubectl]] — CLI behind imperative and declarative techniques (draft)
 - [[entities/kluctl]] — deployment tool that decides SSA conflicts per field (draft)
@@ -119,6 +119,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g3-reconcile-defaults]] — verified dossier on default reconcile intervals for Flux, Argo CD, Crossplane, ACK, Cluster API, and Config Connector, 2026-11-26 (active)
 - [[sources/research-gap-g3-k8s-and-controller-runtime]] — verified dossier on v1.36 staleness mitigation, Mutating Admission Policy GA, StorageVersionMigration GA in v1.37, and Requeue backoff in controller-runtime v0.25.3, 2026-11-26 (active)
 - [[sources/research-gap-g3-flux-ssa-helm]] — verified dossier on the kustomize-controller --override-manager-before-dry-run flag shipped in v1.10.0 and Flux v2.10.0, 2026-11-26 (active)
+- [[sources/research-gap-g3-argocd-capi]] — verified dossier on Argo CD v3.6.3 sharding maturity, Cluster API v1beta2 MachineHealthCheck, Ready versus Available, and ClusterClass Beta at v1.15.0-rc.0, 2026-11-26 (active)
 
 ## Examples
 
@@ -143,7 +144,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]] — dry-run failure stops correction (draft)
 - [[examples/argo-cd-app-of-apps-out-of-sync-from-image-updater]] — a second writer looks like drift (draft)
 - [[examples/incremental-gitops-adoption-with-manual-sync-and-self-heal]] — staged enforcement with Argo CD (draft)
-- [[examples/cluster-api-machine-health-check-replaces-failed-nodes]] — machine-level self-healing (draft)
+- [[examples/cluster-api-machine-health-check-replaces-failed-nodes]] — machine-level self-healing (active)
 - [[examples/tofu-controller-detects-terraform-drift-without-applying]] — detection-only Terraform drift (draft)
 - [[examples/ack-resync-period-tuning-for-stateful-resources]] — freshness versus AWS API cost (draft)
 - [[examples/crossplane-managed-resource-enforces-forprovider-and-observes-adopted-resources]] — enforce, observe, or pause (draft)
@@ -203,7 +204,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/crossplane-initprovider-lets-an-autoscaler-own-node-group-size]] — creation-only settings (draft)
 - [[examples/ec2-client-token-makes-a-retried-runinstances-call-safe]] — server-side retry contract (draft)
 - [[examples/flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs]] — concurrent flags and Helm cache (draft)
-- [[examples/argo-cd-application-controller-shards-clusters-and-tunes-processor-counts]] — cluster sharding and GOMEMLIMIT (draft)
+- [[examples/argo-cd-application-controller-shards-clusters-and-tunes-processor-counts]] — cluster sharding and GOMEMLIMIT (active)
 - [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]] — reconcile rate as API budget (draft)
 - [[examples/kubebuilder-owns-and-a-field-indexer-wire-child-changes-to-the-owner]] — child informers and indexers (draft)
 - [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]] — public outage commentary (draft)
@@ -227,7 +228,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]] — author-owned readiness (active)
 - [[examples/ack-splits-terminal-and-recoverable-errors-into-separate-conditions]] — wait or edit the spec (draft)
 - [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] — one condition, three reasons (draft)
-- [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]] — beyond one mandatory Ready (draft)
+- [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]] — beyond one mandatory Ready (active)
 - [[examples/deployment-progress-deadline-sets-progressing-false-for-a-stalled-rollout]] — the built-in model (draft)
 - [[examples/crossplane-import-of-an-existing-gcp-database-observes-first-then-takes-control]] — Observe, inspect, then promote (draft)
 - [[examples/an-observe-only-managed-resource-lets-a-composition-read-a-database-owned-by-another-team]] — permanent Observe as a reference (draft)
@@ -239,7 +240,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]] — AWS productizes kro with ACK (draft)
 - [[examples/function-kro-runs-a-kro-resource-graph-as-a-crossplane-pipeline-step]] — the two models converge (draft)
 - [[examples/a-v1-crossplane-claim-fronts-a-cluster-scoped-composite-resource]] — the legacy claim pattern (draft)
-- [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]] — the composite pattern for clusters (draft)
+- [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]] — the composite pattern for clusters (active)
 - [[examples/a-platform-api-hides-provider-features-to-enforce-tagging-and-tenant-segregation]] — governance through a platform API (draft)
 - [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]] — the seam between two loops (draft)
 - [[examples/a-composition-function-pipeline-turns-observed-state-into-desired-state]] — how function pipelines work (draft)
@@ -284,6 +285,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/controller-runtime-merged-a-read-your-own-write-client-design-in-october-2026-but-no-release-is-confirmed-to-ship-it]] — design merged, release unconfirmed (active)
 - [[examples/a-user-created-storageversionmigration-object-rewrites-stored-objects-so-a-crd-can-retire-an-old-version]] — user-triggered migration walkthrough (active)
 - [[examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag]] — a stale Update manager fails the dry-run until the v1.10.0 flag (active)
+- [[examples/cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers]] — v1beta2 checks, brake, templateRef, and CEL rules (active)
+- [[examples/cluster-api-kubeadm-control-plane-remediation-must-preserve-etcd-quorum-and-has-its-own-retry-controls]] — control plane remediation preconditions and retry fields (active)
+- [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]] — the v1.15.0-rc.0 release candidate, pre-release (active)
 
 ## Comparisons
 
@@ -401,7 +405,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/drift-detection-latency-is-the-interval]] — interval as correction latency (draft)
 - [[findings/field-ownership-blocks-drift-correction]] — dry-run conflicts stop correction (draft)
 - [[findings/controllers-fighting-over-fields-cause-revert-loops]] — webhooks, HPAs, and image updaters (draft)
-- [[findings/remediation-can-amplify-an-outage]] — mass replacement and the maxUnhealthy brake (draft)
+- [[findings/remediation-can-amplify-an-outage]] — mass replacement and the maxUnhealthy brake (active)
 - [[findings/late-initialized-fields-create-false-drift]] — provider defaults and LateInitialize (draft)
 - [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]] — Lua checks and tracking for CRDs (draft)
 - [[findings/rollback-is-blocked-while-automated-sync-is-on]] — rollback requires a Git revert (draft)
@@ -475,7 +479,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]] — Synced True for an hour (active)
 - [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]] — absence of problems looks healthy (draft)
 - [[findings/updating-lasttransitiontime-on-every-reconcile-turns-a-condition-into-a-heartbeat]] — noisy status writes (draft)
-- [[findings/one-mandatory-ready-condition-that-summarizes-everything-is-too-rigid]] — why Cluster API added Available (draft)
+- [[findings/one-mandatory-ready-condition-that-summarizes-everything-is-too-rigid]] — why Cluster API added Available (active)
 - [[findings/condition-polarity-guidance-conflicts-between-kstatus-and-the-api-conventions]] — unresolved guidance tension (draft)
 - [[findings/synced-false-with-ready-true-is-a-silent-failure-where-drift-correction-stops]] — quiet loss of management (draft)
 - [[findings/crossplane-does-not-delete-and-recreate-to-change-immutable-fields]] — immutable changes may not apply (draft)
@@ -528,7 +532,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/a-portal-alone-gives-visibility-but-not-provisioning-so-ticket-queues-can-persist-according-to-a-kratix-vendor]] — vendor claim about portals (draft)
 - [[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]] — source-quality caveat (draft)
 - [[findings/client-side-throttling-and-server-side-apf-are-separate-layers]] — two throttling layers, two places to look (draft)
-- [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]] — cluster sharding limits and maturity label (draft)
+- [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]] — cluster sharding limits and maturity label (active)
 - [[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory]] — cost moves from the API server to provider pods (draft)
 - [[findings/tested-scalability-maximums-and-operator-advice-differ-by-an-order-of-magnitude]] — 5,000 tested nodes versus 500 advised (draft)
 - [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]] — source-quality caveat (draft)
@@ -558,6 +562,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/the-flux-override-manager-flag-takes-over-only-after-a-successful-dry-run-so-it-cannot-recover-an-object-stuck-at-dry-run-validation]] — the post-dry-run takeover cannot fix a wedged dry-run (active)
 - [[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]] — risks and safe use of the recovery flag (active)
 - [[findings/flux-documents-its-override-manager-flags-on-the-controller-options-page-and-not-on-the-kustomization-spec-page]] — where the flags are documented (active)
+- [[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]] — default 100 percent threshold (active)
+- [[findings/a-non-working-kubelet-on-the-etcd-leader-blocks-cluster-api-control-plane-remediation]] — issue 8465 and the manual workaround (active)
+- [[findings/the-flux-cel-cheatsheet-keys-cluster-api-health-on-ready-and-shows-no-v1beta2-available-variant]] — v1beta1 Ready example, no Available variant (draft)
+- [[findings/cluster-api-v1beta1-maxunhealthy-and-unhealthyrange-are-deprecated-and-older-material-uses-the-old-names]] — v1beta2 field renames (active)
+- [[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]] — alpha, Beta, and provisional (active)
+- [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]] — default unconfirmed at v3.6.3 (active)
 
 ## Outputs
 

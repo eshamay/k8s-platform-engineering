@@ -1,9 +1,9 @@
 ---
 title: Argo CD application controller shards clusters and tunes processor counts
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
@@ -11,6 +11,9 @@ sources:
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
+  - id: research-gap-g3-argocd-capi
+    hash: c3d485fa58ae
+    ingested: 2026-11-26
 aliases: []
 tags: [argo-cd, sharding, cache, memory, scale]
 ---
@@ -32,3 +35,7 @@ Argo CD answers the cache-memory problem by splitting the cache across replicas,
 ## Additional evidence from the scale dossier
 
 The scale dossier confirms the sharding description from the same high-availability page and adds the details that `ARGOCD_CONTROLLER_REPLICAS` tells each replica the total, that clusters can be pinned to a shard through the cluster secret, and that the legacy algorithm is uneven while round-robin and consistent-hashing were labelled experimental in the digest. The two internal queues handle reconciliation in milliseconds and syncing in seconds. Hub-and-spoke setups, where one control plane manages many destination clusters, are the typical scenario. Still no named adopter is given. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], and [[sources/research-scale-and-sharding]].
+
+## Algorithm maturity at v3.6.3
+
+The 2026-11-26 dossier read the same high-availability page at v3.6.3 and found round-robin and consistent-hashing still described as "an experimental feature", with the maturity page listing both as Alpha. The docs ask for community feedback before a production-ready state, and cite a CNOE benchmark blog that was not read. The `legacy` method is "uid based distribution (non-uniform)". See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]] and [[sources/research-gap-g3-argocd-capi]].
