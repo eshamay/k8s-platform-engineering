@@ -3,7 +3,7 @@ title: GitOps (Pull-Based Delivery)
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -26,6 +26,9 @@ sources:
   - id: research-flux-deep-dive
     hash: e640ec8046bc
     ingested: 2026-11-25
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: [GitOps, Pull-based delivery]
 tags: [architecture, principle, gitops]
 ---
@@ -87,3 +90,7 @@ The Flux deep dive shows how one pull-based agent splits the loop into layers. T
 ## To research
 
 Named production adopters, scale numbers, and postmortems of GitOps-caused outages were not found, and the full Git-commit-to-Ready lifecycle trace remains open. See [[open-knowledge-gaps]].
+
+## Update from the GitOps incidents dossier
+
+Correction, 2026-11-26: the closing note above says named production adopters and GitOps-caused outage evidence were not found. The dossier found named adopters as self-reported lists ([[examples/the-argo-cd-users-file-lists-452-self-reported-adopters]], [[examples/subaru-adopted-argo-cd-with-helmfile-to-replace-manual-deployment-procedures]]) and anonymous incident reports, including a customer incident where self-heal skipped a migration hook ([[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]]). No named organization's GitOps postmortem was found. Source: [[sources/research-gap-g1-gitops-drift-incidents]].

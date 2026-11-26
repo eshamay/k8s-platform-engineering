@@ -1,9 +1,9 @@
 ---
 title: Unintended deletion through prune
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
@@ -14,6 +14,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, prune, deletion, gitops]
 ---
@@ -47,3 +50,7 @@ Argo CD's automated sync does not delete resources that are removed from Git unl
 ## Deletion of the GitOps object itself
 
 The finalizers dossier shows that the GitOps object can cascade as well. Argo CD's resources finalizer deletes an Application's workloads when the Application is removed, and Flux's `deletionPolicy` and `prune: disabled` annotation serve the same purpose. [[sources/research-finalizers]] See [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]] and [[concepts/finalizers]].
+
+## Update from the GitOps incidents dossier
+
+Correction, 2026-11-26: the Caveat above said no incident write-ups of an accidental prune were found. The 2026-11-26 dossier found reporter accounts, though no named-organization postmortem. Argo CD issue 15441 (2023) reports a namespace deleted and recreated when its explicit manifest was removed under `CreateNamespace=true`, ACK issue 2911 (2026) reports an Argo CD prune leaving a WebACL CR stuck on its finalizer, and issues 6046 and 20440 report cascades from deleting or recreating the parent. See [[findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed]], [[findings/pruning-a-custom-resource-whose-controller-does-not-map-a-not-found-error-leaves-it-terminating-on-its-finalizer]], and [[sources/research-gap-g1-gitops-drift-incidents]].

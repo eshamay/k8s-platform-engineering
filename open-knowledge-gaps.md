@@ -338,6 +338,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add `findings/` or `examples/` pages for each documented incident.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortem, retries, case-study
+- **Possible resolution from [[sources/research-gap-g1-gitops-drift-incidents]]:** Not settled. No named-company primary postmortem of controller retry amplification, stale caches, or slow convergence was found. The nearest evidence is the anonymous Argo CD self-heal incident of 2026-11-20 and two k8s.af index entries that were not read (Skyscanner 2021 and Airbnb KubeCon NA 2020), both SECONDARY-ONLY. The GitHub primary postmortem named in this gap was not searched for separately. See [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]] and [[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]].
 
 ## kro released-version tuning defaults and instance conditions — status: open
 
@@ -389,6 +390,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add `examples/` or `findings/` pages for each documented incident.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortem, drift, case-study
+- **Possible resolution from [[sources/research-gap-g1-gitops-drift-incidents]]:** Partly settled, and the user decides whether to close it. The dossier found one dated production-style incident, a CNCF blog post of 2026-11-20 in which Argo CD self-heal skipped a migration hook on two of five regional Applications for 36 to 44 minutes (customer unnamed, mechanism the author's claim). It also found Flux issue 2514 (an HPA-managed Deployment reset to 1 replica once, no outage), ACK issue 2911 (a prune that stranded a CR), and Argo CD issue 30398 (permanent OutOfSync). It found no named company's postmortem of a revert loop, a blocked correction, or a remediation storm, and the Cluster API side is covered by [[sources/research-gap-g3-argocd-capi]]. See [[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]], [[findings/handing-replicas-between-git-and-an-hpa-can-reset-the-count-or-leave-an-application-permanently-out-of-sync]], and [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]].
 
 ## Current Cluster API MachineHealthCheck behavior — status: open
 
@@ -448,6 +450,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** adoption, postmortems, gitops
 - **Possible resolution from [[sources/research-finalizers]]:** Largely helpful on deletion. Config Connector and ACK delete the cloud resource by default, with `abandon` and `retain` as opt-outs applied before the delete, and Argo CD's Application finalizer and Flux's `deletionPolicy` decide whether GitOps deletes cascade. The dossier does not test a prune of a Config Connector or ACK object directly. See [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]] and [[comparisons/deletion-policies-across-gitops-and-provider-tools]].
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Partly helpful on adopters. Morgan Stanley gives a named, self-reported scale (more than 500 clusters) and the adopters page names more than 200 organizations. The dossier found no postmortem or outage report. See [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]].
+- **Possible resolution from [[sources/research-gap-g1-gitops-drift-incidents]]:** Partly settled, and the user decides whether to close it. Named adopters now exist as self-reported lists: Argo CD's USERS.md has 452 organizations (the dossier's count, file last changed 2026-11-23), and CNCF documents Subaru's Argo CD and Helmfile adoption with no outage. A press repost says nearly 60 percent of surveyed clusters use Argo CD (SECONDARY-ONLY). GitOps-caused outages appear only as anonymous issues: Argo CD 6046 (apps deleted after a namespace reinstall), 20440 (an ApplicationSet-generated Application deleted with its namespaces and Argo CD), and 15441 (a namespace recreated). The Skyscanner 2021 outage is SECONDARY-ONLY, indexed by k8s.af and unread. No named organization's postmortem and no scale figures were found. See [[examples/the-argo-cd-users-file-lists-452-self-reported-adopters]], [[examples/subaru-adopted-argo-cd-with-helmfile-to-replace-manual-deployment-procedures]], and [[findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed]].
 
 ## Config Connector and ACK behavior under a GitOps agent — status: open
 
@@ -1557,6 +1560,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the official Kubernetes finalizers page directly.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** finalizers, orphans, deletion
+- **Possible resolution from [[sources/research-gap-g1-gitops-drift-incidents]]:** Not settled. No source quantifies the rate. The Kubernetes finalizers page warns that forced removal "can lead to issues in your cluster" and gives no frequency, and searches of the kubernetes, cluster-api, crossplane, and ACK issues found no survey or incident count, though the search tool was weak. The dossier documents orphaning by other routes (a lost delete on restart in issue 53451, public IP and load balancer leaks in issue 43730, a finalizer added too late in Cluster API issue 8172), and the Service finalizer pull request 54569 was closed unmerged. The answer stays a missing measurement. See [[findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources]] and [[findings/resources-are-orphaned-when-a-controller-misses-the-delete-or-the-finalizer-is-added-too-late]].
 
 ## Recent 2024 to 2026 platform incident evidence — status: open
 

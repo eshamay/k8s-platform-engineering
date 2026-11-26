@@ -3,7 +3,7 @@ title: Finalizers
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -17,6 +17,9 @@ sources:
   - id: research-pitfalls-and-case-studies
     hash: 9407913c2448
     ingested: 2026-11-25
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: [metadata.finalizers, deletion gate, pre-delete hook]
 tags: [controllers, finalizers, deletion]
 ---
@@ -84,3 +87,7 @@ The owner-reference dossier frames finalizers as the companion to ownership: own
 ## Case evidence from the pitfalls dossier
 
 A namespace stuck in Terminating reports the condition `NamespaceFinalizersRemaining`, and in the Red Hat walk-through the culprit was a custom resource finalizer whose controller was not removing it. The usual cause is a controller or CRD that was uninstalled first or is failing, so the practical rule is to uninstall controllers only after their custom resources are deleted. Crossplane deliberately keeps a finalizer so the managed resource object remains until the external resource is gone, and a paused resource cannot be deleted. The trade-off is that forcing a finalizer off can orphan the cloud resource it protected. No source quantified how often that happens. See [[concepts/pitfalls-and-case-studies]], [[findings/a-paused-crossplane-resource-cannot-be-deleted-until-it-is-unpaused]], and [[sources/research-pitfalls-and-case-studies]]. URL: https://www.redhat.com/en/blog/troubleshooting-terminating-namespaces.
+
+## Update from the GitOps incidents dossier
+
+Primary issues show orphaning without any forced removal, when a controller restarts mid-delete or when the finalizer is added after the delete, see [[findings/resources-are-orphaned-when-a-controller-misses-the-delete-or-the-finalizer-is-added-too-late]]. No source gives a rate for orphaning after forced removal, see [[findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].

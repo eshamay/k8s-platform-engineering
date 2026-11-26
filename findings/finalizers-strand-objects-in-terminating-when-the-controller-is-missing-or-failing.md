@@ -1,9 +1,9 @@
 ---
 title: Finalizers strand objects in Terminating when the controller is missing or failing
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
@@ -11,6 +11,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, finalizers, deletion, operators]
 ---
@@ -32,3 +35,7 @@ Uninstalling an operator before its custom resources are deleted leaves those re
 ## Additional evidence from the finalizers dossier
 
 The finalizers dossier names three usual causes of a stranded object: a controller that is gone, such as an uninstalled operator, a cleanup that errors forever, and a child that holds its own finalizer. It adds a diagnosis path (read the finalizers, find the owner, read its logs) and warns that the shortcut of forcing removal skips cleanup. [[sources/research-finalizers]] See [[concepts/finalizers]], [[findings/cleanup-that-always-errors-or-assumes-the-external-resource-exists-strands-the-object]], [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]], and [[findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone]].
+
+## Addition from the GitOps incidents dossier
+
+ACK issue 2911 (2026) is a dated case of a failing controller stranding a pruned CR in `Terminating`, see [[findings/pruning-a-custom-resource-whose-controller-does-not-map-a-not-found-error-leaves-it-terminating-on-its-finalizer]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].

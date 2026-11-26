@@ -3,7 +3,7 @@ title: Deletion policies across GitOps and provider tools
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
@@ -20,6 +20,9 @@ sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: []
 tags: [deletion, retain, abandon, orphan]
 ---
@@ -53,3 +56,7 @@ Cluster API and Crossplane add owner-reference-driven cascades, and Crossplane c
 ## Crossplane policy list and Usages
 
 The managed resource dossier adds that in Crossplane v2 the way to keep the cloud resource is to leave Delete out of `managementPolicies`, that the v1 `deletionPolicy: Orphan` is absent on namespaced managed resources, and that a Usage blocks deletion while a dependent resource still uses the target. [[sources/research-managed-resource]] See [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]] and [[examples/crossplane-usages-order-deletion-and-guard-against-accidental-removal]].
+
+## Reported prune incident
+
+ACK issue 2911 (2026) reports an Argo CD prune of an ACK CR that removed the AWS resource and then left the CR in `Terminating` because the controller mishandled the not-found error, see [[examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].

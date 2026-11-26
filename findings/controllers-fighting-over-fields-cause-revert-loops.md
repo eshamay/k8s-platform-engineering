@@ -1,9 +1,9 @@
 ---
 title: Controllers fighting over fields cause revert loops
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
@@ -11,6 +11,9 @@ sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, drift, argo-cd, flux, webhooks, hpa]
 ---
@@ -36,3 +39,7 @@ Argo CD uses `ignoreDifferences` by JSON pointer, JQ path, or `managedFieldsMana
 ## The ownership view
 
 Server-side apply makes the disagreement visible: the autoscaler owns `replicas` while Git says otherwise, and a blanket force makes the two overwrite each other. The Kubernetes maintainers' recommendation is that CD tools surface such conflicts. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict]] and [[decisions/force-conflicts-or-surface-them-to-humans]].
+
+## Addition from the GitOps incidents dossier
+
+Flux issue 2514 (2022) shows a one-time reset and not a loop: replicas dropped to 1 on the first reconciliation over an HPA-managed Deployment and then recovered. Argo CD issue 30398 (2026) shows a permanent OutOfSync under server-side diff with an `ignoreDifferences` entry on an HPA-managed field. Neither names an organization, and no named postmortem of a revert loop with an autoscaler was found. See [[findings/handing-replicas-between-git-and-an-hpa-can-reset-the-count-or-leave-an-application-permanently-out-of-sync]] and [[sources/research-gap-g1-gitops-drift-incidents]].

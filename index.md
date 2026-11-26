@@ -122,6 +122,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g3-argocd-capi]] — verified dossier on Argo CD v3.6.3 sharding maturity, Cluster API v1beta2 MachineHealthCheck, Ready versus Available, and ClusterClass Beta at v1.15.0-rc.0, 2026-11-26 (active)
 - [[sources/research-gap-g3-scale-recheck]] — verified dossier rechecking scale figures (SIG thresholds, Gardener, Upbound, Argo CD, Crossplane, APF, workqueue defaults) against raw text, 2026-11-26 (active)
 - [[sources/research-gap-g1-outage-postmortems]] — verified dossier on the OpenAI December 2024, Jetstack 2019, and Neon May 2025 postmortems and the k8s.af webhook entries, 2026-11-26 (active)
+- [[sources/research-gap-g1-gitops-drift-incidents]] — verified dossier on GitOps adopters, drift-correction and prune incidents, and finalizer orphaning, 2026-11-26 (active)
 
 ## Examples
 
@@ -292,6 +293,16 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]] — the v1.15.0-rc.0 release candidate, pre-release (active)
 - [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]] — OPA webhook blocked the master's startup write and node auto-repair looped (active)
 - [[examples/neon-s-may-2025-delayed-start-incidents-exhausted-subnet-ips-after-a-slow-control-plane-database-query]] — slow control-plane database, IP exhaustion, and a CNI regression (active)
+- [[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]] — self-heal skipped a migration hook on 2 of 5 regions (active)
+- [[examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone]] — ACK issue 2911 (active)
+- [[examples/argo-cd-issue-6046-reinstalling-argo-cd-into-a-wiped-namespace-started-deleting-every-app-it-managed]] — apps deleted after a reinstall (active)
+- [[examples/argo-cd-issue-20440-an-applicationset-generated-application-was-deleted-with-its-namespaces-and-argo-cd-itself]] — ApplicationSet deletion took Argo CD itself (active)
+- [[examples/argo-cd-issue-15441-removing-a-namespace-manifest-under-createnamespace-deleted-and-recreated-the-namespace]] — namespace recreated by a sync (active)
+- [[examples/flux-issue-2514-the-first-reconciliation-over-an-hpa-managed-deployment-reset-replicas-to-one]] — one-time replicas reset on adoption (active)
+- [[examples/kubernetes-issues-53451-and-43730-service-deletions-leaked-cloud-load-balancers-and-public-ips]] — 2017 Service load balancer and IP leaks (active)
+- [[examples/cluster-api-issue-8172-deleting-parents-before-the-controller-adds-its-finalizer-orphans-their-resources]] — finalizer added too late (active)
+- [[examples/the-argo-cd-users-file-lists-452-self-reported-adopters]] — largest primary GitOps adopter list (active)
+- [[examples/subaru-adopted-argo-cd-with-helmfile-to-replace-manual-deployment-procedures]] — CNCF case study, no outage (active)
 
 ## Comparisons
 
@@ -384,6 +395,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]] — one shared control plane or several by domain (draft)
 - [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]] — Crossplane's CRD-count decision and rejected alternatives (draft)
 - [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]] — why the pre-dry-run takeover is its own opt-in list (active)
+- [[decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off]] — two mitigations for hooks skipped by self-heal (draft)
 
 ## Findings
 
@@ -581,6 +593,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/a-staging-test-passed-because-the-failure-scaled-with-cluster-size-and-resource-checks-ignored-api-server-load]] — rollout gate gap (active)
 - [[findings/a-slow-control-plane-database-stopped-pod-suspension-and-exhausted-subnet-ips-and-a-cni-setting-change-caused-a-second-outage]] — Neon's chain of failures (active)
 - [[findings/no-primary-postmortem-was-found-for-a-crd-deletion-cascade-or-an-etcd-quota-alarm]] — evidence caveat (draft)
+- [[findings/argo-cd-self-heal-runs-a-partial-sync-that-skips-hooks-according-to-one-author-so-a-migration-hook-can-be-missed]] — hook skipped by a partial sync, author's mechanism (active)
+- [[findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed]] — three reported cascades (active)
+- [[findings/pruning-a-custom-resource-whose-controller-does-not-map-a-not-found-error-leaves-it-terminating-on-its-finalizer]] — prune plus a controller bug (active)
+- [[findings/handing-replicas-between-git-and-an-hpa-can-reset-the-count-or-leave-an-application-permanently-out-of-sync]] — two opposite HPA handoff failures (active)
+- [[findings/resources-are-orphaned-when-a-controller-misses-the-delete-or-the-finalizer-is-added-too-late]] — orphaning without forced removal (active)
+- [[findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources]] — no rate exists in the evidence (draft)
+- [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]] — evidence caveat (draft)
 
 ## Outputs
 

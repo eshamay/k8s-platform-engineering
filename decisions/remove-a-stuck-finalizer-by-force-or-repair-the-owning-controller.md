@@ -1,13 +1,16 @@
 ---
 title: "Remove a stuck finalizer by force or repair the owning controller"
 type: decision
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, finalizers, troubleshooting, operations]
 ---
@@ -34,3 +37,7 @@ Repair preserves the guarantee that cleanup runs, but it can take time when the 
 ## Related
 
 [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]], [[examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete]], [[concepts/finalizers]]
+
+## Evidence from the GitOps incidents dossier
+
+ACK issue 2911 is a case where the maintainers' answer was to repair the controller (an exception-code mapping), and where the manual patch was safe only because the AWS resource was already gone, see [[examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone]]. No source gives a rate for orphaning after forced removal, see [[findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].

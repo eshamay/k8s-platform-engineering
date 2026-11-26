@@ -3,7 +3,7 @@ title: Retry storms and unbounded retries
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
@@ -17,6 +17,9 @@ sources:
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
     ingested: 2026-11-25
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: [Retry amplification]
 tags: [pitfall, retries, backoff, postmortem]
 ---
@@ -53,3 +56,7 @@ The AWS Builders' Library article adds that blind retry is safe only when the ta
 ## The default workqueue limiter
 
 The rate-limiting walkthrough explains why the default limiter pairs per-item exponential backoff with an overall token bucket: without the bucket, thousands of failing objects could produce tens of thousands of requeues per second, and synchronized backoff creates thundering herds. The default may not fit controllers that share an external API. [[sources/research-informers-reflectors-and-workqueues]] See [[concepts/informers-reflectors-and-workqueues]] and [[findings/skipping-done-or-forget-on-the-workqueue-leaves-items-stuck-or-retrying]].
+
+## Addition from the GitOps incidents dossier
+
+The 2026-11-26 dossier searched again for a named-company primary postmortem of Kubernetes controller retry amplification or stale caches and found none. The nearest finds are an anonymous Argo CD self-heal race and k8s.af index entries that were not read, see [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]] and [[sources/research-gap-g1-gitops-drift-incidents]].

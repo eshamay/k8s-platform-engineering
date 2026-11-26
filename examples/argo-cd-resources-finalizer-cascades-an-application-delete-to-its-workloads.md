@@ -1,13 +1,16 @@
 ---
 title: "The Argo CD resources finalizer cascades an Application delete to its workloads"
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: []
 tags: [finalizers, argo-cd, gitops, deletion]
 ---
@@ -29,3 +32,7 @@ The finalizer is the switch that decides whether a GitOps object owns its output
 ## Related
 
 [[entities/argo-cd]], [[concepts/finalizers]], [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]]
+
+## Reported cascades
+
+Reporters describe Argo CD deleting managed apps after a reinstall (issue 6046) and an ApplicationSet-generated Application deleted with its namespaces and Argo CD itself (issue 20440), see [[findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].

@@ -242,6 +242,20 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passage and source list revised.
 - **Drafted by:** agent on 2026-11-26
 
+## Update part-5 and part-3 evidence passages for the GitOps incidents dossier — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the evidence paragraph (around lines 288 to 292) says named production adopters are mostly self-reported and that the wiki found no named-company postmortem of an accidental prune. It should say named adopter lists exist (Argo CD USERS.md with 452 self-reported entries, the Subaru case study) and that reporter-level prune and cascade incidents were found (Argo CD issues 6046, 20440, and 15441, and ACK issue 2911), while no named organization's postmortem was found. In `outputs/part-3-controller-and-operator-mechanics.md`, the paragraph around line 318 says no named-company postmortem exists for stuck-finalizer data loss. It should add that no rate for orphaning after forced finalizer removal was found and that primary issues document orphaning by other routes.
+- **Why:** See [[sources/research-gap-g1-gitops-drift-incidents]]. Cite [[findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed]], [[findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources]], and [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]].
+- **Acceptance:** Both passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-1 unintended-deletion passage with the GitOps prune incidents — status: open
+
+- **What:** In `outputs/part-1-core-architectural-principles.md`, the "Unintended deletion" paragraph (around line 270) is based on documentation warnings. It can now cite real reports, such as Argo CD issue 15441 (a namespace recreated when its manifest was removed under `CreateNamespace=true`) and ACK issue 2911 (an Argo CD prune stranding a CR on its finalizer), and the self-heal incident in which a migration hook was skipped.
+- **Why:** See [[sources/research-gap-g1-gitops-drift-incidents]]. Cite [[findings/unintended-deletion-through-prune]], [[examples/argo-cd-issue-15441-removing-a-namespace-manifest-under-createnamespace-deleted-and-recreated-the-namespace]], and [[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
 ## Done
 
 ## Run build-wiki workflow — status: done

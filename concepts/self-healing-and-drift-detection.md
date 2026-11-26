@@ -23,6 +23,9 @@ sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: [Drift correction]
 tags: [architecture, principle]
 ---
@@ -74,3 +77,7 @@ The sources agree that correction is never free of policy. The main failure mode
 ## To research
 
 Production postmortems of drift-correction incidents, per-kind Config Connector drift cadence, and current Cluster API remediation behavior. Crossplane's poll interval and Config Connector's default mean are now verified, see [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]] and [[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]]. See [[open-knowledge-gaps]].
+
+## Update from the GitOps incidents dossier
+
+Drift correction has a documented production failure that is not a revert loop. In a customer incident reported on 2026-11-20, Argo CD self-heal ran a partial sync that, per the post's author, skipped a migration hook on two of five regional Applications, see [[findings/argo-cd-self-heal-runs-a-partial-sync-that-skips-hooks-according-to-one-author-so-a-migration-hook-can-be-missed]]. The mechanism is the author's claim, and the customer is unnamed. Source: [[sources/research-gap-g1-gitops-drift-incidents]].

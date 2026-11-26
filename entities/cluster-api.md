@@ -59,6 +59,9 @@ sources:
   - id: research-gap-g3-argocd-capi
     hash: c3d485fa58ae
     ingested: 2026-11-26
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -154,3 +157,7 @@ The proposal "Improving status in CAPI resources" drops `Ready` from higher-leve
 ## ClusterClass maturity at v1.15.0-rc.0
 
 The `ClusterTopology` gate is Beta and enabled by default as of v1.15.0-rc.0 (2026-11-24), while the v1.14.4 docs still say alpha. The original proposal (2021-05-26) frames ClusterClass as a collection of template references and the Cluster as "a single control point" for version, worker pools, labels, and replicas, with continuous reconciliation, and its frontmatter still says `provisional`. Beta is not GA, and v1.15.0 final had not shipped. See [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]], [[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]], and [[sources/research-gap-g3-argocd-capi]].
+
+## Incident from the GitOps incidents dossier
+
+Cluster API issue 8172 (2023, v1.3.0) says resources are orphaned when parent objects are deleted before the controller adds its finalizer, see [[examples/cluster-api-issue-8172-deleting-parents-before-the-controller-adds-its-finalizer-orphans-their-resources]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].

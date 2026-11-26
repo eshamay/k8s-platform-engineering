@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g1-outage-postmortems
     hash: 0487bcf071d6
     ingested: 2026-11-26
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: []
 tags: [source-quality, evidence, postmortems, crossplane, caveat]
 ---
@@ -30,3 +33,7 @@ Claims about deletion cascades and webhook outages in the unread cases are secon
 ## Related
 
 [[open-knowledge-gaps]], [[concepts/pitfalls-and-case-studies]]
+
+## Update from the GitOps incidents dossier
+
+The 2026-11-26 GitOps dossier adds reporter-level incident evidence but still no named-organization postmortem, and the Skyscanner 2021 GitOps outage remains known only from the k8s.af index. See [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]] and [[sources/research-gap-g1-gitops-drift-incidents]].

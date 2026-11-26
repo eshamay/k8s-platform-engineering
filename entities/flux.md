@@ -86,6 +86,9 @@ sources:
   - id: research-gap-g3-flux-ssa-helm
     hash: e825557fc5c4
     ingested: 2026-11-26
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -208,3 +211,7 @@ The pitfalls dossier reports that kustomize-controller reverts any field another
 ## Interval default and drift wording in the reconcile-defaults dossier
 
 The 2026-11-26 verification settles the default question. `.spec.interval` is required on both the Kustomization and the HelmRelease, the CRD Go type carries only a duration-format pattern with no default and no minimum, and the reference says "The minimum value should be 60 seconds", which is a recommendation. The `flux create` command's global `--interval` flag defaults to one minute, which is the only default found. The concepts page's "every five minutes by default" therefore matches no controller behavior, and the ten-minute figure in the reference is an example of drift-check cadence. Drift correction happens on the interval (the reference says reconciliation applies the Kustomization "correcting any existing drift"), source or spec changes are handled instantly outside the interval, `retryInterval` defaults to `.spec.interval`, and the controller can be configured with jitter whose value was not read. A guide example uses `interval: 60m0s` with the comment "detect drift and undo kubectl edits every hour". [[sources/research-gap-g3-reconcile-defaults]] See [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]] and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
+
+## Incident from the GitOps incidents dossier
+
+Flux issue 2514 (2022) reports replicas dropping to 1 on the first reconciliation over an HPA-managed Deployment, see [[examples/flux-issue-2514-the-first-reconciliation-over-an-hpa-managed-deployment-reset-replicas-to-one]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].

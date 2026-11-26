@@ -53,6 +53,9 @@ sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -132,3 +135,7 @@ In [[concepts/tooling-landscape]], ACK is the AWS-only member of the provisionin
 ## Resync default confirmed in the reconcile-defaults dossier
 
 The ACK drift-recovery page says "By default, all ACK controllers attempt to detect drift once every **10 hours**", the runtime constant is `defaultResyncPeriod = 10 * time.Hour`, and the Helm values `reconcile.defaultResyncPeriod` (seconds) and `reconcile.resourceResyncPeriods` override it for all kinds or per kind. The docs page is marked deprecated in favor of a newer site. [[sources/research-gap-g3-reconcile-defaults]] See [[examples/ack-resync-period-tuning-for-stateful-resources]].
+
+## Incident from the GitOps incidents dossier
+
+ACK issue 2911 (2026-06) reports an Argo CD prune that deleted a WAFv2 WebACL CR, after which the CR stayed in `Terminating` because the controller did not map the AWS not-found error. See [[examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].

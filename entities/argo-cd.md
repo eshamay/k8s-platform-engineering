@@ -89,6 +89,9 @@ sources:
   - id: research-gap-g3-argocd-capi
     hash: c3d485fa58ae
     ingested: 2026-11-26
+  - id: research-gap-g1-gitops-drift-incidents
+    hash: 0a1a75f3cab5
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -103,7 +106,7 @@ Argo CD orders a sync by phase (PreSync, Sync, PostSync), then by wave number, t
 
 ## Pitfalls
 
-Hooks run on every sync, so they must be idempotent (see [[concepts/idempotency]]). A PreSync hook can run before the ConfigMaps or Secrets it needs, and a long migration can hit a timeout while it is still running. See [[findings/ordering-and-dependency-failures]].
+Hooks run on every sync, so they must be idempotent (see [[concepts/idempotency]]). Correction note, 2026-11-26: one CNCF blog author reports that a self-heal run is a partial sync that skips hooks, so a hook is not guaranteed to run on every reconciliation, see [[findings/argo-cd-self-heal-runs-a-partial-sync-that-skips-hooks-according-to-one-author-so-a-migration-hook-can-be-missed]]. A PreSync hook can run before the ConfigMaps or Secrets it needs, and a long migration can hit a timeout while it is still running. See [[findings/ordering-and-dependency-failures]].
 
 ## Automated sync policy
 
@@ -217,3 +220,7 @@ The default `timeout.reconciliation` was 180 seconds from v2.5.0 through v2.14.0
 ## Sharding algorithm maturity at v3.6.3
 
 The 2026-11-26 dossier read the high-availability and feature-maturity pages at Argo CD v3.6.3 (released 2026-11-24). Both `round-robin` and `consistent-hashing` are still described as "an experimental feature", and the maturity page lists them as Alpha, introduced in v2.8.0 and v2.12.0. The warning text is the same as at v2.14.0 and v3.0.0, so no graduation happened across that span. The `legacy` method is "uid based distribution (non-uniform)". The v3.6.3 page no longer marks `legacy` as the default, so the current default is unconfirmed. Dynamic Cluster Distribution is a separate Alpha feature from v2.9.0. The docs cite a CNOE benchmark blog with "encouraging results" for consistent hashing, which was not read and is secondary only. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]], and [[sources/research-gap-g3-argocd-capi]].
+
+## Incidents and adopters from the GitOps incidents dossier
+
+Argo CD's USERS.md lists 452 self-reported organizations ([[examples/the-argo-cd-users-file-lists-452-self-reported-adopters]]), and CNCF documents Subaru's move to Argo CD with Helmfile ([[examples/subaru-adopted-argo-cd-with-helmfile-to-replace-manual-deployment-procedures]]). Reported incidents include a self-heal run that skipped a migration hook ([[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]]) and cascading deletes ([[findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed]]). Source: [[sources/research-gap-g1-gitops-drift-incidents]].
