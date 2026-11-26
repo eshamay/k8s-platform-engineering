@@ -124,7 +124,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#scale-numbers-from-model-digests-need-recheck]] — open, unassigned
 - [[#first-party-pitfall-and-incident-evidence-for-kro-config-connector-ack-and-cluster-api]] — open, unassigned
 - [[#primary-incident-reports-for-skyscanner-reddit-jetstack-and-spotify]] — open, unassigned
-- [[#current-crossplane-v2-status-of-deletionpolicy-and-managementpolicies]] — open, unassigned
 - [[#force-conflicts-versus-strip-or-adopt-when-two-controllers-co-own-a-field]] — open, unassigned
 - [[#how-often-forced-finalizer-removal-orphans-guarded-resources]] — open, unassigned
 - [[#recent-2024-to-2026-platform-incident-evidence]] — open, unassigned
@@ -1499,18 +1498,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** postmortem, skyscanner, reddit, jetstack, spotify
 - **Possible resolution from [[sources/research-gap-g1-named-incident-reports]]:** Partly settled, and it stays open. Jetstack is answered from the primary post, read through a Wayback capture of the original URL: the mechanism, recovery, scoping fixes, the rejected option of disabling node auto-repair, and the absence of any `failurePolicy` recommendation are all verified (see [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]]). Reddit is not answered from its primary; only a secondary Kubezilla retelling was read, and it is attributed and not trusted for its timeline (see [[examples/reddit-s-march-2023-pi-day-outage-is-known-only-from-the-k8s-af-index-and-a-secondary-retelling]]). Skyscanner and Spotify are not answered at all, because the Medium, YouTube, and sched pages returned nothing and some fetch routes were blocked. Reading those three needs a permission change or another access path chosen by the user.
 
-## Current Crossplane v2 status of deletionPolicy and managementPolicies — status: open
-
-- **Question:** In the current Crossplane release (the dossier names v2.5), are `deletionPolicy` and `managementPolicies` still both supported, and how did issue 5283 end?
-- **Why it matters:** The dossier read the v1.20 page, and issue 5283 was still open when read, so the deletion-safety guidance may be out of date.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the current managed resources page and the final state of https://github.com/crossplane/crossplane/issues/5283.
-  - [ ] Update [[entities/crossplane]] and [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** crossplane, deletion-policy, management-policies, verification
-- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Both still exist on different kinds: namespaced managed resources (v2.0.0) have no `deletionPolicy`, legacy cluster-scoped ones keep it, and a deprecated runtime resolver combines the two fields. `managementPolicies` is still beta in the v2.5 docs. Issue 5283 is still open (opened 2024-01-25, last activity 2024-08-14), and `deletionPolicy` was never formally deprecated. See [[examples/crossplane-issue-5283-has-left-deletionpolicy-deprecation-open-since-2024]] and [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].
-
 ## Force-conflicts versus strip-or-adopt when two controllers co-own a field — status: open
 
 - **Question:** Is Argo CD's default `--force-conflicts` server-side apply or Flux's strip-or-adopt ignore rule safer when two controllers legitimately co-own a field?
@@ -1712,3 +1699,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: there is no fix. provider-aws issue 2287 was closed as stale and the source on main still reports ReconcileSuccess while an async operation runs ([[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]]). Not settled: the body of open PR 8080 was not read, so a fix in flight is unconfirmed.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Answered, with a negative result. There is no fix. Provider-aws issue 2287 was closed by the stale bot on 2026-06-25 with no linked change, and upjet and crossplane-runtime source on `main` still returns up-to-date from Observe during an async operation and marks `ReconcileSuccess`. `AsyncOperation` is documented as provider detail, not as an alerting recommendation, and the docs and code disagree on its status value. v2.0.0 made XR and claim conditions persist `observedGeneration`. Not settled: the body of open PR 8080 ("stop stale XR condition replay") was not read. See [[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]].
+
+## Current Crossplane v2 status of deletionPolicy and managementPolicies — status: closed (2026-11-26)
+
+- **Question:** In the current Crossplane release (the dossier names v2.5), are `deletionPolicy` and `managementPolicies` still both supported, and how did issue 5283 end?
+- **Why it matters:** The dossier read the v1.20 page, and issue 5283 was still open when read, so the deletion-safety guidance may be out of date.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current managed resources page and the final state of https://github.com/crossplane/crossplane/issues/5283.
+  - [ ] Update [[entities/crossplane]] and [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, deletion-policy, management-policies, verification
+- **Resolution:** Settled: deletionPolicy is removed from namespaced managed resources in v2.0.0 and survives on legacy managed resources, where issue 5283 to deprecate it is still open, so there is no formal deprecation ([[comparisons/deletion-policies-across-gitops-and-provider-tools]]). Not settled: whether issue 5283 will lead to formal deprecation.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Both still exist on different kinds: namespaced managed resources (v2.0.0) have no `deletionPolicy`, legacy cluster-scoped ones keep it, and a deprecated runtime resolver combines the two fields. `managementPolicies` is still beta in the v2.5 docs. Issue 5283 is still open (opened 2024-01-25, last activity 2024-08-14), and `deletionPolicy` was never formally deprecated. See [[examples/crossplane-issue-5283-has-left-deletionpolicy-deprecation-open-since-2024]] and [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].

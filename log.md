@@ -518,3 +518,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Crossplane v2 condition behavior and the fix for async Synced signaling
 - closed by: Eric Shamay
 - resolution: Settled: there is no fix. provider-aws issue 2287 was closed as stale and the source on main still reports ReconcileSuccess while an async operation runs ([[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]]). Not settled: the body of open PR 8080 was not read, so a fix in flight is unconfirmed.
+
+## [2026-11-26] gaps | close | Current Crossplane v2 status of deletionPolicy and managementPolicies
+- closed by: Eric Shamay
+- resolution: Settled: deletionPolicy is removed from namespaced managed resources in v2.0.0 and survives on legacy managed resources, where issue 5283 to deprecate it is still open, so there is no formal deprecation ([[comparisons/deletion-policies-across-gitops-and-provider-tools]]). Not settled: whether issue 5283 will lead to formal deprecation.
