@@ -27,6 +27,11 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#finish-the-outputs-the-revise-phase-did-not-reach]] — open
 - [[#recheck-release-candidate-and-unread-items-noted-in-the-closed-gap-resolutions]] — open
 - [[#update-part-5-and-part-1-evidence-notes-with-the-skyscanner-and-reddit-primary-postmortems]] — open
+- [[#batch-1-p0-to-p2-run-the-mechanics-and-accuracy-pass-workflow]] — open
+- [[#batch-2-p3-other-tool-coverage-research-pass]] — open
+- [[#batch-2-p3b-residual-partial-gaps-from-the-targeted-pass]] — open
+- [[#batch-3-p4-benchmarks-and-scale-by-controller-gaps]] — open
+- [[#batch-3-p4b-turn-design-choice-evidence-into-decision-pages]] — open
 
 ## Open
 
@@ -407,6 +412,41 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** Part 5 section 10 and Part 1's evidence note say the Skyscanner, Reddit and Spotify incidents are index-level or secondary-only and that no named-organization GitOps outage postmortem was found. Skyscanner (2021, Argo CD deleted 478 services) and Reddit (2023, Kubernetes 1.24 label removal and Calico route reflectors) are now primary sources. Spotify (2018 to 2019 cluster deletions through the console and Terraform, no end-user impact) is also now a primary source. Revise those passages and cite [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]] and the Reddit example page.
 - **Why:** The outputs currently understate the evidence and name Skyscanner as unread.
 - **Acceptance:** The passages cite the primary pages and no longer call these incidents index-only.
+- **Drafted by:** agent on 2026-11-26
+
+## Batch 1 (P0 to P2): run the mechanics-and-accuracy-pass workflow — status: open
+
+- **What:** Run `workflows/mechanics-and-accuracy-pass.js`: finish the pending tutorial revisions (P0), re-research UNVERIFIED claims and recheck release-candidate items (P1), and research seven clusters of mechanics gaps (finalizers, ownership and GC, status and conditions, SSA and conflict policy, informers and caches, admission and CRDs, operators and idempotency) (P2).
+- **Why:** The tutorials still understate the wiki's own evidence, and the mechanics gaps are the core of Parts 2 and 3.
+- **Acceptance:** Twelve verified dossiers ingested serially, a triage page, the seven tutorials revised and reviewed, a cross-document consistency pass, and a final commit.
+- **Drafted by:** agent on 2026-11-26
+
+## Batch 2 (P3): other-tool coverage research pass — status: open
+
+- **What:** Research the roughly 30 open gaps about other tools: Argo CD versus Flux head to head, secrets in GitOps agents, Git versus OCI as the source, ApplicationSets and hub-and-spoke, Config Connector versus Crossplane, Kratix, Radius, Score, the KRM function specification, tofu-controller and the Terraform operator, Backstage, and how Flux and Argo CD handle provider-managed resources.
+- **Why:** Adds breadth to Parts 4 and 5 and the landscape comparisons. Not blocking accuracy, so it follows Batch 1.
+- **Acceptance:** Verified dossiers ingested, comparison pages written or updated, and affected tutorial passages revised.
+- **Drafted by:** agent on 2026-11-26
+
+## Batch 2 (P3b): residual partial gaps from the targeted pass — status: open
+
+- **What:** Settle the narrow remainders that Batch 1 does not cover: Crossplane v2 scaling guidance and function-runner history, Config Connector per-kind reconcile cadence, ReplicaSet and StatefulSet staleness metric names, kro-to-Crossplane status propagation, Upjet runtime cost, and package dependency and upgrade policy.
+- **Why:** Each is a named caveat inside a closed or partial gap.
+- **Acceptance:** Each remainder is settled with a primary source or recorded as unanswerable.
+- **Drafted by:** agent on 2026-11-26
+
+## Batch 3 (P4): benchmarks and scale-by-controller gaps — status: open
+
+- **What:** Look for independent benchmarks for etcd, vcluster, kcp and the Argo CD footprint, and measured scaling for kro, ACK, Cluster API and Config Connector controllers. Expect many to be recorded as unanswerable with current public sources.
+- **Why:** Needs measurements that may not exist, so it is lower value per token.
+- **Acceptance:** Each gap has independent numbers or a recorded reason none exist.
+- **Drafted by:** agent on 2026-11-26
+
+## Batch 3 (P4b): turn design-choice evidence into decision pages — status: open
+
+- **What:** After Batch 1 lands, write `decisions/` pages with options, evidence and a recommendation for the user to accept or change: the default SSA conflict policy for GitOps beside in-cluster controllers, force-conflicts versus strip-or-adopt, Git versus OCI, condition polarity, and operator framework choice.
+- **Why:** These are judgment calls, so the user decides; research only supplies evidence.
+- **Acceptance:** Each decision page exists with a status the user sets; the matching gaps can then be closed with `sticki-gaps`.
 - **Drafted by:** agent on 2026-11-26
 
 ## Done
