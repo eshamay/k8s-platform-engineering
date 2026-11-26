@@ -8,6 +8,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-admission-webhooks-and-cel
+    hash: c04dbed76ad9
+    ingested: 2026-11-25
 aliases: []
 tags: [decision, crd, cel, webhooks, validation]
 ---
@@ -33,3 +36,7 @@ The dossier's synthesis is to use CEL where it can express the check, since that
 ## Consequences
 
 CEL keeps validation inside the CRD, so it moves with the definition and avoids a new availability dependency. A webhook keeps flexibility but must be run highly available. Conversion between versions is a separate question covered in [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]]. See also [[findings/admission-webhook-outages-are-a-recurring-failure-class]] and [[examples/cel-rule-replaces-a-validating-webhook-for-cross-field-checks]].
+
+## Additions from the admission dossier
+
+The admission dossier supports the guidance above with KEP-3488, which frames CEL policy as an alternative for most validating use cases, and with the Kubernetes good-practices page, which recommends CEL-based policies where they suffice and webhooks only when external data, complex code, or side effects are needed. If a webhook is chosen, how it should fail is a second decision; see [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]]. See also [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]]. [[sources/research-admission-webhooks-and-cel]]

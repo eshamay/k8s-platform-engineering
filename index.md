@@ -21,7 +21,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/custom-resource-definition]] — registering new API types, schema, versions, costs, and pitfalls (active)
 - [[concepts/spec-status-split]] — intent versus observed reality, the status subresource, observedGeneration, and pitfalls (active)
 - [[concepts/server-side-apply-and-field-ownership]] — managedFields, conflicts, shared ownership, merge markers, and tool policies (active)
-- [[concepts/admission-webhooks-and-cel]] — mutate and validate before persistence (draft)
+- [[concepts/admission-webhooks-and-cel]] — webhooks, CEL policies, CRD rules, failure policy, and pitfalls (active)
 
 ### Controller and operator mechanics
 
@@ -60,6 +60,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/helm]] — package manager whose charts do not upgrade or delete CRDs (draft)
 - [[entities/kstatus]] — generic status computation for conforming resources (draft)
 - [[entities/prometheus-operator]] — operator that retrofitted status onto its workload CRDs (draft)
+- [[entities/kyverno]] — CEL-first policy engine that can generate native admission policies (draft)
+- [[entities/cert-manager]] — operator with validation, defaulting, and conversion webhooks (draft)
 
 ## Sources
 
@@ -74,6 +76,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-custom-resource-definition]] — CRD mechanics, schema and CEL, versions and conversion, tool handling, and failure modes (active)
 - [[sources/research-spec-status-split]] — research dossier on the spec and status split, 16 web sources, 2026-11-25
 - [[sources/research-server-side-apply-and-field-ownership]] — research dossier on server-side apply and field ownership, 17 web sources, 2026-11-25
+- [[sources/research-admission-webhooks-and-cel]] — research dossier on admission webhooks and CEL, 15 web sources, 2026-11-25
 
 ## Examples
 
@@ -130,6 +133,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/kubebuilder-controller-applies-status-with-a-field-owner]] — FieldOwner and ForceOwnership (draft)
 - [[examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects]] — API server arbitrates co-authors (draft)
 - [[examples/flux-ssa-annotations-and-ignore-rules-share-fields-with-other-controllers]] — Merge, IfNotPresent, Strip, and Adopt (draft)
+- [[examples/vap-minimum-replicas-policy-with-per-environment-parameters]] — policy, binding, and parameter guardrail (draft)
+- [[examples/cel-transition-rules-enforce-crd-immutability]] — oldSelf rules for immutable and append-only fields (draft)
+- [[examples/cert-manager-runs-validation-defaulting-and-conversion-webhooks]] — an operator's three webhook roles (draft)
+- [[examples/kyverno-validatingpolicy-generates-native-vap-objects]] — engine hands enforcement to the API server (draft)
+- [[examples/flux-dry-run-fails-against-webhooks-without-dry-run-support]] — GitOps meets sideEffects (draft)
+- [[examples/kubebuilder-operator-scaffolds-defaulting-and-validating-webhooks]] — webhooks in the controller binary (draft)
 
 ## Comparisons
 
@@ -154,6 +163,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/observedgeneration-top-level-versus-per-condition]] — where the generation marker lives (draft)
 - [[comparisons/ssa-conflict-policy-across-tools]] — conflict defaults and escape hatches (draft)
 - [[comparisons/client-side-apply-versus-server-side-apply]] — where the merge runs and what it remembers (draft)
+- [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]] — four admission extension mechanisms (draft)
+- [[comparisons/kyverno-versus-native-validating-admission-policy]] — engine features versus in-process policy (draft)
 
 ## Decisions
 
@@ -169,6 +180,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/publish-synced-false-at-reconcile-start]] — ACK stale-status options (draft)
 - [[decisions/which-crds-get-a-status-subresource]] — Prometheus Operator's line between workload and config CRDs (draft)
 - [[decisions/force-conflicts-or-surface-them-to-humans]] — controller versus CD tool defaults (draft)
+- [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]] — enforcement versus availability (draft)
 
 ## Findings
 
@@ -224,6 +236,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/forcing-conflicts-hides-disagreements-between-writers]] — blanket force versus fail (draft)
 - [[findings/managedfields-are-hidden-from-kubectl-output-by-default]] — show-managed-fields (draft)
 - [[findings/applying-a-whole-read-back-object-claims-every-field]] — controller anti-pattern (draft)
+- [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]] — webhook deadlock (draft)
+- [[findings/webhooks-without-sideeffects-declared-break-dry-run-clients]] — dry-run failures in GitOps (draft)
+- [[findings/mutating-webhooks-can-run-repeatedly-and-in-no-guaranteed-order]] — idempotence requirement (draft)
+- [[findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window]] — certificates and connectivity (draft)
+- [[findings/api-evolution-breaks-webhooks-that-drop-unknown-fields]] — upgrade breakage (draft)
+- [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]] — limits of in-process CEL (draft)
 
 ## Outputs
 

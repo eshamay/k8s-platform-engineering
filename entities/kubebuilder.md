@@ -20,6 +20,9 @@ sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-admission-webhooks-and-cel
+    hash: c04dbed76ad9
+    ingested: 2026-11-25
 aliases: [Kubebuilder Book]
 tags: [tool, operators, framework]
 ---
@@ -51,3 +54,7 @@ Kubebuilder enables the status subresource with the `+kubebuilder:subresource:st
 ## Server-side apply scaffolding
 
 The Kubebuilder book (alpha page) shows scaffolding with `--ssa` to generate apply configuration types, and applying status with `client.FieldOwner` and `client.ForceOwnership`. It recommends SSA when several controllers or users manage one resource and plain `Update()` for a sole owner. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/kubebuilder-controller-applies-status-with-a-field-owner]] and [[findings/applying-a-whole-read-back-object-claims-every-field]].
+
+## Admission webhook scaffolding
+
+The Kubebuilder book scaffolds webhooks with `kubebuilder create webhook`, implements `Default()` and `ValidateCreate`, `ValidateUpdate`, and `ValidateDelete`, and generates webhook manifests from markers. The webhooks ship in the same binary as the controller. [[sources/research-admission-webhooks-and-cel]] See [[examples/kubebuilder-operator-scaffolds-defaulting-and-validating-webhooks]].

@@ -57,6 +57,10 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#best-default-conflict-policy-for-teams-running-gitops-and-in-cluster-controllers]] — open, unassigned
 - [[#crossplane-v2-server-side-apply-behavior-and-external-writers]] — open, unassigned
 - [[#cluster-api-field-ownership-rules-and-argo-cd-server-side-diff-stability]] — open, unassigned
+- [[#mutating-admission-policy-release-status]] — open, unassigned
+- [[#admission-behavior-of-crossplane-kro-argo-cd-config-connector-ack-cluster-api-and-gatekeeper]] — open, unassigned
+- [[#kyverno-webhook-failure-modes-and-availability]] — open, unassigned
+- [[#cel-cost-limits-and-per-request-budgets]] — open, unassigned
 
 ---
 
@@ -82,6 +86,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-custom-resource-definition]]:** Only marginally helpful. The dossier adds one step to the trace for charts that ship CRDs: Helm will not upgrade or delete them, so Flux's HelmRelease `crds` policies (Skip, Create, CreateReplace) and `dependsOn` decide whether CRDs exist before dependent releases are applied. It does not trace the rest of the flow.
 - **Possible resolution from [[sources/research-spec-status-split]]:** Only marginally helpful. The dossier explains the last stretch of the trace: the controller writes conditions and `observedGeneration` through the `/status` subresource, Flux reads `Ready`, `Reconciling`, and `Stalled`, and a lagging `observedGeneration` means the spec change is still pending. It does not trace source fetch or finalizers. See [[concepts/spec-status-split]] and [[examples/flux-helmrelease-status-records-attempts-and-health]].
 - **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Partly helpful for the apply step. The dossier shows that kustomize-controller applies with server-side apply and runs a dry-run each interval, that ownership is recorded in `managedFields` under the manager name, and that a failing dry-run (for example from a stale co-owner of a list entry) stops reconciliation. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].
+- **Possible resolution from [[sources/research-admission-webhooks-and-cel]]:** Only marginally helpful. The dossier places admission (mutating webhooks, schema validation, validating webhooks, or in-process CEL policies) after authentication and authorization and before persistence, and notes that server-side dry-run passes through webhooks, so a missing `sideEffects` declaration can fail a Flux reconcile. It does not trace the full Git-to-Ready path. See [[examples/flux-dry-run-fails-against-webhooks-without-dry-run-support]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -128,6 +133,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-custom-resource-definition]]:** Partly helpful on the apiserver side. Custom resources share etcd and watch-cache paths with built-in objects, and Ant Group's 10,000-plus node write-up cut apiserver memory from roughly 400 GB to 100 GB by serving lists from the watch cache, with label indexing and etcd splitting. It has no controller sharding or workqueue data and no CRD-specific numbers. See [[examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd]].
 - **Possible resolution from [[sources/research-spec-status-split]]:** Marginally helpful. Writing status through the main resource bumps generation and triggers extra reconciles, which is avoidable load on the controller and API server. The dossier gives no scale numbers. See [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]].
 - **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Marginally helpful. The dossier notes that GET-modify-PUT incurs an optimistic-concurrency retry cost when many actors update one object, which server-side apply avoids. It gives no sharding or workqueue data. See [[comparisons/client-side-apply-versus-server-side-apply]].
+- **Possible resolution from [[sources/research-admission-webhooks-and-cel]]:** Marginally helpful. Every matching write blocks on webhook calls (default timeout 10 seconds), so a slow webhook adds latency to the whole write path, and in-process CEL has a comparatively small latency impact according to KEP-3488. The dossier gives no measurements. See [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -643,3 +649,44 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Check whether `kubectl` made server-side apply the default.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cluster-api, argo-cd, server-side-diff, verification
+
+## Mutating Admission Policy release status — status: open
+
+- **Question:** Is MutatingAdmissionPolicy stable and enabled by default as of Kubernetes v1.36, as one documentation digest reports, or is it still beta?
+- **Why it matters:** The digest could not be cross-checked against release notes and earlier knowledge places the feature at beta, so a tutorial could state the wrong status. See [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Check the Kubernetes v1.36 release notes and the live Mutating Admission Policy page.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** mutating-admission-policy, verification
+
+## Admission behavior of Crossplane, kro, Argo CD, Config Connector, ACK, Cluster API, and Gatekeeper — status: open
+
+- **Question:** What webhooks and CEL validation do these tools ship or rely on, such as Crossplane's own conversion and validation webhooks, CRD-level CEL in composed APIs, kro's validation of generated CRDs, and Gatekeeper's policy model?
+- **Why it matters:** The admission dossier found no primary source for any of them, so admission treatment of the platform tools is unknown. See [[concepts/admission-webhooks-and-cel]] and [[entities/crossplane]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read each project's webhook and validation documentation.
+  - [ ] Read a primary Gatekeeper source.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, kro, argo-cd, config-connector, ack, cluster-api, gatekeeper
+
+## Kyverno webhook failure modes and availability — status: open
+
+- **Question:** How does Kyverno configure its own webhook failurePolicy, and how does it behave when its pods are unavailable?
+- **Why it matters:** Kyverno was documented only for its CEL policy types, so the resilience benefit of generated native policies is unquantified. See [[comparisons/kyverno-versus-native-validating-admission-policy]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Kyverno documentation on webhook configuration and availability.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kyverno, webhooks, availability
+
+## CEL cost limits and per-request budgets — status: open
+
+- **Question:** What are the exact CEL cost limits for CRD validation rules and admission policies, and what per-request budgets apply?
+- **Why it matters:** Schema authors need the numbers to decide how tightly to bound lists and strings. See [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Kubernetes CRD validation rules documentation on cost estimation.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cel, limits, crd

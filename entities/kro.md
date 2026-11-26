@@ -35,6 +35,9 @@ sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-admission-webhooks-and-cel
+    hash: c04dbed76ad9
+    ingested: 2026-11-25
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -88,3 +91,7 @@ kro lets a platform author define a schema that users fill in and wire resources
 ## Server-side apply coverage gap
 
 The server-side apply dossier could not read kro's documentation (the page returned empty content), so this wiki makes no claim about how kro sets field managers or forces conflicts. [[sources/research-server-side-apply-and-field-ownership]] See [[concepts/server-side-apply-and-field-ownership]] and [[open-knowledge-gaps]].
+
+## Admission coverage gap
+
+The admission dossier found no primary kro material, so how kro handles validation on the CRDs it generates, and whether it uses CEL validation rules there, is not established. The Kubernetes sources describe CEL validation rules as the way a CRD author can validate without a webhook. [[sources/research-admission-webhooks-and-cel]] See [[concepts/admission-webhooks-and-cel]] and [[open-knowledge-gaps]].

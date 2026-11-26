@@ -17,6 +17,9 @@ sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-admission-webhooks-and-cel
+    hash: c04dbed76ad9
+    ingested: 2026-11-25
 aliases: [SSA, managedFields]
 tags: [api-machinery, server-side-apply]
 ---
@@ -74,3 +77,7 @@ The dossier could not read primary sources for kro, ACK, Config Connector, or He
 ## Related
 
 [[concepts/spec-status-split]], [[concepts/gitops-pull-based-delivery]], [[concepts/self-healing-and-drift-detection]], [[entities/flux]], [[entities/argo-cd]], [[entities/kubectl]]
+
+## Admission and dry-run
+
+Server-side dry-run passes through admission webhooks, so a webhook that does not declare dry-run safety breaks tools that dry-run before applying. [[sources/research-admission-webhooks-and-cel]] See [[findings/webhooks-without-sideeffects-declared-break-dry-run-clients]] and [[concepts/admission-webhooks-and-cel]].

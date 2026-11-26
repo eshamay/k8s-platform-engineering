@@ -8,6 +8,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-admission-webhooks-and-cel
+    hash: c04dbed76ad9
+    ingested: 2026-11-25
 aliases: []
 tags: [crd, cel, webhooks, validation]
 ---
@@ -38,3 +41,7 @@ The dossier does not claim CEL replaces every webhook. Logic that needs external
 ## Related
 
 [[examples/cel-rule-replaces-a-validating-webhook-for-cross-field-checks]], [[decisions/validate-with-cel-rules-or-a-validating-webhook]], [[concepts/admission-webhooks-and-cel]], and [[findings/admission-webhook-outages-are-a-recurring-failure-class]].
+
+## Additions from the admission dossier
+
+The admission dossier adds the policy-object route between the two columns above: ValidatingAdmissionPolicy (stable since v1.30) runs CEL in the API server but is declared outside any one CRD, with a binding and optional parameter resource. It also adds the limits on the CEL side: no external data, bounded cost, and informational type checking. See [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]] and [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]]. [[sources/research-admission-webhooks-and-cel]]

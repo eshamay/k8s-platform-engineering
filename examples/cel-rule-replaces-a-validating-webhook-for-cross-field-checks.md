@@ -8,6 +8,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-admission-webhooks-and-cel
+    hash: c04dbed76ad9
+    ingested: 2026-11-25
 aliases: []
 tags: [crd, cel, validation, webhooks]
 ---
@@ -25,3 +28,7 @@ The Kubernetes blog announcing beta validation rules uses exactly this check. Th
 ## Lesson
 
 The rule travels with the CRD, so there is no webhook to deploy, secure, or keep available, and the dossier reports that per-rule cost limits protect the apiserver from expensive expressions. The dossier read only the first part of the announcement, so transition rules and feature-gate history are not covered here. Validation ratcheting, covered on the CRD task page, lets stricter rules be added without invalidating objects that already exist. See [[comparisons/cel-validation-rules-versus-validating-webhooks]], [[decisions/validate-with-cel-rules-or-a-validating-webhook]], and [[concepts/admission-webhooks-and-cel]].
+
+## Additions from the admission dossier
+
+The admission dossier covers the transition-rule side that the first dossier did not read: `oldSelf` rules run only on updates, and the Kubernetes immutability post shows `self == oldSelf` and append-only patterns. See [[examples/cel-transition-rules-enforce-crd-immutability]] and [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]]. [[sources/research-admission-webhooks-and-cel]]

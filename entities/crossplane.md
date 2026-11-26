@@ -38,6 +38,9 @@ sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-admission-webhooks-and-cel
+    hash: c04dbed76ad9
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -95,3 +98,7 @@ A composite resource's spec carries composition selection and pinning (`composit
 ## Server-side apply
 
 Crossplane uses server-side apply to sync claims to composite resources (behind `--enable-ssa-claims` in the v1.20 documentation, where it is alpha) and composite resources to composed resources when composition functions are used. Spec and metadata flow forward and status flows back, deleted fields and labels propagate downstream, and complex-field merging needs merge markers in the provider CRDs. The move to composition functions required a managed-fields migration, and issue 7453 on v2.3.1 is an unresolved claim that an external controller's forced field disappears, possibly because `managedFields` was hidden in the output. Crossplane v2 behavior may differ from the v1.20 page. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/crossplane-clears-managed-fields-when-migrating-to-composition-functions]] and [[findings/managedfields-are-hidden-from-kubectl-output-by-default]].
+
+## Admission coverage gap
+
+The admission dossier found no primary Crossplane material, so this wiki makes no claim about Crossplane's own webhooks or about CRD-level CEL in composed APIs. [[sources/research-admission-webhooks-and-cel]] See [[concepts/admission-webhooks-and-cel]] and [[open-knowledge-gaps]].

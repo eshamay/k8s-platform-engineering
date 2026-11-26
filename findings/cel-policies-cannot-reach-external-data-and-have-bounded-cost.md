@@ -1,0 +1,27 @@
+---
+title: CEL policies cannot reach external data and have bounded cost
+type: finding
+status: draft
+created: 2026-11-25
+updated: 2026-11-25
+sources:
+  - id: research-admission-webhooks-and-cel
+    hash: c04dbed76ad9
+    ingested: 2026-11-25
+aliases: []
+tags: [pitfall, cel, limits, cost, validating-admission-policy]
+---
+
+# CEL policies cannot reach external data and have bounded cost
+
+## Observation
+
+CEL admission has limits that keep webhooks relevant. Rule cost is bounded to protect the API server, so a CRD schema with unbounded lists or strings can be rejected at creation and iterating rules need `maxItems` and `maxLength`. Type checking of ValidatingAdmissionPolicy is informational because of version skew. CEL policies cannot call external services, so checks that need outside data, such as registry lookups or signature verification, still need a webhook or an engine that provides it. A ValidatingAdmissionPolicy `failurePolicy` applies to evaluation errors, and `Deny` plus `Warn` together is disallowed. URL: https://kubernetes.io/blog/2022/09/23/crd-validation-rules-beta/, https://www.kubernetes.dev/resources/keps/3488/, and https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/. [[sources/research-admission-webhooks-and-cel]]
+
+## Limits of the evidence
+
+The dossier did not capture exact cost-limit numbers or per-request budgets, and the external-data claim is the dossier's synthesis of the KEP scope and the policy variables, not a quoted statement. See [[open-knowledge-gaps]].
+
+## Related
+
+[[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]], [[decisions/validate-with-cel-rules-or-a-validating-webhook]], and [[concepts/admission-webhooks-and-cel]].
