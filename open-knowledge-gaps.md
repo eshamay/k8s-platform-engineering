@@ -87,7 +87,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#behavior-of-namespaced-v2-managed-resources-when-a-namespace-is-deleted-while-the-provider-is-down]] — open, unassigned
 - [[#per-provider-external-name-defaults]] — open, unassigned
 - [[#config-connector-conflict-handling-when-two-objects-target-one-cloud-resource]] — open, unassigned
-- [[#kro-graph-api-status-and-released-version-facts]] — open, unassigned
 - [[#flux-handling-of-composite-resources-and-kro-instances]] — open, unassigned
 - [[#clusterclass-maturity-and-the-managed-topologies-proposal]] — open, unassigned
 - [[#scale-of-composite-resources-per-controller]] — open, unassigned
@@ -1066,18 +1065,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** config-connector, adoption, conflicts
 
 
-## kro Graph API status and released-version facts — status: open
-
-- **Question:** What is the status of kro's alpha `Graph` API compared with the ResourceGraphDefinition, and which kro version is current, given that the docs show 0.10.0 and a third-party blog dated September 2026 says v0.9.x?
-- **Why it matters:** The `readyWhen` gating behavior differs between the two APIs, so a tutorial could describe the wrong one. See [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the kro release notes and the Graph API documentation.
-  - [ ] Update [[entities/kro]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** kro, graph-api, versioning, verification
-- **Possible resolution from [[sources/research-gap-g3-kro]]:** Settled, and the user can close it. The current stable release is v0.10.0 (2026-11-10), preceded by v0.10.0-rc.0 (2026-09-22) and v0.9.4 (2026-09-04), so the September 2026 blog citing v0.9.x was accurate when written. The `Graph` API (`kro.run/v1alpha1`) is alpha, introduced in v0.10.0, off by default behind the `GraphKind` gate, and carries no compatibility guarantee. RGDs behave the same with the gate on or off, the RGD controller now runs on the graph engine and issues `GraphRevision` objects, and in a Graph `readyWhen` only feeds status. The kro.run default-version claim is SECONDARY-ONLY for the live page and was confirmed from the repository's site config. See [[findings/enabling-the-kro-graph-api-needs-a-manual-crd-apply-because-helm-does-not-update-crds-on-upgrade]], [[findings/a-kro-graph-has-no-revision-history-and-sets-no-owner-references-on-the-resources-it-creates]], and [[entities/kro]].
-
 ## Flux handling of composite resources and kro instances — status: open
 
 - **Question:** How do Flux health checks, `dependsOn`, and CRD ordering behave with Crossplane XRs and kro instances, and does Flux need the same ownerReference or tracking recipes that Argo CD needs?
@@ -1718,3 +1705,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-composite-resource]]:** Marginally helpful. The dossier reads v0.10.0 pages and lists the RGD conditions, and says the kro controller tuning docs were not read. It adds a version discrepancy, since a September 2026 blog cites v0.9.x. See [[#kro-graph-api-status-and-released-version-facts]].
 - **Possible resolution from [[sources/research-conditions]]:** Marginally helpful. The dossier read the v0.10.0 RGD reference and the custom status conditions page, but the Instances page returned empty content, so the built-in instance condition names are still inferred. See [[entities/kro]].
 - **Possible resolution from [[sources/research-gap-g3-kro]]:** Largely settled, and the user can close it. The v0.10.0 controller tuning page (released 2026-11-10) confirms every default the wiki took from the unreleased docs: 1 worker, a 36000 s resync, 20 retries, backoff from 200 ms to 1000 s with a bucket of 10 per second and burst 100, and client QPS 100 with burst 150. It adds a 30 s `watchSyncTimeout`, a Graph controller concurrency of 1, `applyConcurrency` 20, a collection limit of 1000 items with 10 dimensions, and a CEL cost limit of 0, and the instance requeue interval is 3 s with exponential backoff capped at five minutes (a fixed delay at v0.9.4, which is an inference from two pages). The Instances page now documents the four built-in instance conditions (`InstanceManaged`, `GraphResolved`, `ResourcesReady`, `Ready`) and says only `Ready` is a stable contract. Not settled: the full v0.9.4 rate-limiter table, and the condition names against Go source. See [[examples/kro-shared-queue-tunes-throughput]], [[findings/kro-reserves-the-right-to-change-instance-sub-conditions-so-only-ready-is-a-stable-contract]], [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]], and [[entities/kro]].
+
+## kro Graph API status and released-version facts — status: closed (2026-11-26)
+
+- **Question:** What is the status of kro's alpha `Graph` API compared with the ResourceGraphDefinition, and which kro version is current, given that the docs show 0.10.0 and a third-party blog dated September 2026 says v0.9.x?
+- **Why it matters:** The `readyWhen` gating behavior differs between the two APIs, so a tutorial could describe the wrong one. See [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the kro release notes and the Graph API documentation.
+  - [ ] Update [[entities/kro]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, graph-api, versioning, verification
+- **Resolution:** Settled: v0.10.0 (2026-11-10) is the latest release read, and the Graph API is alpha, off by default behind the GraphKind gate; enabling it needs a manual CRD apply because Helm does not update CRDs on upgrade ([[entities/kro]], [[findings/enabling-the-kro-graph-api-needs-a-manual-crd-apply-because-helm-does-not-update-crds-on-upgrade]]). Not settled: the promotion timeline belongs to the governance gap.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-kro]]:** Settled, and the user can close it. The current stable release is v0.10.0 (2026-11-10), preceded by v0.10.0-rc.0 (2026-09-22) and v0.9.4 (2026-09-04), so the September 2026 blog citing v0.9.x was accurate when written. The `Graph` API (`kro.run/v1alpha1`) is alpha, introduced in v0.10.0, off by default behind the `GraphKind` gate, and carries no compatibility guarantee. RGDs behave the same with the gate on or off, the RGD controller now runs on the graph engine and issues `GraphRevision` objects, and in a Graph `readyWhen` only feeds status. The kro.run default-version claim is SECONDARY-ONLY for the live page and was confirmed from the repository's site config. See [[findings/enabling-the-kro-graph-api-needs-a-manual-crd-apply-because-helm-does-not-update-crds-on-upgrade]], [[findings/a-kro-graph-has-no-revision-history-and-sets-no-owner-references-on-the-resources-it-creates]], and [[entities/kro]].

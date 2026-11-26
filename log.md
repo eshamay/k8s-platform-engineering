@@ -542,3 +542,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | kro released-version tuning defaults and instance conditions
 - closed by: Eric Shamay
 - resolution: Settled: the v0.10.0 docs confirm the controller tuning defaults and four instance conditions; kro reserves the right to change sub-conditions so only Ready is a stable contract, and the docs disagree on whether a Failed instance state exists ([[findings/kro-reserves-the-right-to-change-instance-sub-conditions-so-only-ready-is-a-stable-contract]], [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]]). Not settled: the v0.9.4 rate-limiter table was not fully read, and conditions come from docs, not Go source.
+
+## [2026-11-26] gaps | close | kro Graph API status and released-version facts
+- closed by: Eric Shamay
+- resolution: Settled: v0.10.0 (2026-11-10) is the latest release read, and the Graph API is alpha, off by default behind the GraphKind gate; enabling it needs a manual CRD apply because Helm does not update CRDs on upgrade ([[entities/kro]], [[findings/enabling-the-kro-graph-api-needs-a-manual-crd-apply-because-helm-does-not-update-crds-on-upgrade]]). Not settled: the promotion timeline belongs to the governance gap.
