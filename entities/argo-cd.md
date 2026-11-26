@@ -65,6 +65,9 @@ sources:
   - id: research-composition
     hash: f57d89652816
     ingested: 2026-11-25
+  - id: research-flux-deep-dive
+    hash: e640ec8046bc
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -160,3 +163,7 @@ For composite resources, Argo CD's default foreground deletion makes Crossplane 
 ## Ordering and tuning for generated resources
 
 Argo CD orders resources with hooks (PreSync, Sync, PostSync, SyncFail, Skip, PreDelete, PostDelete) and sync waves within a phase. A failed PreSync hook stops the sync, wave order is reversed during pruning, and `ttlSecondsAfterFinished` on hook Jobs is discouraged because Argo CD must read the Job outcome. Compared with kro, Argo CD ordering is explicit and annotation-based while kro's is inferred from data references. For Crossplane it needs annotation-based tracking, custom Lua health checks, and a higher Kubernetes client QPS, and for kro each templated resource needs a tracking-id annotation and an owner reference. [[sources/research-composition]] See [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]] and [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]].
+
+## Contrast with Flux in the Flux deep dive
+
+A vendor comparison in the Flux deep dive describes Argo CD as centralized, with sync phases (pre-sync, sync, post-sync) for ordering and Projects for tenant isolation, whereas Flux uses distributed controllers, `dependsOn`, and namespaces with RBAC. The source is a vendor blog, and its claim that Flux lacks a native UI is flagged as dated. [[sources/research-flux-deep-dive]] See [[comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog]].

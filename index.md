@@ -11,7 +11,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/level-triggered-vs-edge-triggered]] — state-driven versus event-driven controller logic (active)
 - [[concepts/eventual-consistency-and-convergence]] — concurrent apply, retry, converge, with costs and mitigations (active)
 - [[concepts/self-healing-and-drift-detection]] — reverting out-of-band changes, with tool controls and failure modes (active)
-- [[concepts/gitops-pull-based-delivery]] — four principles, pull versus push, and the two-layer loop (active)
+- [[concepts/gitops-pull-based-delivery]] — four principles, pull versus push, the two-layer loop, and Flux as a worked implementation (active)
 
 ### KRM and API machinery
 
@@ -42,7 +42,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ## Entities
 
-- [[entities/flux]] — in-cluster GitOps tool (draft)
+- [[entities/flux]] — in-cluster GitOps tool, controllers, tenancy, scale, and pitfalls (active)
 - [[entities/crossplane]] — control plane framework for external infrastructure (draft)
 - [[entities/kro]] — resource-graph based platform API tool (draft)
 - [[entities/argo-cd]] — GitOps tool with phase and wave ordering (draft)
@@ -67,6 +67,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/function-kro]] — Crossplane function that runs kro-style resource graphs in a pipeline step (draft)
 - [[entities/upjet]] — generator of Crossplane providers from Terraform providers (draft)
 - [[entities/azure-service-operator]] — Azure resources as Kubernetes objects, CRDs generated from ARM schemas (draft)
+- [[entities/flux-operator]] — operator that installs Flux and automates controller sharding (draft)
 
 ## Sources
 
@@ -93,6 +94,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-composite-resource]] — research dossier on composite resources and resource graphs, 16 web sources, 2026-11-25
 - [[sources/research-composition]] — research dossier on Crossplane Compositions, kro graphs, and neighbouring tools, 19 web sources, 2026-11-25
 - [[sources/research-provider]] — research dossier on providers across Crossplane, ACK, Config Connector, ASO, and Cluster API, 14 web sources, 2026-11-25
+- [[sources/research-flux-deep-dive]] — research dossier on Flux controllers, tenancy, scale, and adopters, 16 web sources, 2026-11-25
 
 ## Examples
 
@@ -226,6 +228,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/config-connector-namespaced-mode-maps-namespaces-to-projects-and-service-accounts]] — per-namespace identity and quota (draft)
 - [[examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management]] — per-namespace IAM roles (draft)
 - [[examples/azure-service-operator-generates-crds-from-azure-resource-manager-schemas]] — schema-driven Azure coverage (draft)
+- [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]] — self-reported Flux scale case (draft)
+- [[examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation]] — reference fleet repository (draft)
+- [[examples/flux-image-automation-commits-new-tags-to-git-and-the-reference-repo-limits-it-to-staging]] — tag promotion through Git (draft)
+- [[examples/teams-replace-helm-upgrade-in-ci-with-flux-helmrelease-objects]] — declarative Helm (draft)
+- [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]] — shard labels and the Flux Operator (draft)
+- [[examples/flux-notification-receivers-start-reconciliation-without-waiting-for-the-poll-interval]] — webhooks and alerts (draft)
 
 ## Comparisons
 
@@ -271,6 +279,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]] — composition versus one-to-one exposure (draft)
 - [[comparisons/provider-families-versus-per-service-controllers]] — two routes to installable slices of a cloud API (draft)
 - [[comparisons/crossplane-providers-versus-cluster-api-providers]] — catalog versus contract (draft)
+- [[comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog]] — vendor-blog contrast (draft)
+- [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]] — tuning, sharding, and source options (draft)
 
 ## Decisions
 
@@ -303,6 +313,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/choose-automatic-or-manual-composition-update-policy]] — follow the latest revision or pin one (draft)
 - [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]] — which composite layer to adopt (draft)
 - [[decisions/scope-provider-credentials-per-namespace-or-cluster-wide]] — one identity or many (draft)
+- [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]] — vertical tuning versus label sharding (draft)
 
 ## Findings
 
@@ -427,6 +438,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/deleting-stateful-resources-through-a-provider-can-lose-data]] — Spanner and Bigtable deletion risk (draft)
 - [[findings/generated-provider-catalogs-inherit-the-behavior-and-bugs-of-their-generator]] — shared behavior across generated providers (draft)
 - [[findings/hand-written-providers-that-treat-not-found-as-an-error-break-the-create-flow]] — Observe must report missing resources, not errors (draft)
+- [[findings/without-lockdown-flags-a-flux-kustomization-applies-with-the-controllers-own-identity]] — tenant privilege escalation (draft)
+- [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]] — leader election limits throughput (draft)
+- [[findings/suspended-resources-polling-lag-and-a-missing-with-source-flag-make-flux-failures-silent]] — quiet Flux failures (draft)
+- [[findings/automatic-image-tag-updates-can-roll-unintended-versions-into-production]] — promotion risk (draft)
+- [[findings/circular-dependson-chains-between-flux-resources-never-reconcile]] — ordering stalls (draft)
+- [[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents]] — shard label consistency (draft)
+- [[findings/without-prune-flux-leaves-removed-manifests-running-as-orphans]] — orphaned live objects (draft)
 
 ## Outputs
 

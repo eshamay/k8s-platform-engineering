@@ -105,6 +105,9 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#upjet-runtime-execution-model-and-cost]] — open, unassigned
 - [[#config-connector-controller-kind-per-resource]] — open, unassigned
 - [[#flux-and-argo-cd-handling-of-provider-managed-resources]] — open, unassigned
+- [[#flux-source-controller-internals-and-artifact-serving-under-leader-election]] — open, unassigned
+- [[#flux-sharding-in-production-and-the-helmchart-labeling-rule]] — open, unassigned
+- [[#flux-image-automation-api-status-and-safe-promotion-policy]] — open, unassigned
 
 ---
 
@@ -141,6 +144,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier read no Flux documentation and says nothing about Flux health checks, `dependsOn`, or CRD ordering with composites. It covers only the Argo CD interaction. A new gap, [[#flux-handling-of-composite-resources-and-kro-instances]], tracks this.
 - **Possible resolution from [[sources/research-composition]]:** Only marginally helpful. The dossier adds Flux `dependsOn`, health checks, and pruning and Argo CD sync waves, hooks, and reversed prune order for the ordering and readiness steps of the trace. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[entities/argo-cd]].
 - **Possible resolution from [[sources/research-provider]]:** Marginally helpful. The dossier describes the provider end of the trace for Crossplane: a `Provider` installs CRDs and a controller, a managed resource is reconciled by the observe, compare, act loop, and `Ready` and `Synced` conditions report the result. It says nothing about the Flux source fetch, finalizer registration for these objects, or the handoff from a GitOps agent. See [[concepts/provider]] and [[entities/crossplane]].
+- **Possible resolution from [[sources/research-flux-deep-dive]]:** Partly helpful. The dossier names the controller roles that the first half of the trace needs: the source controller fetches Git, OCI, Helm, and bucket content and serves it as tar.gz artifacts, the kustomize controller builds and applies it, the notification controller can trigger an immediate reconcile through a Receiver, and `dependsOn` and `healthChecks` gate readiness. It admits that source-controller internals were not covered and does not trace finalizer registration or condition updates. See [[entities/flux]] and [[examples/flux-notification-receivers-start-reconciliation-without-waiting-for-the-poll-interval]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -174,6 +178,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-composite-resource]]:** Largely helpful. The dossier reads the primary pages for both sides. Crossplane runs a pipeline of gRPC functions that receive observed state and return desired state, with CompositionRevisions that XRs can pin, while kro puts schema and implementation in one RGD, infers a DAG from CEL references, validates at creation, creates in topological order, deletes in reverse, gates dependents with `readyWhen`, and snapshots immutable GraphRevisions with no fallback. It also shows the two converging through `function-kro`. It gives no scale numbers and no incident evidence, and the v2 claim details and the kro Graph API remain unverified. See [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]], and [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]].
 - **Possible resolution from [[sources/research-composition]]:** Partly helpful. The dossier traces Crossplane's three authoring models and kro's CEL-based RGD and states that no source compares them head to head, so the first-draft synthesis is in [[comparisons/where-the-expressiveness-bound-sits-in-crossplane-functions-and-kro-cel]]. kro's Readiness page and the Graph versus RGD readiness difference were not read.
 - **Possible resolution from [[sources/research-provider]]:** Marginally helpful. A maintainer-authored Crossplane blog argues that Composition is what separates Crossplane from the cloud add-ons, and the Amazon EKS ACK guide points to kro for composing ACK resources. Neither is an independent head-to-head of Compositions and kro. See [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]] and [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]].
+- **Possible resolution from [[sources/research-flux-deep-dive]]:** Not helpful. The dossier says Flux comparisons with Crossplane and kro were not researched and that no source confirms Flux simply deploys their custom resources.
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -209,6 +214,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier says no page gives numbers for how many composites or children a single controller handles, and kro's tuning pages were not read. A new gap, [[#scale-of-composite-resources-per-controller]], tracks this.
 - **Possible resolution from [[sources/research-composition]]:** Marginally helpful. The dossier gives function-call arithmetic for Crossplane (60-second poll, so 100 XRs with one function step make 100 calls per minute) and the Argo CD client QPS advice (50 by default, 300 suggested for many CRDs), but no informer or sharding detail. See [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]].
 - **Possible resolution from [[sources/research-provider]]:** Partly helpful for the API-server side of scale. The Crossplane blog reports that provider-aws installing more than 900 CRDs made the API server unresponsive for up to an hour during scale-up, and that provider families fix it by installing only the services in use. ACK avoids the problem with one controller per service. The dossier does not cover informer cache cost, workqueue rate limiting, or controller sharding. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[comparisons/provider-families-versus-per-service-controllers]].
+- **Possible resolution from [[sources/research-flux-deep-dive]]:** Largely helpful for Flux. The dossier explains that extra replicas are failover standbys because of leader election, that label-based sharding with `sharding.fluxcd.io/key` and `--watch-label-selector` adds capacity, that the Flux Operator automates shard setup, and that Morgan Stanley raised intervals and `--concurrent` at more than 500 clusters. It has no production sharding numbers and no Crossplane data. See [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]] and [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -222,6 +228,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** adoption, crossplane, ack, kcp
 - **Possible resolution from [[sources/research-composite-resource]]:** Partly helpful. The same self-reported adopters list adds Renault, Wellhub, Wildlife Studios, Consensys, Grafana Labs, VSHN, Millennium bcp, Continental, and Syntasso (Kratix) as users of composite resources for self-service platforms. The entries are unaudited one-liners and add no counts for composites. No adopter of kro, ACK, Config Connector, or Cluster API is named beyond AWS offering kro on EKS. See [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]].
 - **Possible resolution from [[sources/research-managed-resource]]:** Partly helpful. The Crossplane ADOPTERS list names Nike, Autodesk, SAP, Deutsche Kreditbank, IBM, Elastic, UiPath, VMware Tanzu, DB Systel, Nokia, and Akamai, with reported counts such as SAP's thousands of managed resources and Akamai's up to 200,000. The entries are self-reported one-liners and not verified case studies. See [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]].
+- **Possible resolution from [[sources/research-flux-deep-dive]]:** Marginally helpful. The Flux adopters page lists more than 200 organizations without use-case detail, and Morgan Stanley reports more than 500 clusters. No adopter of Crossplane, ACK, Config Connector, Cluster API, or kcp is added. See [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]].
 
 ## Independent scale benchmarks for etcd, vcluster, and kcp — status: open
 
@@ -316,6 +323,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Revise [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, argo-cd, comparison
+- **Possible resolution from [[sources/research-flux-deep-dive]]:** Marginally helpful. The only comparison read is a vendor blog (Devtron), whose claims on scale and the missing Flux UI are opinion, and the dossier says no neutral benchmark was found. See [[comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog]].
 
 ## Current Crossplane terminology versus the early claims-and-classes model — status: open
 
@@ -490,6 +498,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add a comparison page under `comparisons/`.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** secrets, sops, argo-cd, flux
+- **Possible resolution from [[sources/research-flux-deep-dive]]:** Marginally helpful. The Kustomization reference supports SOPS decryption with age, OpenPGP, and cloud KMS, but the dossier does not cover failure modes or Argo CD. See [[entities/flux]].
 
 ## Named GitOps adopters and GitOps-caused outages — status: open
 
@@ -502,6 +511,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** adoption, postmortems, gitops
 - **Possible resolution from [[sources/research-finalizers]]:** Largely helpful on deletion. Config Connector and ACK delete the cloud resource by default, with `abandon` and `retain` as opt-outs applied before the delete, and Argo CD's Application finalizer and Flux's `deletionPolicy` decide whether GitOps deletes cascade. The dossier does not test a prune of a Config Connector or ACK object directly. See [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]] and [[comparisons/deletion-policies-across-gitops-and-provider-tools]].
+- **Possible resolution from [[sources/research-flux-deep-dive]]:** Partly helpful on adopters. Morgan Stanley gives a named, self-reported scale (more than 500 clusters) and the adopters page names more than 200 organizations. The dossier found no postmortem or outage report. See [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]].
 
 ## Config Connector and ACK behavior under a GitOps agent — status: open
 
@@ -1186,6 +1196,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Write an `examples/` page on Flux hosting composites.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, crossplane, kro, health-checks
+- **Possible resolution from [[sources/research-flux-deep-dive]]:** Not helpful. The dossier does not research Flux with composites or kro instances.
 
 ## ClusterClass maturity and the managed topologies proposal — status: open
 
@@ -1274,3 +1285,37 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find a worked example of a managed resource under each agent.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** gitops, flux, argo-cd, provider
+- **Possible resolution from [[sources/research-flux-deep-dive]]:** Not helpful. The dossier does not read how Flux treats provider-managed resources, and its prune evidence is generic. See [[findings/without-prune-flux-leaves-removed-manifests-running-as-orphans]].
+
+## Flux source-controller internals and artifact serving under leader election — status: open
+
+- **Question:** How does the Flux source controller store and serve artifacts, how does leader election affect artifact serving when several replicas run, and how does OCI source verification work?
+- **Why it matters:** The Flux deep dive read the source controller only at overview level, yet every downstream controller depends on its artifacts, and the Git-to-Ready lifecycle trace cannot be completed without it. See [[entities/flux]] and [[sources/research-flux-deep-dive]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the source controller API pages for GitRepository, OCIRepository, HelmChart, and Bucket directly.
+  - [ ] Update [[entities/flux]] and write a worked example for the lifecycle trace.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, source-controller, leader-election, verification
+
+## Flux sharding in production and the HelmChart labeling rule — status: open
+
+- **Question:** What do production deployments of Flux sharding look like, and what is the exact labeling rule for HelmChart objects that the sharding page cautions about?
+- **Why it matters:** The only adopter in the dossier lists sharding as future work, and the labeling caveat could cause objects to land on the wrong shard. See [[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents]] and [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Flux sharding page directly and note the HelmChart caveat.
+  - [ ] Find a named adopter that runs shards and record its numbers.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, sharding, scale, verification
+
+## Flux image automation API status and safe promotion policy — status: open
+
+- **Question:** What are the current API versions and maturity of the Flux image automation controllers, and what promotion policy do adopters use to keep automatic tag updates out of production?
+- **Why it matters:** The dossier read the guide as a digest and says current versions and any beta status should be checked, and automatic tag commits are a documented rollout risk. See [[findings/automatic-image-tag-updates-can-roll-unintended-versions-into-production]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the image automation API reference and release notes.
+  - [ ] Find adopter write-ups on staging-only or reviewed promotion.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, image-automation, verification

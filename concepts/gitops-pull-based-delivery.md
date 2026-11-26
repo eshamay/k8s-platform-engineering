@@ -23,6 +23,9 @@ sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
     ingested: 2026-11-25
+  - id: research-flux-deep-dive
+    hash: e640ec8046bc
+    ingested: 2026-11-25
 aliases: [GitOps, Pull-based delivery]
 tags: [architecture, principle, gitops]
 ---
@@ -72,6 +75,10 @@ Flux uses `dependsOn` and health checks, and Argo CD uses health-gated sync wave
 ## Drift correction in practice
 
 Automated sync in Argo CD applies Git changes without CI needing cluster credentials, and `selfHeal` re-syncs when live state deviates. Teams commonly adopt in stages, keeping manual sync for risky production workloads. Flux's Helm drift detection is a per-release option, disabled by default. [[sources/research-self-healing-and-drift-detection]] See [[decisions/staged-adoption-of-automated-drift-correction]], [[comparisons/drift-detection-mechanisms-across-tools]], and [[concepts/self-healing-and-drift-detection]].
+
+## Flux as a worked implementation
+
+The Flux deep dive shows how one pull-based agent splits the loop into layers. The source controller pulls Git, OCI, Helm, and bucket content and packages it as artifacts, the kustomize and helm controllers apply them, the notification controller accepts webhooks that start a reconcile at once instead of waiting for the poll interval, and the image automation controllers write new tags back to Git so history stays the audit record. Multi-tenancy is enforced by impersonating a tenant ServiceAccount, and scale is handled by tuning intervals and concurrency or by sharding. The strongest adopter evidence is Morgan Stanley's report of more than 500 clusters that moved from push pipelines to Flux and chose S3 buckets as the artifact source. The dossier found no independent postmortem, so the pitfalls still rest on documentation and one practitioner blog. [[sources/research-flux-deep-dive]] See [[entities/flux]], [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]], and [[findings/suspended-resources-polling-lag-and-a-missing-with-source-flag-make-flux-failures-silent]].
 
 ## Related
 

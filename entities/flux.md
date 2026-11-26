@@ -1,7 +1,7 @@
 ---
 title: Flux
 type: entity
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-25
 sources:
@@ -67,6 +67,9 @@ sources:
     ingested: 2026-11-25
   - id: research-composition
     hash: f57d89652816
+    ingested: 2026-11-25
+  - id: research-flux-deep-dive
+    hash: e640ec8046bc
     ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
@@ -165,3 +168,11 @@ With `spec.prune: true`, a Kustomization deletes objects that disappeared from G
 ## Ordering and pruning of manifest sets in the Compositions dossier
 
 The Compositions dossier presents Flux as handling ordering, health, and garbage collection at the level of whole manifest sets, without defining a new API. `dependsOn` applies a Kustomization only after the referenced ones are Ready, `healthChecks`, `wait`, and CEL `healthCheckExprs` define readiness (a wrong CEL expression stalls until timeout), and `prune: true` garbage-collects objects removed from Git with a deletion policy for composed children that should be orphaned or retained. [[sources/research-composition]] See [[examples/flux-dependson-and-health-checks-gate-rollout]] and [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]].
+
+## Architecture, tenancy, and scale in the Flux deep dive
+
+The Flux deep dive describes the GitOps Toolkit as source, kustomize, helm, notification, and image automation controllers that communicate only through custom resources, with the source controller packaging Git, OCI, Helm, and bucket content as tar.gz artifacts that downstream controllers consume in-cluster. Because the API types are Go packages, the controllers are ordinary controller-runtime programs, and anyone can use them with a controller-runtime client. The operational knobs are `dependsOn`, `healthChecks` and `wait` with CEL expressions, `prune`, `retryInterval`, `timeout`, Helm remediation, tenant ServiceAccount impersonation with the `--default-service-account`, `--no-cross-namespace-refs`, and `--no-remote-bases` flags, and label-based sharding with `sharding.fluxcd.io/key`. Extra replicas are failover standbys because only the elected leader reconciles. [[sources/research-flux-deep-dive]]
+
+Morgan Stanley reports more than 500 clusters, a self-service onboarding platform, S3 buckets as the artifact source, and tuned intervals and concurrency, with sharding and OCI artifacts on the roadmap. The adopters page lists more than 200 organizations. See [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]], [[examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation]], [[examples/flux-image-automation-commits-new-tags-to-git-and-the-reference-repo-limits-it-to-staging]], [[examples/teams-replace-helm-upgrade-in-ci-with-flux-helmrelease-objects]], [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]], [[examples/flux-notification-receivers-start-reconciliation-without-waiting-for-the-poll-interval]], [[entities/flux-operator]], [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]], [[comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog]], and [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]].
+
+The pitfalls the dossier names are covered in [[findings/without-lockdown-flags-a-flux-kustomization-applies-with-the-controllers-own-identity]], [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]], [[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents]], [[findings/circular-dependson-chains-between-flux-resources-never-reconcile]], [[findings/without-prune-flux-leaves-removed-manifests-running-as-orphans]], [[findings/automatic-image-tag-updates-can-roll-unintended-versions-into-production]], and [[findings/suspended-resources-polling-lag-and-a-missing-with-source-flag-make-flux-failures-silent]]. The dossier found no independent Flux postmortem and no verified relationship with Crossplane, kro, Config Connector, ACK, or Cluster API beyond the inference that Flux deploys their custom resources.

@@ -8,6 +8,9 @@ sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
     ingested: 2026-11-25
+  - id: research-flux-deep-dive
+    hash: e640ec8046bc
+    ingested: 2026-11-25
 aliases: []
 tags: [gitops, oci, git, supply-chain]
 ---
@@ -29,6 +32,10 @@ Using Git directly as the source gives the simplest mental model and a familiar 
 ## Consequences
 
 Choosing OCI moves trust to the CI signing step and the registry, which the vendor source argues improves auditability, though that claim is not independently verified. See [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]] and [[findings/mutable-remote-references-change-what-a-commit-renders]].
+
+## A third option from the Flux deep dive
+
+Morgan Stanley moved the source of truth from a self-hosted Git provider to S3 buckets, which the write-up gives as an availability and compliance choice, and it lists OCI artifacts as a roadmap item. The source controller treats buckets as a first-class source kind, so the choice is among Git, OCI, and object storage, not only Git versus OCI. [[sources/research-flux-deep-dive]] See [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]].
 
 ## Related
 
