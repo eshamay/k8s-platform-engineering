@@ -550,3 +550,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | kro dependency graph and readiness mechanics
 - closed by: Eric Shamay
 - resolution: Settled at v0.10.0: ordering is inferred from CEL references into a topologically ordered graph, and readyWhen gates dependents in a ResourceGraphDefinition but only reports health in the alpha Graph API ([[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]], [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]]). Not settled: this is read from docs, not controller source.
+
+## [2026-11-26] gaps | close | Flux default reconcile interval and drift-detection wording
+- closed by: Eric Shamay
+- resolution: Settled: the Flux Kustomization and HelmRelease references require the interval and set no controller default; 60 seconds is the recommended minimum and the CLI default is one minute, so the concepts page's five-minute wording is unsupported ([[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[comparisons/reconcile-cadence-and-off-switches-across-tools]]). Not settled: the jitter value and the origin of the five-minute wording were not read.

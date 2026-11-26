@@ -12,7 +12,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#control-plane-as-platform-outage-postmortems]] — open, unassigned
 - [[#direct-reads-of-argo-cd-flux-ack-and-config-connector-failure-modes]] — open, unassigned
 - [[#community-direction-for-the-kubernetes-as-a-kernel-distribution-model]] — open, unassigned
-- [[#flux-default-reconcile-interval-and-drift-detection-wording]] — open, unassigned
 - [[#adoption-observe-only-and-ignore-differences-controls]] — open, unassigned
 - [[#argo-cd-versus-flux-head-to-head-behavior]] — open, unassigned
 - [[#current-crossplane-terminology-versus-the-early-claims-and-classes-model]] — open, unassigned
@@ -185,20 +184,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find SIG discussions or KEPs and conference talks on API server aggregation, server-side apply, and streaming lists.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** distributions, aenix, kep
-
-## Flux default reconcile interval and drift-detection wording — status: open
-
-- **Question:** What is the actual default Kustomization interval in Flux, and does the concepts page's five-minute figure conflict with the Kustomization API page's 60-second minimum?
-- **Why it matters:** Drift-correction latency is a core operational property, and the two pages read as inconsistent.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the Flux Kustomization reference directly and confirm that `interval` is user-set and what the minimum is.
-  - [ ] Update [[entities/flux]] and [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** flux, drift, verification
-- **Possible resolution from [[sources/research-idempotency]]:** Only marginally helpful. The Kustomization reference quote ("every ten minutes, the Kustomization runs a server-side apply dry-run") uses ten minutes as an example interval, and the dossier does not state a default or the 60-second minimum. See [[entities/flux]].
-- **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Settled, and the user can close it. The concepts page's "every five minutes by default" matches no controller behavior. `.spec.interval` is required on the Kustomization and the HelmRelease, the CRD Go type has only a duration-format pattern with no default and no minimum, and the reference says "The minimum value should be 60 seconds", a recommendation and not an enforced floor. The only default found is the `flux create` global `--interval` flag at one minute. The ten-minute figure is an example of drift-check cadence, and a guide example uses `60m0s` for hourly drift correction. Drift is corrected on the interval, and source or spec changes are handled instantly outside it. Not settled: the origin of the five-minute wording and the controller jitter value. See [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[entities/flux]], and [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
-
 
 ## Adoption, observe-only, and ignore-differences controls — status: open
 
@@ -1720,3 +1705,18 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-composition]]:** Partly helpful. The Dependencies and Ordering page confirms that every CEL reference is a DAG edge (even with `?.`), creation is topological and deletion reversed, cycles fail validation, and kro waits for expressions to be resolvable. It says readiness gating differs between the RGD and the alpha Graph APIs but the Readiness page was not read. See [[entities/kro]].
 - **Possible resolution from [[sources/research-kro-and-abstraction-models]]:** Marginally helpful. The dossier restates that kro infers the graph from CEL references, waits on status values that do not exist yet, validates before reconciling, and requires referenced `schema.spec` fields to have values. It adds no readiness detail beyond what [[sources/research-composite-resource]] gave.
 - **Possible resolution from [[sources/research-gap-g3-kro]]:** Settled, and the user can close it. From the v0.10.0 docs: every CEL reference is a dependency edge, even with the optional operator, creation is topological and deletion reversed, cycles are rejected, and the order is in `status.topologicalOrder`. Resources that reference only `schema` are created in parallel. `readyWhen` may reference only the resource itself (or `each`), gates dependents in an RGD, and only feeds status in a Graph. `includeWhen` controls existence and skips dependents, and `forEach` builds a cartesian product capped at 1000 items by default. The kro row of [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]] is now filled. See [[findings/a-kro-includewhen-on-a-volatile-upstream-status-field-makes-resources-flip-flop]] and [[findings/a-kro-foreach-collection-above-the-1000-item-default-limit-gets-stuck-during-deletion]].
+
+## Flux default reconcile interval and drift-detection wording — status: closed (2026-11-26)
+
+- **Question:** What is the actual default Kustomization interval in Flux, and does the concepts page's five-minute figure conflict with the Kustomization API page's 60-second minimum?
+- **Why it matters:** Drift-correction latency is a core operational property, and the two pages read as inconsistent.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Flux Kustomization reference directly and confirm that `interval` is user-set and what the minimum is.
+  - [ ] Update [[entities/flux]] and [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, drift, verification
+- **Resolution:** Settled: the Flux Kustomization and HelmRelease references require the interval and set no controller default; 60 seconds is the recommended minimum and the CLI default is one minute, so the concepts page's five-minute wording is unsupported ([[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[comparisons/reconcile-cadence-and-off-switches-across-tools]]). Not settled: the jitter value and the origin of the five-minute wording were not read.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-idempotency]]:** Only marginally helpful. The Kustomization reference quote ("every ten minutes, the Kustomization runs a server-side apply dry-run") uses ten minutes as an example interval, and the dossier does not state a default or the 60-second minimum. See [[entities/flux]].
+- **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Settled, and the user can close it. The concepts page's "every five minutes by default" matches no controller behavior. `.spec.interval` is required on the Kustomization and the HelmRelease, the CRD Go type has only a duration-format pattern with no default and no minimum, and the reference says "The minimum value should be 60 seconds", a recommendation and not an enforced floor. The only default found is the `flux create` global `--interval` flag at one minute. The ten-minute figure is an example of drift-check cadence, and a guide example uses `60m0s` for hourly drift correction. Drift is corrected on the interval, and source or spec changes are handled instantly outside it. Not settled: the origin of the five-minute wording and the controller jitter value. See [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[entities/flux]], and [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
