@@ -83,6 +83,9 @@ sources:
   - id: research-gap-b1-recheck-capi-argocd
     hash: 832b86e20750
     ingested: 2026-11-26
+  - id: research-gap-m3-status-conditions
+    hash: 07099fedb0c8
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -203,3 +206,7 @@ A later pass found that v1.15.0 final does not exist: the newest tag is v1.15.0-
 ## Adoption and orphaning
 
 The MachineSet controller adopts Machines that match its selector and have no controller reference, by patching a controller owner reference, and emits `SuccessfulAdopt` or `FailedAdopt` events. The book lists adoption duties for MachineSet and MachineDeployment, and says owner references should be created with the object, re-reconciled if lost, and kept on the latest apiVersion. `clusterctl move` pauses the Cluster first. No explicit orphan propagation was found in non-test source. [[sources/research-gap-m2-ownership-gc]] See [[examples/cluster-api-machineset-adopts-machines-that-have-no-controller-reference]].
+
+## Condition proposals in the m3 dossier
+
+The 2020 conditions proposal had no `observedGeneration` and leaned positive in its suffix guidance. The 2024 proposal drops Cluster API's own condition type for `metav1.Conditions` and aligns with the conventions' "neither polarity" text, and the InfraMachine contract accepts a per-condition `observedGeneration`. [[sources/research-gap-m3-status-conditions]] See [[examples/cluster-api-s-2020-conditions-proposal-had-no-observedgeneration-and-the-2024-proposal-moves-to-metav1-conditions]] and [[entities/kstatus]].

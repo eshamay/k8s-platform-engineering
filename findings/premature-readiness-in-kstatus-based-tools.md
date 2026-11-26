@@ -1,7 +1,7 @@
 ---
 title: Premature readiness in kstatus-based tools
 type: finding
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
@@ -19,6 +19,9 @@ sources:
     ingested: 2026-11-26
   - id: research-gap-b1-recheck-capi-argocd
     hash: 832b86e20750
+    ingested: 2026-11-26
+  - id: research-gap-m3-status-conditions
+    hash: 07099fedb0c8
     ingested: 2026-11-26
 aliases: []
 tags: [pitfall, kstatus, cluster-api, flux, readiness]
@@ -57,3 +60,7 @@ restate-operator issue 216 shows the same early-ready effect in Flux with `wait:
 ## Recheck on 2026-11-26
 
 The kstatus README says an unknown kind with no `Ready` condition is assumed to be always reconciled, and the v1beta2 Cluster type defines `Available` and no `Ready`. Combining the two suggests a kstatus-style tool would not see `Available=False`, but no source states it and it was not run, so it is an open question. See [[findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled]] and [[sources/research-gap-b1-recheck-capi-argocd]].
+
+## Mechanism read from source
+
+The kstatus source gives the exact path: the generic generation check is skipped when `status.observedGeneration` is absent, no `Ready`, `Reconciling`, or `Stalled` condition has been written, and the default result is Current. Built-in kinds have a stricter helper, and custom resources do not. [[sources/research-gap-m3-status-conditions]] See [[findings/a-kstatus-resource-whose-controller-never-writes-status-observedgeneration-skips-the-generation-check-and-can-read-current-early]] and [[findings/kstatus-checks-deletion-then-generation-then-reconciling-and-stalled-then-ready-so-a-stale-top-level-observedgeneration-overrides-ready-true]].

@@ -71,6 +71,9 @@ sources:
   - id: research-gap-g1-other-tool-pitfalls
     hash: a942f0ae1b1b
     ingested: 2026-11-26
+  - id: research-gap-m3-status-conditions
+    hash: 07099fedb0c8
+    ingested: 2026-11-26
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -109,7 +112,7 @@ Config Connector installs CRDs and controllers that reconcile Kubernetes objects
 
 ## Status semantics
 
-The spec and status dossier fetched no primary source on Config Connector, so its condition vocabulary and `observedGeneration` behavior are unknown. [[sources/research-spec-status-split]] See [[open-knowledge-gaps]].
+The spec and status dossier fetched no primary source on Config Connector, so its condition vocabulary and `observedGeneration` behavior were unknown then. They are now read from source: see the Conditions section and the m3 section at the end of this page. [[sources/research-spec-status-split]]
 
 ## Coverage gap in the operator-pattern dossier
 
@@ -129,7 +132,7 @@ Deleting a Config Connector object deletes the real Google Cloud resource by def
 
 ## Conditions
 
-Config Connector uses a single `Ready` condition: `False` with reason `Updating` while it calls Google APIs (the message names the first changed field), `True` with reason `UpToDate`, and `False` with reason `UpdateFailure` carrying the error. The source is a design document, so the dossier does not say which parts shipped, including the idea of putting long-running operation IDs in the reason. [[sources/research-conditions]] See [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] and [[concepts/conditions]].
+Config Connector uses a single `Ready` condition: `False` with reason `Updating` while it calls Google APIs (the message names the first changed field), `True` with reason `UpToDate`, and `False` with reason `UpdateFailed` carrying the error. Correction note: this section previously said `UpdateFailure` and "the message names the first changed field", both taken from the design document. The shipped code uses `UpdateFailed`, and the first-field-path message and the operation-ID reason are not in code. [[sources/research-conditions]] See [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] and [[concepts/conditions]].
 
 ## Acquire by name and the abandon annotation
 
@@ -170,3 +173,7 @@ The 2026-11-26 adopters dossier found no adopters file at the root of the Google
 ## First-party pitfall reports from the other-tool pitfalls dossier
 
 The 2026-11-26 dossier read the Config Connector issue tracker (latest release v1.162.0, 2026-11-23). Issue 16444 says multi-cluster leader election can run a stale deletion against live GCP resources after failover ([[findings/config-connector-leader-election-across-clusters-can-run-a-stale-deletion-against-live-google-cloud-resources]]). Issue 15930 says Direct-controller resources stick in Terminating when a parent is deleted first, and `deletion-policy: abandon` does not release them ([[findings/config-connector-direct-controller-resources-stick-in-terminating-when-a-parent-is-deleted-first-and-abandon-does-not-release-them]]). The claim in issue 13335 that abandon leaves `managed-by-cnrm` and lease labels is SECONDARY-ONLY and unreproduced. Issue 12944 says a StorageBucket `spec.location` edit reported UpToDate while the bucket stayed put ([[findings/a-config-connector-storagebucket-location-edit-reported-uptodate-while-the-bucket-did-not-move]]). All were open reporter claims, not postmortems. The abandon guidance above therefore has a reported exception. [[sources/research-gap-g1-other-tool-pitfalls]]
+
+## Status semantics read from source in the m3 dossier
+
+The docs say `status` is read-only and that the `Ready` condition conveys readiness plus error or information through its reason and message, and important changes also appear as Kubernetes events. The lifecycle handler replaces the whole conditions list with one `Ready` entry and keeps `lastTransitionTime` unless the status value changes. Shipped reasons include `Updating`, `UpToDate`, `UpdateFailed`, `DependencyNotReady`, `DependencyNotFound`, `DependencyInvalid`, `ManagementConflict`, and `Unmanaged`. The docs label these as event types, but the same strings are used as `Ready` reasons in code. A top-level `status.observedGeneration` is written on every status update, and the per-condition line is commented out with a TODO. [[sources/research-gap-m3-status-conditions]] See [[findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code]], [[examples/config-connector-direct-controllers-write-a-top-level-observedgeneration-and-leave-the-per-condition-line-commented-out]], and [[examples/argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration]].

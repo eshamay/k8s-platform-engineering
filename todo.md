@@ -54,6 +54,11 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-crossplane-ramp-up-issue-7801-passage-with-the-open-state-and-the-merged-providerconfig-protection]] — open
 - [[#update-part-3-blockownerdeletion-passage-with-the-admission-plugin-permission-rule]] — open
 - [[#update-part-4-kro-deletion-passage-with-the-label-set-and-the-rgd-owner-references]] — open
+- [[#update-part-3-config-connector-condition-passage-with-the-shipped-updatefailed-reason]] — open
+- [[#update-part-3-polarity-passage-with-the-conventions-history]] — open
+- [[#update-crossplane-ramp-up-config-connector-condition-passage-with-the-shipped-updatefailed-reason]] — open
+- [[#update-part-5-config-connector-condition-passage-with-the-shipped-updatefailed-reason]] — open
+- [[#update-part-2-observedgeneration-passage-with-the-three-coexisting-placements]] — open
 
 ## Open
 
@@ -640,6 +645,41 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "Deletion is where kro made a deliberate departure" says kro tracks children with an ApplySet and that the FAQ tells Argo CD users to add an owner reference and a tracking-id annotation. Add that kro labels each child (`kro.run/owned`, instance identity labels, `applyset.kubernetes.io/part-of`), that it does set an owner reference on the generated CRD and on GraphRevisions, and that the FAQ example uses `controller: false` and `blockOwnerDeletion: true` and warns of out-of-order garbage collection. Cite [[findings/kro-sets-no-owner-references-on-instance-children-and-tracks-them-with-labels-and-an-applyset-inventory]].
 - **Why:** The passage predates the dossier [[sources/research-gap-m2-ownership-gc]], which read the v0.10.0 docs and source.
 - **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 Config Connector condition passage with the shipped UpdateFailed reason — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the bullet beginning "Config Connector uses one `Ready` condition whose reason carries the phase" says the reasons are `Updating`, `UpToDate`, or `UpdateFailure`. Revise it to the shipped `UpdateFailed` and say the design document's `UpdateFailure` did not ship.
+- **Why:** The passage predates the dossier [[sources/research-gap-m3-status-conditions]], which read the source.
+- **Acceptance:** Passage revised and citing [[findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 polarity passage with the conventions history — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the paragraph beginning "Polarity is a more subtle trap" says the API conventions and the Cluster API proposal lean toward positive names. Revise it to say the conventions recommended abnormal-true, then positive in February 2020, and since June 2020 recommend neither, and that the wiki records options without a recommendation.
+- **Why:** The passage predates the dossier [[sources/research-gap-m3-status-conditions]], which read the source.
+- **Acceptance:** Passage revised and citing [[findings/the-kubernetes-api-conventions-recommended-abnormal-true-then-positive-polarity-and-since-june-2020-recommend-neither]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update Crossplane ramp-up Config Connector condition passage with the shipped UpdateFailed reason — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "Other stacks draw this line differently" says Config Connector uses reasons `Updating`, `UpToDate` and `UpdateFailure`. Revise `UpdateFailure` to the shipped `UpdateFailed`.
+- **Why:** The passage predates the dossier [[sources/research-gap-m3-status-conditions]], which read the source.
+- **Acceptance:** Passage revised and citing [[findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 Config Connector condition passage with the shipped UpdateFailed reason — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the paragraph beginning "Other stacks use different vocabularies for the same job" says Config Connector's `Ready` reasons move through `Updating`, `UpToDate` and `UpdateFailure`. Revise `UpdateFailure` to the shipped `UpdateFailed`.
+- **Why:** The passage predates the dossier [[sources/research-gap-m3-status-conditions]], which read the source.
+- **Acceptance:** Passage revised and citing [[findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-2 observedGeneration passage with the three coexisting placements — status: open
+
+- **What:** In `outputs/part-2-krm-and-api-machinery.md`, the paragraph beginning "The generation counter gives controllers a cheap staleness check" says a controller writes the generation into each condition under current conventions and that sources are not settled. Revise it to say the conventions describe both placements, kstatus and Argo CD read only the top-level field, and Flux writes both.
+- **Why:** The passage predates the dossier [[sources/research-gap-m3-status-conditions]], which read the source.
+- **Acceptance:** Passage revised and citing [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]].
 - **Drafted by:** agent on 2026-11-26
 
 ## Dropped

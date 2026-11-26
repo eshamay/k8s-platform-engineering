@@ -3,7 +3,7 @@ title: Health and readiness models across Flux, Argo CD, kstatus, Cluster API, a
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
@@ -11,6 +11,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-gap-m3-status-conditions
+    hash: 07099fedb0c8
+    ingested: 2026-11-26
 aliases: []
 tags: [conditions, health, readiness, flux, argo-cd, kstatus, crossplane, cluster-api]
 ---
@@ -42,3 +45,7 @@ The tools converge on conditions but disagree on the names, and the disagreement
 ## Condition vocabularies
 
 A vocabulary-level companion to this page lists the condition types of Crossplane, ACK, Config Connector, Flux, kro, and Cluster API. [[sources/research-conditions]] See [[comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api]].
+
+## Evidence from the m3 dossier
+
+kstatus decides in a fixed order (deletion, top-level generation, `Reconciling` and `Stalled`, built-in rules, `Ready`, then Current), and Argo CD ships a Lua health script for Config Connector that keys on `UpToDate`, `UpdateFailed`, `DependencyNotFound`, and `DependencyNotReady`. [[sources/research-gap-m3-status-conditions]] See [[findings/kstatus-checks-deletion-then-generation-then-reconciling-and-stalled-then-ready-so-a-stale-top-level-observedgeneration-overrides-ready-true]] and [[examples/argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration]].

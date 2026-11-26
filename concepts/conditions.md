@@ -23,6 +23,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-m3-status-conditions
+    hash: 07099fedb0c8
+    ingested: 2026-11-26
 aliases: [status.conditions]
 tags: [controllers, api-machinery]
 ---
@@ -59,7 +62,7 @@ A condition is one entry in `.status.conditions`. It has a `type`, a `status` of
 
 ## Condition vocabularies differ by stack
 
-`Ready` is the conventional top-level summary, but its meaning varies. Crossplane separates `Synced` (could the controller reconcile) from `Ready` (is the external resource usable). ACK adds `ACK.ResourceSynced`, `ACK.Terminal`, and `ACK.Recoverable` and keeps `Ready` as the roll-up. Config Connector uses a single `Ready` whose reasons are `Updating`, `UpToDate`, and `UpdateFailure`. Flux uses `Ready` plus `Reconciling` and `Stalled`. kro lets the RGD author define instance conditions with CEL. Cluster API moved to `metav1.Condition` and split `Available` from `Ready`. [[sources/research-conditions]] See [[examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update]], [[examples/ack-splits-terminal-and-recoverable-errors-into-separate-conditions]], [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]], [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]], [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]], and [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]].
+`Ready` is the conventional top-level summary, but its meaning varies. Crossplane separates `Synced` (could the controller reconcile) from `Ready` (is the external resource usable). ACK adds `ACK.ResourceSynced`, `ACK.Terminal`, and `ACK.Recoverable` and keeps `Ready` as the roll-up. Config Connector uses a single `Ready` whose reasons are `Updating`, `UpToDate`, and `UpdateFailed` (the design document said `UpdateFailure`, which did not ship). Flux uses `Ready` plus `Reconciling` and `Stalled`. kro lets the RGD author define instance conditions with CEL. Cluster API moved to `metav1.Condition` and split `Available` from `Ready`. [[sources/research-conditions]] See [[examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update]], [[examples/ack-splits-terminal-and-recoverable-errors-into-separate-conditions]], [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]], [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]], [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]], and [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]].
 
 ## Who consumes conditions
 
@@ -80,3 +83,9 @@ The Crossplane async `Synced` pitfall is unfixed as of 2026-11-26: provider-aws 
 ## Operator loop dossier additions
 
 Three open 2026 issues show Ready or Healthy reported before the controller observed the spec generation (CloudNativePG, restate-operator, and Argo CD's ACK health check), and a Longhorn issue shows a volatile condition message driving about 6 reconciles per second. None is a postmortem. See [[findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed]] and [[findings/volatile-text-in-a-condition-message-defeats-the-equality-check-and-causes-a-reconcile-storm]]. Source: [[sources/research-gap-g1-operator-loop-failures]].
+
+## Status and condition gaps settled in the m3 dossier
+
+kstatus evaluates deletion, then a top-level generation comparison, then `Reconciling` and `Stalled`, then type-specific rules, then a `Ready` fallback, and defaults to Current, and it never reads a condition's own `observedGeneration`. The API conventions recommended abnormal-true, then positive, and since June 2020 recommend neither polarity as a general rule. `observedGeneration` placement is a design choice with three coexisting practices, and Config Connector shipped `UpdateFailed` with a single `Ready` condition. [[sources/research-gap-m3-status-conditions]] See [[findings/kstatus-checks-deletion-then-generation-then-reconciling-and-stalled-then-ready-so-a-stale-top-level-observedgeneration-overrides-ready-true]], [[findings/the-kubernetes-api-conventions-recommended-abnormal-true-then-positive-polarity-and-since-june-2020-recommend-neither]], [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]], and [[findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code]].
+
+Correction note: the vocabularies section above previously gave Config Connector's failure reason as `UpdateFailure`, which was the design document's name. The shipped reason is `UpdateFailed`.

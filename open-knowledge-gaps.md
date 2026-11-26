@@ -509,6 +509,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kstatus, conditions
 - **Possible resolution from [[sources/research-conditions]]:** Partly helpful. The kstatus README names the statuses, the `Reconciling` and `Stalled` conditions, the `Ready` fallback, and two corner cases, but it does not give the exact combination rules as a table. See [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]].
+- **Possible resolution from [[sources/research-gap-m3-status-conditions]]:** Settled from source, and the user decides whether to close it. `status.Compute` in cli-utils checks the deletion timestamp (Terminating), then compares `metadata.generation` with `status.observedGeneration` (a mismatch gives InProgress with reason `LatestGenerationNotObserved`, and the check is skipped when the status field is absent), then scans conditions in array order (`Reconciling=True` gives InProgress and `Stalled=True` gives Failed, first match wins), then applies built-in rules, then a `Ready` fallback (True gives Current, False and Unknown give InProgress, never Failed), and otherwise reports Current. A condition's own `observedGeneration` is never read because kstatus's condition struct has no such field. That a stale top-level generation overrides `Ready=True` is an inference from code order. Not settled: no incident shows the premature-readiness path on a named tool beyond the issues already recorded. See [[entities/kstatus]], [[findings/kstatus-checks-deletion-then-generation-then-reconciling-and-stalled-then-ready-so-a-stale-top-level-observedgeneration-overrides-ready-true]], and [[findings/a-kstatus-resource-whose-controller-never-writes-status-observedgeneration-skips-the-generation-check-and-can-read-current-early]].
+
 
 ## Config Connector and Argo CD status semantics beyond health checks — status: open
 
@@ -520,6 +522,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** config-connector, argo-cd, status
 - **Possible resolution from [[sources/research-conditions]]:** Largely helpful for Config Connector. The reconcile-status design document describes a single `Ready` condition with reasons `Updating`, `UpToDate`, and `UpdateFailure` and `observedGeneration` set on status update, though it is a design document and may not match shipped behavior. Argo CD was read for health only. See [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]].
+- **Possible resolution from [[sources/research-gap-m3-status-conditions]]:** Largely settled for Config Connector and partly for Argo CD, so the user decides whether to close it. Config Connector publishes one `Ready` condition, replaced as a whole list, with shipped reasons `Updating`, `UpToDate`, `UpdateFailed`, `DependencyNotReady`, `DependencyNotFound`, `DependencyInvalid`, `ManagementConflict`, and `Unmanaged`, a top-level `status.observedGeneration`, and matching Kubernetes events. Argo CD's Application has a sync status (Synced, OutOfSync, Unknown), typed error, warning, and info conditions with no status field, `reconciledAt` (with `observedAt` deprecated), and annotation-based resource tracking by default, and its Config Connector Lua script maps the shipped reasons to health. Not settled: Argo CD's operation-state docs, sync-phase docs, and the controller code that aggregates per-resource sync status were not read. See [[entities/config-connector]], [[entities/argo-cd]], and [[examples/argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration]].
+
 
 ## Where observedGeneration should live — status: open
 
@@ -531,6 +535,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** observedgeneration, conditions
 - **Possible resolution from [[sources/research-conditions]]:** Partly helpful. KEP-1623 puts `observedGeneration` on each condition as a non-pointer integer, kro describes the per-condition value precisely, and kstatus checks the top-level field, but the dossier states that no source settles the choice. See [[comparisons/observedgeneration-top-level-versus-per-condition]].
+- **Possible resolution from [[sources/research-gap-m3-status-conditions]]:** Not settled by any source, and the dossier did not try to settle it. The conventions describe both a status-level and a per-condition `observedGeneration` without ranking them, KEP-1623 is stable and makes the per-condition field a non-pointer integer, kstatus and Argo CD read only the top-level field, Flux writes both, Cluster API moved to `metav1.Condition`, and Config Connector writes only the top-level value. The dossier frames the choice as three options with trade-offs and gives no recommendation. The earlier open item about the final 15,000 characters of the conventions is resolved: they state no placement rule. See [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]], [[comparisons/observedgeneration-top-level-versus-per-condition]], and [[findings/kstatus-reads-only-the-top-level-observedgeneration-because-its-condition-struct-has-no-per-condition-field]].
+
 
 ## Generic readiness when Cluster API moves from Ready to Available — status: open
 
@@ -911,6 +917,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find practitioner write-ups on polarity incidents.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** conditions, polarity, kstatus, decision
+- **Possible resolution from [[sources/research-gap-m3-status-conditions]]:** Partly settled as history, not settled as a rule. The conventions recommended abnormal-true, reversed to positive on 2020-02-14, and removed that preference on 2020-06-26, so they now say neither polarity can be recommended as a general rule, and Cluster API's 2024 proposal adopts that text. Correction to this entry's question: it says the Cluster API proposal and the conventions lean positive, which is true only of the 2020 proposal's suffix guidance. No published incident write-up measures generic-tool misreadings per polarity (a searched negative result), and the only documented failure mode is the kstatus README's stopped-controller case. The wiki presents options and no recommendation. See [[decisions/choose-abnormal-true-or-positive-polarity-for-new-condition-types]], [[findings/the-kubernetes-api-conventions-recommended-abnormal-true-then-positive-polarity-and-since-june-2020-recommend-neither]], and [[examples/cli-utils-issue-167-a-kstatus-maintainer-said-stalled-is-not-named-failed-because-slow-and-doomed-are-hard-to-tell-apart]].
+
 
 ## Which parts of the Config Connector reconcile-status design shipped — status: open
 
@@ -921,6 +929,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the Config Connector resource status documentation or inspect a live resource.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** config-connector, conditions, verification
+- **Possible resolution from [[sources/research-gap-m3-status-conditions]]:** Settled for direct controllers at release v1.162.0, and the user decides whether to close it. Shipped as designed: one `Ready` condition at a time, `Updating` and `UpToDate` reasons, a top-level `status.observedGeneration` on every status update, and events with the same reasons. Shipped differently: the failure reason is `UpdateFailed` (not `UpdateFailure`), and the messages are "Update call failed: ...", "Update in progress", and "The resource is up to date". Not found in code: the first-field-path message, a field-path helper, the `Updating:<operation-id>` reason (a future consideration in the design itself), and a per-condition `observedGeneration`. Caveat: the searches used GitHub code search, which may lag, and whether an open pull request implements the design was not checked. The question's wording `UpdateFailure` is the design's name. See [[findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code]] and [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] (now marked contradicted).
+
 
 ## Adoption and orphaning behavior in Cluster API, kro, and controller-runtime operators — status: open
 

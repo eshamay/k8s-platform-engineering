@@ -138,6 +138,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-b1-recheck-flux-k8s]] — verified dossier (revised snapshot, second verification pass) rechecking the Flux jitter default and the five-minute wording origin, helm-controller and Helm 4 server-side apply, the Mutating Admission Policy v1.30 gate, StorageVersionMigration progress, Requeue and issue 808, v1.36 staleness metrics, and KEP-1040 (active)
 - [[sources/research-gap-m1-finalizers]] — verified dossier on Argo CD, Flux, ACK, Config Connector, and kro finalizer names and removal, Crossplane issue 7801, and Cluster API issue 1514, 2026-11-26 (active)
 - [[sources/research-gap-m2-ownership-gc]] — verified dossier on kro ownership and labels, Argo CD tracking and prune propagation, the blockOwnerDeletion admission plugin, KEPs, adoption and orphaning, and Crossplane namespace deletion, 2026-11-26 (active)
+- [[sources/research-gap-m3-status-conditions]] — verified dossier on the kstatus evaluation order, observedGeneration placement, condition polarity history, Config Connector reconcile-status design versus shipped code, and Argo CD status beyond health, 2026-11-26 (active)
 
 ## Examples
 
@@ -255,7 +256,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update]] — provider-aws issue 2287 (active)
 - [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]] — author-owned readiness (active)
 - [[examples/ack-splits-terminal-and-recoverable-errors-into-separate-conditions]] — wait or edit the spec (draft)
-- [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] — one condition, three reasons (draft)
+- [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] — one condition, three reasons (contradicted: the shipped failure reason is UpdateFailed, not the design's UpdateFailure)
 - [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]] — beyond one mandatory Ready (active)
 - [[examples/deployment-progress-deadline-sets-progressing-false-for-a-stalled-rollout]] — the built-in model (draft)
 - [[examples/crossplane-import-of-an-existing-gcp-database-observes-first-then-takes-control]] — Observe, inspect, then promote (draft)
@@ -369,6 +370,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/cluster-api-machineset-adopts-machines-that-have-no-controller-reference]] — MachineSet adoption and the owner-reference guidelines (active)
 - [[examples/crossplane-runtime-issue-1150-reports-a-rejected-providerconfigusage-create-in-a-terminating-namespace-blocking-managed-resource-deletion-for-hours]] — open issue on namespace deletion with a rejected usage create (active)
 - [[examples/kubernetes-issues-65200-and-94631-asked-for-defined-cross-namespace-owner-reference-behavior-and-both-are-closed]] — closed issues behind the v1.20 cross-namespace rule (active)
+- [[examples/cli-utils-issue-167-a-kstatus-maintainer-said-stalled-is-not-named-failed-because-slow-and-doomed-are-hard-to-tell-apart]] — the 2020-05-12 maintainer comment on Stalled naming (active)
+- [[examples/flux-stamps-the-current-generation-on-every-condition-and-also-keeps-a-top-level-observedgeneration]] — the both-placements practice and mixed polarity (active)
+- [[examples/argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration]] — reason-to-health mapping in the shipped Lua script (active)
+- [[examples/cluster-api-s-2020-conditions-proposal-had-no-observedgeneration-and-the-2024-proposal-moves-to-metav1-conditions]] — the two proposals and the InfraMachine contract (active)
+- [[examples/config-connector-direct-controllers-write-a-top-level-observedgeneration-and-leave-the-per-condition-line-commented-out]] — top-level only, with a TODO (active)
 
 ## Comparisons
 
@@ -390,7 +396,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]] — how versions convert (draft)
 - [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]] — two CRD factories (draft)
 - [[comparisons/health-and-readiness-models-across-tools]] — status vocabularies of five tools (draft)
-- [[comparisons/observedgeneration-top-level-versus-per-condition]] — where the generation marker lives (draft)
+- [[comparisons/observedgeneration-top-level-versus-per-condition]] — where the generation marker lives (active)
 - [[comparisons/ssa-conflict-policy-across-tools]] — conflict defaults and escape hatches (draft)
 - [[comparisons/client-side-apply-versus-server-side-apply]] — where the merge runs and what it remembers (draft)
 - [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]] — four admission extension mechanisms (draft)
@@ -452,7 +458,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller]] — speed versus guaranteed cleanup (draft)
 - [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]] — issue 7801 options (draft)
 - [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]] — ordered teardown of composites (draft)
-- [[decisions/choose-abnormal-true-or-positive-polarity-for-new-condition-types]] — what True means in a new condition (draft)
+- [[decisions/choose-abnormal-true-or-positive-polarity-for-new-condition-types]] — what True means in a new condition (active)
 - [[decisions/choose-management-policies-for-an-imported-resource]] — Observe, promote, or omit Delete (draft)
 - [[decisions/choose-automatic-or-manual-composition-update-policy]] — follow the latest revision or pin one (draft)
 - [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]] — which composite layer to adopt (draft)
@@ -466,6 +472,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout]] — options from ACK issue 3122 (draft)- [[decisions/block-an-object-s-deletion-with-a-finalizer-a-spec-dependency-list-or-an-annotation-hook]] — options from Cluster API issue 1514, no recommendation (draft)
 - [[decisions/give-kro-children-manual-owner-references-or-leave-them-to-applyset-labels]] — evidence-only options for GitOps tracking of kro children (draft)
 - [[decisions/choose-an-argo-cd-resource-tracking-method-annotation-annotation-plus-label-or-label]] — evidence-only options for the three tracking methods (draft)
+- [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]] — evidence-only options, no recommendation (active)
 
 ## Findings
 
@@ -518,7 +525,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/deleting-a-crd-deletes-every-custom-resource-of-that-kind]] — data loss on CRD removal (draft)
 - [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]] — generation bumps from status writes (draft)
 - [[findings/missing-observedgeneration-hides-stale-status]] — stale versus current conditions (active)
-- [[findings/premature-readiness-in-kstatus-based-tools]] — early ready signals (draft)
+- [[findings/premature-readiness-in-kstatus-based-tools]] — early ready signals (active)
 - [[findings/free-text-in-a-condition-reason-breaks-consumers]] — convention slip (draft)
 - [[findings/status-client-rbac-and-conflict-mistakes]] — operator implementation traps (draft)
 - [[findings/config-style-crds-with-several-reconcilers-get-no-status]] — multiple writers (draft)
@@ -571,10 +578,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/backup-and-restore-tools-can-strip-owner-references-so-controllers-must-re-reconcile-them]] — lost references (draft)
 - [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]] — update permission on owner finalizers, plugin rejects with Forbidden, silent-drop claim unverified (active)
 - [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]] — Synced True for an hour (active)
-- [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]] — absence of problems looks healthy (draft)
+- [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]] — absence of problems looks healthy (active)
 - [[findings/updating-lasttransitiontime-on-every-reconcile-turns-a-condition-into-a-heartbeat]] — noisy status writes (draft)
 - [[findings/one-mandatory-ready-condition-that-summarizes-everything-is-too-rigid]] — why Cluster API added Available (active)
-- [[findings/condition-polarity-guidance-conflicts-between-kstatus-and-the-api-conventions]] — unresolved guidance tension (draft)
+- [[findings/condition-polarity-guidance-conflicts-between-kstatus-and-the-api-conventions]] — unresolved guidance tension (contradicted: the conventions now recommend neither polarity, not positive)
 - [[findings/synced-false-with-ready-true-is-a-silent-failure-where-drift-correction-stops]] — quiet loss of management (draft)
 - [[findings/crossplane-does-not-delete-and-recreate-to-change-immutable-fields]] — immutable changes may not apply (draft)
 - [[findings/observe-based-import-has-manual-copy-steps-ambiguous-names-and-relaxed-validation]] — import hazards (draft)
@@ -635,6 +642,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/a-new-cluster-wide-default-must-wait-until-existing-workloads-carry-explicit-values]] — default PriorityClass cascade (active)
 - [[findings/a-paused-crossplane-resource-cannot-be-deleted-until-it-is-unpaused]] — pause blocks deletion (draft)
 - [[findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied]] — cost of ignore rules (active)
+- [[findings/kstatus-checks-deletion-then-generation-then-reconciling-and-stalled-then-ready-so-a-stale-top-level-observedgeneration-overrides-ready-true]] — the fixed Compute order, with Ready=False never giving Failed (active)
+- [[findings/a-kstatus-resource-whose-controller-never-writes-status-observedgeneration-skips-the-generation-check-and-can-read-current-early]] — the premature-readiness path in kstatus source (active)
+- [[findings/kstatus-reads-only-the-top-level-observedgeneration-because-its-condition-struct-has-no-per-condition-field]] — per-condition values are invisible to kstatus (active)
+- [[findings/the-kubernetes-api-conventions-recommended-abnormal-true-then-positive-polarity-and-since-june-2020-recommend-neither]] — the 2017, 2020-02, and 2020-06 revisions of the polarity advice (active)
+- [[findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code]] — design versus shipped reasons and messages at v1.162.0 (active)
 - [[findings/argo-cd-replace-and-force-sync-options-can-recreate-resources-and-cause-outages]] — destructive sync options (draft)
 - [[findings/the-pitfalls-dossier-rests-on-index-summaries-an-older-crossplane-version-and-few-primary-incident-reports]] — evidence caveats (active)
 - [[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]] — async Synced pitfall unfixed in current source (active)

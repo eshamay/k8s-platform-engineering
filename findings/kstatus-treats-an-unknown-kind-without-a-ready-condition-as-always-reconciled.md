@@ -8,6 +8,9 @@ sources:
   - id: research-gap-b1-recheck-capi-argocd
     hash: 832b86e20750
     ingested: 2026-11-26
+  - id: research-gap-m3-status-conditions
+    hash: 07099fedb0c8
+    ingested: 2026-11-26
 aliases: [kstatus unknown resource fallback]
 tags: [pitfall, kstatus, readiness, cluster-api, conditions, verified]
 ---
@@ -27,3 +30,7 @@ The two verified facts fit together in a way that would let `Available=False` go
 ## Mitigations
 
 Do not rely on kstatus alone for kinds that publish neither `Ready` nor the abnormal-true pair. Use per-kind checks that read the condition the project actually publishes, such as `Available` plus `spec.availabilityGates` for a v1beta2 Cluster. See [[entities/kstatus]], [[findings/premature-readiness-in-kstatus-based-tools]], [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]], and [[findings/the-flux-cel-cheatsheet-keys-cluster-api-health-on-ready-and-shows-no-v1beta2-available-variant]].
+
+## Full evaluation order
+
+The complete order, from the m3 dossier, is deletion, then the top-level generation check, then `Reconciling` and `Stalled` in array order, then built-in rules, then the `Ready` fallback, then Current. The inference for a v1beta2 Cluster therefore also depends on whether its controller writes a top-level `observedGeneration`, which was not checked. [[sources/research-gap-m3-status-conditions]] See [[findings/kstatus-checks-deletion-then-generation-then-reconciling-and-stalled-then-ready-so-a-stale-top-level-observedgeneration-overrides-ready-true]].

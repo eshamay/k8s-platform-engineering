@@ -20,6 +20,9 @@ sources:
   - id: research-gap-g3-kro
     hash: e8d7c5923d98
     ingested: 2026-11-26
+  - id: research-gap-m3-status-conditions
+    hash: 07099fedb0c8
+    ingested: 2026-11-26
 aliases: [Spec and status]
 tags: [api-machinery]
 ---
@@ -73,3 +76,7 @@ The dossier on conditions adds the field-by-field anatomy, the per-tool vocabula
 ## kro status schema at v0.10.0
 
 kro's status half is author-defined. An RGD's `spec.schema.status` maps field names to CEL expressions over the managed resources, and the generated CRD gives each field a type inferred from the expression output, so status has strongly typed schemas and not arbitrary objects. kro adds `conditions` and `state` to every instance status, and `state` is reserved, so kro overrides any definition of it. The RGD object has its own status with five conditions (`Ready`, `GraphRevisionsResolved`, `GraphAccepted`, `KindReady`, `ControllerReady`) and a separate `state` of `Active` or `Inactive`. On the Crossplane side, the current docs say a composite resource has `Synced` and `Ready` conditions and that `Ready` is True when the function pipeline reports all composed resources ready, but how the function signal reaches that condition was not read in source. [[sources/research-gap-g3-kro]] See [[entities/kro]].
+
+## Where observedGeneration lives, per the m3 dossier
+
+The conventions describe a status-level `observedGeneration` and a per-condition one, and no source ranks them. kstatus and Argo CD read only the top-level field. [[sources/research-gap-m3-status-conditions]] See [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]], [[comparisons/observedgeneration-top-level-versus-per-condition]], and [[entities/kstatus]].

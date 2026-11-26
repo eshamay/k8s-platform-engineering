@@ -61,3 +61,7 @@ See [[concepts/conditions]] for the synthesized concept and [[concepts/spec-stat
 - The Crossplane page read was v1.20, so condition behavior in Crossplane v2 and the fix status of the upjet and crossplane-runtime signaling problem were not confirmed.
 - kstatus favors abnormal-true (`Reconciling` and `Stalled`) while the Cluster API proposal and the Kubernetes conventions lean toward positive `Ready` and `Available`, and the sources leave the choice to authors. See [[decisions/choose-abnormal-true-or-positive-polarity-for-new-condition-types]].
 - Whether `observedGeneration` belongs at the top level, per condition, or both is not settled: the conventions allow either, KEP-1623 puts it on each condition, and kstatus checks the top-level field. See [[comparisons/observedgeneration-top-level-versus-per-condition]].
+
+## Correction note (2026-11-26)
+
+Two claims in this summary were corrected by [[sources/research-gap-m3-status-conditions]]. Config Connector's shipped failure reason is `UpdateFailed`, not the design document's `UpdateFailure`, and its first-field-path message was not found in code. The Kubernetes conventions and the Cluster API proposal do not lean toward positive polarity: the conventions now say neither polarity can be recommended as a general rule. The original summary above is left as written for provenance.

@@ -110,6 +110,9 @@ sources:
   - id: research-gap-b1-recheck-capi-argocd
     hash: 832b86e20750
     ingested: 2026-11-26
+  - id: research-gap-m3-status-conditions
+    hash: 07099fedb0c8
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -160,7 +163,7 @@ The ApplicationSets CRD grew large enough that its `last-applied-configuration` 
 
 ## Health assessment from resource status
 
-Argo CD derives health from `status`: built-in checks for core types and Lua scripts that read `obj.status` for CRDs, with results Healthy, Progressing, Degraded, or Suspended, and application health as the worst of the immediate children. Without a script, CRD health cannot be derived reliably. Argo CD maintainers also described comparing managed-field timestamps as a fragile workaround for ACK conditions that lack `observedGeneration`. Argo CD's own status semantics beyond health checks were not read at primary-source depth. [[sources/research-spec-status-split]] See [[examples/argo-cd-rolls-up-child-health-with-lua-checks]] and [[findings/missing-observedgeneration-hides-stale-status]].
+Argo CD derives health from `status`: built-in checks for core types and Lua scripts that read `obj.status` for CRDs, with results Healthy, Progressing, Degraded, or Suspended, and application health as the worst of the immediate children. Without a script, CRD health cannot be derived reliably. Argo CD maintainers also described comparing managed-field timestamps as a fragile workaround for ACK conditions that lack `observedGeneration`. Argo CD's own status semantics beyond health checks are summarized in the m3 section at the end of this page. [[sources/research-spec-status-split]] See [[examples/argo-cd-rolls-up-child-health-with-lua-checks]] and [[findings/missing-observedgeneration-hides-stale-status]].
 
 ## Server-side apply and Server-Side Diff
 
@@ -263,3 +266,7 @@ The `legacy` default sharding algorithm is confirmed in code at v3.6.3 (the cons
 ## Resource tracking and prune propagation
 
 Argo CD tracks the resources an Application owns with `application.resourceTrackingMethod`: `annotation` (default, `argocd.argoproj.io/tracking-id`), `annotation+label`, or `label`. In `annotation+label` the instance label is informational only and truncated at 63 characters, and label mode collides with other tools that write the same label. A tracking annotation that does not reference its own resource keeps the resource out of sync status and pruning. Pruned resources use foreground deletion by default, and `PrunePropagationPolicy` accepts background, foreground, and orphan. Docs were read from `master`, and the latest release was v3.6.3. [[sources/research-gap-m2-ownership-gc]] See [[findings/argo-cd-tracks-resources-by-annotation-by-default-and-label-mode-truncates-and-collides-with-other-tools]] and [[decisions/choose-an-argo-cd-resource-tracking-method-annotation-annotation-plus-label-or-label]].
+
+## Status semantics beyond health in the m3 dossier
+
+An Application has a sync status of Unknown, Synced, or OutOfSync. Its condition list holds typed entries with no status field, named by suffix (`Error`, `Warning`, `Info`): DeletionError, InvalidSpecError, ComparisonError, SyncError, UnknownError, SharedResourceWarning, RepeatedResourceWarning, ExcludedResourceWarning, and OrphanedResourceWarning. `reconciledAt` is the live timestamp and `observedAt` is deprecated. Resource tracking defaults to the `argocd.argoproj.io/tracking-id` annotation, and an annotation that does not reference the resource it sits on affects neither sync status nor pruning. For Config Connector, a shipped Lua script maps `UpToDate` to Healthy and `UpdateFailed` to Degraded. Argo CD's operation-state docs, sync-phase docs, and controller aggregation code were not read, so how per-resource sync status is aggregated stays open. [[sources/research-gap-m3-status-conditions]] See [[examples/argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration]] and [[findings/kstatus-reads-only-the-top-level-observedgeneration-because-its-condition-struct-has-no-per-condition-field]].

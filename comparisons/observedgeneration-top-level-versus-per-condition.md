@@ -1,9 +1,9 @@
 ---
 title: observedGeneration at the top level versus on each condition
 type: comparison
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
@@ -11,6 +11,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-gap-m3-status-conditions
+    hash: 07099fedb0c8
+    ingested: 2026-11-26
 aliases: []
 tags: [observedgeneration, conditions, conventions, flux, cluster-api, ack]
 ---
@@ -23,7 +26,7 @@ Should `observedGeneration` live once at the top level of `status`, inside every
 
 ## Comparison
 
-The current API conventions put `observedGeneration` on each condition, so each condition says which spec generation it describes. Flux and Cluster API use a top-level `status.observedGeneration`, and Flux's HelmRelease status also carries conditions of its own. kstatus reads `observedGeneration` together with the conditions. The ACK issue asks for the per-condition form, because a single condition such as `ResourceSynced` can lag behind other conditions, and it argues that the per-condition form stays compatible with Server-Side Apply even when several writers set different conditions.
+The current API conventions put `observedGeneration` on each condition, so each condition says which spec generation it describes. Flux writes both a top-level `status.observedGeneration` and a per-condition value, and Cluster API's 2020 proposal had no `observedGeneration` before its 2024 proposal moved to `metav1.Condition`. (Correction note: this sentence previously said Flux and Cluster API use a top-level field.) kstatus reads `observedGeneration` together with the conditions. The ACK issue asks for the per-condition form, because a single condition such as `ResourceSynced` can lag behind other conditions, and it argues that the per-condition form stays compatible with Server-Side Apply even when several writers set different conditions.
 
 ## Analysis
 
@@ -36,3 +39,7 @@ A top-level field is simple to compare against `metadata.generation` and is chea
 ## Evidence from the conditions dossier
 
 KEP-1623 puts `observedGeneration` on each condition as a non-pointer integer because `metadata.generation` is never zero, kro's RGD reference describes the per-condition value as the generation the condition was based on, and kstatus checks the top-level field. The conventions allow either. The dossier does not settle which is best. [[sources/research-conditions]] See [[concepts/conditions]].
+
+## Evidence from the m3 dossier
+
+The three placements coexist and no source ranks them. The conventions describe both, KEP-1623 is implemented and stable, kstatus and Argo CD read only the top-level field, Flux stamps both, Cluster API's contract accepts a per-condition value that defaults to the resource generation, and Config Connector writes only the top-level value and has the per-condition line commented out with a TODO. The earlier remark that the final 15,000 characters of the conventions were unread is resolved: the conventions on the default branch were read and state no placement rule. [[sources/research-gap-m3-status-conditions]] See [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]], [[findings/kstatus-reads-only-the-top-level-observedgeneration-because-its-condition-struct-has-no-per-condition-field]], [[examples/flux-stamps-the-current-generation-on-every-condition-and-also-keeps-a-top-level-observedgeneration]], and [[examples/config-connector-direct-controllers-write-a-top-level-observedgeneration-and-leave-the-per-condition-line-commented-out]].

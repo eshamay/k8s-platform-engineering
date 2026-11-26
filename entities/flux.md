@@ -98,6 +98,9 @@ sources:
   - id: research-gap-g1-named-adopters
     hash: 9f6a50098233
     ingested: 2026-11-26
+  - id: research-gap-m3-status-conditions
+    hash: 07099fedb0c8
+    ingested: 2026-11-26
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -232,3 +235,7 @@ Correction note: the adopters sentence above says the page lists more than 200 o
 ## Interval jitter, five-minute wording, and helm-controller from the Flux and Kubernetes recheck
 
 Correction note, 2026-11-26: the sentence in the components section that Kustomizations reconcile every 5 minutes by default was wrong as a controller statement, because `.spec.interval` is required and no controller supplies a default. It is replaced in place above. The controller does apply jitter: `--interval-jitter-percentage` defaults to 5 and is symmetric, so every requeue varies by plus or minus 5 percent of the interval, in both kustomize-controller and helm-controller ([[findings/flux-controllers-jitter-reconcile-intervals-by-plus-or-minus-5-percent-by-default]]). The concepts page's five-minute sentence replaced "one minute" in a docs commit on 2022-08-10 with no stated reason ([[findings/the-flux-concepts-page-five-minute-sentence-replaced-one-minute-in-an-august-2022-docs-commit-with-no-stated-reason]]). The earlier line that the jitter value was not read is now answered. The kustomize-controller options page documents both `--override-manager` (takes over only after a successful dry-run) and `--override-manager-before-dry-run`. The helm-controller `--override-manager` flag is confirmed since v1.5.0 (2026-02-20), HelmRelease install defaults to server-side apply, and drift detection stays disabled by default ([[findings/helm-4-defaults-to-server-side-apply-for-new-releases-and-helm-controller-keeps-the-previous-method-on-upgrade]]). The statement that drift detection has been a per-release option since Flux v2.2.0 was not rechecked and stays unverified. [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Condition and generation practice in the m3 dossier
+
+Flux's condition setter stamps the current generation on every condition, its Kustomization status also keeps a top-level `observedGeneration`, and it mixes abnormal-true `Stalled` and `Reconciling` with a positive `Ready`. [[sources/research-gap-m3-status-conditions]] See [[examples/flux-stamps-the-current-generation-on-every-condition-and-also-keeps-a-top-level-observedgeneration]] and [[entities/kstatus]].
