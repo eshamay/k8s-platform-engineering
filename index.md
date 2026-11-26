@@ -44,7 +44,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 - [[entities/flux]] — in-cluster GitOps tool, controllers, tenancy, scale, and pitfalls (active)
 - [[entities/crossplane]] — control plane framework, four layers, v2 changes, adoption patterns, and costs (active)
-- [[entities/kro]] — resource-graph based platform API tool (draft)
+- [[entities/kro]] — resource-graph based platform API tool, RGD model, deletion, and maturity (active)
 - [[entities/argo-cd]] — GitOps tool with phase and wave ordering (draft)
 - [[entities/config-connector]] — Google Cloud resources as Kubernetes objects (draft)
 - [[entities/ack]] — AWS services as Kubernetes objects, one controller per service (draft)
@@ -57,7 +57,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/kube-rs]] — Rust controller library and single-replica availability guidance (draft)
 - [[entities/tofu-controller]] — Terraform and OpenTofu from Flux-style resources, detection-only model (draft)
 - [[entities/client-go]] — Go client library with the discovery client and RESTMapper constructors (draft)
-- [[entities/helm]] — package manager whose charts do not upgrade or delete CRDs (draft)
+- [[entities/helm]] — package manager whose charts do not upgrade or delete CRDs (active)
 - [[entities/kstatus]] — generic status computation for conforming resources (draft)
 - [[entities/prometheus-operator]] — operator that retrofitted status onto its workload CRDs (draft)
 - [[entities/kyverno]] — CEL-first policy engine that can generate native admission policies (draft)
@@ -69,6 +69,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/azure-service-operator]] — Azure resources as Kubernetes objects, CRDs generated from ARM schemas (draft)
 - [[entities/flux-operator]] — operator that installs Flux and automates controller sharding (draft)
 - [[entities/terraform]] — plan-and-apply infrastructure tool and the contrast case for reconciliation (draft)
+- [[entities/kustomize]] — template-free YAML customization with bases, overlays, and patches (draft)
+- [[entities/kpt]] — Configuration as Data toolchain and the KRM function model (draft)
+- [[entities/score]] — developer workload spec translated into Compose or Kubernetes manifests (draft)
+- [[entities/radius]] — application platform with per-environment Recipes, secondary evidence only (draft)
 
 ## Sources
 
@@ -97,6 +101,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-provider]] — research dossier on providers across Crossplane, ACK, Config Connector, ASO, and Cluster API, 14 web sources, 2026-11-25
 - [[sources/research-flux-deep-dive]] — research dossier on Flux controllers, tenancy, scale, and adopters, 16 web sources, 2026-11-25
 - [[sources/research-crossplane-deep-dive]] — research dossier on Crossplane layers, v2 changes, adopters, and criticism, 15 web sources, 2026-11-25
+- [[sources/research-kro-and-abstraction-models]] — research dossier on kro, Crossplane, Helm, Kustomize, kpt, Score, and Radius, 14 web sources, 2026-11-25
 
 ## Examples
 
@@ -239,6 +244,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]] — Git, Argo CD, and Crossplane self-service pipeline (draft)
 - [[examples/crossplane-v2-upgrade-moves-through-v1-20-the-conversion-cli-and-then-providers]] — upgrade sequence and removed features (draft)
 - [[examples/domain-scoped-crossplane-control-planes-are-proposed-in-place-of-one-monolithic-instance]] — prescriptive design advice, not a deployment (draft)
+- [[examples/build-the-same-storageapp-api-with-kro-and-with-a-crossplane-go-templating-composition]] — one API built two ways (draft)
+- [[examples/kro-cel-hash-functions-restart-a-deployment-when-a-configmap-changes]] — Helm checksum trick in CEL (draft)
+- [[examples/score-generates-docker-compose-or-kubernetes-manifests-from-one-workload-spec]] — one spec, two targets (draft)
+- [[examples/radius-recipes-let-platform-engineers-decide-what-a-redis-cache-becomes-in-each-environment]] — per-environment implementation choice (draft)
 
 ## Comparisons
 
@@ -287,6 +296,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog]] — vendor-blog contrast (draft)
 - [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]] — tuning, sharding, and source options (draft)
 - [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]] — always-on controllers versus on-demand plans (draft)
+- [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]] — the two families of abstraction (draft)
+- [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]] — packaging and governance table (draft)
+- [[comparisons/score-versus-radius-as-developer-facing-workload-abstractions]] — generator versus control plane (draft)
 
 ## Decisions
 
@@ -455,6 +467,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/crossplane-adoption-needs-a-hosting-cluster-kubernetes-skills-and-platform-team-owned-abstractions]] — the cost named by critics and the project (draft)
 - [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]] — mega-Compositions and provider-shaped APIs (draft)
 - [[findings/early-crossplane-evaluations-reported-sparse-docs-alpha-apis-and-hard-multi-layer-troubleshooting]] — a 2022 evaluation, historical (draft)
+- [[findings/moving-kustomize-helm-inflation-to-krm-functions-needs-a-container-runtime-that-laptops-ci-and-argo-cd-often-lack]] — where function code runs (draft)
+- [[findings/default-owner-references-delete-out-of-order-and-cannot-link-namespaced-to-cluster-scoped-objects-so-kro-uses-applysets]] — why kro avoids owner references (draft)
+- [[findings/helm-values-and-kustomize-patches-leak-the-underlying-manifests-into-the-abstraction]] — abstraction leakage (draft)
+- [[findings/go-template-compositions-need-hand-written-ordering-and-deletion-guards]] — manual order and deletion safety (draft)
+- [[findings/radius-maturity-and-governance-claims-rest-on-a-single-third-party-blog]] — weak evidence caveat (draft)
 
 ## Outputs
 

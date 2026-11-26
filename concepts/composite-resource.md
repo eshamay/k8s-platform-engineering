@@ -14,6 +14,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-kro-and-abstraction-models
+    hash: d43d3775cbbd
+    ingested: 2026-11-25
 aliases: [XR, Resource graph, composite]
 tags: [abstraction, crossplane, kro]
 ---
@@ -55,3 +58,7 @@ The schema is a contract with live consumers, so breaking changes are blocked in
 ## To research
 
 Scale limits per controller, Flux handling of composites and graph instances, and the current maturity of ClusterClass. These are tracked in [[open-knowledge-gaps]].
+
+## Render-time versus controller-driven abstractions
+
+A composite resource is the controller-driven way to hide many resources behind one API. The abstraction-models dossier contrasts it with the render-time family (Helm, Kustomize, KRM functions and kpt, Score), which produces manifests once and leaves continuous correction to a GitOps tool. A controller-driven abstraction is a live control loop that reconciles children, writes status back to the parent, and handles deletion order. The same dossier shows two builds of one `StorageApp` API, one with a kro RGD and one with a Crossplane XRD plus `function-go-templating`, with equivalent outcomes. Crossplane v2 XRDs default to Namespaced scope. See [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]] and [[examples/build-the-same-storageapp-api-with-kro-and-with-a-crossplane-go-templating-composition]]. [[sources/research-kro-and-abstraction-models]]

@@ -112,6 +112,11 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#crossplane-operations-maturity-and-api-stability]] — open, unassigned
 - [[#managed-resource-activation-policy-mechanism-and-defaults]] — open, unassigned
 - [[#neutral-comparisons-of-crossplane-with-terraform-and-single-cloud-operators]] — open, unassigned
+- [[#crossplane-v2-claims-and-the-concepts-pages]] — open, unassigned
+- [[#kro-governance-status-and-the-future-of-the-graph-api]] — open, unassigned
+- [[#scaling-limits-of-per-rgd-kro-controllers-and-named-production-kro-adopters]] — open, unassigned
+- [[#primary-source-status-of-radius-and-score]] — open, unassigned
+- [[#krm-function-specification-and-runtime-requirements]] — open, unassigned
 
 ---
 
@@ -150,6 +155,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-provider]]:** Marginally helpful. The dossier describes the provider end of the trace for Crossplane: a `Provider` installs CRDs and a controller, a managed resource is reconciled by the observe, compare, act loop, and `Ready` and `Synced` conditions report the result. It says nothing about the Flux source fetch, finalizer registration for these objects, or the handoff from a GitOps agent. See [[concepts/provider]] and [[entities/crossplane]].
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Partly helpful. The dossier names the controller roles that the first half of the trace needs: the source controller fetches Git, OCI, Helm, and bucket content and serves it as tar.gz artifacts, the kustomize controller builds and applies it, the notification controller can trigger an immediate reconcile through a Receiver, and `dependsOn` and `healthChecks` gate readiness. It admits that source-controller internals were not covered and does not trace finalizer registration or condition updates. See [[entities/flux]] and [[examples/flux-notification-receivers-start-reconciliation-without-waiting-for-the-poll-interval]].
 - **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Not helpful. The dossier covers Crossplane's model and adoption and reads no Flux documentation. Its only GitOps pairing is Argo CD in the JFrog pipeline, where Argo CD syncs custom resources from Git and Crossplane provisions the cloud resources. See [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]].
+- **Possible resolution from [[sources/research-kro-and-abstraction-models]]:** Not helpful. The dossier covers abstraction models and does not trace a Git commit through Flux to Ready status. Its only related point is that render-time tools such as Helm and Kustomize leave continuous correction to a GitOps tool, while kro and Crossplane run their own reconcile loops beneath it.
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -185,6 +191,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-provider]]:** Marginally helpful. A maintainer-authored Crossplane blog argues that Composition is what separates Crossplane from the cloud add-ons, and the Amazon EKS ACK guide points to kro for composing ACK resources. Neither is an independent head-to-head of Compositions and kro. See [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]] and [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]].
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Not helpful. The dossier says Flux comparisons with Crossplane and kro were not researched and that no source confirms Flux simply deploys their custom resources.
 - **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Marginally helpful, and only for Crossplane. The dossier restates that a Composition is a pipeline of gRPC functions applied with server-side apply, that functions must carry desired state forward, and that v2 compositions can hold any Kubernetes resource. It names no kro material and says primary comparisons against kro were not read. See [[concepts/composition]] and [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]].
+- **Possible resolution from [[sources/research-kro-and-abstraction-models]]:** Largely helpful. The dossier compares the two on packaging (OCI Configuration packages versus Git, Helm, or Kustomize), logic (a function pipeline versus bounded CEL), children (managed resources versus Kubernetes objects only), maturity (versioned XRDs versus `v1alpha1`), and deletion (kro uses ApplySets and reverse-topological order and Go-template Compositions need hand-written guards). It also reports a tutorial that built one API both ways with equivalent outcomes. It gives no scale numbers or production incident, and the sources are blogs and a tutorial. See [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]], [[examples/build-the-same-storageapp-api-with-kro-and-with-a-crossplane-go-templating-composition]], and [[findings/go-template-compositions-need-hand-written-ordering-and-deletion-guards]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -222,6 +229,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-provider]]:** Partly helpful for the API-server side of scale. The Crossplane blog reports that provider-aws installing more than 900 CRDs made the API server unresponsive for up to an hour during scale-up, and that provider families fix it by installing only the services in use. ACK avoids the problem with one controller per service. The dossier does not cover informer cache cost, workqueue rate limiting, or controller sharding. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[comparisons/provider-families-versus-per-service-controllers]].
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Largely helpful for Flux. The dossier explains that extra replicas are failover standbys because of leader election, that label-based sharding with `sharding.fluxcd.io/key` and `--watch-label-selector` adds capacity, that the Flux Operator automates shard setup, and that Morgan Stanley raised intervals and `--concurrent` at more than 500 clusters. It has no production sharding numbers and no Crossplane data. See [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]] and [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]].
 - **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Marginally helpful on the API-server side only. The Upbound post explains why thousands of CRDs hurt (hundreds of throttled discovery requests, increasingly expensive serialization on each CRD change, about 4 MiB of memory per CRD) and lists upstream mitigations, and the upgrade guide names managed resource activation policies as the Crossplane v2 remedy without explaining them. It has no informer, workqueue, or controller sharding data. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]].
+- **Possible resolution from [[sources/research-kro-and-abstraction-models]]:** Not helpful. The dossier says the scaling limits of per-RGD dedicated controllers are not covered in the sources read and found no large-scale kro benchmark. See [[open-knowledge-gaps]] for the follow-up on kro scale.
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -273,6 +281,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-composite-resource]]:** Largely helpful. The RGD overview and readiness pages explain that kro infers dependencies from CEL references into a DAG, records the order in `status.topologicalOrder`, creates in topological order and deletes in reverse, creates independent resources in parallel, and rejects cycles at definition time. `readyWhen` defines per-resource readiness and gates dependents in an RGD, but only reports health in the alpha `Graph` API. The kro row of the ordering comparison can now be filled, though the instance-level conditions remain unread. See [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]] and [[entities/kro]].
 - **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on deletion behavior. The dossier reads the Argo CD ApplicationSet deletion page, the Flux Kustomization reference (first 100 KB), the ACK deletion policy guide, and the Config Connector deletion page, all through a summarizing fetch, and it confirms retain and abandon defaults. It does not verify Flux's finalizer name. See [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
 - **Possible resolution from [[sources/research-composition]]:** Partly helpful. The Dependencies and Ordering page confirms that every CEL reference is a DAG edge (even with `?.`), creation is topological and deletion reversed, cycles fail validation, and kro waits for expressions to be resolvable. It says readiness gating differs between the RGD and the alpha Graph APIs but the Readiness page was not read. See [[entities/kro]].
+- **Possible resolution from [[sources/research-kro-and-abstraction-models]]:** Marginally helpful. The dossier restates that kro infers the graph from CEL references, waits on status values that do not exist yet, validates before reconciling, and requires referenced `schema.spec` fields to have values. It adds no readiness detail beyond what [[sources/research-composite-resource]] gave.
 
 ## Direct reads of Argo CD, Flux, ACK, and Config Connector failure modes — status: open
 
@@ -1371,3 +1380,58 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Revise [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, terraform, comparison, bias
+
+## Crossplane v2 claims and the concepts pages — status: open
+
+- **Question:** What do the Crossplane concepts pages say about claims and composition-function status in v2?
+- **Why it matters:** The XRD page read in the dossier did not describe claims status, and the main Composition concept page returned empty content, so the legacy claim path is unverified.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read https://docs.crossplane.io/latest/concepts/compositions/ and the claims documentation.
+  - [ ] Update [[concepts/composite-resource]] with the confirmed claim behavior.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, v2, claims, composition
+
+## kro governance status and the future of the Graph API — status: open
+
+- **Question:** Is kro a CNCF project or only a Kubernetes SIG Cloud Provider subproject, and how will the alpha Graph API affect RGD stability and adoption?
+- **Why it matters:** One blog says kro is not a CNCF project while kro.run says only that it is a SIG Cloud Provider subproject, and the Graph versus RGD relationship decides which API platform teams should build on.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Check kro.run, the Kubernetes SIG Cloud Provider listing, and the kro repository for governance wording.
+  - [ ] Find design discussion on the Graph API roadmap.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, governance, graph, cncf
+
+## Scaling limits of per-RGD kro controllers and named production kro adopters — status: open
+
+- **Question:** How does kro behave at scale when every ResourceGraphDefinition starts a dedicated controller, and which organizations run kro in production?
+- **Why it matters:** The dossier found no named production postmortem and no benchmark, and AWS offering a managed EKS capability is the only adoption evidence.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Search for kro production case studies and benchmarks.
+  - [ ] Extend [[examples/kro-shared-queue-tunes-throughput]] with measured results.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, scale, adopters, production
+
+## Primary-source status of Radius and Score — status: open
+
+- **Question:** What do the primary Radius and Score documents and CNCF listings say about maturity, governance, and lineage?
+- **Why it matters:** Radius claims come from one third-party blog because its docs could not be read, and Score's CNCF Sandbox status and Humanitec origin come only from its own site.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the primary Radius documentation and the CNCF project pages for both.
+  - [ ] Revise [[entities/radius]], [[entities/score]], and [[comparisons/score-versus-radius-as-developer-facing-workload-abstractions]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** radius, score, cncf, verification
+
+## KRM function specification and runtime requirements — status: open
+
+- **Question:** What does the KRM function specification require of a function and its runtime, and which tools can run functions without containers?
+- **Why it matters:** The dossier did not fetch the specification, and the Kustomize discussion shows that the container requirement blocks use on laptops, CI, and Argo CD.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Fetch the KRM function specification and the kpt function documentation.
+  - [ ] Update [[entities/kpt]] and [[findings/moving-kustomize-helm-inflation-to-krm-functions-needs-a-container-runtime-that-laptops-ci-and-argo-cd-often-lack]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** krm-functions, kpt, kustomize, containers

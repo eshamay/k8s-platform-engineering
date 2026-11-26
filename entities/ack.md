@@ -44,6 +44,9 @@ sources:
   - id: research-provider
     hash: 7e43edcd71be
     ingested: 2026-11-25
+  - id: research-kro-and-abstraction-models
+    hash: d43d3775cbbd
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -111,3 +114,7 @@ The ACK overview says ACK "lets you define and use AWS service resources directl
 ## Provider behavior in the Providers dossier
 
 The Providers dossier read the ACK concepts page in full. ACK reconciles immediately on a spec change and resyncs every 10 hours on the Amazon EKS managed capability, with exponential backoff on retries and no retry for permanent errors. Its conditions include `ACK.Terminal`, `ACK.Recoverable`, `ACK.Adopted`, `ACK.ReferencesResolved`, and `ACK.IAMRoleSelected`. Namespaces map to IAM roles through `IAMRoleSelector`, see [[examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management]], and cross-namespace references are off by default but are not tenant isolation, see [[findings/disabling-ack-cross-namespace-references-is-not-tenant-isolation]]. The per-service packaging is compared with Crossplane families in [[comparisons/provider-families-versus-per-service-controllers]]. [[sources/research-provider]]
+
+## Managed kro pairing on EKS
+
+The Amazon EKS guide positions kro as the glue that composes workloads with ACK-managed AWS resources, such as S3 buckets, into "cloud building blocks" with default and immutable organizational settings, and the kro overview uses an ACK `Bucket` inside a `WebApp` graph. kro can wait for ACK status fields, such as a bucket ARN, that do not exist yet. See [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]]. [[sources/research-kro-and-abstraction-models]]

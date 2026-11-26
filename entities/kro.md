@@ -1,7 +1,7 @@
 ---
 title: kro (kube-resource-orchestrator)
 type: entity
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-25
 sources:
@@ -61,6 +61,9 @@ sources:
     ingested: 2026-11-25
   - id: research-composition
     hash: f57d89652816
+    ingested: 2026-11-25
+  - id: research-kro-and-abstraction-models
+    hash: d43d3775cbbd
     ingested: 2026-11-25
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
@@ -159,3 +162,11 @@ For Argo CD, the FAQ says to add an ownerReference and an `argocd.argoproj.io/tr
 The kro overview (version 0.10.0) says a ResourceGraphDefinition declares a SimpleSchema and CEL-bound resource templates, and that kro infers the dependency DAG, generates a CRD, and starts a controller. Every CEL field reference creates an edge, creation follows topological order and deletion runs in reverse, circular references fail validation, and the order appears at `status.topologicalOrder`. kro waits for expressions to be resolvable before creating a resource. It began as an AWS experiment in November 2024, renamed `ResourceGroup` to `ResourceGraphDefinition`, became a joint AWS, Azure, and Google Cloud project, and its API is `v1alpha1`. [[sources/research-composition]]
 
 CEL was chosen because it terminates, has no side effects, and is type-checked at apply time, see [[comparisons/where-the-expressiveness-bound-sits-in-crossplane-functions-and-kro-cel]]. The dossier did not read kro's Readiness or Controller Tuning pages, which remains tracked in [[open-knowledge-gaps]].
+
+## kro and abstraction models dossier
+
+The abstraction-models dossier is the widest single read of kro so far and it is what moves this page from draft to active. An RGD holds a `schema` written in SimpleSchema shorthand (for example `image: string | default=nginx`) and a `resources` list of templates that reference fields through `${...}` CEL expressions. kro parses them, infers the dependency graph, generates a CRD, starts a dedicated controller, and propagates status. It can wait for a status field, such as an ACK bucket ARN, that does not exist yet, and it supports `includeWhen` and `forEach`. The FAQ adds that the API is `v1alpha1` and may break, that the alpha `Graph` object bundles resources without defining a new kind and is disabled by default, and that the Helm-style checksum restart can be done with CEL hash functions. See [[examples/kro-cel-hash-functions-restart-a-deployment-when-a-configmap-changes]].
+
+The instances page describes the states ACTIVE, IN_PROGRESS, DELETING, and ERROR and an observe, compare, act, and report loop. kro avoids default owner references and uses ApplySets with reverse-topological deletion, see [[findings/default-owner-references-delete-out-of-order-and-cannot-link-namespaced-to-cluster-scoped-objects-so-kro-uses-applysets]]. kro orchestrates only Kubernetes objects and relies on ACK, Azure Service Operator, or Config Connector for cloud resources, and it has no equivalent of Upjet. AWS offers kro as a managed EKS capability. The dossier found no named production postmortem and no scale benchmark, and it did not cover the scaling limits of one dedicated controller per RGD. Governance is a Kubernetes SIG Cloud Provider subproject, and a blog's statement that it is not a CNCF project is tracked in [[open-knowledge-gaps]].
+
+Comparisons: [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]], [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]], and the worked build in [[examples/build-the-same-storageapp-api-with-kro-and-with-a-crossplane-go-templating-composition]]. [[sources/research-kro-and-abstraction-models]]

@@ -77,6 +77,9 @@ sources:
   - id: research-crossplane-deep-dive
     hash: 44034359219f
     ingested: 2026-11-25
+  - id: research-kro-and-abstraction-models
+    hash: d43d3775cbbd
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -196,3 +199,7 @@ The project graduated in the CNCF in late 2025. The project's post reports 70 or
 ## Adoption patterns, costs, and alternatives
 
 The best-documented adopter pattern is self-service through Git and a GitOps agent, see [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]]. The costs named by critics and by the project itself are a hosting cluster, Kubernetes skills, and platform-team-owned abstractions, see [[findings/crossplane-adoption-needs-a-hosting-cluster-kubernetes-skills-and-platform-team-owned-abstractions]], [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]], and the historical [[findings/early-crossplane-evaluations-reported-sparse-docs-alpha-apis-and-hard-multi-layer-troubleshooting]]. Design choices are in [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]]. The contrast with imperative infrastructure as code is in [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]] and [[entities/terraform]]. Scale pressure from large provider packages is explained in an Upbound engineering post, see [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]]. Package dependency resolution, activation policy behavior, and Operations maturity remain open in [[open-knowledge-gaps]]. [[sources/research-crossplane-deep-dive]]
+
+## Packaging and governance in the abstraction-models dossier
+
+An engineer's July 2026 blog describes Crossplane's shape as an XRD plus a Composition function pipeline (patch-and-transform, KCL, Go templating, Python) plus managed resources, distributed as OCI Configuration packages that pin providers and functions, and notes that Upjet generates providers from Terraform providers, which kro lacks. The same post calls Crossplane CNCF Incubating, which conflicts with the graduation recorded above from the project's announcement and InfoQ. The wiki treats the blog label as a likely stale dated claim and does not change this page's status for it. Crossplane v2 XRDs default to Namespaced scope, so an XR can compose only resources in its own namespace, with Cluster and LegacyCluster as alternatives, and breaking schema changes need a new XRD or a conversion webhook. See [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]], [[findings/go-template-compositions-need-hand-written-ordering-and-deletion-guards]], and [[entities/kpt]]. [[sources/research-kro-and-abstraction-models]]

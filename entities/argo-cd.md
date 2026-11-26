@@ -71,6 +71,9 @@ sources:
   - id: research-crossplane-deep-dive
     hash: 44034359219f
     ingested: 2026-11-25
+  - id: research-kro-and-abstraction-models
+    hash: d43d3775cbbd
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -174,3 +177,7 @@ A vendor comparison in the Flux deep dive describes Argo CD as centralized, with
 ## Delivery agent in the JFrog self-service pattern
 
 In JFrog's self-service environments, Argo CD sits between Git and Crossplane. Developers' requests become custom resources committed to Git, Argo CD syncs them, and Crossplane creates the cloud resources, so Argo CD sees the platform-level resources and not each cloud resource beneath them. [[sources/research-crossplane-deep-dive]] See [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]] and [[examples/crossplane-resources-hosted-by-argo-cd]].
+
+## Tracking kro children and the EKS capability
+
+The kro FAQ gives an Argo CD recipe: add an owner reference and an `argocd.argoproj.io/tracking-id` annotation to each templated resource so Argo CD can track the children that kro creates, and the FAQ documents risks with the approach. The Amazon EKS guide lists Argo CD as a managed EKS capability that can deploy kro custom resources across clusters. Kustomize's site also lists Argo CD as an integrator. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]], [[findings/default-owner-references-delete-out-of-order-and-cannot-link-namespaced-to-cluster-scoped-objects-so-kro-uses-applysets]], and [[entities/kustomize]]. [[sources/research-kro-and-abstraction-models]]

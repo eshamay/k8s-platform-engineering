@@ -17,6 +17,9 @@ sources:
   - id: research-crossplane-deep-dive
     hash: 44034359219f
     ingested: 2026-11-25
+  - id: research-kro-and-abstraction-models
+    hash: d43d3775cbbd
+    ingested: 2026-11-25
 aliases: [Crossplane Composition, composition function pipeline]
 tags: [abstraction, crossplane]
 ---
@@ -64,3 +67,7 @@ Real-world uses are collected in [[examples/vshn-appcat-sells-self-service-datab
 ## Function pipeline contract in the Crossplane deep dive
 
 The Compositions documentation describes the pipeline contract. On each create or update of a composite resource, Crossplane calls each function in order with a request holding observed state, the desired state accumulated so far, per-function input, and shared context, and each function returns a response. "A function's main job is to update the desired state and return it to Crossplane." Functions must copy desired state forward because omitted resources are deleted, functions can signal readiness and request extra resources, and referencing functions by OCI digest pins versions per Composition revision for staged rollout. Oversized Compositions are a design pitfall, see [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]]. [[sources/research-crossplane-deep-dive]]
+
+## Ordering and deletion guards in Go-template Compositions
+
+The abstraction-models tutorial found that a Composition built on `function-go-templating` needs hand-written creation order and guards against deleting resources when a dependency is briefly unavailable, while kro infers order from references and waits on values that do not exist yet. Crossplane's function pipeline is more expressive (Go templates, KCL, Python) and so easier to make complicated, and kro's CEL is bounded to terminate. See [[findings/go-template-compositions-need-hand-written-ordering-and-deletion-guards]] and [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]]. [[sources/research-kro-and-abstraction-models]]

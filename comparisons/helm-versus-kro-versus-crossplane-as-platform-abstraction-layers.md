@@ -8,6 +8,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-kro-and-abstraction-models
+    hash: d43d3775cbbd
+    ingested: 2026-11-25
 aliases: []
 tags: [helm, kro, crossplane, abstraction, platform-engineering]
 ---
@@ -32,3 +35,7 @@ The post's decision rule is to use kro when the building blocks are already Kube
 ## Caveats
 
 The post cites kro v0.9.x where the kro documentation read shows 0.10.0, so its version facts need checking. Config Connector, ACK, and Azure Service Operator appear in the dossier only as leaf providers beneath a composite layer. See [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]], [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]], [[entities/helm]], and [[findings/helm-does-not-upgrade-or-delete-crds]].
+
+## Further evidence from the abstraction-models dossier
+
+The dossier read the same Coding Protocols post through a summarizing fetch and quotes its warning "kro is pre-1.0, not marked production-ready." It adds the Helm charts page, the Kustomize site, and a worked build of one API with kro and with Crossplane. The wider family map, including Kustomize, kpt, Score, and Radius, is in [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]]. The dossier again describes the layered Helm, Crossplane, and kro pattern as typical and not tied to named companies. [[sources/research-kro-and-abstraction-models]]

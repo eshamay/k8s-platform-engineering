@@ -50,6 +50,9 @@ sources:
   - id: research-provider
     hash: 7e43edcd71be
     ingested: 2026-11-25
+  - id: research-kro-and-abstraction-models
+    hash: d43d3775cbbd
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -125,3 +128,7 @@ Config Connector reconciles with its own service account identity, not the submi
 ## Provider behavior in the Providers dossier
 
 The Providers dossier read the overview in full. Reconciliation runs as the Config Connector IAM service account, so creating the Kubernetes object is effectively permission to change cloud resources, see [[findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions]]. Namespaced mode binds namespaces to separate service accounts and projects, see [[examples/config-connector-namespaced-mode-maps-namespaces-to-projects-and-service-accounts]]. Terraform and DCL controllers use a default 2-minute maximum backoff, and setting the `reconcile-interval-in-seconds` annotation to 0 disables drift correction. Deleting stateful resources such as Spanner instances can lose data, see [[findings/deleting-stateful-resources-through-a-provider-can-lose-data]]. [[sources/research-provider]]
+
+## Named as a kro-compatible leaf provider
+
+The kro overview says kro works with any CRD and names ACK, Azure Service Operator, and Config Connector as examples, and the engineer's blog comparison says kro relies on them because it orchestrates only Kubernetes objects. The dossier read no primary Config Connector page. See [[entities/kro]] and [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]]. [[sources/research-kro-and-abstraction-models]]

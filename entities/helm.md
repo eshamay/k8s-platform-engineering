@@ -1,7 +1,7 @@
 ---
 title: Helm
 type: entity
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-25
 sources:
@@ -10,6 +10,9 @@ sources:
     ingested: 2026-11-25
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
+    ingested: 2026-11-25
+  - id: research-kro-and-abstraction-models
+    hash: d43d3775cbbd
     ingested: 2026-11-25
 aliases: [Helm charts]
 tags: [tool, packaging, crd]
@@ -30,3 +33,7 @@ Per the Flux documentation, Helm has no native support for upgrading or deleting
 ## Server-side apply in Helm 4 (unconfirmed)
 
 One personal blog claims that Helm 4.0.0 (November 2025) enables server-side apply by default for new releases. The dossier found no primary Helm page, so the default, the field manager name, and the handling of releases created with client-side apply are unconfirmed. [[sources/research-server-side-apply-and-field-ownership]] See [[concepts/server-side-apply-and-field-ownership]] and [[open-knowledge-gaps]].
+
+## Render-time packaging and the values surface
+
+A chart is "a collection of files that describe a related set of Kubernetes resources", made of `Chart.yaml`, `values.yaml`, `templates/`, `charts/` dependencies, and `crds/`. Helm renders Go templates with values, aggregates the objects, and installs them as one tracked release. The abstraction surface is the values file, which is free-form and is not a real API schema unless the chart adds a values schema (https://helm.sh/docs/topics/charts/, read through a summarizing fetch). Helm renders once, so drift correction depends on a GitOps tool, and a consultancy comparison says mature platforms still use Helm to install components while Crossplane provisions cloud resources and kro composes developer-facing APIs. This broader view of Helm, beyond CRD handling, is why the page moves from draft to active. See [[findings/helm-values-and-kustomize-patches-leak-the-underlying-manifests-into-the-abstraction]], [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]], and [[entities/kustomize]]. [[sources/research-kro-and-abstraction-models]]
