@@ -3,7 +3,7 @@ title: Managed Resource (MR)
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -14,6 +14,9 @@ sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-gap-g3-crossplane-v2
+    hash: 073a1fe74dec
+    ingested: 2026-11-26
 aliases: [MR]
 tags: [abstraction, crossplane]
 ---
@@ -57,3 +60,7 @@ Because each external resource type is its own CRD, multi-cloud provider sets im
 ## To research
 
 Open questions are tracked in [[open-knowledge-gaps]]: the feature-lifecycle status of management policies, the old-enum-to-list mapping, per-provider external-name defaults, and behavior of namespaced v2 managed resources when a provider is down.
+
+## Update from the v2.5 verification pass (2026-11-26)
+
+`managementPolicies` is still beta in the v2.5 docs and on by default, with values `*` (the default), Create, Delete, LateInitialize, Observe, and Update, and an empty list pauses the resource. Namespaced managed resources, new in v2.0.0, have no `deletionPolicy`, while cluster-scoped ones keep it and a deprecated resolver combines the two fields. Managed resource definitions and activation policies are alpha, and the default Helm install activates every definition. [[sources/research-gap-g3-crossplane-v2]] See [[examples/crossplane-issue-5283-has-left-deletionpolicy-deprecation-open-since-2024]], [[findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays]], [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]], and [[findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes]].

@@ -1,13 +1,16 @@
 ---
 title: managedFields are hidden from kubectl output by default
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-gap-g3-crossplane-v2
+    hash: 073a1fe74dec
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, kubectl, managedfields, debugging]
 ---
@@ -29,3 +32,7 @@ Two lessons follow. Always show managed fields before diagnosing an ownership pr
 ## Related
 
 [[findings/multiple-writers-on-one-object]], [[findings/field-ownership-blocks-drift-correction]]
+
+## Update from the v2.5 verification pass (2026-11-26)
+
+Issue 7453 remained open on 2026-11-26 with labels `bug` and `stale`. The maintainer comment of 2026-08-27 could not reproduce it on v2.3.1 and pointed at the hidden `managedFields`, the reporter never replied, and two community pull requests (7783 and 7787) that assume a real bug in the composite SSA path are open and unmerged. So the claim is reported, not reproduced by a maintainer, and open. [[sources/research-gap-g3-crossplane-v2]] See [[examples/crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource]].

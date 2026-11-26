@@ -114,6 +114,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-landscape]] — research dossier on the delivery, provisioning, and platform tooling landscape, 17 web sources, 2026-11-25
 - [[sources/research-scale-and-sharding]] — research dossier on scale limits, APF, sharding, and CRD count, 13 web sources, 2026-11-25
 - [[sources/research-pitfalls-and-case-studies]] — research dossier on postmortems, finalizers, drift fights, and deletion guard rails, 11 web sources, 2026-11-25
+- [[sources/research-gap-g3-crossplane-v2]] — verified dossier on Crossplane v2.5 claims, conditions, SSA, deletion policies, Operations, activation policies, scaling, and scanners, 2026-11-26 (active)
 
 ## Examples
 
@@ -218,7 +219,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/cluster-api-owner-reference-chain-drives-cluster-deletion-and-clusterctl-move]] — ownership as an API contract (draft)
 - [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]] — ordered composite teardown (draft)
 - [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]] — Flux, Argo CD, and Config Connector (draft)
-- [[examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update]] — provider-aws issue 2287 (draft)
+- [[examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update]] — provider-aws issue 2287 (active)
 - [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]] — author-owned readiness (draft)
 - [[examples/ack-splits-terminal-and-recoverable-errors-into-separate-conditions]] — wait or edit the spec (draft)
 - [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] — one condition, three reasons (draft)
@@ -228,7 +229,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/an-observe-only-managed-resource-lets-a-composition-read-a-database-owned-by-another-team]] — permanent Observe as a reference (draft)
 - [[examples/crossplane-usages-order-deletion-and-guard-against-accidental-removal]] — deletion ordering and protection (draft)
 - [[examples/provider-authors-implement-an-external-client-behind-the-shared-managed-reconciler]] — shared reconciler and external client (draft)
-- [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]] — answer to the CRD count (draft)
+- [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]] — answer to the CRD count (active)
 - [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]] — self-reported adopter scale (draft)
 - [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]] — self-reported platform and catalog uses (draft)
 - [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]] — AWS productizes kro with ACK (draft)
@@ -272,6 +273,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/grafana-s-default-priorityclass-let-a-new-cluster-preempt-every-production-ingester]] — a default PriorityClass amplified by a ReplicaSet (active)
 - [[examples/loveholidays-gke-upgrade-from-1-10-to-1-12-overran-its-window-by-about-five-hours]] — slow drains, a stuck node pool, and HPA saturation (active)
 - [[examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed]] — drift fight fixed by Flux ignore rules (active)
+- [[examples/crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource]] — open, unreproduced report of an external SSA writer losing a field (draft)
+- [[examples/crossplane-issue-5283-has-left-deletionpolicy-deprecation-open-since-2024]] — deletionPolicy never formally deprecated (draft)
+- [[examples/crossplane-v2-4-and-v2-5-cut-memory-on-clusters-with-hundreds-to-two-thousand-crds]] — project-reported memory reductions (draft)
 
 ## Comparisons
 
@@ -311,7 +315,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]] — import, read-only, and keep controls (draft)
 - [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]] — functions versus CEL graphs (draft)
 - [[comparisons/where-the-expressiveness-bound-sits-in-crossplane-functions-and-kro-cel]] — bounded contract versus bounded language (draft)
-- [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] — claims versus namespaced XRs (draft)
+- [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] — claims versus namespaced XRs (active)
 - [[comparisons/helm-versus-kro-versus-crossplane-as-platform-abstraction-layers]] — three altitudes of abstraction (draft)
 - [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]] — per-instance pinning versus one latest revision (draft)
 - [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]] — composition versus one-to-one exposure (draft)
@@ -416,7 +420,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]] — Flux issue 1722 (draft)
 - [[findings/diff-is-not-apply-server-defaults-look-like-drift]] — false OutOfSync (draft)
 - [[findings/forcing-conflicts-hides-disagreements-between-writers]] — blanket force versus fail (draft)
-- [[findings/managedfields-are-hidden-from-kubectl-output-by-default]] — show-managed-fields (draft)
+- [[findings/managedfields-are-hidden-from-kubectl-output-by-default]] — show-managed-fields (active)
 - [[findings/applying-a-whole-read-back-object-claims-every-field]] — controller anti-pattern (draft)
 - [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]] — webhook deadlock (draft)
 - [[findings/webhooks-without-sideeffects-declared-break-dry-run-clients]] — dry-run failures in GitOps (draft)
@@ -459,7 +463,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/recreating-an-owner-with-the-same-name-gives-a-new-uid-and-strands-its-old-dependents]] — UID mismatch (draft)
 - [[findings/backup-and-restore-tools-can-strip-owner-references-so-controllers-must-re-reconcile-them]] — lost references (draft)
 - [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]] — RBAC and an unverified claim (draft)
-- [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]] — Synced True for an hour (draft)
+- [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]] — Synced True for an hour (active)
 - [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]] — absence of problems looks healthy (draft)
 - [[findings/updating-lasttransitiontime-on-every-reconcile-turns-a-condition-into-a-heartbeat]] — noisy status writes (draft)
 - [[findings/one-mandatory-ready-condition-that-summarizes-everything-is-too-rigid]] — why Cluster API added Available (draft)
@@ -467,7 +471,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/synced-false-with-ready-true-is-a-silent-failure-where-drift-correction-stops]] — quiet loss of management (draft)
 - [[findings/crossplane-does-not-delete-and-recreate-to-change-immutable-fields]] — immutable changes may not apply (draft)
 - [[findings/observe-based-import-has-manual-copy-steps-ambiguous-names-and-relaxed-validation]] — import hazards (draft)
-- [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]] — terminology drift (draft)
+- [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]] — terminology drift (active)
 - [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] — CRD count scale cost (draft)
 - [[findings/a-kro-graph-revision-that-fails-compilation-stops-all-instances-with-no-fallback]] — no rollback in kro (draft)
 - [[findings/editing-a-live-composition-can-disrupt-or-replace-existing-composed-resources]] — shared Composition edits propagate (draft)
@@ -519,6 +523,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied]] — cost of ignore rules (active)
 - [[findings/argo-cd-replace-and-force-sync-options-can-recreate-resources-and-cause-outages]] — destructive sync options (draft)
 - [[findings/the-pitfalls-dossier-rests-on-index-summaries-an-older-crossplane-version-and-few-primary-incident-reports]] — evidence caveats (active)
+- [[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]] — async Synced pitfall unfixed in current source (active)
+- [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]] — LegacyCluster is a v1 XRD scope only (active)
+- [[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]] — scanners need custom Crossplane entries (active)
+- [[findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays]] — cascade versus policy list (active)
+- [[findings/crossplane-operations-are-alpha-and-cannot-delete-resources-or-set-owner-references]] — Operations maturity (active)
+- [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]] — default MRAP activates all (active)
+- [[findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes]] — docs versus code mismatches (active)
 
 ## Outputs
 

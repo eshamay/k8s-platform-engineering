@@ -3,11 +3,14 @@ title: Older claims and patch-and-transform material no longer matches current C
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-gap-g3-crossplane-v2
+    hash: 073a1fe74dec
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, crossplane, terminology, version-churn, learning-material]
 ---
@@ -25,3 +28,7 @@ Readers who follow older material will write claims and native compositions that
 ## Mitigations
 
 Check the version of every Crossplane page before using it, prefer the latest pages for mechanics, and use the v1.20 pages only to read legacy material. See [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]], [[findings/crossplane-v2-removed-features-and-offers-no-automated-migration-for-v1-composites]], and the terminology gap on [[open-knowledge-gaps]]. See also [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]] for a similar drift at the managed-resource layer.
+
+## Update from the v2.5 verification pass (2026-11-26)
+
+The v2.5 docs reorganized the former concepts section into `composition/` and `managed-resources/`, and the claims page exists only in the v1.20 docs, so older blog links to `/concepts/claims/` describe a layout that no longer exists. Whether the old `/latest/concepts/compositions/` URL redirects was not checked. [[sources/research-gap-g3-crossplane-v2]] See [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]].

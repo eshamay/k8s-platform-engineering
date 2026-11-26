@@ -3,7 +3,7 @@ title: Crossplane
 type: entity
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -89,6 +89,9 @@ sources:
   - id: research-pitfalls-and-case-studies
     hash: 9407913c2448
     ingested: 2026-11-25
+  - id: research-gap-g3-crossplane-v2
+    hash: 073a1fe74dec
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -109,7 +112,7 @@ The Crossplane documentation says a Composition "composes individual resources t
 
 ## Reconcile cadence
 
-A provider re-reconciles each managed resource, compares `forProvider` to the external resource, and acts according to `managementPolicies` such as Observe, Update, and LateInitialize. A poll interval and a pause annotation control cadence, but the default poll interval was not confirmed from a thin fetch. [[sources/research-level-triggered-vs-edge-triggered]] See [[comparisons/reconcile-cadence-and-off-switches-across-tools]] and [[examples/cloud-console-changes-reverted-by-provider-controllers]].
+A provider re-reconciles each managed resource, compares `forProvider` to the external resource, and acts according to `managementPolicies` such as Observe, Update, and LateInitialize. A poll interval and a pause annotation control cadence, but the v2.5 Pods guide states a default polling rate of one minute and an hourly full re-check, with providers using their own flags, see the v2.5 verification section below. [[sources/research-level-triggered-vs-edge-triggered]] See [[comparisons/reconcile-cadence-and-off-switches-across-tools]] and [[examples/cloud-console-changes-reverted-by-provider-controllers]].
 
 ## Convergence behavior
 
@@ -137,7 +140,7 @@ An XRD declares `group`, `kind`, `plural`, a version list, and a `scope`, and Cr
 
 ## XRD scope, versions, and immutability
 
-An XRD generates a CRD for the composite resource and, in older modes, a claim CRD. Scope can be Namespaced (the default in v2), Cluster, or LegacyCluster, multiple versions are allowed, breaking schema changes need conversion webhooks, schema changes may need a pod restart, and group and names cannot change after creation. The dossier read the latest documentation because the v1.14 URL returned 404. [[sources/research-custom-resource-definition]] See [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]].
+An XRD generates a CRD for the composite resource and, in older modes, a claim CRD. Scope can be Namespaced (the default in v2) or Cluster, and `LegacyCluster` exists only on the v1 XRD API (correction recorded 2026-11-26, see below), multiple versions are allowed, breaking schema changes need conversion webhooks, schema changes may need a pod restart, and group and names cannot change after creation. The dossier read the latest documentation because the v1.14 URL returned 404. [[sources/research-custom-resource-definition]] See [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]].
 
 ## Spec and status of composite resources
 
@@ -169,7 +172,7 @@ Crossplane issue 2595 led to a `--max-reconcile-rate` flag, merged for Crossplan
 
 ## Finalizers, deletion policy, and teardown ordering
 
-A managed resource holds a finalizer until the external resource is fully gone, and `deletionPolicy` is Delete by default, with Orphan keeping the cloud resource. Enabled `managementPolicies` take precedence over `deletionPolicy`. Issue 7801 describes a failure in which, on namespace deletion, a credentials Secret without a finalizer disappears before managed resources finish cleanup and leaves them stuck Terminating. Its resolution was not confirmed. [[sources/research-finalizers]] See [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]], [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]], and [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]].
+A managed resource holds a finalizer until the external resource is fully gone, and `deletionPolicy` is Delete by default, with Orphan keeping the cloud resource. Enabled `managementPolicies` interact with `deletionPolicy` on legacy managed resources through a combining resolver (correction recorded 2026-11-26, see below). Issue 7801 describes a failure in which, on namespace deletion, a credentials Secret without a finalizer disappears before managed resources finish cleanup and leaves them stuck Terminating. Its resolution was not confirmed. [[sources/research-finalizers]] See [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]], [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]], and [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]].
 
 ## Owner references and composite deletion policy
 
@@ -187,7 +190,7 @@ The managed resource dossier adds the operating details of Crossplane's lowest l
 
 The composite resources dossier read the XR, XRD, Composition, claims, v2 upgrade, and function design pages. An XR is selected onto a Composition by `compositeTypeRef`, can follow or pin CompositionRevisions, and can be paused or forced to reconcile by annotation. A Composition is a pipeline of gRPC functions that receive observed state and return desired state, and since v1.17 this is the standard form. In v1 a namespaced claim fronted a cluster-scoped XR, while v2 makes the XR namespaced, removes claims for new-style XRDs, removes native patch-and-transform, ControllerConfig, external secret stores, and XR connection details, and has no automated migration for v1 cluster-scoped XRs. The alpha composite deletion policy can be bypassed by Argo CD's foreground propagation. [[sources/research-composite-resource]]
 
-The project also shipped `function-kro` in March 2026. See [[concepts/composite-resource]], [[concepts/composition]], [[entities/function-kro]], [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]], [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], [[findings/crossplane-v2-removed-features-and-offers-no-automated-migration-for-v1-composites]], [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]], and [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]]. Claim support in v2 rests partly on a third-party blog, so it needs checking against the v2 XRD documentation.
+The project also shipped `function-kro` in March 2026. See [[concepts/composite-resource]], [[concepts/composition]], [[entities/function-kro]], [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]], [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], [[findings/crossplane-v2-removed-features-and-offers-no-automated-migration-for-v1-composites]], [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]], and [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]]. Claim support in v2 is now verified against primary sources, see the v2.5 verification section below.
 
 ## Composition authoring history and function operations
 
@@ -225,3 +228,23 @@ The scale dossier records why Crossplane strains the control plane: providers in
 ## Deletion and drift guard rails in the pitfalls dossier
 
 The pitfalls dossier, reading the v1.20 managed resources page, records that `deletionPolicy` defaults to Delete and removes the cloud resource, that Orphan leaves it, and that `managementPolicies` (beta) override `deletionPolicy` when set. It adds that `forProvider` is the source of truth so console edits are reverted, `initProvider` holds create-only values such as an autoscaled `desiredSize`, immutable-field edits are not applied, and a paused resource cannot be deleted. The external-create annotations detect leaked creates, and the provider waits for a human instead of risking duplicates. Crossplane issue 5283 shows that `deletionPolicy` was announced as deprecated around v1.12 but never formally deprecated, and it was still open when read. The page is flagged as older than v2.5. See [[findings/a-paused-crossplane-resource-cannot-be-deleted-until-it-is-unpaused]], [[concepts/pitfalls-and-case-studies]], and [[sources/research-pitfalls-and-case-studies]]. URLs: https://docs.crossplane.io/v1.20/concepts/managed-resources/ and https://github.com/crossplane/crossplane/issues/5283.
+
+## Update from the v2.5 verification pass (2026-11-26)
+
+Release v2.5.0 was published on 2026-11-24, and v1.20 reached end of life with it. This section records what the verified dossier [[sources/research-gap-g3-crossplane-v2]] settles, and corrects earlier statements on this page.
+
+**Claims and XRD scope.** The v2 XRD API has `scope` of `Namespaced` (the default) or `Cluster`, and rejects `claimNames`. `LegacyCluster` is a v1 XRD scope that keeps claims, and the v1 XRD API is deprecated but still served and still the storage version. Claims remain supported ("v1 legacy workloads like Claims and cluster scoped resources remain supported in Crossplane v2") and were fixed again in v2.4.0 and v2.5.0. No removal date exists. The v2.5 docs have no claims page. See [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]] and [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]].
+
+**Correction on management policies and deletion.** An earlier statement here, repeated in the pitfalls section, said enabled `managementPolicies` take precedence over or override `deletionPolicy`. The code read on `main` is more specific. For legacy cluster-scoped managed resources, a deprecated `LegacyManagementPoliciesResolver` combines the two fields and deletes the external resource when both the deletion policy and the management policies allow it. Namespaced managed resources, new in v2.0.0, have no `deletionPolicy` at all, and the orphan idiom there is a policy list without `Delete`. `managementPolicies` is still beta in the v2.5 docs (on by default, removal needs two releases of deprecation). Issue 5283 to deprecate `deletionPolicy` is still open, see [[examples/crossplane-issue-5283-has-left-deletionpolicy-deprecation-open-since-2024]]. The mapping from older terms is `ObserveOnly` equals `["Observe"]`, an empty list pauses, `deletionPolicy: Orphan` equals a list without `Delete`, and the default is `["*"]`.
+
+**Conditions.** The async `Synced` problem is not fixed: the current upjet and crossplane-runtime source still reports `ReconcileSuccess` while an async operation runs, see [[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]]. v2.0.0 made XR and claim conditions persist `observedGeneration`.
+
+**Server-side apply.** The v1.20 SSA concept page has no v2.5 successor. On `main` the composite reconciler applies `resourceRefs` with force ownership under the field owner `apiextensions.crossplane.io/composite`, and issue 7453 is open and not reproduced by a maintainer, see [[examples/crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource]].
+
+**Deletion and garbage collection.** A cascade that deletes a managed resource without `Delete` in its policies leaves the cloud resource, see [[findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays]]. The alpha composition `deletionPolicy` is new in v2.5.0 and sits behind `--enable-function-controlled-deletion`.
+
+**Maturity of Operations.** Operations are alpha, see [[findings/crossplane-operations-are-alpha-and-cannot-delete-resources-or-set-owner-references]]. Earlier text here relied on a CNCF community blog for them.
+
+**Activation policies and scale.** MRDs and MRAPs are alpha in the docs, the Helm chart activates everything by default, and v2.4 and v2.5 add provider scale-to-zero and memory cuts, see [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]] and [[examples/crossplane-v2-4-and-v2-5-cut-memory-on-clusters-with-hundreds-to-two-thousand-crds]]. The 2023 family-split decision still stands and now has an alpha alternative, see [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]]. The scale dossier's statement that no source covered v2 scaling guidance is superseded: there is no single v2 scaling page, but the Pods guide, v2.1.0 notes (API Priority and Fairness, an XR circuit breaker, and `--max-concurrent-reconciles`), and design docs give guidance, and no numeric limits are documented.
+
+**Scanners.** Pluto and kubent carry no Crossplane rules, see [[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]].

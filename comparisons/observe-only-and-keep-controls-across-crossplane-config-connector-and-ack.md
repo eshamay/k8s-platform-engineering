@@ -3,11 +3,14 @@ title: Observe-only and keep controls across Crossplane, Config Connector, and A
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-gap-g3-crossplane-v2
+    hash: 073a1fe74dec
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, adoption, observe-only, deletion, crossplane, config-connector, ack]
 ---
@@ -29,3 +32,7 @@ The three controllers answer the same two questions: how to bring an existing cl
 Crossplane makes ownership a list of permitted verbs on each object, so import, read-only reference, orphan-on-delete, and pause are all configuration of one field. Config Connector chooses convenience, since matching by name acquires a resource, but the abandon annotation must be set before deletion and the pages read do not explain conflicts when two objects target one cloud resource. ACK splits observation and adoption into two features, which mirrors Crossplane's observe-versus-promote split. The risk of implicit takeover is discussed in [[findings/adopt-or-create-can-take-over-a-look-alike-resource]], and the explicit-intent design in [[decisions/adopt-or-create-or-require-explicit-import]].
 
 Flux adds a fourth layer at GitOps level. With `prune: true` a Git removal deletes the object, and the provider then deletes the cloud resource unless Delete is excluded, so the guards at both layers need to agree. See [[comparisons/deletion-policies-across-gitops-and-provider-tools]], [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]], and [[comparisons/exemption-and-ignore-controls-across-tools]].
+
+## Update from the v2.5 verification pass (2026-11-26)
+
+For Crossplane, the v2.5 docs keep `managementPolicies` in beta. `["Observe"]` imports without changing or deleting, an empty list pauses, and a list without `Delete` keeps the cloud resource when the Kubernetes object is deleted, while `deletionPolicy` survives only on legacy cluster-scoped managed resources. [[sources/research-gap-g3-crossplane-v2]] See [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].

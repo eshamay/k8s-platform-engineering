@@ -3,7 +3,7 @@ title: Conversion webhook versus a new XRD for breaking schema changes
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
@@ -11,6 +11,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-gap-g3-crossplane-v2
+    hash: 073a1fe74dec
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, crossplane, versioning, crd]
 ---
@@ -40,3 +43,7 @@ Either path makes the GVK a versioned product contract. See [[concepts/crd-versi
 ## Additions from the CRD dossier
 
 A down conversion webhook can stall garbage collection, which raises the cost of the webhook option. [[sources/research-custom-resource-definition]] See [[findings/a-down-conversion-webhook-can-stall-garbage-collection]] and [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]].
+
+## Update from the v2.5 verification pass (2026-11-26)
+
+Crossplane itself shows the new-API-version route: the XRD API moved from v1 to v2 with different scope semantics, and the v1 version is marked deprecated but is still served and still the storage version in the v2.5 manifest. [[sources/research-gap-g3-crossplane-v2]] See [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]] and [[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]].

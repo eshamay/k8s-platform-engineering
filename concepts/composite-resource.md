@@ -3,7 +3,7 @@ title: Composite Resource (XR) and Resource Graph
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -17,6 +17,9 @@ sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-g3-crossplane-v2
+    hash: 073a1fe74dec
+    ingested: 2026-11-26
 aliases: [XR, Resource graph, composite]
 tags: [abstraction, crossplane, kro]
 ---
@@ -62,3 +65,7 @@ Scale limits per controller, Flux handling of composites and graph instances, an
 ## Render-time versus controller-driven abstractions
 
 A composite resource is the controller-driven way to hide many resources behind one API. The abstraction-models dossier contrasts it with the render-time family (Helm, Kustomize, KRM functions and kpt, Score), which produces manifests once and leaves continuous correction to a GitOps tool. A controller-driven abstraction is a live control loop that reconciles children, writes status back to the parent, and handles deletion order. The same dossier shows two builds of one `StorageApp` API, one with a kro RGD and one with a Crossplane XRD plus `function-go-templating`, with equivalent outcomes. Crossplane v2 XRDs default to Namespaced scope. See [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]] and [[examples/build-the-same-storageapp-api-with-kro-and-with-a-crossplane-go-templating-composition]]. [[sources/research-kro-and-abstraction-models]]
+
+## Update from the v2.5 verification pass (2026-11-26)
+
+Claims are a legacy feature of v1 XRDs. The v2 XRD API offers `Namespaced` and `Cluster` scope and does not support claims, and the v2.5 docs carry claim material only as a backward-compatibility note in the XRD page, What's New, and the upgrade guide. A namespaced XR can compose only resources in its own namespace, a cluster-scoped XR can compose across namespaces, and legacy cluster-scoped XRs cannot compose namespaced resources. Since v2.5.0 a function cannot make a namespaced XR compose a cluster-scoped resource by setting `metadata.namespace`. Default XR deletion is Background, and the Foreground and Pipeline policies are alpha and new in v2.5.0. [[sources/research-gap-g3-crossplane-v2]] See [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]], [[findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays]], and [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]].

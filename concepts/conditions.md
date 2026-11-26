@@ -3,7 +3,7 @@ title: Conditions
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -17,6 +17,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-gap-g3-crossplane-v2
+    hash: 073a1fe74dec
+    ingested: 2026-11-26
 aliases: [status.conditions]
 tags: [controllers, api-machinery]
 ---
@@ -66,3 +69,7 @@ The recurring failure modes are a missing or stale `observedGeneration`, prematu
 ## Further reading
 
 The clearest short explanation of `observedGeneration` is an operator best-practices post on Medium, the best entry point for `Synced` versus `Ready` is the Crossplane managed resources page, and the kstatus README explains how tools infer "done". The URLs are listed in [[sources/research-conditions]].
+
+## Update from the v2.5 verification pass (2026-11-26)
+
+The Crossplane async `Synced` pitfall is unfixed as of 2026-11-26: provider-aws issue 2287 was closed by the stale bot without a fix, and the current upjet and crossplane-runtime source still marks `ReconcileSuccess` while an async operation runs. [[sources/research-gap-g3-crossplane-v2]] See [[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]].

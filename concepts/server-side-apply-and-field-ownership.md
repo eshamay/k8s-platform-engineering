@@ -3,7 +3,7 @@ title: Server-Side Apply and Field Ownership
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -23,6 +23,9 @@ sources:
   - id: research-pitfalls-and-case-studies
     hash: 9407913c2448
     ingested: 2026-11-25
+  - id: research-gap-g3-crossplane-v2
+    hash: 073a1fe74dec
+    ingested: 2026-11-26
 aliases: [SSA, managedFields]
 tags: [api-machinery, server-side-apply]
 ---
@@ -88,3 +91,7 @@ Server-side dry-run passes through admission webhooks, so a webhook that does no
 ## Drift fights in the pitfalls dossier
 
 The pitfalls dossier shows the practical form of a field-ownership conflict. Flux and an HPA, or Flux and cert-manager's cainjector, overwrite one field on every reconcile, and in one reported SEV2 the cluster autoscaler joined the loop. Flux resolved it with ignore rules that strip a field when another manager owns it or adopt the live value when Flux is the sole owner, while Argo CD's server-side apply mode runs with `--force-conflicts` and so wins ownership by default. The sources do not compare the two or say which is safer when two controllers legitimately co-own a field. See [[examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed]], [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]], and [[sources/research-pitfalls-and-case-studies]].
+
+## Update from the v2.5 verification pass (2026-11-26)
+
+Crossplane v2 applies composite resource `resourceRefs` and status with force ownership under the field owner `apiextensions.crossplane.io/composite`, applies composed resources under owners prefixed `apiextensions.crossplane.io/composed`, and syncs claims to XRs through a beta SSA flag that defaults on. Operations also force ownership, which can conflict with other controllers. The one reported case of an external SSA writer losing a field on an XR (issue 7453) is open and not reproduced by a maintainer. [[sources/research-gap-g3-crossplane-v2]] See [[examples/crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource]].

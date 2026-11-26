@@ -3,11 +3,14 @@ title: "Crossplane foreground and pipeline deletion policies order composed reso
 type: example
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-gap-g3-crossplane-v2
+    hash: 073a1fe74dec
+    ingested: 2026-11-26
 aliases: []
 tags: [crossplane, composition, deletion-ordering, foreground, usages]
 ---
@@ -31,3 +34,7 @@ It shows a tool-level answer layered on the general mechanism. See [[findings/ba
 ## Related
 
 [[entities/crossplane]], [[concepts/composite-resource]], [[concepts/owner-references-and-garbage-collection]], [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]]
+
+## Update from the v2.5 verification pass (2026-11-26)
+
+The composition `deletionPolicy` (Background, Foreground, Pipeline) is alpha, behind `--enable-function-controlled-deletion`, and new in v2.5.0. The default stays Background, legacy cluster-scoped XRs are always deleted with Background, and `kubectl delete --cascade=orphan` or `--cascade=foreground` and Argo CD foreground propagation make Crossplane ignore the policy and emit a warning event. [[sources/research-gap-g3-crossplane-v2]] See [[findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays]].

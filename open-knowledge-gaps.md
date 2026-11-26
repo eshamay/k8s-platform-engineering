@@ -502,6 +502,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read Crossplane v2 documentation on namespaced composite resources.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** deprecation, crossplane, gvk
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Pluto detects deprecated and removed versions from a bundled `versions.yaml` (86 `k8s`, 24 `cert-manager`, 2 `istio` entries, none for Crossplane), and kubent evaluates Rego rule sets for 1.16 to 1.32. Both accept custom entries. Crossplane's own scanner is `crossplane beta upgrade check` and covers removed v1 features, not GVKs. The v2 GVK changes are listed: XRD v1 deprecated beside v2, namespaced managed resources under `.m.` groups beside legacy groups, and Usage moved to `protection.crossplane.io`. The warning-header behavior for a deprecated XRD is an inference. See [[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]].
 
 ## CRD scale limits — status: open
 
@@ -665,6 +666,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Check whether issue 7453 was reproduced or closed.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, server-side-apply, verification
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Partly settled. The v2.5 docs have no SSA page for XRs, so behavior comes from source: the composite reconciler applies `resourceRefs` and status with force ownership under the field owner `apiextensions.crossplane.io/composite`, and composed resources use owners prefixed `apiextensions.crossplane.io/composed`. Issue 7453 is still open with labels `bug` and `stale`, a maintainer could not reproduce it on v2.3.1, and two community PRs (7783, 7787) that assume a real bug are open and unmerged. The wiki can say "reported, not reproduced by a maintainer, open", and cannot say whether it is a real bug. See [[examples/crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource]].
 
 ## Cluster API field ownership rules and Argo CD Server-Side Diff stability — status: open
 
@@ -987,6 +989,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, deletion, management-policies
 - **Possible resolution from [[sources/research-composite-resource]]:** Partly helpful. The current composite resources page documents the alpha deletion policy and its bypass under Argo CD foreground deletion, and the upgrade guide describes namespaced XRs and managed resources under `.m.` groups. Neither source covers how `managementPolicies` interact with the cascade. See [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]].
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Partly settled, from source and not from a docs page. A namespaced XR composes only into its own namespace, composed resources carry a controller owner reference, and deletion defaults to Background. The managed reconciler deletes the external resource only when the policy allows `Delete`, so a cascade over a managed resource without `Delete` removes the Kubernetes object and leaves the cloud resource. No v2 docs page explains this interaction. Not covered: namespace deletion while the provider is down, and special handling of Observe-only managed resources inside compositions. See [[findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays]].
 
 ## KEPs on cross-namespace ownership and garbage collector performance — status: open
 
@@ -1009,6 +1012,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/crossplane]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, conditions, upjet, verification
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Answered, with a negative result. There is no fix. Provider-aws issue 2287 was closed by the stale bot on 2026-06-25 with no linked change, and upjet and crossplane-runtime source on `main` still returns up-to-date from Observe during an async operation and marks `ReconcileSuccess`. `AsyncOperation` is documented as provider detail, not as an alerting recommendation, and the docs and code disagree on its status value. v2.0.0 made XR and claim conditions persist `observedGeneration`. Not settled: the body of open PR 8080 ("stop stale XR condition replay") was not read. See [[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]].
 
 ## How a platform should choose condition polarity — status: open
 
@@ -1041,6 +1045,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find a page or release note that maps the old enum to the list.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, management-policies, verification
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. `managementPolicies` is beta in the v2.5 managed resources page and import guide (on by default, removal needs two releases of deprecation per the feature-lifecycle page). The mapping is `ObserveOnly` to `["Observe"]`, pause to an empty list, `deletionPolicy: Orphan` to a list without `Delete`, and default `["*"]`. No single official page tabulates it, so it is assembled from release notes, docs, and runtime code. See [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].
 
 ## Adoption and orphaning behavior in Cluster API, kro, and controller-runtime operators — status: open
 
@@ -1096,6 +1101,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] and [[entities/crossplane]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, claims, v2, verification
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Claims survive only for legacy XRDs. The v2 XRD API has `scope` of `Namespaced` (default) or `Cluster` and rejects `claimNames` with a CEL rule, and `LegacyCluster` is a scope of the v1 XRD API only, which still serves claims and is deprecated but still the storage version in the v2.5 manifest. The v2.5.0 release notes say claims remain supported, and no removal date exists. This replaces the third-party-blog basis for `LegacyCluster` and corrects the comparison page. See [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] and [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]].
 
 ## kro Graph API status and released-version facts — status: open
 
@@ -1263,6 +1269,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add a concept page or update [[entities/crossplane]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, operations, v2, verification
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Operations are alpha in v2.5 (`state: alpha`, `--enable-operations`, only `ops.crossplane.io/v1alpha1` CRDs), arrived in v2.0.0, and differ from composition functions by running once to completion, force-applying without owner references, and being unable to delete resources. Not settled: no beta graduation plan or tracking issue was found. See [[findings/crossplane-operations-are-alpha-and-cannot-delete-resources-or-set-owner-references]].
 
 ## Managed resource activation policy mechanism and defaults — status: open
 
@@ -1274,6 +1281,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add measurements of CRD counts and API server memory with and without policies.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, crd-scale, activation-policies, verification
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Mechanism and defaults settled, measurements not. An MRAP matches MRD names with prefix-only wildcards, activates one way only, and the Helm chart creates a default MRAP with `"*"`, so a stock install activates everything. MRDs start Inactive only for providers with `safe-start`, and MRDs and MRAPs are alpha in the docs. Failure modes are documented. Not settled: no measurement of CRD counts or API server memory with versus without policies, only the docs' ~3 MiB per CRD estimate and project-reported runtime-side figures. See [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]].
 
 ## Neutral comparisons of Crossplane with Terraform and single-cloud operators — status: open
 
@@ -1296,6 +1304,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[concepts/composite-resource]] with the confirmed claim behavior.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, v2, claims, composition
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. The concepts section was reorganized into `composition/` and `managed-resources/`, the v2.5 docs have no claims page (v1.20 had one), and the Compositions page does not mention claims. Claims appear only in the XRD page, What's New, and the upgrade guide, as a backward-compatibility note. [[concepts/composite-resource]] now says so. Not settled: whether the old `/latest/concepts/compositions/` URL redirects, which was not checked.
 
 ## kro governance status and the future of the Graph API — status: open
 
@@ -1429,6 +1438,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/crossplane]] and the decision page.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, v2, scale, provider-family
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Partly settled. There is no single v2 scaling page. Guidance is in the Pods guide (default polling one minute, hourly full re-check), the v2.1.0 notes (API Priority and Fairness, an XR circuit breaker, `--max-concurrent-reconciles`), and the Accepted MRD design doc, which says families "helped alleviate" the problem and does not retire them. The 2023 family-split decision still stands, now with an alpha alternative. Not settled: no numeric limits for XRs or composed resources per controller, and no independent benchmarks. See [[examples/crossplane-v2-4-and-v2-5-cut-memory-on-clusters-with-hundreds-to-two-thousand-crds]] and [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]].
 
 ## Argo CD sharding algorithm maturity in current releases — status: open
 
@@ -1495,6 +1505,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/crossplane]] and [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, deletion-policy, management-policies, verification
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Both still exist on different kinds: namespaced managed resources (v2.0.0) have no `deletionPolicy`, legacy cluster-scoped ones keep it, and a deprecated runtime resolver combines the two fields. `managementPolicies` is still beta in the v2.5 docs. Issue 5283 is still open (opened 2024-01-25, last activity 2024-08-14), and `deletionPolicy` was never formally deprecated. See [[examples/crossplane-issue-5283-has-left-deletionpolicy-deprecation-open-since-2024]] and [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].
 
 ## Force-conflicts versus strip-or-adopt when two controllers co-own a field — status: open
 

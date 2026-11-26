@@ -3,11 +3,14 @@ title: Scale and sharding
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
+  - id: research-gap-g3-crossplane-v2
+    hash: 073a1fe74dec
+    ingested: 2026-11-26
 aliases: [sharding, controller scale, scalability envelope]
 tags: [scale, sharding, apf, informers, workqueue, crd-count, leader-election]
 ---
@@ -57,3 +60,7 @@ The wiki has no sourced data on how cloud provider API limits constrain Crosspla
 ## Related pages
 
 [[concepts/reconciliation-loop]], [[concepts/custom-resource-definition]], [[entities/flux]], [[entities/argo-cd]], [[entities/crossplane]], [[entities/client-go]], [[entities/gardener]].
+
+## Update from the v2.5 verification pass (2026-11-26)
+
+Crossplane v2 scaling guidance is spread across the Pods guide (default polling of one minute, hourly full re-check, `--max-reconcile-rate`), the v2.1.0 release (custom client-side rate limiting replaced by API Priority and Fairness, an XR circuit breaker, and `--max-concurrent-reconciles`), and design docs. No numeric limits for XRs or composed resources per controller are documented. The CRD-count problem is now addressed on both sides: alpha activation policies reduce served CRDs, and v2.4 and v2.5 cut provider and core memory, with figures that are self-reported. [[sources/research-gap-g3-crossplane-v2]] See [[examples/crossplane-v2-4-and-v2-5-cut-memory-on-clusters-with-hundreds-to-two-thousand-crds]] and [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]].
