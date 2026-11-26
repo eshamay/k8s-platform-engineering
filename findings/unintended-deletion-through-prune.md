@@ -11,6 +11,9 @@ sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, prune, deletion, gitops]
 ---
@@ -40,3 +43,7 @@ The dossier found no incident write-ups of an accidental prune, so the severity 
 ## GitOps agent defaults
 
 Argo CD's automated sync does not delete resources that are removed from Git unless prune is enabled, as a stated safety mechanism, and allow-empty is a separate guard against pruning an application to zero resources. The Flux Kustomize controller garbage-collects objects removed from the source when pruning is enabled. The dossier covers no per-resource deletion policy for cloud resources. [[sources/research-gitops-pull-based-delivery]] See [[concepts/gitops-pull-based-delivery]].
+
+## Deletion of the GitOps object itself
+
+The finalizers dossier shows that the GitOps object can cascade as well. Argo CD's resources finalizer deletes an Application's workloads when the Application is removed, and Flux's `deletionPolicy` and `prune: disabled` annotation serve the same purpose. [[sources/research-finalizers]] See [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]] and [[concepts/finalizers]].

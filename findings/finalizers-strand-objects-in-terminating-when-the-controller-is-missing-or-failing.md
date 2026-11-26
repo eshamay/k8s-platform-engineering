@@ -8,6 +8,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, finalizers, deletion, operators]
 ---
@@ -25,3 +28,7 @@ Uninstalling an operator before its custom resources are deleted leaves those re
 ## Related
 
 [[concepts/finalizers]], [[findings/destructive-deletion-of-external-resources]], [[findings/operator-privileges-and-removal-behavior-set-the-blast-radius]], [[concepts/operator-pattern]]
+
+## Additional evidence from the finalizers dossier
+
+The finalizers dossier names three usual causes of a stranded object: a controller that is gone, such as an uninstalled operator, a cleanup that errors forever, and a child that holds its own finalizer. It adds a diagnosis path (read the finalizers, find the owner, read its logs) and warns that the shortcut of forcing removal skips cleanup. [[sources/research-finalizers]] See [[concepts/finalizers]], [[findings/cleanup-that-always-errors-or-assumes-the-external-resource-exists-strands-the-object]], [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]], and [[findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone]].

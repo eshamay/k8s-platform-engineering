@@ -76,6 +76,11 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#flux-shared-caches-and-crossplane-performance-guidance]] — open, unassigned
 - [[#informer-and-cache-choices-of-kro-config-connector-ack-and-cluster-api]] — open, unassigned
 - [[#primary-openai-kubernetes-outage-postmortem]] — open, unassigned
+- [[#argo-cd-finalizer-variants-and-non-cascading-deletes]] — open, unassigned
+- [[#flux-kustomization-finalizer-name-and-behavior]] — open, unassigned
+- [[#resolution-of-crossplane-issue-7801-on-credential-protection]] — open, unassigned
+- [[#how-ack-config-connector-and-kro-name-and-remove-their-finalizers]] — open, unassigned
+- [[#cluster-api-issue-1514-on-blocking-deletion-with-a-finalizer-or-annotation]] — open, unassigned
 
 ---
 
@@ -105,6 +110,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-operator-pattern]]:** Only marginally helpful. The dossier names Flux's five controllers (source, kustomize, helm, notification, image automation) and the controller-guideline rules that govern each hop, but it does not trace the handoff between them, finalizer registration, or condition updates. See [[examples/flux-splits-gitops-into-single-purpose-controllers]].
 - **Possible resolution from [[sources/research-reconciliation-loop]]:** Marginally helpful. The dossier gives the Flux Kustomization loop timing (`interval`, `retryInterval`, `timeout`, `wait`, `healthChecks`, `dependsOn`, `prune`) and the controller-runtime requeue semantics that govern each hop, but it read only the first 100,000 characters of the Flux page and does not trace source-controller handoff, finalizer registration, or condition updates. See [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]].
 - **Possible resolution from [[sources/research-idempotency]]:** Only marginally helpful. The dossier confirms that kustomize-controller runs a server-side apply dry-run each interval and that conflicting field ownership signals another actor, which fits the apply step of the trace. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[concepts/idempotency]].
+- **Possible resolution from [[sources/research-finalizers]]:** Only marginally helpful. The dossier shows finalizer registration and teardown: Crossplane managed resources hold a finalizer until the external resource is gone, and kro keeps the instance finalizer while deleting in reverse dependency waves, but it does not trace source fetch or status conditions. See [[concepts/finalizers]] and [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -131,6 +137,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-operator-pattern]]:** Marginally helpful. The dossier frames both tools as replacements for a hand-written operator when a custom API is mostly composition: Crossplane through a function pipeline in a Composition, kro through CEL expressions that infer a dependency graph and generate a CRD and controller at runtime. It does not compare their execution models in depth, and the Crossplane composition concept page returned 404. See [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]].
 - **Possible resolution from [[sources/research-reconciliation-loop]]:** Marginally helpful. The dossier describes the Crossplane managed resource loop (Observe, Create, Update, Delete, `Synced` and `Ready`, create tracking) and kro's single shared rate-limited queue with its retry and resync defaults from unreleased documentation. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[entities/crossplane]], [[entities/kro]], and [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
 - **Possible resolution from [[sources/research-idempotency]]:** Marginally helpful, and only for Crossplane. The dossier covers Crossplane's managed resource idempotency (external names, `external-create-pending`, `managementPolicies`, `initProvider`) but could not read kro's instance and reconciliation pages, so kro's handling of repeated reconciliation and partial failure is unknown. See [[entities/crossplane]] and [[entities/kro]].
+- **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on the deletion side of the comparison only. The dossier shows that kro deletes composed resources in reverse dependency waves and that Crossplane has no equivalent ordering for namespace deletion (issue 7801), but it gives no resolution of which graph model suits which case. See [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] and [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -159,6 +166,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-reconciliation-loop]]:** Partly helpful. The dossier gives kro's shared queue, default of 1 worker, token bucket of 10 events per second, 20-retry cap, and client QPS 100 with burst 150, and notes Flux jitter and Argo CD jitter, plus the controller-runtime rate-limited workqueue. It has no sharding data and no Crossplane concurrency data. See [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
 - **Possible resolution from [[sources/research-idempotency]]:** Marginally helpful. The dossier notes that Flux jitter and `retryInterval` and Argo CD's `maxDuration` limit retry load, and that many objects sharing one interval can spike API load. It has no informer, sharding, or concurrency data. See [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]].
 - **Possible resolution from [[sources/research-informers-reflectors-and-workqueues]]:** Partly helpful. The dossier explains the reflector, DeltaFIFO, indexer, and workqueue pipeline, the default limiter, cache memory growth, and relist behavior, and gives tool knobs: Flux `--concurrent` and Helm cache flags, Argo CD cluster sharding with processor counts and `GOMEMLIMIT`, and Crossplane `--max-reconcile-rate`. It has no Flux sharding data and no Crossplane performance guide. See [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] and [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]].
+- **Possible resolution from [[sources/research-finalizers]]:** Not helpful. The dossier names no adopter beyond the projects themselves, and it cannot supply scale data.
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -203,6 +211,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Complete the kro row of [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, ordering, cel
+- **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on deletion behavior. The dossier reads the Argo CD ApplicationSet deletion page, the Flux Kustomization reference (first 100 KB), the ACK deletion policy guide, and the Config Connector deletion page, all through a summarizing fetch, and it confirms retain and abandon defaults. It does not verify Flux's finalizer name. See [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
 
 ## Direct reads of Argo CD, Flux, ACK, and Config Connector failure modes — status: open
 
@@ -442,6 +451,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Write `examples/` pages for each documented adopter and add evidence to the pitfall findings.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** adoption, postmortems, gitops
+- **Possible resolution from [[sources/research-finalizers]]:** Largely helpful on deletion. Config Connector and ACK delete the cloud resource by default, with `abandon` and `retain` as opt-outs applied before the delete, and Argo CD's Application finalizer and Flux's `deletionPolicy` decide whether GitOps deletes cascade. The dossier does not test a prune of a Config Connector or ACK object directly. See [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]] and [[comparisons/deletion-policies-across-gitops-and-provider-tools]].
 
 ## Config Connector and ACK behavior under a GitOps agent — status: open
 
@@ -719,6 +729,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the Kubernetes CRD validation rules documentation on cost estimation.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cel, limits, crd
+- **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on mechanism only. The dossier found no named-company postmortem for stuck finalizers and says so, but it collects the causes (missing controller, always-failing cleanup, child finalizers) and the dangers of forced removal. See [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]].
 
 ## Named operator failure postmortems — status: open
 
@@ -730,6 +741,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Link each to the matching finding page.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** operators, postmortems, finalizers
+- **Possible resolution from [[sources/research-finalizers]]:** Not helpful, although the Kubebuilder book gives the finalizer pattern. See [[entities/kubebuilder]].
 
 ## Criteria for choosing an operator framework or language — status: open
 
@@ -752,6 +764,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Map each level to Crossplane and kro features if applicable.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** operators, maturity-model, crossplane, kro
+- **Possible resolution from [[sources/research-finalizers]]:** Marginally helpful. The dossier shows how Argo CD's Application finalizer and Config Connector's deletion policy behave at deletion, but not how either handles failures more broadly. See [[entities/argo-cd]] and [[entities/config-connector]].
 
 ## Argo CD and Config Connector as operators — status: open
 
@@ -762,6 +775,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the Argo CD and Config Connector architecture documentation directly.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** argo-cd, config-connector, operators
+- **Possible resolution from [[sources/research-finalizers]]:** Not helpful. The dossier does not cover Backstage.
 
 ## Backstage and the operator pattern — status: open
 
@@ -881,3 +895,58 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortem, api-server, outage
+
+## Argo CD finalizer variants and non-cascading deletes — status: open
+
+- **Question:** What do Argo CD's Foreground and Background finalizer variants do, and which options exist for deleting an Application without deleting its workloads beyond ApplicationSet `preserveResourcesOnDeletion`?
+- **Why it matters:** The dossier read only the ApplicationSet deletion page, so Argo CD's deletion behavior is incomplete. See [[examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Argo CD documentation on app deletion and finalizers.
+  - [ ] Update [[entities/argo-cd]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** argo-cd, finalizers, deletion
+
+## Flux Kustomization finalizer name and behavior — status: open
+
+- **Question:** What is Flux's own finalizer on a Kustomization, and how does `WaitForTermination` interact with the finalizers of child objects?
+- **Why it matters:** The dossier read about 100 KB of a page of about 121 KB and did not isolate the finalizer section or confirm `finalizers.fluxcd.io`. See [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the full Kustomization reference and the kustomize-controller source.
+  - [ ] Update [[entities/flux]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, finalizers, verification
+
+## Resolution of Crossplane issue 7801 on credential protection — status: open
+
+- **Question:** Was Crossplane issue 7801 resolved, and did a fix such as Secret finalizers, credential caching, or ordered teardown ship?
+- **Why it matters:** The issue is a proposal discussion and its outcome is unknown. See [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]] and [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the issue thread and any linked pull requests.
+  - [ ] Update the finding and the decision page.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, finalizers, credentials
+
+## How ACK, Config Connector, and kro name and remove their finalizers — status: open
+
+- **Question:** What finalizer names do ACK, Config Connector, and kro put on objects, and how and when does each remove them?
+- **Why it matters:** Their documentation pages do not explain it, so a comparison would need live objects or source code. See [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Inspect live objects or read each controller's source.
+  - [ ] Add the names to the entity pages.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** ack, config-connector, kro, finalizers
+
+## Cluster API issue 1514 on blocking deletion with a finalizer or annotation — status: open
+
+- **Question:** What does Cluster API issue 1514 conclude about blocking deletion with a finalizer or an annotation, and how does that relate to the hook annotations in the current book?
+- **Why it matters:** It was a search hit that the dossier did not read. See [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the issue and the current machine deletion hook documentation.
+  - [ ] Update [[entities/cluster-api]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cluster-api, finalizers, deletion

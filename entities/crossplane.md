@@ -53,6 +53,9 @@ sources:
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -130,3 +133,7 @@ The idempotency dossier adds detail on how Crossplane keeps creates safe. The ma
 ## Reconcile rate as an external API budget
 
 Crossplane issue 2595 led to a `--max-reconcile-rate` flag, merged for Crossplane 1.6 and adopted by providers, that caps reconciles per second and stands in for the cloud API call rate. It replaced scattered knobs (`QPS`, `PollInterval`, `MaxConcurrentReconciles`, `RateLimiter`). Crossplane's current performance guide was not read, so present defaults are unknown. [[sources/research-informers-reflectors-and-workqueues]] See [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]].
+
+## Finalizers, deletion policy, and teardown ordering
+
+A managed resource holds a finalizer until the external resource is fully gone, and `deletionPolicy` is Delete by default, with Orphan keeping the cloud resource. Enabled `managementPolicies` take precedence over `deletionPolicy`. Issue 7801 describes a failure in which, on namespace deletion, a credentials Secret without a finalizer disappears before managed resources finish cleanup and leaves them stuck Terminating. Its resolution was not confirmed. [[sources/research-finalizers]] See [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]], [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]], and [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]].

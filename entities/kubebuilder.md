@@ -35,6 +35,9 @@ sources:
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: [Kubebuilder Book]
 tags: [tool, operators, framework]
 ---
@@ -86,3 +89,7 @@ The good-practices page says directly that the reconciliation loop needs to be i
 ## Owns and field indexers in the CronJob tutorial
 
 The CronJob implementation page registers an informer on child Jobs with `Owns(&Job{})` so child changes reconcile the owner, and adds a field indexer on the owner reference so listing owned Jobs does not scan the whole cache. [[sources/research-informers-reflectors-and-workqueues]] See [[examples/kubebuilder-owns-and-a-field-indexer-wire-child-changes-to-the-owner]].
+
+## Finalizer pattern in the book
+
+The Kubebuilder Book's finalizer reference shows the Reconcile pattern: add the finalizer and update when the object is live and lacks it, and when the object is being deleted run cleanup, remove the finalizer, and update. It stresses idempotent cleanup and the extra RBAC update verb on `resources/finalizers`. [[sources/research-finalizers]] See [[examples/kubebuilder-reconcile-adds-a-finalizer-before-external-work-and-removes-it-after-cleanup]] and [[concepts/finalizers]].

@@ -47,6 +47,9 @@ sources:
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -118,3 +121,7 @@ The automated sync page says self-heal is off by default, pruning is blocked fro
 ## Cluster cache, sharding, and processor counts
 
 The application controller maintains a lightweight cluster cache from watch APIs. The high availability page scales it by sharding clusters across replicas (`legacy`, `round-robin`, `consistent-hashing`), by tuning `--status-processors` and `--operation-processors` (defaults 20 and 10 as extracted), and by setting `GOMEMLIMIT` to 80 to 90 percent of the container limit. [[sources/research-informers-reflectors-and-workqueues]] See [[examples/argo-cd-application-controller-shards-clusters-and-tunes-processor-counts]] and [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]].
+
+## Application finalizer and deletion cascade
+
+The `resources-finalizer.argocd.argoproj.io` finalizer on an Application makes deleting the Application also delete its deployed resources. Deleting an ApplicationSet cascades to its Applications, `--cascade=orphan` leaves Applications whose finalizer still deletes workloads later, and `syncPolicy.preserveResourcesOnDeletion` stops the finalizer from being added. The dossier did not read Argo CD's Foreground and Background finalizer variants or non-cascading Application deletes. [[sources/research-finalizers]] See [[examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads]] and [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].

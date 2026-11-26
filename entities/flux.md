@@ -53,6 +53,9 @@ sources:
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -130,3 +133,7 @@ The idempotency dossier treats the Kustomization as scheduled, repeated apply: e
 ## Concurrency and cache knobs
 
 The vertical scaling page says Flux raises parallel reconciles with `--concurrent` flags, caches Helm indexes in the source controller with `--helm-cache-max-size` and `--helm-cache-ttl`, prefers persistent volumes to EmptyDir for artifacts, and warns that tmpfs counts against pod memory. The page describes tuning and not the informer implementation or sharding. [[sources/research-informers-reflectors-and-workqueues]] See [[examples/flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs]] and [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
+
+## Deletion policy and finalizers
+
+The Kustomization reference says garbage collection also runs when a Kustomization is deleted. `spec.deletionPolicy` takes MirrorPrune (default), Delete, WaitForTermination, or Orphan, and WaitForTermination blocks until children have left etcd, so Flux's own finalizer waits on the finalizers of its children. The per-object `kustomize.toolkit.fluxcd.io/prune: disabled` annotation opts an object out of pruning. The dossier read about 100 KB of a page of about 121 KB and did not confirm the name `finalizers.fluxcd.io` from a primary source. [[sources/research-finalizers]] See [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]] and [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].

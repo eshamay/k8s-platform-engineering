@@ -29,8 +29,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/reconciliation-loop]] — level-based contract, mechanics, requeue semantics, tool timing, and pitfalls (active)
 - [[concepts/idempotency]] — safe repeated reconciliation at the loop, API, and cloud-API layers (active)
 - [[concepts/informers-reflectors-and-workqueues]] — reflector, DeltaFIFO, indexer, workqueue contract, resync, and tuning costs (active)
-- [[concepts/finalizers]] — block deletion until external cleanup (draft)
-- [[concepts/owner-references-and-garbage-collection]] — cascading deletion (draft)
+- [[concepts/finalizers]] — two-phase delete, API rules, controller pattern, tool policies, and the stuck-deletion catalog (active)
+- [[concepts/owner-references-and-garbage-collection]] — cascading deletion and propagation modes (draft)
 - [[concepts/conditions]] — machine-readable status (draft)
 
 ### Platform engineering and abstraction
@@ -83,6 +83,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-reconciliation-loop]] — research dossier on the reconciliation loop, 15 web sources, 2026-11-25
 - [[sources/research-idempotency]] — research dossier on idempotency, 15 web sources, 2026-11-25
 - [[sources/research-informers-reflectors-and-workqueues]] — research dossier on informers, reflectors, and workqueues, 14 web sources, 2026-11-25
+- [[sources/research-finalizers]] — research dossier on finalizers, 17 web sources, 2026-11-25
 
 ## Examples
 
@@ -171,6 +172,15 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]] — reconcile rate as API budget (draft)
 - [[examples/kubebuilder-owns-and-a-field-indexer-wire-child-changes-to-the-owner]] — child informers and indexers (draft)
 - [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]] — public outage commentary (draft)
+- [[examples/pv-protection-finalizer-keeps-an-in-use-volume-from-vanishing]] — the built-in storage guard (draft)
+- [[examples/kubebuilder-reconcile-adds-a-finalizer-before-external-work-and-removes-it-after-cleanup]] — the controller-author pattern (draft)
+- [[examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads]] — cascade and preserve switches (draft)
+- [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]] — four deletion policies (draft)
+- [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] — ordered teardown (draft)
+- [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]] — gated machine removal (draft)
+- [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]] — defaults and opt-outs (draft)
+- [[examples/stuck-terminating-namespace-fixed-through-the-finalize-subresource]] — last-resort namespace fix (draft)
+- [[examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete]] — command-level runbook (draft)
 
 ## Comparisons
 
@@ -202,6 +212,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]] — queues, jitter, workers, and resync (draft)
 - [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] — workers, cache, sharding, and rate caps (draft)
 - [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] — lost-create recovery and adoption (draft)
+- [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]] — what holds a parent and how teardown is ordered (draft)
 
 ## Decisions
 
@@ -225,6 +236,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/adopt-or-create-or-require-explicit-import]] — adoption default for existing cloud resources (draft)
 - [[decisions/external-name-annotation-or-spec-field]] — where the external identifier lives (draft)
 - [[decisions/recover-from-an-ambiguous-create-by-halting-searching-or-tagging]] — lost-create recovery options (draft)
+- [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]] — cascade versus retain defaults (draft)
+- [[decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller]] — speed versus guaranteed cleanup (draft)
+- [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]] — issue 7801 options (draft)
 
 ## Findings
 
@@ -307,6 +321,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/skipping-done-or-forget-on-the-workqueue-leaves-items-stuck-or-retrying]] — workqueue bookkeeping (draft)
 - [[findings/heavy-event-handlers-and-expensive-reconciles-waste-api-calls]] — handlers only enqueue (draft)
 - [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]] — many clients overload the API server (draft)
+- [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]] — the dangerous shortcut (draft)
+- [[findings/a-finalizer-added-after-the-delete-request-is-too-late-and-new-ones-are-refused]] — register before the delete (draft)
+- [[findings/cleanup-that-always-errors-or-assumes-the-external-resource-exists-strands-the-object]] — idempotent cleanup (draft)
+- [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]] — namespace delete ordering (draft)
+- [[findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone]] — controller gone, resources billing (draft)
+- [[findings/foreground-deletion-waits-only-for-dependents-with-blockownerdeletion-true]] — what the owner waits for (draft)
+- [[findings/machine-deletion-stalls-on-disruption-budgets-attached-volumes-and-failing-hooks]] — drain blockers (draft)
 
 ## Outputs
 

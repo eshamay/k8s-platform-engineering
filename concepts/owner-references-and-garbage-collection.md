@@ -8,6 +8,9 @@ sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: [ownerReferences]
 tags: [controllers]
 ---
@@ -29,3 +32,7 @@ Ownership is how a [[concepts/composite-resource]] cleans up its [[concepts/mana
 ## To research
 
 Foreground versus background deletion, cross-namespace ownership limits, and orphan policies.
+
+## Propagation modes and finalizers
+
+The Kubernetes garbage collection page defines three propagation modes. Background, the default, deletes the owner immediately and lets the garbage collector remove dependents later. Foreground sets `deletionTimestamp` and the `foregroundDeletion` finalizer on the owner and removes it only after dependents with `blockOwnerDeletion=true` are gone. Orphan uses the `orphan` finalizer to leave dependents behind. Owner references cannot cross namespaces, and `kubectl delete --cascade` selects the mode. [[sources/research-finalizers]] See [[concepts/finalizers]] and [[findings/foreground-deletion-waits-only-for-dependents-with-blockownerdeletion-true]].

@@ -11,6 +11,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: []
 tags: [deletion, retain, abandon, orphan]
 ---
@@ -32,3 +35,7 @@ Declarative deletion semantics propagate to real infrastructure, so every tool o
 ## Adoption and Crossplane rows from the idempotency dossier
 
 The idempotency dossier confirms ACK's `deletionPolicy: Retain` and Config Connector's `abandon` policy, and adds that Crossplane deletes an external resource only when its managed resource is deleted, with `managementPolicies` able to omit Delete and an empty list pausing the resource. [[sources/research-idempotency]] See [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]].
+
+## Additions from the finalizers dossier
+
+Crossplane belongs in the table: its default is Delete, and `deletionPolicy: Orphan` keeps the cloud resource, with enabled `managementPolicies` taking precedence. For Argo CD, the Application finalizer cascades to workloads unless `preserveResourcesOnDeletion` is set, so "does not prune by default" describes pruning during sync and not deleting the Application. [[sources/research-finalizers]] See [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]] and [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]].

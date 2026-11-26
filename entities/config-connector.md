@@ -29,6 +29,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -76,3 +79,7 @@ The operator-pattern dossier fetched no page on Config Connector, so its failure
 ## Idempotent create by acquisition
 
 The managing-and-deleting-resources page says that if a resource does not exist Config Connector creates it, and if a resource with the same name already exists in the organization, project, or folder it acquires and manages it. Resources with service-generated IDs can be acquired only through the `resourceID` field. Deleting the Kubernetes object deletes the cloud resource unless `cnrm.cloud.google.com/deletion-policy: abandon` is set. The dossier read only this page for Config Connector. [[sources/research-idempotency]] See [[examples/config-connector-acquires-an-existing-google-cloud-resource-by-name]] and [[findings/adopt-or-create-can-take-over-a-look-alike-resource]].
+
+## Deletion policy and finalizer behavior
+
+Deleting a Config Connector object deletes the Google Cloud resource by default. The annotation `cnrm.cloud.google.com/deletion-policy: abandon` keeps the resource, and it must be applied before the manifest is deleted. The official page does not discuss finalizers. A consultancy blog reports that the finalizer deletes a resource that production uses, and that deleting the GKE cluster stops the controller and orphans cloud resources that keep billing. [[sources/research-finalizers]] See [[findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone]] and [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]].

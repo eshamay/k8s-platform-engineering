@@ -26,6 +26,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -69,3 +72,7 @@ The ACK overview says the project ships one controller image per AWS service, ea
 ## Resource adoption policies
 
 The ACK adoption guide describes the `services.k8s.aws/adoption-policy` annotation with two values: `adopt-or-create` adopts an existing AWS resource or creates it, with the manifest as source of truth, and `adopt` imports strictly and fills the spec from AWS. The `adoption-fields` annotation names the identifier used to find the resource, such as a VPC ID, queue URL, SNS ARN, bucket name, or table name. Deleting the Kubernetes object deletes the AWS resource unless `deletionPolicy: Retain` is set, and the guide labels adoption a Beta feature. This fills the adoption gap noted above, though the dossier did not read ACK's idempotency behavior for creates beyond adoption. [[sources/research-idempotency]] See [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]], [[findings/adopt-or-create-can-take-over-a-look-alike-resource]], and [[decisions/adopt-or-create-or-require-explicit-import]].
+
+## Deletion policy
+
+By default ACK deletes the AWS resource and then the Kubernetes object. The `services.k8s.aws/deletion-policy: retain` annotation keeps the AWS resource, which the guide recommends for cluster migration and for S3 buckets and RDS databases. Lookup order is resource annotation, namespace annotation, then controller default, and retained resources can be re-imported with the adoption annotations. The page does not say how the ACK finalizer is named or removed. [[sources/research-finalizers]] See [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]] and [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]].

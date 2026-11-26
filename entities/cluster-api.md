@@ -32,6 +32,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -83,3 +86,7 @@ The Cluster API concepts page describes cluster lifecycle managed as custom reso
 ## Machine controller as a waiting reconciler
 
 The Machine controller sets owner references, waits for infrastructure and bootstrap provisioning, and matches Nodes to provider IDs. The documentation page does not describe requeue or pause mechanics. [[sources/research-reconciliation-loop]] See [[examples/cluster-api-machine-controller-waits-for-infrastructure-and-bootstrap-data]].
+
+## Machine deletion as a gated workflow
+
+A `deletionTimestamp` on a Machine starts a multi-phase teardown: pre-drain hooks, node drain, volume detach, pre-terminate hooks, infrastructure and bootstrap deletion, then node deletion. Blockers are PodDisruptionBudgets, terminating pods, attached volumes, failing hooks, and unreachable nodes, and `exclude-node-draining` and `nodeDrainTimeout` are the escape hatches. Cluster API issue 1514 on blocking deletion with a finalizer or annotation was a search hit that the dossier did not read. [[sources/research-finalizers]] See [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]] and [[findings/machine-deletion-stalls-on-disruption-budgets-attached-volumes-and-failing-hooks]].

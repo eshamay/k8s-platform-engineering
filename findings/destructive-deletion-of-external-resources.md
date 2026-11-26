@@ -14,6 +14,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-finalizers
+    hash: ca11dffc241b
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, deletion, finalizers, safety]
 ---
@@ -43,3 +46,7 @@ The ACK deletion-policy page confirms that the AWS resource is deleted first by 
 ## Deletion behavior in adopted resources
 
 The idempotency dossier adds that adoption interacts with deletion: in ACK and Config Connector, deleting the Kubernetes object deletes an adopted cloud resource unless a retain or abandon policy is set, and Crossplane deletes the external resource only when its managed resource is deleted, with `managementPolicies` able to omit Delete. [[sources/research-idempotency]] See [[findings/adopt-or-create-can-take-over-a-look-alike-resource]].
+
+## Evidence from the finalizers dossier
+
+A consultancy article reports that Config Connector deletes the Google Cloud resource through a finalizer even when production uses it, and that Crossplane, ACK, and Config Connector all delete by default with retain, abandon, or Orphan as the opt-out, applied before the delete. A GitOps prune or a mistaken manifest removal can trigger the cascade. [[sources/research-finalizers]] See [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]] and [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]].
