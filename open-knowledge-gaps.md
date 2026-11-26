@@ -15,7 +15,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#adoption-observe-only-and-ignore-differences-controls]] — open, unassigned
 - [[#argo-cd-versus-flux-head-to-head-behavior]] — open, unassigned
 - [[#current-crossplane-terminology-versus-the-early-claims-and-classes-model]] — open, unassigned
-- [[#informer-resync-semantics]] — open, unassigned
 - [[#origin-of-level-driven-not-edge-driven-guidance]] — open, unassigned
 - [[#incidents-caused-by-lost-events-or-edge-triggered-design]] — open, unassigned
 - [[#reconcile-defaults-for-crossplane-ack-and-cluster-api]] — open, unassigned
@@ -208,19 +207,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, terminology, history
 - **Possible resolution from [[sources/research-composite-resource]]:** Partly helpful. The v1.20 claims page and the v2 upgrade guide show that claims are a namespaced stand-in for a cluster-scoped XR in v1 and that v2 makes XRs namespaced and removes claims for new-style XRDs, and that native patch-and-transform is removed in favor of function pipelines. Claim support in v2 is not stated precisely in a primary page, and the 2018 claims-and-classes announcement itself was not read. See [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]].
-
-## Informer resync semantics — status: open
-
-- **Question:** What does an informer resync period actually do in client-go and controller-runtime, and how does it differ from a relist against the API server?
-- **Why it matters:** Tutorials say controllers re-list or resync periodically, but the dossier found no source that explains that resync replays cached state to handlers and does not refetch from the API server.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Walk through the client-go shared informer and reflector source.
-  - [ ] Update [[concepts/informers-reflectors-and-workqueues]] and [[concepts/level-triggered-vs-edge-triggered]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** informers, resync, client-go
-- **Possible resolution from [[sources/research-informers-reflectors-and-workqueues]]:** Marginally helpful. One source calls periodic resync a defense against reconciler bugs that is usually disabled, and the pitfalls blog lists misunderstanding it as a common error. No source explains what resync replays or whether it refetches from the API server. See [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]].
-- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled from client-go and controller-runtime source, and the user decides whether to close it. A resync delivers an update notification for every object in the informer's local cache and adds no interaction with the authoritative storage, `DeltaFIFO.Resync` re-queues keys from the local known-objects store, a zero period means no resync, and `HasSynced` is unrelated to resync. controller-runtime's `SyncPeriod` defaults to 10 hours with jitter, emits an artificial Update event that `GenerationChangedPredicate` filters out, and the documentation recommends `RequeueAfter` over shortening it. The word names different mechanisms in other tools: ACK's resync is a `RequeueAfter` and kro's flag text says "re list". Not settled: the source was read on default branches and not pinned to release tags. See [[findings/a-resync-replays-the-informers-local-cache-to-the-handlers-and-never-contacts-the-api-server]], [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]], and [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]].
 
 ## Origin of the Level driven, not edge driven guidance — status: open
 
@@ -1810,3 +1796,19 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Closed by:** Eric Shamay on 2026-11-26
 
 - **Possible resolution from [[sources/research-gap-m3-status-conditions]]:** Settled for direct controllers at release v1.162.0, and the user decides whether to close it. Shipped as designed: one `Ready` condition at a time, `Updating` and `UpToDate` reasons, a top-level `status.observedGeneration` on every status update, and events with the same reasons. Shipped differently: the failure reason is `UpdateFailed` (not `UpdateFailure`), and the messages are "Update call failed: ...", "Update in progress", and "The resource is up to date". Not found in code: the first-field-path message, a field-path helper, the `Updating:<operation-id>` reason (a future consideration in the design itself), and a per-condition `observedGeneration`. Caveat: the searches used GitHub code search, which may lag, and whether an open pull request implements the design was not checked. The question's wording `UpdateFailure` is the design's name. See [[findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code]] and [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] (now marked contradicted).
+
+## Informer resync semantics — status: closed (2026-11-26)
+
+- **Question:** What does an informer resync period actually do in client-go and controller-runtime, and how does it differ from a relist against the API server?
+- **Why it matters:** Tutorials say controllers re-list or resync periodically, but the dossier found no source that explains that resync replays cached state to handlers and does not refetch from the API server.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Walk through the client-go shared informer and reflector source.
+  - [ ] Update [[concepts/informers-reflectors-and-workqueues]] and [[concepts/level-triggered-vs-edge-triggered]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** informers, resync, client-go
+- **Resolution:** Settled from client-go and controller-runtime source. A resync delivers an update notification for every object in the informer's local cache and adds no interaction with the authoritative storage, `DeltaFIFO.Resync` re-queues keys from the local known-objects store, a zero period means no resync, and `HasSynced` is unrelated to resync. controller-runtime's `SyncPeriod` defaults to 10 hours with jitter, emits an artificial Update event that `GenerationChangedPredicate` filters out, and the documentation recommends `RequeueAfter` over shortening it. The word names different mechanisms in other tools: ACK's resync is a `RequeueAfter` and kro's flag text says "re list". Not settled: the source was read on default branches and not pinned to release tags. See [[findings/a-resync-replays-the-informers-local-cache-to-the-handlers-and-never-contacts-the-api-server]], [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]], and [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-informers-reflectors-and-workqueues]]:** Marginally helpful. One source calls periodic resync a defense against reconciler bugs that is usually disabled, and the pitfalls blog lists misunderstanding it as a common error. No source explains what resync replays or whether it refetches from the API server. See [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]].
+- **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled from client-go and controller-runtime source, and the user decides whether to close it. A resync delivers an update notification for every object in the informer's local cache and adds no interaction with the authoritative storage, `DeltaFIFO.Resync` re-queues keys from the local known-objects store, a zero period means no resync, and `HasSynced` is unrelated to resync. controller-runtime's `SyncPeriod` defaults to 10 hours with jitter, emits an artificial Update event that `GenerationChangedPredicate` filters out, and the documentation recommends `RequeueAfter` over shortening it. The word names different mechanisms in other tools: ACK's resync is a `RequeueAfter` and kro's flag text says "re list". Not settled: the source was read on default branches and not pinned to release tags. See [[findings/a-resync-replays-the-informers-local-cache-to-the-handlers-and-never-contacts-the-api-server]], [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]], and [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]].
