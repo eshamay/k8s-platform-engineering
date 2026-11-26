@@ -6,7 +6,7 @@ created: 2026-11-26
 updated: 2026-11-26
 sources:
   - id: research-gap-b1-recheck-flux-k8s
-    hash: c78dc9a9635e
+    hash: 636010fe6081
     ingested: 2026-11-26
 aliases: []
 tags: [flux, helm, kubernetes, controller-runtime, research-dossier, gap-closing, targeted-pass, verification, source-code]
@@ -15,7 +15,7 @@ tags: [flux, helm, kubernetes, controller-runtime, research-dossier, gap-closing
 # Research dossier: recheck of Flux and Kubernetes gaps (b1-recheck-flux-k8s)
 
 > [!NOTE]
-> **Raw file:** `raw/research-gap-b1-recheck-flux-k8s.md` (sha256 prefix c78dc9a9635e)<br>
+> **Raw file:** `raw/research-gap-b1-recheck-flux-k8s.md` (sha256 prefix 636010fe6081; revised from c78dc9a9635e, see Revision note)<br>
 > **Kind:** Verified research dossier for gap cluster b1-recheck-flux-k8s, dated 2026-11-26<br>
 > **Ingested:** 2026-11-26 as a targeted pass over the Flux, Helm, Kubernetes, and controller-runtime pages that earlier dossiers left under "Not settled"<br>
 > **Caveat:** The evidence is Go source at tagged refs, Markdown documentation, KEP files, changelogs, and issue and pull request threads read through the gh CLI, plus three scraped pages. No cluster was run, so behavior inferred from code (such as the unregistered StatefulSet metric at v1.36.0) was not tested live.
@@ -68,6 +68,10 @@ For Kubernetes it explains why the Mutating Admission Policy docs say v1.30 (the
 - The KEP-1040 README says the fair-queuing solution "allocating the available seats equally rather than with max-min fairness" sometimes "pretends that a queue uses more seats than it can". It gives `width_approx(n) = min(A, ceil(N / E))` with E = 1 / B, a back-of-envelope memory-dominance point of about 400,000 objects, and an unfinished "[TODO: describe how `N` is estimated.]". VERIFIED.
 - The KEP-1040 README names a failure mode in which a client that does not finish reading a large response can occupy "(hand size) X (max width = 10) seats" (linked to Kubernetes issue 115409), and its production readiness review says "a non-negligible latency is added to API calls". VERIFIED.
 - The earlier scale figures (SIG Scalability, Gardener, Upbound, Argo CD processors, Crossplane) were not reread in this pass and stand as recorded. UNVERIFIED here.
+
+## Revision note
+
+The raw file was revised on 2026-11-26 after a second adversarial verification pass. It re-fetched the Flux jitter source, the helm-controller changelog and flags, the Mutating Admission Policy gate history, the StorageVersionMigration source at v1.37.0, the controller-runtime requeue source, the staleness gates and metrics, and the KEP 5647 and KEP-1040 claims through `gh`, and every one reproduced. No claim changed and no correction was needed beyond the four already recorded. The pass did not re-fetch the rendered kubernetes.io and fluxcd.io pages or the helm.sh overview, and it left unchecked the KEP-1040 test-coverage figures beyond the queueset line, the ReplicaSet `Register` call at both tags, the body of pull request 3574 beyond "Fixes #808", and the `MonitorInformerStaleness` code search. The pages written at seq 53 keep their original hash because none of their claims changed.
 
 ## Not found
 

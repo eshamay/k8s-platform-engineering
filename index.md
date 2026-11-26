@@ -135,7 +135,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/spotify-kubecon-2019-gke-cluster-deletion-transcript]] — transcript of Spotify's KubeCon Europe 2019 talk on deleting production GKE clusters, 2026-11-26
 - [[sources/spotify-kubecon-2019-keynote-slides-with-notes]] — David Xia's slide deck with speaker notes for the Spotify talk, dated 2019-05-22
 - [[sources/research-gap-b1-recheck-kro-crossplane]] — verified dossier (revised snapshot, second verification pass) rechecking kro v0.9.4 and v0.10.0 tuning, requeue, conditions, and states, and Crossplane v2.5.0 readiness, status writes, server-side apply, and scaling defaults from source (active)
-- [[sources/research-gap-b1-recheck-flux-k8s]] — verified dossier rechecking the Flux jitter default and the five-minute wording origin, helm-controller and Helm 4 server-side apply, the Mutating Admission Policy v1.30 gate, StorageVersionMigration progress, Requeue and issue 808, v1.36 staleness metrics, and KEP-1040 (active)
+- [[sources/research-gap-b1-recheck-flux-k8s]] — verified dossier (revised snapshot, second verification pass) rechecking the Flux jitter default and the five-minute wording origin, helm-controller and Helm 4 server-side apply, the Mutating Admission Policy v1.30 gate, StorageVersionMigration progress, Requeue and issue 808, v1.36 staleness metrics, and KEP-1040 (active)
 - [[sources/research-gap-m1-finalizers]] — verified dossier on Argo CD, Flux, ACK, Config Connector, and kro finalizer names and removal, Crossplane issue 7801, and Cluster API issue 1514, 2026-11-26 (active)
 
 ## Examples

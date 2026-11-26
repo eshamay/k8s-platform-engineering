@@ -724,3 +724,13 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 - fact conflicts: 0
 - gaps drafted: 0 (the possible-resolution note under the open kro status schema and Crossplane v2 status propagation gap now carries the corrected function-auto-ready wording; no gap was closed, and the closed and open notes written at seq 52 otherwise stand)
 - rationale: The raw dossier was edited after seq 52 by a second verification pass. Every re-fetched value reproduced except the function-auto-ready description, and the stale "not found" bullet on the kro collection limit was superseded by the two flags already recorded in the wiki. The source page and the readiness finding carry the new hash and a revision note, and the other pages written at seq 52 keep the first hash because no claim on them changed. The existing outputs todo that cites the readiness finding stays valid. Nothing under outputs/ was touched.
+
+## [2026-11-26] ingest | Recheck of Flux and Kubernetes gaps, revised snapshot (b1-recheck-flux-k8s)
+- source: [[sources/research-gap-b1-recheck-flux-k8s]]
+- raw: `raw/research-gap-b1-recheck-flux-k8s.md` (sha256: 636010fe6081; supersedes content hash c78dc9a9635e of the same raw file)
+- pages touched: [[sources/research-gap-b1-recheck-flux-k8s]], [[index]]
+- new pages: none
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 0 (the possible-resolution notes and the updates to closed gaps written at seq 53, and the follow-up todos, stand unchanged; no gap was closed)
+- rationale: The raw dossier was edited after seq 53 by a second adversarial verification pass. It re-fetched the Flux jitter, helm-controller changelog and flags, Mutating Admission Policy gate history, StorageVersionMigration v1.37.0 source, controller-runtime requeue source, staleness gates and metrics, and the KEP 5647 and KEP-1040 claims, and all reproduced with no new corrections. No claim changed, so the source page carries the new hash and a revision note, and the pages written at seq 53 keep the first hash. Nothing under outputs/ was touched and no todo was added.
