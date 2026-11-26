@@ -68,6 +68,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-composition
+    hash: f57d89652816
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -167,3 +170,9 @@ The managed resource dossier adds the operating details of Crossplane's lowest l
 The composite resources dossier read the XR, XRD, Composition, claims, v2 upgrade, and function design pages. An XR is selected onto a Composition by `compositeTypeRef`, can follow or pin CompositionRevisions, and can be paused or forced to reconcile by annotation. A Composition is a pipeline of gRPC functions that receive observed state and return desired state, and since v1.17 this is the standard form. In v1 a namespaced claim fronted a cluster-scoped XR, while v2 makes the XR namespaced, removes claims for new-style XRDs, removes native patch-and-transform, ControllerConfig, external secret stores, and XR connection details, and has no automated migration for v1 cluster-scoped XRs. The alpha composite deletion policy can be bypassed by Argo CD's foreground propagation. [[sources/research-composite-resource]]
 
 The project also shipped `function-kro` in March 2026. See [[concepts/composite-resource]], [[concepts/composition]], [[entities/function-kro]], [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]], [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], [[findings/crossplane-v2-removed-features-and-offers-no-automated-migration-for-v1-composites]], [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]], and [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]]. Claim support in v2 rests partly on a third-party blog, so it needs checking against the v2 XRD documentation.
+
+## Composition authoring history and function operations
+
+The Compositions dossier traces patch and transform, then composition functions, then Crossplane 2.0. Functions are long-running gRPC servers deployed by the package manager, reached through a headless Service and secured with mTLS. Composites pin to a CompositionRevision, are polled every 60 seconds by default, and function calls therefore scale with composite count. Composition functions do not run on deletion. Version 2.0 (12 August 2025) made XRs namespaced by default, removed the claim and XR split, added the `Operation` type, and added activation policies so a cluster installs only the managed resource CRDs it needs. [[sources/research-composition]]
+
+Operationally, a function that omits a resource from desired state deletes it, see [[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]], and load and memory are discussed in [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]]. Case studies are [[examples/vshn-appcat-sells-self-service-databases-queues-and-object-storage-through-composition-functions]] and [[examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function]]. Running under Argo CD needs annotation-based resource tracking, custom Lua health checks, and a higher client QPS (50 by default, 300 suggested), see [[entities/argo-cd]].

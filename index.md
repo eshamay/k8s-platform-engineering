@@ -89,6 +89,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-conditions]] — research dossier on status conditions, 16 web sources, 2026-11-25
 - [[sources/research-managed-resource]] — Research dossier: Managed Resources (active)
 - [[sources/research-composite-resource]] — research dossier on composite resources and resource graphs, 16 web sources, 2026-11-25
+- [[sources/research-composition]] — research dossier on Crossplane Compositions, kro graphs, and neighbouring tools, 19 web sources, 2026-11-25
 
 ## Examples
 
@@ -213,6 +214,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/a-platform-api-hides-provider-features-to-enforce-tagging-and-tenant-segregation]] — governance through a platform API (draft)
 - [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]] — the seam between two loops (draft)
 - [[examples/a-composition-function-pipeline-turns-observed-state-into-desired-state]] — how function pipelines work (draft)
+- [[examples/a-microservice-xr-creates-a-database-and-its-workload-from-one-namespaced-object]] — Crossplane 2.0 illustration of one object creating database and workload (draft)
+- [[examples/a-scalable-composition-lets-hpa-and-keda-drive-an-xr-through-the-scale-subresource]] — XR exposes the scale subresource for HPA and KEDA (active)
+- [[examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function]] — 1,000-line RDS files replaced by a looping function (active)
+- [[examples/vshn-appcat-sells-self-service-databases-queues-and-object-storage-through-composition-functions]] — VSHN's AppCat service catalogue on composition functions (active)
 
 ## Comparisons
 
@@ -251,6 +256,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]] — who defines Ready (draft)
 - [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]] — import, read-only, and keep controls (draft)
 - [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]] — functions versus CEL graphs (draft)
+- [[comparisons/where-the-expressiveness-bound-sits-in-crossplane-functions-and-kro-cel]] — bounded contract versus bounded language (draft)
 - [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] — claims versus namespaced XRs (draft)
 - [[comparisons/helm-versus-kro-versus-crossplane-as-platform-abstraction-layers]] — three altitudes of abstraction (draft)
 - [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]] — per-instance pinning versus one latest revision (draft)
@@ -398,6 +404,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]] — same field, different work (draft)
 - [[findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion]] — schema as contract (draft)
 - [[findings/composition-functions-add-moving-parts-that-must-be-healthy]] — operational cost of functions (draft)
+- [[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]] — partial desired state deletes resources (active)
+- [[findings/patch-and-transform-cannot-branch-loop-or-patch-between-composed-resources]] — why teams left patch and transform for code (active)
+- [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]] — function load and memory limits (draft)
 - [[findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane]] — stale learning material (draft)
 
 ## Outputs

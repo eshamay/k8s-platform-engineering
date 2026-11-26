@@ -62,6 +62,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-composition
+    hash: f57d89652816
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -153,3 +156,7 @@ Crossplane's integration guide says Argo CD should use annotation-based resource
 ## Hosting composite resources
 
 For composite resources, Argo CD's default foreground deletion makes Crossplane ignore its composite deletion policy and emit a warning event, and the fix is the `PrunePropagationPolicy=background` sync option with a background finalizer. For kro instances, every templated child needs an ownerReference and an `argocd.argoproj.io/tracking-id` annotation so Argo CD tracks it. [[sources/research-composite-resource]] See [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]] and [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]]. This partly informs the open question on `PrunePropagationPolicy` in [[open-knowledge-gaps]].
+
+## Ordering and tuning for generated resources
+
+Argo CD orders resources with hooks (PreSync, Sync, PostSync, SyncFail, Skip, PreDelete, PostDelete) and sync waves within a phase. A failed PreSync hook stops the sync, wave order is reversed during pruning, and `ttlSecondsAfterFinished` on hook Jobs is discouraged because Argo CD must read the Job outcome. Compared with kro, Argo CD ordering is explicit and annotation-based while kro's is inferred from data references. For Crossplane it needs annotation-based tracking, custom Lua health checks, and a higher Kubernetes client QPS, and for kro each templated resource needs a tracking-id annotation and an owner reference. [[sources/research-composition]] See [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]] and [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]].

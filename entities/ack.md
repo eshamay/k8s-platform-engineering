@@ -38,6 +38,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-composition
+    hash: f57d89652816
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -97,3 +100,7 @@ ACK offers the annotation `services.k8s.aws/read-only: "true"`, under which the 
 ## Leaf provider beneath kro
 
 The composite resources dossier shows ACK as a leaf provider. The Amazon EKS guide composes ACK S3 Buckets with ConfigMaps and Deployments in a kro RGD and passes the bucket ARN from `status.ackResourceMetadata` into the application's configuration. The dossier read none of ACK's own documentation on readiness or deletion. [[sources/research-composite-resource]] See [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]].
+
+## Operational topics inherited by a composition layer
+
+The ACK overview says ACK "lets you define and use AWS service resources directly from Kubernetes" and ships one controller image per AWS service, which avoids CRD sprawl by construction. Its sidebar lists drift recovery, adoption, retention after deletion, field export into ConfigMaps or Secrets, and multi-account and multi-region management, which are the problems a composition layer inherits. The page is thin and the site is marked deprecated, so verify against the current site. [[sources/research-composition]]

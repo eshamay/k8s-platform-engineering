@@ -59,6 +59,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-composition
+    hash: f57d89652816
+    ingested: 2026-11-25
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -150,3 +153,9 @@ Each spec change becomes an immutable GraphRevision, and if the latest revision 
 ## Hosting under Argo CD and use inside Crossplane
 
 For Argo CD, the FAQ says to add an ownerReference and an `argocd.argoproj.io/tracking-id` annotation to every templated resource, which also partly answers how kro marks children. AWS offers kro as a managed EKS capability that composes ACK resources. The Crossplane project's `function-kro` embeds kro's graph builder in a pipeline step. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]], [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]], [[entities/function-kro]], and [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]]. [[sources/research-composite-resource]]
+
+## Compositions dossier: CEL bounds, ordering, and maturity
+
+The kro overview (version 0.10.0) says a ResourceGraphDefinition declares a SimpleSchema and CEL-bound resource templates, and that kro infers the dependency DAG, generates a CRD, and starts a controller. Every CEL field reference creates an edge, creation follows topological order and deletion runs in reverse, circular references fail validation, and the order appears at `status.topologicalOrder`. kro waits for expressions to be resolvable before creating a resource. It began as an AWS experiment in November 2024, renamed `ResourceGroup` to `ResourceGraphDefinition`, became a joint AWS, Azure, and Google Cloud project, and its API is `v1alpha1`. [[sources/research-composition]]
+
+CEL was chosen because it terminates, has no side effects, and is type-checked at apply time, see [[comparisons/where-the-expressiveness-bound-sits-in-crossplane-functions-and-kro-cel]]. The dossier did not read kro's Readiness or Controller Tuning pages, which remains tracked in [[open-knowledge-gaps]].

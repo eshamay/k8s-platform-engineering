@@ -11,6 +11,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-composition
+    hash: f57d89652816
+    ingested: 2026-11-25
 aliases: [Crossplane Composition, composition function pipeline]
 tags: [abstraction, crossplane]
 ---
@@ -46,3 +49,11 @@ The dossier recommends `crossplane render` for local runs, unit tests for functi
 ## To research
 
 Performance of function pipelines at scale and the status of the alpha kro `Graph` API. Both are tracked in [[open-knowledge-gaps]].
+
+## Authoring models and pitfalls in the Compositions dossier
+
+Crossplane has used three authoring models. Patch and transform is a static list of base resources plus patches and is deliberately not Turing complete. Composition functions (alpha in v1.11, beta in v1.14) use `mode: Pipeline`, where each step calls a gRPC function that receives observed and desired state and returns a new desired state, and Crossplane rather than the function talks to the API server. Patch and transform survives as `function-patch-and-transform`, the legacy `mode: Resources` was deprecated in v1.17, and Crossplane 2.0 lets a Composition include any Kubernetes resource. [[sources/research-composition]]
+
+Composition is one answer to the cost of writing a bespoke controller per platform API. The recurring pitfalls are that a function omitting a resource deletes it ([[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]]), that patch and transform cannot branch or loop ([[findings/patch-and-transform-cannot-branch-loop-or-patch-between-composed-resources]]), that function load scales with composite count ([[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]]), and that editing a live Composition affects pinned composites only through revisions ([[findings/editing-a-live-composition-can-disrupt-or-replace-existing-composed-resources]]). The two expressiveness bounds are compared in [[comparisons/where-the-expressiveness-bound-sits-in-crossplane-functions-and-kro-cel]].
+
+Real-world uses are collected in [[examples/vshn-appcat-sells-self-service-databases-queues-and-object-storage-through-composition-functions]], [[examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function]], [[examples/a-scalable-composition-lets-hpa-and-keda-drive-an-xr-through-the-scale-subresource]], and [[examples/a-microservice-xr-creates-a-database-and-its-workload-from-one-namespaced-object]]. Flux `dependsOn` and Argo CD sync waves order whole manifest sets without defining a new API, so they sit beside composition rather than inside it, see [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]].

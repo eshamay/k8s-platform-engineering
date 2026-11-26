@@ -44,6 +44,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-composition
+    hash: f57d89652816
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -111,3 +114,7 @@ Config Connector acquires an existing Google Cloud resource when the manifest na
 ## Leaf provider beneath composite layers
 
 The composite resources dossier shows Config Connector as a leaf provider. The Google Cloud kro announcement describes a platform admin exposing a GKE cluster API whose underlying resources are Config Connector objects for the cluster, node pools, IAM service account and policy member, and policies, with only cluster name, node pool name, max nodes, location, and optional networks exposed to users. The dossier read none of Config Connector's own pages on readiness, deletion, or abandon semantics. [[sources/research-composite-resource]] See [[examples/self-service-gke-cluster-with-kro]] and [[comparisons/helm-versus-kro-versus-crossplane-as-platform-abstraction-layers]].
+
+## Permission model beneath compositions
+
+Config Connector reconciles with its own service account identity, not the submitter's, so the right to create objects in a Config Connector namespace is effectively the right to change cloud resources. Google recommends tightly controlling who can create them, for example by applying them from a trusted repository. The dossier states this for Config Connector only and calls its extension to Crossplane and kro an inference. It also describes Config Connector as a managed-resource layer that compositions and kro graphs wrap, and says nothing about readiness or deletion-policy interplay when wrapped. [[sources/research-composition]] See [[findings/blast-radius-and-privilege-centralization]].

@@ -44,6 +44,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-composition
+    hash: f57d89652816
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -111,3 +114,7 @@ Cluster API replaced its custom condition model (a mandatory all-summarizing `Re
 ## ClusterClass as the composite pattern for clusters
 
 ClusterClass is a reusable class plus a small `topology` on a Cluster that a controller expands into machine and infrastructure objects. It is described as "a powerful abstraction implemented on top of existing interfaces" and gated by `ClusterTopology`. The page read labels the feature experimental or alpha, which may be stale, and the CAEP was not read. [[sources/research-composite-resource]] See [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]] and [[concepts/composite-resource]].
+
+## ClusterClass status in the Compositions dossier
+
+The Compositions dossier cites the Cluster API book page for ClusterClass, which says it reduces boilerplate and enables flexible customization through a `topology` on the Cluster, gated by `ClusterTopology`. The author and consumer split mirrors Crossplane's XRD and Composition versus XR split. The page is labelled alpha and may be stale, so confirm current status before presenting it as stable. [[sources/research-composition]]

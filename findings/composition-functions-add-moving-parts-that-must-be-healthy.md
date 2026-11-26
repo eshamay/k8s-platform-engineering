@@ -8,6 +8,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-composition
+    hash: f57d89652816
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, crossplane, functions, operations, kro]
 ---
@@ -25,3 +28,7 @@ A team that adopts many function languages carries an operational dependency for
 ## Mitigations
 
 The Crossplane docs and blog recommend `crossplane render`, unit tests, and a Kuttl-based test loop, and `function-kro` offers kro-style CEL checking inside a pipeline. See [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], [[examples/a-composition-function-pipeline-turns-observed-state-into-desired-state]], and [[entities/function-kro]].
+
+## Further operational evidence
+
+The Compositions dossier adds that OpenShift's crun runtime initially could not run functions, which is a runtime-compatibility dependency, and that function load and memory become new capacity concerns, see [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]] and [[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]]. [[sources/research-composition]]

@@ -100,6 +100,8 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#clusterclass-maturity-and-the-managed-topologies-proposal]] — open, unassigned
 - [[#scale-of-composite-resources-per-controller]] — open, unassigned
 - [[#feature-parity-of-function-kro-with-standalone-kro]] — open, unassigned
+- [[#crossplane-function-runner-architecture-history]] — open, unassigned
+- [[#config-connector-and-ack-behavior-when-wrapped-by-compositions]] — open, unassigned
 
 ---
 
@@ -134,6 +136,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-conditions]]:** Partly helpful on the last step. The dossier shows that kustomize-controller waits for applied resources to become healthy (kstatus for compatible custom resources, CEL `healthCheckExprs` for others) before marking a Kustomization `Ready`, that Flux publishes `Ready`, `Reconciling`, and `Stalled` with `observedGeneration`, and that this gating unblocks `dependsOn` dependents. It does not trace source fetch or finalizers. See [[concepts/conditions]] and [[entities/flux]].
 - **Possible resolution from [[sources/research-managed-resource]]:** Only marginally helpful. The dossier shows one downstream step, that a Flux prune of a managed resource object triggers the provider's delete of the cloud resource unless Delete is excluded from `managementPolicies`, and that Crossplane's reconciler phases are Connect, Observe, Create, Update, Delete. It does not trace source fetch, apply, or condition updates. See [[entities/flux]] and [[concepts/managed-resource]].
 - **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier read no Flux documentation and says nothing about Flux health checks, `dependsOn`, or CRD ordering with composites. It covers only the Argo CD interaction. A new gap, [[#flux-handling-of-composite-resources-and-kro-instances]], tracks this.
+- **Possible resolution from [[sources/research-composition]]:** Only marginally helpful. The dossier adds Flux `dependsOn`, health checks, and pruning and Argo CD sync waves, hooks, and reversed prune order for the ordering and readiness steps of the trace. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[entities/argo-cd]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -165,6 +168,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-conditions]]:** Partly helpful on the status side. Crossplane fixes the meaning of `Synced` and `Ready` in the framework, while kro lets the RGD author define `readyWhen` and custom instance conditions in CEL, which hides kro's built-in conditions. kro's instance-level built-in names were not read. See [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]].
 - **Possible resolution from [[sources/research-managed-resource]]:** Not helpful. The dossier covers the managed resource layer under compositions and says kro adoption and orphaning behavior was not read, so it cannot compare Compositions with kro.
 - **Possible resolution from [[sources/research-composite-resource]]:** Largely helpful. The dossier reads the primary pages for both sides. Crossplane runs a pipeline of gRPC functions that receive observed state and return desired state, with CompositionRevisions that XRs can pin, while kro puts schema and implementation in one RGD, infers a DAG from CEL references, validates at creation, creates in topological order, deletes in reverse, gates dependents with `readyWhen`, and snapshots immutable GraphRevisions with no fallback. It also shows the two converging through `function-kro`. It gives no scale numbers and no incident evidence, and the v2 claim details and the kro Graph API remain unverified. See [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]], and [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]].
+- **Possible resolution from [[sources/research-composition]]:** Partly helpful. The dossier traces Crossplane's three authoring models and kro's CEL-based RGD and states that no source compares them head to head, so the first-draft synthesis is in [[comparisons/where-the-expressiveness-bound-sits-in-crossplane-functions-and-kro-cel]]. kro's Readiness page and the Graph versus RGD readiness difference were not read.
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -198,6 +202,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-conditions]]:** Marginally helpful. The dossier notes that bumping `lastTransitionTime` on every reconcile adds API traffic, but it gives no scale numbers or sharding data. See [[findings/updating-lasttransitiontime-on-every-reconcile-turns-a-condition-into-a-heartbeat]].
 - **Possible resolution from [[sources/research-managed-resource]]:** Partly helpful on the CRD side. The dossier gives numbers for the cost of one CRD per external resource type (roughly 2,000 CRDs for three clouds, more than 4 MiB of API server memory per CRD, about 300 group-versions to discover, GKE control planes unresponsive at about 680 CRDs) and the Crossplane v2 remedy of activation policies, plus Argo CD's client QPS of 300. It has no informer, workqueue, or sharding data for Flux or Crossplane controllers. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]].
 - **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier says no page gives numbers for how many composites or children a single controller handles, and kro's tuning pages were not read. A new gap, [[#scale-of-composite-resources-per-controller]], tracks this.
+- **Possible resolution from [[sources/research-composition]]:** Marginally helpful. The dossier gives function-call arithmetic for Crossplane (60-second poll, so 100 XRs with one function step make 100 calls per minute) and the Argo CD client QPS advice (50 by default, 300 suggested for many CRDs), but no informer or sharding detail. See [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -246,6 +251,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** kro, ordering, cel
 - **Possible resolution from [[sources/research-composite-resource]]:** Largely helpful. The RGD overview and readiness pages explain that kro infers dependencies from CEL references into a DAG, records the order in `status.topologicalOrder`, creates in topological order and deletes in reverse, creates independent resources in parallel, and rejects cycles at definition time. `readyWhen` defines per-resource readiness and gates dependents in an RGD, but only reports health in the alpha `Graph` API. The kro row of the ordering comparison can now be filled, though the instance-level conditions remain unread. See [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]] and [[entities/kro]].
 - **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on deletion behavior. The dossier reads the Argo CD ApplicationSet deletion page, the Flux Kustomization reference (first 100 KB), the ACK deletion policy guide, and the Config Connector deletion page, all through a summarizing fetch, and it confirms retain and abandon defaults. It does not verify Flux's finalizer name. See [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
+- **Possible resolution from [[sources/research-composition]]:** Partly helpful. The Dependencies and Ordering page confirms that every CEL reference is a DAG edge (even with `?.`), creation is topological and deletion reversed, cycles fail validation, and kro waits for expressions to be resolvable. It says readiness gating differs between the RGD and the alpha Graph APIs but the Readiness page was not read. See [[entities/kro]].
 
 ## Direct reads of Argo CD, Flux, ACK, and Config Connector failure modes — status: open
 
@@ -1207,3 +1213,25 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find independent reports of running it in production.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** function-kro, kro, crossplane, verification
+
+## Crossplane function runner architecture history — status: open
+
+- **Question:** Which parts of the earlier Crossplane function runner model (a gRPC runner as a sidecar to the Crossplane pod, and a container-runner path) still exist, given that the design doc describes functions as Deployments behind a headless Service?
+- **Why it matters:** The VSHN post from 2023 and the design doc disagree on the runtime shape, and operators need the current model to size and secure functions. See [[sources/research-composition]] and [[entities/crossplane]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current Crossplane Function package and runtime documentation.
+  - [ ] Update [[entities/crossplane]] and [[findings/composition-functions-add-moving-parts-that-must-be-healthy]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, composition-functions, verification
+
+## Config Connector and ACK behavior when wrapped by compositions — status: open
+
+- **Question:** How do Config Connector and ACK readiness conditions and deletion policies interact when their resources are composed by a Crossplane Composition or a kro ResourceGraphDefinition?
+- **Why it matters:** Both are the managed-resource layer that compositions typically wrap, but the dossier's pages say nothing about this interplay, and the ACK drift recovery and deletion policy topics were not opened. See [[sources/research-composition]], [[entities/config-connector]], and [[entities/ack]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the ACK deletion policy and drift recovery guides and the Config Connector deletion and readiness pages.
+  - [ ] Find a worked example of a graph wrapping ACK or Config Connector resources and record how readiness propagates.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** ack, config-connector, composition, readiness

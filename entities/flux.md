@@ -65,6 +65,9 @@ sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-composition
+    hash: f57d89652816
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -158,3 +161,7 @@ Flux's kustomize-controller reports `Ready`, `Reconciling`, and `Stalled` plus `
 ## Prune cascades into managed resource deletion
 
 With `spec.prune: true`, a Kustomization deletes objects that disappeared from Git, tracked through `.status.inventory`, and the annotation `kustomize.toolkit.fluxcd.io/prune: disabled` exempts an object. For managed resources a Git removal becomes a prune of the object followed by a provider delete of the cloud resource, unless Delete is excluded from `managementPolicies`. The dossier read only the first 100,000 of about 121,000 characters of the Flux page. [[sources/research-managed-resource]] See [[findings/unintended-deletion-through-prune]] and [[decisions/choose-management-policies-for-an-imported-resource]].
+
+## Ordering and pruning of manifest sets in the Compositions dossier
+
+The Compositions dossier presents Flux as handling ordering, health, and garbage collection at the level of whole manifest sets, without defining a new API. `dependsOn` applies a Kustomization only after the referenced ones are Ready, `healthChecks`, `wait`, and CEL `healthCheckExprs` define readiness (a wrong CEL expression stalls until timeout), and `prune: true` garbage-collects objects removed from Git with a deletion policy for composed children that should be orphaned or retained. [[sources/research-composition]] See [[examples/flux-dependson-and-health-checks-gate-rollout]] and [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]].
