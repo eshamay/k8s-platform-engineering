@@ -506,3 +506,7 @@ Closing summary:
 
 ## [2026-11-26] lint | k8s-platform-engineering
 Structural lint over 651 content pages (concepts 27, entities 37, sources 43, examples 214, comparisons 53, decisions 36, findings 234, outputs 7). One index drift found and auto-fixed (the dispositions finding was missing from index.md). No frontmatter drift, dangling links, orphans, supersede violations, contradicted pages, stale pages, or thin concept pages. irrefutable-facts.md and purpose.md are untouched with warning headers intact; open-knowledge-gaps.md has 3 closed gaps, all with a human closer and none closed by an agent. Check 15 found no derived registry and the outputs carry no draws_on pointers, so it was a no-op. No gaps were closed and no pages were archived.
+
+## [2026-11-26] gaps | close | Claim support and scope in Crossplane v2 XRDs
+- closed by: Eric Shamay
+- resolution: Settled: v2 XRDs have scope Namespaced or Cluster and reject claims; LegacyCluster exists only on the v1 XRD API and keeps claims ([[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]], [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]]). Not settled: no removal date for claims was found.

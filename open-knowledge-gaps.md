@@ -91,7 +91,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#behavior-of-namespaced-v2-managed-resources-when-a-namespace-is-deleted-while-the-provider-is-down]] — open, unassigned
 - [[#per-provider-external-name-defaults]] — open, unassigned
 - [[#config-connector-conflict-handling-when-two-objects-target-one-cloud-resource]] — open, unassigned
-- [[#claim-support-and-scope-in-crossplane-v2-xrds]] — open, unassigned
 - [[#kro-graph-api-status-and-released-version-facts]] — open, unassigned
 - [[#flux-handling-of-composite-resources-and-kro-instances]] — open, unassigned
 - [[#clusterclass-maturity-and-the-managed-topologies-proposal]] — open, unassigned
@@ -1125,18 +1124,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** config-connector, adoption, conflicts
 
 
-## Claim support and scope in Crossplane v2 XRDs — status: open
-
-- **Question:** What do the primary Crossplane v2 XRD and composite resource pages say about claims, the `LegacyCluster` scope, and how v1 claim-based XRDs coexist with namespaced XRs?
-- **Why it matters:** The composite resources dossier read v1.20 pages for claims and XRDs and relied on a third-party blog for the `LegacyCluster` detail, so [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] has an unverified v2 column.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the current Crossplane XRD and composite resource documentation.
-  - [ ] Update [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] and [[entities/crossplane]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** crossplane, claims, v2, verification
-- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Claims survive only for legacy XRDs. The v2 XRD API has `scope` of `Namespaced` (default) or `Cluster` and rejects `claimNames` with a CEL rule, and `LegacyCluster` is a scope of the v1 XRD API only, which still serves claims and is deprecated but still the storage version in the v2.5 manifest. The v2.5.0 release notes say claims remain supported, and no removal date exists. This replaces the third-party-blog basis for `LegacyCluster` and corrects the comparison page. See [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] and [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]].
-
 ## kro Graph API status and released-version facts — status: open
 
 - **Question:** What is the status of kro's alpha `Graph` API compared with the ResourceGraphDefinition, and which kro version is current, given that the docs show 0.10.0 and a third-party blog dated September 2026 says v0.9.x?
@@ -1709,3 +1696,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-kro-and-abstraction-models]]:** Not helpful. The dossier says the scaling limits of per-RGD dedicated controllers are not covered in the sources read and found no large-scale kro benchmark. See [[open-knowledge-gaps]] for the follow-up on kro scale.
 - **Possible resolution from [[sources/research-landscape]]:** Marginally helpful. The self-reported Crossplane adopters list gives SAP at 100 or more control planes and Akamai's provider-ceph at up to 200,000 managed resources, and Akuity claims Argo CD has a heavier footprint than Flux. All are unverified or vendor claims, so no tuning guidance follows. See [[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]].
 - **Possible resolution from [[sources/research-scale-and-sharding]]:** Largely helpful. The dossier gives the cluster envelope, client-go informer, workqueue, and rate-limiter limits, API Priority and Fairness, Flux label sharding with `sharding.fluxcd.io/key`, Argo CD cluster sharding, and Crossplane provider families with CRD counts, and it states that leader election makes extra replicas add availability and not throughput. It does not cover cloud API rate limits, kro, ACK, Cluster API, or Config Connector scale, or named adopters, and most numbers came from digests. See [[concepts/scale-and-sharding]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], and [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]]. The gap stays open for human closure via `sticki-gaps`.
+
+## Claim support and scope in Crossplane v2 XRDs — status: closed (2026-11-26)
+
+- **Question:** What do the primary Crossplane v2 XRD and composite resource pages say about claims, the `LegacyCluster` scope, and how v1 claim-based XRDs coexist with namespaced XRs?
+- **Why it matters:** The composite resources dossier read v1.20 pages for claims and XRDs and relied on a third-party blog for the `LegacyCluster` detail, so [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] has an unverified v2 column.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current Crossplane XRD and composite resource documentation.
+  - [ ] Update [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] and [[entities/crossplane]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, claims, v2, verification
+- **Resolution:** Settled: v2 XRDs have scope Namespaced or Cluster and reject claims; LegacyCluster exists only on the v1 XRD API and keeps claims ([[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]], [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]]). Not settled: no removal date for claims was found.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Claims survive only for legacy XRDs. The v2 XRD API has `scope` of `Namespaced` (default) or `Cluster` and rejects `claimNames` with a CEL rule, and `LegacyCluster` is a scope of the v1 XRD API only, which still serves claims and is deprecated but still the storage version in the v2.5 manifest. The v2.5.0 release notes say claims remain supported, and no removal date exists. This replaces the third-party-blog basis for `LegacyCluster` and corrects the comparison page. See [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] and [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]].
