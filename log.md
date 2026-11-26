@@ -586,3 +586,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | ClusterClass maturity and the managed topologies proposal
 - closed by: Eric Shamay
 - resolution: Settled at Cluster API v1.15.0-rc.0: ClusterTopology is Beta and on by default, while maturity labels disagree across doc versions and the original proposal still says provisional ([[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]], [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]]). Not settled: only rc.0 existed, so the label needs a recheck at v1.15.0 final.
+
+## [2026-11-26] gaps | close | Scale numbers from model digests need rechecking
+- closed by: Eric Shamay
+- resolution: Settled: every quoted scale figure was rechecked against raw page text and matched, with three wording tightenings: about 4 MiB per CRD, the Argo CD processor defaults, and the Crossplane memory figures, which are design-doc targets, not measurements ([[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]], [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]]). Not settled: KEP-1040 was read only in part.

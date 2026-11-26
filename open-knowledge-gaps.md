@@ -105,7 +105,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#scaling-behavior-of-kro-ack-cluster-api-and-config-connector-controllers]] — open, unassigned
 - [[#current-crossplane-v2-scaling-guidance]] — open, unassigned
 - [[#named-flux-sharding-adopters-and-api-priority-and-fairness-incidents]] — open, unassigned
-- [[#scale-numbers-from-model-digests-need-recheck]] — open, unassigned
 - [[#first-party-pitfall-and-incident-evidence-for-kro-config-connector-ack-and-cluster-api]] — open, unassigned
 - [[#primary-incident-reports-for-skyscanner-reddit-jetstack-and-spotify]] — open, unassigned
 - [[#force-conflicts-versus-strip-or-adopt-when-two-controllers-co-own-a-field]] — open, unassigned
@@ -1248,18 +1247,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, sharding, apf, incidents
 
-## Scale numbers from model digests need rechecking — status: open
-
-- **Question:** Do the CRD memory, Gardener limit, Argo CD processor size, and SIG Scalability figures in the scale dossier match the raw pages?
-- **Why it matters:** Most figures came from summarizing fetches, and the APF page and KEP-1040 were only partly read. See [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Reread each page in full and compare the figures.
-  - [ ] Fully read the API Priority and Fairness page and KEP-1040.
-- **Possible resolution from [[sources/research-gap-g3-scale-recheck]]:** Largely settled, and the user can close it, with one residual. The dossier reread the SIG Scalability thresholds, the Gardener guide, the Upbound post, the Argo CD high-availability page, the Crossplane design doc and provider-families blog, and the client-go and controller-runtime source from raw text and found every quoted figure correct. Three wordings were tightened: Upbound's figure is "a little over 4MiB" per CRD and not "several MiB", Argo CD sizes 50 status and 25 operation processors for 1,000 applications against defaults of 20 and 10, and the Crossplane memory figures are design-doc targets and not measurements. The APF page was read in full. The residual is KEP-1040: the README was fetched in full but only its Summary, Motivation, Goals, seat and shuffle-sharding sections and `kep.yaml` were read closely, so its fair-queuing math, test plan, and graduation criteria remain unread. Figures are tied to the dates read (2026-11-26) and, for Gardener, to an undated page. See [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]], [[findings/the-sig-scalability-thresholds-cover-built-in-types-only-and-are-not-hard-limits]], and [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]]. The gap stays open for human closure via `sticki-gaps`.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** source-quality, scale, verification
-
 ## First-party pitfall and incident evidence for kro, Config Connector, ACK, and Cluster API — status: open
 
 - **Question:** What deletion cascades, adoption problems, and upgrade-ordering pitfalls are documented first-hand for kro, Config Connector, ACK, and Cluster API?
@@ -1727,3 +1714,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled at Cluster API v1.15.0-rc.0: ClusterTopology is Beta and on by default, while maturity labels disagree across doc versions and the original proposal still says provisional ([[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]], [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]]). Not settled: only rc.0 existed, so the label needs a recheck at v1.15.0 final.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Settled for the release candidate, and the user can close it. The `ClusterTopology` gate is Beta and enabled by default as of v1.15.0-rc.0 (2026-11-24), while the v1.14.4 docs still say alpha, so the wiki's alpha label reflects older docs. Beta is not GA, and v1.15.0 final was not released on 2026-11-26. The proposal describes ClusterClass as a collection of template references and the Cluster as a single control point with continuous reconciliation, and its frontmatter still says `provisional` despite later additions (MachineHealthChecks in 2022, upgrade plans in 2025). Recheck at the v1.15.0 release. See [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]] and [[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]].
+
+## Scale numbers from model digests need rechecking — status: closed (2026-11-26)
+
+- **Question:** Do the CRD memory, Gardener limit, Argo CD processor size, and SIG Scalability figures in the scale dossier match the raw pages?
+- **Why it matters:** Most figures came from summarizing fetches, and the APF page and KEP-1040 were only partly read. See [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Reread each page in full and compare the figures.
+  - [ ] Fully read the API Priority and Fairness page and KEP-1040.
+- **Possible resolution from [[sources/research-gap-g3-scale-recheck]]:** Largely settled, and the user can close it, with one residual. The dossier reread the SIG Scalability thresholds, the Gardener guide, the Upbound post, the Argo CD high-availability page, the Crossplane design doc and provider-families blog, and the client-go and controller-runtime source from raw text and found every quoted figure correct. Three wordings were tightened: Upbound's figure is "a little over 4MiB" per CRD and not "several MiB", Argo CD sizes 50 status and 25 operation processors for 1,000 applications against defaults of 20 and 10, and the Crossplane memory figures are design-doc targets and not measurements. The APF page was read in full. The residual is KEP-1040: the README was fetched in full but only its Summary, Motivation, Goals, seat and shuffle-sharding sections and `kep.yaml` were read closely, so its fair-queuing math, test plan, and graduation criteria remain unread. Figures are tied to the dates read (2026-11-26) and, for Gardener, to an undated page. See [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]], [[findings/the-sig-scalability-thresholds-cover-built-in-types-only-and-are-not-hard-limits]], and [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]]. The gap stays open for human closure via `sticki-gaps`.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** source-quality, scale, verification
+- **Resolution:** Settled: every quoted scale figure was rechecked against raw page text and matched, with three wording tightenings: about 4 MiB per CRD, the Argo CD processor defaults, and the Crossplane memory figures, which are design-doc targets, not measurements ([[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]], [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]]). Not settled: KEP-1040 was read only in part.
+- **Closed by:** Eric Shamay on 2026-11-26
