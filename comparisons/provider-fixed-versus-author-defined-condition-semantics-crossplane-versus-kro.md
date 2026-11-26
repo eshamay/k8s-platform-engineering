@@ -3,11 +3,14 @@ title: Provider-fixed versus author-defined condition semantics, Crossplane vers
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-gap-g3-kro
+    hash: e8d7c5923d98
+    ingested: 2026-11-26
 aliases: []
 tags: [conditions, crossplane, kro, platform-api, comparison]
 ---
@@ -24,7 +27,7 @@ The meanings are set by the framework. `Synced` says the provider could reconcil
 
 ## kro
 
-Each resource can set `readyWhen` CEL expressions, with a default of "exists", and the RGD author can declare custom conditions with `runtime.newCondition()`. Doing so hides kro's four built-in conditions, so the author owns the whole surface and must compose any `Ready` from kro's `ResourcesReady` plus domain signals. Expression errors set `state: Error` and keep the previous conditions. The benefit is domain-specific readiness, and the cost is that every platform can differ and a lax `readyWhen` repeats the premature-readiness problem. The instance-level built-in names were not read.
+Each resource can set `readyWhen` CEL expressions, with a default of "exists", and the RGD author can declare custom conditions with `runtime.newCondition()`. Doing so hides kro's four built-in conditions, so the author owns the whole surface and must compose any `Ready` from kro's `ResourcesReady` plus domain signals. Expression errors set `state: Error` and keep the previous conditions. The benefit is domain-specific readiness, and the cost is that every platform can differ and a lax `readyWhen` repeats the premature-readiness problem. The instance-level built-in names are `InstanceManaged`, `GraphResolved`, `ResourcesReady`, and `Ready` at v0.10.0, and the docs say only `Ready` should be relied on because kro may change sub-conditions. On the Crossplane side, the current docs say a composite has two conditions, `Synced` and `Ready`, and that `Ready` becomes True when the composition function pipeline reports all composed resources ready. The mechanism by which a function's per-resource signal becomes the composite `Ready` condition was not read in source. [[sources/research-gap-g3-kro]]
 
 ## Trade-off
 

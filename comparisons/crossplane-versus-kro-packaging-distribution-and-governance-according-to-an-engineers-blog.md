@@ -3,11 +3,14 @@ title: Crossplane versus kro, packaging, distribution, and governance according 
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-g3-kro
+    hash: e8d7c5923d98
+    ingested: 2026-11-26
 aliases: []
 tags: [crossplane, kro, packaging, oci, governance, comparison]
 ---
@@ -33,7 +36,7 @@ The post's summary is that "kro is markedly more compact and has no external run
 
 ## Where the post disagrees with the wiki
 
-The post labels Crossplane as CNCF Incubating, but the project's announcement and InfoQ, recorded in [[sources/research-crossplane-deep-dive]], say it graduated. A July 2026 date makes the blog label likely stale, and the wiki treats graduation as established. The post also says kro is not a CNCF project, while kro.run says only that it is a SIG Cloud Provider subproject. The two statements are compatible and the wiki tracks the question in [[open-knowledge-gaps]].
+The post labels Crossplane as CNCF Incubating, but the project's announcement and InfoQ, recorded in [[sources/research-crossplane-deep-dive]], say it graduated. A July 2026 date makes the blog label likely stale, and the wiki treats graduation as established. The post also says kro is not a CNCF project, while kro.run says only that it is a SIG Cloud Provider subproject. The two statements are compatible, and the first-party sources now support them: the kro README, kro.run, and the Kubernetes community SIG Cloud Provider README all call kro a subproject of Kubernetes SIG Cloud Provider, and the kro.run footer's CNCF sentence is about Kubernetes, not kro. No first-party page read calls kro a CNCF project in its own right, though absence from the CNCF landscape was not verified. [[sources/research-gap-g3-kro]] The wiki tracks the remaining question in [[open-knowledge-gaps]].
 
 ## Reading the comparison
 

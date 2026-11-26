@@ -3,7 +3,7 @@ title: kro (kube-resource-orchestrator)
 type: entity
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -65,6 +65,9 @@ sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-g3-kro
+    hash: e8d7c5923d98
+    ingested: 2026-11-26
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -85,7 +88,7 @@ The overview documentation says a ResourceGraphDefinition holds a schema, resour
 
 ## Controller tuning
 
-kro handles all instances from one shared queue and documents its tuning values in the unreleased "next" docs: one worker by default, exponential backoff of 200ms to 1000s with a token bucket of 10 per second and burst 100, client QPS 100 and burst 150, a 10-hour full resync, and 20 retries before an item is dropped. Instance status conditions remain unverified because the instances page returned no content. [[sources/research-eventual-consistency-and-convergence]] See [[examples/kro-shared-queue-tunes-throughput]].
+kro handles all instances from one shared queue and first documented its tuning values in the unreleased "next" docs, and the released v0.10.0 page repeats them: one worker by default, exponential backoff of 200ms to 1000s with a token bucket of 10 per second and burst 100, client QPS 100 and burst 150, a 10-hour full resync, and 20 retries before an item is dropped. The built-in instance conditions are now documented at v0.10.0, see the released-version section below. [[sources/research-eventual-consistency-and-convergence]] See [[examples/kro-shared-queue-tunes-throughput]].
 
 ## Related concepts
 
@@ -93,7 +96,7 @@ kro handles all instances from one shared queue and documents its tuning values 
 
 ## To research
 
-Resource graph definition, dependency and ordering semantics, CEL usage, maturity, and comparison with Crossplane Compositions (see [[open-knowledge-gaps]]).
+Production adopters and scale evidence, the Go source behind the documented condition names, and any promotion timeline for the Graph API (see [[open-knowledge-gaps]]). Dependency and ordering semantics, the status schema, version facts, and governance wording are covered in the released-version section below.
 
 ## Drift resync and maturity
 
@@ -129,7 +132,7 @@ The kro overview says kro "parses the expressions, infers the dependency graph, 
 
 ## Shared queue and tuning defaults
 
-The controller tuning page says kro runs three reconcile loops, and its dynamic controller handles all instances through one shared rate-limited queue with a default of 1 worker, a bucket limit of 10 events per second, a full resync every 10 hours, up to 20 retries, instance requeue from 3 seconds to 5 minutes, and client QPS 100 with burst 150. The figures come from the `next` documentation and may differ in released versions. [[sources/research-reconciliation-loop]] See [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
+The controller tuning page says kro runs three reconcile loops, and its dynamic controller handles all instances through one shared rate-limited queue with a default of 1 worker, a bucket limit of 10 events per second, a full resync every 10 hours, up to 20 retries, instance requeue from 3 seconds to 5 minutes, and client QPS 100 with burst 150. The figures first came from the `next` documentation, and the released v0.10.0 tuning page confirms them (correction note: they no longer carry the unreleased-docs caveat). [[sources/research-gap-g3-kro]] [[sources/research-reconciliation-loop]] See [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
 
 ## Idempotency coverage gap
 
@@ -145,7 +148,7 @@ The Google Cloud launch post says nothing about ownership or deletion mechanics,
 
 ## Conditions and readyWhen
 
-kro's ResourceGraphDefinition reference (v0.10.0) documents `readyWhen` CEL expressions that decide when a child resource counts as ready, with a default of "exists", plus `includeWhen` and RGD conditions such as `Ready`, `GraphAccepted`, `KindReady`, and `ControllerReady`, each with an `observedGeneration` that marks staleness. RGD authors can declare their own instance conditions with `runtime.newCondition()`, which hides kro's four built-in conditions, and expression errors set `state: Error` while keeping the previous conditions. The kro Instances page returned no usable content, so instance-level built-in names are inferred. [[sources/research-conditions]] See [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]] and [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]].
+kro's ResourceGraphDefinition reference (v0.10.0) documents `readyWhen` CEL expressions that decide when a child resource counts as ready, with a default of "exists", plus `includeWhen` and RGD conditions such as `Ready`, `GraphAccepted`, `KindReady`, and `ControllerReady`, each with an `observedGeneration` that marks staleness. RGD authors can declare their own instance conditions with `runtime.newCondition()`, which hides kro's four built-in conditions, and expression errors set `state: Error` while keeping the previous conditions. The built-in instance condition names are `InstanceManaged`, `GraphResolved`, `ResourcesReady`, and `Ready`, confirmed from the v0.10.0 documentation (correction note: they were previously inferred). The RGD-level condition set has five members, with `GraphRevisionsResolved` beside the four listed above. [[sources/research-gap-g3-kro]] [[sources/research-conditions]] See [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]] and [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]].
 
 ## Resource graphs, graph revisions, and readiness
 
@@ -170,3 +173,19 @@ The abstraction-models dossier is the widest single read of kro so far and it is
 The instances page describes the states ACTIVE, IN_PROGRESS, DELETING, and ERROR and an observe, compare, act, and report loop. kro avoids default owner references and uses ApplySets with reverse-topological deletion, see [[findings/default-owner-references-delete-out-of-order-and-cannot-link-namespaced-to-cluster-scoped-objects-so-kro-uses-applysets]]. kro orchestrates only Kubernetes objects and relies on ACK, Azure Service Operator, or Config Connector for cloud resources, and it has no equivalent of Upjet. AWS offers kro as a managed EKS capability. The dossier found no named production postmortem and no scale benchmark, and it did not cover the scaling limits of one dedicated controller per RGD. Governance is a Kubernetes SIG Cloud Provider subproject, and a blog's statement that it is not a CNCF project is tracked in [[open-knowledge-gaps]].
 
 Comparisons: [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]], [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]], and the worked build in [[examples/build-the-same-storageapp-api-with-kro-and-with-a-crossplane-go-templating-composition]]. [[sources/research-kro-and-abstraction-models]]
+
+## Released version v0.10.0, the Graph API, and governance
+
+The latest stable release is v0.10.0, published 2026-11-10. The previous stable release was v0.9.4 (2026-09-04), and a v0.10.0-rc.0 prerelease followed on 2026-09-22, so a September 2026 blog that cites v0.9.x described the stable release of its day. That settles the version discrepancy noted earlier in this page: the documentation was not newer than the release, and the blog was not stale. The earlier line in this page that the site "showed version 0.10.0" while third-party material said v0.9.x is therefore explained by timing. [[sources/research-gap-g3-kro]]
+
+**Tuning at v0.10.0.** The defaults are 1 dynamic-controller worker, a 36000 second resync, 20 retries, backoff from 200 ms to 1000 s with a bucket of 10 events per second and burst 100, and client QPS 100 with burst 150. New or newly recorded settings are a 30 second `watchSyncTimeout`, a Graph controller with its own concurrency (1), `applyConcurrency` 20, a collection limit of 1000 items and 10 dimensions, and a CEL cost limit of 0 (disabled). The instance requeue interval is 3 seconds with exponential backoff that doubles up to five minutes. At v0.9.4 the same setting is described as a fixed delay, so the exponential backoff appears to be new in v0.10.0, which is an inference from comparing two pages. The docs call the shared queue a design principle and say per-RGD queues may replace it in future versions. See [[examples/kro-shared-queue-tunes-throughput]] and [[findings/a-kro-foreach-collection-above-the-1000-item-default-limit-gets-stuck-during-deletion]].
+
+**Instance conditions and state.** An instance has four built-in conditions, `InstanceManaged`, `GraphResolved`, `ResourcesReady`, and the root `Ready`, and the docs say to rely only on `Ready` because sub-conditions may change. The `state` field is reserved and kro-driven. The Instances page lists ACTIVE, IN_PROGRESS, DELETING, and ERROR, while the Schema page adds FAILED. The annotation `kro.run/reconcile: suspended` suspends one instance for debugging. See [[findings/kro-reserves-the-right-to-change-instance-sub-conditions-so-only-ready-is-a-stable-contract]] and [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]].
+
+**Dependencies and readiness.** Every CEL reference is a dependency edge, including references written with the optional operator. Resources that reference only `schema` are created in parallel. In an RGD, dependents wait for the upstream `readyWhen`, and `readyWhen` may reference only the resource itself or `each`. `includeWhen` controls existence, and skipping a resource skips its dependents. See [[findings/a-kro-includewhen-on-a-volatile-upstream-status-field-makes-resources-flip-flop]] and [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]].
+
+**Status schema.** An RGD's `spec.schema.status` maps field names to CEL expressions, and the generated CRD gives them typed schemas. kro adds `conditions` and `state` to every instance status and overrides any user-defined `state`. Authors build conditions with `runtime.newCondition`, and one entry can return a list. RGD-level `status.state` is a separate enum, `Active` or `Inactive`, with `Active` requiring `GraphAccepted`, `KindReady`, and `ControllerReady` to be True. See [[concepts/spec-status-split]].
+
+**The Graph API.** `Graph` (`kro.run/v1alpha1`) is alpha, off by default behind the `GraphKind` gate, and carries no compatibility guarantee. It has no schema, no generated API, and no instances, and its nodes come in five kinds. The RGD controller now runs on the graph engine unconditionally and issues `GraphRevision` objects, while RGD stays a separate Kind that is not deprecated. In a Graph, `readyWhen` feeds status only and does not gate downstream nodes. See [[findings/enabling-the-kro-graph-api-needs-a-manual-crd-apply-because-helm-does-not-update-crds-on-upgrade]], [[findings/a-kro-graph-has-no-revision-history-and-sets-no-owner-references-on-the-resources-it-creates]], and [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]].
+
+**Governance.** The kro README, kro.run, and the Kubernetes community SIG Cloud Provider README all say kro is a subproject of Kubernetes SIG Cloud Provider, and the repository is under kubernetes-sigs. The kro.run footer adds that Kubernetes is a CNCF graduated project, which is a statement about Kubernetes and not about kro. No first-party page read calls kro a CNCF sandbox, incubating, or graduated project, and absence from the CNCF landscape was not verified. On main, the maintainers are a-hilaly, jakobmoellerdev, and jlbutler, with four reviewers, and a 2026-11-23 commit moved one maintainer to emeritus. The in-repo roadmap is dated 2026-04-03 and lags the release, and no promotion timeline for Graph was found. See [[findings/the-kro-in-repo-roadmap-predates-the-v0-10-0-release-and-gives-no-graph-promotion-timeline]].

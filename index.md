@@ -115,6 +115,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-scale-and-sharding]] — research dossier on scale limits, APF, sharding, and CRD count, 13 web sources, 2026-11-25
 - [[sources/research-pitfalls-and-case-studies]] — research dossier on postmortems, finalizers, drift fights, and deletion guard rails, 11 web sources, 2026-11-25
 - [[sources/research-gap-g3-crossplane-v2]] — verified dossier on Crossplane v2.5 claims, conditions, SSA, deletion policies, Operations, activation policies, scaling, and scanners, 2026-11-26 (active)
+- [[sources/research-gap-g3-kro]] — verified dossier on kro v0.10.0 tuning defaults, instance conditions, Graph API, readiness mechanics, status schema, and governance, 2026-11-26 (active)
 
 ## Examples
 
@@ -135,7 +136,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/flux-dependson-and-health-checks-gate-rollout]] — health-gated ordering in Flux (draft)
 - [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]] — self-heal and waves (draft)
 - [[examples/crossplane-database-claim-reports-synced-and-ready]] — Synced and Ready during slow provisioning (draft)
-- [[examples/kro-shared-queue-tunes-throughput]] — kro queue and rate-limit numbers (draft)
+- [[examples/kro-shared-queue-tunes-throughput]] — kro queue and rate-limit numbers (active)
 - [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]] — dry-run failure stops correction (draft)
 - [[examples/argo-cd-app-of-apps-out-of-sync-from-image-updater]] — a second writer looks like drift (draft)
 - [[examples/incremental-gitops-adoption-with-manual-sync-and-self-heal]] — staged enforcement with Argo CD (draft)
@@ -220,7 +221,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]] — ordered composite teardown (draft)
 - [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]] — Flux, Argo CD, and Config Connector (draft)
 - [[examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update]] — provider-aws issue 2287 (active)
-- [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]] — author-owned readiness (draft)
+- [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]] — author-owned readiness (active)
 - [[examples/ack-splits-terminal-and-recoverable-errors-into-separate-conditions]] — wait or edit the spec (draft)
 - [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] — one condition, three reasons (draft)
 - [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]] — beyond one mandatory Ready (draft)
@@ -474,10 +475,17 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]] — terminology drift (active)
 - [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] — CRD count scale cost (draft)
 - [[findings/a-kro-graph-revision-that-fails-compilation-stops-all-instances-with-no-fallback]] — no rollback in kro (draft)
+- [[findings/the-kro-docs-disagree-on-whether-an-instance-state-of-failed-exists]] — kro docs list the FAILED instance state on one page and omit it on another (draft)
+- [[findings/kro-reserves-the-right-to-change-instance-sub-conditions-so-only-ready-is-a-stable-contract]] — only the Ready instance condition is a stable contract (draft)
+- [[findings/a-kro-includewhen-on-a-volatile-upstream-status-field-makes-resources-flip-flop]] — volatile status in includeWhen makes resources flip-flop (draft)
+- [[findings/a-kro-foreach-collection-above-the-1000-item-default-limit-gets-stuck-during-deletion]] — over-limit collections get stuck on deletion (draft)
+- [[findings/enabling-the-kro-graph-api-needs-a-manual-crd-apply-because-helm-does-not-update-crds-on-upgrade]] — Graph alpha needs a manual CRD apply on upgrade (draft)
+- [[findings/the-kro-in-repo-roadmap-predates-the-v0-10-0-release-and-gives-no-graph-promotion-timeline]] — roadmap lags the release and gives no Graph timeline (draft)
+- [[findings/a-kro-graph-has-no-revision-history-and-sets-no-owner-references-on-the-resources-it-creates]] — Graph has no revisions and no owner references (draft)
 - [[findings/editing-a-live-composition-can-disrupt-or-replace-existing-composed-resources]] — shared Composition edits propagate (draft)
 - [[findings/crossplane-v2-removed-features-and-offers-no-automated-migration-for-v1-composites]] — v2 removals and manual migration (draft)
 - [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]] — GitOps overrides ordered teardown (draft)
-- [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]] — same field, different work (draft)
+- [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]] — same field, different work (active)
 - [[findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion]] — schema as contract (draft)
 - [[findings/composition-functions-add-moving-parts-that-must-be-healthy]] — operational cost of functions (draft)
 - [[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]] — partial desired state deletes resources (active)

@@ -3,11 +3,14 @@ title: Condition vocabularies across Crossplane, ACK, Config Connector, Flux, kr
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-gap-g3-kro
+    hash: e8d7c5923d98
+    ingested: 2026-11-26
 aliases: []
 tags: [conditions, comparison, crossplane, ack, config-connector, flux, kro, cluster-api]
 ---
@@ -26,7 +29,7 @@ All six stacks write `.status.conditions`, but they choose different condition t
 | ACK | `Ready`, `ACK.ResourceSynced`, `ACK.Terminal`, `ACK.Recoverable`, `ACK.Adopted`, `ACK.ReferencesResolved` | Terminal versus recoverable errors | Terminal means the spec must change |
 | Config Connector | One `Ready` | Reason: `Updating`, `UpToDate`, `UpdateFailure` | Only one `Ready` entry; design document |
 | Flux | `Ready`, `Reconciling`, `Stalled` | `Reconciling=True` is normal progress and `Stalled` means no progress without a change | Health checks use kstatus or CEL expressions |
-| kro | Built-in `ResourcesReady`-style conditions, or fully author-defined conditions through CEL | `readyWhen` per resource, default "exists" | Custom conditions hide the built-ins |
+| kro | Four built-in instance conditions (`InstanceManaged`, `GraphResolved`, `ResourcesReady`, `Ready`), or fully author-defined conditions through CEL | `readyWhen` per resource, default "exists" | Custom conditions hide the built-ins |
 | Cluster API | `Available`, `Ready`, operation conditions such as `ScalingUp` and `Remediating` | Separate availability and operation signals | Moved to `metav1.Condition` |
 
 ## Reading the differences

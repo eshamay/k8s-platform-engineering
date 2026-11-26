@@ -3,11 +3,14 @@ title: Composition revisions versus graph revisions for rolling out platform API
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-gap-g3-kro
+    hash: e8d7c5923d98
+    ingested: 2026-11-26
 aliases: []
 tags: [crossplane, kro, revisions, rollout, versioning]
 ---
@@ -33,3 +36,7 @@ Both tools snapshot changes to the definition, but they differ on who chooses wh
 ## Reading the table
 
 Crossplane makes rollout a per-instance choice, which suits platforms where many teams consume one API and cannot all move at once, but the Automatic default means an edit to a shared Composition still reaches followers immediately, see [[findings/editing-a-live-composition-can-disrupt-or-replace-existing-composed-resources]]. kro treats the definition as a single latest version, see [[findings/a-kro-graph-revision-that-fails-compilation-stops-all-instances-with-no-fallback]]. The `function-kro` post argues that embedding kro-style graphs in a Crossplane pipeline gives them revision pinning and rollback. See [[decisions/choose-automatic-or-manual-composition-update-policy]] and [[findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion]].
+
+## Update from kro v0.10.0
+
+At v0.10.0 the RGD controller runs on the graph engine and issues `GraphRevision` objects, and the docs describe each as an immutable snapshot created on every spec change. The alpha `Graph` kind does not get revisions: "kro does not create GraphRevision objects for Graphs". The table's "Not described" cell for kro pinning and rollback still holds, because the dossier found no pinning mechanism. See [[findings/a-kro-graph-has-no-revision-history-and-sets-no-owner-references-on-the-resources-it-creates]]. [[sources/research-gap-g3-kro]]

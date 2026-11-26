@@ -3,7 +3,7 @@ title: Spec vs Status Split
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -17,6 +17,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-gap-g3-kro
+    hash: e8d7c5923d98
+    ingested: 2026-11-26
 aliases: [Spec and status]
 tags: [api-machinery]
 ---
@@ -66,3 +69,7 @@ Whether `observedGeneration` belongs at the top level, on each condition, or bot
 ## Conditions in depth
 
 The dossier on conditions adds the field-by-field anatomy, the per-tool vocabularies, and the failure modes of the status surface. [[sources/research-conditions]] See [[concepts/conditions]] and [[comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api]].
+
+## kro status schema at v0.10.0
+
+kro's status half is author-defined. An RGD's `spec.schema.status` maps field names to CEL expressions over the managed resources, and the generated CRD gives each field a type inferred from the expression output, so status has strongly typed schemas and not arbitrary objects. kro adds `conditions` and `state` to every instance status, and `state` is reserved, so kro overrides any definition of it. The RGD object has its own status with five conditions (`Ready`, `GraphRevisionsResolved`, `GraphAccepted`, `KindReady`, `ControllerReady`) and a separate `state` of `Active` or `Inactive`. On the Crossplane side, the current docs say a composite resource has `Synced` and `Ready` conditions and that `Ready` is True when the function pipeline reports all composed resources ready, but how the function signal reaches that condition was not read in source. [[sources/research-gap-g3-kro]] See [[entities/kro]].

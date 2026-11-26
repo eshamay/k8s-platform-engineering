@@ -3,7 +3,7 @@ title: Retry and backoff controls across tools
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
@@ -14,13 +14,16 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-gap-g3-kro
+    hash: e8d7c5923d98
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, retries, backoff, convergence]
 ---
 
 # Retry and backoff controls across tools
 
-The values below are as stated on the fetched pages, and the kro values come from unreleased "next" documentation. [[sources/research-eventual-consistency-and-convergence]]
+The values below are as stated on the fetched pages, and the kro values first came from unreleased "next" documentation. The released v0.10.0 tuning page repeats the retry and backoff values (correction note), and says the instance requeue interval is 3 seconds with exponential backoff capped at five minutes. [[sources/research-gap-g3-kro]] [[sources/research-eventual-consistency-and-convergence]]
 
 | Behavior | [[entities/flux]] | [[entities/argo-cd]] | [[entities/crossplane]] | [[entities/kro]] | [[entities/controller-runtime]] |
 |---|---|---|---|---|---|

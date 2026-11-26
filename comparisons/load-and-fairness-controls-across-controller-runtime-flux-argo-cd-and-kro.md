@@ -3,7 +3,7 @@ title: Load and fairness controls across controller-runtime, Flux, Argo CD, and 
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
@@ -11,13 +11,16 @@ sources:
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
     ingested: 2026-11-25
+  - id: research-gap-g3-kro
+    hash: e8d7c5923d98
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, load, rate-limiting, jitter, workqueue]
 ---
 
 # Load and fairness controls across controller-runtime, Flux, Argo CD, and kro
 
-The values below are as stated on the fetched pages. The kro numbers come from the `next` documentation and may differ in released versions. [[sources/research-reconciliation-loop]]
+The values below are as stated on the fetched pages. The kro numbers first came from the `next` documentation, and the released v0.10.0 tuning page confirms them (correction note: the earlier caveat about released versions is resolved). The v0.10.0 page also lists a 30 second watch sync timeout, a Graph controller concurrency of 1, and `applyConcurrency` 20. [[sources/research-gap-g3-kro]] [[sources/research-reconciliation-loop]]
 
 | Control | [[entities/controller-runtime]] | [[entities/flux]] | [[entities/argo-cd]] | [[entities/kro]] |
 |---|---|---|---|---|
