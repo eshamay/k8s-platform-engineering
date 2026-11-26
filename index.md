@@ -6,7 +6,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ### Core architectural principles
 
-- [[concepts/universal-control-plane]] — Kubernetes API and etcd as a control plane for any infrastructure (draft)
+- [[concepts/universal-control-plane]] — Kubernetes API and etcd as a control plane for any infrastructure (active)
 - [[concepts/declarative-vs-imperative]] — end-state specs versus command sequences (draft)
 - [[concepts/level-triggered-vs-edge-triggered]] — state-driven versus event-driven controller logic (draft)
 - [[concepts/eventual-consistency-and-convergence]] — concurrent apply, retry, converge (draft)
@@ -43,26 +43,42 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/flux]] — in-cluster GitOps tool (draft)
 - [[entities/crossplane]] — control plane framework for external infrastructure (draft)
 - [[entities/kro]] — resource-graph based platform API tool (draft)
+- [[entities/argo-cd]] — GitOps tool with phase and wave ordering (draft)
+- [[entities/config-connector]] — Google Cloud resources as Kubernetes objects (draft)
+- [[entities/ack]] — AWS services as Kubernetes objects, one controller per service (draft)
+- [[entities/cluster-api]] — management cluster that creates workload clusters (draft)
+- [[entities/kcp]] — node-less multi-tenant API workspaces (draft)
 
 ## Sources
 
 - [[sources/krm-platform-vocabulary]] — seed vocabulary note, 2026-11-25
+- [[sources/research-universal-control-plane]] — research dossier on the universal control plane idea, 19 web sources, 2026-11-25
 
 ## Examples
 
-_(none yet)_
+- [[examples/self-service-gke-cluster-with-kro]] — self-service cluster API (draft)
+- [[examples/cluster-fleet-lifecycle-with-cluster-api]] — management cluster and workload clusters (draft)
+- [[examples/cloud-services-as-kubernetes-objects]] — ACK and Config Connector (draft)
+- [[examples/non-container-appliances-on-the-kubernetes-api]] — Ænix distribution vision (draft)
+- [[examples/multi-tenant-api-hosting-with-kcp]] — workspaces for SaaS tenants (draft)
 
 ## Comparisons
 
-_(none yet)_
+- [[comparisons/tenancy-models-namespaces-vcluster-kcp]] — tenancy trade-offs (draft)
+- [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]] — how each tool orders work (draft)
 
 ## Decisions
 
-_(none yet)_
+- [[decisions/crd-versus-aggregated-api]] — how to serve new API kinds (draft)
 
 ## Findings
 
-_(none yet)_
+- [[findings/etcd-scale-limits-of-the-shared-store]] — etcd limits (draft)
+- [[findings/destructive-deletion-of-external-resources]] — deleting objects deletes infrastructure (draft)
+- [[findings/ordering-and-dependency-failures]] — CRD and dependency ordering (draft)
+- [[findings/immutable-fields-and-drift-collisions]] — force, resync, and adoption hazards (draft)
+- [[findings/blast-radius-and-privilege-centralization]] — central authority risks (draft)
+- [[findings/immature-abstractions-in-the-control-plane-ecosystem]] — pre-1.0 and Sandbox tools (draft)
 
 ## Outputs
 

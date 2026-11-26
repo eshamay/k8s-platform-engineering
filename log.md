@@ -31,3 +31,13 @@ Closing summary:
 - fact conflicts: 0
 - gaps drafted: 0 (three seeded gaps at bootstrap map to the note's closing follow-ups)
 - rationale: Seed vocabulary decomposed one concept per bullet, each as a draft page awaiting external sources from the research workflow. Drafted inline rather than via page-writer fan-out because every page derives from one small source.
+
+## [2026-11-25] ingest | Research dossier: Universal Control Plane
+- source: [[sources/research-universal-control-plane]]
+- raw: `raw/research-universal-control-plane.md` (sha256: 037575049a4c)
+- pages touched: [[concepts/universal-control-plane]], [[entities/flux]], [[entities/crossplane]], [[entities/kro]], [[open-knowledge-gaps]], [[index]]
+- new pages: [[sources/research-universal-control-plane]], entities ([[entities/argo-cd]], [[entities/config-connector]], [[entities/ack]], [[entities/cluster-api]], [[entities/kcp]]), examples (5), findings (6), comparisons (2), [[decisions/crd-versus-aggregated-api]]
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 6 (plus possible-resolution notes under all three seeded gaps)
+- rationale: The dossier summarizes 19 web pages, so URLs are cited in the source page's Key claims and no per-URL source pages were created. The universal-control-plane concept was promoted from draft to active because it now has a primary-source layered account. Backstage is not mentioned in the dossier, so no page was created. Drafted inline because the page-writer subagent is not available in this session.
