@@ -734,3 +734,13 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 - fact conflicts: 0
 - gaps drafted: 0 (the possible-resolution notes and the updates to closed gaps written at seq 53, and the follow-up todos, stand unchanged; no gap was closed)
 - rationale: The raw dossier was edited after seq 53 by a second adversarial verification pass. It re-fetched the Flux jitter, helm-controller changelog and flags, Mutating Admission Policy gate history, StorageVersionMigration v1.37.0 source, controller-runtime requeue source, staleness gates and metrics, and the KEP 5647 and KEP-1040 claims, and all reproduced with no new corrections. No claim changed, so the source page carries the new hash and a revision note, and the pages written at seq 53 keep the first hash. Nothing under outputs/ was touched and no todo was added.
+
+## [2026-11-26] ingest-skip | Finalizer gaps (m1-finalizers) | reason: hash-exists
+- source: [[sources/research-gap-m1-finalizers]]
+- raw: `raw/research-gap-m1-finalizers.md` (sha256: 014549e333b6)
+- pages touched: none
+- new pages: none
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 0
+- rationale: The batch 1 resume re-requested this source. Its content hash 014549e333b6 already appears in `sources/research-gap-m1-finalizers.md`, which was ingested at seq 54 (commit 974ce1e) with the same raw file, unchanged. That ingest already added the possible-resolution notes under the five open finalizer gaps, created the finding, example, and decision pages, and left the outputs todos for the Flux and Crossplane ramp-up guides. Re-running it would duplicate those writes, so this entry records the skip only.
