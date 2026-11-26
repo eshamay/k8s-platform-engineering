@@ -37,7 +37,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#how-argo-cd-config-connector-ack-and-cluster-api-key-resources-by-gvk]] — open, unassigned
 - [[#informer-and-cache-behavior-keyed-by-gvr]] — open, unassigned
 - [[#controller-runtime-v030-dynamic-mapper-claim-and-aggregated-discovery-rationale]] — open, unassigned
-- [[#deprecated-api-scanners-and-crossplane-v2-gvks]] — open, unassigned
 - [[#crd-scale-limits]] — open, unassigned
 - [[#storageversionmigration-ga-details-in-kubernetes-v137]] — open, unassigned
 - [[#crd-handling-in-cluster-api-config-connector-ack-and-backstage]] — open, unassigned
@@ -503,18 +502,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Locate the aggregated discovery KEP or design discussion.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** controller-runtime, restmapper, discovery
-
-## Deprecated API scanners and Crossplane v2 GVKs — status: open
-
-- **Question:** How do deprecation scanners such as pluto and kubent detect removed GVKs, and how do Crossplane v2 namespaced composite resources change the GVKs that XRDs and claims create compared with v1 claims?
-- **Why it matters:** Both were seen only as search results or passing mentions in the dossier. See [[findings/removed-beta-gvks-break-pinned-manifests-and-clients]] and [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read pluto and kubent documentation.
-  - [ ] Read Crossplane v2 documentation on namespaced composite resources.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** deprecation, crossplane, gvk
-- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Pluto detects deprecated and removed versions from a bundled `versions.yaml` (86 `k8s`, 24 `cert-manager`, 2 `istio` entries, none for Crossplane), and kubent evaluates Rego rule sets for 1.16 to 1.32. Both accept custom entries. Crossplane's own scanner is `crossplane beta upgrade check` and covers removed v1 features, not GVKs. The v2 GVK changes are listed: XRD v1 deprecated beside v2, namespaced managed resources under `.m.` groups beside legacy groups, and Usage moved to `protection.crossplane.io`. The warning-header behavior for a deprecated XRD is an inference. See [[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]].
 
 ## CRD scale limits — status: open
 
@@ -1716,3 +1703,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: the ManagedResourceDefinition, ManagedResourceActivationPolicy and safe-start mechanism, and that the default Helm install activates every managed resource so the default must be turned off to use policies ([[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]]). Not settled: no with-versus-without-policy API server measurement exists, and the docs say alpha where the code says beta.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Mechanism and defaults settled, measurements not. An MRAP matches MRD names with prefix-only wildcards, activates one way only, and the Helm chart creates a default MRAP with `"*"`, so a stock install activates everything. MRDs start Inactive only for providers with `safe-start`, and MRDs and MRAPs are alpha in the docs. Failure modes are documented. Not settled: no measurement of CRD counts or API server memory with versus without policies, only the docs' ~3 MiB per CRD estimate and project-reported runtime-side figures. See [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]].
+
+## Deprecated API scanners and Crossplane v2 GVKs — status: closed (2026-11-26)
+
+- **Question:** How do deprecation scanners such as pluto and kubent detect removed GVKs, and how do Crossplane v2 namespaced composite resources change the GVKs that XRDs and claims create compared with v1 claims?
+- **Why it matters:** Both were seen only as search results or passing mentions in the dossier. See [[findings/removed-beta-gvks-break-pinned-manifests-and-clients]] and [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read pluto and kubent documentation.
+  - [ ] Read Crossplane v2 documentation on namespaced composite resources.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** deprecation, crossplane, gvk
+- **Resolution:** Settled: Pluto (86 Kubernetes, 24 cert-manager and 2 Istio entries) and kubent ship no Crossplane rules, so deprecated Crossplane GVKs pass unflagged unless custom entries are added ([[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]]). Not settled: the API-server warning-header behavior for the deprecated XRD v1 is inference, not observed.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Pluto detects deprecated and removed versions from a bundled `versions.yaml` (86 `k8s`, 24 `cert-manager`, 2 `istio` entries, none for Crossplane), and kubent evaluates Rego rule sets for 1.16 to 1.32. Both accept custom entries. Crossplane's own scanner is `crossplane beta upgrade check` and covers removed v1 features, not GVKs. The v2 GVK changes are listed: XRD v1 deprecated beside v2, namespaced managed resources under `.m.` groups beside legacy groups, and Usage moved to `protection.crossplane.io`. The warning-header behavior for a deprecated XRD is an inference. See [[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]].

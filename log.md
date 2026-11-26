@@ -534,3 +534,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Managed resource activation policy mechanism and defaults
 - closed by: Eric Shamay
 - resolution: Settled: the ManagedResourceDefinition, ManagedResourceActivationPolicy and safe-start mechanism, and that the default Helm install activates every managed resource so the default must be turned off to use policies ([[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]]). Not settled: no with-versus-without-policy API server measurement exists, and the docs say alpha where the code says beta.
+
+## [2026-11-26] gaps | close | Deprecated API scanners and Crossplane v2 GVKs
+- closed by: Eric Shamay
+- resolution: Settled: Pluto (86 Kubernetes, 24 cert-manager and 2 Istio entries) and kubent ship no Crossplane rules, so deprecated Crossplane GVKs pass unflagged unless custom entries are added ([[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]]). Not settled: the API-server warning-header behavior for the deprecated XRD v1 is inference, not observed.
