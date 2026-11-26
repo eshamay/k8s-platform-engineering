@@ -177,6 +177,13 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passage revised and citing the page named above.
 - **Drafted by:** agent on 2026-11-26
 
+## Update flux-ramp-up for the verified pre-dry-run takeover flag — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the client-side to server-side migration paragraph (around line 255) says the issue 1722 flag "runs takeover before the dry run, which a maintainer called dangerous; the shipped semantics were not verified in the wiki". It should name `--override-manager-before-dry-run`, say it first shipped in kustomize-controller v1.10.0 (2026-10-24) and Flux v2.10.0 (2026-10-26), and say that it is a separate opt-in list that transfers all fields of the named managers, prunes fields missing from the source, is not reverted on failure, and should be removed after recovery. The open-questions passage (around line 340) should drop the unverified caveat for this flag.
+- **Why:** The 2026-11-26 dossier verified the flag against PR 1747 and the v1.10.0 source and docs, see [[sources/research-gap-g3-flux-ssa-helm]]. Cite [[examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag]] and [[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]]. The helm-controller `--override-manager` passage (around line 257) is not affected and stays unverified.
+- **Acceptance:** Both passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
 ## Done
 
 ## Run build-wiki workflow — status: done

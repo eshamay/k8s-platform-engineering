@@ -3,11 +3,14 @@ title: Server-side apply conflict policy across tools
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-gap-g3-flux-ssa-helm
+    hash: e825557fc5c4
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, server-side-apply, conflict, gitops]
 ---
@@ -20,7 +23,7 @@ Every tool that applies with SSA must decide what happens when another manager o
 |---|---|---|---|
 | `kubectl apply --server-side` | Error | `--force-conflicts` forces everything | `kubectl` unless `--field-manager` is set |
 | [[entities/argo-cd]] | Force (`--server-side --force-conflicts`), opt-in via `ServerSideApply=true` | `ignoreDifferences`, Server-Side Diff, `managedFieldsManagers` | `argocd-controller` |
-| [[entities/flux]] | Force-applies its own intent | `ssa` annotation (`Override`, `Merge`, `IfNotPresent`, `Ignore`), `.spec.ignore` with Strip and Adopt, `--override-manager` | kustomize-controller, plus `flux-client-side-apply` for preserving kubectl edits |
+| [[entities/flux]] | Force-applies its own intent | `ssa` annotation (`Override`, `Merge`, `IfNotPresent`, `Ignore`), `.spec.ignore` with Strip and Adopt, `--override-manager` (after a successful dry-run), `--override-manager-before-dry-run` (kustomize-controller v1.10.0 and Flux v2.10.0, recovery only) | kustomize-controller, plus `flux-client-side-apply` for preserving kubectl edits |
 | [[entities/kluctl]] | Decides per field, overwriting known interactive managers | `--force-apply`, `kluctl.io/force-apply`, `kluctl.io/force-apply-field` | Kluctl's own manager |
 | Controllers (Kubebuilder) | Force ownership of fields they manage | Specify only the fields you manage | Named with `client.FieldOwner` |
 | [[entities/crossplane]] | Uses SSA to propagate claim to composite to composed resources | Merge markers on provider CRDs; managed-field cleanup on migration | Prefix `apiextensions.crossplane.io/composed/` |

@@ -83,6 +83,9 @@ sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
+  - id: research-gap-g3-flux-ssa-helm
+    hash: e825557fc5c4
+    ingested: 2026-11-26
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -139,7 +142,7 @@ Flux HelmRelease status carries the conditions `Ready`, `Reconciling`, `Stalled`
 
 ## Server-side apply and field ownership
 
-kustomize-controller applies with server-side apply and runs a server-side dry-run on each interval. Its controls are the `kustomize.toolkit.fluxcd.io/ssa` annotation (`Override`, `Merge`, `IfNotPresent`, `Ignore`), the `force` annotation for immutable-field changes, `.spec.ignore` rules with Strip and Adopt semantics, and the `flux-client-side-apply` manager name that preserves kubectl edits. Moving from client-side apply in Flux 0.17 to server-side apply in 0.18 left removed fields in the cluster, and a stale manager that co-owns a list entry key can make the dry-run fail every reconcile. Issue 1722 was closed through PR 1747 with an opt-in pre-dry-run takeover flag, whose final semantics were not verified. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/flux-ssa-annotations-and-ignore-rules-share-fields-with-other-controllers]], [[examples/flux-migration-from-client-side-apply-strands-removed-fields]], and [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].
+kustomize-controller applies with server-side apply and runs a server-side dry-run on each interval. Its controls are the `kustomize.toolkit.fluxcd.io/ssa` annotation (`Override`, `Merge`, `IfNotPresent`, `Ignore`), the `force` annotation for immutable-field changes, `.spec.ignore` rules with Strip and Adopt semantics, and the `flux-client-side-apply` manager name that preserves kubectl edits. Moving from client-side apply in Flux 0.17 to server-side apply in 0.18 left removed fields in the cluster, and a stale manager that co-owns a list entry key can make the dry-run fail every reconcile. Issue 1722 was closed through PR 1747 with the opt-in flag `--override-manager-before-dry-run`, which first shipped in kustomize-controller v1.10.0 (2026-10-24) and is bundled in Flux v2.10.0 (2026-10-26). It is a separate list from `--override-manager`, which still takes over the named managers only after a successful dry-run. The new flag transfers all fields of the named managers before the dry-run, prunes fields missing from the source, is not reverted if the apply fails, matches names exactly, and leaves the default managers on the post-dry-run path. The documentation says to use it only to recover stuck objects and to remove it afterwards. Correction: earlier text here said the final semantics were not verified. [[sources/research-server-side-apply-and-field-ownership]] [[sources/research-gap-g3-flux-ssa-helm]] See [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]], [[examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag]], [[findings/flux-documents-its-override-manager-flags-on-the-controller-options-page-and-not-on-the-kustomization-spec-page]], [[examples/flux-ssa-annotations-and-ignore-rules-share-fields-with-other-controllers]], [[examples/flux-migration-from-client-side-apply-strands-removed-fields]], and [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].
 
 ## Admission webhooks and dry-run
 

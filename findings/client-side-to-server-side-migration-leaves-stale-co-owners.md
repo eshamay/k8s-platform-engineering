@@ -3,11 +3,14 @@ title: Migrating from client-side to server-side apply leaves stale co-owners
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-gap-g3-flux-ssa-helm
+    hash: e825557fc5c4
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, server-side-apply, migration, managedfields]
 ---
@@ -24,7 +27,7 @@ Flux hit this when moving from 0.17 to 0.18 and when adopting hand-applied resou
 
 ## Mitigations
 
-Each tool chose a different cleanup. Flux's workaround was deleting the `managedFields` entry and later an `--override-manager` flag that reclaims named managers after a successful dry-run. Argo CD automates the move to its `argocd-controller` manager with a client-side apply migration feature that deletes the old entry. Crossplane clears all managers, applies under a new manager, and deletes `before-first-apply`. Argo CD's proposal also notes the risk of alternating client-side and server-side syncs. See [[comparisons/client-side-apply-versus-server-side-apply]].
+Each tool chose a different cleanup. Flux's workaround was deleting the `managedFields` entry and later an `--override-manager` flag that reclaims named managers after a successful dry-run. Since kustomize-controller v1.10.0, a separate `--override-manager-before-dry-run` flag does the same before the dry-run, for objects the dry-run itself rejects ([[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]]). Argo CD automates the move to its `argocd-controller` manager with a client-side apply migration feature that deletes the old entry. Crossplane clears all managers, applies under a new manager, and deletes `before-first-apply`. Argo CD's proposal also notes the risk of alternating client-side and server-side syncs. See [[comparisons/client-side-apply-versus-server-side-apply]].
 
 ## Related
 

@@ -118,6 +118,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g3-kro]] — verified dossier on kro v0.10.0 tuning defaults, instance conditions, Graph API, readiness mechanics, status schema, and governance, 2026-11-26 (active)
 - [[sources/research-gap-g3-reconcile-defaults]] — verified dossier on default reconcile intervals for Flux, Argo CD, Crossplane, ACK, Cluster API, and Config Connector, 2026-11-26 (active)
 - [[sources/research-gap-g3-k8s-and-controller-runtime]] — verified dossier on v1.36 staleness mitigation, Mutating Admission Policy GA, StorageVersionMigration GA in v1.37, and Requeue backoff in controller-runtime v0.25.3, 2026-11-26 (active)
+- [[sources/research-gap-g3-flux-ssa-helm]] — verified dossier on the kustomize-controller --override-manager-before-dry-run flag shipped in v1.10.0 and Flux v2.10.0, 2026-11-26 (active)
 
 ## Examples
 
@@ -282,6 +283,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/kubernetes-v1-36-daemonset-statefulset-replicaset-and-job-controllers-skip-a-sync-until-the-cache-catches-up-with-their-own-write]] — built-in controllers gate on resource version (active)
 - [[examples/controller-runtime-merged-a-read-your-own-write-client-design-in-october-2026-but-no-release-is-confirmed-to-ship-it]] — design merged, release unconfirmed (active)
 - [[examples/a-user-created-storageversionmigration-object-rewrites-stored-objects-so-a-crd-can-retire-an-old-version]] — user-triggered migration walkthrough (active)
+- [[examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag]] — a stale Update manager fails the dry-run until the v1.10.0 flag (active)
 
 ## Comparisons
 
@@ -373,6 +375,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]] — vertical tuning versus label sharding (draft)
 - [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]] — one shared control plane or several by domain (draft)
 - [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]] — Crossplane's CRD-count decision and rejected alternatives (draft)
+- [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]] — why the pre-dry-run takeover is its own opt-in list (active)
 
 ## Findings
 
@@ -423,7 +426,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/config-style-crds-with-several-reconcilers-get-no-status]] — multiple writers (draft)
 - [[findings/client-side-to-server-side-migration-leaves-stale-co-owners]] — removals do not prune (draft)
 - [[findings/atomic-lists-and-unmarked-crds-block-shared-field-ownership]] — merge markers as API contract (draft)
-- [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]] — Flux issue 1722 (draft)
+- [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]] — Flux issue 1722, resolved by the v1.10.0 pre-dry-run flag (active)
 - [[findings/diff-is-not-apply-server-defaults-look-like-drift]] — false OutOfSync (draft)
 - [[findings/forcing-conflicts-hides-disagreements-between-writers]] — blanket force versus fail (draft)
 - [[findings/managedfields-are-hidden-from-kubectl-output-by-default]] — show-managed-fields (active)
@@ -552,6 +555,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]] — stage claims need the gate table (active)
 - [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]] — Requeue true is rate-limited and keeps history (active)
 - [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]] — GA does not mean automatic (active)
+- [[findings/the-flux-override-manager-flag-takes-over-only-after-a-successful-dry-run-so-it-cannot-recover-an-object-stuck-at-dry-run-validation]] — the post-dry-run takeover cannot fix a wedged dry-run (active)
+- [[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]] — risks and safe use of the recovery flag (active)
+- [[findings/flux-documents-its-override-manager-flags-on-the-controller-options-page-and-not-on-the-kustomization-spec-page]] — where the flags are documented (active)
 
 ## Outputs
 

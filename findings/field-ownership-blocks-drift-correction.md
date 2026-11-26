@@ -3,7 +3,7 @@ title: Field ownership can block drift correction
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
@@ -11,6 +11,9 @@ sources:
   - id: research-server-side-apply-and-field-ownership
     hash: 1f12c486354e
     ingested: 2026-11-25
+  - id: research-gap-g3-flux-ssa-helm
+    hash: e825557fc5c4
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, server-side-apply, drift, flux, argo-cd]
 ---
@@ -39,4 +42,6 @@ The override flag and its "since v1.5.0" claim come from a community reply, not 
 
 ## A second blocking case
 
-Flux issue 1722 shows another way ownership blocks correction: a stale manager co-owning a list entry key leaves a half-removed container that fails the dry-run on every reconcile. The issue was closed through PR 1747 with an opt-in pre-dry-run takeover flag that maintainers call dangerous. [[sources/research-server-side-apply-and-field-ownership]] See [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].
+Flux issue 1722 shows another way ownership blocks correction: a stale manager co-owning a list entry key leaves a half-removed container that fails the dry-run on every reconcile. The issue was closed through PR 1747 with an opt-in pre-dry-run takeover flag, `--override-manager-before-dry-run`, which shipped in kustomize-controller v1.10.0 and Flux v2.10.0 and which maintainers call dangerous. The documentation says to use it only to recover stuck objects and to remove it afterwards. [[sources/research-server-side-apply-and-field-ownership]] [[sources/research-gap-g3-flux-ssa-helm]] See [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]] and [[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]].
+
+The `--override-manager` flag in kustomize-controller is documented on the controller options page, where it takes over the named managers only after a successful dry-run. The helm-controller variant discussed above is still known only from the community reply.

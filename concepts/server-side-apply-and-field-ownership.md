@@ -26,6 +26,9 @@ sources:
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
+  - id: research-gap-g3-flux-ssa-helm
+    hash: e825557fc5c4
+    ingested: 2026-11-26
 aliases: [SSA, managedFields]
 tags: [api-machinery, server-side-apply]
 ---
@@ -74,7 +77,7 @@ Flux and Argo CD rely on server-side apply to decide what is theirs, and the Kub
 
 ## Pitfalls
 
-Most problems appear at boundaries. The documented ones are stale co-owners after a migration, atomic lists and unmarked CRDs, list entries whose key is co-owned by a stale manager, diffs that mistake server defaults for drift, hidden `managedFields` in `kubectl` output, and forcing that hides real disagreements. See [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]], [[findings/diff-is-not-apply-server-defaults-look-like-drift]], [[findings/managedfields-are-hidden-from-kubectl-output-by-default]], and [[findings/forcing-conflicts-hides-disagreements-between-writers]].
+Most problems appear at boundaries. The documented ones are stale co-owners after a migration, atomic lists and unmarked CRDs, list entries whose key is co-owned by a stale manager, diffs that mistake server defaults for drift, hidden `managedFields` in `kubectl` output, and forcing that hides real disagreements. A tool that dry-runs before applying can be wedged by a stale co-owner, and Flux's recovery switch since kustomize-controller v1.10.0 is `--override-manager-before-dry-run`, which transfers all fields of the named managers before the dry-run and is meant to be removed afterwards ([[sources/research-gap-g3-flux-ssa-helm]]). See [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]], [[findings/diff-is-not-apply-server-defaults-look-like-drift]], [[findings/managedfields-are-hidden-from-kubectl-output-by-default]], and [[findings/forcing-conflicts-hides-disagreements-between-writers]].
 
 ## Open edges
 

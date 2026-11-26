@@ -363,6 +363,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, helm, server-side-apply, verification
+- **Possible resolution from [[sources/research-gap-g3-flux-ssa-helm]]:** Marginally helpful, and not settled. The dossier verified the kustomize-controller `--override-manager` flag (documented as "Field manager disallowed to perform changes on managed resources.") and its new pre-dry-run sibling, but it did not read helm-controller documentation or release notes, so the helm-controller flag and its availability since v1.5.0 stay unverified. See [[findings/field-ownership-blocks-drift-correction]].
 
 ## Config Connector reconcile interval and drift cadence — status: open
 
@@ -657,6 +658,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/flux]] and [[findings/field-ownership-blocks-drift-correction]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, server-side-apply, verification
+- **Possible resolution from [[sources/research-gap-g3-flux-ssa-helm]]:** Settled, and the user can close it. The shipped flag is `--override-manager-before-dry-run`, the name issue 1722 proposed, delivered by kustomize-controller PR 1747 (merged 2026-10-23) with fluxcd/pkg PR 1276. It first shipped in kustomize-controller v1.10.0 (2026-10-24) and is bundled in Flux v2.10.0 (2026-10-26). It is a separate opt-in list, and `--override-manager` still takes over the named managers only after a successful dry-run. The documentation says the pre-dry-run takeover transfers all fields of the named managers, prunes fields missing from the source, is not reverted if the apply fails, matches names exactly, and should be used only to recover stuck objects and then removed. The default managers stay on the post-dry-run path. The flags are documented on the controller options page and not on the Kustomization spec page. Not settled: the helm-controller `--override-manager` claim and the since-v1.5.0 version, which the dossier did not research. See [[entities/flux]], [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]], [[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]], [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]], and [[examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag]].
 
 ## Best default conflict policy for teams running GitOps and in-cluster controllers — status: open
 
