@@ -558,3 +558,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Argo CD default reconcile interval across versions
 - closed by: Eric Shamay
 - resolution: Settled: Argo CD's default is 180 seconds through v2.14 and 120 seconds plus 60 seconds of jitter from v3.0, and some docs still say three minutes ([[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]], [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]]). Not settled: the reason for the change and the v2.1 to v2.4 values were not found.
+
+## [2026-11-26] gaps | close | Flux pre-dry-run manager takeover flag and current SSA documentation
+- closed by: Eric Shamay
+- resolution: Settled: the flag is --override-manager-before-dry-run, first shipped in kustomize-controller v1.10.0 and Flux v2.10.0; it transfers all fields of the named managers and is not reverted if the apply fails ([[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]], [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]]). Not settled: helm-controller driftDetection and Helm 4 server-side apply were not researched in this pass.

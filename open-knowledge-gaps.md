@@ -46,7 +46,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#generic-readiness-when-cluster-api-moves-from-ready-to-available]] — open, unassigned
 - [[#named-case-studies-and-postmortems-for-status-problems]] — open, unassigned
 - [[#server-side-apply-behavior-in-kro-ack-config-connector-and-helm-4]] — open, unassigned
-- [[#flux-pre-dry-run-manager-takeover-flag-and-current-ssa-documentation]] — open, unassigned
 - [[#best-default-conflict-policy-for-teams-running-gitops-and-in-cluster-controllers]] — open, unassigned
 - [[#crossplane-v2-server-side-apply-behavior-and-external-writers]] — open, unassigned
 - [[#cluster-api-field-ownership-rules-and-argo-cd-server-side-diff-stability]] — open, unassigned
@@ -588,18 +587,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add rows to [[comparisons/ssa-conflict-policy-across-tools]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** server-side-apply, kro, ack, config-connector, helm
-
-## Flux pre-dry-run manager takeover flag and current SSA documentation — status: open
-
-- **Question:** What are the shipped semantics of the kustomize-controller flag proposed in issue 1722 (`--override-manager-before-dry-run`), delivered through PR 1747, and how does current Flux documentation describe `--override-manager`?
-- **Why it matters:** The dossier read only the issue thread, and the final flag name and semantics should be checked before anyone relies on them. See [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read kustomize-controller PR 1747 and the current Kustomization documentation.
-  - [ ] Update [[entities/flux]] and [[findings/field-ownership-blocks-drift-correction]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** flux, server-side-apply, verification
-- **Possible resolution from [[sources/research-gap-g3-flux-ssa-helm]]:** Settled, and the user can close it. The shipped flag is `--override-manager-before-dry-run`, the name issue 1722 proposed, delivered by kustomize-controller PR 1747 (merged 2026-10-23) with fluxcd/pkg PR 1276. It first shipped in kustomize-controller v1.10.0 (2026-10-24) and is bundled in Flux v2.10.0 (2026-10-26). It is a separate opt-in list, and `--override-manager` still takes over the named managers only after a successful dry-run. The documentation says the pre-dry-run takeover transfers all fields of the named managers, prunes fields missing from the source, is not reverted if the apply fails, matches names exactly, and should be used only to recover stuck objects and then removed. The default managers stay on the post-dry-run path. The flags are documented on the controller options page and not on the Kustomization spec page. Not settled: the helm-controller `--override-manager` claim and the since-v1.5.0 version, which the dossier did not research. See [[entities/flux]], [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]], [[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]], [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]], and [[examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag]].
 
 ## Best default conflict policy for teams running GitOps and in-cluster controllers — status: open
 
@@ -1720,3 +1707,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: Argo CD's default is 180 seconds through v2.14 and 120 seconds plus 60 seconds of jitter from v3.0, and some docs still say three minutes ([[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]], [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]]). Not settled: the reason for the change and the v2.1 to v2.4 values were not found.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Settled for the versions sampled, and the user can close it. `timeout.reconciliation` is 180s from v2.5.0 through v2.14.0 (the jitter key appears from v2.10.0 with default 0) and 120s plus 60s of jitter from v3.0.0 through v3.6.0, in both the manifest and the controller constants. The v3.0.0 FAQ restates 3 minutes as a "default maximum polling interval", and the v3.2.0 high-availability page still says 3m. Not settled: why the default changed (the upgrade notes and pull request searches found nothing) and the values for v2.0.0 to v2.4.0, which were not sampled. See [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]] and [[entities/argo-cd]].
+
+## Flux pre-dry-run manager takeover flag and current SSA documentation — status: closed (2026-11-26)
+
+- **Question:** What are the shipped semantics of the kustomize-controller flag proposed in issue 1722 (`--override-manager-before-dry-run`), delivered through PR 1747, and how does current Flux documentation describe `--override-manager`?
+- **Why it matters:** The dossier read only the issue thread, and the final flag name and semantics should be checked before anyone relies on them. See [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read kustomize-controller PR 1747 and the current Kustomization documentation.
+  - [ ] Update [[entities/flux]] and [[findings/field-ownership-blocks-drift-correction]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, server-side-apply, verification
+- **Resolution:** Settled: the flag is --override-manager-before-dry-run, first shipped in kustomize-controller v1.10.0 and Flux v2.10.0; it transfers all fields of the named managers and is not reverted if the apply fails ([[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]], [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]]). Not settled: helm-controller driftDetection and Helm 4 server-side apply were not researched in this pass.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-flux-ssa-helm]]:** Settled, and the user can close it. The shipped flag is `--override-manager-before-dry-run`, the name issue 1722 proposed, delivered by kustomize-controller PR 1747 (merged 2026-10-23) with fluxcd/pkg PR 1276. It first shipped in kustomize-controller v1.10.0 (2026-10-24) and is bundled in Flux v2.10.0 (2026-10-26). It is a separate opt-in list, and `--override-manager` still takes over the named managers only after a successful dry-run. The documentation says the pre-dry-run takeover transfers all fields of the named managers, prunes fields missing from the source, is not reverted if the apply fails, matches names exactly, and should be used only to recover stuck objects and then removed. The default managers stay on the post-dry-run path. The flags are documented on the controller options page and not on the Kustomization spec page. Not settled: the helm-controller `--override-manager` claim and the since-v1.5.0 version, which the dossier did not research. See [[entities/flux]], [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]], [[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]], [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]], and [[examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag]].
