@@ -578,3 +578,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Requeue true backoff behavior in current controller-runtime
 - closed by: Eric Shamay
 - resolution: Settled: at controller-runtime v0.25.3 returning Requeue true is a rate-limited requeue with per-item exponential backoff, and only RequeueAfter forgets the failure history ([[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]], [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]]). Not settled: the origin of the older claim of an immediate requeue (issue 808) was not located.
+
+## [2026-11-26] gaps | close | Current Cluster API MachineHealthCheck behavior
+- closed by: Eric Shamay
+- resolution: Settled at Cluster API v1.15.0-rc.0: the v1beta2 names, a 100 percent default that leaves the short-circuit guard off so remediation is unbounded until a threshold is set, and an external remediation reference; v1beta1 maxUnhealthy and unhealthyRange are deprecated ([[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]], [[findings/cluster-api-v1beta1-maxunhealthy-and-unhealthyrange-are-deprecated-and-older-material-uses-the-old-names]]). Not settled: these were read from a release candidate and need a recheck at v1.15.0 final.

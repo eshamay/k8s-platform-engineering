@@ -24,7 +24,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#flux-helm-controller-override-manager-and-dry-run-failure-recovery]] — open, unassigned
 - [[#config-connector-reconcile-interval-and-drift-cadence]] — open, unassigned
 - [[#production-incidents-from-drift-correction]] — open, unassigned
-- [[#current-cluster-api-machinehealthcheck-behavior]] — open, unassigned
 - [[#kro-drift-issue-history-and-comparability-of-ten-hour-resyncs]] — open, unassigned
 - [[#argo-cd-multi-cluster-hub-and-spoke-and-applicationsets]] — open, unassigned
 - [[#secret-management-in-gitops-agents]] — open, unassigned
@@ -331,18 +330,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortem, drift, case-study
 - **Possible resolution from [[sources/research-gap-g1-gitops-drift-incidents]]:** Partly settled, and the user decides whether to close it. The dossier found one dated production-style incident, a CNCF blog post of 2026-11-20 in which Argo CD self-heal skipped a migration hook on two of five regional Applications for 36 to 44 minutes (customer unnamed, mechanism the author's claim). It also found Flux issue 2514 (an HPA-managed Deployment reset to 1 replica once, no outage), ACK issue 2911 (a prune that stranded a CR), and Argo CD issue 30398 (permanent OutOfSync). It found no named company's postmortem of a revert loop, a blocked correction, or a remediation storm, and the Cluster API side is covered by [[sources/research-gap-g3-argocd-capi]]. See [[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]], [[findings/handing-replicas-between-git-and-an-hpa-can-reset-the-count-or-leave-an-application-permanently-out-of-sync]], and [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]].
-
-## Current Cluster API MachineHealthCheck behavior — status: open
-
-- **Question:** How does MachineHealthCheck behave in current Cluster API releases, including remediation templates, newer fields, and the semantics of `maxUnhealthy`?
-- **Why it matters:** The dossier read the v0.4 book only. See [[examples/cluster-api-machine-health-check-replaces-failed-nodes]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the current Cluster API book.
-  - [ ] Update [[entities/cluster-api]] and [[findings/remediation-can-amplify-an-outage]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** cluster-api, remediation, verification
-- **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Largely settled, and the user can close it. The v1beta2 API (v1.11.0, 2025-08-19) moves checks under `spec.checks` and replaces `maxUnhealthy` and `unhealthyRange` with `remediation.triggerIf.unhealthyLessThanOrEqualTo` and `unhealthyInRange` (which takes precedence, percentages round down). The default is 100 percent, so the short-circuit is off until set. External remediation uses `remediation.templateRef`, v1.15.0-rc.0 adds CEL `unhealthyExpressions` (OR-combined, at most 10), and KubeadmControlPlane remediation must preserve etcd quorum with its own `maxRetry`, `retryPeriodSeconds`, and `minHealthyPeriodSeconds` controls. Not settled: v1.15.0 final was not released on 2026-11-26, so the v1.15 items are pre-release, and no real-world remediation-storm incident was found. See [[examples/cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers]], [[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]], and [[entities/cluster-api]].
 
 ## kro drift issue history and comparability of ten-hour resyncs — status: open
 
@@ -1725,3 +1712,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: at controller-runtime v0.25.3 returning Requeue true is a rate-limited requeue with per-item exponential backoff, and only RequeueAfter forgets the failure history ([[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]], [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]]). Not settled: the origin of the older claim of an immediate requeue (issue 808) was not located.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-k8s-and-controller-runtime]]:** Settled, and the user can close it. At controller-runtime v0.25.3 (published 2026-11-16), `Result{Requeue: true}` with a nil error is a rate-limited requeue with per-item exponential backoff, so the package reference was right. The handler adds the request with `RateLimited: true` and does not reset the failure counter, while `RequeueAfter > 0` calls `Queue.Forget(req)` and then waits exactly that duration, and a non-nil error ignores both fields. The deprecation notice names the replacement: "Deprecated: Use `RequeueAfter` instead." With the default priority queue the limiter is per-item exponential (5 ms to 1000 s) with no overall bucket. Not settled: where the "immediate requeue" reading came from, because issue 808's body does not claim it and its comment thread was not read. See [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]] and [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]].
+
+## Current Cluster API MachineHealthCheck behavior — status: closed (2026-11-26)
+
+- **Question:** How does MachineHealthCheck behave in current Cluster API releases, including remediation templates, newer fields, and the semantics of `maxUnhealthy`?
+- **Why it matters:** The dossier read the v0.4 book only. See [[examples/cluster-api-machine-health-check-replaces-failed-nodes]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current Cluster API book.
+  - [ ] Update [[entities/cluster-api]] and [[findings/remediation-can-amplify-an-outage]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cluster-api, remediation, verification
+- **Resolution:** Settled at Cluster API v1.15.0-rc.0: the v1beta2 names, a 100 percent default that leaves the short-circuit guard off so remediation is unbounded until a threshold is set, and an external remediation reference; v1beta1 maxUnhealthy and unhealthyRange are deprecated ([[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]], [[findings/cluster-api-v1beta1-maxunhealthy-and-unhealthyrange-are-deprecated-and-older-material-uses-the-old-names]]). Not settled: these were read from a release candidate and need a recheck at v1.15.0 final.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Largely settled, and the user can close it. The v1beta2 API (v1.11.0, 2025-08-19) moves checks under `spec.checks` and replaces `maxUnhealthy` and `unhealthyRange` with `remediation.triggerIf.unhealthyLessThanOrEqualTo` and `unhealthyInRange` (which takes precedence, percentages round down). The default is 100 percent, so the short-circuit is off until set. External remediation uses `remediation.templateRef`, v1.15.0-rc.0 adds CEL `unhealthyExpressions` (OR-combined, at most 10), and KubeadmControlPlane remediation must preserve etcd quorum with its own `maxRetry`, `retryPeriodSeconds`, and `minHealthyPeriodSeconds` controls. Not settled: v1.15.0 final was not released on 2026-11-26, so the v1.15 items are pre-release, and no real-world remediation-storm incident was found. See [[examples/cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers]], [[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]], and [[entities/cluster-api]].
