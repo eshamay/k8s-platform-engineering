@@ -17,6 +17,9 @@ sources:
   - id: research-gap-g3-scale-recheck
     hash: d9bd6911bff7
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, crossplane, provider-family, crd-count, scale]
 ---
@@ -50,3 +53,7 @@ The Accepted managed resource definition design doc says families "helped allevi
 ## Evidence update (2026-11-26)
 
 A recheck of the current Crossplane v2 material found no published numeric limit for XRs or composed resources per controller, no independent v2 benchmark, and no guidance that retires provider families. The options above are unchanged and this page still gives no recommendation beyond the evidence it cites. [[sources/research-gap-b1-recheck-kro-crossplane]]
+
+## Evidence from the admission and CRD dossier
+
+No official CRD count limit exists, and issue reports tie roughly 700 CRDs to a CPU spike and roughly 1,900 CRDs to about 8 GiB of apiserver memory ([[findings/crd-scale-evidence-is-issue-reports-of-a-cpu-spike-near-700-crds-and-about-8-gib-of-apiserver-memory-near-1900-crds-with-no-official-limit]]). Config Connector ships 883 CRD files ([[findings/config-connector-ships-883-crd-files-and-the-largest-is-579-kb-because-it-has-one-crd-per-google-cloud-resource-kind]]). No recommendation is made here. [[sources/research-gap-m6-admission-crds]]

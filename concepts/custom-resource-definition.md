@@ -20,6 +20,9 @@ sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: [CRD]
 tags: [api-machinery]
 ---
@@ -68,7 +71,7 @@ The sources agree that CRDs are cheap to add but carry real cost. Each CRD adds 
 - Custom resources applied before their CRD fail: [[findings/custom-resources-applied-before-their-crd-exists]].
 - Shared etcd and watch-cache load grows with object counts: [[findings/etcd-scale-limits-of-the-shared-store]] and [[examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd]].
 
-Authoritative numbers for the maximum CRDs per cluster or custom resources per type were not found, and a secondary source cites an object size limit near 1.5 MB. Those limits are tracked as a gap in [[open-knowledge-gaps]]. Third-party CRD code also adds failure points, and custom resource data needs the same etcd backup as everything else.
+No official limit on CRDs per cluster or custom resources per type exists in the SIG Scalability thresholds, which cover built-in types only, and the evidence is issue reports ([[findings/crd-scale-evidence-is-issue-reports-of-a-cpu-spike-near-700-crds-and-about-8-gib-of-apiserver-memory-near-1900-crds-with-no-official-limit]]). The roughly 1.5 MB object figure matches etcd's 1.5 MiB default request limit ([[findings/etcd-limits-requests-to-1-5-mib-and-storage-to-2-gib-by-default-and-8-gib-is-a-suggested-maximum-not-the-default]]). The open question is tracked in [[open-knowledge-gaps]]. Third-party CRD code also adds failure points, and custom resource data needs the same etcd backup as everything else.
 
 ## Related
 
@@ -77,3 +80,7 @@ Authoritative numbers for the maximum CRDs per cluster or custom resources per t
 ## CRD count as an architectural cost of one type per external resource
 
 The managed resource dossier shows the cost of generating one CRD per external resource type: multi-cloud provider sets imply roughly 2,000 CRDs, with more than 4 MiB of API server memory per CRD and discovery requests for about 300 group-versions, and Upbound and the Crossplane community reported slow or unresponsive API servers at several hundred CRDs. [[sources/research-managed-resource]] See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]].
+
+## Additions from the admission and CRD dossier
+
+CEL rules in a CRD schema are bounded by a static estimate, so unbounded lists and strings need `maxItems` and `maxLength` ([[findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set]]). Cluster API labels its CRDs with contract versions and migrates storage versions itself ([[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration]]), Config Connector ships 883 CRD files ([[findings/config-connector-ships-883-crd-files-and-the-largest-is-579-kb-because-it-has-one-crd-per-google-cloud-resource-kind]]), ACK ships CRDs per service chart ([[findings/ack-ships-one-helm-chart-per-service-with-its-crds-in-the-chart-and-no-written-api-version-policy-was-found]]), and Backstage reads only the CRDs named in its configuration ([[findings/backstage-reads-custom-resources-only-from-the-kubernetes-custom-resources-list-and-silently-skips-a-missing-crd]]). [[sources/research-gap-m6-admission-crds]]

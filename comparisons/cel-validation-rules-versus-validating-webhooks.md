@@ -3,7 +3,7 @@ title: CEL validation rules versus validating webhooks
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
@@ -11,6 +11,9 @@ sources:
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [crd, cel, webhooks, validation]
 ---
@@ -45,3 +48,7 @@ The dossier does not claim CEL replaces every webhook. Logic that needs external
 ## Additions from the admission dossier
 
 The admission dossier adds the policy-object route between the two columns above: ValidatingAdmissionPolicy (stable since v1.30) runs CEL in the API server but is declared outside any one CRD, with a binding and optional parameter resource. It also adds the limits on the CEL side: no external data, bounded cost, and informational type checking. See [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]] and [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]]. [[sources/research-admission-webhooks-and-cel]]
+
+## Additions from the admission and CRD dossier
+
+CRD rules are bounded by a static estimate of 10,000,000 per expression and 100,000,000 per CRD ([[findings/cel-cost-limits-are-10-million-per-expression-and-100-million-per-crd-statically-and-1-million-per-call-and-10-million-per-request-at-runtime]]), so unbounded schemas need limits ([[findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set]]). Crossplane's replacement of its XRD and Composition webhooks with CEL is an adopter case ([[findings/crossplane-core-ships-one-fail-closed-usage-webhook-and-replaced-its-xrd-and-composition-webhooks-with-cel]]). [[sources/research-gap-m6-admission-crds]]

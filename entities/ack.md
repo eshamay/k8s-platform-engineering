@@ -77,6 +77,9 @@ sources:
   - id: research-gap-m5-informers-caches
     hash: 1a6a4969c0c2
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -185,3 +188,7 @@ The shared ACK runtime reconciler writes with controller-runtime merge patches a
 ## Cache scope and what "resync" means (m5 dossier)
 
 Service controllers set the cache namespaces and label selector from `--watch-namespace` and `--watch-selectors`, default to one concurrent reconcile per resource, and filter events with `GenerationChangedPredicate` unless ignore-field-drift is on. Correction note, 2026-11-26: the 10-hour "resync" earlier on this page is a `RequeueAfter` after a successful reconcile and not an informer resync. The runtime keys its resource manager factories by `GroupKind`. See [[examples/ack-service-controllers-scope-their-cache-by-namespace-and-label-selector-and-trigger-on-generation-changes]], [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]], and [[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]]. [[sources/research-gap-m5-informers-caches]]
+
+## Admission and CRD handling
+
+The ACK runtime defines only a conversion webhook type and the s3-controller chart ships no webhook ([[findings/kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only]]). Each service has its own Helm chart that carries its CRDs, and no written API-version policy was found ([[findings/ack-ships-one-helm-chart-per-service-with-its-crds-in-the-chart-and-no-written-api-version-policy-was-found]]). [[sources/research-gap-m6-admission-crds]]

@@ -459,6 +459,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crd, scale, etcd
 - **Possible resolution from [[sources/research-gap-b1-unverified-claims]]:** Settles one number only. The etcd v3.6 docs state "The default storage size limit is 2 GiB, configurable with `--quota-backend-bytes` flag." The roughly 1.5 MB object limit, CRD-count limits, and per-CRD apiserver memory were not rechecked. See [[findings/no-primary-postmortem-was-found-for-a-crd-deletion-cascade-or-an-etcd-quota-alarm]].
+- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Partly settled, and the user decides whether to close it. No official limit on CRDs per cluster, custom resources per type or apiserver memory per CRD exists in the SIG Scalability thresholds, which cover built-in types only; that negative was verified by full-text search. The roughly 1.5 MB object figure is consistent with etcd's documented 1.5 MiB default request limit, and etcd's default storage limit is 2 GiB with 8 GiB suggested as a maximum. The evidence for CRD count is issue reports: a CPU spike near 700 CRDs, about 8 GiB of apiserver RSS near 1,900 CRDs, and an open one-etcd-client-per-CRD issue. Not settled: an official CRD count limit and official memory per CRD. See [[findings/crd-scale-evidence-is-issue-reports-of-a-cpu-spike-near-700-crds-and-about-8-gib-of-apiserver-memory-near-1900-crds-with-no-official-limit]] and [[findings/etcd-limits-requests-to-1-5-mib-and-storage-to-2-gib-by-default-and-8-gib-is-a-suggested-maximum-not-the-default]].
 
 ## CRD handling in Cluster API, Config Connector, ACK, and Backstage — status: open
 
@@ -470,6 +471,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find Backstage Kubernetes plugin documentation on custom resources.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cluster-api, config-connector, ack, backstage, crd
+- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Partly settled, and the user decides whether to close it. Cluster API labels CRDs with contract versions, forbids breaking changes within a contract version, and runs a CRD migrator for storage version migration. Config Connector ships 883 CRD files with the largest at 579,353 bytes. ACK ships one Helm chart per service with its CRDs in the chart. Backstage reads custom resources only from `kubernetes.customResources` and silently skips a missing CRD. Not settled: a written ACK API-version stability policy and Backstage CRD handling beyond that configuration. See [[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration]], [[findings/config-connector-ships-883-crd-files-and-the-largest-is-579-kb-because-it-has-one-crd-per-google-cloud-resource-kind]], [[findings/ack-ships-one-helm-chart-per-service-with-its-crds-in-the-chart-and-no-written-api-version-policy-was-found]] and [[findings/backstage-reads-custom-resources-only-from-the-kubernetes-custom-resources-list-and-silently-skips-a-missing-crd]].
 
 ## Status of the conversion webhook and garbage collection problem — status: open
 
@@ -480,6 +482,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read issue 101078 and the partial informer sync work.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crd, conversion, garbage-collection
+- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Mostly settled, and the user decides whether to close it. The stall is fixed upstream: pull request 125796 merged on 2024-09-25 with milestone v1.32, issue 101078 closed as completed, and the 1.32 changelog carries the release note. The caveat is that objects in the unsynced resource type with owner references that set `blockOwnerDeletion: true` are not known to the garbage collector. Not settled: how long dependents remain after a down webhook, and any further partial-informer work. See [[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]].
 
 ## Contents of the k8s.af admission webhook postmortems — status: open
 
@@ -632,6 +635,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read a primary Gatekeeper source.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, kro, argo-cd, config-connector, ack, cluster-api, gatekeeper
+- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Largely settled, and the user decides whether to close it. Crossplane ships one Fail Usage webhook and uses CEL for XRD and Composition validation. kro and ACK ship no webhook in the files read, and kro relies on CRD schema and CEL. Config Connector and Cluster API ship many webhooks, all Fail. Gatekeeper defaults to Ignore with a documented fail-closed path. Not settled: Argo CD webhook absence is UNVERIFIED because only tree paths were searched, and namespace exclusions in the Cluster API and Config Connector manifests were not searched exhaustively. See [[comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno]].
 
 ## Kyverno webhook failure modes and availability — status: open
 
@@ -642,6 +646,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the Kyverno documentation on webhook configuration and availability.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kyverno, webhooks, availability
+- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Partly settled, and the user decides whether to close it. Kyverno policies default to failure policy Fail with a 10 second timeout, the Kyverno and kube-system namespaces are excluded by default, three admission replicas are the HA minimum, and an all-pods-down outage is recovered by deleting the resource webhook configurations. Not settled: measured availability numbers, and any resilience comparison of Kyverno-generated native ValidatingAdmissionPolicy with webhook mode. See [[findings/kyverno-defaults-to-failure-policy-fail-with-a-10-second-timeout-and-needs-three-admission-replicas-for-high-availability]] and [[findings/kyverno-fail-closed-policies-time-out-api-requests-when-all-kyverno-pods-are-down-unless-the-kyverno-namespace-is-excluded]].
 
 ## CEL cost limits and per-request budgets — status: open
 
@@ -653,6 +658,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cel, limits, crd
 - **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on mechanism only. The dossier found no named-company postmortem for stuck finalizers and says so, but it collects the causes (missing controller, always-failing cleanup, child finalizers) and the dangers of forced removal. See [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]].
+- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Settled from Kubernetes source, and the user decides whether to close it. The static estimate limit is 10,000,000 per expression and 100,000,000 per CRD, the runtime limit is 1,000,000 per call, the runtime budget is 10,000,000 per binding or custom resource, and matchConditions have 2,500,000. The CRD docs advise `maxItems`, `maxProperties` and `maxLength` because unbounded inputs get worst-case cost. Values were read on master, not pinned to a release tag. See [[findings/cel-cost-limits-are-10-million-per-expression-and-100-million-per-crd-statically-and-1-million-per-call-and-10-million-per-request-at-runtime]] and [[findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set]].
 
 ## Named operator failure postmortems — status: open
 

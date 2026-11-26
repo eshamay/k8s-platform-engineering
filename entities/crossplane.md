@@ -119,6 +119,9 @@ sources:
   - id: research-gap-m5-informers-caches
     hash: 1a6a4969c0c2
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -177,9 +180,9 @@ A composite resource's spec carries composition selection and pinning (`composit
 
 Crossplane uses server-side apply to sync claims to composite resources (behind `--enable-ssa-claims` in the v1.20 documentation, where it is alpha) and composite resources to composed resources when composition functions are used. Spec and metadata flow forward and status flows back, deleted fields and labels propagate downstream, and complex-field merging needs merge markers in the provider CRDs. The move to composition functions required a managed-fields migration, and issue 7453 on v2.3.1 is an unresolved claim that an external controller's forced field disappears, possibly because `managedFields` was hidden in the output. Crossplane v2 behavior may differ from the v1.20 page. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/crossplane-clears-managed-fields-when-migrating-to-composition-functions]] and [[findings/managedfields-are-hidden-from-kubectl-output-by-default]].
 
-## Admission coverage gap
+## Admission behavior
 
-The admission dossier found no primary Crossplane material, so this wiki makes no claim about Crossplane's own webhooks or about CRD-level CEL in composed APIs. [[sources/research-admission-webhooks-and-cel]] See [[concepts/admission-webhooks-and-cel]] and [[open-knowledge-gaps]].
+Crossplane core ships one validating webhook, `crossplane-no-usages`, with failure policy Fail (settable to Ignore), and replaced its XRD and Composition webhooks with CEL validation. See [[findings/crossplane-core-ships-one-fail-closed-usage-webhook-and-replaced-its-xrd-and-composition-webhooks-with-cel]] and [[examples/crossplane-no-usages-webhook-blocks-deletes-of-resources-labelled-in-use]]. Correction note 2026-11-26: this section earlier said no primary material existed. [[sources/research-gap-m6-admission-crds]]
 
 ## Composition as a replacement for a bespoke controller
 

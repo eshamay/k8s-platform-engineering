@@ -92,6 +92,9 @@ sources:
   - id: research-gap-m5-informers-caches
     hash: 1a6a4969c0c2
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -220,3 +223,7 @@ The 2020 conditions proposal had no `observedGeneration` and leaned positive in 
 ## Cache choices (m5 dossier)
 
 The core manager caches only Secrets that carry the cluster-name label, keeps data only for kubeconfig Secrets, and excludes ConfigMap and Secret from its client cache. A `ClusterCache` gives each workload cluster its own cache that strips managed fields and does not cache Pods or DaemonSets, with client QPS 20 and burst 30. In v1beta2 references carry `apiGroup` and `kind` and the version is resolved from CRD contract labels. See [[examples/cluster-api-caches-only-cluster-labelled-secrets-and-gives-each-workload-cluster-its-own-cache]] and [[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]]. [[sources/research-gap-m5-informers-caches]]
+
+## Admission and CRD handling
+
+Cluster API core ships mutating and validating webhooks that all use failure policy Fail, plus conversion webhooks ([[findings/config-connector-and-cluster-api-register-many-webhooks-and-every-one-uses-failure-policy-fail]]). Providers label CRDs with contract versions and a CRD migrator handles storage version migration ([[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration]]). [[sources/research-gap-m6-admission-crds]]

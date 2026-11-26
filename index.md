@@ -63,7 +63,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/helm]] — package manager whose charts do not upgrade or delete CRDs (active)
 - [[entities/kstatus]] — generic status computation for conforming resources (active)
 - [[entities/prometheus-operator]] — operator that retrofitted status onto its workload CRDs (draft)
-- [[entities/kyverno]] — CEL-first policy engine that can generate native admission policies (draft)
+- [[entities/kyverno]] — CEL-first policy engine that can generate native admission policies (active)
 - [[entities/cert-manager]] — operator with validation, defaulting, and conversion webhooks (draft)
 - [[entities/operator-sdk]] — Operator Framework SDK and its five capability levels (draft)
 - [[entities/crossplane-provider-btp]] — SAP provider with explicit external names and bounded create recovery (draft)
@@ -76,7 +76,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/kpt]] — Configuration as Data toolchain and the KRM function model (draft)
 - [[entities/score]] — developer workload spec translated into Compose or Kubernetes manifests (draft)
 - [[entities/radius]] — application platform with per-environment Recipes, secondary evidence only (draft)
-- [[entities/backstage]] — developer portal framework with catalog and templates, not a provisioner (draft)
+- [[entities/backstage]] — developer portal framework with catalog and templates, not a provisioner (active)
 - [[entities/kratix]] — Promise-based orchestration framework behind a portal (draft)
 - [[entities/port]] — commercial SaaS developer portal with blueprints and actions (draft)
 - [[entities/cozystack]] — packaged PaaS for building a cloud on bare metal (draft)
@@ -141,6 +141,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-m3-status-conditions]] — verified dossier on the kstatus evaluation order, observedGeneration placement, condition polarity history, Config Connector reconcile-status design versus shipped code, and Argo CD status beyond health, 2026-11-26 (active)
 - [[sources/research-gap-m4-ssa-conflict-policy]] — verified dossier on server-side apply behavior in kro, ACK, Config Connector, Helm 4, and helm-controller, Cluster API field ownership, Argo CD Server-Side Diff stability, and force versus strip-or-adopt, 2026-11-26 (active)
 - [[sources/research-gap-m5-informers-caches]] — verified dossier on informer resync, cache narrowing, per-tool caches, GVK and GVR keying, and the dynamic mapper, 2026-11-26 (active)
+- [[sources/research-gap-m6-admission-crds]] — Research dossier: admission and CRD gaps (m6-admission-crds) (active)
 
 ## Examples
 
@@ -390,6 +391,17 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/ack-service-controllers-scope-their-cache-by-namespace-and-label-selector-and-trigger-on-generation-changes]] — flag-scoped cache and generation filter (active)
 - [[examples/cluster-api-caches-only-cluster-labelled-secrets-and-gives-each-workload-cluster-its-own-cache]] — label-limited Secret cache and per-workload-cluster cache (active)
 - [[examples/argo-cd-tracks-resources-by-group-kind-namespace-and-name-so-an-api-version-change-keeps-the-same-key]] — version-free resource identity (active)
+- [[examples/cluster-api-crd-migrator-patches-every-custom-resource-through-the-status-endpoint-to-migrate-storage-versions]] — The Cluster API CRD migrator patches every custom resource through the status endpoint to migrate storage versions (active)
+- [[examples/config-connector-webhook-manager-runs-ten-fail-closed-handlers-with-an-autoscaler-of-2-to-20-replicas]] — Config Connector's webhook-manager runs ten fail-closed handlers with an autoscaler of 2 to 20 replicas (active)
+- [[examples/crossplane-no-usages-webhook-blocks-deletes-of-resources-labelled-in-use]] — Crossplane's crossplane-no-usages webhook blocks deletes of resources labelled in-use (active)
+- [[examples/kro-integration-test-reports-a-third-party-webhook-denial-in-instance-status-and-recovers]] — A kro integration test reports a third-party webhook denial in instance status and recovers when the policy is removed (active)
+- [[examples/kubernetes-issue-105932-posting-just-over-700-crds-at-once-spiked-kube-apiserver-cpu-in-openapi-publishing]] — Kubernetes issue 105932, posting just over 700 CRDs at once spiked kube-apiserver CPU in OpenAPI publishing (active)
+- [[examples/kubernetes-issue-110720-a-down-conversion-webhook-stalled-the-garbage-collector-and-was-closed-as-a-duplicate-of-101078]] — Kubernetes issue 110720, a down conversion webhook stalled the garbage collector and was closed as a duplicate of 101078 (active)
+- [[examples/kubernetes-issue-111476-about-1-900-crds-pushed-apiserver-memory-to-about-8-gib]] — Kubernetes issue 111476, about 1,900 CRDs pushed apiserver memory to about 8 GiB (active)
+- [[examples/kubernetes-issue-111622-the-api-server-creates-one-etcd-client-per-crd-and-the-issue-is-open]] — Kubernetes issue 111622, the API server creates one etcd client per CRD and the issue is open (active)
+- [[examples/kubernetes-issue-127105-a-failing-resource-sync-stalled-garbage-collection-of-other-resources-in-an-ha-kind-cluster]] — Kubernetes issue 127105, a failing resource sync stalled garbage collection of other resources in an HA kind cluster (active)
+- [[examples/kubernetes-issue-82292-crd-size-trouble-includes-a-5-519-crd-size-distribution-and-a-1-23-mb-strimzi-crd]] — Kubernetes issue 82292, CRD size trouble includes a 5,519-CRD size distribution and a 1.23 MB Strimzi CRD (active)
+- [[examples/kubernetes-pull-request-125796-let-the-garbage-collector-proceed-after-a-failed-cache-sync-and-closed-issue-101078-in-v1-32]] — Kubernetes pull request 125796 let the garbage collector proceed after a failed cache sync and closed issue 101078 in v1.32 (active)
 
 ## Comparisons
 
@@ -415,7 +427,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/ssa-conflict-policy-across-tools]] — conflict defaults and escape hatches (active)
 - [[comparisons/client-side-apply-versus-server-side-apply]] — where the merge runs and what it remembers (draft)
 - [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]] — four admission extension mechanisms (draft)
-- [[comparisons/kyverno-versus-native-validating-admission-policy]] — engine features versus in-process policy (draft)
+- [[comparisons/kyverno-versus-native-validating-admission-policy]] — engine features versus in-process policy (active)
 - [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]] — three ways to a custom API (draft)
 - [[comparisons/how-flux-ack-and-cluster-api-split-controllers]] — three axes of controller separation (draft)
 - [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]] — queues, jitter, workers, and resync (draft)
@@ -447,6 +459,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]] — label key versus cluster key for splitting controller work (draft)
 - [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]] — how each tool settles a field two writers set (active)
 - [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]] — cache scope, rate limits, and resync mechanism per tool (active)
+- [[comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno]] — Admission webhooks and failure policies across Crossplane, kro, Argo CD, Config Connector, ACK, Cluster API, Gatekeeper, and Kyverno (active)
 
 ## Decisions
 
@@ -463,7 +476,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/publish-synced-false-at-reconcile-start]] — ACK stale-status options (draft)
 - [[decisions/which-crds-get-a-status-subresource]] — Prometheus Operator's line between workload and config CRDs (draft)
 - [[decisions/force-conflicts-or-surface-them-to-humans]] — controller versus CD tool defaults (active)
-- [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]] — enforcement versus availability (draft)
+- [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]] — enforcement versus availability (active)
 - [[decisions/build-a-custom-operator-or-compose-existing-resources]] — code or composition (draft)
 - [[decisions/one-controller-per-kind-or-one-multi-kind-controller]] — single responsibility versus consolidation (draft)
 - [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]] — what each reconcile return value does, verified at v0.25.3 (active)
@@ -499,7 +512,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]] — kro shared queue and issue 198, with the per-RGD controller correction (active)
 - [[findings/a-kro-hard-apply-failure-discarded-watches-and-hot-looped-while-large-collections-re-listed-against-the-apiserver]] — kro issue 1464 (active)
 - [[findings/flux-turns-off-client-side-throttling-when-apf-is-enabled-but-a-custom-kubeconfig-path-kept-it-until-2026]] — Flux APF awareness and the 2026 kubeconfig fix (active)
-- [[findings/etcd-scale-limits-of-the-shared-store]] — etcd limits (active)
+- [[findings/etcd-scale-limits-of-the-shared-store]] — etcd limits (contradicted)
 - [[findings/the-sig-scalability-thresholds-cover-built-in-types-only-and-are-not-hard-limits]] — SIG table scope, kops test setup, not hard limits (active)
 - [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]] — 600MB and 300MB are targets from a Draft doc (active)
 - [[findings/the-default-workqueue-rate-limiter-differs-between-client-go-and-controller-runtime]] — client-go bucket versus controller-runtime exponential only (active)
@@ -535,7 +548,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/group-and-plural-names-are-effectively-permanent]] — immutable names (draft)
 - [[findings/crd-version-removal-without-migration-strands-stored-objects]] — conversion and migration hazards (draft)
 - [[findings/removed-beta-gvks-break-pinned-manifests-and-clients]] — upstream removals (draft)
-- [[findings/a-down-conversion-webhook-can-stall-garbage-collection]] — webhook outage blast radius (draft)
+- [[findings/a-down-conversion-webhook-can-stall-garbage-collection]] — webhook outage blast radius (active)
 - [[findings/admission-webhook-outages-are-a-recurring-failure-class]] — k8s.af index evidence plus the read Jetstack postmortem (active)
 - [[findings/unknown-fields-are-silently-pruned-under-structural-schemas]] — undeclared fields vanish (draft)
 - [[findings/helm-does-not-upgrade-or-delete-crds]] — chart CRD lifecycle gap (draft)
@@ -559,7 +572,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/mutating-webhooks-can-run-repeatedly-and-in-no-guaranteed-order]] — idempotence requirement (draft)
 - [[findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window]] — certificates and connectivity (draft)
 - [[findings/api-evolution-breaks-webhooks-that-drop-unknown-fields]] — upgrade breakage (draft)
-- [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]] — limits of in-process CEL (draft)
+- [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]] — limits of in-process CEL (active)
 - [[findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down]] — why reconcile must be level-driven (active)
 - [[findings/mutating-objects-from-a-shared-cache-or-reading-an-unsynced-cache-corrupts-reconcile-input]] — cache misuse (draft)
 - [[findings/multi-kind-controllers-break-encapsulation-and-scale-poorly]] — single responsibility per controller (draft)
@@ -780,6 +793,21 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/aggregated-discovery-exists-because-per-group-version-discovery-caused-a-request-storm]] — KEP-3352 rationale (active)
 - [[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]] — version-free identity across four tools (active)
 - [[findings/the-level-driven-not-edge-driven-guideline-is-point-3-of-the-controller-writing-guide-and-the-beda-quote-remains-second-hand]] — guideline origin and provenance (active)
+- [[findings/ack-ships-one-helm-chart-per-service-with-its-crds-in-the-chart-and-no-written-api-version-policy-was-found]] — ACK ships one Helm chart per service with its CRDs in the chart, and no written API version policy was found (active)
+- [[findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set]] — An unbounded list or string makes the CEL cost estimate reject a CRD rule until maxItems and maxLength are set (active)
+- [[findings/backstage-reads-custom-resources-only-from-the-kubernetes-custom-resources-list-and-silently-skips-a-missing-crd]] — Backstage reads custom resources only from the kubernetes.customResources list and silently skips a missing CRD (active)
+- [[findings/cel-cost-limits-are-10-million-per-expression-and-100-million-per-crd-statically-and-1-million-per-call-and-10-million-per-request-at-runtime]] — CEL cost limits are 10 million per expression and 100 million per CRD statically, and 1 million per call and 10 million per request at runtime (active)
+- [[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration]] — Cluster API labels CRDs with contract versions and runs a CRD migrator for storage version migration (active)
+- [[findings/config-connector-and-cluster-api-register-many-webhooks-and-every-one-uses-failure-policy-fail]] — Config Connector and Cluster API register many webhooks and every one uses failure policy Fail (active)
+- [[findings/config-connector-ships-883-crd-files-and-the-largest-is-579-kb-because-it-has-one-crd-per-google-cloud-resource-kind]] — Config Connector ships 883 CRD files and the largest is 579 KB because it has one CRD per Google Cloud resource kind (active)
+- [[findings/crd-scale-evidence-is-issue-reports-of-a-cpu-spike-near-700-crds-and-about-8-gib-of-apiserver-memory-near-1900-crds-with-no-official-limit]] — CRD scale evidence is issue reports of a CPU spike near 700 CRDs and about 8 GiB of apiserver memory near 1,900 CRDs, with no official limit (active)
+- [[findings/crossplane-core-ships-one-fail-closed-usage-webhook-and-replaced-its-xrd-and-composition-webhooks-with-cel]] — Crossplane core ships one fail-closed Usage webhook and replaced its XRD and Composition webhooks with CEL (active)
+- [[findings/etcd-limits-requests-to-1-5-mib-and-storage-to-2-gib-by-default-and-8-gib-is-a-suggested-maximum-not-the-default]] — etcd limits requests to 1.5 MiB and storage to 2 GiB by default, and 8 GiB is a suggested maximum, not the default (active)
+- [[findings/gatekeeper-defaults-its-webhooks-to-fail-open-and-documents-a-fail-closed-deadlock-with-an-emergency-delete-of-the-webhook-configuration]] — Gatekeeper defaults its webhooks to fail open and documents a fail-closed deadlock with an emergency delete of the webhook configuration (active)
+- [[findings/kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only]] — kro and ACK ship no admission webhook and rely on CRD schema and CEL validation, and no Argo CD webhook was found in a tree search only (active)
+- [[findings/kyverno-defaults-to-failure-policy-fail-with-a-10-second-timeout-and-needs-three-admission-replicas-for-high-availability]] — Kyverno defaults to failure policy Fail with a 10 second timeout and needs three admission replicas for high availability (active)
+- [[findings/kyverno-fail-closed-policies-time-out-api-requests-when-all-kyverno-pods-are-down-unless-the-kyverno-namespace-is-excluded]] — Kyverno fail-closed policies time out API requests when all Kyverno pods are down unless the Kyverno namespace is excluded (active)
+- [[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]] — Since Kubernetes 1.32 the garbage collector proceeds after a failed cache sync, but cannot see blockOwnerDeletion owners of the unsynced type (active)
 
 ## Outputs
 

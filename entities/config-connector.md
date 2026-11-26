@@ -80,6 +80,9 @@ sources:
   - id: research-gap-m5-informers-caches
     hash: 1a6a4969c0c2
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -191,3 +194,7 @@ Config Connector does not apply with server-side apply. Its lifecycle handler wr
 ## Cache choices (m5 dossier)
 
 By default the manager's client caches only ConfigConnector and ConfigConnectorContext objects and CRDs, disables caching for Namespace, Secret, ConfigMap and IAM kinds, and does not cache unstructured objects. The cache-everything mode is commented "Currently only used in preview". Client rate is QPS 20 and burst 30. A registration controller watches CRDs and registers one controller per group and kind, with the version taken from the CRD. See [[examples/config-connector-caches-only-its-own-configuration-kinds-by-default]] and [[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]]. [[sources/research-gap-m5-informers-caches]]
+
+## Admission and CRD footprint
+
+Config Connector runs a separate webhook-manager with ten fail-closed handlers and an HPA of 2 to 20 replicas ([[findings/config-connector-and-cluster-api-register-many-webhooks-and-every-one-uses-failure-policy-fail]]), and ships 883 CRD files, the largest 579,353 bytes ([[findings/config-connector-ships-883-crd-files-and-the-largest-is-579-kb-because-it-has-one-crd-per-google-cloud-resource-kind]]). [[sources/research-gap-m6-admission-crds]]

@@ -14,6 +14,9 @@ sources:
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [admission, webhooks, cel, comparison]
 ---
@@ -54,3 +57,7 @@ Correction note, 2026-11-26: this page previously said the status came from a di
 ## Why the docs say v1.30
 
 Correction note, 2026-11-26: the caveat above said the docs sentence "first available in the v1.30 release" conflicts with the gate table. It is explained by code. The `MutatingAdmissionPolicy` gate was registered as Alpha with default false in v1.30.0 (pull request 123425) as a placeholder with no API behind it, and the usable `v1alpha1` API arrived in v1.32, which is where the KEP and the v1.36.0 gate table start. Cite v1.32 as the first usable release and v1.36 for GA and default on. See [[findings/the-mutating-admission-policy-gate-was-registered-in-v1-30-as-an-inert-alpha-placeholder-and-the-usable-api-arrived-in-v1-32]]. [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Additions from the admission and CRD dossier
+
+CEL cost limits for CRD rules and policies are in [[findings/cel-cost-limits-are-10-million-per-expression-and-100-million-per-crd-statically-and-1-million-per-call-and-10-million-per-request-at-runtime]]. Per-tool webhook defaults are in [[comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno]]. [[sources/research-gap-m6-admission-crds]]

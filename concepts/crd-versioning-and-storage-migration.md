@@ -17,6 +17,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: [storage version migration, CRD conversion]
 tags: [api-machinery, crd, versioning]
 ---
@@ -54,3 +57,7 @@ Correction note, 2026-11-26: this paragraph previously rested on one blog extrac
 ## Progress reporting layout
 
 Correction note, 2026-11-26: the correction above said the exact shape of the progress reporting was not read. It is now read from source at v1.37.0. There is no numeric progress field. Progress is text in the `message` of the `Running` condition ("The migration is running", then ", N/M objects not yet migrated" or ", M objects verified migrated", plus "; transient error: <err>"), and completion flips `Running` to False with reason `MigrationCompleted` and sets `Succeeded` true. For CRDs the controller also sets a `StorageMigrating` condition and removes old stored versions from the CRD status (pull request 135297). See [[findings/storageversionmigration-reports-progress-as-text-in-the-running-condition-message-and-has-no-numeric-progress-field]]. [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Additions from the admission and CRD dossier
+
+Cluster API runs its own CRD migrator that patches every custom resource and then sets `status.storedVersions`, and labels CRDs with contract versions ([[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration]]). A down conversion webhook no longer stalls garbage collection from Kubernetes 1.32 ([[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]]). [[sources/research-gap-m6-admission-crds]]

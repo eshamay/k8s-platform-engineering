@@ -1,13 +1,16 @@
 ---
 title: CEL policies cannot reach external data and have bounded cost
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, cel, limits, cost, validating-admission-policy]
 ---
@@ -20,7 +23,7 @@ CEL admission has limits that keep webhooks relevant. Rule cost is bounded to pr
 
 ## Limits of the evidence
 
-The dossier did not capture exact cost-limit numbers or per-request budgets, and the external-data claim is the dossier's synthesis of the KEP scope and the policy variables, not a quoted statement. See [[open-knowledge-gaps]].
+The exact cost-limit numbers are now recorded in [[findings/cel-cost-limits-are-10-million-per-expression-and-100-million-per-crd-statically-and-1-million-per-call-and-10-million-per-request-at-runtime]] (correction note 2026-11-26). The external-data claim is the dossier's synthesis of the KEP scope and the policy variables, not a quoted statement. See [[open-knowledge-gaps]].
 
 ## Related
 

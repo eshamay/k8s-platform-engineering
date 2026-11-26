@@ -17,6 +17,9 @@ sources:
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: [Admission control, Common Expression Language, ValidatingAdmissionPolicy, Dynamic admission control]
 tags: [api-machinery, admission, webhooks, cel]
 ---
@@ -53,7 +56,7 @@ The result is a division of labor and not a replacement. Webhooks stay the gener
 
 ## Tool and operator treatment
 
-Flux surfaces webhook problems as reconcile failures and does not prevent them ([[entities/flux]]). Kubebuilder scaffolds webhooks into the manager binary ([[entities/kubebuilder]]). cert-manager is the best documented operator that uses all three webhook roles ([[entities/cert-manager]]). Kyverno compiles its CEL policies into native policy objects to reduce dependence on its own webhook ([[entities/kyverno]]). The dossier found no primary material on admission for Crossplane, kro, Argo CD, Config Connector, ACK, Cluster API, or Gatekeeper, so this wiki makes no claim about them; see [[open-knowledge-gaps]].
+Flux surfaces webhook problems as reconcile failures and does not prevent them ([[entities/flux]]). Kubebuilder scaffolds webhooks into the manager binary ([[entities/kubebuilder]]). cert-manager is the best documented operator that uses all three webhook roles ([[entities/cert-manager]]). Kyverno compiles its CEL policies into native policy objects to reduce dependence on its own webhook ([[entities/kyverno]]). The 2026-11-26 admission dossier read primary source for Crossplane, kro, Argo CD, Config Connector, ACK, Cluster API, Gatekeeper and Kyverno, and the per-tool results are in [[comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno]] (correction note: this page earlier said no primary material existed).
 
 ## Choosing between them
 
@@ -70,3 +73,7 @@ CEL rules in `x-kubernetes-validations` let a CRD express cross-field validation
 ## Related
 
 [[concepts/composite-resource]], [[concepts/spec-status-split]], [[concepts/gvk-and-gvr]], [[concepts/crd-versioning-and-storage-migration]]
+
+## Additions from the admission and CRD dossier
+
+The CEL cost limits are settled from Kubernetes source: 10,000,000 per expression and 100,000,000 per CRD statically, and 1,000,000 per call and 10,000,000 per request or resource at runtime. See [[findings/cel-cost-limits-are-10-million-per-expression-and-100-million-per-crd-statically-and-1-million-per-call-and-10-million-per-request-at-runtime]] and [[findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set]]. Tool defaults differ: Gatekeeper fails open by default ([[findings/gatekeeper-defaults-its-webhooks-to-fail-open-and-documents-a-fail-closed-deadlock-with-an-emergency-delete-of-the-webhook-configuration]]), Kyverno fails closed by default and needs three admission replicas ([[findings/kyverno-defaults-to-failure-policy-fail-with-a-10-second-timeout-and-needs-three-admission-replicas-for-high-availability]]), and Crossplane replaced its XRD and Composition webhooks with CEL ([[findings/crossplane-core-ships-one-fail-closed-usage-webhook-and-replaced-its-xrd-and-composition-webhooks-with-cel]]). The conversion-webhook garbage-collection stall was fixed in Kubernetes 1.32 with one caveat ([[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]]). [[sources/research-gap-m6-admission-crds]]

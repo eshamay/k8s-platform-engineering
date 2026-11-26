@@ -1,7 +1,7 @@
 ---
 title: Failure policy Fail or Ignore for an admission webhook
 type: decision
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
@@ -14,6 +14,9 @@ sources:
   - id: research-gap-g1-named-incident-reports
     hash: 3c7df7bb12f1
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, webhooks, failure-policy, availability]
 ---
@@ -22,7 +25,7 @@ tags: [decision, webhooks, failure-policy, availability]
 
 ## Status
 
-Draft. This records a decision point described in documentation and a vendor blog, not a choice made by this wiki.
+Active as an evidence record. It lays out options with source evidence and makes no recommendation, and the choice is not made by this wiki.
 
 ## Context
 
@@ -51,3 +54,7 @@ Jetstack's 2019 post is a primary example of the `Fail` deadlock and of the scop
 ## Correction note from the named-incident dossier
 
 A second read confirmed that Jetstack's post never mentions `failurePolicy`. The evidence above is about scoping and probes only, and no `failurePolicy` recommendation should be cited to Jetstack. [[sources/research-gap-g1-named-incident-reports]]
+
+## Evidence from tool defaults, 2026-11-26
+
+The options are visible in what tools ship. Fail-open: Gatekeeper's default (Ignore, with an audit backstop) and Kyverno's catch-all fallback when auto-update is disabled. Fail-closed: Cluster API, Config Connector, the Crossplane Usage webhook and Kyverno's default. Each side has a documented cost. Fail-closed needs the self-exclusion and replica measures in [[findings/kyverno-fail-closed-policies-time-out-api-requests-when-all-kyverno-pods-are-down-unless-the-kyverno-namespace-is-excluded]] and a deadlock exit (delete the webhook configuration), and Crossplane exposes Ignore for managed Kubernetes services that reject Fail with wildcard rules. Fail-open skips checks while the webhook is down, which Gatekeeper's docs address through audit. The full table is in [[comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno]]. [[sources/research-gap-m6-admission-crds]]

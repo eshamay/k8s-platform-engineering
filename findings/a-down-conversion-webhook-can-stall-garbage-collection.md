@@ -1,13 +1,16 @@
 ---
 title: A down conversion webhook can stall garbage collection
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, crd, conversion, webhooks, garbage-collection]
 ---
@@ -24,8 +27,12 @@ A single third-party CRD with a conversion webhook can degrade core control-plan
 
 ## Mitigations suggested by the sources
 
-The dossier suggests preferring `None` conversion when schemas are compatible, using CEL rules instead of validating webhooks, and running webhooks highly available. These are the dossier's synthesis and not a documented fix. Whether the underlying problem is fixed in current releases is unknown from the sources, and it is tracked as a gap.
+The dossier suggests preferring `None` conversion when schemas are compatible, using CEL rules instead of validating webhooks, and running webhooks highly available. These are the dossier's synthesis and not a documented fix. Correction 2026-11-26: the stall was fixed in Kubernetes 1.32 (see below).
 
 ## Related
 
 [[concepts/crd-versioning-and-storage-migration]], [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]], [[concepts/owner-references-and-garbage-collection]], [[findings/admission-webhook-outages-are-a-recurring-failure-class]], and [[open-knowledge-gaps]].
+
+## Status update from the admission and CRD dossier
+
+Pull request 125796 merged on 2024-09-25 with milestone v1.32, and issue 101078 closed as completed. The collector now proceeds after a failed cache sync, but owners with `blockOwnerDeletion: true` in the unsynced type are not seen. Details and remaining unknowns are in [[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]]. [[sources/research-gap-m6-admission-crds]]

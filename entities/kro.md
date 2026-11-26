@@ -89,6 +89,9 @@ sources:
   - id: research-gap-m5-informers-caches
     hash: 1a6a4969c0c2
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -143,9 +146,9 @@ kro lets a platform author define a schema that users fill in and wire resources
 
 Correction note, 2026-11-26: the earlier server-side apply dossier could not read kro's documentation, so this page used to make no claim about how kro sets field managers or forces conflicts. A source-level read now settles it. kro applies template resources with server-side apply and force, applies patch contributions without force under a per-node manager, uses the managers `kro.run/applyset` and `kro-instance-status`, and has an opt-in conflict-detection mode that refuses to take a field from another kro Graph while still reclaiming external drift. [[sources/research-gap-m4-ssa-conflict-policy]] See [[findings/kro-applies-template-resources-with-server-side-apply-and-force-and-applies-patch-contributions-without-force]], [[concepts/server-side-apply-and-field-ownership]], and [[comparisons/ssa-conflict-policy-across-tools]].
 
-## Admission coverage gap
+## Admission behavior
 
-The admission dossier found no primary kro material, so how kro handles validation on the CRDs it generates, and whether it uses CEL validation rules there, is not established. The Kubernetes sources describe CEL validation rules as the way a CRD author can validate without a webhook. [[sources/research-admission-webhooks-and-cel]] See [[concepts/admission-webhooks-and-cel]] and [[open-knowledge-gaps]].
+kro v0.10.0 ships no webhook. Kubernetes validates instances against the generated CRD schema, and the SimpleSchema validation marker is a CEL rule evaluated by the API server. kro reports a third-party webhook denial in instance status. See [[findings/kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only]] and [[examples/kro-integration-test-reports-a-third-party-webhook-denial-in-instance-status-and-recovers]]. Correction note 2026-11-26: this section earlier said validation was not established. [[sources/research-gap-m6-admission-crds]]
 
 ## A no-code alternative to a bespoke operator
 

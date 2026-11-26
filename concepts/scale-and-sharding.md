@@ -26,6 +26,9 @@ sources:
   - id: research-gap-g1-named-adopters
     hash: 9f6a50098233
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: [sharding, controller scale, scalability envelope]
 tags: [scale, sharding, apf, informers, workqueue, crd-count, leader-election]
 ---
@@ -95,3 +98,7 @@ Correction note: the Crossplane paragraph above says the Pods guide describes `-
 ## API Priority and Fairness limits from KEP-1040
 
 Update 2026-11-26: the KEP-1040 README was read in full. Its fair-queuing allocates seats equally and not max-min fairly, a LIST request's width is approximated as `min(A, ceil(N / E))`, and a client that does not finish reading large responses can hold up to hand size times 10 seats ([[findings/apf-fair-queuing-allocates-seats-equally-and-a-slow-reader-can-hold-hand-size-times-ten-seats]]). The KEP records APF as stable in v1.29 in `kep.yaml` while its README history stops at v1.26 ([[findings/the-kep-1040-readme-history-stops-at-v1-26-while-its-kep-yaml-records-stable-in-v1-29]]). [[sources/research-gap-b1-recheck-flux-k8s]]
+
+## Additions from the admission and CRD dossier
+
+The tested envelope covers built-in types only and has no CRD-count figure. Measured CRD behavior exists only as issue reports ([[findings/crd-scale-evidence-is-issue-reports-of-a-cpu-spike-near-700-crds-and-about-8-gib-of-apiserver-memory-near-1900-crds-with-no-official-limit]]), and the etcd request and storage defaults are in [[findings/etcd-limits-requests-to-1-5-mib-and-storage-to-2-gib-by-default-and-8-gib-is-a-suggested-maximum-not-the-default]]. [[sources/research-gap-m6-admission-crds]]

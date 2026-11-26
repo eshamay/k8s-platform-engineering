@@ -3,11 +3,14 @@ title: CRD conversion strategies, None, webhook, and hub-and-spoke
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [crd, conversion, versioning, kubebuilder]
 ---
@@ -37,3 +40,7 @@ Prefer `None` when schemas are compatible, because it removes the webhook depend
 ## Related
 
 [[concepts/crd-versioning-and-storage-migration]], [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]], [[examples/kubebuilder-hub-and-spoke-conversion-for-multi-version-crds]], and [[findings/a-down-conversion-webhook-can-stall-garbage-collection]].
+
+## Additions from the admission and CRD dossier
+
+A down conversion webhook stalled garbage collection until Kubernetes 1.32 ([[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]]). Cluster API uses conversion webhooks at `/convert` and its own migrator ([[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration]]). [[sources/research-gap-m6-admission-crds]]

@@ -20,6 +20,9 @@ sources:
   - id: research-gap-g1-named-incident-reports
     hash: 3c7df7bb12f1
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, webhooks, postmortems, availability]
 ---
@@ -53,3 +56,7 @@ The Jetstack account was re-verified against a second capture of the post, and t
 ## Reddit's OPA webhook timeouts were a symptom
 
 Reddit's primary postmortem adds a counter-example to the webhook failure class. During the Pi-Day outage the API server logged write timeouts from calling the Open Policy Agent admission webhook, and removing its webhook configurations ended the timeouts instantly without recovering the cluster. The webhook backend had stopped because cluster networking had already failed, so the timeouts were a symptom of the routing failure and not its cause. Treat webhook timeouts during a wider outage as a lead to check, not as proof of the root cause. See [[examples/reddit-s-march-2023-pi-day-outage-a-kubernetes-1-24-upgrade-removed-the-master-node-label-that-calico-route-reflectors-selected]].
+
+## Additions from the admission and CRD dossier
+
+Kyverno documents an all-pods-down outage with a recovery by deleting its webhook configurations ([[findings/kyverno-fail-closed-policies-time-out-api-requests-when-all-kyverno-pods-are-down-unless-the-kyverno-namespace-is-excluded]]), and Gatekeeper documents the same deadlock when failing closed ([[findings/gatekeeper-defaults-its-webhooks-to-fail-open-and-documents-a-fail-closed-deadlock-with-an-emergency-delete-of-the-webhook-configuration]]). [[sources/research-gap-m6-admission-crds]]

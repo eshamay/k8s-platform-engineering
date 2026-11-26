@@ -1,13 +1,16 @@
 ---
 title: Kyverno ValidatingPolicy versus native ValidatingAdmissionPolicy
 type: comparison
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [kyverno, validating-admission-policy, policy-engines, comparison]
 ---
@@ -31,7 +34,7 @@ Kyverno's ValidatingPolicy is described as a superset of the Kubernetes Validati
 
 ## Notes
 
-The comparison is built from the Kyverno documentation and the Kubernetes tutorial. The dossier did not read Kyverno's pages on its webhook `failurePolicy` or availability, and read no primary Gatekeeper source, so it cannot compare failure behavior or other engines. See [[open-knowledge-gaps]].
+The comparison is built from the Kyverno documentation and the Kubernetes tutorial. The 2026-11-26 dossier read Kyverno's failure-policy and availability pages ([[findings/kyverno-defaults-to-failure-policy-fail-with-a-10-second-timeout-and-needs-three-admission-replicas-for-high-availability]]) and Gatekeeper's ([[findings/gatekeeper-defaults-its-webhooks-to-fail-open-and-documents-a-fail-closed-deadlock-with-an-emergency-delete-of-the-webhook-configuration]]). Kyverno's webhook mode defaults to Fail with a 10 second timeout and three admission replicas for HA, while Gatekeeper defaults to Ignore. No measured availability numbers or generated-native-policy resilience comparison were found, so the resilience benefit stays unquantified. See [[open-knowledge-gaps]].
 
 ## Related
 

@@ -17,6 +17,9 @@ sources:
   - id: research-gap-m2-ownership-gc
     hash: 62aafaded9c0
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: [ownerReferences, cascading deletion]
 tags: [controllers, garbage-collection, deletion, owner-references]
 ---
@@ -69,3 +72,7 @@ Platform tools use the mechanism in different ways. Cluster API uses owner refer
 ## Open questions
 
 How ACK handles deletion and whether Flux relies on owner references anywhere are unverified. How kro marks children and how Argo CD's prune propagation and tracking methods work are now read from source, with the caveats on the linked findings. No KEP covers cross-namespace ownership or garbage collector performance, see [[findings/no-kep-covers-cross-namespace-ownership-or-garbage-collector-performance-and-the-nearest-proposals-are-5080-and-2336]]. See [[open-knowledge-gaps]].
+
+## Additions from the admission and CRD dossier
+
+The garbage collector no longer blocks on a failed cache sync since Kubernetes 1.32, but owners with `blockOwnerDeletion: true` in an unsynced resource type are not known to it. See [[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]] and [[examples/kubernetes-pull-request-125796-let-the-garbage-collector-proceed-after-a-failed-cache-sync-and-closed-issue-101078-in-v1-32]]. [[sources/research-gap-m6-admission-crds]]

@@ -3,7 +3,7 @@ title: Validate with CEL rules or a validating webhook
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
@@ -11,6 +11,9 @@ sources:
   - id: research-admission-webhooks-and-cel
     hash: c04dbed76ad9
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, crd, cel, webhooks, validation]
 ---
@@ -40,3 +43,7 @@ CEL keeps validation inside the CRD, so it moves with the definition and avoids 
 ## Additions from the admission dossier
 
 The admission dossier supports the guidance above with KEP-3488, which frames CEL policy as an alternative for most validating use cases, and with the Kubernetes good-practices page, which recommends CEL-based policies where they suffice and webhooks only when external data, complex code, or side effects are needed. If a webhook is chosen, how it should fail is a second decision; see [[decisions/failure-policy-fail-or-ignore-for-an-admission-webhook]]. See also [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]]. [[sources/research-admission-webhooks-and-cel]]
+
+## Evidence from the admission and CRD dossier
+
+The CRD CEL limits are 10,000,000 per expression and 100,000,000 per CRD statically ([[findings/cel-cost-limits-are-10-million-per-expression-and-100-million-per-crd-statically-and-1-million-per-call-and-10-million-per-request-at-runtime]]), and unbounded lists and strings are rejected until bounded ([[findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set]]). Crossplane chose CEL over its own XRD and Composition webhooks ([[findings/crossplane-core-ships-one-fail-closed-usage-webhook-and-replaced-its-xrd-and-composition-webhooks-with-cel]]). No recommendation is made here. [[sources/research-gap-m6-admission-crds]]

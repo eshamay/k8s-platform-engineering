@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g1-outage-postmortems
     hash: 0487bcf071d6
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, webhooks, failure-policy, availability, deadlock]
 ---
@@ -36,3 +39,7 @@ Run the backend with several replicas behind a load balancer, add pod anti-affin
 ## Related
 
 [[concepts/admission-webhooks-and-cel]], [[findings/remediation-can-amplify-an-outage]], and [[findings/blast-radius-and-privilege-centralization]].
+
+## Additions from the admission and CRD dossier
+
+Gatekeeper and Kyverno both document the emergency exit of deleting the webhook configuration ([[findings/gatekeeper-defaults-its-webhooks-to-fail-open-and-documents-a-fail-closed-deadlock-with-an-emergency-delete-of-the-webhook-configuration]], [[findings/kyverno-fail-closed-policies-time-out-api-requests-when-all-kyverno-pods-are-down-unless-the-kyverno-namespace-is-excluded]]). [[sources/research-gap-m6-admission-crds]]

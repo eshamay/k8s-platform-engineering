@@ -64,6 +64,11 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-flux-ramp-up-scaling-passage-with-flux-per-controller-caches-and-the-watch-label-selector]] — open
 - [[#update-crossplane-ramp-up-informer-cache-passage-with-the-core-cache-transform-and-the-missing-performance-guide]] — open
 - [[#update-part-1-resync-cadence-table-row-with-the-kro-and-cluster-api-resync-mechanisms]] — open
+- [[#update-part-2-conversion-webhook-passage-with-the-kubernetes-1-32-garbage-collector-fix]] — open
+- [[#update-part-2-kyverno-policy-engine-passage-with-the-kyverno-failure-policy-defaults-and-ha-minimum]] — open
+- [[#update-part-2-kyverno-entry-with-the-gatekeeper-fail-open-default]] — open
+- [[#update-part-5-etcd-passage-with-the-correct-etcd-storage-default]] — open
+- [[#update-part-1-control-plane-overload-passage-with-the-confirmed-etcd-limits]] — open
 
 ## Open
 
@@ -741,6 +746,41 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/part-1-core-architectural-principles.md`, the cadence table rows for kro ("10-hour full resync") and Cluster API ("10-minute `--sync-period`") needs revision: it does not say that kro's interval is a replay of cached objects through its metadata informers and that ACK's ten hours is a `RequeueAfter`, which are different mechanisms.
 - **Why:** The passage predates the dossier [[sources/research-gap-m5-informers-caches]].
 - **Acceptance:** Passage revised and citing [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-2 conversion webhook passage with the Kubernetes 1.32 garbage collector fix — status: open
+
+- **What:** In `outputs/part-2-krm-and-api-machinery.md`, the paragraph beginning "The risk with webhook conversion is that it puts a network service in the path of reads" says the issue was closed as a duplicate and the proposed direction was a partially synced informer. It needs revision: the fix merged in Kubernetes 1.32 (PR 125796), with the blockOwnerDeletion caveat.
+- **Why:** The passage predates the dossier [[sources/research-gap-m6-admission-crds]].
+- **Acceptance:** Passage revised and citing [[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-2 Kyverno policy engine passage with the Kyverno failure policy defaults and HA minimum — status: open
+
+- **What:** In `outputs/part-2-krm-and-api-machinery.md`, the paragraph beginning "Policy engines sit on top" ends by saying the wiki did not read Kyverno's webhook failure policy or availability. It needs the Fail default, 10 second timeout, three-replica HA minimum and the all-pods-down recovery.
+- **Why:** The passage predates the dossier [[sources/research-gap-m6-admission-crds]].
+- **Acceptance:** Passage revised and citing [[findings/kyverno-defaults-to-failure-policy-fail-with-a-10-second-timeout-and-needs-three-admission-replicas-for-high-availability]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-2 Kyverno entry with the Gatekeeper fail-open default — status: open
+
+- **What:** In `outputs/part-2-krm-and-api-machinery.md`, the paragraph beginning "Kyverno sits on the admission contract" says the wiki read no primary Gatekeeper source. It needs the Gatekeeper Ignore default, the fail-closed deadlock exit and the contrast with Kyverno.
+- **Why:** The passage predates the dossier [[sources/research-gap-m6-admission-crds]].
+- **Acceptance:** Passage revised and citing [[findings/gatekeeper-defaults-its-webhooks-to-fail-open-and-documents-a-fail-closed-deadlock-with-an-emergency-delete-of-the-webhook-configuration]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 etcd passage with the correct etcd storage default — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the paragraph beginning "Underneath is the shared store" says etcd has "an 8 GB default cap". etcd documents a 2 GiB default with 8 GiB as a suggested maximum.
+- **Why:** The passage predates the dossier [[sources/research-gap-m6-admission-crds]].
+- **Acceptance:** Passage revised and citing [[findings/etcd-limits-requests-to-1-5-mib-and-storage-to-2-gib-by-default-and-8-gib-is-a-suggested-maximum-not-the-default]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-1 control-plane overload passage with the confirmed etcd limits — status: open
+
+- **What:** In `outputs/part-1-core-architectural-principles.md`, the "Control-plane overload" paragraph hedges that the secondary source states 8 GB as the default and says to verify. The etcd documentation now confirms 2 GiB default and 8 GiB suggested maximum, so the hedge can be replaced with a citation.
+- **Why:** The passage predates the dossier [[sources/research-gap-m6-admission-crds]].
+- **Acceptance:** Passage revised and citing [[findings/etcd-limits-requests-to-1-5-mib-and-storage-to-2-gib-by-default-and-8-gib-is-a-suggested-maximum-not-the-default]].
 - **Drafted by:** agent on 2026-11-26
 
 ## Dropped

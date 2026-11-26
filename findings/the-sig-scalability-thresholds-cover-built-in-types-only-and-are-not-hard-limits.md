@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g3-scale-recheck
     hash: d9bd6911bff7
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [scale, sig-scalability, thresholds, crd-count, caveat]
 ---
@@ -25,3 +28,7 @@ Because the table covers built-in types, it says nothing about custom resources,
 ## Related pages
 
 [[concepts/scale-and-sharding]], [[findings/etcd-scale-limits-of-the-shared-store]], [[examples/gardener-advises-keeping-most-clusters-under-about-500-nodes-and-controlling-webhooks-and-object-counts]].
+
+## Additions from the admission and CRD dossier
+
+A full-text search of the thresholds document on 2026-11-26 found no CRD figure, so the answer to "authoritative CRD limits" is that none are documented. See [[findings/crd-scale-evidence-is-issue-reports-of-a-cpu-spike-near-700-crds-and-about-8-gib-of-apiserver-memory-near-1900-crds-with-no-official-limit]]. [[sources/research-gap-m6-admission-crds]]

@@ -3,11 +3,14 @@ title: Helm does not upgrade or delete CRDs
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, helm, crd, flux, lifecycle]
 ---
@@ -25,3 +28,7 @@ Flux works around the limit with `spec.install.crds` and `spec.upgrade.crds`, wh
 ## Related
 
 [[entities/helm]], [[entities/flux]], [[findings/deleting-a-crd-deletes-every-custom-resource-of-that-kind]], and [[findings/custom-resources-applied-before-their-crd-exists]].
+
+## Additions from the admission and CRD dossier
+
+ACK ships CRDs in each service chart, and its install doc tells users to check CRD changes before upgrades ([[findings/ack-ships-one-helm-chart-per-service-with-its-crds-in-the-chart-and-no-written-api-version-policy-was-found]]). [[sources/research-gap-m6-admission-crds]]

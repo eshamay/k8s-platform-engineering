@@ -119,6 +119,9 @@ sources:
   - id: research-gap-m5-informers-caches
     hash: 1a6a4969c0c2
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -280,3 +283,7 @@ An Application has a sync status of Unknown, Synced, or OutOfSync. Its condition
 ## Resource identity in the m5 dossier
 
 The tracking annotation and gitops-engine `ResourceKey` carry group, kind, namespace and name with no version, the cluster cache watches preferred versions, and live objects are converted to the manifest's version for comparison. See [[examples/argo-cd-tracks-resources-by-group-kind-namespace-and-name-so-an-api-version-change-keeps-the-same-key]]. [[sources/research-gap-m5-informers-caches]]
+
+## Admission behavior
+
+No admission webhook configuration was found under the v3.6.3 manifests and charts paths, but that is a tree-path search with no file contents read, so it is UNVERIFIED. The sync-options document names the 262144-byte annotation limit as a client-side apply failure mode. See [[findings/kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only]]. [[sources/research-gap-m6-admission-crds]]

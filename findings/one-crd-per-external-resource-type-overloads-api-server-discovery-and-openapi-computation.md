@@ -17,6 +17,9 @@ sources:
   - id: research-gap-g3-scale-recheck
     hash: d9bd6911bff7
     ingested: 2026-11-26
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, scale, crd, crossplane, api-server, discovery]
 ---
@@ -42,3 +45,7 @@ The Upbound engineering post gives the mechanism in plain terms. Clients make hu
 ## Additional evidence from the scale dossier
 
 The scale dossier adds that CRD count was never an official Kubernetes scaling threshold, that SIG Scalability's tested envelope does not include it, and that the Crossplane design doc puts the onset of problems around 500 CRDs. The fix chosen was provider families. See [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]], [[examples/upbound-tested-a-multi-cloud-control-plane-of-about-2000-managed-resources-and-upstreamed-kubernetes-fixes]], [[concepts/scale-and-sharding]], and [[sources/research-scale-and-sharding]].
+
+## Additions from the admission and CRD dossier
+
+Issue reports give a CPU spike near 700 CRDs and about 8 GiB of apiserver memory near 1,900 CRDs, and the one-etcd-client-per-CRD issue 111622 is still open ([[findings/crd-scale-evidence-is-issue-reports-of-a-cpu-spike-near-700-crds-and-about-8-gib-of-apiserver-memory-near-1900-crds-with-no-official-limit]]). [[sources/research-gap-m6-admission-crds]]

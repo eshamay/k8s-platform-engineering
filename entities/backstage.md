@@ -1,13 +1,16 @@
 ---
 title: "Backstage"
 type: entity
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-landscape
     hash: d28204a90545
     ingested: 2026-11-25
+  - id: research-gap-m6-admission-crds
+    hash: 7cac38f11490
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, portal, catalog, cncf]
 ---
@@ -26,7 +29,7 @@ A portal alone leaves a gap between seeing and doing. Syntasso argues that devel
 
 ## Open points
 
-How Backstage consumes custom resources and CRDs is not covered by this dossier, see [[open-knowledge-gaps]].
+The Kubernetes plugin reads custom resources only from the `kubernetes.customResources` list, globally or per cluster, and silently skips a missing CRD ([[findings/backstage-reads-custom-resources-only-from-the-kubernetes-custom-resources-list-and-silently-skips-a-missing-crd]]). Backstage's catalog handling of CRDs beyond this configuration was not read. [[sources/research-gap-m6-admission-crds]]
 
 ## Related
 
