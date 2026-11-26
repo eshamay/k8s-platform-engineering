@@ -8,6 +8,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-server-side-apply-and-field-ownership
+    hash: 1f12c486354e
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, drift, argo-cd, flux, webhooks, hpa]
 ---
@@ -29,3 +32,7 @@ Argo CD uses `ignoreDifferences` by JSON pointer, JQ path, or `managedFieldsMana
 ## Related
 
 [[concepts/self-healing-and-drift-detection]], [[findings/defaulting-and-drift-reconcile-loops]], [[entities/argo-cd]], [[entities/flux]]
+
+## The ownership view
+
+Server-side apply makes the disagreement visible: the autoscaler owns `replicas` while Git says otherwise, and a blanket force makes the two overwrite each other. The Kubernetes maintainers' recommendation is that CD tools surface such conflicts. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict]] and [[decisions/force-conflicts-or-surface-them-to-humans]].

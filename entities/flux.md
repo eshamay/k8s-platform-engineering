@@ -35,6 +35,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-server-side-apply-and-field-ownership
+    hash: 1f12c486354e
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -88,3 +91,7 @@ A HelmRelease has `spec.install.crds` and `spec.upgrade.crds` with Skip, Create 
 ## Status and readiness semantics
 
 Flux HelmRelease status carries the conditions `Ready`, `Reconciling`, `Stalled`, `Released`, and `TestSuccess`, plus `observedGeneration`, failure counters, last-attempted revision, config digest, and release action, `lastHandledReconcileAt`, and a pointer to the generated HelmChart. `Reconciling=True` is normal progress, and an `observedGeneration` below `metadata.generation` means a spec change is pending. Flux relies on kstatus to judge dependency readiness, and it added CEL-based custom health checks for Cluster API after kstatus stopped fitting. [[sources/research-spec-status-split]] See [[examples/flux-helmrelease-status-records-attempts-and-health]], [[examples/cluster-api-readiness-gates-flux-dependents]], and [[entities/kstatus]].
+
+## Server-side apply and field ownership
+
+kustomize-controller applies with server-side apply and runs a server-side dry-run on each interval. Its controls are the `kustomize.toolkit.fluxcd.io/ssa` annotation (`Override`, `Merge`, `IfNotPresent`, `Ignore`), the `force` annotation for immutable-field changes, `.spec.ignore` rules with Strip and Adopt semantics, and the `flux-client-side-apply` manager name that preserves kubectl edits. Moving from client-side apply in Flux 0.17 to server-side apply in 0.18 left removed fields in the cluster, and a stale manager that co-owns a list entry key can make the dry-run fail every reconcile. Issue 1722 was closed through PR 1747 with an opt-in pre-dry-run takeover flag, whose final semantics were not verified. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/flux-ssa-annotations-and-ignore-rules-share-fields-with-other-controllers]], [[examples/flux-migration-from-client-side-apply-strands-removed-fields]], and [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].

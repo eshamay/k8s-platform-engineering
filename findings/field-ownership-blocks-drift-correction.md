@@ -8,6 +8,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-server-side-apply-and-field-ownership
+    hash: 1f12c486354e
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, server-side-apply, drift, flux, argo-cd]
 ---
@@ -33,3 +36,7 @@ The override flag and its "since v1.5.0" claim come from a community reply, not 
 ## Related
 
 [[concepts/self-healing-and-drift-detection]], [[entities/flux]], [[entities/argo-cd]]
+
+## A second blocking case
+
+Flux issue 1722 shows another way ownership blocks correction: a stale manager co-owning a list entry key leaves a half-removed container that fails the dry-run on every reconcile. The issue was closed through PR 1747 with an opt-in pre-dry-run takeover flag that maintainers call dangerous. [[sources/research-server-side-apply-and-field-ownership]] See [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].

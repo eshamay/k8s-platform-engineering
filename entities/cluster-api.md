@@ -23,6 +23,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-server-side-apply-and-field-ownership
+    hash: 1f12c486354e
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -62,3 +65,7 @@ A management cluster runs Cluster API and providers that reconcile Cluster, Mach
 ## Readiness conventions and kstatus
 
 Cluster API is moving from the `Ready` condition to `Available`, which kstatus does not expect, so Flux added CEL-based custom health checks for it. A proposal to default `status.observedGeneration` to `-1` to avoid a "resource is ready" race was closed as not planned in May 2025. [[sources/research-spec-status-split]] See [[examples/cluster-api-readiness-gates-flux-dependents]] and [[findings/premature-readiness-in-kstatus-based-tools]].
+
+## Server-side apply in the topology controller
+
+The ClusterClass topology controller adopted server-side apply in pull request 6495 (merged June 2022) so the API server can arbitrate several controllers co-authoring the same object. Only the pull request description was read, so the field-level ownership rules between Cluster API and infrastructure providers are unverified. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects]].

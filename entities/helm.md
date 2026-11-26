@@ -8,6 +8,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-server-side-apply-and-field-ownership
+    hash: 1f12c486354e
+    ingested: 2026-11-25
 aliases: [Helm charts]
 tags: [tool, packaging, crd]
 ---
@@ -23,3 +26,7 @@ Per the Flux documentation, Helm has no native support for upgrading or deleting
 ## Related
 
 [[entities/flux]], [[entities/argo-cd]], and [[findings/custom-resources-applied-before-their-crd-exists]].
+
+## Server-side apply in Helm 4 (unconfirmed)
+
+One personal blog claims that Helm 4.0.0 (November 2025) enables server-side apply by default for new releases. The dossier found no primary Helm page, so the default, the field manager name, and the handling of releases created with client-side apply are unconfirmed. [[sources/research-server-side-apply-and-field-ownership]] See [[concepts/server-side-apply-and-field-ownership]] and [[open-knowledge-gaps]].

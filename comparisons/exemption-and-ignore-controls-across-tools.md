@@ -8,6 +8,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-server-side-apply-and-field-ownership
+    hash: 1f12c486354e
+    ingested: 2026-11-25
 aliases: []
 tags: [comparison, drift, ignore, adoption]
 ---
@@ -28,3 +31,7 @@ Every stack offers some way to say "do not fight this field or resource". The me
 ## Reading the table
 
 An important limit is order of operations: Flux's `driftDetection.ignore` applies after the dry-run, so it cannot rescue a dry-run that already failed because of field ownership. See [[findings/field-ownership-blocks-drift-correction]]. For the pitfalls these controls address, see [[findings/controllers-fighting-over-fields-cause-revert-loops]], [[findings/late-initialized-fields-create-false-drift]], and [[findings/multiple-writers-on-one-object]]. ACK adoption controls were not read. See [[comparisons/drift-detection-mechanisms-across-tools]] and [[decisions/staged-adoption-of-automated-drift-correction]].
+
+## Server-side apply controls
+
+Server-side apply adds Flux's `ssa` annotation values and Strip and Adopt ignore rules, Argo CD's Server-Side Diff as an alternative to `ignoreDifferences` for server defaults, and Kluctl's per-field force annotations. [[sources/research-server-side-apply-and-field-ownership]] See [[comparisons/ssa-conflict-policy-across-tools]].

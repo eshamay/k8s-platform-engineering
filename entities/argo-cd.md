@@ -32,6 +32,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-server-side-apply-and-field-ownership
+    hash: 1f12c486354e
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -83,3 +86,7 @@ The ApplicationSets CRD grew large enough that its `last-applied-configuration` 
 ## Health assessment from resource status
 
 Argo CD derives health from `status`: built-in checks for core types and Lua scripts that read `obj.status` for CRDs, with results Healthy, Progressing, Degraded, or Suspended, and application health as the worst of the immediate children. Without a script, CRD health cannot be derived reliably. Argo CD maintainers also described comparing managed-field timestamps as a fragile workaround for ACK conditions that lack `observedGeneration`. Argo CD's own status semantics beyond health checks were not read at primary-source depth. [[sources/research-spec-status-split]] See [[examples/argo-cd-rolls-up-child-health-with-lua-checks]] and [[findings/missing-observedgeneration-hides-stale-status]].
+
+## Server-side apply and Server-Side Diff
+
+Argo CD applies with client-side `kubectl apply` by default. `ServerSideApply=true`, set per Application or per resource, runs `kubectl apply --server-side --force-conflicts` under the manager `argocd-controller`. `Replace=true` takes precedence over it and `Force=true` is ignored under it. A client-side apply migration feature moves ownership to Argo CD's manager, and adopting a namespace with `managedNamespaceMetadata` needs a prior upgrade to server-side apply. Applying and diffing are separate: Server-Side Diff (`ServerSideDiff=true`) avoids false OutOfSync caused by server defaults. SSA support arrived in Argo CD v2.5.0 according to one personal blog. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/argo-cd-server-side-diff-ends-false-out-of-sync-from-server-defaults]], [[findings/diff-is-not-apply-server-defaults-look-like-drift]], and [[comparisons/ssa-conflict-policy-across-tools]].

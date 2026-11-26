@@ -8,6 +8,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-server-side-apply-and-field-ownership
+    hash: 1f12c486354e
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, crd, argo-cd, server-side-apply]
 ---
@@ -25,3 +28,7 @@ The issue lists the `ServerSideApply=true` sync option and, for Kustomize, `Clie
 ## Why it matters for platforms
 
 Schemas generated from higher-level definitions, such as those built by Crossplane or kro, can also grow large, and Git-driven tools that default to client-side apply will hit the same wall. The dossier reports only the Argo CD case, so any claim about generated schemas is an inference. See [[concepts/server-side-apply-and-field-ownership]] and [[entities/argo-cd]].
+
+## Corroboration from SSA sources
+
+The Argo CD sync options page lists resources larger than the 262,144-byte annotation limit as a primary reason to enable `ServerSideApply=true`, and the Kluctl author reports the same problem with Prometheus operator CRDs as a driver for leaving client-side apply. [[sources/research-server-side-apply-and-field-ownership]] See [[comparisons/client-side-apply-versus-server-side-apply]] and [[examples/kluctl-decides-field-level-conflicts-with-known-manager-heuristics]].

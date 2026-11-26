@@ -8,6 +8,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-server-side-apply-and-field-ownership
+    hash: 1f12c486354e
+    ingested: 2026-11-25
 aliases: [kubectl apply]
 tags: [tool, cli, declarative]
 ---
@@ -27,3 +30,7 @@ The declarative task tutorial recommends running `kubectl diff` before applying.
 ## Related
 
 [[concepts/declarative-vs-imperative]], [[findings/mixing-management-techniques-on-one-object]]
+
+## Server-side apply mode
+
+`kubectl apply --server-side` is the supported path from client-side apply to server-side apply. On a conflict it offers only an error or `--force-conflicts`, which forces everything, and the default manager name is `kubectl` unless `--field-manager` is set. `kubectl diff --server-side` shows what the server would change, and `kubectl get -o yaml` hides `managedFields` unless `--show-managed-fields` is passed. The maintainers hope to make server-side apply the default, and the dossier did not verify that. [[sources/research-server-side-apply-and-field-ownership]] See [[comparisons/client-side-apply-versus-server-side-apply]] and [[findings/managedfields-are-hidden-from-kubectl-output-by-default]].

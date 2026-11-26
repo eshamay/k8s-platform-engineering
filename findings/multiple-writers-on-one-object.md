@@ -11,6 +11,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-server-side-apply-and-field-ownership
+    hash: 1f12c486354e
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, server-side-apply, ownership]
 ---
@@ -40,3 +43,7 @@ Flux field-manager details were not read in the dossier, so the exact conflict b
 ## Worked cases
 
 Field ownership can block correction altogether, and a second automation tool can look like drift. See [[findings/field-ownership-blocks-drift-correction]], [[findings/controllers-fighting-over-fields-cause-revert-loops]], and [[comparisons/exemption-and-ignore-controls-across-tools]]. The Flux and Argo CD field-manager behavior left unverified above is now partly covered by the Flux discussion and Argo CD's `managedFieldsManagers`. [[sources/research-self-healing-and-drift-detection]]
+
+## Server-side apply mechanics and policy
+
+The mechanics behind this pitfall are field managers and conflicts: the later apply errors unless the applier forces, drops the field, or shares ownership by setting the same value. Tools resolve the tension differently, and the dossier records that the best default is unsettled. [[sources/research-server-side-apply-and-field-ownership]] See [[comparisons/ssa-conflict-policy-across-tools]], [[decisions/force-conflicts-or-surface-them-to-humans]], and [[findings/forcing-conflicts-hides-disagreements-between-writers]].

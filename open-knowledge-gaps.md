@@ -52,6 +52,11 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#where-observedgeneration-should-live]] — open, unassigned
 - [[#generic-readiness-when-cluster-api-moves-from-ready-to-available]] — open, unassigned
 - [[#named-case-studies-and-postmortems-for-status-problems]] — open, unassigned
+- [[#server-side-apply-behavior-in-kro-ack-config-connector-and-helm-4]] — open, unassigned
+- [[#flux-pre-dry-run-manager-takeover-flag-and-current-ssa-documentation]] — open, unassigned
+- [[#best-default-conflict-policy-for-teams-running-gitops-and-in-cluster-controllers]] — open, unassigned
+- [[#crossplane-v2-server-side-apply-behavior-and-external-writers]] — open, unassigned
+- [[#cluster-api-field-ownership-rules-and-argo-cd-server-side-diff-stability]] — open, unassigned
 
 ---
 
@@ -76,6 +81,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-gvk-and-gvr]]:** Only marginally helpful. The dossier shows one step of the trace that depends on API discovery: Flux Kustomization `dependsOn` and `healthChecks` reference resources by apiVersion and kind, so the kustomize-controller must resolve each GVK to a resource through discovery before it can apply or assess health. It does not trace source fetch, finalizers, or status conditions. See [[comparisons/missing-crd-handling-flux-versus-argo-cd]] and [[entities/flux]].
 - **Possible resolution from [[sources/research-custom-resource-definition]]:** Only marginally helpful. The dossier adds one step to the trace for charts that ship CRDs: Helm will not upgrade or delete them, so Flux's HelmRelease `crds` policies (Skip, Create, CreateReplace) and `dependsOn` decide whether CRDs exist before dependent releases are applied. It does not trace the rest of the flow.
 - **Possible resolution from [[sources/research-spec-status-split]]:** Only marginally helpful. The dossier explains the last stretch of the trace: the controller writes conditions and `observedGeneration` through the `/status` subresource, Flux reads `Ready`, `Reconciling`, and `Stalled`, and a lagging `observedGeneration` means the spec change is still pending. It does not trace source fetch or finalizers. See [[concepts/spec-status-split]] and [[examples/flux-helmrelease-status-records-attempts-and-health]].
+- **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Partly helpful for the apply step. The dossier shows that kustomize-controller applies with server-side apply and runs a dry-run each interval, that ownership is recorded in `managedFields` under the manager name, and that a failing dry-run (for example from a stale co-owner of a list entry) stops reconciliation. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -98,6 +104,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-gvk-and-gvr]]:** Partly helpful on the API-definition side. The dossier shows that both tools are GVK factories: a Crossplane XRD declares group, kind, plural, versions, and scope and is named `<plural>.<group>` with immutable group and names, while a kro RGD `schema` declares apiVersion, kind, and an optional group (default `kro.run`), converts a SimpleSchema to OpenAPI v3, and generates the CRD. It does not compare Composition functions with RGD graphs or readiness. See [[examples/xrd-and-rgd-declare-platform-gvks]] and [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]].
 - **Possible resolution from [[sources/research-custom-resource-definition]]:** Partly helpful for the API-definition step only. The dossier compares how an XRD (OpenAPI v3 schema, scope options, conversion webhooks for breaking changes, immutable group and names) and a kro ResourceGraphDefinition (simple schema, CEL-inferred dependencies, definition-time validation) each generate a CRD. It does not compare execution models. See [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]].
 - **Possible resolution from [[sources/research-spec-status-split]]:** Partly helpful on the status side only. A Crossplane XR reports `Synced` and `Ready`, with `Ready` meaning the function pipeline reports all composed resources ready, while kro pulls status from composed resources through CEL. kro's status schema was not read because its documentation URL returned 404. See [[examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready]] and [[entities/kro]].
+- **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Marginally helpful, and only for Crossplane. The dossier shows that Crossplane propagates claim to composite resource to composed resources with server-side apply, which depends on merge markers in provider CRDs, and that moving to composition functions needed a managed-fields migration. The kro documentation returned empty content, so nothing is known about how kro applies composed resources. See [[examples/crossplane-clears-managed-fields-when-migrating-to-composition-functions]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -120,6 +127,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-gvk-and-gvr]]:** Marginally helpful. The dossier shows that aggregated discovery (stable in v1.30) collapses per-group-version discovery requests into one, which lowers client startup cost, and that mappers rebuild on lookup failure behind a rate limit. It does not cover informer caches keyed by GVR, workqueues, or sharding. See [[concepts/api-discovery-and-restmapper]] and [[comparisons/restmapper-strategies-static-deferred-and-dynamic]].
 - **Possible resolution from [[sources/research-custom-resource-definition]]:** Partly helpful on the apiserver side. Custom resources share etcd and watch-cache paths with built-in objects, and Ant Group's 10,000-plus node write-up cut apiserver memory from roughly 400 GB to 100 GB by serving lists from the watch cache, with label indexing and etcd splitting. It has no controller sharding or workqueue data and no CRD-specific numbers. See [[examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd]].
 - **Possible resolution from [[sources/research-spec-status-split]]:** Marginally helpful. Writing status through the main resource bumps generation and triggers extra reconciles, which is avoidable load on the controller and API server. The dossier gives no scale numbers. See [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]].
+- **Possible resolution from [[sources/research-server-side-apply-and-field-ownership]]:** Marginally helpful. The dossier notes that GET-modify-PUT incurs an optimistic-concurrency retry cost when many actors update one object, which server-side apply avoids. It gives no sharding or workqueue data. See [[comparisons/client-side-apply-versus-server-side-apply]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -578,3 +586,60 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Search conference talks and public postmortems.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** case-studies, postmortems, status
+
+## Server-side apply behavior in kro, ACK, Config Connector, and Helm 4 — status: open
+
+- **Question:** How do kro, ACK, Config Connector, and Helm 4 set field managers, force conflicts, and reconcile fields owned by other controllers, and does Helm 4.0.0 really enable server-side apply by default for new releases?
+- **Why it matters:** The dossier could not read a primary source for any of them: the kro page returned empty content, no ACK or Config Connector page was found, and the Helm 4 default rests on one personal blog. See [[comparisons/ssa-conflict-policy-across-tools]] and [[entities/helm]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read each project's documentation or source for field manager names and force behavior.
+  - [ ] Find the Helm 4 release notes and the upgrade behavior for releases created with client-side apply.
+  - [ ] Add rows to [[comparisons/ssa-conflict-policy-across-tools]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** server-side-apply, kro, ack, config-connector, helm
+
+## Flux pre-dry-run manager takeover flag and current SSA documentation — status: open
+
+- **Question:** What are the shipped semantics of the kustomize-controller flag proposed in issue 1722 (`--override-manager-before-dry-run`), delivered through PR 1747, and how does current Flux documentation describe `--override-manager`?
+- **Why it matters:** The dossier read only the issue thread, and the final flag name and semantics should be checked before anyone relies on them. See [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read kustomize-controller PR 1747 and the current Kustomization documentation.
+  - [ ] Update [[entities/flux]] and [[findings/field-ownership-blocks-drift-correction]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, server-side-apply, verification
+
+## Best default conflict policy for teams running GitOps and in-cluster controllers — status: open
+
+- **Question:** What default conflict policy should a platform team choose when a GitOps tool and in-cluster controllers write the same objects, given that the Kubernetes maintainers advise controllers to force and CD tools to surface conflicts while Argo CD and Flux both force?
+- **Why it matters:** The dossier says its sources do not settle the question, and the answer decides whether revert loops or blocked automation are the more likely failure. See [[decisions/force-conflicts-or-surface-them-to-humans]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find practitioner write-ups or SIG API Machinery discussion of parsing `managedFields` to ignore conflicts.
+  - [ ] Find a named adopter's policy for mixed GitOps and controller ownership.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** server-side-apply, gitops, conflict, decision
+
+## Crossplane v2 server-side apply behavior and external writers — status: open
+
+- **Question:** How does Crossplane v2 use server-side apply compared with the v1.20 alpha page, and is Crossplane issue 7453 (an external controller's forced field disappearing from a composite resource on v2.3.1) a real bug or a `managedFields` visibility mistake?
+- **Why it matters:** The dossier read only the v1.20 concept page and an unresolved, stale issue whose claim a maintainer could not reproduce. See [[findings/managedfields-are-hidden-from-kubectl-output-by-default]] and [[entities/crossplane]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current Crossplane documentation on server-side apply and composition functions.
+  - [ ] Check whether issue 7453 was reproduced or closed.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, server-side-apply, verification
+
+## Cluster API field ownership rules and Argo CD Server-Side Diff stability — status: open
+
+- **Question:** Which fields does the Cluster API topology controller own compared with infrastructure and control plane providers, and is Argo CD Server-Side Diff stable since 3.1.0 as one blog claims?
+- **Why it matters:** The dossier read only the Cluster API pull request description and relied on a personal blog for the Argo CD stability claim. See [[examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects]] and [[examples/argo-cd-server-side-diff-ends-false-out-of-sync-from-server-defaults]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Cluster API book on ClusterClass topology and server-side apply.
+  - [ ] Read the Argo CD diff-strategies documentation.
+  - [ ] Check whether `kubectl` made server-side apply the default.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cluster-api, argo-cd, server-side-diff, verification

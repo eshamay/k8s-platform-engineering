@@ -17,6 +17,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-server-side-apply-and-field-ownership
+    hash: 1f12c486354e
+    ingested: 2026-11-25
 aliases: [Kubebuilder Book]
 tags: [tool, operators, framework]
 ---
@@ -44,3 +47,7 @@ The Kubebuilder book describes the hub-and-spoke pattern for multi-version CRDs,
 ## Status subresource marker and client
 
 Kubebuilder enables the status subresource with the `+kubebuilder:subresource:status` marker, and controllers should write status with `r.Status().Patch()` so generation is not bumped and the controller does not retrigger itself. Tutorial sources warn against using the normal client for status, forgetting RBAC on `/status`, and updating spec and status in one call. [[sources/research-spec-status-split]] See [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]] and [[findings/status-client-rbac-and-conflict-mistakes]].
+
+## Server-side apply scaffolding
+
+The Kubebuilder book (alpha page) shows scaffolding with `--ssa` to generate apply configuration types, and applying status with `client.FieldOwner` and `client.ForceOwnership`. It recommends SSA when several controllers or users manage one resource and plain `Update()` for a sole owner. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/kubebuilder-controller-applies-status-with-a-field-owner]] and [[findings/applying-a-whole-read-back-object-claims-every-field]].

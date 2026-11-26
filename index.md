@@ -20,7 +20,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/crd-versioning-and-storage-migration]] — served and storage versions, conversion, retirement (draft)
 - [[concepts/custom-resource-definition]] — registering new API types, schema, versions, costs, and pitfalls (active)
 - [[concepts/spec-status-split]] — intent versus observed reality, the status subresource, observedGeneration, and pitfalls (active)
-- [[concepts/server-side-apply-and-field-ownership]] — managedFields and shared ownership (draft)
+- [[concepts/server-side-apply-and-field-ownership]] — managedFields, conflicts, shared ownership, merge markers, and tool policies (active)
 - [[concepts/admission-webhooks-and-cel]] — mutate and validate before persistence (draft)
 
 ### Controller and operator mechanics
@@ -51,6 +51,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/cluster-api]] — management cluster that creates workload clusters (draft)
 - [[entities/kcp]] — node-less multi-tenant API workspaces (draft)
 - [[entities/kubectl]] — CLI behind imperative and declarative techniques (draft)
+- [[entities/kluctl]] — deployment tool that decides SSA conflicts per field (draft)
 - [[entities/kubebuilder]] — controller framework and Reconcile tutorial (draft)
 - [[entities/controller-runtime]] — Go controller library and the level-based Reconciler contract (draft)
 - [[entities/kube-rs]] — Rust controller library and single-replica availability guidance (draft)
@@ -72,6 +73,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gvk-and-gvr]] — research dossier on GVK and GVR, 18 web sources, 2026-11-25
 - [[sources/research-custom-resource-definition]] — CRD mechanics, schema and CEL, versions and conversion, tool handling, and failure modes (active)
 - [[sources/research-spec-status-split]] — research dossier on the spec and status split, 16 web sources, 2026-11-25
+- [[sources/research-server-side-apply-and-field-ownership]] — research dossier on server-side apply and field ownership, 17 web sources, 2026-11-25
 
 ## Examples
 
@@ -120,6 +122,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/argo-cd-rolls-up-child-health-with-lua-checks]] — health from child status (draft)
 - [[examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready]] — platform-layer split (draft)
 - [[examples/cluster-api-readiness-gates-flux-dependents]] — provider status gating ordering (draft)
+- [[examples/argo-cd-server-side-diff-ends-false-out-of-sync-from-server-defaults]] — diff is separate from apply (draft)
+- [[examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict]] — canonical conflict example (draft)
+- [[examples/kluctl-decides-field-level-conflicts-with-known-manager-heuristics]] — per-field conflict policy (draft)
+- [[examples/flux-migration-from-client-side-apply-strands-removed-fields]] — Flux 0.17 to 0.18 (draft)
+- [[examples/crossplane-clears-managed-fields-when-migrating-to-composition-functions]] — four-step managed-fields migration (draft)
+- [[examples/kubebuilder-controller-applies-status-with-a-field-owner]] — FieldOwner and ForceOwnership (draft)
+- [[examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects]] — API server arbitrates co-authors (draft)
+- [[examples/flux-ssa-annotations-and-ignore-rules-share-fields-with-other-controllers]] — Merge, IfNotPresent, Strip, and Adopt (draft)
 
 ## Comparisons
 
@@ -142,6 +152,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]] — two CRD factories (draft)
 - [[comparisons/health-and-readiness-models-across-tools]] — status vocabularies of five tools (draft)
 - [[comparisons/observedgeneration-top-level-versus-per-condition]] — where the generation marker lives (draft)
+- [[comparisons/ssa-conflict-policy-across-tools]] — conflict defaults and escape hatches (draft)
+- [[comparisons/client-side-apply-versus-server-side-apply]] — where the merge runs and what it remembers (draft)
 
 ## Decisions
 
@@ -156,6 +168,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/validate-with-cel-rules-or-a-validating-webhook]] — where CRD validation runs (draft)
 - [[decisions/publish-synced-false-at-reconcile-start]] — ACK stale-status options (draft)
 - [[decisions/which-crds-get-a-status-subresource]] — Prometheus Operator's line between workload and config CRDs (draft)
+- [[decisions/force-conflicts-or-surface-them-to-humans]] — controller versus CD tool defaults (draft)
 
 ## Findings
 
@@ -204,6 +217,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/free-text-in-a-condition-reason-breaks-consumers]] — convention slip (draft)
 - [[findings/status-client-rbac-and-conflict-mistakes]] — operator implementation traps (draft)
 - [[findings/config-style-crds-with-several-reconcilers-get-no-status]] — multiple writers (draft)
+- [[findings/client-side-to-server-side-migration-leaves-stale-co-owners]] — removals do not prune (draft)
+- [[findings/atomic-lists-and-unmarked-crds-block-shared-field-ownership]] — merge markers as API contract (draft)
+- [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]] — Flux issue 1722 (draft)
+- [[findings/diff-is-not-apply-server-defaults-look-like-drift]] — false OutOfSync (draft)
+- [[findings/forcing-conflicts-hides-disagreements-between-writers]] — blanket force versus fail (draft)
+- [[findings/managedfields-are-hidden-from-kubectl-output-by-default]] — show-managed-fields (draft)
+- [[findings/applying-a-whole-read-back-object-claims-every-field]] — controller anti-pattern (draft)
 
 ## Outputs
 
