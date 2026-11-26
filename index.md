@@ -128,6 +128,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g1-operator-loop-failures]] — verified dossier on issue-level operator reconcile loops, lost events, and early-Ready status bugs, with no formal operator postmortem found, 2026-11-26 (active)
 - [[sources/research-gap-g1-leaked-resources-adoption]] — verified dossier on leaked or duplicated cloud resources from ambiguous creates and on adopt-or-create versus explicit import, from GitHub issues only, 2026-11-26 (active)
 - [[sources/research-gap-g1-other-tool-pitfalls]] — verified dossier on first-party pitfall issues and release notes for kro, Config Connector, ACK, and Cluster API, with no named-organization postmortem, 2026-11-26 (active)
+- [[sources/research-gap-b1-unverified-claims]] — verified dossier re-checking about 60 unverified claims: the helm-controller flag, Crossplane docs URLs, Argo CD defaults, controller-runtime read-your-writes, and etcd quota, 2026-11-26 (active)
 - [[sources/skyscanner-namespace-deletion-postmortem]] — Skyscanner's 2021 postmortem of a global outage caused by a template change reconciled by Argo CD, 2026-11-26
 - [[sources/reddit-pi-day-outage-postmortem]] — Reddit's postmortem of the 314-minute Pi-Day outage, 2026-11-26
 - [[sources/spotify-kubecon-2019-gke-cluster-deletion-transcript]] — transcript of Spotify's KubeCon Europe 2019 talk on deleting production GKE clusters, 2026-11-26
@@ -162,7 +163,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]] — self-heal and waves (draft)
 - [[examples/crossplane-database-claim-reports-synced-and-ready]] — Synced and Ready during slow provisioning (draft)
 - [[examples/kro-shared-queue-tunes-throughput]] — kro queue and rate-limit numbers (active)
-- [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]] — dry-run failure stops correction (draft)
+- [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]] — dry-run failure stops correction (active)
 - [[examples/argo-cd-app-of-apps-out-of-sync-from-image-updater]] — a second writer looks like drift (draft)
 - [[examples/incremental-gitops-adoption-with-manual-sync-and-self-heal]] — staged enforcement with Argo CD (draft)
 - [[examples/cluster-api-machine-health-check-replaces-failed-nodes]] — machine-level self-healing (active)
@@ -299,11 +300,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/grafana-s-default-priorityclass-let-a-new-cluster-preempt-every-production-ingester]] — a default PriorityClass amplified by a ReplicaSet (active)
 - [[examples/loveholidays-gke-upgrade-from-1-10-to-1-12-overran-its-window-by-about-five-hours]] — slow drains, a stuck node pool, and HPA saturation (active)
 - [[examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed]] — drift fight fixed by Flux ignore rules (active)
-- [[examples/crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource]] — open, unreproduced report of an external SSA writer losing a field (draft)
+- [[examples/crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource]] — open, unreproduced report of an external SSA writer losing a field (active)
 - [[examples/crossplane-issue-5283-has-left-deletionpolicy-deprecation-open-since-2024]] — deletionPolicy never formally deprecated (draft)
 - [[examples/crossplane-v2-4-and-v2-5-cut-memory-on-clusters-with-hundreds-to-two-thousand-crds]] — project-reported memory reductions (draft)
 - [[examples/kubernetes-v1-36-daemonset-statefulset-replicaset-and-job-controllers-skip-a-sync-until-the-cache-catches-up-with-their-own-write]] — built-in controllers gate on resource version (active)
-- [[examples/controller-runtime-merged-a-read-your-own-write-client-design-in-october-2026-but-no-release-is-confirmed-to-ship-it]] — design merged, release unconfirmed (active)
+- [[examples/controller-runtime-merged-a-read-your-own-write-client-design-in-october-2026-but-no-release-is-confirmed-to-ship-it]] — design merged, release unconfirmed (contradicted: v0.25.0 shipped an experimental option)
 - [[examples/a-user-created-storageversionmigration-object-rewrites-stored-objects-so-a-crd-can-retire-an-old-version]] — user-triggered migration walkthrough (active)
 - [[examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag]] — a stale Update manager fails the dry-run until the v1.10.0 flag (active)
 - [[examples/cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers]] — v1beta2 checks, brake, templateRef, and CEL rules (active)
@@ -478,7 +479,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/duplicate-work-from-replicas-without-leader-election]] — racing replicas (draft)
 - [[findings/misleading-readiness-and-stale-status]] — Ready versus Synced and observedGeneration (active)
 - [[findings/drift-detection-latency-is-the-interval]] — interval as correction latency (draft)
-- [[findings/field-ownership-blocks-drift-correction]] — dry-run conflicts stop correction (draft)
+- [[findings/field-ownership-blocks-drift-correction]] — dry-run conflicts stop correction (active)
 - [[findings/controllers-fighting-over-fields-cause-revert-loops]] — webhooks, HPAs, and image updaters (draft)
 - [[findings/remediation-can-amplify-an-outage]] — mass replacement and the maxUnhealthy brake (active)
 - [[findings/late-initialized-fields-create-false-drift]] — provider defaults and LateInitialize (draft)
@@ -689,6 +690,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/kubernetes-has-no-supported-downgrade-so-a-failed-control-plane-upgrade-forces-a-backup-restore-and-an-untested-restore-procedure-is-the-risk]] — no supported downgrade makes an untested restore the risk (active)
 - [[findings/terraform-review-builds-that-write-a-shared-state-file-and-out-of-order-merges-deleted-production-clusters]] — shared Terraform state and out-of-order merges deleted clusters (active)
 - [[findings/partial-migration-and-pod-ip-service-discovery-let-spotify-fail-over-when-its-kubernetes-clusters-were-deleted]] — partial migration and pod-IP discovery enabled failover (active)
+- [[findings/helm-controller-has-had-a-repeatable-override-manager-flag-since-v1-5-0-and-it-is-unrelated-to-helm-v4-server-side-apply]] — changelog-confirmed flag since v1.5.0 (2026-02-20), not tied to Helm 4 (active)
+- [[findings/the-old-crossplane-latest-concepts-urls-return-404-and-the-docs-redirect-rules-only-cover-end-of-life-versions]] — old docs URLs 404 and are not redirected (active)
+- [[findings/controller-runtime-v0-25-0-ships-an-experimental-opt-in-read-your-writes-client]] — experimental ReadYourWritesConsistency shipped in v0.25.0 (active)
+- [[findings/argo-cd-v3-6-3-still-defaults-to-legacy-sharding-because-the-source-says-so-even-though-the-docs-page-dropped-the-marker]] — default confirmed in source (active)
 
 ## Outputs
 

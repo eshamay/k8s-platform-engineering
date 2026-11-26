@@ -1,18 +1,28 @@
 ---
 title: "controller-runtime merged a read-your-own-write client design in October 2026, but no release is confirmed to ship it"
 type: example
-status: active
+status: contradicted
 created: 2026-11-26
 updated: 2026-11-26
 sources:
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: [controller-runtime read-your-writes]
 tags: [controller-runtime, staleness, read-your-writes, design, v0-25]
 ---
 
 # controller-runtime merged a read-your-own-write client design in October 2026, but no release is confirmed to ship it
+
+## Contradictions
+
+> [!WARNING]
+> This page's title and body say no controller-runtime release is confirmed to ship read-your-writes behavior. The v0.25.0 release notes say otherwise.
+
+The page says: "It does not claim that any controller-runtime release gives controllers read-your-own-writes behavior" and "No release ... is confirmed to ship it". The 2026-11-26 recheck says: v0.25.0 (2026-09-03) "introduces a new experimental `ReadYourWritesConsistency` feature", enabled with `Client.EnableReadYourWritesConsistency`. The release notes are the primary source, so the later claim stands: an experimental, opt-in implementation shipped in v0.25.0. Suggested resolution: treat the body below as the history of the design pull request only, and cite [[findings/controller-runtime-v0-25-0-ships-an-experimental-opt-in-read-your-writes-client]] for the shipped behavior. [[sources/research-gap-b1-unverified-claims]]
 
 ## Scenario
 

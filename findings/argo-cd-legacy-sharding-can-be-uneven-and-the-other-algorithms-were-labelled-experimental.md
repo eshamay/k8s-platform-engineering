@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g3-argocd-capi
     hash: c3d485fa58ae
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, argo-cd, sharding, scale, algorithm]
 ---
@@ -32,3 +35,7 @@ Because the unit of sharding is a whole cluster, one very large cluster cannot b
 ## Recheck at v3.6.3
 
 The 2026-11-26 dossier read the docs source at Argo CD v3.6.3 (released 2026-11-24). "The `round-robin` shard distribution algorithm is an experimental feature." and "The `consistent-hashing` shard distribution algorithm is an experimental feature." The feature-maturity page lists "Cluster Sharding: consistent-hashing | v2.12.0 | Alpha" and round-robin as introduced in v2.8.0. The same warning appears at v2.14.0 and v3.0.0, and nothing read says either algorithm graduated or that the default changed. The docs cite a CNOE benchmark blog with encouraging results for consistent hashing, which the dossier did not read. See [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]] and [[sources/research-gap-g3-argocd-capi]].
+
+## Default confirmed 2026-11-26
+
+The default method is `legacy`: `DefaultShardingAlgorithm = LegacyShardingAlgorithm` in `common/common.go` at v3.0.0 and v3.6.3. The CNOE blog the docs cite (2023-11-21) was read and reports 3x better CPU utilization and 5x fewer rebalancings from the new algorithms, as the authors' own benchmark. See [[findings/argo-cd-v3-6-3-still-defaults-to-legacy-sharding-because-the-source-says-so-even-though-the-docs-page-dropped-the-marker]] and [[sources/research-gap-b1-unverified-claims]].

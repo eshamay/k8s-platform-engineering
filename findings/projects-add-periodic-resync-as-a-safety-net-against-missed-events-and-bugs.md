@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: [Resync as a safeguard]
 tags: [resync, informer, safety-net, argo-rollouts, kubefleet]
 ---
@@ -16,7 +19,7 @@ tags: [resync, informer, safety-net, argo-rollouts, kubefleet]
 
 ## Observation
 
-Two projects document a periodic resync as a deliberate guard. KubeFleet's placement controller has a hardcoded 30-minute safety resync, commented in code as "We use a safety resync period to requeue all the finished request just in case there is a bug in the system", and issue 635 (2026-04-23) proposes unifying it across controllers. That is VERIFIED design intent and not an incident. A user in Argo Rollouts issue 4140 says operators run `--rollout-resync=60` "to prevent rollouts from getting stuck due to missed events". That statement is SECONDARY-ONLY, because it is a user's claim about the flag's purpose and the flag documentation was not read. [[sources/research-gap-g1-operator-loop-failures]]
+Two projects document a periodic resync as a deliberate guard. KubeFleet's placement controller has a hardcoded 30-minute safety resync, commented in code as "We use a safety resync period to requeue all the finished request just in case there is a bug in the system", and issue 635 (2026-04-23) proposes unifying it across controllers. That is VERIFIED design intent and not an incident. A user in Argo Rollouts issue 4140 says operators run `--rollout-resync=60` "to prevent rollouts from getting stuck due to missed events". That statement is SECONDARY-ONLY, because it is a user's claim about the flag's purpose. A later pass verified that the flag exists in the controller's `main.go` ("Time period in seconds for rollouts resync."), but the project does not describe it as a guard against missed events, so the claim stays SECONDARY-ONLY ([[sources/research-gap-b1-unverified-claims]]). [[sources/research-gap-g1-operator-loop-failures]]
 
 ## Interpretation
 

@@ -17,6 +17,9 @@ sources:
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
     ingested: 2026-11-25
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: [Expectations problem]
 tags: [pitfall, controllers, cache, level-triggered]
 ---
@@ -54,3 +57,5 @@ Correction note, 2026-11-26: this section previously said only that v1.36 "adds 
 ## Cache-backed client reads in the informers dossier
 
 The controller-runtime cache blog says the cache-backed client reads from the cache and writes go to the API server, so a read right after a write can return old data. The remedies it and the pitfalls blog give are the expectations pattern and explicit uncached reads where authority is required. [[sources/research-informers-reflectors-and-workqueues]] See [[concepts/informers-reflectors-and-workqueues]].
+
+Correction 2026-11-26: for controller-runtime operators, the v0.25.0 release added an experimental, opt-in read-your-writes client option (`Client.EnableReadYourWritesConsistency`). It is not on by default and is labelled experimental, so the defenses above still apply. See [[findings/controller-runtime-v0-25-0-ships-an-experimental-opt-in-read-your-writes-client]] and [[sources/research-gap-b1-unverified-claims]].

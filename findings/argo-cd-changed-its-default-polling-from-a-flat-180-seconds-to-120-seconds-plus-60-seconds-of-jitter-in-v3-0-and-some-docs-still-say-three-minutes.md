@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, argo-cd, interval, defaults, version-drift, documentation-conflict]
 ---
@@ -31,7 +34,7 @@ The v3.0.0 FAQ reads "The default maximum polling interval is 3 minutes (120 sec
 
 ## What was not found
 
-The reason for the change is UNVERIFIED. The v3.0 upgrade notes and pull request searches for the jitter and the reduced default found nothing. A pull request merged on 2026-07-31 (number 27683) is titled "fix(controller): treat `timeout.reconciliation=0` as disabled soft expiry", which shows that setting the value to 0 disables polling-based refresh, but only the title and state were read, not the diff. https://github.com/argoproj/argo-cd/pull/27683
+The change is attributed to pull request 22342 ("chore!: add 60s default jitter", merged 2025-03-13), found in a later pass. Its body says the change was left out of the 2.14 to 3.0 migration guide "because the maximum default is the same (at least every 3 minutes)", so the pull request states how it preserved the ceiling. The reason jitter was added at all is still UNVERIFIED, because the body is one sentence and the v3.0.0 upgrade notes contain no jitter text. The v3.6.3 FAQ says the default is "calculated as 120 seconds + up to 60 seconds of jitter" ([[sources/research-gap-b1-unverified-claims]]). https://github.com/argoproj/argo-cd/pull/22342 A pull request merged on 2026-07-31 (number 27683) is titled "fix(controller): treat `timeout.reconciliation=0` as disabled soft expiry", which shows that setting the value to 0 disables polling-based refresh, but only the title and state were read, not the diff. https://github.com/argoproj/argo-cd/pull/27683
 
 ## Consequences
 

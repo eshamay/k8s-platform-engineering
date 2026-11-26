@@ -35,6 +35,9 @@ sources:
   - id: research-gap-g3-scale-recheck
     hash: d9bd6911bff7
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: [sigs.k8s.io/controller-runtime]
 tags: [tool, controllers, framework]
 ---
@@ -81,7 +84,7 @@ Correction note, 2026-11-26: this section previously said that sources disagree 
 
 ## Read-your-own-writes design
 
-controller-runtime PR 3473, "Read your own write client design", merged on 2026-10-05, and issue 3320 ("Feature: ReadYourWritesConsistency") was still open on 2026-11-26. No release up to v0.25.3 is confirmed to ship the behavior. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[examples/controller-runtime-merged-a-read-your-own-write-client-design-in-october-2026-but-no-release-is-confirmed-to-ship-it]].
+controller-runtime PR 3473, "Read your own write client design", merged on 2026-10-05, and issue 3320 ("Feature: ReadYourWritesConsistency") was still open on 2026-11-26. Correction 2026-11-26: the v0.25.0 release (2026-09-03) already shipped an experimental, opt-in `ReadYourWritesConsistency` feature, enabled with `Client.EnableReadYourWritesConsistency`, so the earlier statement that no release up to v0.25.3 is confirmed to ship it was wrong ([[findings/controller-runtime-v0-25-0-ships-an-experimental-opt-in-read-your-writes-client]], [[sources/research-gap-b1-unverified-claims]]). [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[examples/controller-runtime-merged-a-read-your-own-write-client-design-in-october-2026-but-no-release-is-confirmed-to-ship-it]].
 
 ## FAQ guidance on idempotent reconcilers
 

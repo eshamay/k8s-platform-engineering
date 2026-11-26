@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: [Kubernetes stale controller consistency, KEP 5647 adopters]
 tags: [kubernetes, v1-36, v1-37, staleness, informers, kube-controller-manager, read-your-writes]
 ---
@@ -39,3 +42,5 @@ Upstream treats "my cache has not yet seen my own write" as a skip-and-retry con
 ## Related
 
 [[entities/client-go]], [[examples/controller-runtime-merged-a-read-your-own-write-client-design-in-october-2026-but-no-release-is-confirmed-to-ship-it]], [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]]
+
+Update 2026-11-26: master source defines `stale_sync_skips_total` for the ReplicaSet and StatefulSet controllers under the subsystems `replicaset_controller` and `statefulset_controller`. The release in which each shipped was not pinned. See [[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source]] and [[sources/research-gap-b1-unverified-claims]].

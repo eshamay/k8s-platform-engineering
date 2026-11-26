@@ -14,6 +14,9 @@ sources:
   - id: research-gap-g3-flux-ssa-helm
     hash: e825557fc5c4
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, drift, ignore, adoption]
 ---
@@ -27,7 +30,7 @@ Every stack offers some way to say "do not fight this field or resource". The me
 | Ignore specific fields | `driftDetection.ignore` with JSON Pointers and target selectors (HelmRelease) | `ignoreDifferences` by JSON pointer, JQ path, or `managedFieldsManagers`, per app or system-wide | Not described |
 | Per-object opt-out | `kustomize.toolkit.fluxcd.io/ssa` annotation: `Ignore` or `IfNotPresent` | Not described | `managementPolicies` limit actions per resource |
 | Observe without changing | `warn` drift mode (HelmRelease) | Manual sync (OutOfSync only) | `Observe` policy |
-| Transfer field ownership | kustomize-controller `--override-manager` and, since v1.10.0, `--override-manager-before-dry-run` (documented); helm-controller `--override-manager` (community-reported) | `managedFieldsManagers` to ignore chosen managers | Not described |
+| Transfer field ownership | kustomize-controller `--override-manager` and, since v1.10.0, `--override-manager-before-dry-run` (documented); helm-controller `--override-manager` (changelog entry since v1.5.0) | `managedFieldsManagers` to ignore chosen managers | Not described |
 | Stop everything | `suspend` | Turn off automated sync | `crossplane.io/paused` annotation |
 | Dangerous correction | `force` recreates on immutable changes, use temporarily | `prune` off by default, rollback blocked under auto sync | `Delete` policy and finalizers control external deletion |
 

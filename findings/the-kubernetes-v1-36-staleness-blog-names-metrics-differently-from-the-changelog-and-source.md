@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: [staleness metric names]
 tags: [pitfall, kubernetes, v1-36, metrics, staleness, documentation]
 ---
@@ -23,7 +26,7 @@ The v1.36 staleness mitigation blog and the code disagree on metric names. The b
 | `stale_sync_skips_total` | `daemonset_controller_stale_sync_skips_total` and `job_controller_stale_sync_skips_total` | CHANGELOG-1.36, PRs 134937 and 137210 |
 | `store_resource_version` | `informer_store_resource_version` with labels name, group, version, resource, alpha | tag v1.36.0, `component-base/metrics/prometheus/clientgo/fifo/metrics.go` |
 
-The gauge help text is "The 15 least significant digits of the resource version of the store", so it is a coarse lag signal and not the full resource version. The dossier found no CHANGELOG names for the ReplicaSet and StatefulSet skip metrics, so those two names remain unknown. The v1.37 scheduler additionally publishes `informer_queued_items` and `informer_processing_latency_seconds` (CHANGELOG-1.37, PR 140511).
+The gauge help text is "The 15 least significant digits of the resource version of the store", so it is a coarse lag signal and not the full resource version. The 1.36 CHANGELOG has no names for the ReplicaSet and StatefulSet skip metrics. Master source does: `stale_sync_skips_total` under the subsystems `replicaset_controller` and `statefulset_controller` (pkg/controller/replicaset/metrics/metrics.go and pkg/controller/statefulset/metrics/metrics.go, read 2026-11-26), which would give `replicaset_controller_stale_sync_skips_total` and `statefulset_controller_stale_sync_skips_total` as full names. That reading is from master and not pinned to a release, so confirm against a live `/metrics` endpoint ([[sources/research-gap-b1-unverified-claims]]). The v1.37 scheduler additionally publishes `informer_queued_items` and `informer_processing_latency_seconds` (CHANGELOG-1.37, PR 140511).
 
 ## Why it is a pitfall
 

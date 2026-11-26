@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, crossplane, operations, alpha, maturity, v2]
 ---
@@ -24,7 +27,7 @@ Operations run function pipelines to completion, "like a Kubernetes Job", in thr
 
 ## Why it matters
 
-A runbook or tutorial that presents Operations as an ordinary stable feature overstates them: removal or breaking change is permitted, and an Operation cannot clean up what it created. The dossier searched for a tracking issue or schedule for beta graduation and found none.
+A runbook or tutorial that presents Operations as an ordinary stable feature overstates them: removal or breaking change is permitted, and an Operation cannot clean up what it created. The dossier searched for a tracking issue or schedule for beta graduation and found none. A later pass confirmed on main that `--enable-operations` is declared under "Alpha Features" in `cmd/crossplane/core/core.go`, and a search of issue titles for "operations beta" again found nothing, so no beta plan is known ([[sources/research-gap-b1-unverified-claims]]).
 
 ## Mitigations
 

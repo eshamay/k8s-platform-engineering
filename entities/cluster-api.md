@@ -71,6 +71,9 @@ sources:
   - id: research-gap-g1-other-tool-pitfalls
     hash: a942f0ae1b1b
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -178,7 +181,7 @@ Rancher's cluster-api-provider-rke2 v0.22.0 onward had a self-sustaining loop of
 
 ## Adopters file
 
-A code search of the Cluster API repository in the 2026-11-26 adopters dossier found only a providers reference page and no adopters page. The repository root was not read, so this negative result is unverified. [[sources/research-gap-g1-named-adopters]]
+A code search of the Cluster API repository in the 2026-11-26 adopters dossier found only a providers reference page and no adopters page. A later pass read the repository root listing on 2026-11-26 and found no adopters file there, which settles the root only. Subdirectories were not searched ([[sources/research-gap-b1-unverified-claims]]). [[sources/research-gap-g1-named-adopters]]
 
 ## Pitfall evidence from the other-tool pitfalls dossier
 

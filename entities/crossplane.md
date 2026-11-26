@@ -104,6 +104,9 @@ sources:
   - id: research-gap-g1-named-adopters
     hash: 9f6a50098233
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -168,7 +171,7 @@ The admission dossier found no primary Crossplane material, so this wiki makes n
 
 ## Composition as a replacement for a bespoke controller
 
-The operator-pattern dossier presents Crossplane compositions as a way to expose a custom API without hand-writing a controller: platform teams define composite resource APIs (XRD, XR) and map them to managed resources with a Composition that runs a function pipeline, so controller logic is configured. The page at `/latest/concepts/composition/` returned 404 during the research, so current documentation paths need checking. [[sources/research-operator-pattern]] See [[examples/crossplane-composition-replaces-a-hand-written-controller-for-composed-apis]] and [[decisions/build-a-custom-operator-or-compose-existing-resources]].
+The operator-pattern dossier presents Crossplane compositions as a way to expose a custom API without hand-writing a controller: platform teams define composite resource APIs (XRD, XR) and map them to managed resources with a Composition that runs a function pipeline, so controller logic is configured. The page at `/latest/concepts/composition/` returned 404 during the research, so current documentation paths need checking. A later pass confirmed that the old `/latest/concepts/...` pages return 404 and are not redirected ([[findings/the-old-crossplane-latest-concepts-urls-return-404-and-the-docs-redirect-rules-only-cover-end-of-life-versions]]). [[sources/research-operator-pattern]] See [[examples/crossplane-composition-replaces-a-hand-written-controller-for-composed-apis]] and [[decisions/build-a-custom-operator-or-compose-existing-resources]].
 
 ## Observe, Create, Update, Delete and create tracking
 

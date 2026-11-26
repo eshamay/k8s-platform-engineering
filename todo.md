@@ -32,6 +32,11 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#batch-2-p3b-residual-partial-gaps-from-the-targeted-pass]] — open
 - [[#batch-3-p4-benchmarks-and-scale-by-controller-gaps]] — open
 - [[#batch-3-p4b-turn-design-choice-evidence-into-decision-pages]] — open
+- [[#update-flux-ramp-up-field-ownership-passage-with-the-confirmed-helm-controller-flag]] — open
+- [[#update-part-3-staleness-passage-with-the-replicaset-and-statefulset-metrics-and-the-read-your-writes-release]] — open
+- [[#update-part-5-argo-cd-sharding-passage-with-the-confirmed-legacy-default]] — open
+- [[#update-crossplane-ramp-up-unknowns-passage-with-the-docs-page-and-url-findings]] — open
+- [[#review-closed-gap-resolutions-refined-by-the-b1-recheck]] — open
 
 ## Open
 
@@ -463,5 +468,40 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Each resolved-candidate gap is closed with a Resolution paragraph or left open with a reason.
 - **Drafted by:** agent on 2026-11-26
 - **Outcome:** 2026-11-26: closed all 22 resolved-candidate gaps with Resolution paragraphs the user confirmed in three batches (Closed by Eric Shamay); each Resolution states what remains unsettled. 102 gaps remain open.
+
+## Update flux-ramp-up field ownership passage with the confirmed helm-controller flag — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "**Field ownership blocks drift correction.**" says the `--override-manager=kubectl-edit` fix is "stated as available since helm-controller v1.5.0, but it comes from a community member, not a maintainer, so verify it". The helm-controller CHANGELOG confirms the flag in its 1.5.0 section (2026-02-20) and says it is unrelated to Helm v4 server-side apply. Cite [[findings/helm-controller-has-had-a-repeatable-override-manager-flag-since-v1-5-0-and-it-is-unrelated-to-helm-v4-server-side-apply]] and drop the verify-it caveat, keeping the note that the before-or-after-dry-run behavior was not checked.
+- **Why:** The ramp-up still presents a confirmed flag as unverified. The 2026-11-26 dossier [[sources/research-gap-b1-unverified-claims]] supplies the evidence.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 staleness passage with the ReplicaSet and StatefulSet metrics and the read-your-writes release — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the paragraph beginning "When a DaemonSet or Job sync is deferred" says the wiki found no changelog names for the ReplicaSet and StatefulSet counters. Master source defines `stale_sync_skips_total` under the `replicaset_controller` and `statefulset_controller` subsystems (not pinned to a release). Cite [[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source]]. Also add that controller-runtime v0.25.0 shipped an experimental, opt-in read-your-writes client option, citing [[findings/controller-runtime-v0-25-0-ships-an-experimental-opt-in-read-your-writes-client]], wherever the part says no controller-runtime release gives that behavior.
+- **Why:** The part states the metric names as unknown and may state the read-your-writes release as unconfirmed. The 2026-11-26 dossier [[sources/research-gap-b1-unverified-claims]] supplies the evidence.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 Argo CD sharding passage with the confirmed legacy default — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the paragraph beginning "Argo CD shards by destination cluster" says the current default is unconfirmed because the v3.6.3 high-availability page drops the "(default)" marker. The source sets `DefaultShardingAlgorithm = LegacyShardingAlgorithm` at v3.0.0 and v3.6.3, so the default is `legacy`. Cite [[findings/argo-cd-v3-6-3-still-defaults-to-legacy-sharding-because-the-source-says-so-even-though-the-docs-page-dropped-the-marker]].
+- **Why:** The part leaves a settled default as unconfirmed. The 2026-11-26 dossier [[sources/research-gap-b1-unverified-claims]] supplies the evidence.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up unknowns passage with the docs page and URL findings — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "The wiki is honest about what it does not know" says the managed-resource poll interval was verified from source "although backoff values and the docs page were not read". The docs page was read and states no poll interval default, so it cannot be cited for the number. Cite [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]]. If the ramp-up links any old `/latest/concepts/...` Crossplane URL, replace it using [[findings/the-old-crossplane-latest-concepts-urls-return-404-and-the-docs-redirect-rules-only-cover-end-of-life-versions]].
+- **Why:** The ramp-up understates what was checked about the docs page. The 2026-11-26 dossier [[sources/research-gap-b1-unverified-claims]] supplies the evidence.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Review closed gap resolutions refined by the b1 recheck — status: open
+
+- **What:** Closed gaps were not edited. Two closed Resolutions carry statements the b1 recheck refines: "Argo CD sharding algorithm maturity in current releases" says the default is unconfirmed (the default is `legacy`, confirmed in source), and "Argo CD default reconcile interval across versions" says the reason for the jitter is unverified (pull request 22342 explains only that the 3 minute ceiling was kept). Pages were updated instead, see [[findings/argo-cd-v3-6-3-still-defaults-to-legacy-sharding-because-the-source-says-so-even-though-the-docs-page-dropped-the-marker]] and [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]]. A human decides whether to reopen either gap or leave the Resolution as a record of what was known at close.
+- **Why:** Closed Resolutions stay as the reasoning trail, and the reader should know which statements were later refined. The 2026-11-26 dossier [[sources/research-gap-b1-unverified-claims]] supplies the evidence.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
 
 ## Dropped

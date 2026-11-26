@@ -98,6 +98,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -225,7 +228,7 @@ The default `timeout.reconciliation` was 180 seconds from v2.5.0 through v2.14.0
 
 ## Sharding algorithm maturity at v3.6.3
 
-The 2026-11-26 dossier read the high-availability and feature-maturity pages at Argo CD v3.6.3 (released 2026-11-24). Both `round-robin` and `consistent-hashing` are still described as "an experimental feature", and the maturity page lists them as Alpha, introduced in v2.8.0 and v2.12.0. The warning text is the same as at v2.14.0 and v3.0.0, so no graduation happened across that span. The `legacy` method is "uid based distribution (non-uniform)". The v3.6.3 page no longer marks `legacy` as the default, so the current default is unconfirmed. Dynamic Cluster Distribution is a separate Alpha feature from v2.9.0. The docs cite a CNOE benchmark blog with "encouraging results" for consistent hashing, which was not read and is secondary only. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]], and [[sources/research-gap-g3-argocd-capi]].
+The 2026-11-26 dossier read the high-availability and feature-maturity pages at Argo CD v3.6.3 (released 2026-11-24). Both `round-robin` and `consistent-hashing` are still described as "an experimental feature", and the maturity page lists them as Alpha, introduced in v2.8.0 and v2.12.0. The warning text is the same as at v2.14.0 and v3.0.0, so no graduation happened across that span. The `legacy` method is "uid based distribution (non-uniform)". The v3.6.3 page no longer marks `legacy` as the default, but the source default is still `legacy` (correction 2026-11-26, [[findings/argo-cd-v3-6-3-still-defaults-to-legacy-sharding-because-the-source-says-so-even-though-the-docs-page-dropped-the-marker]]). Dynamic Cluster Distribution is a separate Alpha feature from v2.9.0. The docs cite a CNOE benchmark blog with "encouraging results" for consistent hashing, which a later pass read: the authors report 3x better CPU utilization and 5x fewer rebalancings (their own benchmark, [[sources/research-gap-b1-unverified-claims]]). See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]], and [[sources/research-gap-g3-argocd-capi]].
 
 ## Incidents and adopters from the GitOps incidents dossier
 
@@ -239,3 +242,7 @@ Argo CD issue 18151 reports that the 2.11 upgrade raised the application control
 ## Skyscanner 2021 outage
 
 In Skyscanner's published account, Argo CD reconciled clusters against an incorrect configuration with no valid namespaces and deleted all 478 services across every availability zone and region. The post does not describe the sync policy or prune settings in use, so it establishes the behavior and not a specific misconfiguration. See [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]].
+
+## Polling jitter
+
+Pull request 22342 (merged 2025-03-13) added the 60 second default jitter and states that the maximum default stays at 3 minutes. The v3.6.3 FAQ gives the default as 120 seconds plus up to 60 seconds of jitter. The reason for the jitter beyond keeping that ceiling is not stated. See [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]] and [[sources/research-gap-b1-unverified-claims]].

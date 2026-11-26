@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g3-crossplane-v2
     hash: 073a1fe74dec
     ingested: 2026-11-26
+  - id: research-gap-b1-unverified-claims
+    hash: d152f98abb04
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, crossplane, terminology, version-churn, learning-material]
 ---
@@ -31,4 +34,4 @@ Check the version of every Crossplane page before using it, prefer the latest pa
 
 ## Update from the v2.5 verification pass (2026-11-26)
 
-The v2.5 docs reorganized the former concepts section into `composition/` and `managed-resources/`, and the claims page exists only in the v1.20 docs, so older blog links to `/concepts/claims/` describe a layout that no longer exists. Whether the old `/latest/concepts/compositions/` URL redirects was not checked. [[sources/research-gap-g3-crossplane-v2]] See [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]].
+The v2.5 docs reorganized the former concepts section into `composition/` and `managed-resources/`, and the claims page exists only in the v1.20 docs, so older blog links to `/concepts/claims/` describe a layout that no longer exists. Correction 2026-11-26: the old `/latest/concepts/compositions/` URL does not redirect, it returns 404 ([[findings/the-old-crossplane-latest-concepts-urls-return-404-and-the-docs-redirect-rules-only-cover-end-of-life-versions]]). [[sources/research-gap-g3-crossplane-v2]] See [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]].
