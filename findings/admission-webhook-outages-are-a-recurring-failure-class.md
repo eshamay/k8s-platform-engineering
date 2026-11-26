@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: reddit-pi-day-outage-postmortem
+    hash: 195bd85b2856
+    ingested: 2026-11-26
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
@@ -46,3 +49,7 @@ The admission dossier did not close the evidence gap: its searches for the Venaf
 ## Update from the named-incident dossier
 
 The Jetstack account was re-verified against a second capture of the post, and the post does not recommend or mention `failurePolicy`, so that recommendation must not be attributed to Jetstack. The Reddit Pi-Day, Skyscanner, and Spotify incidents are not webhook cases and remain index-level, apart from a secondary-only retelling of Reddit's. See [[sources/research-gap-g1-named-incident-reports]] and [[examples/reddit-s-march-2023-pi-day-outage-is-known-only-from-the-k8s-af-index-and-a-secondary-retelling]].
+
+## Reddit's OPA webhook timeouts were a symptom
+
+Reddit's primary postmortem adds a counter-example to the webhook failure class. During the Pi-Day outage the API server logged write timeouts from calling the Open Policy Agent admission webhook, and removing its webhook configurations ended the timeouts instantly without recovering the cluster. The webhook backend had stopped because cluster networking had already failed, so the timeouts were a symptom of the routing failure and not its cause. Treat webhook timeouts during a wider outage as a lead to check, not as proof of the root cause. See [[examples/reddit-s-march-2023-pi-day-outage-a-kubernetes-1-24-upgrade-removed-the-master-node-label-that-calico-route-reflectors-selected]].

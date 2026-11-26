@@ -129,6 +129,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g1-leaked-resources-adoption]] — verified dossier on leaked or duplicated cloud resources from ambiguous creates and on adopt-or-create versus explicit import, from GitHub issues only, 2026-11-26 (active)
 - [[sources/research-gap-g1-other-tool-pitfalls]] — verified dossier on first-party pitfall issues and release notes for kro, Config Connector, ACK, and Cluster API, with no named-organization postmortem, 2026-11-26 (active)
 - [[sources/skyscanner-namespace-deletion-postmortem]] — Skyscanner's 2021 postmortem of a global outage caused by a template change reconciled by Argo CD, 2026-11-26
+- [[sources/reddit-pi-day-outage-postmortem]] — Reddit's postmortem of the 314-minute Pi-Day outage, 2026-11-26
 
 ## Examples
 
@@ -307,7 +308,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/cluster-api-kubeadm-control-plane-remediation-must-preserve-etcd-quorum-and-has-its-own-retry-controls]] — control plane remediation preconditions and retry fields (active)
 - [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]] — the v1.15.0-rc.0 release candidate, pre-release (active)
 - [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]] — OPA webhook blocked the master's startup write and node auto-repair looped (active)
-- [[examples/reddit-s-march-2023-pi-day-outage-is-known-only-from-the-k8s-af-index-and-a-secondary-retelling]] — Calico route reflector and label upgrade outage, secondary-only (draft)
+- [[examples/reddit-s-march-2023-pi-day-outage-is-known-only-from-the-k8s-af-index-and-a-secondary-retelling]] — Calico route reflector and label upgrade outage, secondary-only (draft) (superseded)
 - [[examples/neon-s-may-2025-delayed-start-incidents-exhausted-subnet-ips-after-a-slow-control-plane-database-query]] — slow control-plane database, IP exhaustion, and a CNI regression (active)
 - [[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]] — self-heal skipped a migration hook on 2 of 5 regions (active)
 - [[examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone]] — ACK issue 2911 (active)
@@ -347,6 +348,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/ack-issue-3152-adoption-under-argo-cd-or-flux-overwrites-the-adopted-aws-resource-with-the-git-spec]] — adoption overwrites with the git spec (active)
 - [[examples/cluster-api-issue-10522-cert-manager-rotation-made-webhooks-unreachable-and-failed-a-clusterctl-upgrade-test]] — 90 second webhook window (active)
 - [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]] — Skyscanner's 2021 outage, 478 services deleted across every region (active)
+- [[examples/reddit-s-march-2023-pi-day-outage-a-kubernetes-1-24-upgrade-removed-the-master-node-label-that-calico-route-reflectors-selected]] — Reddit's Pi-Day outage, a 1.24 upgrade removed the master label Calico route reflectors selected (active)
 
 ## Comparisons
 
@@ -680,6 +682,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]] — evidence caveat (draft)
 - [[findings/evidence-and-fact-check-pass-gap-dispositions]] — triage of the 49 group 1 and 3 gaps against the 14 research dossiers: 22 resolved-candidate, 23 partial, 4 still-open (active)
 - [[findings/templated-configuration-that-looks-like-config-is-code-and-needs-tests-and-a-regional-rollout-before-a-gitops-controller-applies-it-globally]] — templated configuration is code and needs tests and staged rollout (active)
+- [[findings/hand-edited-calico-route-reflector-configuration-that-was-committed-nowhere-outlived-everyone-who-knew-about-it]] — undeclared Calico configuration outlived its owners (active)
+- [[findings/kubernetes-has-no-supported-downgrade-so-a-failed-control-plane-upgrade-forces-a-backup-restore-and-an-untested-restore-procedure-is-the-risk]] — no supported downgrade makes an untested restore the risk (active)
 
 ## Outputs
 

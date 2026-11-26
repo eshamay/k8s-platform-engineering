@@ -1,7 +1,8 @@
 ---
 title: Reddit's March 2023 Pi-Day outage is known only from the k8s.af index and a secondary retelling
 type: example
-status: draft
+status: superseded
+superseded_by: [[examples/reddit-s-march-2023-pi-day-outage-a-kubernetes-1-24-upgrade-removed-the-master-node-label-that-calico-route-reflectors-selected]]
 created: 2026-11-26
 updated: 2026-11-26
 sources:
@@ -29,3 +30,7 @@ The Kubezilla figures of 314 minutes and 52 million users are not confirmed agai
 ## Related
 
 [[findings/the-pitfalls-dossier-rests-on-index-summaries-an-older-crossplane-version-and-few-primary-incident-reports]] and [[concepts/pitfalls-and-case-studies]].
+
+## Superseded
+
+On 2026-11-26 the primary Reddit post was read in full from a Wayback Machine capture. This page, which described the incident from the k8s.af index and a secondary retelling, is superseded by [[examples/reddit-s-march-2023-pi-day-outage-a-kubernetes-1-24-upgrade-removed-the-master-node-label-that-calico-route-reflectors-selected]]. The page is kept as the record of what was known before the primary was read.

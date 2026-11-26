@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: reddit-pi-day-outage-postmortem
+    hash: 195bd85b2856
+    ingested: 2026-11-26
   - id: skyscanner-namespace-deletion-postmortem
     hash: 4930a0cb876a
     ingested: 2026-11-26
@@ -56,3 +59,7 @@ Correction, 2026-11-26: the claim that nothing was read for kro, Config Connecto
 ## Update from the Skyscanner primary post
 
 The Skyscanner 2021 GitOps outage is no longer known only from the k8s.af index. The primary post was read in full on 2026-11-26 and is summarized in [[sources/skyscanner-namespace-deletion-postmortem]] and [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]]. The earlier statement that the Skyscanner case remains index-only is superseded by this update.
+
+## Update from the Reddit primary post
+
+The Reddit Pi-Day outage is no longer known only from a secondary retelling. The primary post was read in full on 2026-11-26, see [[sources/reddit-pi-day-outage-postmortem]] and [[examples/reddit-s-march-2023-pi-day-outage-a-kubernetes-1-24-upgrade-removed-the-master-node-label-that-calico-route-reflectors-selected]]. Earlier statements here that Reddit rests on a secondary retelling are superseded.

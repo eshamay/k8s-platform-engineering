@@ -609,3 +609,14 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 - fact conflicts: 0
 - gaps drafted: 0 (possible-resolution notes added under two gaps)
 - rationale: First primary account of a GitOps-caused outage. Fetched with the user's explicit permission from a Wayback Machine capture because the scraper and WebFetch could not read Medium. Spotify and Reddit followed as separate ingests.
+
+## [2026-11-26] ingest | Reddit, You Broke Reddit, The Pi-Day Outage
+- source: [[sources/reddit-pi-day-outage-postmortem]]
+- raw: `raw/reddit-pi-day-outage-postmortem.md` (sha256: 195bd85b2856)
+- pages touched: [[findings/admission-webhook-outages-are-a-recurring-failure-class]], [[findings/the-pitfalls-dossier-rests-on-index-summaries-an-older-crossplane-version-and-few-primary-incident-reports]], [[concepts/self-healing-and-drift-detection]], [[index]]
+- new pages: [[sources/reddit-pi-day-outage-postmortem]], [[examples/reddit-s-march-2023-pi-day-outage-a-kubernetes-1-24-upgrade-removed-the-master-node-label-that-calico-route-reflectors-selected]], [[findings/hand-edited-calico-route-reflector-configuration-that-was-committed-nowhere-outlived-everyone-who-knew-about-it]], [[findings/kubernetes-has-no-supported-downgrade-so-a-failed-control-plane-upgrade-forces-a-backup-restore-and-an-untested-restore-procedure-is-the-risk]]
+- superseded: [[examples/reddit-s-march-2023-pi-day-outage-is-known-only-from-the-k8s-af-index-and-a-secondary-retelling]] -> [[examples/reddit-s-march-2023-pi-day-outage-a-kubernetes-1-24-upgrade-removed-the-master-node-label-that-calico-route-reflectors-selected]]
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 0 (possible-resolution notes added under two gaps)
+- rationale: Replaces the secondary-only retelling with the primary post, fetched with the user's explicit permission from a Wayback Machine capture. The secondary account's main mechanism and 314-minute figure are confirmed; its reconstructed timeline and 52 million user figure are not in the primary.

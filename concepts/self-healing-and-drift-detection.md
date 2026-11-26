@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: reddit-pi-day-outage-postmortem
+    hash: 195bd85b2856
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -81,3 +84,7 @@ Production postmortems of drift-correction incidents, per-kind Config Connector 
 ## Update from the GitOps incidents dossier
 
 Drift correction has a documented production failure that is not a revert loop. In a customer incident reported on 2026-11-20, Argo CD self-heal ran a partial sync that, per the post's author, skipped a migration hook on two of five regional Applications, see [[findings/argo-cd-self-heal-runs-a-partial-sync-that-skips-hooks-according-to-one-author-so-a-migration-hook-can-be-missed]]. The mechanism is the author's claim, and the customer is unnamed. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+
+## Evidence that configuration outside the API escapes drift detection
+
+Reddit's Calico route reflector configuration lived outside the Kubernetes API and outside Git, was hand-edited through Calico's own tool, and was forgotten. A Kubernetes upgrade invalidated its label selectors and took the cluster's routing down. Drift detection and reconciliation protect only what is declared. See [[findings/hand-edited-calico-route-reflector-configuration-that-was-committed-nowhere-outlived-everyone-who-knew-about-it]].
