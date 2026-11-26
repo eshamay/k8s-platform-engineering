@@ -134,6 +134,9 @@ sources:
   - id: research-gap-o7-krm-functions
     hash: 35b3cd859ba9
     ingested: 2026-11-26
+  - id: research-gap-o8-crossplane-residuals
+    hash: 35c6f2fb6101
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -335,3 +338,11 @@ Correction note, 2026-11-26: the documentation's default that providers name ext
 ## Config Connector comparison and poll defaults (o4 dossier)
 
 A Crossplane maintainer holds that a purpose-built provider is better than Config Connector through the Kubernetes provider, and no neutral comparison exists, see [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]] and [[decisions/use-config-connector-directly-wrap-it-in-crossplane-through-the-kubernetes-provider-or-use-a-crossplane-gcp-provider]]. The crossplane-runtime default poll interval constant is 1 minute with a per-resource `crossplane.io/poll-interval` annotation, and `managementPolicies` is beta and provider-dependent. The 2021 blog statement that managed resources are cluster scoped is dated for Crossplane v2, whose docs show a namespaced `.m.` API group example. [[sources/research-gap-o4-config-connector-ack]]
+
+## Packages, scaling, and function-kro status (o8 dossier)
+
+Packages: only one revision of a Provider or Configuration is Active, `revisionActivationPolicy` is `Automatic` by default or `Manual`, one Inactive revision is kept by default, and `skipDependencyResolution` ignores dependencies. The resolver is the Lock controller, which never modifies the Lock and creates one missing dependency at a time, and dependency version upgrades and downgrades are alpha. The Function package policy was not found. See [[findings/the-crossplane-lock-resolver-never-modifies-the-lock-and-creates-only-the-first-missing-dependency]], [[findings/crossplane-dependency-version-upgrades-and-downgrades-are-alpha-and-downgrades-need-both-feature-flags]], [[findings/crossplane-activation-policy-and-history-defaults-are-documented-for-providers-and-configurations-and-were-not-found-for-functions]], and [[decisions/let-crossplane-resolve-package-dependencies-or-pin-versions-and-skip-resolution]].
+
+Scaling: v2.5.0 (2026-11-24) adds an alpha garbage collector for unused CompositionRevisions with `spec.unusedRevisionHistoryLimit` defaulting to 1, see [[examples/crossplane-v2-5-0-released-2026-11-24-with-alpha-compositionrevision-garbage-collection-and-an-upgrade-ownership-fix]]. Correction note: the docs Pods guide still calls `--max-reconcile-rate` a per-second rate while v2.1.0 renamed it `--max-concurrent-reconciles`, a worker pool size, and no numeric capacity limit or independent benchmark was found. The release that changed the XR circuit breaker default from 50 burst (v2.1.0 notes) to 100 (v2.5.0 source) was not traced.
+
+Status: `function-kro` approximates kro built-in conditions from one run and sets only declared status paths on the desired XR, see [[findings/function-kro-approximates-kro-built-in-conditions-from-one-run-and-writes-only-declared-status-paths-to-the-desired-xr]]. v2.5.0 reserves `status.crossplane` on modern XRs. [[sources/research-gap-o8-crossplane-residuals]]

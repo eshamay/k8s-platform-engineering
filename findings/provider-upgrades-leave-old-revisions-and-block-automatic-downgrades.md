@@ -1,13 +1,16 @@
 ---
 title: "Provider upgrades leave old revisions and block automatic downgrades"
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-provider
     hash: 7e43edcd71be
     ingested: 2026-11-25
+  - id: research-gap-o8-crossplane-residuals
+    hash: 35c6f2fb6101
+    ingested: 2026-11-26
 aliases: []
 tags: [crossplane, provider, upgrade, providerrevision, dependencies]
 ---
@@ -25,3 +28,7 @@ Keeping an old revision lets an operator roll back, and it keeps CRDs that exist
 ## What to do
 
 Use manual revision activation where upgrades must be reviewed, check `HEALTHY` after each upgrade, and tune `revisionHistoryLimit` to balance rollback ability against CRD count. ACK handles the equivalent concern through alpha to GA maturity phases and a deprecation policy, see [[entities/ack]]. See also [[concepts/provider]].
+
+## Update from the o8 dossier
+
+Update 2026-11-26: the docs master Providers and Configurations pages confirm each claim above. Only one revision is Active, `Automatic` is the default activation policy, one Inactive revision is kept by default, and `0` disables storing. Automatic downgrade needs both alpha flags and is off by default, see [[findings/crossplane-dependency-version-upgrades-and-downgrades-are-alpha-and-downgrades-need-both-feature-flags]]. The Function package case was not confirmed, see [[findings/crossplane-activation-policy-and-history-defaults-are-documented-for-providers-and-configurations-and-were-not-found-for-functions]]. The resolver behavior is in [[findings/the-crossplane-lock-resolver-never-modifies-the-lock-and-creates-only-the-first-missing-dependency]]. Promoted from draft to active. [[sources/research-gap-o8-crossplane-residuals]]

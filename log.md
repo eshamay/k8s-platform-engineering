@@ -965,3 +965,13 @@ Structural lint over 806 content pages (concepts 27, entities 37, sources 58, ex
 - fact conflicts: 0
 - gaps drafted: 0
 - rationale: A targeted pass over the kpt, Kustomize, and Crossplane function pages with a verified dossier read from the KRM spec, kpt and Kustomize docs, Crossplane design documents, release notes, and docs on 2026-11-26. No existing claim was contradicted as fact, so no page was marked contradicted. The kpt page's idempotence definition and the Manual-pin rollout claim received correction notes, kpt was promoted to active, two open gaps received possible-resolution notes without closing, and one todo was appended for the crossplane-ramp-up function-pinning passage.
+
+## [2026-11-26] ingest | Research dossier: gap cluster o8-crossplane-residuals
+- source: [[sources/research-gap-o8-crossplane-residuals]]
+- raw: `raw/research-gap-o8-crossplane-residuals.md` (sha256: 35c6f2fb6101)
+- pages touched: [[entities/upjet]], [[entities/crossplane]], [[findings/provider-upgrades-leave-old-revisions-and-block-automatic-downgrades]], [[examples/function-kro-runs-a-kro-resource-graph-as-a-crossplane-pipeline-step]], [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]], [[findings/crossplane-core-strips-crd-schemas-from-its-cache-and-no-crossplane-performance-or-sharding-guide-was-found]], open-knowledge-gaps, todo
+- new pages: [[sources/research-gap-o8-crossplane-residuals]], 8 findings, 3 examples, and 1 decision (listed in `index.md`)
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 0
+- rationale: A targeted pass over the Upjet, Crossplane, provider-upgrade, function-kro, and scaling pages with a verified dossier read from the Crossplane docs, release notes, resolver source, the Upjet repository, and the function-kro source on 2026-11-26. No existing claim was contradicted as fact, so no page was marked contradicted. The Upjet entity's "not confirmed" runtime statement was replaced with the settled model, and the provider-upgrade finding was promoted to active. Four open gaps received "Possible resolution" notes and none was closed. Two open todos name passages in outputs/crossplane-ramp-up.md for a later revision, and outputs/ was not edited.

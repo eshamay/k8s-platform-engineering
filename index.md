@@ -151,6 +151,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-o5-kro-ecosystem]] — verified dossier on kro governance and the Graph API, kro scaling evidence, function-kro parity, and community direction for the Kubernetes-as-a-kernel model, 2026-11-26 (active)
 - [[sources/research-gap-o6-platform-landscape]] — verified dossier on Radius and Score primary status, Kratix Destinations and GitStateStores, Backstage and the operator pattern, neutral Crossplane comparisons, and tofu-controller and Terraform Operator maintenance, 2026-11-26 (active)
 - [[sources/research-gap-o7-krm-functions]] — verified dossier on the KRM function specification and runtime requirements and the Crossplane function runner history, 2026-11-26
+- [[sources/research-gap-o8-crossplane-residuals]] — verified dossier on Crossplane scaling guidance, Upjet runtime, package dependency resolution, and function-kro status, 2026-11-26
 
 ## Examples
 
@@ -440,6 +441,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/superorbital-s-2022-evaluation-reported-no-terraform-plan-equivalent-for-crossplane]] — dated consultancy evaluation (active)
 - [[examples/crossplane-v1-14-0-shipped-beta-functions-on-2023-11-01-and-broke-compatibility-with-alpha-functions]] — alpha to beta cutover (active)
 - [[examples/a-kustomize-exec-krm-function-runs-only-with-enable-alpha-plugins-and-enable-exec]] — exec invocation and flags (active)
+- [[examples/upjet-issue-263-reports-a-shared-terraform-provider-stuck-at-its-invocation-limit]] — closed user report of a stuck shared provider (active)
+- [[examples/upjet-issue-754-reports-the-plugin-framework-connector-re-running-provider-configure-on-every-reconcile]] — open reporter claim about per-reconcile Configure cost (active)
+- [[examples/crossplane-v2-5-0-released-2026-11-24-with-alpha-compositionrevision-garbage-collection-and-an-upgrade-ownership-fix]] — v2.5.0 GC, ownership fix, and reserved status.crossplane (active)
 
 ## Comparisons
 
@@ -553,6 +557,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api]] — RGD or alpha Graph, options and evidence without a recommendation (active)
 - [[decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane]] — options and evidence, no recommendation (draft)
 - [[decisions/run-a-krm-function-as-a-container-or-as-an-exec-binary]] — options and evidence, no recommendation (draft)
+- [[decisions/let-crossplane-resolve-package-dependencies-or-pin-versions-and-skip-resolution]] — four options for package dependency handling, evidence only (draft)
 
 ## Findings
 
@@ -686,7 +691,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]] — function load and memory limits (draft)
 - [[findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane]] — stale learning material (draft)
 - [[findings/removing-a-crossplane-provider-before-its-managed-resources-abandons-the-cloud-resources]] — provider removal order (draft)
-- [[findings/provider-upgrades-leave-old-revisions-and-block-automatic-downgrades]] — ProviderRevision retention and downgrade safety (draft)
+- [[findings/provider-upgrades-leave-old-revisions-and-block-automatic-downgrades]] — ProviderRevision retention and downgrade safety (active)
 - [[findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions]] — credential blast radius (draft)
 - [[findings/disabling-ack-cross-namespace-references-is-not-tenant-isolation]] — references are not a security boundary (draft)
 - [[findings/deleting-stateful-resources-through-a-provider-can-lose-data]] — Spanner and Bigtable deletion risk (draft)
@@ -930,6 +935,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/crossplane-moved-composition-functions-from-an-xfn-sidecar-in-v1-11-to-package-manager-deployments-in-v1-14]] — function runner history (active)
 - [[findings/crossplane-functions-speak-a-grpc-runfunction-contract-that-differs-from-the-krm-resourcelist-over-stdio]] — gRPC versus ResourceList (active)
 - [[findings/upgrading-a-crossplane-function-changes-every-composition-revision-that-uses-functionref-including-manual-pins]] — function upgrades reach Manual pins (active)
+- [[findings/upjet-supports-three-terraform-execution-modes-selected-per-resource-configuration]] — fork-based CLI, no-fork SDK v2, and no-fork Plugin Framework modes chosen per resource (active)
+- [[findings/upjet-cli-mode-keeps-a-terraform-workspace-per-resource-and-shares-a-forked-provider-process-until-an-invocation-ttl]] — workspace per resource, shared forked provider process, invocation TTL, and metrics (active)
+- [[findings/no-official-upjet-memory-or-cpu-figures-exist-and-the-memory-footprint-issue-was-closed-as-outdated-by-provider-families]] — no official cost figures, issue 151 closed as outdated (active)
+- [[findings/the-crossplane-lock-resolver-never-modifies-the-lock-and-creates-only-the-first-missing-dependency]] — Lock controller behavior and the cluster-scoped Lock object (active)
+- [[findings/crossplane-dependency-version-upgrades-and-downgrades-are-alpha-and-downgrades-need-both-feature-flags]] — alpha dependency movement flags and risks (active)
+- [[findings/crossplane-activation-policy-and-history-defaults-are-documented-for-providers-and-configurations-and-were-not-found-for-functions]] — Automatic and Manual activation, one Inactive revision, Function case unconfirmed (active)
+- [[findings/function-kro-approximates-kro-built-in-conditions-from-one-run-and-writes-only-declared-status-paths-to-the-desired-xr]] — function-kro status and condition handling (active)
+- [[findings/no-documentation-was-found-of-a-standalone-kro-controller-feeding-a-crossplane-composite-and-function-kro-s-readiness-link-is-unlocated]] — negative finding on kro-to-Crossplane status propagation (active)
 
 ## Outputs
 

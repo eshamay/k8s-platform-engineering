@@ -20,6 +20,9 @@ sources:
   - id: research-gap-m6-admission-crds
     hash: 7cac38f11490
     ingested: 2026-11-26
+  - id: research-gap-o8-crossplane-residuals
+    hash: 35c6f2fb6101
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, crossplane, provider-family, crd-count, scale]
 ---
@@ -57,3 +60,7 @@ A recheck of the current Crossplane v2 material found no published numeric limit
 ## Evidence from the admission and CRD dossier
 
 No official CRD count limit exists, and issue reports tie roughly 700 CRDs to a CPU spike and roughly 1,900 CRDs to about 8 GiB of apiserver memory ([[findings/crd-scale-evidence-is-issue-reports-of-a-cpu-spike-near-700-crds-and-about-8-gib-of-apiserver-memory-near-1900-crds-with-no-official-limit]]). Config Connector ships 883 CRD files ([[findings/config-connector-ships-883-crd-files-and-the-largest-is-579-kb-because-it-has-one-crd-per-google-cloud-resource-kind]]). No recommendation is made here. [[sources/research-gap-m6-admission-crds]]
+
+## Update from the o8 dossier
+
+Update 2026-11-26: nothing read in the o8 dossier retires the 2023 provider-family decision. A collaborator comment on Upjet issue 151 says large monolithic provider packages for AWS, GCP, and Azure are discouraged, and the v2.5 MRD guide estimates about 3 MiB of API server memory per CRD, an illustrative figure and not a benchmark. See [[findings/no-official-upjet-memory-or-cpu-figures-exist-and-the-memory-footprint-issue-was-closed-as-outdated-by-provider-families]]. [[sources/research-gap-o8-crossplane-residuals]]

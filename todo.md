@@ -990,4 +990,18 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passage revised and citing [[findings/upgrading-a-crossplane-function-changes-every-composition-revision-that-uses-functionref-including-manual-pins]].
 - **Drafted by:** agent on 2026-11-26
 
+## Update crossplane-ramp-up Upjet runtime passage with the three execution modes — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "Writing hundreds of resource types by hand is impractical" says the dossier did not confirm whether the Upjet runtime calls Terraform as a subprocess or in-process. The o8 dossier settles it: three execution modes are chosen per resource, with a shared forked provider process in CLI mode, and no official memory or CPU figures exist.
+- **Why:** The passage predates [[sources/research-gap-o8-crossplane-residuals]].
+- **Acceptance:** Passage revised and citing [[findings/upjet-supports-three-terraform-execution-modes-selected-per-resource-configuration]] and [[findings/no-official-upjet-memory-or-cpu-figures-exist-and-the-memory-footprint-issue-was-closed-as-outdated-by-provider-families]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up open-items passage on package dependency resolution and function-pipeline status — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "What is still open is narrower" says package dependency resolution was not checked, that no source covered whether the Upjet runtime runs Terraform as a subprocess, and that function-pipeline status propagation rests on reconciler source reading. The o8 dossier covers the first two and part of the third through function-kro.
+- **Why:** The passage predates [[sources/research-gap-o8-crossplane-residuals]].
+- **Acceptance:** Passage revised and citing [[findings/the-crossplane-lock-resolver-never-modifies-the-lock-and-creates-only-the-first-missing-dependency]], [[findings/crossplane-dependency-version-upgrades-and-downgrades-are-alpha-and-downgrades-need-both-feature-flags]], and [[findings/function-kro-approximates-kro-built-in-conditions-from-one-run-and-writes-only-declared-status-paths-to-the-desired-xr]].
+- **Drafted by:** agent on 2026-11-26
+
 ## Dropped

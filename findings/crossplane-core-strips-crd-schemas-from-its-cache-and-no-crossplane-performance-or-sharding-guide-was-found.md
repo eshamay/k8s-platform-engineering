@@ -8,6 +8,9 @@ sources:
   - id: research-gap-m5-informers-caches
     hash: 1a6a4969c0c2
     ingested: 2026-11-26
+  - id: research-gap-o8-crossplane-residuals
+    hash: 35c6f2fb6101
+    ingested: 2026-11-26
 aliases: [Crossplane performance guidance]
 tags: [crossplane, cache, performance, sharding, controller-runtime, mechanism]
 ---
@@ -29,3 +32,7 @@ One vendor article, an Upbound knowledge-base page last updated "7 months ago", 
 ## Related
 
 [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]], [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]], [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]], [[entities/crossplane]].
+
+## Update from the o8 dossier
+
+Update 2026-11-26: the o8 dossier re-searched the docs repository for "memory", "max-reconcile-rate", and the `guides/` listing, and the release notes from v2.1.0 to v2.5.0, and again found no numeric capacity limit, no CPU or memory sizing for the Crossplane pod, and no independent benchmark. The v2.5.0 notes report a maintainer-measured drop from 338 MiB to 190 MiB heap on a cluster with 791 CRDs. [[sources/research-gap-o8-crossplane-residuals]]
