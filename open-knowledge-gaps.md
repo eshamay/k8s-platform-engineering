@@ -108,7 +108,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#crossplane-operations-maturity-and-api-stability]] — open, unassigned
 - [[#managed-resource-activation-policy-mechanism-and-defaults]] — open, unassigned
 - [[#neutral-comparisons-of-crossplane-with-terraform-and-single-cloud-operators]] — open, unassigned
-- [[#crossplane-v2-claims-and-the-concepts-pages]] — open, unassigned
 - [[#kro-governance-status-and-the-future-of-the-graph-api]] — open, unassigned
 - [[#scaling-limits-of-per-rgd-kro-controllers-and-named-production-kro-adopters]] — open, unassigned
 - [[#primary-source-status-of-radius-and-score]] — open, unassigned
@@ -1317,18 +1316,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, terraform, comparison, bias
 
-## Crossplane v2 claims and the concepts pages — status: open
-
-- **Question:** What do the Crossplane concepts pages say about claims and composition-function status in v2?
-- **Why it matters:** The XRD page read in the dossier did not describe claims status, and the main Composition concept page returned empty content, so the legacy claim path is unverified.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read https://docs.crossplane.io/latest/concepts/compositions/ and the claims documentation.
-  - [ ] Update [[concepts/composite-resource]] with the confirmed claim behavior.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** crossplane, v2, claims, composition
-- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. The concepts section was reorganized into `composition/` and `managed-resources/`, the v2.5 docs have no claims page (v1.20 had one), and the Compositions page does not mention claims. Claims appear only in the XRD page, What's New, and the upgrade guide, as a backward-compatibility note. [[concepts/composite-resource]] now says so. Not settled: whether the old `/latest/concepts/compositions/` URL redirects, which was not checked.
-
 ## kro governance status and the future of the Graph API — status: open
 
 - **Question:** Is kro a CNCF project or only a Kubernetes SIG Cloud Provider subproject, and how will the alpha Graph API affect RGD stability and adoption?
@@ -1710,3 +1697,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: v2 XRDs have scope Namespaced or Cluster and reject claims; LegacyCluster exists only on the v1 XRD API and keeps claims ([[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]], [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]]). Not settled: no removal date for claims was found.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Claims survive only for legacy XRDs. The v2 XRD API has `scope` of `Namespaced` (default) or `Cluster` and rejects `claimNames` with a CEL rule, and `LegacyCluster` is a scope of the v1 XRD API only, which still serves claims and is deprecated but still the storage version in the v2.5 manifest. The v2.5.0 release notes say claims remain supported, and no removal date exists. This replaces the third-party-blog basis for `LegacyCluster` and corrects the comparison page. See [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] and [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]].
+
+## Crossplane v2 claims and the concepts pages — status: closed (2026-11-26)
+
+- **Question:** What do the Crossplane concepts pages say about claims and composition-function status in v2?
+- **Why it matters:** The XRD page read in the dossier did not describe claims status, and the main Composition concept page returned empty content, so the legacy claim path is unverified.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read https://docs.crossplane.io/latest/concepts/compositions/ and the claims documentation.
+  - [ ] Update [[concepts/composite-resource]] with the confirmed claim behavior.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, v2, claims, composition
+- **Resolution:** Settled: the v2.5 docs have no claims page and the concepts section became composition and managed-resources, so older claims and patch-and-transform tutorials no longer match current Crossplane ([[findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane]]). Not settled: whether the old concepts URLs redirect was not checked.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. The concepts section was reorganized into `composition/` and `managed-resources/`, the v2.5 docs have no claims page (v1.20 had one), and the Compositions page does not mention claims. Claims appear only in the XRD page, What's New, and the upgrade guide, as a backward-compatibility note. [[concepts/composite-resource]] now says so. Not settled: whether the old `/latest/concepts/compositions/` URL redirects, which was not checked.

@@ -510,3 +510,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Claim support and scope in Crossplane v2 XRDs
 - closed by: Eric Shamay
 - resolution: Settled: v2 XRDs have scope Namespaced or Cluster and reject claims; LegacyCluster exists only on the v1 XRD API and keeps claims ([[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]], [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]]). Not settled: no removal date for claims was found.
+
+## [2026-11-26] gaps | close | Crossplane v2 claims and the concepts pages
+- closed by: Eric Shamay
+- resolution: Settled: the v2.5 docs have no claims page and the concepts section became composition and managed-resources, so older claims and patch-and-transform tutorials no longer match current Crossplane ([[findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane]]). Not settled: whether the old concepts URLs redirect was not checked.
