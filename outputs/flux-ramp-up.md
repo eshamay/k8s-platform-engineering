@@ -1,9 +1,10 @@
 ---
 title: "Flux Ramp-Up: GitOps Toolkit Architecture, Operation and Design Principles"
 type: output
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
+delivered: 2026-11-26
 sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
@@ -44,7 +45,7 @@ tags: [tutorial, flux, gitops, ramp-up, controllers, k8s-platform-engineering]
 > [!NOTE]
 > **Audience:** Engineers who operate Kubernetes (pods, deployments, services, RBAC, kubectl) but have not yet worked with controllers, API machinery or GitOps agents in depth<br>
 > **Purpose:** Teach how Flux works from first principles, where it fails in practice, how it compares with neighboring tools, and which of its design choices are worth copying<br>
-> **Status:** Draft<br>
+> **Status:** Active<br>
 > **Created:** 2026-11-25<br>
 > **As of:** 2026-11-26<br>
 > **Draws on:** [[entities/flux]], [[concepts/gitops-pull-based-delivery]], [[sources/research-flux-deep-dive]], [[concepts/scale-and-sharding]], [[comparisons/flux-versus-argo-cd-architecture]] and the other wiki pages listed under Further reading

@@ -1,9 +1,10 @@
 ---
 title: "Crossplane Ramp-Up: Compositions, Providers and Design Principles for Control-Plane Platforms"
 type: output
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
+delivered: 2026-11-26
 sources:
   - id: research-crossplane-deep-dive
     hash: 44034359219f
@@ -86,7 +87,7 @@ tags: [tutorial, tool-ramp-up, crossplane, platform-engineering, composition, pr
 > [!NOTE]
 > **Audience:** Engineers who operate Kubernetes (pods, deployments, services, RBAC, kubectl) but have not yet worked with controllers, API machinery or platform abstractions, and platform engineers weighing Crossplane for an internal developer platform.<br>
 > **Purpose:** Teach Crossplane from first principles, explain how it behaves in practice, and draw out the design principles that make it a useful model for building platforms.<br>
-> **Status:** Draft. Facts come from the k8s-platform-engineering wiki; where the wiki is thin or its sources disagree, the text says so.<br>
+> **Status:** Active. Facts come from the k8s-platform-engineering wiki; where the wiki is thin or its sources disagree, the text says so.<br>
 > **Created:** 2026-11-25<br>
 > **As of:** 2026-11-26<br>
 > **Draws on:** [[entities/crossplane]], [[concepts/managed-resource]], [[concepts/composite-resource]], [[concepts/composition]], [[concepts/provider]], [[sources/research-crossplane-deep-dive]], and the findings, comparisons and decisions listed under Further reading.

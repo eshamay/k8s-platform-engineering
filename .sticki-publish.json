@@ -4,7 +4,7 @@
   "feature_dir": "outputs",
   "include_sources": false,
   "publish_info_pages": false,
-  "publish_status": ["draft", "active", "stale", "contradicted"],
+  "publish_status": ["active", "stale", "contradicted"],
   "publish_dirs": ["outputs"],
   "exclude_dirs": [],
   "nav_order_stems": [

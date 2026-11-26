@@ -11,7 +11,6 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 
 ## Index of open todos
 
-- [[#review-and-deliver-the-seven-outputs]] — open
 - [[#promote-draft-pages-to-active]] — open
 - [[#add-sticki-lint-to-the-recurring-routine]] — open
 - [[#deepen-the-dossiers-that-rest-on-model-digests]] — open
@@ -32,12 +31,6 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#review-the-unrevised-passages-that-kept-their-caveats-in-the-seven-outputs]] — open
 
 ## Open
-
-## Review and deliver the seven outputs — status: open
-
-- **What:** Read the five tutorial parts and the Flux and Crossplane ramp-ups, check them against the prose style contract and the banned-phrases list, then set `delivered:` and promote them from draft.
-- **Why:** All seven are `status: draft` and unreviewed; delivered outputs are frozen and exempt from staleness checks.
-- **Acceptance:** Each output reviewed by a human, status active, `delivered:` set.
 
 ## Promote draft pages to active — status: open
 
@@ -865,5 +858,12 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passage revised and citing [[findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern]].
 - **Drafted by:** agent on 2026-11-26
 - **Outcome:** 2026-11-26: revised in the mechanics and accuracy pass (Revise phase); the diff of the output shows all 1 cited page(s) in the added text. Caveats the dossier left open stay in the passage.
+
+## Review and deliver the seven outputs — status: done
+
+- **What:** Read the five tutorial parts and the Flux and Crossplane ramp-ups, check them against the prose style contract and the banned-phrases list, then set `delivered:` and promote them from draft.
+- **Why:** All seven are `status: draft` and unreviewed; delivered outputs are frozen and exempt from staleness checks.
+- **Acceptance:** Each output reviewed by a human, status active, `delivered:` set.
+- **Outcome:** 2026-11-26: the user read the published site locally and approved it. All seven outputs are status active with delivered 2026-11-26, and the draft setting was removed from the publish config so only active outputs publish. The banned-word and prose checks were done by the review phases.
 
 ## Dropped

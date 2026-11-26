@@ -840,13 +840,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ## Outputs
 
-- [[outputs/part-1-core-architectural-principles]] — tutorial Part 1: why Kubernetes works as a universal control plane (draft)
-- [[outputs/part-2-krm-and-api-machinery]] — tutorial Part 2: the Kubernetes Resource Model and API machinery (draft)
-- [[outputs/part-3-controller-and-operator-mechanics]] — tutorial Part 3: how controllers and operators work internally (draft)
-- [[outputs/part-4-platform-abstractions]] — tutorial Part 4: platform abstractions from managed resources to resource graphs (draft)
-- [[outputs/part-5-platform-architecture-principles-and-operating-at-scale]] — tutorial Part 5: principles of good platform architecture and operating at scale (draft)
-- [[outputs/flux-ramp-up]] — Flux ramp-up guide: GitOps Toolkit architecture, operation, and design principles (draft)
-- [[outputs/crossplane-ramp-up]] — Crossplane ramp-up guide: compositions, providers, and design principles for control-plane platforms (draft)
+- [[outputs/part-1-core-architectural-principles]] — tutorial Part 1: why Kubernetes works as a universal control plane (active)
+- [[outputs/part-2-krm-and-api-machinery]] — tutorial Part 2: the Kubernetes Resource Model and API machinery (active)
+- [[outputs/part-3-controller-and-operator-mechanics]] — tutorial Part 3: how controllers and operators work internally (active)
+- [[outputs/part-4-platform-abstractions]] — tutorial Part 4: platform abstractions from managed resources to resource graphs (active)
+- [[outputs/part-5-platform-architecture-principles-and-operating-at-scale]] — tutorial Part 5: principles of good platform architecture and operating at scale (active)
+- [[outputs/flux-ramp-up]] — Flux ramp-up guide: GitOps Toolkit architecture, operation, and design principles (active)
+- [[outputs/crossplane-ramp-up]] — Crossplane ramp-up guide: compositions, providers, and design principles for control-plane platforms (active)
 - [[findings/kro-applies-template-resources-with-server-side-apply-and-force-and-applies-patch-contributions-without-force]] — kro managers, force, and conflict detection (active)
 - [[findings/the-ack-runtime-sends-merge-patches-and-sets-no-server-side-apply-field-manager]] — ACK runtime uses merge patches (active)
 - [[findings/config-connector-writes-with-update-under-cnrm-controller-manager-and-reads-other-managers-fields-as-user-intent]] — Update writes and managedFields reads (active)

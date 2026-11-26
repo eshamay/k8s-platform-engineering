@@ -1,9 +1,10 @@
 ---
 title: "Part 5: Principles of Good Platform Architecture and Operating at Scale"
 type: output
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
+delivered: 2026-11-26
 sources:
   - id: research-flux-deep-dive
     hash: e640ec8046bc
@@ -71,7 +72,7 @@ tags: [tutorial, series-part, platform-architecture, scale, flux, crossplane, gi
 > [!NOTE]
 > **Audience:** Engineers who operate Kubernetes (pods, deployments, services, RBAC, kubectl) and are finishing the tutorial series on controllers, API machinery and platform abstractions.<br>
 > **Purpose:** Trace one Flux commit through server-side apply, finalizers and conditions to a Ready status, show that good platform architecture is the disciplined composition of the earlier mechanics, and describe what operating that architecture at scale requires.<br>
-> **Status:** Draft. The end-to-end trace is assembled from documented pieces, because the wiki holds no single sourced trace (see section 12).<br>
+> **Status:** Active. The end-to-end trace is assembled from documented pieces, because the wiki holds no single sourced trace (see section 12).<br>
 > **Created:** 2026-11-25<br>
 > **As of:** 2026-11-26<br>
 > **Draws on:** [[concepts/universal-control-plane]], [[concepts/gitops-pull-based-delivery]], [[concepts/reconciliation-loop]], [[concepts/server-side-apply-and-field-ownership]], [[concepts/finalizers]], [[concepts/conditions]], [[concepts/scale-and-sharding]], [[concepts/pitfalls-and-case-studies]], [[concepts/tooling-landscape]], and the examples, findings, comparisons and decisions linked inline

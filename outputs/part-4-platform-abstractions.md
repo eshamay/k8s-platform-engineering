@@ -1,9 +1,10 @@
 ---
 title: "Part 4: Platform Abstractions from Managed Resources to Resource Graphs"
 type: output
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
+delivered: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -53,7 +54,7 @@ tags: [tutorial, series-part, abstraction, crossplane, kro, platform-engineering
 > [!NOTE]
 > **Audience:** Engineers with real Kubernetes operating experience (pods, deployments, services, RBAC, kubectl) who have not yet worked with controllers, API machinery, or platform abstractions in depth.<br>
 > **Purpose:** Teach how platform teams publish simple, owned APIs over complex infrastructure, and how Crossplane, kro, and the surrounding tools trade flexibility, operability, and expressiveness against one another.<br>
-> **Status:** Draft, part 4 of the tutorial series.<br>
+> **Status:** Active, part 4 of the tutorial series.<br>
 > **Created:** 2026-11-25<br>
 > **As of:** 2026-11-26<br>
 > **Draws on:** The concept, example, finding, comparison, decision, and entity pages of this wiki listed under Further reading, which in turn rest on the research dossiers in `sources/`.

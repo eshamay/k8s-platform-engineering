@@ -1,9 +1,10 @@
 ---
 title: "Part 3: Inside Controllers and Operators"
 type: output
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
+delivered: 2026-11-26
 sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
@@ -56,7 +57,7 @@ tags: [tutorial, series-part, controllers, operators, reconciliation, finalizers
 > [!NOTE]
 > **Audience:** Engineers with real Kubernetes operating experience (pods, deployments, services, RBAC, kubectl) who have not yet worked inside controllers, API machinery, or platform abstractions.<br>
 > **Purpose:** Teach the handful of mechanics that every controller-based platform tool depends on, show how real tools implement them differently, and explain why most production failures are violations of those mechanics.<br>
-> **Status:** Draft, part 3 of the tutorial series.<br>
+> **Status:** Active, part 3 of the tutorial series.<br>
 > **Created:** 2026-11-25<br>
 > **As of:** 2026-11-26<br>
 > **Draws on:** [[concepts/operator-pattern]], [[concepts/reconciliation-loop]], [[concepts/idempotency]], [[concepts/informers-reflectors-and-workqueues]], [[concepts/finalizers]], [[concepts/owner-references-and-garbage-collection]], [[concepts/conditions]], [[concepts/level-triggered-vs-edge-triggered]], [[concepts/pitfalls-and-case-studies]], and the example, finding, comparison, and decision pages linked inline.

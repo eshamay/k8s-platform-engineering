@@ -1,9 +1,10 @@
 ---
 title: "Part 2: The Kubernetes Resource Model and API Machinery"
 type: output
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
+delivered: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -78,7 +79,7 @@ tags:
 > [!NOTE]
 > **Audience:** Engineers who operate Kubernetes day to day (pods, deployments, services, RBAC, kubectl) but have not yet studied controllers, API machinery, or platform abstractions.<br>
 > **Purpose:** Teach the shared substrate that Flux, Crossplane, kro and their neighbors all build on, so that platform failures and design choices can be explained from first principles.<br>
-> **Status:** Draft. Part 2 of the series on Kubernetes platform engineering.<br>
+> **Status:** Active. Part 2 of the series on Kubernetes platform engineering.<br>
 > **Created:** 2026-11-25<br>
 > **As of:** 2026-11-26<br>
 > **Draws on:** The wiki's concept, example, finding, comparison, decision and entity pages on GVK and GVR, CRDs, the spec and status split, server-side apply and admission, plus the research dossiers listed under Further reading.

@@ -1,9 +1,10 @@
 ---
 title: "Part 1: Why Kubernetes Works as a Universal Control Plane"
 type: output
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
+delivered: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -44,7 +45,7 @@ tags: [tutorial, series-part, architecture, control-plane, gitops, reconciliatio
 > [!NOTE]
 > **Audience:** Engineers who operate Kubernetes (pods, deployments, services, RBAC, kubectl) but have not yet studied controllers, API machinery, or platform abstractions<br>
 > **Purpose:** Explain the five architectural principles that let Kubernetes manage resources far beyond containers, and show how Flux, Crossplane, and neighboring tools inherit them<br>
-> **Status:** Draft<br>
+> **Status:** Active<br>
 > **Created:** 2026-11-25<br>
 > **As of:** 2026-11-26<br>
 > **Draws on:** [[concepts/universal-control-plane]], [[concepts/declarative-vs-imperative]], [[concepts/level-triggered-vs-edge-triggered]], [[concepts/eventual-consistency-and-convergence]], [[concepts/self-healing-and-drift-detection]], [[concepts/gitops-pull-based-delivery]], [[concepts/reconciliation-loop]], [[concepts/tooling-landscape]], [[concepts/pitfalls-and-case-studies]], [[findings/the-flux-concepts-page-says-five-minutes-by-default-but-the-kustomization-and-helmrelease-references-require-the-interval-and-set-no-default]], [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]], [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]], [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]], [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]], [[findings/evidence-and-fact-check-pass-gap-dispositions]], [[findings/mechanics-and-accuracy-pass-gap-dispositions]]

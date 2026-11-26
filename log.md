@@ -829,3 +829,8 @@ Structural lint over 806 content pages (concepts 27, entities 37, sources 58, ex
 - backup: a verified git bundle of all refs was saved outside the repo before the rewrite
 - three short hashes quoted in log.md, todo.md and the workflow scripts were mapped to their new values (09d4014, 830bdbb, 1518b78)
 - new commits in this repo use the gmail identity through local git config
+
+## [2026-11-26] outputs | delivered the seven tutorials
+- the seven outputs were reviewed by the user on the local site and promoted from draft to active with delivered 2026-11-26
+- draft was removed from publish_status in .sticki-publish.json, so only active outputs publish
+- the todo "Review and deliver the seven outputs" is done
