@@ -8,6 +8,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, kstatus, cluster-api, flux, readiness]
 ---
@@ -29,3 +32,7 @@ Write custom health checks for kinds whose condition vocabulary differs from the
 ## Related
 
 [[entities/cluster-api]], [[entities/flux]], [[concepts/conditions]]
+
+## Additional evidence on the Cluster API race
+
+The conditions dossier reports that the issue became moot when Cluster API changed its conditions and that Flux uses CEL health checks for Cluster API resources, and it adds the kstatus README's own corner case that a controller that has not yet written conditions is treated as reconciled. [[sources/research-conditions]] See [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]].

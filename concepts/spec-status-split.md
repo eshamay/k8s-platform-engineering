@@ -14,6 +14,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: [Spec and status]
 tags: [api-machinery]
 ---
@@ -59,3 +62,7 @@ Whether `observedGeneration` belongs at the top level, on each condition, or bot
 ## Related
 
 [[concepts/declarative-vs-imperative]], [[concepts/server-side-apply-and-field-ownership]], [[concepts/custom-resource-definition]], [[decisions/which-crds-get-a-status-subresource]], [[decisions/publish-synced-false-at-reconcile-start]]
+
+## Conditions in depth
+
+The dossier on conditions adds the field-by-field anatomy, the per-tool vocabularies, and the failure modes of the status surface. [[sources/research-conditions]] See [[concepts/conditions]] and [[comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api]].

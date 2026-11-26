@@ -53,6 +53,9 @@ sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -132,3 +135,7 @@ The `resources-finalizer.argocd.argoproj.io` finalizer on an Application makes d
 ## Application finalizer instead of owner references
 
 Argo CD cascades an Application delete to its managed resources only when the Application carries the `resources-finalizer.argocd.argoproj.io` finalizer. Cascade uses foreground propagation by default, and background and non-cascading deletes are also selectable. The `PrunePropagationPolicy` sync option and the tracking methods were not read. [[sources/research-owner-references-and-garbage-collection]] See [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]].
+
+## Health from conditions
+
+Argo CD assigns each resource Healthy, Progressing, Degraded, Suspended, Missing, or Unknown, takes the worst health among an application's immediate children, and needs custom Lua checks (`resource.customizations.health.<group>_<kind>`) for CRDs because status formats are not standardized. [[sources/research-conditions]] See [[examples/argo-cd-rolls-up-child-health-with-lua-checks]] and [[concepts/conditions]].

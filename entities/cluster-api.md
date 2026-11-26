@@ -38,6 +38,9 @@ sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -97,3 +100,7 @@ A `deletionTimestamp` on a Machine starts a multi-phase teardown: pre-drain hook
 ## Owner references as the cluster ownership contract
 
 The Cluster API book defines the ownership chain Cluster, MachineDeployment, MachineSet, Machine, with infrastructure and bootstrap objects owned by the Machine. Owner references drive cluster deletion and `clusterctl move`, and controllers must re-reconcile them if they are lost, for example after a Velero restore. [[sources/research-owner-references-and-garbage-collection]] See [[examples/cluster-api-owner-reference-chain-drives-cluster-deletion-and-clusterctl-move]] and [[findings/backup-and-restore-tools-can-strip-owner-references-so-controllers-must-re-reconcile-them]].
+
+## Condition model
+
+Cluster API replaced its custom condition model (a mandatory all-summarizing `Ready` and a custom `Severity` field) with `metav1.Condition`, added `Available` as a separate signal, and added operation conditions such as `ScalingUp` and `Remediating`. A brand-new resource can look ready to kstatus, which is why Flux uses CEL health checks for Cluster API. [[sources/research-conditions]] See [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]] and [[findings/one-mandatory-ready-condition-that-summarizes-everything-is-too-rigid]].

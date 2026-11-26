@@ -29,6 +29,9 @@ sources:
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -76,3 +79,7 @@ The ACK adoption guide describes the `services.k8s.aws/adoption-policy` annotati
 ## Deletion policy
 
 By default ACK deletes the AWS resource and then the Kubernetes object. The `services.k8s.aws/deletion-policy: retain` annotation keeps the AWS resource, which the guide recommends for cluster migration and for S3 buckets and RDS databases. Lookup order is resource annotation, namespace annotation, then controller default, and retained resources can be re-imported with the adoption annotations. The page does not say how the ACK finalizer is named or removed. [[sources/research-finalizers]] See [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]] and [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]].
+
+## Conditions
+
+ACK uses `ACK.Recoverable` for transient errors such as throttling, `ACK.Terminal` for errors that need a spec change, `ACK.ResourceSynced` for whether the AWS resource matches the spec, `ACK.Adopted`, `ACK.ReferencesResolved`, and `Ready` as the top-level indicator. [[sources/research-conditions]] See [[examples/ack-splits-terminal-and-recoverable-errors-into-separate-conditions]] and [[concepts/conditions]].

@@ -11,6 +11,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, conditions, observedgeneration, status]
 ---
@@ -36,3 +39,7 @@ Compare `observedGeneration` to `metadata.generation` before trusting a conditio
 ## Further sources of stale and premature readiness
 
 The spec and status dossier adds three concrete cases. ACK conditions lack `observedGeneration`, so a stale `ResourceSynced=True` cannot be told from a current one. A Cluster API resource with `observedGeneration` but no conditions can look ready to kstatus, and Flux may proceed to dependents too early. A suspended Flux resource keeps its last condition and can look healthy. [[sources/research-spec-status-split]] See [[findings/missing-observedgeneration-hides-stale-status]], [[findings/premature-readiness-in-kstatus-based-tools]], and [[examples/flux-helmrelease-status-records-attempts-and-health]].
+
+## Summary conditions that mask in-flight work
+
+Provider-aws issue 2287 adds a case where `Synced` stayed True through a 60-minute update. [[sources/research-conditions]] See [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]].

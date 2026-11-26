@@ -8,6 +8,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: []
 tags: [conditions, health, readiness, flux, argo-cd, kstatus, crossplane, cluster-api]
 ---
@@ -35,3 +38,7 @@ The tools converge on conditions but disagree on the names, and the disagreement
 ## Related
 
 [[concepts/conditions]], [[concepts/spec-status-split]], [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]]
+
+## Condition vocabularies
+
+A vocabulary-level companion to this page lists the condition types of Crossplane, ACK, Config Connector, Flux, kro, and Cluster API. [[sources/research-conditions]] See [[comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api]].

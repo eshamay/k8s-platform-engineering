@@ -86,6 +86,9 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#what-happens-when-blockownerdeletion-is-set-without-finalizers-permission]] — open, unassigned
 - [[#crossplane-v2-namespaced-composites-and-managementpolicies-versus-garbage-collection]] — open, unassigned
 - [[#keps-on-cross-namespace-ownership-and-garbage-collector-performance]] — open, unassigned
+- [[#crossplane-v2-condition-behavior-and-the-fix-for-async-synced-signaling]] — open, unassigned
+- [[#how-a-platform-should-choose-condition-polarity]] — open, unassigned
+- [[#which-parts-of-the-config-connector-reconcile-status-design-shipped]] — open, unassigned
 
 ---
 
@@ -117,6 +120,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-idempotency]]:** Only marginally helpful. The dossier confirms that kustomize-controller runs a server-side apply dry-run each interval and that conflicting field ownership signals another actor, which fits the apply step of the trace. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[concepts/idempotency]].
 - **Possible resolution from [[sources/research-finalizers]]:** Only marginally helpful. The dossier shows finalizer registration and teardown: Crossplane managed resources hold a finalizer until the external resource is gone, and kro keeps the instance finalizer while deleting in reverse dependency waves, but it does not trace source fetch or status conditions. See [[concepts/finalizers]] and [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]].
 - **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Only marginally helpful. The dossier adds the garbage collector side of the trace: the controller sets an owner reference on each child, the garbage collector's dependency graph deletes dependents when the owner goes, and a lost reference breaks cascade. It does not trace Flux's source fetch, apply, or condition updates, and it says Flux prunes through an inventory and not through owner references. See [[concepts/owner-references-and-garbage-collection]] and [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]].
+- **Possible resolution from [[sources/research-conditions]]:** Partly helpful on the last step. The dossier shows that kustomize-controller waits for applied resources to become healthy (kstatus for compatible custom resources, CEL `healthCheckExprs` for others) before marking a Kustomization `Ready`, that Flux publishes `Ready`, `Reconciling`, and `Stalled` with `observedGeneration`, and that this gating unblocks `dependsOn` dependents. It does not trace source fetch or finalizers. See [[concepts/conditions]] and [[entities/flux]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -145,6 +149,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-idempotency]]:** Marginally helpful, and only for Crossplane. The dossier covers Crossplane's managed resource idempotency (external names, `external-create-pending`, `managementPolicies`, `initProvider`) but could not read kro's instance and reconciliation pages, so kro's handling of repeated reconciliation and partial failure is unknown. See [[entities/crossplane]] and [[entities/kro]].
 - **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on the deletion side of the comparison only. The dossier shows that kro deletes composed resources in reverse dependency waves and that Crossplane has no equivalent ordering for namespace deletion (issue 7801), but it gives no resolution of which graph model suits which case. See [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] and [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]].
 - **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Partly helpful on the Crossplane side of deletion only. The dossier shows that composed resources are owned by their composite and that the composite deletion policy is Background, Foreground, or Pipeline, which gives Crossplane an explicit ordered-teardown knob. It could not read kro's instances page, so how kro owns and orders its children is still unknown. See [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]] and [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]].
+- **Possible resolution from [[sources/research-conditions]]:** Partly helpful on the status side. Crossplane fixes the meaning of `Synced` and `Ready` in the framework, while kro lets the RGD author define `readyWhen` and custom instance conditions in CEL, which hides kro's built-in conditions. kro's instance-level built-in names were not read. See [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -175,6 +180,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-informers-reflectors-and-workqueues]]:** Partly helpful. The dossier explains the reflector, DeltaFIFO, indexer, and workqueue pipeline, the default limiter, cache memory growth, and relist behavior, and gives tool knobs: Flux `--concurrent` and Helm cache flags, Argo CD cluster sharding with processor counts and `GOMEMLIMIT`, and Crossplane `--max-reconcile-rate`. It has no Flux sharding data and no Crossplane performance guide. See [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] and [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]].
 - **Possible resolution from [[sources/research-finalizers]]:** Not helpful. The dossier names no adopter beyond the projects themselves, and it cannot supply scale data.
 - **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Marginally helpful. The dossier describes how the garbage collector keeps a graph built from watch events on all resources, with queues and an absent-owner cache, but it gives no scale numbers or sharding data. See [[examples/the-garbage-collector-builds-a-dependency-graph-from-watch-events-and-sorts-references-into-three-classes]].
+- **Possible resolution from [[sources/research-conditions]]:** Marginally helpful. The dossier notes that bumping `lastTransitionTime` on every reconcile adds API traffic, but it gives no scale numbers or sharding data. See [[findings/updating-lasttransitiontime-on-every-reconcile-turns-a-condition-into-a-heartbeat]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -370,6 +376,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/kro]] and [[comparisons/retry-and-backoff-controls-across-tools]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, verification, conditions
+- **Possible resolution from [[sources/research-conditions]]:** Marginally helpful. The dossier read the v0.10.0 RGD reference and the custom status conditions page, but the Instances page returned empty content, so the built-in instance condition names are still inferred. See [[entities/kro]].
 
 ## Flux helm-controller override-manager and dry-run failure recovery — status: open
 
@@ -590,6 +597,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Fetch the kro ResourceGraphDefinition docs and the Crossplane composition-function docs.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, crossplane, status
+- **Possible resolution from [[sources/research-conditions]]:** Partly helpful for kro. The RGD reference documents `readyWhen`, `includeWhen`, and the RGD conditions (`Ready`, `GraphAccepted`, `KindReady`, `ControllerReady`), and the status-conditions page documents author-defined instance conditions through `runtime.newCondition()`. The Instances page returned no content and Crossplane v2 was not read. See [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]].
 
 ## kstatus rules for combining observedGeneration and conditions — status: open
 
@@ -600,6 +608,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the cli-utils source or documentation directly.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kstatus, conditions
+- **Possible resolution from [[sources/research-conditions]]:** Partly helpful. The kstatus README names the statuses, the `Reconciling` and `Stalled` conditions, the `Ready` fallback, and two corner cases, but it does not give the exact combination rules as a table. See [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]].
 
 ## Config Connector and Argo CD status semantics beyond health checks — status: open
 
@@ -610,6 +619,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the Config Connector resource status documentation and Argo CD's resource tracking documentation.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** config-connector, argo-cd, status
+- **Possible resolution from [[sources/research-conditions]]:** Largely helpful for Config Connector. The reconcile-status design document describes a single `Ready` condition with reasons `Updating`, `UpToDate`, and `UpdateFailure` and `observedGeneration` set on status update, though it is a design document and may not match shipped behavior. Argo CD was read for health only. See [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]].
 
 ## Where observedGeneration should live — status: open
 
@@ -620,6 +630,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the final 15,000 characters of the API conventions and the Flux and Cluster API contract documents.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** observedgeneration, conditions
+- **Possible resolution from [[sources/research-conditions]]:** Partly helpful. KEP-1623 puts `observedGeneration` on each condition as a non-pointer integer, kro describes the per-condition value precisely, and kstatus checks the top-level field, but the dossier states that no source settles the choice. See [[comparisons/observedgeneration-top-level-versus-per-condition]].
 
 ## Generic readiness when Cluster API moves from Ready to Available — status: open
 
@@ -630,6 +641,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the Cluster API condition-transition proposal and Flux CEL health check documentation.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** cluster-api, kstatus, flux
+- **Possible resolution from [[sources/research-conditions]]:** Partly helpful. The Cluster API proposal explains the move to `Available` and operation conditions and says Flux uses CEL health checks for Cluster API, but it offers no general rule for generic tools. See [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]].
 
 ## Named case studies and postmortems for status problems — status: open
 
@@ -640,6 +652,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Search conference talks and public postmortems.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** case-studies, postmortems, status
+- **Possible resolution from [[sources/research-conditions]]:** Marginally helpful. The dossier found no postmortems or talks, but it adds one more issue-level case, provider-aws issue 2287, where `Synced` stayed True through a 60-minute update. See [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]].
 
 ## Server-side apply behavior in kro, ACK, Config Connector, and Helm 4 — status: open
 
@@ -1015,3 +1028,35 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Re-read the finalizers blog and design proposal in full.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** keps, garbage-collection, verification
+
+## Crossplane v2 condition behavior and the fix for async Synced signaling — status: open
+
+- **Question:** Do Crossplane v2 and current upjet and crossplane-runtime releases still overwrite a pending state with `ReconcileSuccess` during long async operations, and is `AsyncOperation` now part of the recommended alert surface?
+- **Why it matters:** The dossier read the v1.20 managed resources page and the issue thread only, so the fix status of provider-aws issue 2287 is unknown. See [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read current Crossplane v2 managed resource documentation and the upjet and crossplane-runtime changes linked to the issue.
+  - [ ] Update [[entities/crossplane]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, conditions, upjet, verification
+
+## How a platform should choose condition polarity — status: open
+
+- **Question:** Should new condition types be abnormal-true (as kstatus prefers) or positive (as the Cluster API proposal and the API conventions lean), and what evidence shows which choice produces fewer misreadings by generic tools?
+- **Why it matters:** The sources read leave the choice to authors, so the wiki cannot recommend one. See [[decisions/choose-abnormal-true-or-positive-polarity-for-new-condition-types]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the last part of the API conventions and the kstatus design discussion.
+  - [ ] Find practitioner write-ups on polarity incidents.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** conditions, polarity, kstatus, decision
+
+## Which parts of the Config Connector reconcile-status design shipped — status: open
+
+- **Question:** Did Config Connector ship the single `Ready` condition reasons (`Updating`, `UpToDate`, `UpdateFailure`) and the proposal to carry long-running operation IDs in the reason, as the design document describes?
+- **Why it matters:** The only source is a design document, so [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] may describe intent and not behavior.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Config Connector resource status documentation or inspect a live resource.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** config-connector, conditions, verification

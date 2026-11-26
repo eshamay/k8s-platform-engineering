@@ -59,6 +59,9 @@ sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -144,3 +147,7 @@ The Kustomization reference says garbage collection also runs when a Kustomizati
 ## Pruning without owner references
 
 Flux garbage collection is its own mechanism. With `.spec.prune: true`, objects missing from the current source revision are removed using the inventory in `.status.inventory`, the annotation `kustomize.toolkit.fluxcd.io/prune: disabled` exempts an object, and `.spec.deletionPolicy` (MirrorPrune, Delete, WaitForTermination, Orphan) governs deletion of the Kustomization itself. Whether Flux ever relies on owner references was not stated in the part of the page that the dossier read. [[sources/research-owner-references-and-garbage-collection]] See [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]].
+
+## Conditions and health checks
+
+Flux's kustomize-controller reports `Ready`, `Reconciling`, and `Stalled` plus `observedGeneration`. It waits for applied resources to become healthy before marking a Kustomization `Ready`, which unblocks Kustomizations that `dependsOn` it. Compatible custom resources are judged through kstatus, and for kinds that do not follow kstatus, `healthCheckExprs` supplies CEL expressions. Flux added CEL checks for Cluster API resources after kstatus misjudged new objects. The dossier read only the first 100 KB of the Kustomization page. [[sources/research-conditions]] See [[concepts/conditions]], [[findings/premature-readiness-in-kstatus-based-tools]], and [[examples/flux-dependson-and-health-checks-gate-rollout]].

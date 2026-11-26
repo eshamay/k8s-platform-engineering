@@ -59,6 +59,9 @@ sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -144,3 +147,7 @@ A managed resource holds a finalizer until the external resource is fully gone, 
 ## Owner references and composite deletion policy
 
 Composed resources carry owner references to their composite resource. The composite deletion policy is Background by default, with Foreground and Pipeline as options for ordered teardown, and a composed resource that a function stops returning is deleted. Claims order deletion through `compositeDeletePolicy` because the composite has no owner reference to the claim. Issue 6084 on per-resource deletion behavior was closed as stale in April 2025. [[sources/research-owner-references-and-garbage-collection]] See [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]] and [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]].
+
+## Conditions: Synced and Ready
+
+Crossplane managed resources use `Ready` (reasons `Available`, `Creating`, `Unavailable`, `Deleting`) for whether the external resource is operational and `Synced` (reasons `ReconcileSuccess`, `ReconcileError`, `ReconcilePaused`) for whether the provider reconcile succeeded. Read together, `Synced=False` points to credentials, configuration, or provider problems, and `Ready=False` with `Synced=True` points to the cloud side. Upjet-based providers add `AsyncOperation`. The semantics are fixed by the framework, and provider-aws issue 2287 shows that a framework-level overwrite can leave `Synced=True` through a 60-minute update. The page read was v1.20, so Crossplane v2 behavior is unconfirmed. [[sources/research-conditions]] See [[examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update]], [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]], and [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]].

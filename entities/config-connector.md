@@ -35,6 +35,9 @@ sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -90,3 +93,7 @@ Deleting a Config Connector object deletes the Google Cloud resource by default.
 ## Abandon policy versus owner references
 
 Deleting a Config Connector object deletes the real Google Cloud resource by default, and the annotation `cnrm.cloud.google.com/deletion-policy: abandon` keeps it. The page shows Kubernetes delete semantics reaching an external system through finalizer-style controller handling and not through owner references. [[sources/research-owner-references-and-garbage-collection]] See [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
+
+## Conditions
+
+Config Connector uses a single `Ready` condition: `False` with reason `Updating` while it calls Google APIs (the message names the first changed field), `True` with reason `UpToDate`, and `False` with reason `UpdateFailure` carrying the error. The source is a design document, so the dossier does not say which parts shipped, including the idea of putting long-running operation IDs in the reason. [[sources/research-conditions]] See [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] and [[concepts/conditions]].

@@ -31,7 +31,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/informers-reflectors-and-workqueues]] — reflector, DeltaFIFO, indexer, workqueue contract, resync, and tuning costs (active)
 - [[concepts/finalizers]] — two-phase delete, API rules, controller pattern, tool policies, and the stuck-deletion catalog (active)
 - [[concepts/owner-references-and-garbage-collection]] — owner references, the garbage collector, propagation modes, tool behavior, and pitfalls (active)
-- [[concepts/conditions]] — machine-readable status (draft)
+- [[concepts/conditions]] — anatomy, observedGeneration, per-stack vocabularies, consumers, and pitfalls (active)
 
 ### Platform engineering and abstraction
 
@@ -85,6 +85,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-informers-reflectors-and-workqueues]] — research dossier on informers, reflectors, and workqueues, 14 web sources, 2026-11-25
 - [[sources/research-finalizers]] — research dossier on finalizers, 17 web sources, 2026-11-25
 - [[sources/research-owner-references-and-garbage-collection]] — research dossier on owner references and garbage collection, 16 web sources, 2026-11-25
+- [[sources/research-conditions]] — research dossier on status conditions, 16 web sources, 2026-11-25
 
 ## Examples
 
@@ -189,6 +190,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/cluster-api-owner-reference-chain-drives-cluster-deletion-and-clusterctl-move]] — ownership as an API contract (draft)
 - [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]] — ordered composite teardown (draft)
 - [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]] — Flux, Argo CD, and Config Connector (draft)
+- [[examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update]] — provider-aws issue 2287 (draft)
+- [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]] — author-owned readiness (draft)
+- [[examples/ack-splits-terminal-and-recoverable-errors-into-separate-conditions]] — wait or edit the spec (draft)
+- [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]] — one condition, three reasons (draft)
+- [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]] — beyond one mandatory Ready (draft)
+- [[examples/deployment-progress-deadline-sets-progressing-false-for-a-stalled-rollout]] — the built-in model (draft)
 
 ## Comparisons
 
@@ -223,6 +230,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]] — what holds a parent and how teardown is ordered (draft)
 - [[comparisons/background-foreground-and-orphan-propagation-modes]] — three modes side by side (draft)
 - [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]] — owner references, inventory, and finalizers by tool (draft)
+- [[comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api]] — condition types by tool (draft)
+- [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]] — who defines Ready (draft)
 
 ## Decisions
 
@@ -250,6 +259,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller]] — speed versus guaranteed cleanup (draft)
 - [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]] — issue 7801 options (draft)
 - [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]] — ordered teardown of composites (draft)
+- [[decisions/choose-abnormal-true-or-positive-polarity-for-new-condition-types]] — what True means in a new condition (draft)
 
 ## Findings
 
@@ -346,6 +356,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/recreating-an-owner-with-the-same-name-gives-a-new-uid-and-strands-its-old-dependents]] — UID mismatch (draft)
 - [[findings/backup-and-restore-tools-can-strip-owner-references-so-controllers-must-re-reconcile-them]] — lost references (draft)
 - [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]] — RBAC and an unverified claim (draft)
+- [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]] — Synced True for an hour (draft)
+- [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]] — absence of problems looks healthy (draft)
+- [[findings/updating-lasttransitiontime-on-every-reconcile-turns-a-condition-into-a-heartbeat]] — noisy status writes (draft)
+- [[findings/one-mandatory-ready-condition-that-summarizes-everything-is-too-rigid]] — why Cluster API added Available (draft)
+- [[findings/condition-polarity-guidance-conflicts-between-kstatus-and-the-api-conventions]] — unresolved guidance tension (draft)
 
 ## Outputs
 

@@ -8,6 +8,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: []
 tags: [observedgeneration, conditions, conventions, flux, cluster-api, ack]
 ---
@@ -29,3 +32,7 @@ A top-level field is simple to compare against `metadata.generation` and is chea
 ## Related
 
 [[concepts/spec-status-split]], [[entities/flux]], [[entities/cluster-api]], [[entities/ack]]
+
+## Evidence from the conditions dossier
+
+KEP-1623 puts `observedGeneration` on each condition as a non-pointer integer because `metadata.generation` is never zero, kro's RGD reference describes the per-condition value as the generation the condition was based on, and kstatus checks the top-level field. The conventions allow either. The dossier does not settle which is best. [[sources/research-conditions]] See [[concepts/conditions]].

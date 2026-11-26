@@ -8,6 +8,9 @@ sources:
   - id: research-spec-status-split
     hash: 598e6132ea4f
     ingested: 2026-11-25
+  - id: research-conditions
+    hash: 97b224c63502
+    ingested: 2026-11-25
 aliases: [cli-utils kstatus]
 tags: [tool, status, readiness, cli-utils]
 ---
@@ -29,3 +32,7 @@ kstatus can report premature readiness for a resource that has `observedGenerati
 ## Related
 
 [[concepts/conditions]], [[concepts/spec-status-split]], [[entities/flux]], [[entities/cluster-api]]
+
+## Conditions README details
+
+The kstatus README computes InProgress, Failed, Current, Terminating, NotFound, and Unknown, defines `Reconciling` and `Stalled` under the abnormal-true pattern, falls back to `Ready` for other types, and lists two corner cases: a `Ready` condition that only appears once `True` is invisible, and a controller that has not yet written conditions is treated as reconciled. [[sources/research-conditions]] See [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]] and [[findings/premature-readiness-in-kstatus-based-tools]].
