@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-flux-ssa-helm
     hash: e825557fc5c4
     ingested: 2026-11-26
@@ -29,3 +32,7 @@ Taking over after the dry-run means a failed apply never reassigns ownership, wh
 ## Related
 
 [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]], [[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]], [[entities/flux]]
+
+## Update from the Flux and Kubernetes recheck
+
+Update 2026-11-26: the kustomize-controller options page was re-read and documents both flags. It says `--override-manager` takes over "only after a successful server-side apply dry-run" and that `--override-manager-before-dry-run` takes over before it, to be removed after a stuck object is recovered. The helm-controller flag of the same name is scoped to drift detection ([[findings/helm-4-defaults-to-server-side-apply-for-new-releases-and-helm-controller-keeps-the-previous-method-on-upgrade]]). [[sources/research-gap-b1-recheck-flux-k8s]]

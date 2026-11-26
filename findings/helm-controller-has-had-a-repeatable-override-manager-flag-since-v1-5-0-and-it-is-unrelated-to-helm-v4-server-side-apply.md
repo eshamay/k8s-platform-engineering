@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-b1-unverified-claims
     hash: d152f98abb04
     ingested: 2026-11-26
@@ -31,3 +34,7 @@ The dossier read the changelog and `main.go`, not the helm-controller documentat
 ## Related
 
 [[findings/field-ownership-blocks-drift-correction]], [[comparisons/exemption-and-ignore-controls-across-tools]], [[entities/flux]], [[concepts/server-side-apply-and-field-ownership]]
+
+## Update from the Flux and Kubernetes recheck
+
+Update 2026-11-26: the flag, its release (v1.5.0, 2026-02-20, pull request 1365), and the changelog sentence about Helm v4 are re-read and agree. The same release moved helm-controller to Helm v4 and defaulted new HelmReleases to server-side apply ([[findings/helm-4-defaults-to-server-side-apply-for-new-releases-and-helm-controller-keeps-the-previous-method-on-upgrade]]). Still not settled: whether the helm-controller flag takes over before or after the drift-detection dry-run. Its help text reads "List of field managers to override during drift detection", which does not say. [[sources/research-gap-b1-recheck-flux-k8s]]

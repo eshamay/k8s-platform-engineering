@@ -5,6 +5,9 @@ status: draft
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -47,3 +50,7 @@ Correction note, 2026-11-26: this page previously said the status came from a di
 ## Related
 
 [[concepts/admission-webhooks-and-cel]], [[decisions/validate-with-cel-rules-or-a-validating-webhook]], and [[comparisons/kyverno-versus-native-validating-admission-policy]].
+
+## Why the docs say v1.30
+
+Correction note, 2026-11-26: the caveat above said the docs sentence "first available in the v1.30 release" conflicts with the gate table. It is explained by code. The `MutatingAdmissionPolicy` gate was registered as Alpha with default false in v1.30.0 (pull request 123425) as a placeholder with no API behind it, and the usable `v1alpha1` API arrived in v1.32, which is where the KEP and the v1.36.0 gate table start. Cite v1.32 as the first usable release and v1.36 for GA and default on. See [[findings/the-mutating-admission-policy-gate-was-registered-in-v1-30-as-an-inert-alpha-placeholder-and-the-usable-api-arrived-in-v1-32]]. [[sources/research-gap-b1-recheck-flux-k8s]]

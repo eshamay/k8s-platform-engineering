@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-scale-and-sharding
     hash: d082d1d36d7e
     ingested: 2026-11-25
@@ -32,3 +35,7 @@ Pages built from this dossier stay at `draft` where they depend on a single dige
 ## Recheck result (2026-11-26)
 
 The follow-up read in [[sources/research-gap-g3-scale-recheck]] compared the digest-derived figures with raw text, using full-page scrapes and raw files from GitHub, and found no numeric value that needed correcting. Three wordings were tightened: the Upbound figure is "a little over 4MiB" of resident memory per CRD and not "several MiB", the Argo CD processor guidance is 50 and 25 for 1,000 applications against defaults of 20 and 10, and the Crossplane memory figures are design-doc targets. The APF page was read in full. The KEP-1040 README was fetched in full but only its Summary, Motivation, Goals, seat and shuffle-sharding sections and `kep.yaml` were read closely, so the sentence that the dossier had marked as a paraphrase is now quotable verbatim while claims about the rest of the KEP stay unverified. The caveat above is therefore historical for the figures listed, and still applies to anything not named in the recheck.
+
+## KEP-1040 residual (2026-11-26)
+
+Update 2026-11-26: the KEP-1040 residual is now read. The README (3,337 lines) was read by section, covering the fair queuing equations, LIST width, test plan, graduation criteria, and production readiness answers, and `kep.yaml` was read. See [[findings/apf-fair-queuing-allocates-seats-equally-and-a-slow-reader-can-hold-hand-size-times-ten-seats]] and [[findings/the-kep-1040-readme-history-stops-at-v1-26-while-its-kep-yaml-records-stable-in-v1-29]]. The figures from the earlier recheck (SIG Scalability, Gardener, Upbound, Argo CD, Crossplane) were not reread in this pass and stand as recorded. [[sources/research-gap-b1-recheck-flux-k8s]]

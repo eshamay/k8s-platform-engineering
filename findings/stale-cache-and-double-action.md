@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -59,3 +62,7 @@ Correction note, 2026-11-26: this section previously said only that v1.36 "adds 
 The controller-runtime cache blog says the cache-backed client reads from the cache and writes go to the API server, so a read right after a write can return old data. The remedies it and the pitfalls blog give are the expectations pattern and explicit uncached reads where authority is required. [[sources/research-informers-reflectors-and-workqueues]] See [[concepts/informers-reflectors-and-workqueues]].
 
 Correction 2026-11-26: for controller-runtime operators, the v0.25.0 release added an experimental, opt-in read-your-writes client option (`Client.EnableReadYourWritesConsistency`). It is not on by default and is labelled experimental, so the defenses above still apply. See [[findings/controller-runtime-v0-25-0-ships-an-experimental-opt-in-read-your-writes-client]] and [[sources/research-gap-b1-unverified-claims]].
+
+## Update from the Flux and Kubernetes recheck
+
+Update 2026-11-26: on v1.36.0 the StatefulSet skip counter was not registered, so an absent counter does not prove that no syncs were skipped ([[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]]). `MonitorInformerStaleness` and `BookmarkFunc` are described by the KEP and blog but were not found in shipped code ([[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]]). Whether any controller-runtime release ships read-your-writes was not rechecked here. [[sources/research-gap-b1-recheck-flux-k8s]]

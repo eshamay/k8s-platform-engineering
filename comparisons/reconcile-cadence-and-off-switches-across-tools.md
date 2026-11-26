@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
@@ -60,3 +63,7 @@ The Cluster API MachineHealthCheck brake is `remediation.triggerIf.unhealthyLess
 ## Argo CD version range, 2026-11-26
 
 The Argo CD default was 180 seconds from v2.1.0 through v2.14.0 (manifest and controller constant agree at v2.1.0 and v2.4.0) and is 120 seconds plus up to 60 seconds of jitter from v3.0.0. See [[findings/argo-cd-changed-its-default-polling-from-a-flat-180-seconds-to-120-seconds-plus-60-seconds-of-jitter-in-v3-0-and-some-docs-still-say-three-minutes]] and [[sources/research-gap-b1-recheck-capi-argocd]].
+
+## Flux jitter and wording, 2026-11-26 recheck
+
+Correction 2026-11-26: Flux controllers apply plus or minus 5 percent jitter to every requeue by default through `--interval-jitter-percentage` ([[findings/flux-controllers-jitter-reconcile-intervals-by-plus-or-minus-5-percent-by-default]]), so the Flux cadence is the manifest's interval with that spread, and Argo CD's jitter is a separate plus up to 60 seconds. The concepts page's five-minute sentence replaced "one minute" in a 2022 docs commit with no stated reason ([[findings/the-flux-concepts-page-five-minute-sentence-replaced-one-minute-in-an-august-2022-docs-commit-with-no-stated-reason]]). [[sources/research-gap-b1-recheck-flux-k8s]]

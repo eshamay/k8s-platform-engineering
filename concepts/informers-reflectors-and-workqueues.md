@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -106,3 +109,7 @@ The scale dossier adds that the workqueue never processes one key concurrently, 
 ## Lost-event and resync evidence from the operator loop dossier
 
 Kubernetes issue 115658 shows that a relist racing a queued CREATE could drop the DELETE event for a short-lived object, so a consumer kept the object forever, until pull requests 115620 (merged 2023-02-17) and 116623 (merged 2023-03-16, for 1.27) fixed it. See [[examples/kubernetes-issue-115658-a-client-go-relist-could-drop-the-delete-event-for-a-short-lived-object]]. KubeFleet documents a 30-minute safety resync as protection against bugs, and an Argo Rollouts user says `--rollout-resync=60` guards against missed events (SECONDARY-ONLY). What a resync replays is still not settled. See [[findings/projects-add-periodic-resync-as-a-safety-net-against-missed-events-and-bugs]] and [[sources/research-gap-g1-operator-loop-failures]].
+
+## Staleness metrics pinned to releases
+
+Update 2026-11-26: the per-controller skip counter `stale_sync_skips_total` is read at v1.36.0 and v1.37.0, with full names under the subsystems `daemonset_controller`, `job_controller`, `replicaset_controller`, `statefulset_controller`, and from v1.37 `horizontal_pod_autoscaler_controller`. The StatefulSet counter was defined but not registered at v1.36.0 and registered from v1.37 ([[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]]). KEP 5647's `kep.yaml` lists a different gate shape from the code, and `MonitorInformerStaleness` was not found in Kubernetes source ([[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]]). [[sources/research-gap-b1-recheck-flux-k8s]]

@@ -44,6 +44,12 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-crossplane-ramp-up-external-writers-passage-with-the-v2-5-0-source-reading]] — open
 - [[#update-part-4-readiness-passage-with-how-a-crossplane-function-ready-signal-becomes-xr-ready]] — open
 - [[#review-closed-gap-resolutions-refined-by-the-b1-recheck-of-kro-and-crossplane]] — open
+- [[#update-flux-ramp-up-defaults-and-caveats-passages-with-the-flux-jitter-default-and-the-origin-of-the-five-minute-wording]] — open
+- [[#update-part-3-staleness-passage-with-the-statefulset-metric-registration-gap-at-v1-36-0]] — open
+- [[#update-part-3-requeue-passage-with-the-issue-808-and-pull-request-3107-findings]] — open
+- [[#update-part-2-storageversionmigration-passage-with-the-progress-message-layout]] — open
+- [[#update-part-5-apf-passage-with-the-kep-1040-fair-queuing-limits]] — open
+- [[#review-closed-gap-resolutions-refined-by-the-b1-recheck-of-flux-and-kubernetes]] — open
 
 ## Open
 
@@ -558,6 +564,48 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** Closed gaps were not edited. Two closed Resolutions carry statements the recheck refines. "kro released-version tuning defaults and instance conditions" says the v0.9.4 rate-limiter table was not fully read and conditions come from docs (both are now read from source, and the `FAILED` state is a deprecated legacy constant). "Crossplane v2 condition behavior and the fix for async Synced signaling" says the body of PR 8080 was not read (it is read: it fixes stale XR condition replay and not async Synced). Review whether the user wants to reopen or annotate them through `sticki-gaps`.
 - **Why:** Closed Resolutions stay as the reasoning trail, and the reader should know which statements were later refined. The 2026-11-26 dossier [[sources/research-gap-b1-recheck-kro-crossplane]] supplies the evidence.
 - **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update flux-ramp-up defaults and caveats passages with the Flux jitter default and the origin of the five-minute wording — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "A note on defaults, because Flux's own documentation is inconsistent here" and the caveats paragraph beginning "Some questions the wiki cannot answer" say the origin of the five-minute wording is unknown and do not give the jitter. State that controllers jitter every requeue by plus or minus 5 percent by default (`--interval-jitter-percentage`) and that the concepts page's sentence replaced "one minute" in a docs commit on 2022-08-10 with no stated reason. Cite [[findings/flux-controllers-jitter-reconcile-intervals-by-plus-or-minus-5-percent-by-default]] and [[findings/the-flux-concepts-page-five-minute-sentence-replaced-one-minute-in-an-august-2022-docs-commit-with-no-stated-reason]].
+- **Why:** The passages predate the jitter and history readings in [[sources/research-gap-b1-recheck-flux-k8s]].
+- **Acceptance:** Both passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 staleness passage with the StatefulSet metric registration gap at v1.36.0 — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the paragraph beginning "When a DaemonSet or Job sync is deferred" should add that the StatefulSet skip counter was defined but not registered at v1.36.0 and registered from v1.37 (pull request 138451), that the ReplicaSet counter was registered at both tags, and that KEP 5647 lists a different gate shape from the code. Cite [[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]] and [[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]].
+- **Why:** The passage names only the DaemonSet and Job counters. The dossier [[sources/research-gap-b1-recheck-flux-k8s]] pins all five names to release tags.
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 requeue passage with the issue 808 and pull request 3107 findings — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the paragraph beginning "Sources once disagreed about `Result{Requeue: true}`" says a summary of issue 808 read it as immediate. Add that the issue thread, read in full, never makes that claim, that source at v0.4.0, v0.7.0, and v0.15.0 already used a rate-limited add, and that pull request 3107 deprecated the field on 2025-02-24. Cite [[findings/controller-runtime-issue-808-is-a-documentation-request-and-does-not-claim-that-requeue-true-is-immediate]].
+- **Why:** The passage leaves the origin of the immediate reading open. The dossier [[sources/research-gap-b1-recheck-flux-k8s]] shows the issue does not support it.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-2 StorageVersionMigration passage with the progress message layout — status: open
+
+- **What:** In `outputs/part-2-krm-and-api-machinery.md`, the paragraph beginning "The more important point is that \"enabled by default\" describes the API and the controller" should add that progress is text in the `Running` condition message and that scripts should wait on the `Succeeded` condition. Cite [[findings/storageversionmigration-reports-progress-as-text-in-the-running-condition-message-and-has-no-numeric-progress-field]].
+- **Why:** The passage does not describe how migration progress is reported. The dossier [[sources/research-gap-b1-recheck-flux-k8s]] reads it from v1.37.0 source.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 APF passage with the KEP-1040 fair-queuing limits — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the paragraph beginning "Two throttling layers are easy to confuse" should add that the KEP-1040 README describes its fair queuing as approximate (equal seat allocation, not max-min) and names a slow-reader failure mode that can hold hand size times 10 seats. Cite [[findings/apf-fair-queuing-allocates-seats-equally-and-a-slow-reader-can-hold-hand-size-times-ten-seats]].
+- **Why:** The passage describes APF without its documented limits. The dossier [[sources/research-gap-b1-recheck-flux-k8s]] reads the full KEP-1040 README.
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Review closed gap resolutions refined by the b1 recheck of Flux and Kubernetes — status: open
+
+- **What:** Closed gaps were not edited. Six closed Resolutions carry "Not settled" statements the recheck refines: "Flux default reconcile interval and drift-detection wording" (the jitter value is 5 percent and the wording originated in a 2022-08-10 docs commit), "Flux pre-dry-run manager takeover flag and current SSA documentation" (the helm-controller flag and Helm 4 server-side apply are now read), "Mutating Admission Policy release status" (the v1.30 docs figure is explained by the gate registration), "StorageVersionMigration GA details in Kubernetes v1.37" (the progress layout is text in the `Running` message), "Requeue true backoff behavior in current controller-runtime" (issue 808 never claims an immediate requeue), and "Scale numbers from model digests need rechecking" (the KEP-1040 residual is now read). Review whether the user wants to annotate them through `sticki-gaps`.
+- **Why:** Closed Resolutions stay as the reasoning trail, and the reader should know which statements were later refined. The 2026-11-26 dossier [[sources/research-gap-b1-recheck-flux-k8s]] supplies the evidence.
+- **Acceptance:** User decision recorded for each closed gap.
 - **Drafted by:** agent on 2026-11-26
 
 ## Dropped

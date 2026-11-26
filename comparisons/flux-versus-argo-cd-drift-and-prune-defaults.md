@@ -5,6 +5,9 @@ status: draft
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
@@ -38,3 +41,7 @@ The dossier did not read the two tools side by side, so this table merges separa
 ## Helm drift mode and diffing controls
 
 Flux HelmRelease drift detection is off by default (`mode: disabled`), with `warn` as a middle stage, while Argo CD self-heal is also off by default and its `prune` is off by default. Argo CD documents `ignoreDifferences` and Flux documents `driftDetection.ignore` and the `ssa` annotation. [[sources/research-self-healing-and-drift-detection]] See [[comparisons/exemption-and-ignore-controls-across-tools]] and [[comparisons/drift-detection-mechanisms-across-tools]].
+
+## Interval default and jitter, 2026-11-26 recheck
+
+Correction note, 2026-11-26: Flux supplies no controller default for the interval, and it jitters every requeue by plus or minus 5 percent by default ([[findings/flux-controllers-jitter-reconcile-intervals-by-plus-or-minus-5-percent-by-default]]). The concepts page's five-minute wording is a 2022 docs edit and not a default ([[findings/the-flux-concepts-page-five-minute-sentence-replaced-one-minute-in-an-august-2022-docs-commit-with-no-stated-reason]]). HelmRelease drift detection defaults to disabled and, when enabled, corrects drift from a server-side dry-run apply ([[findings/helm-4-defaults-to-server-side-apply-for-new-releases-and-helm-controller-keeps-the-previous-method-on-upgrade]]). [[sources/research-gap-b1-recheck-flux-k8s]]

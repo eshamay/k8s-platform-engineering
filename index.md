@@ -56,7 +56,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/kubectl]] — CLI behind imperative and declarative techniques (draft)
 - [[entities/kluctl]] — deployment tool that decides SSA conflicts per field (draft)
 - [[entities/kubebuilder]] — controller framework and Reconcile tutorial (draft)
-- [[entities/controller-runtime]] — Go controller library and the level-based Reconciler contract (draft)
+- [[entities/controller-runtime]] — Go controller library and the level-based Reconciler contract (active)
 - [[entities/kube-rs]] — Rust controller library and single-replica availability guidance (draft)
 - [[entities/tofu-controller]] — Terraform and OpenTofu from Flux-style resources, detection-only model (draft)
 - [[entities/client-go]] — Go client library with the discovery client and RESTMapper constructors (draft)
@@ -135,6 +135,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/spotify-kubecon-2019-gke-cluster-deletion-transcript]] — transcript of Spotify's KubeCon Europe 2019 talk on deleting production GKE clusters, 2026-11-26
 - [[sources/spotify-kubecon-2019-keynote-slides-with-notes]] — David Xia's slide deck with speaker notes for the Spotify talk, dated 2019-05-22
 - [[sources/research-gap-b1-recheck-kro-crossplane]] — verified dossier rechecking kro v0.9.4 and v0.10.0 tuning, requeue, conditions, and states, and Crossplane v2.5.0 readiness, status writes, server-side apply, and scaling defaults from source (active)
+- [[sources/research-gap-b1-recheck-flux-k8s]] — verified dossier rechecking the Flux jitter default and the five-minute wording origin, helm-controller and Helm 4 server-side apply, the Mutating Admission Policy v1.30 gate, StorageVersionMigration progress, Requeue and issue 808, v1.36 staleness metrics, and KEP-1040 (active)
 
 
 ## Examples
@@ -359,6 +360,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/spotify-deleted-one-production-gke-cluster-by-console-click-and-two-more-through-terraform-with-no-end-user-impact]] — Spotify deleted three production GKE clusters in two incidents with no end-user impact (active)
 - [[examples/crossplane-pull-request-8080-guards-the-xr-status-write-with-a-resource-version-to-stop-stale-condition-replay]] — open pull request 8080 fixes stale XR condition replay, not async Synced signaling (active)
 - [[examples/crossplane-pull-requests-7783-and-7787-say-fromstruct-drops-managedfields-on-the-composite-resource]] — two open pull requests tied to issue 7453, which no maintainer has reproduced (active)
+- [[examples/controller-runtime-pull-request-3107-deprecated-requeue-true-on-2025-02-24-and-pull-request-3574-to-document-it-is-still-open]] — deprecation of Requeue true and the open documentation pull request (active)
+- [[examples/kubernetes-pull-request-138451-registered-the-statefulset-stale-sync-skip-metric-in-v1-37]] — StatefulSet skip metric defined but unregistered at v1.36.0 (active)
 
 
 ## Comparisons
@@ -709,6 +712,16 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/crossplane-v2-5-0-writes-xr-status-twice-so-a-lagging-cache-can-replay-old-conditions]] — the two-write XR status pattern behind issues 7062 and 8033 (active)
 - [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]] — docs and source disagree on what the flag means after the v2.1.0 rename (active)
 - [[findings/the-crossplane-xr-circuit-breaker-default-is-burst-100-in-v2-5-0-source-while-the-v2-1-0-notes-say-burst-50]] — circuit breaker defaults differ between the v2.1.0 notes and v2.5.0 source (active)
+- [[findings/flux-controllers-jitter-reconcile-intervals-by-plus-or-minus-5-percent-by-default]] — --interval-jitter-percentage defaults to 5, symmetric, in both controllers (active)
+- [[findings/the-flux-concepts-page-five-minute-sentence-replaced-one-minute-in-an-august-2022-docs-commit-with-no-stated-reason]] — 2022-08-10 docs commit, reason not stated (active)
+- [[findings/helm-4-defaults-to-server-side-apply-for-new-releases-and-helm-controller-keeps-the-previous-method-on-upgrade]] — Helm 4 and helm-controller server-side apply defaults (active)
+- [[findings/the-mutating-admission-policy-gate-was-registered-in-v1-30-as-an-inert-alpha-placeholder-and-the-usable-api-arrived-in-v1-32]] — why the docs say v1.30 (active)
+- [[findings/storageversionmigration-reports-progress-as-text-in-the-running-condition-message-and-has-no-numeric-progress-field]] — progress is message text (active)
+- [[findings/controller-runtime-issue-808-is-a-documentation-request-and-does-not-claim-that-requeue-true-is-immediate]] — issue 808 read in full (active)
+- [[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]] — unregistered at v1.36.0, fixed in v1.37 (active)
+- [[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]] — KEP versus code gates (active)
+- [[findings/the-kep-1040-readme-history-stops-at-v1-26-while-its-kep-yaml-records-stable-in-v1-29]] — APF lifecycle record mismatch (active)
+- [[findings/apf-fair-queuing-allocates-seats-equally-and-a-slow-reader-can-hold-hand-size-times-ten-seats]] — APF fair queuing limits (active)
 
 
 ## Outputs

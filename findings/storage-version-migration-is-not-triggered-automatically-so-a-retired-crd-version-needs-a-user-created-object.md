@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -35,3 +38,7 @@ Create the migration object as an explicit step in the version-retirement runboo
 ## Related
 
 [[concepts/custom-resource-definition]], [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]], [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]]
+
+## Update from the Flux and Kubernetes recheck
+
+Update 2026-11-26: to wait for a migration, read the `Succeeded` condition. Progress is only text in the `Running` message, with no numeric field ([[findings/storageversionmigration-reports-progress-as-text-in-the-running-condition-message-and-has-no-numeric-progress-field]]). Old stored versions are removed from the CRD status after migration (pull request 135297, merged 2026-03-11). [[sources/research-gap-b1-recheck-flux-k8s]]

@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -44,3 +47,7 @@ Errors give automatic backoff but unbounded retries, which can amplify load as d
 ## Related
 
 [[concepts/reconciliation-loop]], [[findings/errors-used-as-timers-in-reconcilers]], [[entities/controller-runtime]]
+
+## Update from the Flux and Kubernetes recheck
+
+Update 2026-11-26: the evidence behind the `Requeue: true` row now reaches back to v0.4.0, because the source at v0.4.0, v0.7.0, and v0.15.0 calls `AddRateLimited` for it, and issue 808 never claimed otherwise ([[findings/controller-runtime-issue-808-is-a-documentation-request-and-does-not-claim-that-requeue-true-is-immediate]]). Pull request 3107 deprecated the field on 2025-02-24 ([[examples/controller-runtime-pull-request-3107-deprecated-requeue-true-on-2025-02-24-and-pull-request-3574-to-document-it-is-still-open]]). The recommendation to avoid it in new code is unchanged. [[sources/research-gap-b1-recheck-flux-k8s]]

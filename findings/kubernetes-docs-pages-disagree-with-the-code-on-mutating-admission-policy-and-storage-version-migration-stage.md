@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -34,3 +37,7 @@ Cite the feature-gate table at a release tag and the CHANGELOG for stage and def
 ## Related
 
 [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]], [[concepts/crd-versioning-and-storage-migration]], [[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source]], [[findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes]]
+
+## Update from the Flux and Kubernetes recheck
+
+Correction note, 2026-11-26: the first mismatch above said the dossier did not resolve the v1.30 conflict. It is now explained: the gate was registered in v1.30.0 as an inert Alpha placeholder and the usable API arrived in v1.32 ([[findings/the-mutating-admission-policy-gate-was-registered-in-v1-30-as-an-inert-alpha-placeholder-and-the-usable-api-arrived-in-v1-32]]). The fourth mismatch is detailed in [[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]]. [[sources/research-gap-b1-recheck-flux-k8s]]

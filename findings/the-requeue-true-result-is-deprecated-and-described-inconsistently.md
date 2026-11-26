@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -36,3 +39,7 @@ Avoid the deprecated field in new code. Use an error for failures, `RequeueAfter
 ## Related
 
 [[entities/controller-runtime]], [[findings/errors-used-as-timers-in-reconcilers]], [[findings/failure-retry-loops-and-backoff]], [[concepts/reconciliation-loop]]
+
+## Update from the Flux and Kubernetes recheck
+
+Correction note, 2026-11-26: the conflict recorded above came from a summary of issue 808, not from the issue. The thread, read in full, never calls the requeue immediate ([[findings/controller-runtime-issue-808-is-a-documentation-request-and-does-not-claim-that-requeue-true-is-immediate]]). The deprecation came from pull request 3107 on 2025-02-24 ([[examples/controller-runtime-pull-request-3107-deprecated-requeue-true-on-2025-02-24-and-pull-request-3574-to-document-it-is-still-open]]). [[sources/research-gap-b1-recheck-flux-k8s]]

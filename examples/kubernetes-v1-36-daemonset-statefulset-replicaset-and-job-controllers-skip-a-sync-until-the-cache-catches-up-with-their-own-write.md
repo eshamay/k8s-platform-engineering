@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -44,3 +47,7 @@ Upstream treats "my cache has not yet seen my own write" as a skip-and-retry con
 [[entities/client-go]], [[examples/controller-runtime-merged-a-read-your-own-write-client-design-in-october-2026-but-no-release-is-confirmed-to-ship-it]], [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]]
 
 Update 2026-11-26: master source defines `stale_sync_skips_total` for the ReplicaSet and StatefulSet controllers under the subsystems `replicaset_controller` and `statefulset_controller`. The release in which each shipped was not pinned. See [[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source]] and [[sources/research-gap-b1-unverified-claims]].
+
+## Update from the Flux and Kubernetes recheck
+
+Update 2026-11-26: the earlier update that left the release of the ReplicaSet and StatefulSet metrics unpinned is superseded. Both counters are defined at v1.36.0 and v1.37.0, but the StatefulSet counter was only registered from v1.37 through pull request 138451 ([[examples/kubernetes-pull-request-138451-registered-the-statefulset-stale-sync-skip-metric-in-v1-37]]; [[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]]). KEP 5647's `kep.yaml` lists a different gate shape ([[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]]). [[sources/research-gap-b1-recheck-flux-k8s]]

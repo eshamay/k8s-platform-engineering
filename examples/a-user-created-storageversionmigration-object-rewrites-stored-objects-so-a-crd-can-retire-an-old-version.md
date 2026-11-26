@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -34,3 +37,7 @@ Migration needs an integer resource version and fails for resources that do not 
 ## Related
 
 [[concepts/crd-versioning-and-storage-migration]], [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]], [[findings/crd-version-removal-without-migration-strands-stored-objects]]
+
+## Update from the Flux and Kubernetes recheck
+
+Update 2026-11-26: while the migration runs, `Running` is True with a message such as "The migration is running, 120/500 objects not yet migrated" (format from source, the numbers are illustrative). On completion `Running` becomes False with reason `MigrationCompleted` and `Succeeded` becomes True. See [[findings/storageversionmigration-reports-progress-as-text-in-the-running-condition-message-and-has-no-numeric-progress-field]]. [[sources/research-gap-b1-recheck-flux-k8s]]

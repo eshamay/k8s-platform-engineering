@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -44,3 +47,7 @@ An author who expects an immediate retry from `Requeue: true` is surprised by gr
 ## Related
 
 [[entities/controller-runtime]], [[concepts/reconciliation-loop]], [[findings/failure-retry-loops-and-backoff]], [[findings/retry-storms-and-unbounded-retries]]
+
+## Update from the Flux and Kubernetes recheck
+
+Correction note, 2026-11-26: the section "What this corrects" said the issue 808 comment thread was not read. It is now read in full (13 comments) and does not claim an immediate requeue ([[findings/controller-runtime-issue-808-is-a-documentation-request-and-does-not-claim-that-requeue-true-is-immediate]]). Source at v0.4.0, v0.7.0, and v0.15.0 also calls `AddRateLimited` for `Requeue`, so the exponential backoff reading is stable across versions, not only at v0.25.3 ([[examples/controller-runtime-pull-request-3107-deprecated-requeue-true-on-2025-02-24-and-pull-request-3574-to-document-it-is-still-open]]). The origin of the "immediate" reading is still not found. [[sources/research-gap-b1-recheck-flux-k8s]]

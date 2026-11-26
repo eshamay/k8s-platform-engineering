@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -47,3 +50,7 @@ The versioning task page separates the `served` and `storage` flags, and tells a
 The built-in StorageVersionMigration API (`storagemigration.k8s.io/v1`) and the `StorageVersionMigrator` controller in kube-controller-manager graduated to GA and are on by default in Kubernetes v1.37. KEP 4192 gives alpha v1.30, beta v1.35, and stable v1.37, and the gate was Beta with default false at v1.36.0. A user creates a `StorageVersionMigration` object whose immutable `spec.resource` names a group and resource, and the controller rewrites every stored object of that resource. The kind is cluster-scoped with a status subresource, `status.conditions` use the types Running, Succeeded, and Failed, and `status.resourceVersion` is set when kube-controller-manager first observes the object. Migration is not triggered automatically, because the KEP defers creation of the object to the user and the out-of-tree trigger controller was not moved in-tree. After a CRD migration, `.status.storedVersions` should hold only the preferred version, otherwise the migration should be retried, and the resource must have an integer resource version, so aggregated APIs can fail. Before this, operators wrote their own migrators. URL: https://kubernetes.io/blog/2026/08/31/kubernetes-v1-37-storage-version-migration-ga/. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[examples/a-user-created-storageversionmigration-object-rewrites-stored-objects-so-a-crd-can-retire-an-old-version]], [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]], and [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]].
 
 Correction note, 2026-11-26: this paragraph previously rested on one blog extract and said that whether migration triggers automatically was unverified. The KEP, CHANGELOG-1.37, and the gate tables confirm GA and that migration is user-triggered. The exact shape of the progress-reporting condition fields added in v1.37 (PR 138875) was not read. See [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]], [[examples/kubebuilder-hub-and-spoke-conversion-for-multi-version-crds]], and [[findings/a-down-conversion-webhook-can-stall-garbage-collection]].
+
+## Progress reporting layout
+
+Correction note, 2026-11-26: the correction above said the exact shape of the progress reporting was not read. It is now read from source at v1.37.0. There is no numeric progress field. Progress is text in the `message` of the `Running` condition ("The migration is running", then ", N/M objects not yet migrated" or ", M objects verified migrated", plus "; transient error: <err>"), and completion flips `Running` to False with reason `MigrationCompleted` and sets `Succeeded` true. For CRDs the controller also sets a `StorageMigrating` condition and removes old stored versions from the CRD status (pull request 135297). See [[findings/storageversionmigration-reports-progress-as-text-in-the-running-condition-message-and-has-no-numeric-progress-field]]. [[sources/research-gap-b1-recheck-flux-k8s]]

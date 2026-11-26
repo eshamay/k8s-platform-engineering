@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-kro-crossplane
     hash: ccee0efa5bdd
     ingested: 2026-11-26
@@ -88,3 +91,7 @@ The 2026-11-26 dossier found no organization that says it runs sharded Flux, no 
 ## Crossplane v2.5.0 scaling facts from source (2026-11-26)
 
 Correction note: the Crossplane paragraph above says the Pods guide describes `--max-reconcile-rate`. In v2.5.0 source that flag is an alias for `--max-concurrent-reconciles`, a worker pool size defaulting to 100, so the guide's per-second wording does not match the code, see [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]]. The XR circuit breaker default is burst 100, refill 1.0 per second, and cooldown 5 minutes, while the v2.1.0 notes say burst 50, see [[findings/the-crossplane-xr-circuit-breaker-default-is-burst-100-in-v2-5-0-source-while-the-v2-1-0-notes-say-burst-50]]. The v2.5 Scalable Composition guide covers the `scale` subresource and not controller capacity. No numeric per-controller limits for XRs or composed resources and no independent benchmark were found. [[sources/research-gap-b1-recheck-kro-crossplane]]
+
+## API Priority and Fairness limits from KEP-1040
+
+Update 2026-11-26: the KEP-1040 README was read in full. Its fair-queuing allocates seats equally and not max-min fairly, a LIST request's width is approximated as `min(A, ceil(N / E))`, and a client that does not finish reading large responses can hold up to hand size times 10 seats ([[findings/apf-fair-queuing-allocates-seats-equally-and-a-slow-reader-can-hold-hand-size-times-ten-seats]]). The KEP records APF as stable in v1.29 in `kep.yaml` while its README history stops at v1.26 ([[findings/the-kep-1040-readme-history-stops-at-v1-26-while-its-kep-yaml-records-stable-in-v1-29]]). [[sources/research-gap-b1-recheck-flux-k8s]]

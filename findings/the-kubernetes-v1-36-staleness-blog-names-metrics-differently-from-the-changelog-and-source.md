@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: research-gap-g3-k8s-and-controller-runtime
     hash: 2b4e3378c119
     ingested: 2026-11-26
@@ -39,3 +42,7 @@ Take metric names from the CHANGELOG or from the source at the tag in use, and c
 ## Related
 
 [[concepts/informers-reflectors-and-workqueues]], [[entities/client-go]], [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]]
+
+## Update from the Flux and Kubernetes recheck
+
+Correction note, 2026-11-26: the ReplicaSet and StatefulSet names above are now pinned to tags. The source at v1.36.0 and v1.37.0 defines `stale_sync_skips_total` under `replicaset_controller` and `statefulset_controller`, but the StatefulSet counter was not registered at v1.36.0 and was registered from v1.37 ([[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]]). The blog's list has four controllers (DaemonSet, StatefulSet, ReplicaSet, Job). The KEP names no metrics ([[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]]). [[sources/research-gap-b1-recheck-flux-k8s]]

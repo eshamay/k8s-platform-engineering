@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-b1-recheck-flux-k8s
+    hash: c78dc9a9635e
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -132,7 +135,7 @@ A HelmRelease has `spec.driftDetection.mode` with `disabled` (the default), `war
 
 ## Components, sources, and tenancy
 
-Flux is built from GitOps Toolkit controllers: source controllers fetch from Git, OCI, Helm repositories, and buckets and expose artifacts; the Kustomize and Helm controllers apply them; the notification controller handles alerts and webhooks; and image automation controllers update manifests. Kustomizations reconcile every 5 minutes by default and revert manual changes unless suspended. Bootstrap installs Flux and commits its own manifests so Flux manages itself. The Kustomize controller adds SOPS and KMS decryption, health assessment, `dependsOn` ordering, garbage collection, and service-account impersonation for multi-tenant RBAC isolation. In the ControlPlane D2 design, Flux pulls signed OCI artifacts through a FluxInstance and ResourceSet resources so that clusters never connect to Git. [[sources/research-gitops-pull-based-delivery]] See [[comparisons/flux-versus-argo-cd-architecture]], [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]], and [[decisions/git-versus-oci-as-the-canonical-source]].
+Flux is built from GitOps Toolkit controllers: source controllers fetch from Git, OCI, Helm repositories, and buckets and expose artifacts; the Kustomize and Helm controllers apply them; the notification controller handles alerts and webhooks; and image automation controllers update manifests. Kustomizations reconcile on the author-set `spec.interval` and revert manual changes unless suspended (the concepts page's "every five minutes by default" is not a controller default, see the correction note at the end of this page). Bootstrap installs Flux and commits its own manifests so Flux manages itself. The Kustomize controller adds SOPS and KMS decryption, health assessment, `dependsOn` ordering, garbage collection, and service-account impersonation for multi-tenant RBAC isolation. In the ControlPlane D2 design, Flux pulls signed OCI artifacts through a FluxInstance and ResourceSet resources so that clusters never connect to Git. [[sources/research-gitops-pull-based-delivery]] See [[comparisons/flux-versus-argo-cd-architecture]], [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]], and [[decisions/git-versus-oci-as-the-canonical-source]].
 
 ## Ordering around CRDs and discovery
 
@@ -222,3 +225,7 @@ Flux issue 2514 (2022) reports replicas dropping to 1 on the first reconciliatio
 ## Adopters page re-read
 
 Correction note: the adopters sentence above says the page lists more than 200 organizations. The 2026-11-26 dossier read the data file `1-flux-v2.yaml` and counted 127 `name:` lines, a few of which may not be companies, and the page front matter calls the list "a selection of organisations who self-identified as using any of the Flux projects in production". The earlier figure was not reproduced from that file, so treat it as unverified. The dossier also found that Morgan Stanley lists sharding as future work and that no organization was found running sharded Flux. See [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]]. [[sources/research-gap-g1-named-adopters]]
+
+## Interval jitter, five-minute wording, and helm-controller from the Flux and Kubernetes recheck
+
+Correction note, 2026-11-26: the sentence in the components section that Kustomizations reconcile every 5 minutes by default was wrong as a controller statement, because `.spec.interval` is required and no controller supplies a default. It is replaced in place above. The controller does apply jitter: `--interval-jitter-percentage` defaults to 5 and is symmetric, so every requeue varies by plus or minus 5 percent of the interval, in both kustomize-controller and helm-controller ([[findings/flux-controllers-jitter-reconcile-intervals-by-plus-or-minus-5-percent-by-default]]). The concepts page's five-minute sentence replaced "one minute" in a docs commit on 2022-08-10 with no stated reason ([[findings/the-flux-concepts-page-five-minute-sentence-replaced-one-minute-in-an-august-2022-docs-commit-with-no-stated-reason]]). The earlier line that the jitter value was not read is now answered. The kustomize-controller options page documents both `--override-manager` (takes over only after a successful dry-run) and `--override-manager-before-dry-run`. The helm-controller `--override-manager` flag is confirmed since v1.5.0 (2026-02-20), HelmRelease install defaults to server-side apply, and drift detection stays disabled by default ([[findings/helm-4-defaults-to-server-side-apply-for-new-releases-and-helm-controller-keeps-the-previous-method-on-upgrade]]). The statement that drift detection has been a per-release option since Flux v2.2.0 was not rechecked and stays unverified. [[sources/research-gap-b1-recheck-flux-k8s]]
