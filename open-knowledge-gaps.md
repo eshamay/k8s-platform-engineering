@@ -94,6 +94,12 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#behavior-of-namespaced-v2-managed-resources-when-a-namespace-is-deleted-while-the-provider-is-down]] — open, unassigned
 - [[#per-provider-external-name-defaults]] — open, unassigned
 - [[#config-connector-conflict-handling-when-two-objects-target-one-cloud-resource]] — open, unassigned
+- [[#claim-support-and-scope-in-crossplane-v2-xrds]] — open, unassigned
+- [[#kro-graph-api-status-and-released-version-facts]] — open, unassigned
+- [[#flux-handling-of-composite-resources-and-kro-instances]] — open, unassigned
+- [[#clusterclass-maturity-and-the-managed-topologies-proposal]] — open, unassigned
+- [[#scale-of-composite-resources-per-controller]] — open, unassigned
+- [[#feature-parity-of-function-kro-with-standalone-kro]] — open, unassigned
 
 ---
 
@@ -127,6 +133,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Only marginally helpful. The dossier adds the garbage collector side of the trace: the controller sets an owner reference on each child, the garbage collector's dependency graph deletes dependents when the owner goes, and a lost reference breaks cascade. It does not trace Flux's source fetch, apply, or condition updates, and it says Flux prunes through an inventory and not through owner references. See [[concepts/owner-references-and-garbage-collection]] and [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]].
 - **Possible resolution from [[sources/research-conditions]]:** Partly helpful on the last step. The dossier shows that kustomize-controller waits for applied resources to become healthy (kstatus for compatible custom resources, CEL `healthCheckExprs` for others) before marking a Kustomization `Ready`, that Flux publishes `Ready`, `Reconciling`, and `Stalled` with `observedGeneration`, and that this gating unblocks `dependsOn` dependents. It does not trace source fetch or finalizers. See [[concepts/conditions]] and [[entities/flux]].
 - **Possible resolution from [[sources/research-managed-resource]]:** Only marginally helpful. The dossier shows one downstream step, that a Flux prune of a managed resource object triggers the provider's delete of the cloud resource unless Delete is excluded from `managementPolicies`, and that Crossplane's reconciler phases are Connect, Observe, Create, Update, Delete. It does not trace source fetch, apply, or condition updates. See [[entities/flux]] and [[concepts/managed-resource]].
+- **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier read no Flux documentation and says nothing about Flux health checks, `dependsOn`, or CRD ordering with composites. It covers only the Argo CD interaction. A new gap, [[#flux-handling-of-composite-resources-and-kro-instances]], tracks this.
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -157,6 +164,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Partly helpful on the Crossplane side of deletion only. The dossier shows that composed resources are owned by their composite and that the composite deletion policy is Background, Foreground, or Pipeline, which gives Crossplane an explicit ordered-teardown knob. It could not read kro's instances page, so how kro owns and orders its children is still unknown. See [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]] and [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]].
 - **Possible resolution from [[sources/research-conditions]]:** Partly helpful on the status side. Crossplane fixes the meaning of `Synced` and `Ready` in the framework, while kro lets the RGD author define `readyWhen` and custom instance conditions in CEL, which hides kro's built-in conditions. kro's instance-level built-in names were not read. See [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]].
 - **Possible resolution from [[sources/research-managed-resource]]:** Not helpful. The dossier covers the managed resource layer under compositions and says kro adoption and orphaning behavior was not read, so it cannot compare Compositions with kro.
+- **Possible resolution from [[sources/research-composite-resource]]:** Largely helpful. The dossier reads the primary pages for both sides. Crossplane runs a pipeline of gRPC functions that receive observed state and return desired state, with CompositionRevisions that XRs can pin, while kro puts schema and implementation in one RGD, infers a DAG from CEL references, validates at creation, creates in topological order, deletes in reverse, gates dependents with `readyWhen`, and snapshots immutable GraphRevisions with no fallback. It also shows the two converging through `function-kro`. It gives no scale numbers and no incident evidence, and the v2 claim details and the kro Graph API remain unverified. See [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]], and [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -189,6 +197,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Marginally helpful. The dossier describes how the garbage collector keeps a graph built from watch events on all resources, with queues and an absent-owner cache, but it gives no scale numbers or sharding data. See [[examples/the-garbage-collector-builds-a-dependency-graph-from-watch-events-and-sorts-references-into-three-classes]].
 - **Possible resolution from [[sources/research-conditions]]:** Marginally helpful. The dossier notes that bumping `lastTransitionTime` on every reconcile adds API traffic, but it gives no scale numbers or sharding data. See [[findings/updating-lasttransitiontime-on-every-reconcile-turns-a-condition-into-a-heartbeat]].
 - **Possible resolution from [[sources/research-managed-resource]]:** Partly helpful on the CRD side. The dossier gives numbers for the cost of one CRD per external resource type (roughly 2,000 CRDs for three clouds, more than 4 MiB of API server memory per CRD, about 300 group-versions to discover, GKE control planes unresponsive at about 680 CRDs) and the Crossplane v2 remedy of activation policies, plus Argo CD's client QPS of 300. It has no informer, workqueue, or sharding data for Flux or Crossplane controllers. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]].
+- **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier says no page gives numbers for how many composites or children a single controller handles, and kro's tuning pages were not read. A new gap, [[#scale-of-composite-resources-per-controller]], tracks this.
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -200,6 +209,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Write `examples/` pages for each documented adopter.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** adoption, crossplane, ack, kcp
+- **Possible resolution from [[sources/research-composite-resource]]:** Partly helpful. The same self-reported adopters list adds Renault, Wellhub, Wildlife Studios, Consensys, Grafana Labs, VSHN, Millennium bcp, Continental, and Syntasso (Kratix) as users of composite resources for self-service platforms. The entries are unaudited one-liners and add no counts for composites. No adopter of kro, ACK, Config Connector, or Cluster API is named beyond AWS offering kro on EKS. See [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]].
 - **Possible resolution from [[sources/research-managed-resource]]:** Partly helpful. The Crossplane ADOPTERS list names Nike, Autodesk, SAP, Deutsche Kreditbank, IBM, Elastic, UiPath, VMware Tanzu, DB Systel, Nokia, and Akamai, with reported counts such as SAP's thousands of managed resources and Akamai's up to 200,000. The entries are self-reported one-liners and not verified case studies. See [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]].
 
 ## Independent scale benchmarks for etcd, vcluster, and kcp — status: open
@@ -234,6 +244,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Complete the kro row of [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, ordering, cel
+- **Possible resolution from [[sources/research-composite-resource]]:** Largely helpful. The RGD overview and readiness pages explain that kro infers dependencies from CEL references into a DAG, records the order in `status.topologicalOrder`, creates in topological order and deletes in reverse, creates independent resources in parallel, and rejects cycles at definition time. `readyWhen` defines per-resource readiness and gates dependents in an RGD, but only reports health in the alpha `Graph` API. The kro row of the ordering comparison can now be filled, though the instance-level conditions remain unread. See [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]] and [[entities/kro]].
 - **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on deletion behavior. The dossier reads the Argo CD ApplicationSet deletion page, the Flux Kustomization reference (first 100 KB), the ACK deletion policy guide, and the Config Connector deletion page, all through a summarizing fetch, and it confirms retain and abandon defaults. It does not verify Flux's finalizer name. See [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
 
 ## Direct reads of Argo CD, Flux, ACK, and Config Connector failure modes — status: open
@@ -304,6 +315,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/crossplane]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, terminology, history
+- **Possible resolution from [[sources/research-composite-resource]]:** Partly helpful. The v1.20 claims page and the v2 upgrade guide show that claims are a namespaced stand-in for a cluster-scoped XR in v1 and that v2 makes XRs namespaced and removes claims for new-style XRDs, and that native patch-and-transform is removed in favor of function pipelines. Claim support in v2 is not stated precisely in a primary page, and the 2018 claims-and-classes announcement itself was not read. See [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]].
 
 ## Informer resync semantics — status: open
 
@@ -386,6 +398,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/kro]] and [[comparisons/retry-and-backoff-controls-across-tools]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, verification, conditions
+- **Possible resolution from [[sources/research-composite-resource]]:** Marginally helpful. The dossier reads v0.10.0 pages and lists the RGD conditions, and says the kro controller tuning docs were not read. It adds a version discrepancy, since a September 2026 blog cites v0.9.x. See [[#kro-graph-api-status-and-released-version-facts]].
 - **Possible resolution from [[sources/research-conditions]]:** Marginally helpful. The dossier read the v0.10.0 RGD reference and the custom status conditions page, but the Instances page returned empty content, so the built-in instance condition names are still inferred. See [[entities/kro]].
 
 ## Flux helm-controller override-manager and dry-run failure recovery — status: open
@@ -818,6 +831,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find Backstage documentation on Kubernetes and custom resource integration.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** backstage, platform-engineering
+- **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier does not mention Backstage, although it notes that composite kinds are consumed as products by other teams and that Kratix uses Crossplane as a component.
 
 ## Requeue true backoff behavior in current controller-runtime — status: open
 
@@ -995,6 +1009,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Add a kro row to [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, owner-references, deletion
+- **Possible resolution from [[sources/research-composite-resource]]:** Marginally helpful. The kro FAQ tells Argo CD users to add an ownerReference and an `argocd.argoproj.io/tracking-id` annotation to every templated resource, which suggests kro does not set these in a way Argo CD tracks by default, and the RGD overview says deletion follows reverse topological order. It does not say whether kro sets its own owner references or labels. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]].
 
 ## Argo CD PrunePropagationPolicy and resource tracking methods — status: open
 
@@ -1027,6 +1042,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the Crossplane v2 documentation on composite resources, scope, and management policies.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, deletion, management-policies
+- **Possible resolution from [[sources/research-composite-resource]]:** Partly helpful. The current composite resources page documents the alpha deletion policy and its bypass under Argo CD foreground deletion, and the upgrade guide describes namespaced XRs and managed resources under `.m.` groups. Neither source covers how `managementPolicies` interact with the cascade. See [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]].
 
 ## KEPs on cross-namespace ownership and garbage collector performance — status: open
 
@@ -1124,3 +1140,70 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the Config Connector resource acquisition documentation directly.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** config-connector, adoption, conflicts
+
+
+## Claim support and scope in Crossplane v2 XRDs — status: open
+
+- **Question:** What do the primary Crossplane v2 XRD and composite resource pages say about claims, the `LegacyCluster` scope, and how v1 claim-based XRDs coexist with namespaced XRs?
+- **Why it matters:** The composite resources dossier read v1.20 pages for claims and XRDs and relied on a third-party blog for the `LegacyCluster` detail, so [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] has an unverified v2 column.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current Crossplane XRD and composite resource documentation.
+  - [ ] Update [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] and [[entities/crossplane]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, claims, v2, verification
+
+## kro Graph API status and released-version facts — status: open
+
+- **Question:** What is the status of kro's alpha `Graph` API compared with the ResourceGraphDefinition, and which kro version is current, given that the docs show 0.10.0 and a third-party blog dated September 2026 says v0.9.x?
+- **Why it matters:** The `readyWhen` gating behavior differs between the two APIs, so a tutorial could describe the wrong one. See [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the kro release notes and the Graph API documentation.
+  - [ ] Update [[entities/kro]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, graph-api, versioning, verification
+
+## Flux handling of composite resources and kro instances — status: open
+
+- **Question:** How do Flux health checks, `dependsOn`, and CRD ordering behave with Crossplane XRs and kro instances, and does Flux need the same ownerReference or tracking recipes that Argo CD needs?
+- **Why it matters:** The composite resources dossier read Argo CD interaction only and no Flux material, yet Flux is a primary tool of this wiki. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]] and [[entities/flux]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read Flux documentation on health checks and custom resource readiness for composites.
+  - [ ] Write an `examples/` page on Flux hosting composites.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, crossplane, kro, health-checks
+
+## ClusterClass maturity and the managed topologies proposal — status: open
+
+- **Question:** What is the current maturity of Cluster API's ClusterClass and what does the CAEP "ClusterClass and Managed Topologies" specify?
+- **Why it matters:** The dossier read only a short landing page that labels the feature alpha, which may be stale. See [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current Cluster API book on ClusterClass and the CAEP.
+  - [ ] Update [[entities/cluster-api]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cluster-api, clusterclass, verification
+
+## Scale of composite resources per controller — status: open
+
+- **Question:** How many composites and composed children can a Crossplane function pipeline or a kro dynamic controller reconcile, and what do the tuning pages report?
+- **Why it matters:** The composite resources dossier found no numbers for either tool and did not read kro's tuning documentation, so platform sizing has no evidence. See [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read Crossplane performance guidance and kro tuning documentation.
+  - [ ] Find adopter or benchmark reports for composites and function pipelines.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** scale, crossplane, kro, composites
+
+## Feature parity of function-kro with standalone kro — status: open
+
+- **Question:** Does `function-kro` really reach full feature parity with a standalone kro ResourceGraphDefinition, and how do readiness and revision behavior differ when the graph runs inside a Crossplane pipeline?
+- **Why it matters:** The parity claim comes from the Crossplane project's own announcement, and the choice between running kro alone or inside Crossplane depends on it. See [[entities/function-kro]] and [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the function-kro repository documentation and compare it with the kro RGD reference.
+  - [ ] Find independent reports of running it in production.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** function-kro, kro, crossplane, verification

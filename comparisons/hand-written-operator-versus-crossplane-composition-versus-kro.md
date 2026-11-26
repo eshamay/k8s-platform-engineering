@@ -8,6 +8,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-composite-resource
+    hash: 8640896d06b9
+    ingested: 2026-11-25
 aliases: []
 tags: [operators, crossplane, kro, abstraction]
 ---
@@ -30,3 +33,7 @@ The dossier presents the two composition tools as alternatives to bespoke contro
 ## Related
 
 [[decisions/build-a-custom-operator-or-compose-existing-resources]], [[findings/hand-written-operators-duplicate-what-composition-could-express]], [[entities/crossplane]], [[entities/kro]], [[entities/kubebuilder]]
+
+## Update from the composite resources dossier
+
+The two composition tools are now compared in depth in [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], and Helm is added as a third altitude in [[comparisons/helm-versus-kro-versus-crossplane-as-platform-abstraction-layers]]. The dossier reports that `function-kro` lets kro-style graphs run inside a Crossplane pipeline, so the choice is no longer strictly either-or, see [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]]. [[sources/research-composite-resource]]

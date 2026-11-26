@@ -8,6 +8,9 @@ sources:
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
+  - id: research-composite-resource
+    hash: 8640896d06b9
+    ingested: 2026-11-25
 aliases: []
 tags: [decision, crossplane, deletion-ordering, composition]
 ---
@@ -36,3 +39,7 @@ Foreground is a native Kubernetes mode with a clear meaning but only orders pare
 ## Related
 
 [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]], [[findings/background-deletion-gives-no-teardown-ordering-between-dependents]], [[entities/crossplane]]
+
+## Update from the composite resources dossier
+
+The current Crossplane composite resources page documents the deletion policy (alpha) and warns that Argo CD's default foreground deletion makes Crossplane ignore it, with `PrunePropagationPolicy=background` and a background finalizer as the fix, so the choice here also depends on the GitOps tool's settings. A stuck Foreground or Pipeline deletion leaves the XR in Deleting until the finalizer is removed manually. [[sources/research-composite-resource]] See [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]].

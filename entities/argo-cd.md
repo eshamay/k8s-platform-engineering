@@ -59,6 +59,9 @@ sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-composite-resource
+    hash: 8640896d06b9
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -146,3 +149,7 @@ Argo CD assigns each resource Healthy, Progressing, Degraded, Suspended, Missing
 ## Hosting Crossplane managed resources
 
 Crossplane's integration guide says Argo CD should use annotation-based resource tracking because label tracking collides with Crossplane's own labels on composed resources, should have custom Lua health checks that read the `Ready` and `Synced` conditions, should hide ProviderConfigUsage objects, and may need `ARGOCD_K8S_CLIENT_QPS` raised to 300 as CRDs multiply. [[sources/research-managed-resource]] See [[examples/crossplane-resources-hosted-by-argo-cd]] and [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]].
+
+## Hosting composite resources
+
+For composite resources, Argo CD's default foreground deletion makes Crossplane ignore its composite deletion policy and emit a warning event, and the fix is the `PrunePropagationPolicy=background` sync option with a background finalizer. For kro instances, every templated child needs an ownerReference and an `argocd.argoproj.io/tracking-id` annotation so Argo CD tracks it. [[sources/research-composite-resource]] See [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]] and [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]]. This partly informs the open question on `PrunePropagationPolicy` in [[open-knowledge-gaps]].

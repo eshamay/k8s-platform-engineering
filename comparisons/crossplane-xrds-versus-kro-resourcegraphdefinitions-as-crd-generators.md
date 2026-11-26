@@ -8,6 +8,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-composite-resource
+    hash: 8640896d06b9
+    ingested: 2026-11-25
 aliases: []
 tags: [crossplane, kro, crd, platform-api]
 ---
@@ -34,3 +37,7 @@ The Crossplane column comes from https://docs.crossplane.io/latest/composition/c
 ## Related
 
 [[examples/xrd-and-rgd-declare-platform-gvks]], [[examples/platform-team-self-service-apis-with-crossplane-and-kro]], [[entities/crossplane]], [[entities/kro]], and the gap on [[open-knowledge-gaps]] comparing Compositions and kro graphs.
+
+## Update from the composite resources dossier
+
+The composite resources dossier fills several cells above. For kro, breaking schema changes are blocked unless `kro.run/allow-breaking-changes` is set, the generated CRD is validated statically at RGD creation, and spec changes become immutable GraphRevisions. For Crossplane, the XRD name must be `<plural>.<group>`, versions follow alpha, beta, and stable conventions, and v2 makes XRs namespaced without claims. See [[findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion]], [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]], and [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]] for the execution models. [[sources/research-composite-resource]]

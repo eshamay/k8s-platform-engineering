@@ -56,6 +56,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-composite-resource
+    hash: 8640896d06b9
+    ingested: 2026-11-25
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -68,7 +71,7 @@ A tool that, like Crossplane, adds vocabulary for building internal developer pl
 
 Google announced kro on 2025-01-30 as a joint effort of Google, AWS, and Microsoft. A ResourceGraphDefinition expands one end-user CRD into a graph of Kubernetes resources, including cloud resources from [[entities/ack]], [[entities/config-connector]], and Azure Service Operator. The announcement describes kro as "a Kubernetes-native framework that lets you create reusable APIs to deploy multiple resources as a single unit." The project site describes an in-cluster controller driven by one CRD that reconciles continuously with drift detection, uses CEL (typed and non-Turing-complete) to reference fields across resources, and calls itself a SIG Cloud Provider subproject. The site showed version 0.10.0, so kro is pre-1.0, and the announcement said it was not production-ready. [[sources/research-universal-control-plane]]
 
-Use cases from the announcement are in [[examples/self-service-gke-cluster-with-kro]]. See [[findings/immature-abstractions-in-the-control-plane-ecosystem]]. The dependency-graph and readiness mechanics were not visible in the fetched page.
+Use cases from the announcement are in [[examples/self-service-gke-cluster-with-kro]]. See [[findings/immature-abstractions-in-the-control-plane-ecosystem]]. The dependency-graph and readiness mechanics were not visible in that page, and are covered in the sections below from the composite resources dossier.
 
 ## Resource graph details
 
@@ -137,3 +140,13 @@ The Google Cloud launch post says nothing about ownership or deletion mechanics,
 ## Conditions and readyWhen
 
 kro's ResourceGraphDefinition reference (v0.10.0) documents `readyWhen` CEL expressions that decide when a child resource counts as ready, with a default of "exists", plus `includeWhen` and RGD conditions such as `Ready`, `GraphAccepted`, `KindReady`, and `ControllerReady`, each with an `observedGeneration` that marks staleness. RGD authors can declare their own instance conditions with `runtime.newCondition()`, which hides kro's four built-in conditions, and expression errors set `state: Error` while keeping the previous conditions. The kro Instances page returned no usable content, so instance-level built-in names are inferred. [[sources/research-conditions]] See [[examples/kro-rgd-authors-define-instance-conditions-with-cel-and-readywhen]] and [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]].
+
+## Resource graphs, graph revisions, and readiness
+
+The composite resources dossier read the RGD overview (v0.10.0), the FAQ, and the readiness page. An RGD has `spec.schema` in SimpleSchema and `spec.resources` as templates with CEL expressions. When it is applied, kro validates it, generates and registers a CRD, and starts a dynamic controller for instances. Static analysis at creation covers the schema, the existence of referenced kinds, CEL type checking, and dependency inference including cycle rejection. The computed order lands in `status.topologicalOrder`, creation follows topological order, and deletion follows the reverse. The RGD conditions are `Ready`, `GraphRevisionsResolved`, `GraphAccepted`, `KindReady`, and `ControllerReady`. Independent resources are created in parallel, and `includeWhen` can reference only `schema.spec`. [[sources/research-composite-resource]]
+
+Each spec change becomes an immutable GraphRevision, and if the latest revision fails compilation, instances stop progressing with no fallback to an older one. Breaking schema changes are blocked unless `kro.run/allow-breaking-changes` is set. `readyWhen` gates dependents in an RGD, but in the newer alpha `Graph` API, which is disabled by default, it only reports health. The FAQ says the API is `v1alpha1`, and the third-party comparison blog cites v0.9.x where the docs show 0.10.0. See [[findings/a-kro-graph-revision-that-fails-compilation-stops-all-instances-with-no-fallback]], [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]], [[findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion]], and [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]].
+
+## Hosting under Argo CD and use inside Crossplane
+
+For Argo CD, the FAQ says to add an ownerReference and an `argocd.argoproj.io/tracking-id` annotation to every templated resource, which also partly answers how kro marks children. AWS offers kro as a managed EKS capability that composes ACK resources. The Crossplane project's `function-kro` embeds kro's graph builder in a pipeline step. See [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]], [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]], [[entities/function-kro]], and [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]]. [[sources/research-composite-resource]]

@@ -65,6 +65,9 @@ sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-composite-resource
+    hash: 8640896d06b9
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -158,3 +161,9 @@ Crossplane managed resources use `Ready` (reasons `Available`, `Creating`, `Unav
 ## Managed resource management policies, usages, and scale
 
 The managed resource dossier adds the operating details of Crossplane's lowest layer. `spec.managementPolicies` lists the permitted verbs (Observe, Create, Update, Delete, LateInitialize, or `*`), so import, read-only reference, orphan-on-delete, and pause are all one field, and the import recipe sets the external-name annotation and Observe before promoting to `["*"]`. Usages block deletion of a resource that is in use, which gives deletion ordering and accidental-deletion protection. Crossplane v2 represents each managed resource type as a ManagedResourceDefinition and activates only the needed ones through activation policies, which answers the CRD-count scale problem. Self-reported adopters range from thousands of managed resources to Akamai's reported 200,000. [[sources/research-managed-resource]] See [[concepts/managed-resource]], [[examples/crossplane-import-of-an-existing-gcp-database-observes-first-then-takes-control]], [[examples/crossplane-usages-order-deletion-and-guard-against-accidental-removal]], [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]], [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]], and [[findings/synced-false-with-ready-true-is-a-silent-failure-where-drift-correction-stops]].
+
+## Composite resources, composition functions, claims, and v2
+
+The composite resources dossier read the XR, XRD, Composition, claims, v2 upgrade, and function design pages. An XR is selected onto a Composition by `compositeTypeRef`, can follow or pin CompositionRevisions, and can be paused or forced to reconcile by annotation. A Composition is a pipeline of gRPC functions that receive observed state and return desired state, and since v1.17 this is the standard form. In v1 a namespaced claim fronted a cluster-scoped XR, while v2 makes the XR namespaced, removes claims for new-style XRDs, removes native patch-and-transform, ControllerConfig, external secret stores, and XR connection details, and has no automated migration for v1 cluster-scoped XRs. The alpha composite deletion policy can be bypassed by Argo CD's foreground propagation. [[sources/research-composite-resource]]
+
+The project also shipped `function-kro` in March 2026. See [[concepts/composite-resource]], [[concepts/composition]], [[entities/function-kro]], [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]], [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], [[findings/crossplane-v2-removed-features-and-offers-no-automated-migration-for-v1-composites]], [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]], and [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]]. Claim support in v2 rests partly on a third-party blog, so it needs checking against the v2 XRD documentation.

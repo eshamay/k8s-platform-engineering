@@ -41,6 +41,9 @@ sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-composite-resource
+    hash: 8640896d06b9
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -104,3 +107,7 @@ Config Connector uses a single `Ready` condition: `False` with reason `Updating`
 ## Acquire by name and the abandon annotation
 
 Config Connector acquires an existing Google Cloud resource when the manifest name or ID matches it, so import is implicit and not flagged. Deleting the Kubernetes object deletes the cloud resource by default, and the annotation `cnrm.cloud.google.com/deletion-policy: abandon` must be set before deletion to keep it. The dossier read this page through a summarized fetch and found nothing on conflict handling when two objects target the same cloud resource. [[sources/research-managed-resource]] See [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]].
+
+## Leaf provider beneath composite layers
+
+The composite resources dossier shows Config Connector as a leaf provider. The Google Cloud kro announcement describes a platform admin exposing a GKE cluster API whose underlying resources are Config Connector objects for the cluster, node pools, IAM service account and policy member, and policies, with only cluster name, node pool name, max nodes, location, and optional networks exposed to users. The dossier read none of Config Connector's own pages on readiness, deletion, or abandon semantics. [[sources/research-composite-resource]] See [[examples/self-service-gke-cluster-with-kro]] and [[comparisons/helm-versus-kro-versus-crossplane-as-platform-abstraction-layers]].

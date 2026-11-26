@@ -36,8 +36,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 ### Platform engineering and abstraction
 
 - [[concepts/managed-resource]] — one-to-one cloud primitive, anatomy, management policies, import, deletion, and scale (active)
-- [[concepts/composite-resource]] — opinionated platform API over many resources (draft)
-- [[concepts/composition]] — blueprint mapping composite to managed resources (draft)
+- [[concepts/composite-resource]] — opinionated platform API over many resources, two implementations, per-XR controls, readiness, and pitfalls (active)
+- [[concepts/composition]] — blueprint mapping composite to managed resources, function pipelines, and the resource graph alternative (active)
 - [[concepts/provider]] — controller and CRDs for an external API (draft)
 
 ## Entities
@@ -64,6 +64,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/cert-manager]] — operator with validation, defaulting, and conversion webhooks (draft)
 - [[entities/operator-sdk]] — Operator Framework SDK and its five capability levels (draft)
 - [[entities/crossplane-provider-btp]] — SAP provider with explicit external names and bounded create recovery (draft)
+- [[entities/function-kro]] — Crossplane function that runs kro-style resource graphs in a pipeline step (draft)
 
 ## Sources
 
@@ -87,6 +88,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-owner-references-and-garbage-collection]] — research dossier on owner references and garbage collection, 16 web sources, 2026-11-25
 - [[sources/research-conditions]] — research dossier on status conditions, 16 web sources, 2026-11-25
 - [[sources/research-managed-resource]] — Research dossier: Managed Resources (active)
+- [[sources/research-composite-resource]] — research dossier on composite resources and resource graphs, 16 web sources, 2026-11-25
 
 ## Examples
 
@@ -203,6 +205,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/provider-authors-implement-an-external-client-behind-the-shared-managed-reconciler]] — shared reconciler and external client (draft)
 - [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]] — answer to the CRD count (draft)
 - [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]] — self-reported adopter scale (draft)
+- [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]] — self-reported platform and catalog uses (draft)
+- [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]] — AWS productizes kro with ACK (draft)
+- [[examples/function-kro-runs-a-kro-resource-graph-as-a-crossplane-pipeline-step]] — the two models converge (draft)
+- [[examples/a-v1-crossplane-claim-fronts-a-cluster-scoped-composite-resource]] — the legacy claim pattern (draft)
+- [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]] — the composite pattern for clusters (draft)
+- [[examples/a-platform-api-hides-provider-features-to-enforce-tagging-and-tenant-segregation]] — governance through a platform API (draft)
+- [[examples/kro-resources-need-owner-references-and-tracking-ids-to-be-tracked-by-argo-cd]] — the seam between two loops (draft)
+- [[examples/a-composition-function-pipeline-turns-observed-state-into-desired-state]] — how function pipelines work (draft)
 
 ## Comparisons
 
@@ -240,6 +250,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api]] — condition types by tool (draft)
 - [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]] — who defines Ready (draft)
 - [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]] — import, read-only, and keep controls (draft)
+- [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]] — functions versus CEL graphs (draft)
+- [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]] — claims versus namespaced XRs (draft)
+- [[comparisons/helm-versus-kro-versus-crossplane-as-platform-abstraction-layers]] — three altitudes of abstraction (draft)
+- [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]] — per-instance pinning versus one latest revision (draft)
 
 ## Decisions
 
@@ -269,6 +283,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]] — ordered teardown of composites (draft)
 - [[decisions/choose-abnormal-true-or-positive-polarity-for-new-condition-types]] — what True means in a new condition (draft)
 - [[decisions/choose-management-policies-for-an-imported-resource]] — Observe, promote, or omit Delete (draft)
+- [[decisions/choose-automatic-or-manual-composition-update-policy]] — follow the latest revision or pin one (draft)
+- [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]] — which composite layer to adopt (draft)
 
 ## Findings
 
@@ -375,6 +391,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/observe-based-import-has-manual-copy-steps-ambiguous-names-and-relaxed-validation]] — import hazards (draft)
 - [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]] — terminology drift (draft)
 - [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] — CRD count scale cost (draft)
+- [[findings/a-kro-graph-revision-that-fails-compilation-stops-all-instances-with-no-fallback]] — no rollback in kro (draft)
+- [[findings/editing-a-live-composition-can-disrupt-or-replace-existing-composed-resources]] — shared Composition edits propagate (draft)
+- [[findings/crossplane-v2-removed-features-and-offers-no-automated-migration-for-v1-composites]] — v2 removals and manual migration (draft)
+- [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]] — GitOps overrides ordered teardown (draft)
+- [[findings/kro-readywhen-gates-dependents-in-a-resource-graph-definition-but-only-reports-health-in-the-alpha-graph-api]] — same field, different work (draft)
+- [[findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion]] — schema as contract (draft)
+- [[findings/composition-functions-add-moving-parts-that-must-be-healthy]] — operational cost of functions (draft)
+- [[findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane]] — stale learning material (draft)
 
 ## Outputs
 

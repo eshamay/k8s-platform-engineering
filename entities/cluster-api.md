@@ -41,6 +41,9 @@ sources:
   - id: research-conditions
     hash: 97b224c63502
     ingested: 2026-11-25
+  - id: research-composite-resource
+    hash: 8640896d06b9
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -104,3 +107,7 @@ The Cluster API book defines the ownership chain Cluster, MachineDeployment, Mac
 ## Condition model
 
 Cluster API replaced its custom condition model (a mandatory all-summarizing `Ready` and a custom `Severity` field) with `metav1.Condition`, added `Available` as a separate signal, and added operation conditions such as `ScalingUp` and `Remediating`. A brand-new resource can look ready to kstatus, which is why Flux uses CEL health checks for Cluster API. [[sources/research-conditions]] See [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]] and [[findings/one-mandatory-ready-condition-that-summarizes-everything-is-too-rigid]].
+
+## ClusterClass as the composite pattern for clusters
+
+ClusterClass is a reusable class plus a small `topology` on a Cluster that a controller expands into machine and infrastructure objects. It is described as "a powerful abstraction implemented on top of existing interfaces" and gated by `ClusterTopology`. The page read labels the feature experimental or alpha, which may be stale, and the CAEP was not read. [[sources/research-composite-resource]] See [[examples/cluster-api-clusterclass-expands-a-small-topology-into-many-machine-and-infrastructure-objects]] and [[concepts/composite-resource]].

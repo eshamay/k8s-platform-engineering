@@ -35,6 +35,9 @@ sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-composite-resource
+    hash: 8640896d06b9
+    ingested: 2026-11-25
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -90,3 +93,7 @@ ACK uses `ACK.Recoverable` for transient errors such as throttling, `ACK.Termina
 ## Read-only annotation versus adoption
 
 ACK offers the annotation `services.k8s.aws/read-only: "true"`, under which the controller syncs status from AWS, ignores spec, never creates, updates, or deletes, and shows an error if the AWS resource is missing. ACK's separate adoption feature gives full management, which mirrors the observe-versus-promote split in Crossplane's management policies. [[sources/research-managed-resource]] See [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]].
+
+## Leaf provider beneath kro
+
+The composite resources dossier shows ACK as a leaf provider. The Amazon EKS guide composes ACK S3 Buckets with ConfigMaps and Deployments in a kro RGD and passes the bucket ARN from `status.ackResourceMetadata` into the application's configuration. The dossier read none of ACK's own documentation on readiness or deletion. [[sources/research-composite-resource]] See [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]].

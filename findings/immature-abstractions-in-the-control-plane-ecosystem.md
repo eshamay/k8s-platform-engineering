@@ -11,6 +11,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-composite-resource
+    hash: 8640896d06b9
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, maturity, kro, kcp]
 ---
@@ -32,3 +35,7 @@ Maturity labels such as 0.10.0 may have changed since the dossier was written. S
 ## Drift handling has matured recently
 
 A reported kro bug that drift in managed resources was not reconciled after creation was closed as completed on 2025-11-04, so drift handling in younger projects has matured recently. The issue history is unverified. [[sources/research-self-healing-and-drift-detection]] See [[entities/kro]].
+
+## Version and API churn in composition tools
+
+The composite resources dossier adds more maturity evidence. kro's FAQ states "kro's API is currently at `v1alpha1`," the alpha `Graph` API is disabled by default, and the kro version in third-party material (v0.9.x) differs from the docs (0.10.0). Crossplane is CNCF graduated but v2 removed native patch-and-transform, claims for new-style XRDs, and several other features, with no automated migration for v1 cluster-scoped composites. Cluster API's ClusterClass page still labels the feature experimental, though that label may be stale. [[sources/research-composite-resource]] See [[findings/crossplane-v2-removed-features-and-offers-no-automated-migration-for-v1-composites]] and [[findings/a-kro-graph-revision-that-fails-compilation-stops-all-instances-with-no-fallback]].
