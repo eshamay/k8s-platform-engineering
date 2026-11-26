@@ -1,10 +1,13 @@
 ---
 title: "kro deletes instance resources in reverse dependency waves"
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-m1-finalizers
+    hash: 014549e333b6
+    ingested: 2026-11-26
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
@@ -24,7 +27,7 @@ kro keeps the instance finalizer until every managed resource is gone. It finds 
 
 ## Why the example matters
 
-The ordering removes a class of failure in which a dependency vanishes before a dependent finishes its own cleanup. See [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]] for the Crossplane case that lacks this ordering. The page was read through the project documentation only, so kro's finalizer name and removal mechanics were not inspected on a live object.
+The ordering removes a class of failure in which a dependency vanishes before a dependent finishes its own cleanup. See [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]] for the Crossplane case that lacks this ordering. Source read on 2026-11-26 shows the instance finalizer is `kro.run/finalizer`, the highest apply-order wave is deleted first, and the finalizer is removed by a merge patch only when no deletion candidates remain, see [[findings/ack-config-connector-and-kro-each-name-their-finalizers-differently-and-remove-them-only-after-cleanup]]. Nothing was inspected on a live object. [[sources/research-gap-m1-finalizers]]
 
 ## Related
 

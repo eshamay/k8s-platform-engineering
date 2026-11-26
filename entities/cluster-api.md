@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m1-finalizers
+    hash: 014549e333b6
+    ingested: 2026-11-26
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
@@ -131,7 +134,7 @@ The Machine controller sets owner references, waits for infrastructure and boots
 
 ## Machine deletion as a gated workflow
 
-A `deletionTimestamp` on a Machine starts a multi-phase teardown: pre-drain hooks, node drain, volume detach, pre-terminate hooks, infrastructure and bootstrap deletion, then node deletion. Blockers are PodDisruptionBudgets, terminating pods, attached volumes, failing hooks, and unreachable nodes, and `exclude-node-draining` and `nodeDrainTimeout` are the escape hatches. Cluster API issue 1514 on blocking deletion with a finalizer or annotation was a search hit that the dossier did not read. [[sources/research-finalizers]] See [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]] and [[findings/machine-deletion-stalls-on-disruption-budgets-attached-volumes-and-failing-hooks]].
+A `deletionTimestamp` on a Machine starts a multi-phase teardown: pre-drain hooks, node drain, volume detach, pre-terminate hooks, infrastructure and bootstrap deletion, then node deletion. Blockers are PodDisruptionBudgets, terminating pods, attached volumes, failing hooks, and unreachable nodes, and `exclude-node-draining` and `nodeDrainTimeout` are the escape hatches. Cluster API issue 1514 on blocking deletion with a finalizer or annotation was closed on 2020-04-27 in favor of a proposal that chose annotation hooks, see [[examples/cluster-api-issue-1514-was-closed-in-april-2020-in-favor-of-a-proposal-that-chose-annotation-hooks]] and [[findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers]]. [[sources/research-finalizers]] See [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]] and [[findings/machine-deletion-stalls-on-disruption-budgets-attached-volumes-and-failing-hooks]].
 
 ## Owner references as the cluster ownership contract
 

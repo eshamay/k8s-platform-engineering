@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m1-finalizers
+    hash: 014549e333b6
+    ingested: 2026-11-26
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
@@ -23,7 +26,7 @@ A platform team generates many Argo CD Applications from one ApplicationSet. The
 
 ## How it works
 
-The `resources-finalizer.argocd.argoproj.io` finalizer on an Application makes deleting the Application also delete the resources it deployed. Deleting an ApplicationSet cascades to its Applications and then to the cluster resources. Deleting the ApplicationSet with `--cascade=orphan` leaves the Applications in place, but each Application still carries the finalizer, so removing one of them later still deletes its workloads. Setting `syncPolicy.preserveResourcesOnDeletion` on the ApplicationSet prevents the finalizer from being added, so the workloads survive. The dossier read only the ApplicationSet page, so Argo CD's foreground and background finalizer variants and non-cascading Application deletes are not covered. See [[open-knowledge-gaps]].
+The `resources-finalizer.argocd.argoproj.io` finalizer on an Application makes deleting the Application also delete the resources it deployed. Deleting an ApplicationSet cascades to its Applications and then to the cluster resources. Deleting the ApplicationSet with `--cascade=orphan` leaves the Applications in place, but each Application still carries the finalizer, so removing one of them later still deletes its workloads. Setting `syncPolicy.preserveResourcesOnDeletion` on the ApplicationSet prevents the finalizer from being added, so the workloads survive. Correction recorded 2026-11-26: a later dossier read the Argo CD source and documentation. The finalizer has three spellings, the bare name, `/foreground`, and `/background`, and a non-cascading delete is `argocd app delete APPNAME --cascade=false` or the UI choice Non-Cascading (Orphan), see [[findings/argo-cd-applications-use-three-cascade-finalizer-names-and-a-non-cascading-delete-removes-the-finalizer]]. [[sources/research-gap-m1-finalizers]]
 
 ## Why the example matters
 

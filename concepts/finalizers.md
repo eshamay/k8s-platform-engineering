@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m1-finalizers
+    hash: 014549e333b6
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -74,7 +77,7 @@ Read `metadata.finalizers` on the object and its dependents, check the owner ref
 
 ## Evidence limits
 
-The dossier found no named-company postmortem, so the pitfalls rest on project documentation and practitioner blogs. How Flux, ACK, Config Connector, and kro name and remove their own finalizers was not established. See [[open-knowledge-gaps]].
+The dossier found no named-company postmortem, so the pitfalls rest on project documentation and practitioner blogs. The finalizer names of Flux (`finalizers.fluxcd.io`), ACK, Config Connector, and kro are now confirmed from source, see [[findings/ack-config-connector-and-kro-each-name-their-finalizers-differently-and-remove-them-only-after-cleanup]] and [[findings/flux-kustomization-uses-finalizers-fluxcd-io-and-removes-it-even-when-waitfortermination-times-out]]. Cluster API deliberately uses annotation hooks and not finalizers for machine deletion, see [[findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers]]. Whether Crossplane will protect the credentials Secret remains open, see [[examples/crossplane-issue-7801-asks-how-to-protect-provider-credentials-during-namespace-deletion-and-is-open-with-no-maintainer-reply]]. [[sources/research-gap-m1-finalizers]]
 
 ## Related
 

@@ -136,7 +136,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/spotify-kubecon-2019-keynote-slides-with-notes]] — David Xia's slide deck with speaker notes for the Spotify talk, dated 2019-05-22
 - [[sources/research-gap-b1-recheck-kro-crossplane]] — verified dossier rechecking kro v0.9.4 and v0.10.0 tuning, requeue, conditions, and states, and Crossplane v2.5.0 readiness, status writes, server-side apply, and scaling defaults from source (active)
 - [[sources/research-gap-b1-recheck-flux-k8s]] — verified dossier rechecking the Flux jitter default and the five-minute wording origin, helm-controller and Helm 4 server-side apply, the Mutating Admission Policy v1.30 gate, StorageVersionMigration progress, Requeue and issue 808, v1.36 staleness metrics, and KEP-1040 (active)
-
+- [[sources/research-gap-m1-finalizers]] — verified dossier on Argo CD, Flux, ACK, Config Connector, and kro finalizer names and removal, Crossplane issue 7801, and Cluster API issue 1514, 2026-11-26 (active)
 
 ## Examples
 
@@ -238,9 +238,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/kubebuilder-reconcile-adds-a-finalizer-before-external-work-and-removes-it-after-cleanup]] — the controller-author pattern (draft)
 - [[examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads]] — cascade and preserve switches (draft)
 - [[examples/argo-cd-pull-request-22342-added-a-60-second-default-jitter-while-keeping-the-three-minute-maximum]] — the 2025-03-13 change from a flat 180 seconds to 120 seconds plus 60 seconds of jitter (active)
-- [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]] — four deletion policies (draft)
-- [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] — ordered teardown (draft)
-- [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]] — gated machine removal (draft)
+- [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]] — four deletion policies (active)
+- [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] — ordered teardown (active)
+- [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]] — gated machine removal (active)
 - [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]] — defaults and opt-outs (draft)
 - [[examples/stuck-terminating-namespace-fixed-through-the-finalize-subresource]] — last-resort namespace fix (draft)
 - [[examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete]] — command-level runbook (draft)
@@ -362,7 +362,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/crossplane-pull-requests-7783-and-7787-say-fromstruct-drops-managedfields-on-the-composite-resource]] — two open pull requests tied to issue 7453, which no maintainer has reproduced (active)
 - [[examples/controller-runtime-pull-request-3107-deprecated-requeue-true-on-2025-02-24-and-pull-request-3574-to-document-it-is-still-open]] — deprecation of Requeue true and the open documentation pull request (active)
 - [[examples/kubernetes-pull-request-138451-registered-the-statefulset-stale-sync-skip-metric-in-v1-37]] — StatefulSet skip metric defined but unregistered at v1.36.0 (active)
-
+- [[examples/crossplane-issue-7801-asks-how-to-protect-provider-credentials-during-namespace-deletion-and-is-open-with-no-maintainer-reply]] — open issue with no maintainer reply and a third-party measurement (active)
+- [[examples/cluster-api-issue-1514-was-closed-in-april-2020-in-favor-of-a-proposal-that-chose-annotation-hooks]] — finalizer, dependency list, CRD, or annotation debate and its outcome (active)
 
 ## Comparisons
 
@@ -394,7 +395,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]] — queues, jitter, workers, and resync (draft)
 - [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] — workers, cache, sharding, and rate caps (contradicted: the Crossplane rate-cap cells describe a pre-v2.1 flag meaning)
 - [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] — lost-create recovery and adoption (active)
-- [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]] — what holds a parent and how teardown is ordered (draft)
+- [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]] — what holds a parent and how teardown is ordered (active)
 - [[comparisons/background-foreground-and-orphan-propagation-modes]] — three modes side by side (draft)
 - [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]] — owner references, inventory, and finalizers by tool (draft)
 - [[comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api]] — condition types by tool (draft)
@@ -457,7 +458,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]] — why the pre-dry-run takeover is its own opt-in list (active)
 - [[decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off]] — two mitigations for hooks skipped by self-heal (draft)
 - [[decisions/set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses]] — opt out of the create-pending guard per provider (draft)
-- [[decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout]] — options from ACK issue 3122 (draft)
+- [[decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout]] — options from ACK issue 3122 (draft)- [[decisions/block-an-object-s-deletion-with-a-finalizer-a-spec-dependency-list-or-an-annotation-hook]] — options from Cluster API issue 1514, no recommendation (draft)
 
 ## Findings
 
@@ -551,7 +552,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]] — the dangerous shortcut (draft)
 - [[findings/a-finalizer-added-after-the-delete-request-is-too-late-and-new-ones-are-refused]] — register before the delete (draft)
 - [[findings/cleanup-that-always-errors-or-assumes-the-external-resource-exists-strands-the-object]] — idempotent cleanup (draft)
-- [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]] — namespace delete ordering (draft)
+- [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]] — namespace delete ordering (active)
 - [[findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone]] — controller gone, resources billing (draft)
 - [[findings/foreground-deletion-waits-only-for-dependents-with-blockownerdeletion-true]] — what the owner waits for (draft)
 - [[findings/machine-deletion-stalls-on-disruption-budgets-attached-volumes-and-failing-hooks]] — drain blockers (draft)
@@ -722,7 +723,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]] — KEP versus code gates (active)
 - [[findings/the-kep-1040-readme-history-stops-at-v1-26-while-its-kep-yaml-records-stable-in-v1-29]] — APF lifecycle record mismatch (active)
 - [[findings/apf-fair-queuing-allocates-seats-equally-and-a-slow-reader-can-hold-hand-size-times-ten-seats]] — APF fair queuing limits (active)
-
+- [[findings/argo-cd-applications-use-three-cascade-finalizer-names-and-a-non-cascading-delete-removes-the-finalizer]] — three cascade spellings, hook finalizers, and the non-cascading delete routes (active)
+- [[findings/flux-kustomization-uses-finalizers-fluxcd-io-and-removes-it-even-when-waitfortermination-times-out]] — finalizer name and the bounded wait (active)
+- [[findings/ack-config-connector-and-kro-each-name-their-finalizers-differently-and-remove-them-only-after-cleanup]] — naming schemes and removal points (active)
+- [[findings/config-connector-has-a-second-deletion-defender-finalizer-and-removes-both-finalizers-with-an-abandon-setting-when-its-crd-is-uninstalled]] — the second finalizer and the CRD uninstall path (active)
+- [[findings/crossplane-protects-providerconfigs-while-managed-resources-terminate-but-the-credentials-secret-behind-them-is-still-unprotected]] — pull request 1113 merged, Secret still open under issue 7801 (active)
+- [[findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers]] — the implemented proposal's reason (active)
 
 ## Outputs
 

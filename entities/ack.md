@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m1-finalizers
+    hash: 014549e333b6
+    ingested: 2026-11-26
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
@@ -114,7 +117,7 @@ The ACK adoption guide describes the `services.k8s.aws/adoption-policy` annotati
 
 ## Deletion policy
 
-By default ACK deletes the AWS resource and then the Kubernetes object. The `services.k8s.aws/deletion-policy: retain` annotation keeps the AWS resource, which the guide recommends for cluster migration and for S3 buckets and RDS databases. Lookup order is resource annotation, namespace annotation, then controller default, and retained resources can be re-imported with the adoption annotations. The page does not say how the ACK finalizer is named or removed. [[sources/research-finalizers]] See [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]] and [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]].
+By default ACK deletes the AWS resource and then the Kubernetes object. The `services.k8s.aws/deletion-policy: retain` annotation keeps the AWS resource, which the guide recommends for cluster migration and for S3 buckets and RDS databases. Lookup order is resource annotation, namespace annotation, then controller default, and retained resources can be re-imported with the adoption annotations. The page does not say how the ACK finalizer is named or removed. Source shows the name template `finalizers.<apiGroup>/<Kind>`, removed after the AWS cleanup, see [[findings/ack-config-connector-and-kro-each-name-their-finalizers-differently-and-remove-them-only-after-cleanup]]. [[sources/research-finalizers]] See [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]] and [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]].
 
 ## Conditions
 

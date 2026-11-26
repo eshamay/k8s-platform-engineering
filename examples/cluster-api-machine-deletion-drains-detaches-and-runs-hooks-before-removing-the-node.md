@@ -1,10 +1,13 @@
 ---
 title: "Cluster API machine deletion drains, detaches, and runs hooks before removing the node"
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: research-gap-m1-finalizers
+    hash: 014549e333b6
+    ingested: 2026-11-26
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
@@ -24,7 +27,7 @@ A `deletionTimestamp` on the Machine starts a multi-phase teardown. The controll
 
 ## Why the example matters
 
-The sequence shows deletion as a workflow, not a single cleanup step. Each phase can block, and each block has a documented cause. See [[findings/machine-deletion-stalls-on-disruption-budgets-attached-volumes-and-failing-hooks]]. The dossier cites Cluster API issue 1514 on blocking deletion with a finalizer or an annotation as a search hit that it did not read. See [[open-knowledge-gaps]].
+The sequence shows deletion as a workflow, not a single cleanup step. Each phase can block, and each block has a documented cause. See [[findings/machine-deletion-stalls-on-disruption-budgets-attached-volumes-and-failing-hooks]]. Cluster API issue 1514 on blocking deletion with a finalizer or an annotation was closed in 2020 in favor of a proposal that chose the annotation hooks, see [[examples/cluster-api-issue-1514-was-closed-in-april-2020-in-favor-of-a-proposal-that-chose-annotation-hooks]] and [[findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers]]. [[sources/research-gap-m1-finalizers]]
 
 ## Related
 

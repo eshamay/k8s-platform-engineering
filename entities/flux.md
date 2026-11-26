@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m1-finalizers
+    hash: 014549e333b6
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-flux-k8s
     hash: c78dc9a9635e
     ingested: 2026-11-26
@@ -175,7 +178,7 @@ The vertical scaling page says Flux raises parallel reconciles with `--concurren
 
 ## Deletion policy and finalizers
 
-The Kustomization reference says garbage collection also runs when a Kustomization is deleted. `spec.deletionPolicy` takes MirrorPrune (default), Delete, WaitForTermination, or Orphan, and WaitForTermination blocks until children have left etcd, so Flux's own finalizer waits on the finalizers of its children. The per-object `kustomize.toolkit.fluxcd.io/prune: disabled` annotation opts an object out of pruning. The dossier read about 100 KB of a page of about 121 KB and did not confirm the name `finalizers.fluxcd.io` from a primary source. [[sources/research-finalizers]] See [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]] and [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
+The Kustomization reference says garbage collection also runs when a Kustomization is deleted. `spec.deletionPolicy` takes MirrorPrune (default), Delete, WaitForTermination, or Orphan, and WaitForTermination waits for children to leave etcd, bounded by the Kustomization timeout, and the finalizer is removed even when the wait fails (correction recorded 2026-11-26). The per-object `kustomize.toolkit.fluxcd.io/prune: disabled` annotation opts an object out of pruning. The finalizer name `finalizers.fluxcd.io` is confirmed from the kustomize-controller source, see [[findings/flux-kustomization-uses-finalizers-fluxcd-io-and-removes-it-even-when-waitfortermination-times-out]]. [[sources/research-gap-m1-finalizers]] [[sources/research-finalizers]] See [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]] and [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
 
 ## Pruning without owner references
 

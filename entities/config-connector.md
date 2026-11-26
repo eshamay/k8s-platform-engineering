@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m1-finalizers
+    hash: 014549e333b6
+    ingested: 2026-11-26
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
@@ -118,7 +121,7 @@ The managing-and-deleting-resources page says that if a resource does not exist 
 
 ## Deletion policy and finalizer behavior
 
-Deleting a Config Connector object deletes the Google Cloud resource by default. The annotation `cnrm.cloud.google.com/deletion-policy: abandon` keeps the resource, and it must be applied before the manifest is deleted. The official page does not discuss finalizers. A consultancy blog reports that the finalizer deletes a resource that production uses, and that deleting the GKE cluster stops the controller and orphans cloud resources that keep billing. [[sources/research-finalizers]] See [[findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone]] and [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]].
+Deleting a Config Connector object deletes the Google Cloud resource by default. The annotation `cnrm.cloud.google.com/deletion-policy: abandon` keeps the resource, and it must be applied before the manifest is deleted. The official page does not discuss finalizers. Source shows `cnrm.cloud.google.com/finalizer` and a second `cnrm.cloud.google.com/deletion-defender` finalizer, see [[findings/ack-config-connector-and-kro-each-name-their-finalizers-differently-and-remove-them-only-after-cleanup]] and [[findings/config-connector-has-a-second-deletion-defender-finalizer-and-removes-both-finalizers-with-an-abandon-setting-when-its-crd-is-uninstalled]]. A consultancy blog reports that the finalizer deletes a resource that production uses, and that deleting the GKE cluster stops the controller and orphans cloud resources that keep billing. [[sources/research-finalizers]] See [[findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone]] and [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]].
 
 ## Abandon policy versus owner references
 

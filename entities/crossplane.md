@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m1-finalizers
+    hash: 014549e333b6
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-kro-crossplane
     hash: ccee0efa5bdd
     ingested: 2026-11-26
@@ -190,7 +193,7 @@ Crossplane issue 2595 led to a `--max-reconcile-rate` flag, merged for Crossplan
 
 ## Finalizers, deletion policy, and teardown ordering
 
-A managed resource holds a finalizer until the external resource is fully gone, and `deletionPolicy` is Delete by default, with Orphan keeping the cloud resource. Enabled `managementPolicies` interact with `deletionPolicy` on legacy managed resources through a combining resolver (correction recorded 2026-11-26, see below). Issue 7801 describes a failure in which, on namespace deletion, a credentials Secret without a finalizer disappears before managed resources finish cleanup and leaves them stuck Terminating. Its resolution was not confirmed. [[sources/research-finalizers]] See [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]], [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]], and [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]].
+A managed resource holds a finalizer until the external resource is fully gone, and `deletionPolicy` is Delete by default, with Orphan keeping the cloud resource. Enabled `managementPolicies` interact with `deletionPolicy` on legacy managed resources through a combining resolver (correction recorded 2026-11-26, see below). Issue 7801 describes a failure in which, on namespace deletion, a credentials Secret without a finalizer disappears before managed resources finish cleanup and leaves them stuck Terminating. Its resolution was not confirmed. [[sources/research-finalizers]] As of 2026-11-26 the issue is still open with no maintainer reply and no linked fix, while ProviderConfig protection merged on 2026-09-08, see [[findings/crossplane-protects-providerconfigs-while-managed-resources-terminate-but-the-credentials-secret-behind-them-is-still-unprotected]]. [[sources/research-gap-m1-finalizers]] See [[examples/crossplane-ack-and-config-connector-delete-the-cloud-resource-before-the-kubernetes-object]], [[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]], and [[decisions/protect-shared-credentials-with-finalizers-caching-or-ordered-teardown]].
 
 ## Owner references and composite deletion policy
 

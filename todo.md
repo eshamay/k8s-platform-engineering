@@ -50,6 +50,8 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-part-2-storageversionmigration-passage-with-the-progress-message-layout]] — open
 - [[#update-part-5-apf-passage-with-the-kep-1040-fair-queuing-limits]] — open
 - [[#review-closed-gap-resolutions-refined-by-the-b1-recheck-of-flux-and-kubernetes]] — open
+- [[#update-flux-ramp-up-waitfortermination-passage-with-the-confirmed-finalizer-name-and-timeout-behavior]] — open
+- [[#update-crossplane-ramp-up-issue-7801-passage-with-the-open-state-and-the-merged-providerconfig-protection]] — open
 
 ## Open
 
@@ -606,6 +608,20 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** Closed gaps were not edited. Six closed Resolutions carry "Not settled" statements the recheck refines: "Flux default reconcile interval and drift-detection wording" (the jitter value is 5 percent and the wording originated in a 2022-08-10 docs commit), "Flux pre-dry-run manager takeover flag and current SSA documentation" (the helm-controller flag and Helm 4 server-side apply are now read), "Mutating Admission Policy release status" (the v1.30 docs figure is explained by the gate registration), "StorageVersionMigration GA details in Kubernetes v1.37" (the progress layout is text in the `Running` message), "Requeue true backoff behavior in current controller-runtime" (issue 808 never claims an immediate requeue), and "Scale numbers from model digests need rechecking" (the KEP-1040 residual is now read). Review whether the user wants to annotate them through `sticki-gaps`.
 - **Why:** Closed Resolutions stay as the reasoning trail, and the reader should know which statements were later refined. The 2026-11-26 dossier [[sources/research-gap-b1-recheck-flux-k8s]] supplies the evidence.
 - **Acceptance:** User decision recorded for each closed gap.
+- **Drafted by:** agent on 2026-11-26
+
+## Update Flux ramp-up WaitForTermination passage with the confirmed finalizer name and timeout behavior — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "The `spec.deletionPolicy` takes four values" says WaitForTermination blocks until the children have left etcd, so Flux's own deletion waits on every finalizer its children carry, and says the finalizer name is not stated. Revise it to say the finalizer is `finalizers.fluxcd.io` and that the wait is bounded by the Kustomization timeout, after which Flux logs an error and removes its finalizer anyway. Also revise the matching sentence in the deletion paragraph of `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md` that ends "One unconfirmed detail: the wiki did not establish from a primary source what Flux names its own finalizer", and add the three Argo CD finalizer spellings to its Argo CD sentence.
+- **Why:** The passage predates the dossier [[sources/research-gap-m1-finalizers]], which read the source and the issue thread.
+- **Acceptance:** Passage revised and citing [[findings/flux-kustomization-uses-finalizers-fluxcd-io-and-removes-it-even-when-waitfortermination-times-out]] and [[findings/argo-cd-applications-use-three-cascade-finalizer-names-and-a-non-cascading-delete-removes-the-finalizer]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update Crossplane ramp-up issue 7801 passage with the open state and the merged ProviderConfig protection — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "Related ordering problems: a credentials Secret with no finalizer" says the final resolution of issue 7801 was not confirmed. Revise it to say the issue is open on 2026-11-26 with no maintainer reply, that ProviderConfig protection (crossplane-runtime pull request 1113) merged on 2026-09-08, and that the Secret behind the ProviderConfig is still unprotected.
+- **Why:** The passage predates the dossier [[sources/research-gap-m1-finalizers]], which read the source and the issue thread.
+- **Acceptance:** Passage revised and citing [[findings/crossplane-protects-providerconfigs-while-managed-resources-terminate-but-the-credentials-secret-behind-them-is-still-unprotected]].
 - **Drafted by:** agent on 2026-11-26
 
 ## Dropped

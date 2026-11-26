@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: research-gap-m1-finalizers
+    hash: 014549e333b6
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-kro-crossplane
     hash: ccee0efa5bdd
     ingested: 2026-11-26
@@ -149,7 +152,7 @@ The idempotency dossier could read only the kro home page, which claims continuo
 
 ## Instance deletion
 
-kro keeps the instance finalizer until all managed resources are gone, finds them from a persisted ApplySet inventory, and deletes them in reverse dependency order in waves, each fully gone before the next. A stuck instance shows `ResourcesReady=Unknown` with reason `UnderDeletion`, and the fix is to find finalizers on children in the active wave. [[sources/research-finalizers]] See [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] and [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
+kro keeps the instance finalizer until all managed resources are gone, finds them from a persisted ApplySet inventory, and deletes them in reverse dependency order in waves, each fully gone before the next. A stuck instance shows `ResourcesReady=Unknown` with reason `UnderDeletion`, and the fix is to find finalizers on children in the active wave. [[sources/research-finalizers]] The instance finalizer is `kro.run/finalizer`, and it is removed by a merge patch only when no deletion candidates remain, see [[findings/ack-config-connector-and-kro-each-name-their-finalizers-differently-and-remove-them-only-after-cleanup]]. [[sources/research-gap-m1-finalizers]] See [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]] and [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]].
 
 ## Ownership of child resources (not covered)
 
