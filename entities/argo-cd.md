@@ -29,6 +29,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-spec-status-split
+    hash: 598e6132ea4f
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -76,3 +79,7 @@ Argo CD users who hit "no matches for kind" when a Helm or GitOps deployment app
 ## Large CRDs and client-side apply
 
 The ApplicationSets CRD grew large enough that its `last-applied-configuration` annotation exceeded the 262,144-byte limit under client-side apply. The reported workarounds are the `ServerSideApply=true` sync option and, for Kustomize, `ClientSideApplyMigration=false`. [[sources/research-custom-resource-definition]] See [[examples/argo-cd-applicationsets-crd-too-large-for-client-side-apply]] and [[findings/large-crds-exceed-the-client-side-apply-annotation-limit]].
+
+## Health assessment from resource status
+
+Argo CD derives health from `status`: built-in checks for core types and Lua scripts that read `obj.status` for CRDs, with results Healthy, Progressing, Degraded, or Suspended, and application health as the worst of the immediate children. Without a script, CRD health cannot be derived reliably. Argo CD maintainers also described comparing managed-field timestamps as a fragile workaround for ACK conditions that lack `observedGeneration`. Argo CD's own status semantics beyond health checks were not read at primary-source depth. [[sources/research-spec-status-split]] See [[examples/argo-cd-rolls-up-child-health-with-lua-checks]] and [[findings/missing-observedgeneration-hides-stale-status]].

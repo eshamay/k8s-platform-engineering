@@ -46,6 +46,12 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#crd-handling-in-cluster-api-config-connector-ack-and-backstage]] — open, unassigned
 - [[#status-of-the-conversion-webhook-and-garbage-collection-problem]] — open, unassigned
 - [[#contents-of-the-k8saf-admission-webhook-postmortems]] — open, unassigned
+- [[#kro-status-schema-and-crossplane-v2-status-propagation]] — open, unassigned
+- [[#kstatus-rules-for-combining-observedgeneration-and-conditions]] — open, unassigned
+- [[#config-connector-and-argo-cd-status-semantics-beyond-health-checks]] — open, unassigned
+- [[#where-observedgeneration-should-live]] — open, unassigned
+- [[#generic-readiness-when-cluster-api-moves-from-ready-to-available]] — open, unassigned
+- [[#named-case-studies-and-postmortems-for-status-problems]] — open, unassigned
 
 ---
 
@@ -69,6 +75,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Only marginally helpful. The dossier names the Flux controllers (source, kustomize, helm, notification, image automation), says Kustomizations reconcile every 5 minutes and that bootstrap commits Flux's own manifests, and describes Argo CD's API server, repository server, and application controller. It does not trace the handoff between controllers, finalizers, or condition updates. See [[comparisons/flux-versus-argo-cd-architecture]] and [[entities/flux]].
 - **Possible resolution from [[sources/research-gvk-and-gvr]]:** Only marginally helpful. The dossier shows one step of the trace that depends on API discovery: Flux Kustomization `dependsOn` and `healthChecks` reference resources by apiVersion and kind, so the kustomize-controller must resolve each GVK to a resource through discovery before it can apply or assess health. It does not trace source fetch, finalizers, or status conditions. See [[comparisons/missing-crd-handling-flux-versus-argo-cd]] and [[entities/flux]].
 - **Possible resolution from [[sources/research-custom-resource-definition]]:** Only marginally helpful. The dossier adds one step to the trace for charts that ship CRDs: Helm will not upgrade or delete them, so Flux's HelmRelease `crds` policies (Skip, Create, CreateReplace) and `dependsOn` decide whether CRDs exist before dependent releases are applied. It does not trace the rest of the flow.
+- **Possible resolution from [[sources/research-spec-status-split]]:** Only marginally helpful. The dossier explains the last stretch of the trace: the controller writes conditions and `observedGeneration` through the `/status` subresource, Flux reads `Ready`, `Reconciling`, and `Stalled`, and a lagging `observedGeneration` means the spec change is still pending. It does not trace source fetch or finalizers. See [[concepts/spec-status-split]] and [[examples/flux-helmrelease-status-records-attempts-and-health]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -90,6 +97,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Only marginally helpful. The dossier shows that both Crossplane and kro sit beneath a GitOps agent and bring their own reconcile loops, that Crossplane needs custom health checks in Argo CD, and that kro validates CEL at creation time and composes with ACK and Config Connector. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[findings/two-reconcile-loops-hide-status-and-drift-at-two-layers]] and [[examples/crossplane-resources-hosted-by-argo-cd]].
 - **Possible resolution from [[sources/research-gvk-and-gvr]]:** Partly helpful on the API-definition side. The dossier shows that both tools are GVK factories: a Crossplane XRD declares group, kind, plural, versions, and scope and is named `<plural>.<group>` with immutable group and names, while a kro RGD `schema` declares apiVersion, kind, and an optional group (default `kro.run`), converts a SimpleSchema to OpenAPI v3, and generates the CRD. It does not compare Composition functions with RGD graphs or readiness. See [[examples/xrd-and-rgd-declare-platform-gvks]] and [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]].
 - **Possible resolution from [[sources/research-custom-resource-definition]]:** Partly helpful for the API-definition step only. The dossier compares how an XRD (OpenAPI v3 schema, scope options, conversion webhooks for breaking changes, immutable group and names) and a kro ResourceGraphDefinition (simple schema, CEL-inferred dependencies, definition-time validation) each generate a CRD. It does not compare execution models. See [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]].
+- **Possible resolution from [[sources/research-spec-status-split]]:** Partly helpful on the status side only. A Crossplane XR reports `Synced` and `Ready`, with `Ready` meaning the function pipeline reports all composed resources ready, while kro pulls status from composed resources through CEL. kro's status schema was not read because its documentation URL returned 404. See [[examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready]] and [[entities/kro]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -111,6 +119,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Marginally helpful. The only scale datum is Crossplane's guidance to raise the Argo CD Kubernetes client QPS to 300 because of the many CRDs. It has no sharding or concurrency data for Flux or Crossplane controllers. See [[examples/crossplane-resources-hosted-by-argo-cd]].
 - **Possible resolution from [[sources/research-gvk-and-gvr]]:** Marginally helpful. The dossier shows that aggregated discovery (stable in v1.30) collapses per-group-version discovery requests into one, which lowers client startup cost, and that mappers rebuild on lookup failure behind a rate limit. It does not cover informer caches keyed by GVR, workqueues, or sharding. See [[concepts/api-discovery-and-restmapper]] and [[comparisons/restmapper-strategies-static-deferred-and-dynamic]].
 - **Possible resolution from [[sources/research-custom-resource-definition]]:** Partly helpful on the apiserver side. Custom resources share etcd and watch-cache paths with built-in objects, and Ant Group's 10,000-plus node write-up cut apiserver memory from roughly 400 GB to 100 GB by serving lists from the watch cache, with label indexing and etcd splitting. It has no controller sharding or workqueue data and no CRD-specific numbers. See [[examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd]].
+- **Possible resolution from [[sources/research-spec-status-split]]:** Marginally helpful. Writing status through the main resource bumps generation and triggers extra reconciles, which is avoidable load on the controller and API server. The dossier gives no scale numbers. See [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -509,3 +518,63 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Open and summarize the linked posts.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** webhooks, postmortems
+
+## kro status schema and Crossplane v2 status propagation — status: open
+
+- **Question:** How do kro ResourceGraphDefinitions define and populate instance status, and how does Crossplane v2 propagate readiness from a function pipeline into composite status?
+- **Why it matters:** The dossier read only the kro overview (the RGD URL returned 404) and not the Crossplane composition-function documentation. See [[entities/kro]] and [[examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Fetch the kro ResourceGraphDefinition docs and the Crossplane composition-function docs.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, crossplane, status
+
+## kstatus rules for combining observedGeneration and conditions — status: open
+
+- **Question:** Exactly how does kstatus combine `observedGeneration`, `Ready`, `Reconciling`, and `Stalled` to produce InProgress, Current, or Failed?
+- **Why it matters:** The dossier's summary of the package page was brief. The precise rules explain the premature-readiness race. See [[entities/kstatus]] and [[findings/premature-readiness-in-kstatus-based-tools]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the cli-utils source or documentation directly.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kstatus, conditions
+
+## Config Connector and Argo CD status semantics beyond health checks — status: open
+
+- **Question:** What conditions and generation tracking do Config Connector resources publish, and how does Argo CD interpret status beyond its health checks?
+- **Why it matters:** No primary source on Config Connector was fetched and Argo CD was read only for health. See [[entities/config-connector]] and [[entities/argo-cd]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Config Connector resource status documentation and Argo CD's resource tracking documentation.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** config-connector, argo-cd, status
+
+## Where observedGeneration should live — status: open
+
+- **Question:** Should `observedGeneration` live at the top level of status, on each condition, or both, given that the conventions say per condition while Flux and Cluster API use a top-level field?
+- **Why it matters:** Consumers need one rule to detect stale status. See [[comparisons/observedgeneration-top-level-versus-per-condition]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the final 15,000 characters of the API conventions and the Flux and Cluster API contract documents.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** observedgeneration, conditions
+
+## Generic readiness when Cluster API moves from Ready to Available — status: open
+
+- **Question:** How should generic tools such as Flux and kstatus judge Cluster API objects now that Cluster API is replacing `Ready` with `Available`?
+- **Why it matters:** Flux added CEL health checks, but a general answer is unresolved. See [[findings/premature-readiness-in-kstatus-based-tools]] and [[entities/cluster-api]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Cluster API condition-transition proposal and Flux CEL health check documentation.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cluster-api, kstatus, flux
+
+## Named case studies and postmortems for status problems — status: open
+
+- **Question:** Are there named end-user case studies or postmortems about reconcile loops, stale status, or false readiness caused by status handling?
+- **Why it matters:** The dossier found only project docs and issues. See [[findings/misleading-readiness-and-stale-status]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Search conference talks and public postmortems.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** case-studies, postmortems, status

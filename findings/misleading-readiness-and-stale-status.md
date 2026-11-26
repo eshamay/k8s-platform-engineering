@@ -8,6 +8,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-spec-status-split
+    hash: 598e6132ea4f
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, conditions, observedgeneration, status]
 ---
@@ -29,3 +32,7 @@ Compare `observedGeneration` to `metadata.generation` before trusting a conditio
 ## Related
 
 [[concepts/eventual-consistency-and-convergence]], [[findings/ordering-and-dependency-failures]]
+
+## Further sources of stale and premature readiness
+
+The spec and status dossier adds three concrete cases. ACK conditions lack `observedGeneration`, so a stale `ResourceSynced=True` cannot be told from a current one. A Cluster API resource with `observedGeneration` but no conditions can look ready to kstatus, and Flux may proceed to dependents too early. A suspended Flux resource keeps its last condition and can look healthy. [[sources/research-spec-status-split]] See [[findings/missing-observedgeneration-hides-stale-status]], [[findings/premature-readiness-in-kstatus-based-tools]], and [[examples/flux-helmrelease-status-records-attempts-and-health]].

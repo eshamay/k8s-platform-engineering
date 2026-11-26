@@ -20,6 +20,9 @@ sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
     ingested: 2026-11-25
+  - id: research-spec-status-split
+    hash: 598e6132ea4f
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -55,3 +58,7 @@ Config Connector has direct (Go SDK), Terraform-based, DCL-based, and IAM contro
 ## Credentials and GitOps role
 
 Config Connector installs CRDs and controllers that reconcile Kubernetes objects into Google Cloud resources asynchronously, using the controller's own IAM service account instead of individual developers' identities. This centralizes cloud authorization behind Kubernetes RBAC, the same credential-concentration trade-off GitOps agents raise. The dossier did not read deletion or abandon behavior. [[sources/research-gitops-pull-based-delivery]] See [[findings/blast-radius-and-privilege-centralization]] and [[concepts/gitops-pull-based-delivery]].
+
+## Status semantics
+
+The spec and status dossier fetched no primary source on Config Connector, so its condition vocabulary and `observedGeneration` behavior are unknown. [[sources/research-spec-status-split]] See [[open-knowledge-gaps]].

@@ -29,6 +29,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-spec-status-split
+    hash: 598e6132ea4f
+    ingested: 2026-11-25
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -74,3 +77,7 @@ In an RGD, `schema` declares `apiVersion`, `kind`, and an optional `group` that 
 ## CRD generation from an RGD
 
 Applying a ResourceGraphDefinition makes kro validate it, generate and register a CRD, and run a dynamic controller for instances, with dependencies inferred from CEL expressions and errors caught at definition time. [[sources/research-custom-resource-definition]] See [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]].
+
+## Spec schema and status from composed resources
+
+kro lets a platform author define a schema that users fill in and wire resources together with CEL expressions that reference user spec and the status of underlying resources, which also determines dependency order. This is the same spec-and-status split at the platform layer. The dossier read only the kro overview, because the ResourceGraphDefinition concept URL returned 404, so how kro builds and reports its own status schema is not established. [[sources/research-spec-status-split]] See [[concepts/spec-status-split]] and [[open-knowledge-gaps]].

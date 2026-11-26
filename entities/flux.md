@@ -32,6 +32,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-spec-status-split
+    hash: 598e6132ea4f
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -81,3 +84,7 @@ The Kustomization API orders work with `.spec.dependsOn`, `.spec.healthChecks`, 
 ## CRD policies in HelmRelease
 
 A HelmRelease has `spec.install.crds` and `spec.upgrade.crds` with Skip, Create (the default), and CreateReplace policies, because Helm has no native support for upgrading or deleting CRDs. CreateReplace updates existing CRDs but does not delete removed ones, and `dependsOn` should order CRD-providing releases first. [[sources/research-custom-resource-definition]] See [[examples/flux-helmrelease-crd-policies-createreplace-and-dependson]] and [[findings/helm-does-not-upgrade-or-delete-crds]].
+
+## Status and readiness semantics
+
+Flux HelmRelease status carries the conditions `Ready`, `Reconciling`, `Stalled`, `Released`, and `TestSuccess`, plus `observedGeneration`, failure counters, last-attempted revision, config digest, and release action, `lastHandledReconcileAt`, and a pointer to the generated HelmChart. `Reconciling=True` is normal progress, and an `observedGeneration` below `metadata.generation` means a spec change is pending. Flux relies on kstatus to judge dependency readiness, and it added CEL-based custom health checks for Cluster API after kstatus stopped fitting. [[sources/research-spec-status-split]] See [[examples/flux-helmrelease-status-records-attempts-and-health]], [[examples/cluster-api-readiness-gates-flux-dependents]], and [[entities/kstatus]].

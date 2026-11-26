@@ -32,6 +32,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-spec-status-split
+    hash: 598e6132ea4f
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -81,3 +84,7 @@ An XRD declares `group`, `kind`, `plural`, a version list, and a `scope`, and Cr
 ## XRD scope, versions, and immutability
 
 An XRD generates a CRD for the composite resource and, in older modes, a claim CRD. Scope can be Namespaced (the default in v2), Cluster, or LegacyCluster, multiple versions are allowed, breaking schema changes need conversion webhooks, schema changes may need a pod restart, and group and names cannot change after creation. The dossier read the latest documentation because the v1.14 URL returned 404. [[sources/research-custom-resource-definition]] See [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]].
+
+## Spec and status of composite resources
+
+A composite resource's spec carries composition selection and pinning (`compositionRef`, `compositionSelector`, `compositionUpdatePolicy`, revision references) plus pause and poll-interval annotations. Its status reports `Synced` and `Ready`, so an operator can tell a broken platform from a resource that is still coming up. Issue 4094 showed a claim putting free text into the `Ready` condition's `reason`, fixed in v1.13. The dossier did not read Crossplane v2 function-pipeline status propagation. [[sources/research-spec-status-split]] See [[examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready]] and [[findings/free-text-in-a-condition-reason-breaks-consumers]].

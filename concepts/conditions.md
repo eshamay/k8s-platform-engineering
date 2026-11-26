@@ -11,6 +11,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-spec-status-split
+    hash: 598e6132ea4f
+    ingested: 2026-11-25
 aliases: [status.conditions]
 tags: [controllers, api-machinery]
 ---
@@ -36,3 +39,7 @@ The API conventions define the standard conditions structure and `observedGenera
 ## To research
 
 The standard condition conventions, `observedGeneration` handling, and inconsistencies between tools.
+
+## Condition format and who reads it
+
+The API conventions define a condition as a PascalCase `type` that describes the current observed state, a `True`, `False`, or `Unknown` status, a CamelCase `reason` meant for programs, a human-readable `message`, and `observedGeneration`. Flux, Argo CD, kstatus, Cluster API, and Crossplane all read conditions to decide readiness, so a convention slip such as free text in `reason` breaks consumers. Flux treats `Reconciling=True` as normal progress and `Stalled` as no progress without a change. [[sources/research-spec-status-split]] See [[comparisons/health-and-readiness-models-across-tools]], [[findings/free-text-in-a-condition-reason-breaks-consumers]], [[findings/missing-observedgeneration-hides-stale-status]], [[comparisons/observedgeneration-top-level-versus-per-condition]], and [[entities/kstatus]].

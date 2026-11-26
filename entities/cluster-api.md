@@ -20,6 +20,9 @@ sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
     ingested: 2026-11-25
+  - id: research-spec-status-split
+    hash: 598e6132ea4f
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -55,3 +58,7 @@ A MachineHealthCheck evaluates Node conditions against timeouts and remediates u
 ## Fleets as GitOps targets
 
 A management cluster runs Cluster API and providers that reconcile Cluster, Machine, MachineDeployment, and KubeadmControlPlane resources into workload clusters, and machines are replaced rather than patched in place. The declarative model makes cluster fleets natural GitOps targets, with the hub cluster pulling cluster definitions from Git and workload clusters pulling their own add-ons. [[sources/research-gitops-pull-based-delivery]] See [[examples/cluster-fleet-lifecycle-with-cluster-api]] and [[concepts/gitops-pull-based-delivery]].
+
+## Readiness conventions and kstatus
+
+Cluster API is moving from the `Ready` condition to `Available`, which kstatus does not expect, so Flux added CEL-based custom health checks for it. A proposal to default `status.observedGeneration` to `-1` to avoid a "resource is ready" race was closed as not planned in May 2025. [[sources/research-spec-status-split]] See [[examples/cluster-api-readiness-gates-flux-dependents]] and [[findings/premature-readiness-in-kstatus-based-tools]].

@@ -14,6 +14,9 @@ sources:
   - id: research-custom-resource-definition
     hash: 6c26f7f89147
     ingested: 2026-11-25
+  - id: research-spec-status-split
+    hash: 598e6132ea4f
+    ingested: 2026-11-25
 aliases: [Kubebuilder Book]
 tags: [tool, operators, framework]
 ---
@@ -37,3 +40,7 @@ The CronJob tutorial chapter on GVKs defines group, version, kind, and resource,
 ## Hub-and-spoke conversion
 
 The Kubebuilder book describes the hub-and-spoke pattern for multi-version CRDs, where every version converts only to and from one hub version. [[sources/research-custom-resource-definition]] See [[examples/kubebuilder-hub-and-spoke-conversion-for-multi-version-crds]].
+
+## Status subresource marker and client
+
+Kubebuilder enables the status subresource with the `+kubebuilder:subresource:status` marker, and controllers should write status with `r.Status().Patch()` so generation is not bumped and the controller does not retrigger itself. Tutorial sources warn against using the normal client for status, forgetting RBAC on `/status`, and updating spec and status in one call. [[sources/research-spec-status-split]] See [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]] and [[findings/status-client-rbac-and-conflict-mistakes]].

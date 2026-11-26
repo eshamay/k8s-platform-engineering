@@ -19,7 +19,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/api-discovery-and-restmapper]] — discovery documents and the GVK-to-GVR translator (draft)
 - [[concepts/crd-versioning-and-storage-migration]] — served and storage versions, conversion, retirement (draft)
 - [[concepts/custom-resource-definition]] — registering new API types, schema, versions, costs, and pitfalls (active)
-- [[concepts/spec-status-split]] — intent versus observed reality (draft)
+- [[concepts/spec-status-split]] — intent versus observed reality, the status subresource, observedGeneration, and pitfalls (active)
 - [[concepts/server-side-apply-and-field-ownership]] — managedFields and shared ownership (draft)
 - [[concepts/admission-webhooks-and-cel]] — mutate and validate before persistence (draft)
 
@@ -57,6 +57,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/tofu-controller]] — Terraform and OpenTofu from Flux-style resources, detection-only model (draft)
 - [[entities/client-go]] — Go client library with the discovery client and RESTMapper constructors (draft)
 - [[entities/helm]] — package manager whose charts do not upgrade or delete CRDs (draft)
+- [[entities/kstatus]] — generic status computation for conforming resources (draft)
+- [[entities/prometheus-operator]] — operator that retrofitted status onto its workload CRDs (draft)
 
 ## Sources
 
@@ -69,6 +71,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gitops-pull-based-delivery]] — research dossier on GitOps pull-based delivery, 15 web sources, 2026-11-25
 - [[sources/research-gvk-and-gvr]] — research dossier on GVK and GVR, 18 web sources, 2026-11-25
 - [[sources/research-custom-resource-definition]] — CRD mechanics, schema and CEL, versions and conversion, tool handling, and failure modes (active)
+- [[sources/research-spec-status-split]] — research dossier on the spec and status split, 16 web sources, 2026-11-25
 
 ## Examples
 
@@ -111,6 +114,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/flux-helmrelease-crd-policies-createreplace-and-dependson]] — chart CRD handling in Flux (draft)
 - [[examples/argo-cd-applicationsets-crd-too-large-for-client-side-apply]] — annotation size limit (draft)
 - [[examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd]] — apiserver and etcd scale tuning (draft)
+- [[examples/deployment-status-reports-ready-replicas-against-spec-replicas]] — baseline spec versus status (draft)
+- [[examples/prometheus-operator-retrofits-status-onto-workload-crds]] — status added after the fact (draft)
+- [[examples/flux-helmrelease-status-records-attempts-and-health]] — audit trail plus health (draft)
+- [[examples/argo-cd-rolls-up-child-health-with-lua-checks]] — health from child status (draft)
+- [[examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready]] — platform-layer split (draft)
+- [[examples/cluster-api-readiness-gates-flux-dependents]] — provider status gating ordering (draft)
 
 ## Comparisons
 
@@ -131,6 +140,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/cel-validation-rules-versus-validating-webhooks]] — in-schema rules versus external services (draft)
 - [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]] — how versions convert (draft)
 - [[comparisons/crossplane-xrds-versus-kro-resourcegraphdefinitions-as-crd-generators]] — two CRD factories (draft)
+- [[comparisons/health-and-readiness-models-across-tools]] — status vocabularies of five tools (draft)
+- [[comparisons/observedgeneration-top-level-versus-per-condition]] — where the generation marker lives (draft)
 
 ## Decisions
 
@@ -143,6 +154,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/git-versus-oci-as-the-canonical-source]] — where the cluster pulls desired state from (draft)
 - [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]] — shipping breaking API changes (draft)
 - [[decisions/validate-with-cel-rules-or-a-validating-webhook]] — where CRD validation runs (draft)
+- [[decisions/publish-synced-false-at-reconcile-start]] — ACK stale-status options (draft)
+- [[decisions/which-crds-get-a-status-subresource]] — Prometheus Operator's line between workload and config CRDs (draft)
 
 ## Findings
 
@@ -185,6 +198,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/helm-does-not-upgrade-or-delete-crds]] — chart CRD lifecycle gap (draft)
 - [[findings/large-crds-exceed-the-client-side-apply-annotation-limit]] — 262,144-byte annotation cap (draft)
 - [[findings/deleting-a-crd-deletes-every-custom-resource-of-that-kind]] — data loss on CRD removal (draft)
+- [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]] — generation bumps from status writes (draft)
+- [[findings/missing-observedgeneration-hides-stale-status]] — stale versus current conditions (draft)
+- [[findings/premature-readiness-in-kstatus-based-tools]] — early ready signals (draft)
+- [[findings/free-text-in-a-condition-reason-breaks-consumers]] — convention slip (draft)
+- [[findings/status-client-rbac-and-conflict-mistakes]] — operator implementation traps (draft)
+- [[findings/config-style-crds-with-several-reconcilers-get-no-status]] — multiple writers (draft)
 
 ## Outputs
 

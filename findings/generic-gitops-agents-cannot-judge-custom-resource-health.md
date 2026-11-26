@@ -8,6 +8,9 @@ sources:
   - id: research-gitops-pull-based-delivery
     hash: 335ba8f50b2b
     ingested: 2026-11-25
+  - id: research-spec-status-split
+    hash: 598e6132ea4f
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, gitops, health, crossplane, argo-cd]
 ---
@@ -29,3 +32,7 @@ Teach the agent each kind's health semantics, using Lua checks in Argo CD or the
 ## Related
 
 [[concepts/conditions]], [[entities/argo-cd]], [[entities/flux]], [[entities/crossplane]]
+
+## Argo CD's own statement of the problem
+
+Argo CD's health documentation says that "CRDs do not follow a consistent or standardized status format." It uses built-in checks for core types and Lua scripts over `obj.status` for CRDs, reports Healthy, Progressing, Degraded, or Suspended, and rolls an application's health up as the worst of its immediate children. For a CRD with no script, health cannot be derived reliably. [[sources/research-spec-status-split]] See [[examples/argo-cd-rolls-up-child-health-with-lua-checks]] and [[comparisons/health-and-readiness-models-across-tools]].
