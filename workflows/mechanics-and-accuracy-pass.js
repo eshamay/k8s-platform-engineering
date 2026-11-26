@@ -13,7 +13,7 @@ export const meta = {
 
 const WIKI = '/Users/eshamay/dev/wikis/k8s-platform-engineering'
 const TODAY = (args && args.today) || '2026-11-26'
-const BASE_SHA = (args && args.baseSha) || '09d4014'
+const BASE_SHA = (args && args.baseSha) || 'fade1a9'
 
 const OUTPUT_SLUGS = [
   'part-1-core-architectural-principles',

@@ -743,7 +743,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 - contradictions raised: 0
 - fact conflicts: 0
 - gaps drafted: 0
-- rationale: The batch 1 resume re-requested this source. Its content hash 014549e333b6 already appears in `sources/research-gap-m1-finalizers.md`, which was ingested at seq 54 (commit 1518b78) with the same raw file, unchanged. That ingest already added the possible-resolution notes under the five open finalizer gaps, created the finding, example, and decision pages, and left the outputs todos for the Flux and Crossplane ramp-up guides. Re-running it would duplicate those writes, so this entry records the skip only.
+- rationale: The batch 1 resume re-requested this source. Its content hash 014549e333b6 already appears in `sources/research-gap-m1-finalizers.md`, which was ingested at seq 54 (commit 05e84ae) with the same raw file, unchanged. That ingest already added the possible-resolution notes under the five open finalizer gaps, created the finding, example, and decision pages, and left the outputs todos for the Flux and Crossplane ramp-up guides. Re-running it would duplicate those writes, so this entry records the skip only.
 
 ## [2026-11-26] ingest | Ownership and garbage collection gaps (m2-ownership-gc)
 - source: [[sources/research-gap-m2-ownership-gc]]
@@ -816,7 +816,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] outputs | mechanics and accuracy pass
 - dossiers ingested: 11 ([[sources/research-gap-b1-unverified-claims]], [[sources/research-gap-b1-recheck-capi-argocd]], [[sources/research-gap-b1-recheck-kro-crossplane]], [[sources/research-gap-b1-recheck-flux-k8s]], [[sources/research-gap-m1-finalizers]], [[sources/research-gap-m2-ownership-gc]], [[sources/research-gap-m3-status-conditions]], [[sources/research-gap-m4-ssa-conflict-policy]], [[sources/research-gap-m5-informers-caches]], [[sources/research-gap-m6-admission-crds]], [[sources/research-gap-m7-operators-idempotency]]), seq 50 to 65
 - pages created: 142 by the ingests, plus [[findings/mechanics-and-accuracy-pass-gap-dispositions]] (the triage page); 6 contradictions raised across the ingests
-- outputs revised: all 7 ([[outputs/part-1-core-architectural-principles]], [[outputs/part-2-krm-and-api-machinery]], [[outputs/part-3-controller-and-operator-mechanics]], [[outputs/part-4-platform-abstractions]], [[outputs/part-5-platform-architecture-principles-and-operating-at-scale]], [[outputs/flux-ramp-up]], [[outputs/crossplane-ramp-up]]); 48 open output todos were marked done after checking that every page cited in each Acceptance line appears in the added lines of the output diff against 09d4014
+- outputs revised: all 7 ([[outputs/part-1-core-architectural-principles]], [[outputs/part-2-krm-and-api-machinery]], [[outputs/part-3-controller-and-operator-mechanics]], [[outputs/part-4-platform-abstractions]], [[outputs/part-5-platform-architecture-principles-and-operating-at-scale]], [[outputs/flux-ramp-up]], [[outputs/crossplane-ramp-up]]); 48 open output todos were marked done after checking that every page cited in each Acceptance line appears in the added lines of the output diff against fade1a9
 - consistency fixes: edits to existing pages were made inside the ingests (in-place corrections on Argo CD polling and sharding, Crossplane poll and reconcile-rate values, kro defaults, Flux jitter, etcd storage default, Config Connector UpdateFailed, Mutating Admission Policy and StorageVersionMigration stages); no separate cross-document edits were made at finalize; index.md gained the missing dispositions page
 - gap dispositions ([[findings/mechanics-and-accuracy-pass-gap-dispositions]]): 43 gaps, 14 resolved-candidate, 26 partial, 3 still-open, 0 needs-different-source; no gap was closed
 - todos: 4 named evidence todos and the Batch 1 todo marked done; 5 follow-ups added (close the 14 resolved-candidate gaps, decide on the 26 partial and 3 still-open gaps, fetch 15 unreadable sources, recheck Cluster API at v1.15.0 final, review leftover caveats in the outputs)
@@ -827,10 +827,15 @@ Structural lint over 806 content pages (concepts 27, entities 37, sources 58, ex
 ## [2026-11-26] housekeeping | rewrote commit author and committer email
 - all 104 commits rewritten from the work email to eric.shamay@gmail.com with git filter-repo and a mailmap; content and tree hash unchanged (197bbf25), commit hashes changed once
 - backup: a verified git bundle of all refs was saved outside the repo before the rewrite
-- three short hashes quoted in log.md, todo.md and the workflow scripts were mapped to their new values (09d4014, 830bdbb, 1518b78)
+- three short hashes quoted in log.md, todo.md and the workflow scripts were mapped to their new values (fade1a9, fc63a1c, 05e84ae)
 - new commits in this repo use the gmail identity through local git config
 
 ## [2026-11-26] outputs | delivered the seven tutorials
 - the seven outputs were reviewed by the user on the local site and promoted from draft to active with delivered 2026-11-26
 - draft was removed from publish_status in .sticki-publish.json, so only active outputs publish
 - the todo "Review and deliver the seven outputs" is done
+
+## [2026-11-26] housekeeping | re-signed every commit
+- all 108 commits were re-signed with the gmail GPG key 890DEF27E3A82DEA, preserving author and committer dates; content and tree hash unchanged (1a3bc1df), commit hashes changed once
+- backups: verified git bundles of all refs were saved outside the repo before each rewrite (the email rewrite and this re-sign)
+- the short hashes quoted in log.md, todo.md and the workflow scripts were mapped by position to their new values (fade1a9, fc63a1c, 05e84ae)
