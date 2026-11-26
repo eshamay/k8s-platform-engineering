@@ -108,6 +108,10 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#flux-source-controller-internals-and-artifact-serving-under-leader-election]] — open, unassigned
 - [[#flux-sharding-in-production-and-the-helmchart-labeling-rule]] — open, unassigned
 - [[#flux-image-automation-api-status-and-safe-promotion-policy]] — open, unassigned
+- [[#crossplane-package-dependency-resolution-revision-activation-and-upgrade-policy]] — open, unassigned
+- [[#crossplane-operations-maturity-and-api-stability]] — open, unassigned
+- [[#managed-resource-activation-policy-mechanism-and-defaults]] — open, unassigned
+- [[#neutral-comparisons-of-crossplane-with-terraform-and-single-cloud-operators]] — open, unassigned
 
 ---
 
@@ -145,6 +149,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-composition]]:** Only marginally helpful. The dossier adds Flux `dependsOn`, health checks, and pruning and Argo CD sync waves, hooks, and reversed prune order for the ordering and readiness steps of the trace. It does not trace source fetch, finalizers, or condition updates. See [[entities/flux]] and [[entities/argo-cd]].
 - **Possible resolution from [[sources/research-provider]]:** Marginally helpful. The dossier describes the provider end of the trace for Crossplane: a `Provider` installs CRDs and a controller, a managed resource is reconciled by the observe, compare, act loop, and `Ready` and `Synced` conditions report the result. It says nothing about the Flux source fetch, finalizer registration for these objects, or the handoff from a GitOps agent. See [[concepts/provider]] and [[entities/crossplane]].
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Partly helpful. The dossier names the controller roles that the first half of the trace needs: the source controller fetches Git, OCI, Helm, and bucket content and serves it as tar.gz artifacts, the kustomize controller builds and applies it, the notification controller can trigger an immediate reconcile through a Receiver, and `dependsOn` and `healthChecks` gate readiness. It admits that source-controller internals were not covered and does not trace finalizer registration or condition updates. See [[entities/flux]] and [[examples/flux-notification-receivers-start-reconciliation-without-waiting-for-the-poll-interval]].
+- **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Not helpful. The dossier covers Crossplane's model and adoption and reads no Flux documentation. Its only GitOps pairing is Argo CD in the JFrog pipeline, where Argo CD syncs custom resources from Git and Crossplane provisions the cloud resources. See [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -179,6 +184,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-composition]]:** Partly helpful. The dossier traces Crossplane's three authoring models and kro's CEL-based RGD and states that no source compares them head to head, so the first-draft synthesis is in [[comparisons/where-the-expressiveness-bound-sits-in-crossplane-functions-and-kro-cel]]. kro's Readiness page and the Graph versus RGD readiness difference were not read.
 - **Possible resolution from [[sources/research-provider]]:** Marginally helpful. A maintainer-authored Crossplane blog argues that Composition is what separates Crossplane from the cloud add-ons, and the Amazon EKS ACK guide points to kro for composing ACK resources. Neither is an independent head-to-head of Compositions and kro. See [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]] and [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]].
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Not helpful. The dossier says Flux comparisons with Crossplane and kro were not researched and that no source confirms Flux simply deploys their custom resources.
+- **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Marginally helpful, and only for Crossplane. The dossier restates that a Composition is a pipeline of gRPC functions applied with server-side apply, that functions must carry desired state forward, and that v2 compositions can hold any Kubernetes resource. It names no kro material and says primary comparisons against kro were not read. See [[concepts/composition]] and [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -215,6 +221,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-composition]]:** Marginally helpful. The dossier gives function-call arithmetic for Crossplane (60-second poll, so 100 XRs with one function step make 100 calls per minute) and the Argo CD client QPS advice (50 by default, 300 suggested for many CRDs), but no informer or sharding detail. See [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]].
 - **Possible resolution from [[sources/research-provider]]:** Partly helpful for the API-server side of scale. The Crossplane blog reports that provider-aws installing more than 900 CRDs made the API server unresponsive for up to an hour during scale-up, and that provider families fix it by installing only the services in use. ACK avoids the problem with one controller per service. The dossier does not cover informer cache cost, workqueue rate limiting, or controller sharding. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[comparisons/provider-families-versus-per-service-controllers]].
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Largely helpful for Flux. The dossier explains that extra replicas are failover standbys because of leader election, that label-based sharding with `sharding.fluxcd.io/key` and `--watch-label-selector` adds capacity, that the Flux Operator automates shard setup, and that Morgan Stanley raised intervals and `--concurrent` at more than 500 clusters. It has no production sharding numbers and no Crossplane data. See [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]] and [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]].
+- **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Marginally helpful on the API-server side only. The Upbound post explains why thousands of CRDs hurt (hundreds of throttled discovery requests, increasingly expensive serialization on each CRD change, about 4 MiB of memory per CRD) and lists upstream mitigations, and the upgrade guide names managed resource activation policies as the Crossplane v2 remedy without explaining them. It has no informer, workqueue, or controller sharding data. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -229,6 +236,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-composite-resource]]:** Partly helpful. The same self-reported adopters list adds Renault, Wellhub, Wildlife Studios, Consensys, Grafana Labs, VSHN, Millennium bcp, Continental, and Syntasso (Kratix) as users of composite resources for self-service platforms. The entries are unaudited one-liners and add no counts for composites. No adopter of kro, ACK, Config Connector, or Cluster API is named beyond AWS offering kro on EKS. See [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]].
 - **Possible resolution from [[sources/research-managed-resource]]:** Partly helpful. The Crossplane ADOPTERS list names Nike, Autodesk, SAP, Deutsche Kreditbank, IBM, Elastic, UiPath, VMware Tanzu, DB Systel, Nokia, and Akamai, with reported counts such as SAP's thousands of managed resources and Akamai's up to 200,000. The entries are self-reported one-liners and not verified case studies. See [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]].
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Marginally helpful. The Flux adopters page lists more than 200 organizations without use-case detail, and Morgan Stanley reports more than 500 clusters. No adopter of Crossplane, ACK, Config Connector, Cluster API, or kcp is added. See [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]].
+- **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Partly helpful. The CNCF graduation post names Nike, Nokia, Grafana, NASA Science Cloud, Elastic, Akamai, SAP, and IBM among 70 or more self-reported adopters, and InfoQ adds Autodesk. Only JFrog is described in any detail, as a Jenkins, Git, Argo CD, and Crossplane self-service pipeline with size classes and expiry tags, and the post gives no object counts. See [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]].
 
 ## Independent scale benchmarks for etcd, vcluster, and kcp — status: open
 
@@ -1319,3 +1327,47 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find adopter write-ups on staging-only or reviewed promotion.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, image-automation, verification
+
+## Crossplane package dependency resolution, revision activation, and upgrade policy — status: open
+
+- **Question:** How does Crossplane resolve dependencies between Providers, Functions, and Configurations, which revision becomes active on an upgrade, and what upgrade policies apply to packages?
+- **Why it matters:** The packages overview in the deep dive lists the four package types but gave no detail on dependency resolution, revisions, or upgrade policy, and staged rollouts depend on it. See [[entities/crossplane]] and [[concepts/provider]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Crossplane package documentation and the Configuration dependency pages directly.
+  - [ ] Update [[entities/crossplane]] and [[findings/provider-upgrades-leave-old-revisions-and-block-automatic-downgrades]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, packages, upgrades, verification
+
+## Crossplane Operations maturity and API stability — status: open
+
+- **Question:** What are Crossplane Operations for day-two tasks, which API version and stability level do they have, and how do they differ from composition functions?
+- **Why it matters:** Only a CNCF community blog describes Operations as scheduled day-two work, and that blog is forward-looking advocacy. See [[sources/research-crossplane-deep-dive]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the official Crossplane documentation on Operations and its release notes.
+  - [ ] Add a concept page or update [[entities/crossplane]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, operations, v2, verification
+
+## Managed resource activation policy mechanism and defaults — status: open
+
+- **Question:** How do managed resource activation policies decide which CRDs a provider installs, and what are their defaults and failure modes?
+- **Why it matters:** The upgrade guide and the Upbound scaling post connect activation policies to the CRD scale problem, but neither explains the mechanism. See [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]] and [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Crossplane documentation page on activation policies.
+  - [ ] Add measurements of CRD counts and API server memory with and without policies.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, crd-scale, activation-policies, verification
+
+## Neutral comparisons of Crossplane with Terraform and single-cloud operators — status: open
+
+- **Question:** What do neutral sources, such as practitioner benchmarks or independent write-ups, say about Crossplane versus Terraform, OpenTofu, Pulumi, CDK, Config Connector, ACK, and Azure Service Operator?
+- **Why it matters:** The dossier's comparisons come from the Crossplane project and from Encore, a vendor of a competing product, and no primary documentation was read for Config Connector, ACK, or Azure Service Operator. See [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]] and [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find independent comparisons and adopter migration write-ups.
+  - [ ] Revise [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, terraform, comparison, bias

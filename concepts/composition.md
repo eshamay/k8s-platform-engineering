@@ -14,6 +14,9 @@ sources:
   - id: research-composition
     hash: f57d89652816
     ingested: 2026-11-25
+  - id: research-crossplane-deep-dive
+    hash: 44034359219f
+    ingested: 2026-11-25
 aliases: [Crossplane Composition, composition function pipeline]
 tags: [abstraction, crossplane]
 ---
@@ -57,3 +60,7 @@ Crossplane has used three authoring models. Patch and transform is a static list
 Composition is one answer to the cost of writing a bespoke controller per platform API. The recurring pitfalls are that a function omitting a resource deletes it ([[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]]), that patch and transform cannot branch or loop ([[findings/patch-and-transform-cannot-branch-loop-or-patch-between-composed-resources]]), that function load scales with composite count ([[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]]), and that editing a live Composition affects pinned composites only through revisions ([[findings/editing-a-live-composition-can-disrupt-or-replace-existing-composed-resources]]). The two expressiveness bounds are compared in [[comparisons/where-the-expressiveness-bound-sits-in-crossplane-functions-and-kro-cel]].
 
 Real-world uses are collected in [[examples/vshn-appcat-sells-self-service-databases-queues-and-object-storage-through-composition-functions]], [[examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function]], [[examples/a-scalable-composition-lets-hpa-and-keda-drive-an-xr-through-the-scale-subresource]], and [[examples/a-microservice-xr-creates-a-database-and-its-workload-from-one-namespaced-object]]. Flux `dependsOn` and Argo CD sync waves order whole manifest sets without defining a new API, so they sit beside composition rather than inside it, see [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]].
+
+## Function pipeline contract in the Crossplane deep dive
+
+The Compositions documentation describes the pipeline contract. On each create or update of a composite resource, Crossplane calls each function in order with a request holding observed state, the desired state accumulated so far, per-function input, and shared context, and each function returns a response. "A function's main job is to update the desired state and return it to Crossplane." Functions must copy desired state forward because omitted resources are deleted, functions can signal readiness and request extra resources, and referencing functions by OCI digest pins versions per Composition revision for staged rollout. Oversized Compositions are a design pitfall, see [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]]. [[sources/research-crossplane-deep-dive]]

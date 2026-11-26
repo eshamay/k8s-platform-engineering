@@ -1,7 +1,7 @@
 ---
 title: Crossplane
 type: entity
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-25
 sources:
@@ -73,6 +73,9 @@ sources:
     ingested: 2026-11-25
   - id: research-provider
     hash: 7e43edcd71be
+    ingested: 2026-11-25
+  - id: research-crossplane-deep-dive
+    hash: 44034359219f
     ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
@@ -183,3 +186,13 @@ Operationally, a function that omits a resource from desired state deletes it, s
 ## Providers as installable packages
 
 The Providers dossier adds the package view of Crossplane providers. A `Provider` object installs an OCI package, each upgrade creates a `ProviderRevision`, `ProviderConfig` and `ClusterProviderConfig` select credentials, and install policies control pull behavior and revision activation. Provider families answered the CRD scaling problem, see [[examples/crossplane-provider-families-let-operators-install-only-the-cloud-services-they-use]]. Removing a provider before its managed resources abandons them, see [[findings/removing-a-crossplane-provider-before-its-managed-resources-abandons-the-cloud-resources]]. Generated providers come from [[entities/upjet]]. A maintainer-authored positioning against the cloud add-ons is in [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]]. [[sources/research-provider]]
+
+## Four layers, v2 changes, and CNCF graduation
+
+The Crossplane deep dive summarizes the stack as four layers. Providers install CRDs and a controller for an external service, and `spec.forProvider` of each managed resource is the source of truth. An XRD generates a platform API as a CRD, a Composition turns each composite resource into a pipeline of gRPC functions, and Crossplane applies the result with server-side apply. Packages (Provider, Function, Configuration, ImageConfig) are OCI images that distribute all of it. Version 2 made composite resources namespaced by default, dropped the need for claims in new-style XRDs, allowed any Kubernetes resource in a composition, and added Operations for day-two work, which only a CNCF community blog describes. It removed native patch and transform, `ControllerConfig`, and the alpha external secret stores, and upgrades must start from v1.20. [[sources/research-crossplane-deep-dive]]
+
+The project graduated in the CNCF in late 2025. The project's post reports 70 or more public adopters and 480 or more contributing companies, InfoQ says 450, and all counts are self-reported. Created by Upbound, it entered the CNCF Sandbox in 2020. See [[examples/crossplane-v2-upgrade-moves-through-v1-20-the-conversion-cli-and-then-providers]] and [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]].
+
+## Adoption patterns, costs, and alternatives
+
+The best-documented adopter pattern is self-service through Git and a GitOps agent, see [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]]. The costs named by critics and by the project itself are a hosting cluster, Kubernetes skills, and platform-team-owned abstractions, see [[findings/crossplane-adoption-needs-a-hosting-cluster-kubernetes-skills-and-platform-team-owned-abstractions]], [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]], and the historical [[findings/early-crossplane-evaluations-reported-sparse-docs-alpha-apis-and-hard-multi-layer-troubleshooting]]. Design choices are in [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]]. The contrast with imperative infrastructure as code is in [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]] and [[entities/terraform]]. Scale pressure from large provider packages is explained in an Upbound engineering post, see [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]]. Package dependency resolution, activation policy behavior, and Operations maturity remain open in [[open-knowledge-gaps]]. [[sources/research-crossplane-deep-dive]]

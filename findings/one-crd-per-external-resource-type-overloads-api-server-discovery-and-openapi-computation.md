@@ -8,6 +8,9 @@ sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-crossplane-deep-dive
+    hash: 44034359219f
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, scale, crd, crossplane, api-server, discovery]
 ---
@@ -25,3 +28,7 @@ The cost lands on the shared control plane and on every client, not only on Cros
 ## Mitigations
 
 Crossplane v2 activates only needed types through ManagedResourceDefinitions and activation policies, see [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]]. GitOps clients may need a higher client QPS, see [[examples/crossplane-resources-hosted-by-argo-cd]]. For the general API machinery view see [[concepts/custom-resource-definition]], [[concepts/api-discovery-and-restmapper]], and [[findings/etcd-scale-limits-of-the-shared-store]].
+
+## Upbound explanation of the mechanism
+
+The Upbound engineering post gives the mechanism in plain terms. Clients make hundreds of discovery requests and get throttled, the API server does increasingly expensive serialization work each time a CRD is added or updated, and memory reaches roughly 4 MiB per CRD. Upstream mitigations include higher kubectl discovery rate limits, cheaper client caching, lazy OpenAPI computation, and shared etcd clients and loggers. The post covers upstream fixes and does not itself detail managed resource activation policies. [[sources/research-crossplane-deep-dive]] See [[entities/crossplane]] and [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]].

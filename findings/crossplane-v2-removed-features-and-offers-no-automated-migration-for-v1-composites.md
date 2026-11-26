@@ -8,6 +8,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-crossplane-deep-dive
+    hash: 44034359219f
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, crossplane, v2, migration, version-churn]
 ---
@@ -25,3 +28,7 @@ Platform teams that built on v1 face a manual path to move their composites to t
 ## Mitigations
 
 Run the upgrade check before each minor version, convert compositions to pipelines early, and keep v1-style XRs running until a planned migration. See [[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]], [[entities/crossplane]], and [[findings/immature-abstractions-in-the-control-plane-ecosystem]].
+
+## Upgrade guide checklist
+
+The Crossplane deep dive adds that the upgrade guide lists the removals as native patch and transform (`mode: Resources`), `ControllerConfig` (replaced by `DeploymentRuntimeConfig`), alpha external secret stores, native XR connection details (recreated as composed Secrets), and the `--registry` flag (packages need fully qualified names). It says to upgrade only from v1.20 and mentions a CLI converter for deprecations, which means some conversion help exists even though a full migration of v1 composites is manual. See [[examples/crossplane-v2-upgrade-moves-through-v1-20-the-conversion-cli-and-then-providers]]. [[sources/research-crossplane-deep-dive]]

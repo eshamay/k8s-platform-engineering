@@ -1,0 +1,73 @@
+---
+title: "Research dossier: Crossplane deep dive"
+type: source
+status: active
+created: 2026-11-25
+updated: 2026-11-25
+sources:
+  - id: research-crossplane-deep-dive
+    hash: 44034359219f
+    ingested: 2026-11-25
+aliases: []
+tags: [crossplane, composition, providers, packages, v2, adopters, research-dossier]
+---
+
+# Research dossier: Crossplane deep dive
+
+> [!NOTE]
+> **Raw file:** `raw/research-crossplane-deep-dive.md` (sha256 prefix 44034359219f)<br>
+> **Kind:** Research dossier summarizing 15 web pages, dated 2026-11-25<br>
+> **Ingested:** 2026-11-25<br>
+> **Caveat:** Every page was read through a summarizing fetch, so quotes and field names are a digest and should be checked against the live pages before they are reused in a tutorial. The Sixt and AWS case study could not be read and is not used.
+
+## Summary
+
+The dossier presents Crossplane as a Kubernetes add-on that turns a cluster into a control plane for resources outside the cluster and, increasingly, for anything that can be described as Kubernetes objects. It describes four layers. Providers install CRDs and a controller for an external service, and each instance is a managed resource whose `spec.forProvider` is the source of truth. A composite resource definition (XRD) generates a platform API as a CRD. A Composition says what each composite resource is made of, and in current versions it is a pipeline of gRPC functions that receive observed and desired state and return new desired state. Packages (Provider, Function, Configuration, ImageConfig) distribute all of it as OCI images.
+
+Crossplane v2 changed the model. Composite resources are namespaced by default, the claim indirection is no longer needed for new-style XRDs, compositions can hold any Kubernetes resource, and Operations were added for day-two work. Native patch and transform, `ControllerConfig`, and the alpha external secret stores were removed, and upgrades must start from v1.20. The project graduated in the CNCF in late 2025, which the sources present as a maturity signal with 70 or more public adopters.
+
+The sources fall into three camps. Official documentation and CNCF material present Crossplane as a universal, API-first platform substrate. Adopter stories such as JFrog's show the self-service platform pattern, usually paired with Argo CD. Critical views from Encore and SuperOrbital stress that teams must run a hosting cluster, write and maintain Compositions, and accept ecosystem immaturity. The dossier found no postmortems and no primary comparison against Config Connector, ACK, kro, or Cluster API.
+
+## Key claims
+
+### Core model (official documentation)
+
+- "A composite resource or XR (this page) is a custom API." The XRD defines schema and endpoint, the XR is the instance, and the Composition names the composed resources. XRs are namespaced in v2 and legacy cluster-scoped XRs remain supported (https://docs.crossplane.io/latest/composition/composite-resources/). See [[concepts/composite-resource]].
+- "Crossplane XRDs are like Kubernetes custom resource definitions." An XRD carries an OpenAPI v3 schema, applying it generates a CRD, scope is Namespaced (the v2 default), Cluster, or LegacyCluster, and multiple versions are allowed but only one can be referenced by Compositions (https://docs.crossplane.io/latest/composition/composite-resource-definitions/). The extract did not cover claims.
+- "A function's main job is to update the desired state and return it to Crossplane." On each create or update Crossplane calls each function in order with a `RunFunctionRequest` holding observed state, the desired state so far, per-function input, and shared context. Functions must copy desired state forward because omitted resources are deleted, and referencing functions by OCI digest pins versions per Composition revision (https://docs.crossplane.io/latest/composition/compositions/). See [[concepts/composition]] and [[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]].
+- "Crossplane considers the forProvider field of a managed resource the 'source of truth' for external resources." `managementPolicies` (beta) allow Create, Delete, Update, Observe, and LateInitialize individually and replace the older `deletionPolicy` for avoiding accidental destruction or importing existing resources (https://docs.crossplane.io/latest/managed-resources/managed-resources/). See [[concepts/managed-resource]] and [[decisions/choose-management-policies-for-an-imported-resource]].
+- Four package types exist: Providers, Functions, Configurations (portable bundles of XRDs, Compositions, and dependencies), and Image Configs (central control of package image settings). The extract gave no detail on dependency resolution, revisions, or upgrade policy (https://docs.crossplane.io/latest/packages/). See [[concepts/provider]].
+
+### Upgrade and maturity
+
+- "Only upgrade to Crossplane v2 from Crossplane `v1.20`, the final `v1.x` release." Native patch and transform (`mode: Resources`) is gone, `ControllerConfig` is replaced by `DeploymentRuntimeConfig`, alpha external secret stores are removed, XRs lose native connection details, and the `--registry` flag is removed so packages need fully qualified names. The path is to reach v1.20, fix deprecations with the CLI converter, upgrade core with Helm, optionally set managed resource activation policies, and then upgrade providers (https://docs.crossplane.io/latest/guides/upgrade-to-crossplane-v2/). See [[findings/crossplane-v2-removed-features-and-offers-no-automated-migration-for-v1-composites]] and [[examples/crossplane-v2-upgrade-moves-through-v1-20-the-conversion-cli-and-then-providers]].
+- The project's own announcement says "Graduation represents the highest level of maturity in the CNCF and signals that Crossplane is stable, reliable, and broadly deployed." It reports creation by Upbound, CNCF Sandbox entry in 2020, 70 or more public adopters including Nike, Nokia, Grafana, NASA Science Cloud, Elastic, Akamai, SAP, and IBM, and more than 3,000 contributors from more than 480 companies (https://blog.crossplane.io/crossplane-cncf-graduation/). The numbers are self-reported.
+- InfoQ independently confirms graduation, names Nike, Autodesk, NASA Science Cloud, Elastic, SAP, IBM, and Nokia, and says the dominant pattern is Crossplane as the backbone of internal developer platforms. It gives 450 contributing companies where the project says 480 (https://www.infoq.com/news/2025/11/crossplane-grad/). See [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]].
+
+### Comparisons and criticism
+
+- "Crossplane is a control plane, where Terraform is a command-line tool — an interface to control planes." The project's blog contrasts always-on reconciliation and drift correction with Terraform's manual or CI-triggered plan and apply, notes that each resource is an independent API endpoint with no shared state-file lock, credits Kubernetes RBAC for granular access, and concedes that Terraform is simpler and more familiar (https://blog.crossplane.io/crossplane-vs-terraform/). It is advocacy. See [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]] and [[entities/terraform]].
+- "Crossplane needs a running Kubernetes cluster as its control plane, even when the resources it provisions have nothing to do with Kubernetes." Encore, which sells a competing product, lists Terraform and OpenTofu, Pulumi, AWS CDK, single-cloud operators (Config Connector, ACK, Azure Service Operator), and Encore itself as alternatives (https://encore.dev/articles/crossplane-alternatives). See [[findings/crossplane-adoption-needs-a-hosting-cluster-kubernetes-skills-and-platform-team-owned-abstractions]] and [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]].
+- "Adopting it today is similar to adopting Docker in 2013." A 2022 SuperOrbital evaluation listed sparse documentation, uneven provider coverage (native versus Terrajet-generated), mostly alpha or beta APIs, no dry run, and hard multi-layer troubleshooting. Several gaps have since been addressed, so it is historical context (https://superorbital.io/blog/crossplane-2022/). See [[findings/early-crossplane-evaluations-reported-sparse-docs-alpha-apis-and-hard-multi-layer-troubleshooting]].
+
+### Scale
+
+- Large provider packages make clients issue hundreds of discovery requests and get throttled, the API server does increasingly expensive serialization on each CRD change ("Each time a CRD was added or updated the API server was doing serialization work increasingly expensive"), and memory reaches roughly 4 MiB per CRD. Upstream mitigations include higher kubectl discovery rate limits, cheaper client caching, lazy OpenAPI computation, and shared etcd clients. The post does not detail activation policies (https://www.upbound.io/blog/scaling-kubernetes-to-thousands-of-crds). See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]].
+
+### Use cases and design advice
+
+- JFrog developers request resources through a Jenkins-based interface that writes custom resources into Git, Argo CD applies them, and Crossplane provisions the cloud resources. Predefined small, medium, and large size classes prevent over-provisioning, owner and expiry tags support cleanup, and RBAC plus templates provide governance. "Developers no longer have to wait for approval or depend on other teams to create environments." The post lists no pitfalls (https://jfrog.com/blog/how-jfrog-delivers-self-service-cloud-environments-for-our-developers/). See [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]] and [[entities/argo-cd]].
+- "Teams no longer need a single monolithic Crossplane instance." A practitioner blog argues for several small, domain-scoped control planes, APIs modeled by infrastructure domain and not cloud provider, observability (conditions and events) before rollout, small Compositions, and APIs shaped to users' mental models. It is opinion (https://www.polarpoint.io/blog/2026/03/25/crossplane-v2-api-first-platforms-and-compositional-control-planes/). See [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]], [[examples/domain-scoped-crossplane-control-planes-are-proposed-in-place-of-one-monolithic-instance]], and [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]].
+- "Controllers handle mechanics, while agents focus on higher-level reasoning." A CNCF community blog pitches declarative control planes as the interface for AI agents, says v2 compositions can include any Kubernetes resource so one composite API can provision infrastructure, deploy apps, configure networking, and set up observability, and introduces Operations for scheduled day-two work. It is forward-looking advocacy, and Operations are documented only there (https://www.cncf.io/blog/2026/03/20/crossplane-and-ai-the-case-for-api-first-infrastructure/). See [[examples/a-microservice-xr-creates-a-database-and-its-workload-from-one-namespaced-object]].
+
+### Unread pages
+
+- Two search results, https://ditwrd.dev/posts/crossplane-composition/ ("Composition is not templating") and https://devopstoolkit.live/crossplane/index.html, could not be fetched, so the wiki uses neither.
+
+## Open questions recorded by the dossier
+
+The dossier lists whether v2 removes claims or only makes them optional, the exact mechanism and defaults of managed resource activation policies, package dependency resolution and revision activation, the maturity of Operations, the 450 versus 480 company discrepancy, Upbound's commercial products, the unreadable Sixt case study, primary comparisons against Config Connector, ACK, kro, and Cluster API, Flux integration, and the absence of postmortems. See [[open-knowledge-gaps]].
+
+## Pages built from this source
+
+[[entities/crossplane]], [[entities/terraform]], [[entities/argo-cd]], [[concepts/composition]], [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]], [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]], [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]], [[examples/crossplane-v2-upgrade-moves-through-v1-20-the-conversion-cli-and-then-providers]], [[examples/domain-scoped-crossplane-control-planes-are-proposed-in-place-of-one-monolithic-instance]], [[findings/crossplane-adoption-needs-a-hosting-cluster-kubernetes-skills-and-platform-team-owned-abstractions]], [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]], [[findings/early-crossplane-evaluations-reported-sparse-docs-alpha-apis-and-hard-multi-layer-troubleshooting]]

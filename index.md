@@ -43,7 +43,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 ## Entities
 
 - [[entities/flux]] — in-cluster GitOps tool, controllers, tenancy, scale, and pitfalls (active)
-- [[entities/crossplane]] — control plane framework for external infrastructure (draft)
+- [[entities/crossplane]] — control plane framework, four layers, v2 changes, adoption patterns, and costs (active)
 - [[entities/kro]] — resource-graph based platform API tool (draft)
 - [[entities/argo-cd]] — GitOps tool with phase and wave ordering (draft)
 - [[entities/config-connector]] — Google Cloud resources as Kubernetes objects (draft)
@@ -68,6 +68,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/upjet]] — generator of Crossplane providers from Terraform providers (draft)
 - [[entities/azure-service-operator]] — Azure resources as Kubernetes objects, CRDs generated from ARM schemas (draft)
 - [[entities/flux-operator]] — operator that installs Flux and automates controller sharding (draft)
+- [[entities/terraform]] — plan-and-apply infrastructure tool and the contrast case for reconciliation (draft)
 
 ## Sources
 
@@ -95,6 +96,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-composition]] — research dossier on Crossplane Compositions, kro graphs, and neighbouring tools, 19 web sources, 2026-11-25
 - [[sources/research-provider]] — research dossier on providers across Crossplane, ACK, Config Connector, ASO, and Cluster API, 14 web sources, 2026-11-25
 - [[sources/research-flux-deep-dive]] — research dossier on Flux controllers, tenancy, scale, and adopters, 16 web sources, 2026-11-25
+- [[sources/research-crossplane-deep-dive]] — research dossier on Crossplane layers, v2 changes, adopters, and criticism, 15 web sources, 2026-11-25
 
 ## Examples
 
@@ -234,6 +236,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/teams-replace-helm-upgrade-in-ci-with-flux-helmrelease-objects]] — declarative Helm (draft)
 - [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]] — shard labels and the Flux Operator (draft)
 - [[examples/flux-notification-receivers-start-reconciliation-without-waiting-for-the-poll-interval]] — webhooks and alerts (draft)
+- [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]] — Git, Argo CD, and Crossplane self-service pipeline (draft)
+- [[examples/crossplane-v2-upgrade-moves-through-v1-20-the-conversion-cli-and-then-providers]] — upgrade sequence and removed features (draft)
+- [[examples/domain-scoped-crossplane-control-planes-are-proposed-in-place-of-one-monolithic-instance]] — prescriptive design advice, not a deployment (draft)
 
 ## Comparisons
 
@@ -281,6 +286,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/crossplane-providers-versus-cluster-api-providers]] — catalog versus contract (draft)
 - [[comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog]] — vendor-blog contrast (draft)
 - [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]] — tuning, sharding, and source options (draft)
+- [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]] — always-on controllers versus on-demand plans (draft)
 
 ## Decisions
 
@@ -314,6 +320,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]] — which composite layer to adopt (draft)
 - [[decisions/scope-provider-credentials-per-namespace-or-cluster-wide]] — one identity or many (draft)
 - [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]] — vertical tuning versus label sharding (draft)
+- [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]] — one shared control plane or several by domain (draft)
 
 ## Findings
 
@@ -445,6 +452,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/circular-dependson-chains-between-flux-resources-never-reconcile]] — ordering stalls (draft)
 - [[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents]] — shard label consistency (draft)
 - [[findings/without-prune-flux-leaves-removed-manifests-running-as-orphans]] — orphaned live objects (draft)
+- [[findings/crossplane-adoption-needs-a-hosting-cluster-kubernetes-skills-and-platform-team-owned-abstractions]] — the cost named by critics and the project (draft)
+- [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]] — mega-Compositions and provider-shaped APIs (draft)
+- [[findings/early-crossplane-evaluations-reported-sparse-docs-alpha-apis-and-hard-multi-layer-troubleshooting]] — a 2022 evaluation, historical (draft)
 
 ## Outputs
 

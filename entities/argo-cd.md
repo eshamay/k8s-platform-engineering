@@ -68,6 +68,9 @@ sources:
   - id: research-flux-deep-dive
     hash: e640ec8046bc
     ingested: 2026-11-25
+  - id: research-crossplane-deep-dive
+    hash: 44034359219f
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -167,3 +170,7 @@ Argo CD orders resources with hooks (PreSync, Sync, PostSync, SyncFail, Skip, Pr
 ## Contrast with Flux in the Flux deep dive
 
 A vendor comparison in the Flux deep dive describes Argo CD as centralized, with sync phases (pre-sync, sync, post-sync) for ordering and Projects for tenant isolation, whereas Flux uses distributed controllers, `dependsOn`, and namespaces with RBAC. The source is a vendor blog, and its claim that Flux lacks a native UI is flagged as dated. [[sources/research-flux-deep-dive]] See [[comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog]].
+
+## Delivery agent in the JFrog self-service pattern
+
+In JFrog's self-service environments, Argo CD sits between Git and Crossplane. Developers' requests become custom resources committed to Git, Argo CD syncs them, and Crossplane creates the cloud resources, so Argo CD sees the platform-level resources and not each cloud resource beneath them. [[sources/research-crossplane-deep-dive]] See [[examples/jfrog-delivers-self-service-cloud-environments-through-jenkins-git-argo-cd-and-crossplane]] and [[examples/crossplane-resources-hosted-by-argo-cd]].
