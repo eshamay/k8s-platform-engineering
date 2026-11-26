@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: skyscanner-namespace-deletion-postmortem
+    hash: 4930a0cb876a
+    ingested: 2026-11-26
   - id: research-pitfalls-and-case-studies
     hash: 9407913c2448
     ingested: 2026-11-25
@@ -49,3 +52,7 @@ The 2026-11-26 GitOps dossier adds reporter-level incident evidence but still no
 The 2026-11-26 named-incident pass tried to read the Skyscanner, Reddit, Spotify, and Jetstack primaries. Only Jetstack could be read. Reddit is now known from a secondary retelling that matches the index on the Calico and label mechanism, and Skyscanner and Spotify remain index-only because the scraper returned empty pages and some fetch routes were blocked. See [[sources/research-gap-g1-named-incident-reports]] and [[examples/reddit-s-march-2023-pi-day-outage-is-known-only-from-the-k8s-af-index-and-a-secondary-retelling]].
 
 Correction, 2026-11-26: the claim that nothing was read for kro, Config Connector, ACK, or Cluster API is superseded. A later dossier read their issue trackers and release notes, with no named-organization postmortems found. See [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]]. [[sources/research-gap-g1-other-tool-pitfalls]]
+
+## Update from the Skyscanner primary post
+
+The Skyscanner 2021 GitOps outage is no longer known only from the k8s.af index. The primary post was read in full on 2026-11-26 and is summarized in [[sources/skyscanner-namespace-deletion-postmortem]] and [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]]. The earlier statement that the Skyscanner case remains index-only is superseded by this update.

@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: skyscanner-namespace-deletion-postmortem
+    hash: 4930a0cb876a
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -94,3 +97,7 @@ Named production adopters, scale numbers, and postmortems of GitOps-caused outag
 ## Update from the GitOps incidents dossier
 
 Correction, 2026-11-26: the closing note above says named production adopters and GitOps-caused outage evidence were not found. The dossier found named adopters as self-reported lists ([[examples/the-argo-cd-users-file-lists-452-self-reported-adopters]], [[examples/subaru-adopted-argo-cd-with-helmfile-to-replace-manual-deployment-procedures]]) and anonymous incident reports, including a customer incident where self-heal skipped a migration hook ([[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]]). No named organization's GitOps postmortem was found. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+
+## Evidence from a named global outage
+
+Skyscanner's 2021 postmortem shows both edges of pull-based delivery. Argo CD enforced a broken desired state in every region within about half an hour of the merge, deleting 478 services, and the same pull model let clusters reconfigure themselves once correct configuration returned. The lesson the team drew was to avoid global configuration deploys and to treat templated configuration as code. See [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]] and [[findings/templated-configuration-that-looks-like-config-is-code-and-needs-tests-and-a-regional-rollout-before-a-gitops-controller-applies-it-globally]].

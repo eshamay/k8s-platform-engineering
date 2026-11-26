@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: skyscanner-namespace-deletion-postmortem
+    hash: 4930a0cb876a
+    ingested: 2026-11-26
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
@@ -232,3 +235,7 @@ Argo CD's USERS.md lists 452 self-reported organizations ([[examples/the-argo-cd
 ## Reports from the operator loop dossier
 
 Argo CD issue 18151 reports that the 2.11 upgrade raised the application controller's PATCH rate to Application objects on about 10 clusters, with no confirmed root cause and later user diagnoses ([[examples/argo-cd-issue-18151-the-2-11-upgrade-raised-the-application-patch-rate-on-every-cluster]]). Issue 30373 reports that the built-in ACK health check added in v3.6.0-rc1 reports Healthy before the ACK controller observes a spec change ([[examples/argo-cd-issue-30373-the-built-in-ack-health-check-reports-healthy-before-the-controller-observes-a-spec-change]]). Both are reporter accounts. Source: [[sources/research-gap-g1-operator-loop-failures]].
+
+## Skyscanner 2021 outage
+
+In Skyscanner's published account, Argo CD reconciled clusters against an incorrect configuration with no valid namespaces and deleted all 478 services across every availability zone and region. The post does not describe the sync policy or prune settings in use, so it establishes the behavior and not a specific misconfiguration. See [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]].

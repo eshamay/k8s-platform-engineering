@@ -26,6 +26,7 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#review-claims-still-unverified-after-the-evidence-pass]] — open
 - [[#finish-the-outputs-the-revise-phase-did-not-reach]] — open
 - [[#recheck-release-candidate-and-unread-items-noted-in-the-closed-gap-resolutions]] — open
+- [[#update-part-5-and-part-1-evidence-notes-with-the-skyscanner-and-reddit-primary-postmortems]] — open
 
 ## Open
 
@@ -399,6 +400,13 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** Recheck the items the 22 newly closed gap Resolutions mark as not settled: Cluster API MachineHealthCheck and ClusterClass at v1.15.0 final (read at rc.0); kro v0.9.4 rate-limiter table and instance conditions from Go source; the body of Crossplane PR 8080 for async Synced signaling; KEP-1040 in full; helm-controller driftDetection and Helm 4 server-side apply; whether old Crossplane concepts URLs redirect; and the Kubernetes docs-versus-code stage discrepancies for Mutating Admission Policy and StorageVersionMigration.
 - **Why:** The gaps are closed with their caveats written into the Resolution, so these remainders now live only in prose and would be easy to lose.
 - **Acceptance:** Each item is rechecked and the affected pages corrected, or dropped with a reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 and part-1 evidence notes with the Skyscanner and Reddit primary postmortems — status: open
+
+- **What:** Part 5 section 10 and Part 1's evidence note say the Skyscanner, Reddit and Spotify incidents are index-level or secondary-only and that no named-organization GitOps outage postmortem was found. Skyscanner (2021, Argo CD deleted 478 services) and Reddit (2023, Kubernetes 1.24 label removal and Calico route reflectors) are now primary sources. Revise those passages and cite [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]] and the Reddit example page.
+- **Why:** The outputs currently understate the evidence and name Skyscanner as unread.
+- **Acceptance:** The passages cite the primary pages and no longer call these incidents index-only.
 - **Drafted by:** agent on 2026-11-26
 
 ## Done

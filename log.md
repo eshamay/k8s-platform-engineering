@@ -599,3 +599,13 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 - closed todo: Close the resolved-candidate gaps from the evidence and fact-check pass (done)
 - added todo: Recheck release-candidate and unread items noted in the closed-gap resolutions
 - rebuilt the index of open todos (it had listed completed items)
+
+## [2026-11-26] ingest | Skyscanner Engineering, How a couple of characters brought down our site
+- source: [[sources/skyscanner-namespace-deletion-postmortem]]
+- raw: `raw/skyscanner-namespace-deletion-postmortem.md` (sha256: 4930a0cb876a)
+- pages touched: [[findings/no-named-organization-postmortem-was-found-for-a-gitops-revert-loop-a-gitops-outage-or-controller-retry-amplification]], [[findings/the-pitfalls-dossier-rests-on-index-summaries-an-older-crossplane-version-and-few-primary-incident-reports]], [[concepts/gitops-pull-based-delivery]], [[entities/argo-cd]], [[index]], [[todo]]
+- new pages: [[sources/skyscanner-namespace-deletion-postmortem]], [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]], [[findings/templated-configuration-that-looks-like-config-is-code-and-needs-tests-and-a-regional-rollout-before-a-gitops-controller-applies-it-globally]]
+- contradictions raised: 1 (the no-named-organization postmortem finding)
+- fact conflicts: 0
+- gaps drafted: 0 (possible-resolution notes added under two gaps)
+- rationale: First primary account of a GitOps-caused outage. Fetched with the user's explicit permission from a Wayback Machine capture because the scraper and WebFetch could not read Medium. Spotify and Reddit followed as separate ingests.

@@ -128,6 +128,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g1-operator-loop-failures]] — verified dossier on issue-level operator reconcile loops, lost events, and early-Ready status bugs, with no formal operator postmortem found, 2026-11-26 (active)
 - [[sources/research-gap-g1-leaked-resources-adoption]] — verified dossier on leaked or duplicated cloud resources from ambiguous creates and on adopt-or-create versus explicit import, from GitHub issues only, 2026-11-26 (active)
 - [[sources/research-gap-g1-other-tool-pitfalls]] — verified dossier on first-party pitfall issues and release notes for kro, Config Connector, ACK, and Cluster API, with no named-organization postmortem, 2026-11-26 (active)
+- [[sources/skyscanner-namespace-deletion-postmortem]] — Skyscanner's 2021 postmortem of a global outage caused by a template change reconciled by Argo CD, 2026-11-26
 
 ## Examples
 
@@ -345,6 +346,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/ack-issue-3153-pruning-a-custom-resource-from-git-deletes-the-aws-resource-irreversibly]] — prune deletes the AWS resource (active)
 - [[examples/ack-issue-3152-adoption-under-argo-cd-or-flux-overwrites-the-adopted-aws-resource-with-the-git-spec]] — adoption overwrites with the git spec (active)
 - [[examples/cluster-api-issue-10522-cert-manager-rotation-made-webhooks-unreachable-and-failed-a-clusterctl-upgrade-test]] — 90 second webhook window (active)
+- [[examples/skyscanner-s-2021-global-outage-an-incorrect-template-change-was-reconciled-by-argo-cd-into-deleting-478-services]] — Skyscanner's 2021 outage, 478 services deleted across every region (active)
 
 ## Comparisons
 
@@ -677,6 +679,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/cluster-api-v1-14-0-lists-four-breaking-changes-and-schedules-v1beta1-and-docker-removals]] — CAPI v1.14.0 release notes (active)
 - [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]] — evidence caveat (draft)
 - [[findings/evidence-and-fact-check-pass-gap-dispositions]] — triage of the 49 group 1 and 3 gaps against the 14 research dossiers: 22 resolved-candidate, 23 partial, 4 still-open (active)
+- [[findings/templated-configuration-that-looks-like-config-is-code-and-needs-tests-and-a-regional-rollout-before-a-gitops-controller-applies-it-globally]] — templated configuration is code and needs tests and staged rollout (active)
 
 ## Outputs
 
