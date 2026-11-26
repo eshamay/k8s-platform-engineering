@@ -3,7 +3,7 @@ title: Destructive deletion of external resources
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
@@ -23,6 +23,9 @@ sources:
   - id: research-managed-resource
     hash: 09ca2f9dcdc6
     ingested: 2026-11-25
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, deletion, finalizers, safety]
 ---
@@ -64,3 +67,7 @@ Owner references only reach Kubernetes objects, so cascade deletion never covers
 ## Managed resource dossier additions
 
 The managed resource dossier confirms that deleting the Kubernetes object deletes the cloud resource by default in Crossplane, Config Connector, and ACK, and adds two Crossplane guardrails: policies that omit Delete (the v2 orphan idiom, since namespaced managed resources have no `deletionPolicy`) and Usages, which block deletion of a resource that is in use. It also records that a Git removal chains through Flux prune and then the provider delete unless Delete is excluded. [[sources/research-managed-resource]] See [[examples/crossplane-usages-order-deletion-and-guard-against-accidental-removal]] and [[comparisons/observe-only-and-keep-controls-across-crossplane-config-connector-and-ack]].
+
+## Evidence from the leaked-resources dossier
+
+In the ACK issue 3149 reproduction, deleting either of two custom resources that had adopted the same IAM role deleted the role in 4 ms, and the surviving custom resource created a replacement with a new role ID on its next resync. The run was against moto and not real AWS. See [[examples/ack-issue-3149-adopt-or-create-let-two-custom-resources-overwrite-one-iam-role-and-deleting-either-deleted-it]]. [[sources/research-gap-g1-leaked-resources-adoption]]

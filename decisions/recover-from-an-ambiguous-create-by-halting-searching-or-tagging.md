@@ -3,11 +3,14 @@ title: Recover from an ambiguous create by halting, searching, or tagging
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: [Ambiguous create recovery]
 tags: [decision, idempotency, crossplane, recovery]
 ---
@@ -31,8 +34,12 @@ A provider wrote a pending marker, called a create API, and lost the outcome. Th
 
 ## Consequences
 
-Halting costs human time on each restart during a failing create, while searching risks adopting the wrong resource if the key is weak. Prevention is the most robust choice when the API offers it. The maintainers also proposed letting resources with deterministic identifiers opt out of the pending marker. See [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] and [[examples/sap-btp-provider-recovers-lost-ids-by-business-key-and-creation-window]].
+Halting costs human time on each restart during a failing create, while searching risks adopting the wrong resource if the key is weak. Prevention is the most robust choice when the API offers it. The maintainers also proposed letting resources with deterministic identifiers opt out of the pending marker, and that opt-out now exists in crossplane-runtime as `WithDeterministicExternalName` (see [[decisions/set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses]]). See [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] and [[examples/sap-btp-provider-recovers-lost-ids-by-business-key-and-creation-window]].
 
 ## Related
 
 [[concepts/idempotency]], [[entities/crossplane]], [[entities/crossplane-provider-btp]]
+
+## Update from the leaked-resources dossier
+
+The dossier adds a fifth option under discussion in ACK: record the owner in an AWS tag at creation so a controller can recover a lost ID and refuse foreign resources (ACK issue 3143, an open proposal, with a work-in-progress tag-check change in runtime pull request 261). ACK runtime pull request 292 (merged 2026-11-20) patches status immediately after Create to narrow the window. See [[decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout]] and [[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]]. [[sources/research-gap-g1-leaked-resources-adoption]]

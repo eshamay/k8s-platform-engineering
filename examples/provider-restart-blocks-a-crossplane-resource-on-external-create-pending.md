@@ -1,13 +1,16 @@
 ---
 title: A provider restart blocks a Crossplane resource on external-create-pending
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: []
 tags: [crossplane, idempotency, external-create-pending, provider-aws]
 ---
@@ -33,3 +36,11 @@ Failing safe protects against duplicates and leaked cost, but it does not scale 
 ## Related
 
 [[entities/crossplane]], [[concepts/managed-resource]], [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]]
+
+## Update from the leaked-resources dossier
+
+The 2026-11-26 dossier read issue 3037 again, with the maintainer's later comments, and corrects the "proposed" status of the opt-out. The maintainer (Nic Cope) said the pending marker "ensures that if creation was ambiguous that we stop and ask a human to intervene rather than potentially creating more infrastructure", and later listed three leak scenarios the annotations cover: cloud-generated names that cannot be stored, eventually consistent APIs reporting that a resource does not exist, and stale cache reads of the managed resource. The opt-out for deterministic identifiers did ship in crossplane-runtime as `WithDeterministicExternalName`, but an open upjet issue says upjet controllers do not set it, so deterministically named resources still wedge. See [[findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error]] and [[decisions/set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses]].
+
+Correction note: the earlier text on this page says the issue proposed an opt-out and was closed as not planned. The dossier confirms the issue is closed and that the option now exists in the runtime, and it does not restate the "not planned" reason, so read that phrase as unconfirmed.
+
+Reported triggers in the thread are a normal Deployment rollout of the provider after a create that was failing on IAM errors and a cluster upgrade that replaced all nodes (that second report was partly struck through by its author). The maintainer also said providers had no graceful shutdown handling for in-flight creates at the time. crossplane-runtime issue 340 (2022-07-14) shows provider-terraform leaving the annotation stuck when its pod is terminated mid-apply. A dated, named cost case is [[examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days]]. [[sources/research-gap-g1-leaked-resources-adoption]]

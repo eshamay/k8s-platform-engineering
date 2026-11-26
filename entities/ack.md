@@ -59,6 +59,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -147,3 +150,7 @@ ACK issue 2911 (2026-06) reports an Argo CD prune that deleted a WAFv2 WebACL CR
 ## Missing observedGeneration seen from Argo CD
 
 Argo CD issue 30373 (2026-10-23) reports that ACK resources have no `observedGeneration`, so Argo CD's built-in ACK health check reports Healthy about 2 seconds before the controller re-stamps its conditions after a spec change (iam-controller v1.10.1). The reporter's statement that ACK issue 1583 has been open since 2022 is SECONDARY-ONLY. See [[examples/argo-cd-issue-30373-the-built-in-ack-health-check-reports-healthy-before-the-controller-observes-a-spec-change]] and [[sources/research-gap-g1-operator-loop-failures]].
+
+## Leaked and duplicated resources and adoption failures from the leaked-resources dossier
+
+The 2026-11-26 dossier collects reporter-level evidence on two ACK weaknesses. First, a lost Create response duplicates the AWS resource or wedges the custom resource: a CI run created a second VPC endpoint during a controller rollout with leader election off ([[examples/ack-issue-3122-a-controller-restart-during-a-rollout-created-a-second-vpc-endpoint-and-blocked-subnet-deletion-for-about-two-hours]]), a GitOps bootstrap across two clusters left one duplicate Route 53 hosted zone per name ([[examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name]]), and an audit counts 48 resources in 22 controllers ([[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]]). Runtime pull request 292 (merged 2026-11-20) patches status right after Create. Second, `adopt-or-create` has no foreign-owner guard and behaves differently by kind ([[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]], [[findings/ack-adoption-semantics-are-inconsistent-across-kinds-and-adopted-resources-can-fail-to-converge]]). The earlier note on this page that adoption fills the adoption gap should be read with those caveats. Most late-2026 ACK adoption reports come from one reporter. [[sources/research-gap-g1-leaked-resources-adoption]] See [[decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout]].

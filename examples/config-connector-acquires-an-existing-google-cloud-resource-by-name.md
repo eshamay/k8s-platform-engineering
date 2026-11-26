@@ -1,13 +1,16 @@
 ---
 title: Config Connector acquires an existing Google Cloud resource by name
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: []
 tags: [config-connector, gcp, acquire, idempotency, bigquery]
 ---
@@ -33,3 +36,7 @@ Same-name-means-same-resource works well when the cloud API accepts caller-chose
 ## Related
 
 [[entities/config-connector]], [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]]
+
+## Update from the leaked-resources dossier
+
+A reported side effect of acquisition is that settings the CRD does not model can be removed: issue 14236 says acquiring an existing StorageBucket removed its encryption enforcement config ([[examples/config-connector-issue-14236-acquiring-an-existing-storage-bucket-removed-its-encryption-enforcement-config]], a reporter claim, open). Issue 13840 shows the opposite failure, a 409 when the server-generated ID was not set. See [[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]]. [[sources/research-gap-g1-leaked-resources-adoption]]

@@ -59,6 +59,9 @@ sources:
   - id: research-gap-g3-reconcile-defaults
     hash: b7be72012393
     ingested: 2026-11-26
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -146,3 +149,7 @@ The overview says Config Connector "reconciles the configured state against Goog
 ## Reconcile interval and drift cadence in the reconcile-defaults dossier
 
 The reconciliation page says resources reconcile on every update and "after a jitter period with an average based on the preconfigured default interval". In source the global default mean is 10 minutes, the interval resolves from the Terraform service mapping, DCL metadata, IAM kind constants, and then the default, jitter spreads requeues between 0.5 and 1.5 times the mean (5 to 15 minutes by default), the annotation `cnrm.cloud.google.com/reconcile-interval-in-seconds` overrides it per resource, setting it to 0 is documented as irreversible, and failure backoff is capped at 120 seconds by default. Per-kind Terraform and DCL values were not read, so whether the controller types differ by default is open. [[sources/research-gap-g3-reconcile-defaults]] See [[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]].
+
+## Acquisition side effects and a failed create in the leaked-resources dossier
+
+The dossier adds two dated Config Connector reports. Issue 14236 (2026-10-21, v1.117.0, open) says acquiring an existing StorageBucket removed its CSEK `FullyRestricted` enforcement config because the CRD has no field for it, a reporter claim not confirmed by maintainers in the text read ([[examples/config-connector-issue-14236-acquiring-an-existing-storage-bucket-removed-its-encryption-enforcement-config]]). Issue 648 (2022, v1.76.0) shows a MonitoringAlertPolicy created on every reconcile although the create returned HTTP 400, which a Config Connector engineer attributed to the GCP API ([[examples/config-connector-issue-648-an-alert-policy-was-created-on-every-reconcile-although-the-create-returned-http-400]]). Issue 12740 (open) proposes that server-generated-ID resources fail terminally instead of being re-created, and issue 13840 shows a 409 when the server-generated ID was not set. See [[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]]. [[sources/research-gap-g1-leaked-resources-adoption]]

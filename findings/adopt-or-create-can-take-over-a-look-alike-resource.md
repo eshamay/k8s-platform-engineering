@@ -1,13 +1,16 @@
 ---
 title: Adopt-or-create can take over a look-alike resource
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: [Accidental adoption]
 tags: [pitfall, ack, config-connector, adoption, crossplane]
 ---
@@ -33,3 +36,7 @@ Use strict adoption or Observe-only first, read the populated spec, and only the
 ## Related
 
 [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]], [[examples/config-connector-acquires-an-existing-google-cloud-resource-by-name]], [[findings/immutable-fields-and-drift-collisions]], [[concepts/idempotency]]
+
+## Update from the leaked-resources dossier
+
+The dossier turns the documented risk into reproduced cases. ACK `adopt-or-create` adopts a found resource with no check on whether another custom resource manages it, so two custom resources overwrote one IAM role and deleting either deleted it ([[examples/ack-issue-3149-adopt-or-create-let-two-custom-resources-overwrite-one-iam-role-and-deleting-either-deleted-it]], reproduced against moto, not real AWS). Config Connector acquisition of an existing bucket removed settings the CRD does not model ([[examples/config-connector-issue-14236-acquiring-an-existing-storage-bucket-removed-its-encryption-enforcement-config]]). See [[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]], [[findings/ack-adoption-semantics-are-inconsistent-across-kinds-and-adopted-resources-can-fail-to-converge]], and [[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]]. No production frequencies were found, so the page still cannot say how often this happens. [[sources/research-gap-g1-leaked-resources-adoption]]

@@ -280,6 +280,27 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passage revised and citing the pages named above.
 - **Drafted by:** agent on 2026-11-26
 
+## Update crossplane-ramp-up ambiguous-create paragraph with the shipped opt-out and the upjet gap — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the "Ambiguous create" paragraph (around line 306) says the issue 3037 proposal to let deterministic-identifier resources opt out "was closed as not planned". The opt-out now exists in crossplane-runtime as `WithDeterministicExternalName`, and provider-upjet-aws issue 2251 reports that upjet controllers do not set it. The paragraph can also cite the reporter-measured cost case, provider-upjet-aws issue 2199 (about $155 over 15 days, self-reported). The "closed as not planned" wording is not restated by the new dossier and should be rechecked before it is kept.
+- **Why:** See [[sources/research-gap-g1-leaked-resources-adoption]]. Cite [[findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error]] and [[examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up adoption passage with the reproduced adopt-or-create failures — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "Other tools answer the same two questions" (around line 270) says adopt-or-create "can take over a look-alike resource" as a general warning. It can now cite reproduced cases: ACK issue 3149 (two custom resources overwrote one IAM role and deleting either deleted it, run against moto) and Config Connector issue 14236 (acquisition removed settings the CRD does not model, a reporter claim). It should also say that no production comparison of the policies exists.
+- **Why:** See [[sources/research-gap-g1-leaked-resources-adoption]]. Cite [[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]] and [[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-3 ambiguous-create and adoption passages with the 2026 incident evidence — status: open
+
+- **What:** In `outputs/part-3-controller-and-operator-mechanics.md`, the "Crossplane case" paragraph (around line 116) describes the pending marker and says failing safe does not scale but mentions neither the runtime opt-out nor any dated incident, and the "How they handle ambiguous creates and existing resources" paragraph (around line 328) presents ACK adopt-or-create as making a retried create converge. They can now say that the runtime opt-out shipped but upjet providers do not set it, that an ACK audit counts 48 resources in 22 controllers where a lost create response duplicates the resource or wedges the custom resource (author's audit, not an incident count), and that a CI run created a duplicate VPC endpoint. Convergence under adopt-or-create holds only if the identifier was recorded.
+- **Why:** See [[sources/research-gap-g1-leaked-resources-adoption]]. Cite [[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]], [[examples/ack-issue-3122-a-controller-restart-during-a-rollout-created-a-second-vpc-endpoint-and-blocked-subnet-deletion-for-about-two-hours]], and [[findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error]].
+- **Acceptance:** Passages revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
 ## Done
 
 ## Run build-wiki workflow — status: done

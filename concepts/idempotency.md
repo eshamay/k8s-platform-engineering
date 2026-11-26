@@ -3,7 +3,7 @@ title: Idempotency
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -20,6 +20,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: [Idempotent reconciliation, Safe retries]
 tags: [controllers, idempotency, external-resources]
 ---
@@ -70,3 +73,7 @@ The dossier leaves three questions unresolved: whether the external name belongs
 ## Related
 
 [[concepts/reconciliation-loop]], [[concepts/level-triggered-vs-edge-triggered]], [[concepts/provider]], [[concepts/managed-resource]], [[concepts/finalizers]]
+
+## Update from the leaked-resources dossier
+
+The cloud-layer mechanisms above now have incident-grade evidence from GitHub issues, none from a named postmortem. A lost create result leads to a leaked or duplicated resource (an ACK CI run with a second VPC endpoint, an audit of 48 resources in 22 ACK controllers), to a stuck retry loop (a reported $155 over 15 days in an upjet provider), or to a halted resource that needs a human (Crossplane issue 3037). Caller-chosen names help only if the controller does not retry blindly: a 409 stopped a duplicate in one case, and a failed HTTP 400 create still produced a policy in another. Adoption as a convergence tool has its own failures, because `adopt-or-create` removes the foreign-owner guard. See [[examples/ack-issue-3122-a-controller-restart-during-a-rollout-created-a-second-vpc-endpoint-and-blocked-subnet-deletion-for-about-two-hours]], [[examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days]], [[examples/config-connector-issue-648-an-alert-policy-was-created-on-every-reconcile-although-the-create-returned-http-400]], [[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]], and [[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]]. The unresolved question about the safer adoption default stays open in [[decisions/adopt-or-create-or-require-explicit-import]]. [[sources/research-gap-g1-leaked-resources-adoption]]

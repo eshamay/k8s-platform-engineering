@@ -3,11 +3,14 @@ title: Blind retries duplicate side effects when the cloud API is not idempotent
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, retries, aws, idempotency, client-token]
 ---
@@ -33,3 +36,7 @@ Choose APIs with client tokens or caller-chosen identifiers, record intent befor
 ## Related
 
 [[concepts/idempotency]], [[findings/failure-retry-loops-and-backoff]]
+
+## Further evidence from the leaked-resources dossier
+
+Config Connector issue 648 shows a cloud API that created an alert policy even when the create returned HTTP 400, so each retry added a policy ([[examples/config-connector-issue-648-an-alert-policy-was-created-on-every-reconcile-although-the-create-returned-http-400]]). Route 53 allows two public hosted zones with the same name, so a second controller with empty status duplicated every zone ([[examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name]]). [[sources/research-gap-g1-leaked-resources-adoption]]

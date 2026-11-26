@@ -17,6 +17,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: [failure modes, postmortems, platform pitfalls]
 tags: [pitfalls, postmortems, cascades, finalizers, deletion, drift, ssa, guard-rails]
 ---
@@ -65,3 +68,7 @@ The 2026-11-26 GitOps dossier adds dated, anonymous reports for the GitOps pitfa
 ## Update from the operator loop dossier
 
 The 2026-11-26 operator dossier found no formal organization-authored postmortem of an operator failure, and the k8s.af index has no operator-bug entry. It adds twelve issue-level cases: five reconcile-loop reports, one retry loop that grew controller memory about 25 times, two lost-event cases, and three early-Ready status bugs, plus one resync-related report. All impact figures are self-reported by issue authors. See [[findings/no-formal-organization-authored-postmortem-of-an-operator-failure-was-found]], [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]], [[findings/an-informer-relist-that-races-a-queued-create-can-drop-the-delete-event-for-the-object]], and [[findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed]]. Source: [[sources/research-gap-g1-operator-loop-failures]].
+
+## Update from the leaked-resources dossier
+
+A third gap on the evidence side is partly filled. The 2026-11-26 dossier found no named postmortem or conference talk about leaked or duplicated cloud resources, and it records issue-level cases: a duplicate VPC endpoint from an ACK controller restart, duplicate Route 53 hosted zones from a two-cluster GitOps bootstrap, a reported $155 retry-loop cost in an upjet provider, and two custom resources overwriting one IAM role under `adopt-or-create`. Figures are self-reported. See [[findings/no-named-postmortem-or-production-comparison-was-found-for-leaked-resources-or-adopt-or-create-versus-explicit-import]] and [[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]]. [[sources/research-gap-g1-leaked-resources-adoption]]

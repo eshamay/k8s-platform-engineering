@@ -98,6 +98,9 @@ sources:
   - id: research-gap-g1-operator-loop-failures
     hash: baca2cdf965d
     ingested: 2026-11-26
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -263,3 +266,7 @@ The managed reconciler in crossplane-runtime defaults to a 1 minute poll interva
 ## Issue 7221 from the operator loop dossier
 
 Crossplane issue 7221 (2026-03-19, closed 2026-05-13) reported that the CompositionRevision and composite reconcilers call `Status().Update()` on every pass, so reconcile-ordering test scenarios never converge, while the production rate limiter dampens it to slow churn. A maintainer acknowledged it, and the fix was not read. See [[examples/crossplane-issue-7221-an-unconditional-status-update-kept-reconcile-ordering-tests-from-converging]] and [[sources/research-gap-g1-operator-loop-failures]].
+
+## Create-pending opt-out in the leaked-resources dossier
+
+Correction note: the "To research" and idempotency notes above treat the opt-out for deterministic identifiers as a proposal. The dossier read crossplane-runtime main on 2026-11-26 and found `WithDeterministicExternalName` in the managed reconciler: when it is false the reconciler stops with "cannot determine creation result" after an incomplete create, and when true the safeguard is skipped. Provider-upjet-aws issue 2251 (open) reports that upjet controllers do not set it ([[findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error]]). Issue 2199 reports a reconcile retry loop after a lost external name at about $155 over 15 days, a figure that is the reporter's own ([[examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days]]). Crossplane 1.17's cached unstructured reads let the composite reconciler leak composed objects ([[examples/crossplane-issue-6260-unstructured-caching-in-1-17-let-the-composite-reconciler-leak-composed-resources]]). [[sources/research-gap-g1-leaked-resources-adoption]] See [[decisions/set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses]].

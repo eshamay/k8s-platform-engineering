@@ -1,13 +1,16 @@
 ---
 title: An ambiguous create result halts reconciliation until a human intervenes
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-gap-g1-leaked-resources-adoption
+    hash: 472b18eb451a
+    ingested: 2026-11-26
 aliases: [Ambiguous create]
 tags: [pitfall, crossplane, idempotency, external-resources, create-pending]
 ---
@@ -33,3 +36,7 @@ Prefer APIs and resource types with caller-chosen names or client tokens, record
 ## Related
 
 [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]], [[concepts/idempotency]], [[entities/crossplane]], [[concepts/managed-resource]]
+
+## Update from the leaked-resources dossier
+
+The dossier adds dated incidents and corrects one open question. The Crossplane opt-out for deterministic identifiers shipped as `WithDeterministicExternalName` in crossplane-runtime, but upjet-based providers do not set it ([[findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error]]). A lost external name after a provider restart turned into a 409 retry loop that the reporter put at about $155 over 15 days ([[examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days]]). In ACK a lost create response duplicates the resource or wedges the custom resource for 48 resources in 22 controllers by one audit ([[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]]), and a CI run created a second VPC endpoint ([[examples/ack-issue-3122-a-controller-restart-during-a-rollout-created-a-second-vpc-endpoint-and-blocked-subnet-deletion-for-about-two-hours]]). No named postmortem or conference talk exists ([[findings/no-named-postmortem-or-production-comparison-was-found-for-leaked-resources-or-adopt-or-create-versus-explicit-import]]). [[sources/research-gap-g1-leaked-resources-adoption]]

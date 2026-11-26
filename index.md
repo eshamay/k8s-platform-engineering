@@ -124,6 +124,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g1-outage-postmortems]] — verified dossier on the OpenAI December 2024, Jetstack 2019, and Neon May 2025 postmortems and the k8s.af webhook entries, 2026-11-26 (active)
 - [[sources/research-gap-g1-gitops-drift-incidents]] — verified dossier on GitOps adopters, drift-correction and prune incidents, and finalizer orphaning, 2026-11-26 (active)
 - [[sources/research-gap-g1-operator-loop-failures]] — verified dossier on issue-level operator reconcile loops, lost events, and early-Ready status bugs, with no formal operator postmortem found, 2026-11-26 (active)
+- [[sources/research-gap-g1-leaked-resources-adoption]] — verified dossier on leaked or duplicated cloud resources from ambiguous creates and on adopt-or-create versus explicit import, from GitHub issues only, 2026-11-26 (active)
 
 ## Examples
 
@@ -201,10 +202,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/argo-cd-does-not-retry-a-failed-sync-of-the-same-commit-unless-retry-is-configured]] — no retry for unchanged input (draft)
 - [[examples/cluster-api-machine-controller-waits-for-infrastructure-and-bootstrap-data]] — a waiting reconciler (draft)
 - [[examples/built-in-controllers-use-deterministic-names-to-avoid-duplicate-children]] — ordinals, template hashes, and tracked creates (draft)
-- [[examples/provider-restart-blocks-a-crossplane-resource-on-external-create-pending]] — issue 3037 (draft)
+- [[examples/provider-restart-blocks-a-crossplane-resource-on-external-create-pending]] — issue 3037 (active)
 - [[examples/sap-btp-provider-recovers-lost-ids-by-business-key-and-creation-window]] — bounded semantic recovery (draft)
-- [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]] — adoption policies (draft)
-- [[examples/config-connector-acquires-an-existing-google-cloud-resource-by-name]] — acquire on name match (draft)
+- [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]] — adoption policies (active)
+- [[examples/config-connector-acquires-an-existing-google-cloud-resource-by-name]] — acquire on name match (active)
 - [[examples/crossplane-initprovider-lets-an-autoscaler-own-node-group-size]] — creation-only settings (draft)
 - [[examples/ec2-client-token-makes-a-retried-runinstances-call-safe]] — server-side retry contract (draft)
 - [[examples/flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs]] — concurrent flags and Helm cache (draft)
@@ -316,6 +317,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/cloudnativepg-issue-11390-kubectl-wait-for-ready-can-return-on-a-condition-produced-before-the-spec-change]] — Ready from before the change (active)
 - [[examples/restate-operator-issue-216-ready-true-before-a-statefulset-rollout-finished-let-flux-mark-the-release-healthy]] — Flux wait passes early (active)
 - [[examples/argo-cd-issue-30373-the-built-in-ack-health-check-reports-healthy-before-the-controller-observes-a-spec-change]] — Healthy before ACK observes the spec (active)
+- [[examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days]] — a 409 retry loop after a lost external name, reported at about $155 over 15 days (active)
+- [[examples/ack-issue-3122-a-controller-restart-during-a-rollout-created-a-second-vpc-endpoint-and-blocked-subnet-deletion-for-about-two-hours]] — duplicate VPC endpoint from a rollout restart, CI reproduction (active)
+- [[examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name]] — second cluster with empty status duplicates hosted zones (active)
+- [[examples/ack-issue-3149-adopt-or-create-let-two-custom-resources-overwrite-one-iam-role-and-deleting-either-deleted-it]] — accidental adoption reproduced against moto (active)
+- [[examples/config-connector-issue-14236-acquiring-an-existing-storage-bucket-removed-its-encryption-enforcement-config]] — acquisition dropped unmodeled settings (active)
+- [[examples/config-connector-issue-648-an-alert-policy-was-created-on-every-reconcile-although-the-create-returned-http-400]] — a failed create that still created the resource (active)
+- [[examples/crossplane-issue-6260-unstructured-caching-in-1-17-let-the-composite-reconciler-leak-composed-resources]] — stale cached read leading to a second create (active)
 
 ## Comparisons
 
@@ -346,7 +354,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/how-flux-ack-and-cluster-api-split-controllers]] — three axes of controller separation (draft)
 - [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]] — queues, jitter, workers, and resync (draft)
 - [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] — workers, cache, sharding, and rate caps (draft)
-- [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] — lost-create recovery and adoption (draft)
+- [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] — lost-create recovery and adoption (active)
 - [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]] — what holds a parent and how teardown is ordered (draft)
 - [[comparisons/background-foreground-and-orphan-propagation-modes]] — three modes side by side (draft)
 - [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]] — owner references, inventory, and finalizers by tool (draft)
@@ -409,6 +417,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]] — Crossplane's CRD-count decision and rejected alternatives (draft)
 - [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]] — why the pre-dry-run takeover is its own opt-in list (active)
 - [[decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off]] — two mitigations for hooks skipped by self-heal (draft)
+- [[decisions/set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses]] — opt out of the create-pending guard per provider (draft)
+- [[decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout]] — options from ACK issue 3122 (draft)
 
 ## Findings
 
@@ -483,11 +493,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/hand-written-operators-duplicate-what-composition-could-express]] — over-building (draft)
 - [[findings/the-requeue-true-result-is-deprecated-and-described-inconsistently]] — conflicting backoff claims, settled at v0.25.3 (active)
 - [[findings/self-triggered-reconcile-loops-generate-their-own-events]] — hot loops from status writes and noisy children (active)
-- [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]] — create tracking (draft)
+- [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]] — create tracking (active)
 - [[findings/a-level-based-loop-deletes-what-it-no-longer-sees-in-desired-state]] — prune and orphan guards (draft)
-- [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]] — external-create-pending blocks (draft)
+- [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]] — external-create-pending blocks (active)
 - [[findings/external-identity-takes-different-forms-across-cloud-apis]] — names, IDs, ARNs, and compound keys (draft)
-- [[findings/adopt-or-create-can-take-over-a-look-alike-resource]] — accidental adoption (draft)
+- [[findings/adopt-or-create-can-take-over-a-look-alike-resource]] — accidental adoption (active)
 - [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]] — retry safety depends on the API (draft)
 - [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]] — cache memory has no eviction (draft)
 - [[findings/an-expired-resourceversion-forces-a-relist-and-synchronized-relists-can-storm]] — 410 Gone and relist cost (draft)
@@ -622,6 +632,12 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/projects-add-periodic-resync-as-a-safety-net-against-missed-events-and-bugs]] — resync as a guard, one claim secondary-only (draft)
 - [[findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed]] — early Ready from missing observedGeneration (active)
 - [[findings/no-formal-organization-authored-postmortem-of-an-operator-failure-was-found]] — evidence caveat (draft)
+- [[findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error]] — the runtime opt-out exists and upjet does not use it (active)
+- [[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]] — an author's audit of ACK exposure to lost creates (active)
+- [[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]] — no foreign-owner check under adopt-or-create (active)
+- [[findings/ack-adoption-semantics-are-inconsistent-across-kinds-and-adopted-resources-can-fail-to-converge]] — Role versus Policy, EKS and RDS adoption loops (active)
+- [[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]] — Config Connector acquisition side effect, single report (draft)
+- [[findings/no-named-postmortem-or-production-comparison-was-found-for-leaked-resources-or-adopt-or-create-versus-explicit-import]] — evidence caveat (draft)
 
 ## Outputs
 
