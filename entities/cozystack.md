@@ -3,11 +3,14 @@ title: "Cozystack"
 type: entity
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-landscape
     hash: d28204a90545
     ingested: 2026-11-25
+  - id: research-gap-o2-flux-internals
+    hash: 866650ffd3aa
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, paas, bare-metal, talos]
 ---
@@ -23,3 +26,7 @@ The documentation lists Talos Linux, Kubernetes, KubeVirt, LINSTOR and DRBD, and
 ## Related
 
 [[concepts/tooling-landscape]], [[entities/cluster-api]]
+
+## Flux sharding operator
+
+Cozystack's repository ships a `flux-shard-operator` that creates label-selected helm-controller shards at about 100 HelmReleases per shard. See [[examples/cozystack-s-flux-shard-operator-creates-helm-controller-shards-at-about-100-helmreleases-per-shard]]. [[sources/research-gap-o2-flux-internals]]

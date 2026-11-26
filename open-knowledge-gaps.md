@@ -833,6 +833,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, crossplane, kro, health-checks
 - **Possible resolution from [[sources/research-flux-deep-dive]]:** Not helpful. The dossier does not research Flux with composites or kro instances.
+- **Possible resolution from [[sources/research-gap-o2-flux-internals]]:** Partly settled, and the user decides whether to close it. Flux health checks accept kstatus-compatible custom resources, `healthCheckExprs` supplies CEL per kind, `dependsOn` waits on health checks, and `readyExpr` replaces built-in readiness, see [[findings/flux-tracks-composite-resources-through-its-inventory-and-kstatus-or-cel-health-checks-and-documents-no-owner-reference-recipe-or-kro-guidance]]. A named case is [[examples/flux2-issue-5855-kstatus-saw-crossplane-resources-without-a-ready-condition-as-ready-and-maintainers-recommended-an-observedgeneration-cel-expression]]. Not settled: whether Flux needs no ownerReference recipe (an inference from its inventory-based prune, with no Flux page stating it), and any Flux guidance for kro instances, since none was found in either project. The open kro issue is [[examples/kro-issue-1290-external-controllers-fight-kro-over-fields-and-kro-resets-their-changes]].
 
 ## Scale of composite resources per controller — status: open
 
@@ -922,6 +923,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/flux]] and write a worked example for the lifecycle trace.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, source-controller, leader-election, verification
+- **Possible resolution from [[sources/research-gap-o2-flux-internals]]:** Partly settled, and the user decides whether to close it. The dossier read the source and documentation on `main`: artifacts live under `/data` and are served from an in-process file server on `:9090`, the server starts only after leader election, non-leaders fail readiness, and standby replicas add failover and no capacity, see [[findings/flux-source-controller-starts-its-artifact-server-only-after-winning-leader-election-and-standbys-fail-readiness]] and [[findings/the-stock-flux-source-controller-keeps-artifacts-in-an-emptydir-with-one-minute-retention-so-a-restart-rebuilds-them]]. Not settled: OCI source verification mechanics in source-controller (signature verification is covered in [[findings/flux-verifies-cosign-and-notation-signatures-on-oci-artifacts-while-the-argo-cd-pages-read-document-no-oci-signature-verification]]), the default lease durations, how dependents behave while source-controller restarts, whether any supported configuration persists artifacts, and the inference that `/data` maps to an emptyDir.
 
 ## Flux sharding in production and the HelmChart labeling rule — status: open
 
@@ -933,6 +935,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find a named adopter that runs shards and record its numbers.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, sharding, scale, verification
+- **Possible resolution from [[sources/research-gap-o2-flux-internals]]:** Half settled, and the user decides whether to close it. The labeling rule is verified: source kinds with a dependency on another kind need the same labels, and a generated HelmChart is labeled through the HelmRelease's `.spec.chart.metadata.labels`, see [[findings/a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels]]. The docs do not state the failure symptom of a mismatch. For production use, Cozystack ships a shard operator at about 100 HelmReleases per shard, but its README states design intent and no measured outcome, see [[examples/cozystack-s-flux-shard-operator-creates-helm-controller-shards-at-about-100-helmreleases-per-shard]], and Morgan Stanley lists sharding only as exploration. No adopter's production shard numbers were found.
 
 ## Flux image automation API status and safe promotion policy — status: open
 
@@ -944,6 +947,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find adopter write-ups on staging-only or reviewed promotion.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, image-automation, verification
+- **Possible resolution from [[sources/research-gap-o2-flux-internals]]:** Half settled, and the user decides whether to close it. The current spec pages for ImageRepository, ImagePolicy, and ImageUpdateAutomation use `image.toolkit.fluxcd.io/v1`, with v1 served and stored for ImagePolicy and controllers at v1.3.1, see [[findings/flux-image-automation-kinds-are-image-toolkit-fluxcd-io-v1-with-older-versions-still-in-the-api-directory]]. The official guide offers semver for production, a separate push branch for pull-request approval, and revert by narrowing the range, see [[findings/the-flux-image-update-guide-offers-semver-for-production-a-separate-push-branch-for-review-and-revert-by-narrowing-the-range]] and [[decisions/gate-flux-image-automation-with-semver-ranges-a-separate-push-branch-or-staging-only-automation]]. Not settled: adopter write-ups on staging-only or reviewed promotion, the date v1 graduated, and the ImageUpdateAutomation CRD storage version.
 
 ## Crossplane package dependency resolution, revision activation, and upgrade policy — status: open
 
@@ -1115,6 +1119,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-gap-g1-named-adopters]]:** Mostly answered in the negative, and the user decides whether to close it. No organization was found that publicly says it runs sharded Flux at a stated scale. Morgan Stanley, with over 500 clusters, lists sharding under "Looking Ahead". Only anonymous issue reporters use sharding, and their reports are recorded in [[findings/a-flux-dependson-across-shards-failed-with-dependency-not-found-until-a-2024-fix]] and [[findings/objects-that-leave-a-flux-shard-keep-stale-artifacts-on-the-old-source-controller]]. No postmortem ties APF throttling to Flux. What exists is the 2022 change that made Flux controllers APF-aware and a 2026 fix for a remaining client-side path, see [[findings/flux-turns-off-client-side-throttling-when-apf-is-enabled-but-a-custom-kubeconfig-path-kept-it-until-2026]]. Talks by KLM, NatWest Group, and Orange at FluxCon Europe 2026 were not read.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** flux, sharding, apf, incidents
+- **Possible resolution from [[sources/research-gap-o2-flux-internals]]:** Cozystack is a named project that ships label-based Flux shards, with design targets of about 100 HelmReleases per shard and no measured outcome, see [[examples/cozystack-s-flux-shard-operator-creates-helm-controller-shards-at-about-100-helmreleases-per-shard]]. The dossier found no new APF incident. The gap stays open.
 
 ## First-party pitfall and incident evidence for kro, Config Connector, ACK, and Cluster API — status: open
 

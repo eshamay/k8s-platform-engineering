@@ -110,6 +110,9 @@ sources:
   - id: research-gap-o1-argocd-flux-gitops
     hash: 3a5f956bbd5a
     ingested: 2026-11-26
+  - id: research-gap-o2-flux-internals
+    hash: 866650ffd3aa
+    ingested: 2026-11-26
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -260,3 +263,9 @@ The source-, kustomize- and helm-controller each build their own manager and nar
 ## Secrets, OCI verification, ignore rules, and remote clusters (o1 dossier)
 
 kustomize-controller decrypts only SOPS and needs plaintext `metadata`, `kind` and `apiVersion`, see [[findings/flux-kustomize-controller-decrypts-only-sops-and-requires-metadata-kind-and-apiversion-to-stay-in-plaintext]]. OCIRepository verifies Cosign and Notation signatures, see [[findings/flux-verifies-cosign-and-notation-signatures-on-oci-artifacts-while-the-argo-cd-pages-read-document-no-oci-signature-verification]]. A Kustomization `.spec.ignore` rule without a target selector matches every object it manages, see [[findings/a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages]]. A Kustomization can target a remote cluster with `.spec.kubeConfig`, where the ConfigMap mode is recommended and secret-less, see [[findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity]]. Release cadence on 2026-11-26: v2.10.1 on 2026-11-20, v2.10.0 on 2026-10-26, v2.9.6 on 2026-10-01. The adopters data file is a list without write-ups, see [[examples/the-flux-adopters-data-file-lists-xenit-sortlist-tietoevry-nexxiot-soulcycle-and-luma-health-among-others-with-no-write-ups]]. [[sources/research-gap-o1-argocd-flux-gitops]]
+
+## Internals and edges from the o2 dossier
+
+Source-controller stores artifacts under `/data` and serves them from an in-process HTTP file server on `:9090`. It starts that server only after winning leader election, and standby replicas fail the `leader-election` readiness check, so extra replicas add failover and no capacity. The stock manifest runs one replica with a Recreate strategy and emptyDir volumes, with a one-minute artifact retention TTL. See [[findings/flux-source-controller-starts-its-artifact-server-only-after-winning-leader-election-and-standbys-fail-readiness]] and [[findings/the-stock-flux-source-controller-keeps-artifacts-in-an-emptydir-with-one-minute-retention-so-a-restart-rebuilds-them]].
+
+For sharding, a HelmChart generated from a HelmRelease takes its shard label from `.spec.chart.metadata.labels`, notification-controller and source-watcher do not support sharding, and Cozystack automates helm-controller shards at about 100 HelmReleases each. See [[findings/a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels]], [[findings/flux-notification-controller-and-source-watcher-do-not-support-sharding-and-the-documented-recipe-leaves-image-automation-unsharded]], and [[examples/cozystack-s-flux-shard-operator-creates-helm-controller-shards-at-about-100-helmreleases-per-shard]]. The image automation kinds are `image.toolkit.fluxcd.io/v1`, see [[findings/flux-image-automation-kinds-are-image-toolkit-fluxcd-io-v1-with-older-versions-still-in-the-api-directory]] and [[decisions/gate-flux-image-automation-with-semver-ranges-a-separate-push-branch-or-staging-only-automation]]. For composites, health comes from kstatus or CEL `healthCheckExprs`, see [[findings/flux-tracks-composite-resources-through-its-inventory-and-kstatus-or-cel-health-checks-and-documents-no-owner-reference-recipe-or-kro-guidance]] and [[examples/flux2-issue-5855-kstatus-saw-crossplane-resources-without-a-ready-condition-as-ready-and-maintainers-recommended-an-observedgeneration-cel-expression]]. The docs were read on `main` on 2026-11-26. [[sources/research-gap-o2-flux-internals]]

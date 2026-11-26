@@ -3,11 +3,14 @@ title: Single replica versus leader election for controllers
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-gap-o2-flux-internals
+    hash: 866650ffd3aa
+    ingested: 2026-11-26
 aliases: []
 tags: [controllers, availability, leader-election, kube-rs]
 ---
@@ -33,3 +36,7 @@ A single replica is simple and tolerates restarts because of eventual consistenc
 ## Related
 
 [[entities/kube-rs]], [[concepts/eventual-consistency-and-convergence]]
+
+## Flux source-controller as a worked case
+
+The 2026-11-26 o2 dossier shows one controller where the trade-off is concrete. Flux source-controller ships with one replica, a Recreate strategy, and `--enable-leader-election`, and the artifact server runs only on the leader, so standbys give failover and no capacity. During a restart the Service has no ready endpoint until the new pod is elected, and dependents fail fetches until artifacts exist again. See [[findings/flux-source-controller-starts-its-artifact-server-only-after-winning-leader-election-and-standbys-fail-readiness]] and [[findings/the-stock-flux-source-controller-keeps-artifacts-in-an-emptydir-with-one-minute-retention-so-a-restart-rebuilds-them]]. [[sources/research-gap-o2-flux-internals]]

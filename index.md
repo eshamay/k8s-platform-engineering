@@ -145,6 +145,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-m6-admission-crds]] — Research dossier: admission and CRD gaps (m6-admission-crds) (active)
 - [[sources/research-gap-m7-operators-idempotency]] — verified dossier on operator framework options, capability levels, Argo CD and Config Connector failure handling, Backstage, kro and Cluster API creates, per-provider external names, and Config Connector conflict leases, 2026-11-26 (active)
 - [[sources/research-gap-o1-argocd-flux-gitops]] — verified dossier on Argo CD and Flux pruning, drift, ignore controls, secret management, OCI sources, ApplicationSet limits, and hub-and-spoke delivery, read from docs at main on 2026-11-26 (active)
+- [[sources/research-gap-o2-flux-internals]] — verified dossier on Flux source-controller artifact serving, sharding labels, image automation API status, and composite resource health, read from source and docs at main on 2026-11-26 (active)
 
 ## Examples
 
@@ -290,7 +291,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/azure-service-operator-generates-crds-from-azure-resource-manager-schemas]] — schema-driven Azure coverage (draft)
 - [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]] — self-reported Flux scale case (draft)
 - [[examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation]] — reference fleet repository (draft)
-- [[examples/flux-image-automation-commits-new-tags-to-git-and-the-reference-repo-limits-it-to-staging]] — tag promotion through Git (draft)
+- [[examples/flux-image-automation-commits-new-tags-to-git-and-the-reference-repo-limits-it-to-staging]] — tag promotion through Git (active)
 - [[examples/teams-replace-helm-upgrade-in-ci-with-flux-helmrelease-objects]] — declarative Helm (draft)
 - [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]] — shard labels and the Flux Operator (draft)
 - [[examples/flux-notification-receivers-start-reconciliation-without-waiting-for-the-poll-interval]] — webhooks and alerts (draft)
@@ -412,6 +413,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/red-hat-developer-hub-operator-deploys-backstage-on-kubernetes-and-openshift]] — an operator for Backstage, verified from the repository description (active)
 - [[examples/config-connector-lease-labels-gate-two-namespaces-that-manage-one-google-cloud-resource]] — 40 minute lease and ManagementConflict (active)
 - [[examples/the-flux-adopters-data-file-lists-xenit-sortlist-tietoevry-nexxiot-soulcycle-and-luma-health-among-others-with-no-write-ups]] — Flux adopter list, names only (active)
+- [[examples/cozystack-s-flux-shard-operator-creates-helm-controller-shards-at-about-100-helmreleases-per-shard]] — label-sharded helm-controllers, design targets only (active)
+- [[examples/flux2-issue-5855-kstatus-saw-crossplane-resources-without-a-ready-condition-as-ready-and-maintainers-recommended-an-observedgeneration-cel-expression]] — kstatus race on Crossplane resources (active)
+- [[examples/kro-issue-1290-external-controllers-fight-kro-over-fields-and-kro-resets-their-changes]] — open kro field-ownership issue (active)
 
 ## Comparisons
 
@@ -519,6 +523,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/set-config-connector-management-conflict-prevention-to-none-or-resource-or-avoid-acquisition]] — evidence-only options, no recommendation (active)
 - [[decisions/supply-gitops-secrets-from-a-destination-cluster-operator-a-generation-plugin-or-controller-side-sops]] — evidence-only options, no recommendation (active)
 - [[decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes]] — evidence-only options, no recommendation (active)
+- [[decisions/gate-flux-image-automation-with-semver-ranges-a-separate-push-branch-or-staging-only-automation]] — evidence-only options for promotion control (draft)
 
 ## Findings
 
@@ -659,9 +664,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/generated-provider-catalogs-inherit-the-behavior-and-bugs-of-their-generator]] — shared behavior across generated providers (draft)
 - [[findings/hand-written-providers-that-treat-not-found-as-an-error-break-the-create-flow]] — Observe must report missing resources, not errors (draft)
 - [[findings/without-lockdown-flags-a-flux-kustomization-applies-with-the-controllers-own-identity]] — tenant privilege escalation (draft)
-- [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]] — leader election limits throughput (draft)
+- [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]] — leader election limits throughput (active)
 - [[findings/suspended-resources-polling-lag-and-a-missing-with-source-flag-make-flux-failures-silent]] — quiet Flux failures (draft)
-- [[findings/automatic-image-tag-updates-can-roll-unintended-versions-into-production]] — promotion risk (draft)
+- [[findings/automatic-image-tag-updates-can-roll-unintended-versions-into-production]] — promotion risk (active)
 - [[findings/circular-dependson-chains-between-flux-resources-never-reconcile]] — ordering stalls (draft)
 - [[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents]] — shard label consistency (draft)
 - [[findings/without-prune-flux-leaves-removed-manifests-running-as-orphans]] — orphaned live objects (draft)
@@ -851,6 +856,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/the-applicationset-create-only-policy-does-not-stop-owner-reference-deletion-of-applications]] — create-only policy limit (active)
 - [[findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity]] — hub push versus the argocd-agent pull model (active)
 - [[findings/no-neutral-benchmark-or-cncf-comparison-of-argo-cd-and-flux-was-found-so-the-comparison-rests-on-each-project-s-own-documentation]] — no neutral comparison found, documented default differences, release cadence (active)
+- [[findings/flux-source-controller-starts-its-artifact-server-only-after-winning-leader-election-and-standbys-fail-readiness]] — artifact server runs only on the elected leader (active)
+- [[findings/the-stock-flux-source-controller-keeps-artifacts-in-an-emptydir-with-one-minute-retention-so-a-restart-rebuilds-them]] — artifact storage defaults and emptyDir (active)
+- [[findings/a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels]] — HelmChart shard labeling rule (active)
+- [[findings/flux-notification-controller-and-source-watcher-do-not-support-sharding-and-the-documented-recipe-leaves-image-automation-unsharded]] — controllers outside the sharding recipe (active)
+- [[findings/flux-image-automation-kinds-are-image-toolkit-fluxcd-io-v1-with-older-versions-still-in-the-api-directory]] — image automation API version (active)
+- [[findings/the-flux-image-update-guide-offers-semver-for-production-a-separate-push-branch-for-review-and-revert-by-narrowing-the-range]] — documented image promotion controls (active)
+- [[findings/flux-tracks-composite-resources-through-its-inventory-and-kstatus-or-cel-health-checks-and-documents-no-owner-reference-recipe-or-kro-guidance]] — Flux with composites and kro instances (active)
 
 ## Outputs
 

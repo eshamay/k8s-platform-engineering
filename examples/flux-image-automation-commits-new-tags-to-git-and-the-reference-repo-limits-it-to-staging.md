@@ -1,13 +1,16 @@
 ---
 title: Flux image automation commits new tags to Git and the reference repo limits it to staging
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-flux-deep-dive
     hash: e640ec8046bc
     ingested: 2026-11-25
+  - id: research-gap-o2-flux-internals
+    hash: 866650ffd3aa
+    ingested: 2026-11-26
 aliases: []
 tags: [use-case, flux, image-automation, promotion, gitops]
 ---
@@ -27,3 +30,7 @@ The multi-tenancy reference repository enables this only for the staging overlay
 ## Related
 
 [[entities/flux]], [[findings/automatic-image-tag-updates-can-roll-unintended-versions-into-production]], [[findings/mutable-remote-references-change-what-a-commit-renders]], [[examples/argo-cd-app-of-apps-out-of-sync-from-image-updater]], [[examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation]]
+
+## Correction: current API version
+
+Correction note, 2026-11-26: the How it works section above says the current API versions and any beta status still need checking. The o2 dossier found that the current spec pages for all three kinds use `image.toolkit.fluxcd.io/v1`, with v1 served and stored for ImagePolicy and controller releases at v1.3.1. See [[findings/flux-image-automation-kinds-are-image-toolkit-fluxcd-io-v1-with-older-versions-still-in-the-api-directory]]. The date v1 was introduced remains unknown. The promotion options are in [[findings/the-flux-image-update-guide-offers-semver-for-production-a-separate-push-branch-for-review-and-revert-by-narrowing-the-range]]. [[sources/research-gap-o2-flux-internals]]

@@ -17,6 +17,9 @@ sources:
   - id: research-gap-b1-recheck-capi-argocd
     hash: 832b86e20750
     ingested: 2026-11-26
+  - id: research-gap-o2-flux-internals
+    hash: 866650ffd3aa
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, flux, argo-cd, sharding, scale]
 ---
@@ -46,3 +49,7 @@ Argo CD's docs at v3.6.3 still call round-robin and consistent-hashing experimen
 ## Recheck on 2026-11-26
 
 A second reading of v3.6.3 confirms the `legacy` default in code and the experimental label on round-robin and consistent-hashing. See [[sources/research-gap-b1-recheck-capi-argocd]].
+
+## Flux limits from the o2 dossier
+
+Flux's label sharding covers the source, kustomize, and helm controllers, but notification-controller and source-watcher do not support it, shards elect leaders independently, and a generated HelmChart takes its label from the HelmRelease. See [[findings/flux-notification-controller-and-source-watcher-do-not-support-sharding-and-the-documented-recipe-leaves-image-automation-unsharded]] and [[findings/a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels]]. [[sources/research-gap-o2-flux-internals]]

@@ -23,6 +23,9 @@ sources:
   - id: research-gap-m3-status-conditions
     hash: 07099fedb0c8
     ingested: 2026-11-26
+  - id: research-gap-o2-flux-internals
+    hash: 866650ffd3aa
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, kstatus, cluster-api, flux, readiness]
 ---
@@ -64,3 +67,7 @@ The kstatus README says an unknown kind with no `Ready` condition is assumed to 
 ## Mechanism read from source
 
 The kstatus source gives the exact path: the generic generation check is skipped when `status.observedGeneration` is absent, no `Ready`, `Reconciling`, or `Stalled` condition has been written, and the default result is Current. Built-in kinds have a stricter helper, and custom resources do not. [[sources/research-gap-m3-status-conditions]] See [[findings/a-kstatus-resource-whose-controller-never-writes-status-observedgeneration-skips-the-generation-check-and-can-read-current-early]] and [[findings/kstatus-checks-deletion-then-generation-then-reconciling-and-stalled-then-ready-so-a-stale-top-level-observedgeneration-overrides-ready-true]].
+
+## Update from the Flux internals dossier
+
+Flux issue 5855 (closed 2026-04-21) reports the same race for Crossplane resources without an initial Ready condition. The maintainers said kstatus requires `observedGeneration` and recommended a CEL `healthCheckExprs` expression requiring `e.observedGeneration == metadata.generation`. See [[examples/flux2-issue-5855-kstatus-saw-crossplane-resources-without-a-ready-condition-as-ready-and-maintainers-recommended-an-observedgeneration-cel-expression]] and [[findings/flux-tracks-composite-resources-through-its-inventory-and-kstatus-or-cel-health-checks-and-documents-no-owner-reference-recipe-or-kro-guidance]]. [[sources/research-gap-o2-flux-internals]]

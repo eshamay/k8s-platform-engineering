@@ -1,13 +1,16 @@
 ---
 title: Automatic image tag updates can roll unintended versions into production
 type: finding
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-flux-deep-dive
     hash: e640ec8046bc
     ingested: 2026-11-25
+  - id: research-gap-o2-flux-internals
+    hash: 866650ffd3aa
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, flux, image-automation, promotion]
 ---
@@ -25,3 +28,7 @@ Use narrow semver ranges, keep production on reviewed pull requests, and pin by 
 ## Related
 
 [[examples/flux-image-automation-commits-new-tags-to-git-and-the-reference-repo-limits-it-to-staging]], [[findings/mutable-remote-references-change-what-a-commit-renders]], [[findings/controllers-fighting-over-fields-cause-revert-loops]], [[entities/flux]]
+
+## Documented controls from the o2 dossier
+
+The image update guide offers semver ranges for production, a separate push branch for pull-request approval, and revert by narrowing the semver range, but it prescribes no policy beyond those choices. See [[findings/the-flux-image-update-guide-offers-semver-for-production-a-separate-push-branch-for-review-and-revert-by-narrowing-the-range]] and [[decisions/gate-flux-image-automation-with-semver-ranges-a-separate-push-branch-or-staging-only-automation]]. The page is promoted to active because the guide is primary documentation, while the risk itself still has no named incident. [[sources/research-gap-o2-flux-internals]]

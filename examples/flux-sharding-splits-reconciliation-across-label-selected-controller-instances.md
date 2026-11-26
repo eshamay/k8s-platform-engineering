@@ -11,6 +11,9 @@ sources:
   - id: research-gap-g1-named-adopters
     hash: 9f6a50098233
     ingested: 2026-11-26
+  - id: research-gap-o2-flux-internals
+    hash: 866650ffd3aa
+    ingested: 2026-11-26
 aliases: []
 tags: [use-case, flux, sharding, scale, flux-operator]
 ---
@@ -36,3 +39,7 @@ The Morgan Stanley write-up lists sharding only as future work, so the dossier h
 ## Named adopters and documented incidents
 
 The 2026-11-26 dossier searched adopter lists, the sharding docs, the Morgan Stanley write-up, and GitHub issues and found no organization that publicly says it runs sharded Flux at a stated scale. The sharding page advises the strategy "when Flux is managing tens of thousands of applications", and Stefan Prodan proposed the `--watch-label-selector` mechanism in flux2 issue 3731 on 2023-03-29. The only sharding users are anonymous issue reporters, covered in [[findings/a-flux-dependson-across-shards-failed-with-dependency-not-found-until-a-2024-fix]], [[findings/objects-that-leave-a-flux-shard-keep-stale-artifacts-on-the-old-source-controller]], and [[examples/a-hub-and-spoke-flux-user-reported-nightly-reconciliation-storms-and-was-told-to-shard-or-tune]]. No incident ties sharded Flux to API Priority and Fairness throttling, see [[findings/flux-turns-off-client-side-throttling-when-apf-is-enabled-but-a-custom-kubeconfig-path-kept-it-until-2026]]. [[sources/research-gap-g1-named-adopters]]
+
+## Named project and labeling rule from the o2 dossier
+
+Cozystack ships a `flux-shard-operator` that creates label-selected helm-controller shards at about 100 HelmReleases per shard, but its README states design intent and no measured outcome was found, see [[examples/cozystack-s-flux-shard-operator-creates-helm-controller-shards-at-about-100-helmreleases-per-shard]]. This refines the statement above that no organization was found: a project automates sharding, but production use is not independently confirmed. The HelmChart label is set through the HelmRelease's `.spec.chart.metadata.labels`, see [[findings/a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels]]. Notification-controller and source-watcher cannot be sharded, see [[findings/flux-notification-controller-and-source-watcher-do-not-support-sharding-and-the-documented-recipe-leaves-image-automation-unsharded]]. [[sources/research-gap-o2-flux-internals]]

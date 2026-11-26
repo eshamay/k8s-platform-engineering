@@ -11,6 +11,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-gap-o2-flux-internals
+    hash: 866650ffd3aa
+    ingested: 2026-11-26
 aliases: []
 tags: [kro, argo-cd, gitops, tracking, owner-references]
 ---
@@ -28,3 +31,7 @@ The kro FAQ gives a recipe: add an `ownerReference` and an `argocd.argoproj.io/t
 ## Why the example matters
 
 It shows the seam between two reconcile loops. The GitOps agent sees one object, the composition layer fans it out, and the markers are what let the outer tool follow the inner one. Crossplane has a parallel recipe, see [[examples/crossplane-resources-hosted-by-argo-cd]], and a related pitfall on deletion is in [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]]. See [[findings/two-reconcile-loops-hide-status-and-drift-at-two-layers]], [[entities/argo-cd]], and [[entities/kro]].
+
+## Flux comparison from the o2 dossier
+
+The earlier note that no Flux-specific guidance was found still holds, and the o2 dossier adds Flux's side of the picture. Flux tracks what it applied through an inventory and has no documented ownerReference recipe for composites, which is an inference and not a documented fact. Health comes from kstatus or CEL. See [[findings/flux-tracks-composite-resources-through-its-inventory-and-kstatus-or-cel-health-checks-and-documents-no-owner-reference-recipe-or-kro-guidance]] and [[examples/kro-issue-1290-external-controllers-fight-kro-over-fields-and-kro-resets-their-changes]]. [[sources/research-gap-o2-flux-internals]]

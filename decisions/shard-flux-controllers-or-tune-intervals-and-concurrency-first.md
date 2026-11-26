@@ -14,6 +14,9 @@ sources:
   - id: research-gap-g1-named-adopters
     hash: 9f6a50098233
     ingested: 2026-11-26
+  - id: research-gap-o2-flux-internals
+    hash: 866650ffd3aa
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, flux, scale, sharding]
 ---
@@ -47,3 +50,7 @@ The scale dossier states the documented order: for hundreds of applications depl
 ## Correction and evidence from the named-adopters dossier
 
 Correction note: the Status section above says no source states a threshold at which sharding becomes necessary. The Flux sharding page does state one qualitative threshold, advising sharding "when Flux is managing tens of thousands of applications", and a maintainer wrote that "A single kustomize-controller instance can do 1K reconciliation in about 3m". The flux-benchmark table shows 1000 Kustomizations in 4m13s on Flux v2.10.0. These are documentation and benchmark statements and not a validated production rule. See [[examples/the-flux-benchmark-reconciles-1000-kustomizations-in-4-minutes-13-seconds-on-flux-v2-10-0]] and [[examples/an-unnamed-user-with-300-namespaces-saw-5-minute-delays-and-a-flux-maintainer-cited-1k-kustomizations-in-about-3-minutes]]. The dossier still found no organization running sharded Flux, and Morgan Stanley confirms sharding as future work. [[sources/research-gap-g1-named-adopters]]
+
+## Additional evidence from the o2 dossier
+
+Sharding cannot relieve notification-controller or source-watcher load, and the documented recipe leaves image automation unsharded. Shards elect leaders independently because the election ID is derived from the label selector. Cozystack's operator targets about 100 HelmReleases per shard with a maximum of 16, as design intent without measured results, and Morgan Stanley still lists sharding only as exploration. No production shard sizing from any adopter was found. See [[findings/flux-notification-controller-and-source-watcher-do-not-support-sharding-and-the-documented-recipe-leaves-image-automation-unsharded]], [[findings/flux-source-controller-starts-its-artifact-server-only-after-winning-leader-election-and-standbys-fail-readiness]], and [[examples/cozystack-s-flux-shard-operator-creates-helm-controller-shards-at-about-100-helmreleases-per-shard]]. [[sources/research-gap-o2-flux-internals]]

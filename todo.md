@@ -31,6 +31,9 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#review-the-unrevised-passages-that-kept-their-caveats-in-the-seven-outputs]] — open
 - [[#update-flux-ramp-up-git-versus-oci-passage-with-the-signature-verification-evidence]] — open
 - [[#update-part-1-ignoredifferences-passage-with-the-diff-only-default-and-the-flux-target-rule]] — open
+- [[#update-flux-ramp-up-source-controller-passage-with-leader-election-artifact-serving]] — open
+- [[#update-flux-ramp-up-sharding-passage-with-the-verified-helmchart-labeling-rule]] — open
+- [[#update-flux-ramp-up-image-automation-passage-with-the-v1-api-and-promotion-options]] — open
 
 ## Open
 
@@ -880,6 +883,27 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/part-1-core-architectural-principles.md`, the paragraph beginning "The `automated` block turns on continuous correction" says `ignoreDifferences` declares a field another controller owns. It should add that the rule is diff-only unless `RespectIgnoreDifferences=true`, and that a Flux ignore rule without a target selector matches every object.
 - **Why:** The passage predates the dossier [[sources/research-gap-o1-argocd-flux-gitops]].
 - **Acceptance:** Passage revised and citing [[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]] and [[findings/a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update flux-ramp-up source controller passage with leader-election artifact serving — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "The source controller fetches content from outside the cluster" says other controllers read the archive from inside the cluster. It can add that the artifact server starts only after leader election, standbys fail readiness, and the stock manifest uses one replica with emptyDir storage.
+- **Why:** The passage predates the dossier [[sources/research-gap-o2-flux-internals]].
+- **Acceptance:** Passage revised and citing [[findings/flux-source-controller-starts-its-artifact-server-only-after-winning-leader-election-and-standbys-fail-readiness]] and [[findings/the-stock-flux-source-controller-keeps-artifacts-in-an-emptydir-with-one-minute-retention-so-a-restart-rebuilds-them]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update flux-ramp-up sharding passage with the verified HelmChart labeling rule — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "The label places the release on the controller instance watching `shard1`" says the exact HelmChart labeling rule was not verified. It should state that the chart label is set through the HelmRelease's `.spec.chart.metadata.labels` and that notification-controller and source-watcher cannot be sharded.
+- **Why:** The passage predates the dossier [[sources/research-gap-o2-flux-internals]].
+- **Acceptance:** Passage revised and citing [[findings/a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels]] and [[findings/flux-notification-controller-and-source-watcher-do-not-support-sharding-and-the-documented-recipe-leaves-image-automation-unsharded]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update flux-ramp-up image automation passage with the v1 API and promotion options — status: open
+
+- **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "**Image automation.**" should add that the kinds are `image.toolkit.fluxcd.io/v1` and name the guide's promotion options (semver for production, a separate push branch for pull-request approval, revert by narrowing the range), noting that no adopter write-up was found.
+- **Why:** The passage predates the dossier [[sources/research-gap-o2-flux-internals]].
+- **Acceptance:** Passage revised and citing [[findings/flux-image-automation-kinds-are-image-toolkit-fluxcd-io-v1-with-older-versions-still-in-the-api-directory]] and [[findings/the-flux-image-update-guide-offers-semver-for-production-a-separate-push-branch-for-review-and-revert-by-narrowing-the-range]].
 - **Drafted by:** agent on 2026-11-26
 
 ## Dropped
