@@ -64,7 +64,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#informer-and-cache-choices-of-kro-config-connector-ack-and-cluster-api]] — open, unassigned
 - [[#resolution-of-crossplane-issue-7801-on-credential-protection]] — open, unassigned
 - [[#how-ack-config-connector-and-kro-name-and-remove-their-finalizers]] — open, unassigned
-- [[#cluster-api-issue-1514-on-blocking-deletion-with-a-finalizer-or-annotation]] — open, unassigned
 - [[#how-kro-sets-ownership-and-labels-on-child-resources]] — open, unassigned
 - [[#argo-cd-prunepropagationpolicy-and-resource-tracking-methods]] — open, unassigned
 - [[#what-happens-when-blockownerdeletion-is-set-without-finalizers-permission]] — open, unassigned
@@ -827,18 +826,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** ack, config-connector, kro, finalizers
 - **Possible resolution from [[sources/research-gap-m1-finalizers]]:** Mostly settled, and the user decides whether to close it. ACK names its finalizer from a code-generator template, `finalizers.<apiGroup>/<Kind>`, and removes it only after the AWS resource is cleaned up, with asynchronous deletes returning a requeue. Config Connector uses `cnrm.cloud.google.com/finalizer`, removed in the lifecycle handler's deleted path, and a second `cnrm.cloud.google.com/deletion-defender` finalizer, which a deletion-defender controller removes first, and on CRD uninstall it removes both and sets abandon. kro uses `kro.run/finalizer` on instances, ResourceGraphDefinitions, and GraphRevisions and `kro.run/graph-finalizer` on Graph objects, and removes it with a merge patch only when no deletion candidates remain. Not settled: the rendered ACK string for a specific service, where Config Connector adds the deletion-defender finalizer, and the Config Connector direct controllers. See [[findings/ack-config-connector-and-kro-each-name-their-finalizers-differently-and-remove-them-only-after-cleanup]] and [[findings/config-connector-has-a-second-deletion-defender-finalizer-and-removes-both-finalizers-with-an-abandon-setting-when-its-crd-is-uninstalled]].
-
-## Cluster API issue 1514 on blocking deletion with a finalizer or annotation — status: open
-
-- **Question:** What does Cluster API issue 1514 conclude about blocking deletion with a finalizer or an annotation, and how does that relate to the hook annotations in the current book?
-- **Why it matters:** It was a search hit that the dossier did not read. See [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the issue and the current machine deletion hook documentation.
-  - [ ] Update [[entities/cluster-api]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** cluster-api, finalizers, deletion
-- **Possible resolution from [[sources/research-gap-m1-finalizers]]:** Settled, and the user decides whether to close it. Issue 1514 was opened 2019-10-10 and closed 2020-04-27 with a maintainer deferring to a CAEP. The thread weighed a named finalizer, a `Dependencies` list in the spec, a hook-registration CRD, and annotations. The implemented Machine Deletion Phase Hooks proposal chose annotations and rejects finalizers because "A misbehaving controller that accidentally removes finalizers could have undesirable effects." The current API defines the prefixes `pre-drain.delete.hook.machine.cluster.x-k8s.io` and `pre-terminate.delete.hook.machine.cluster.x-k8s.io`, and the control plane provider adds its own pre-terminate hook. Not settled: the Cluster API book page on the hooks could not be read, and the issue thread does not itself record the final choice. See [[examples/cluster-api-issue-1514-was-closed-in-april-2020-in-favor-of-a-proposal-that-chose-annotation-hooks]] and [[findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers]].
 
 ## How kro sets ownership and labels on child resources — status: open
 
@@ -1802,3 +1789,18 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 
 - **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Marginally helpful. The dossier read about 100,000 of 121,000 characters of the Kustomization page, found `deletionPolicy` and inventory-based pruning, and did not isolate the finalizer name or say whether Flux uses owner references. See [[entities/flux]].
 - **Possible resolution from [[sources/research-gap-m1-finalizers]]:** Settled, and the user decides whether to close it. The Kustomization finalizer is `finalizers.fluxcd.io`, which the reconciler adds first to avoid a race with deletion. A suspended Kustomization or one with an empty inventory deletes nothing, MirrorPrune follows `spec.prune`, Delete and WaitForTermination always delete, and Orphan never does. WaitForTermination polls every 2 seconds up to the Kustomization timeout, and if the wait fails Flux logs an error and removes the finalizer anyway, so a timeout does not hold the Kustomization. A missing impersonation account also logs the stale objects and continues. Flux deletes by inventory and not owner references in the code read. Not settled: older beta API versions were not read. See [[findings/flux-kustomization-uses-finalizers-fluxcd-io-and-removes-it-even-when-waitfortermination-times-out]].
+
+## Cluster API issue 1514 on blocking deletion with a finalizer or annotation — status: closed (2026-11-26)
+
+- **Question:** What does Cluster API issue 1514 conclude about blocking deletion with a finalizer or an annotation, and how does that relate to the hook annotations in the current book?
+- **Why it matters:** It was a search hit that the dossier did not read. See [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the issue and the current machine deletion hook documentation.
+  - [ ] Update [[entities/cluster-api]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cluster-api, finalizers, deletion
+- **Resolution:** Settled. Issue 1514 was opened 2019-10-10 and closed 2020-04-27 with a maintainer deferring to a CAEP. The thread weighed a named finalizer, a `Dependencies` list in the spec, a hook-registration CRD, and annotations. The implemented Machine Deletion Phase Hooks proposal chose annotations and rejects finalizers because "A misbehaving controller that accidentally removes finalizers could have undesirable effects." The current API defines the prefixes `pre-drain.delete.hook.machine.cluster.x-k8s.io` and `pre-terminate.delete.hook.machine.cluster.x-k8s.io`, and the control plane provider adds its own pre-terminate hook. Not settled: the Cluster API book page on the hooks could not be read, and the issue thread does not itself record the final choice. See [[examples/cluster-api-issue-1514-was-closed-in-april-2020-in-favor-of-a-proposal-that-chose-annotation-hooks]] and [[findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-gap-m1-finalizers]]:** Settled, and the user decides whether to close it. Issue 1514 was opened 2019-10-10 and closed 2020-04-27 with a maintainer deferring to a CAEP. The thread weighed a named finalizer, a `Dependencies` list in the spec, a hook-registration CRD, and annotations. The implemented Machine Deletion Phase Hooks proposal chose annotations and rejects finalizers because "A misbehaving controller that accidentally removes finalizers could have undesirable effects." The current API defines the prefixes `pre-drain.delete.hook.machine.cluster.x-k8s.io` and `pre-terminate.delete.hook.machine.cluster.x-k8s.io`, and the control plane provider adds its own pre-terminate hook. Not settled: the Cluster API book page on the hooks could not be read, and the issue thread does not itself record the final choice. See [[examples/cluster-api-issue-1514-was-closed-in-april-2020-in-favor-of-a-proposal-that-chose-annotation-hooks]] and [[findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers]].
