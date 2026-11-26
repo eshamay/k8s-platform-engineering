@@ -1,4 +1,4 @@
-const meta = {
+export const meta = {
   name: 'close-evidence-gaps',
   description: 'Targeted research pass for the missing-evidence and version-sensitive gap groups: research, adversarially verify, ingest serially, triage gaps, revise affected tutorials',
   phases: [
