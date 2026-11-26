@@ -3,11 +3,14 @@ title: Choose automatic or manual composition update policy
 type: decision
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-gap-o7-krm-functions
+    hash: 35b3cd859ba9
+    ingested: 2026-11-26
 aliases: []
 tags: [decision, crossplane, composition-revision, rollout]
 ---
@@ -25,6 +28,8 @@ A [[concepts/composite-resource]] follows a Composition through CompositionRevis
 ## Options
 
 Keep Automatic, so every composite converges on the newest platform behavior without work from consumers. Use Manual with pinned revisions, so each team upgrades on its own schedule and a bad revision reaches only those who adopt it. Mix the two, with Automatic for non-production and Manual for production.
+
+Correction note: Manual pinning freezes the Composition revision but not the function code behind a `functionRef` step, so a Function upgrade reaches pinned XRs too, see [[findings/upgrading-a-crossplane-function-changes-every-composition-revision-that-uses-functionref-including-manual-pins]]. The statement above that a bad revision reaches only those who adopt it holds for Composition edits and not for function upgrades. [[sources/research-gap-o7-krm-functions]]
 
 ## Consequences
 

@@ -955,3 +955,13 @@ Structural lint over 806 content pages (concepts 27, entities 37, sources 58, ex
 - fact conflicts: 0
 - gaps drafted: 0
 - rationale: A targeted pass over existing Radius, Score, Kratix, Backstage, tofu-controller, Terraform Operator, and Crossplane comparison pages with a verified dossier read from the CNCF landscape file, repositories, and the Kratix and Backstage documentation on 2026-11-26. Five open gaps received "Possible resolution" notes and none was closed. Five entities and two comparisons were promoted to active. Four open todos name tutorial passages in outputs/ for a later revision, and outputs/ was not edited.
+
+## [2026-11-26] ingest | Research dossier: gap cluster o7-krm-functions
+- source: [[sources/research-gap-o7-krm-functions]]
+- raw: `raw/research-gap-o7-krm-functions.md` (sha256: 35b3cd859ba9)
+- pages touched: [[entities/kpt]], [[entities/kustomize]], [[entities/crossplane]], [[concepts/composition]], [[findings/moving-kustomize-helm-inflation-to-krm-functions-needs-a-container-runtime-that-laptops-ci-and-argo-cd-often-lack]], [[findings/composition-functions-add-moving-parts-that-must-be-healthy]], [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]], [[decisions/choose-automatic-or-manual-composition-update-policy]], [[sources/research-composition]], open-knowledge-gaps, todo
+- new pages: [[sources/research-gap-o7-krm-functions]], 7 findings, 2 examples, and 1 decision (listed in `index.md`)
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 0
+- rationale: A targeted pass over the kpt, Kustomize, and Crossplane function pages with a verified dossier read from the KRM spec, kpt and Kustomize docs, Crossplane design documents, release notes, and docs on 2026-11-26. No existing claim was contradicted as fact, so no page was marked contradicted. The kpt page's idempotence definition and the Manual-pin rollout claim received correction notes, kpt was promoted to active, two open gaps received possible-resolution notes without closing, and one todo was appended for the crossplane-ramp-up function-pinning passage.

@@ -3,7 +3,7 @@ title: Composition
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
@@ -20,6 +20,9 @@ sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-o7-krm-functions
+    hash: 35b3cd859ba9
+    ingested: 2026-11-26
 aliases: [Crossplane Composition, composition function pipeline]
 tags: [abstraction, crossplane]
 ---
@@ -58,7 +61,7 @@ Performance of function pipelines at scale and the status of the alpha kro `Grap
 
 ## Authoring models and pitfalls in the Compositions dossier
 
-Crossplane has used three authoring models. Patch and transform is a static list of base resources plus patches and is deliberately not Turing complete. Composition functions (alpha in v1.11, beta in v1.14) use `mode: Pipeline`, where each step calls a gRPC function that receives observed and desired state and returns a new desired state, and Crossplane rather than the function talks to the API server. Patch and transform survives as `function-patch-and-transform`, the legacy `mode: Resources` was deprecated in v1.17, and Crossplane 2.0 lets a Composition include any Kubernetes resource. [[sources/research-composition]]
+Crossplane has used three authoring models. Patch and transform is a static list of base resources plus patches and is deliberately not Turing complete. Composition functions (alpha in v1.11 on 2023-01-31 with an `xfn` sidecar, beta in v1.14 on 2023-11-01 with package-manager Deployments, v1 in v1.17 on 2024-08-29) use `mode: Pipeline`, where each step calls a gRPC function that receives observed and desired state and returns a new desired state, and Crossplane rather than the function talks to the API server. Patch and transform survives as `function-patch-and-transform`, the legacy `mode: Resources` was deprecated in v1.17, Crossplane 2.0 (v2.0.0, 2025-08-14) removed `mode: Resources` and lets a Composition include any Kubernetes resource. See [[findings/crossplane-moved-composition-functions-from-an-xfn-sidecar-in-v1-11-to-package-manager-deployments-in-v1-14]]. [[sources/research-composition]]
 
 Composition is one answer to the cost of writing a bespoke controller per platform API. The recurring pitfalls are that a function omitting a resource deletes it ([[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]]), that patch and transform cannot branch or loop ([[findings/patch-and-transform-cannot-branch-loop-or-patch-between-composed-resources]]), that function load scales with composite count ([[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]]), and that editing a live Composition affects pinned composites only through revisions ([[findings/editing-a-live-composition-can-disrupt-or-replace-existing-composed-resources]]). The two expressiveness bounds are compared in [[comparisons/where-the-expressiveness-bound-sits-in-crossplane-functions-and-kro-cel]].
 

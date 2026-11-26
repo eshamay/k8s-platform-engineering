@@ -131,6 +131,9 @@ sources:
   - id: research-gap-o4-config-connector-ack
     hash: c0d708f1d445
     ingested: 2026-11-26
+  - id: research-gap-o7-krm-functions
+    hash: 35b3cd859ba9
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, platform]
 ---
@@ -234,6 +237,8 @@ The project also shipped `function-kro` in March 2026. See [[concepts/composite-
 ## Composition authoring history and function operations
 
 The Compositions dossier traces patch and transform, then composition functions, then Crossplane 2.0. Functions are long-running gRPC servers deployed by the package manager, reached through a headless Service and secured with mTLS. Composites pin to a CompositionRevision, are polled every 60 seconds by default, and function calls therefore scale with composite count. Composition functions do not run on deletion. Version 2.0 (12 August 2025) made XRs namespaced by default, removed the claim and XR split, added the `Operation` type, and added activation policies so a cluster installs only the managed resource CRDs it needs. [[sources/research-composition]]
+
+Function runner history: alpha (v1.11.0, 2023-01-31) ran containerized functions through an `xfn` sidecar in the Crossplane pod, and v1.14.0 (2023-11-01) replaced it with package-manager Deployments and moved xfn out of tree, see [[findings/crossplane-moved-composition-functions-from-an-xfn-sidecar-in-v1-11-to-package-manager-deployments-in-v1-14]] and [[examples/crossplane-v1-14-0-shipped-beta-functions-on-2023-11-01-and-broke-compatibility-with-alpha-functions]]. The gRPC `RunFunction` contract differs from the KRM `ResourceList` contract, see [[findings/crossplane-functions-speak-a-grpc-runfunction-contract-that-differs-from-the-krm-resourcelist-over-stdio]]. Upgrading a Function affects every CompositionRevision that uses `functionRef`, including Manual pins, see [[findings/upgrading-a-crossplane-function-changes-every-composition-revision-that-uses-functionref-including-manual-pins]]. [[sources/research-gap-o7-krm-functions]]
 
 Operationally, a function that omits a resource from desired state deletes it, see [[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]], and load and memory are discussed in [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]]. Case studies are [[examples/vshn-appcat-sells-self-service-databases-queues-and-object-storage-through-composition-functions]] and [[examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function]]. Running under Argo CD needs annotation-based resource tracking, custom Lua health checks, and a higher client QPS (50 by default, 300 suggested), see [[entities/argo-cd]].
 

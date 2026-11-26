@@ -3,11 +3,14 @@ title: Kustomize
 type: entity
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-o7-krm-functions
+    hash: 35b3cd859ba9
+    ingested: 2026-11-26
 aliases: [kustomize, kubectl apply -k]
 tags: [tool, render-time, abstraction, packaging]
 ---
@@ -27,6 +30,8 @@ The project encourages a fork, modify, and rebase workflow instead of parameteri
 ## Helm inflation and KRM functions
 
 Kustomize can inflate Helm charts. A GitHub design discussion shows maintainers proposing to move that built-in inflation toward KRM functions, and users objecting because KRM functions need a container runtime. Support for Helm v4 arrived in kustomize v5.8.1 and no deprecation date for the built-in path was set. See [[findings/moving-kustomize-helm-inflation-to-krm-functions-needs-a-container-runtime-that-laptops-ci-and-argo-cd-often-lack]] and [[entities/kpt]]. [[sources/research-kro-and-abstraction-models]]
+
+Kustomize also runs KRM functions as plugins. Containerized functions are the recommended style but alpha and need `--enable-alpha-plugins`, and exec functions need `--enable-alpha-plugins --enable-exec`, with the guide stating "Kustomize does not provide an execution sandbox of any kind". See [[findings/kpt-and-kustomize-run-functions-without-containers-only-through-opt-in-exec-extensions-that-both-docs-discourage]] and [[examples/a-kustomize-exec-krm-function-runs-only-with-enable-alpha-plugins-and-enable-exec]]. [[sources/research-gap-o7-krm-functions]]
 
 ## Related
 

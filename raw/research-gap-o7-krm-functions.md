@@ -1,0 +1,96 @@
+# Research dossier: gap cluster o7-krm-functions
+
+Research date: 2026-11-26
+
+## Overview
+
+This dossier covers two gaps: what the KRM Functions Specification requires of a function and its runtime, and how the Crossplane function runner evolved. Sources were read in this run from the raw spec file in kubernetes-sigs/kustomize (master branch, no version tag beyond the spec's own `apiVersion: v1`), the kpt book chapters 4 and 5 (kpt docs site, page last modified 2026-11-18), the SIG CLI Kustomize guides for containerized and exec KRM functions, the Crossplane composition-functions design document on `main` (status Accepted), the defunct alpha design document, Crossplane GitHub release notes, the Crossplane docs repository (`content/master`), and `run_function.proto`.
+
+The KRM Functions Specification defines a client-side contract: a function is a container that reads a `ResourceList` from stdin and writes one to stdout, with exit code and stderr semantics. The spec explicitly says it is decoupled from Kubernetes API machinery and any in-cluster component. The container requirement is a MUST in the spec text itself. Tools that run functions without containers do so through non-spec extensions: kpt has an `exec` function type gated behind `--allow-exec`, and Kustomize has exec KRM functions gated behind `--enable-alpha-plugins --enable-exec`. Both tools' docs warn against exec on portability and security grounds, and Kustomize says it provides no sandbox.
+
+Crossplane composition functions share the "function in a pipeline" idea and the name, but not the wire contract. Crossplane's current model is a long-running gRPC server (`FunctionRunnerService.RunFunction`) deployed by the package manager as a Deployment behind a headless Service, while KRM functions are run-to-completion processes exchanging YAML `ResourceList` over stdio. History: alpha (v1.11.0, 2023-01-31) ran containerized functions through an `xfn` sidecar in the Crossplane pod, the beta design replaced this with function servers, v1.14.0 (2023-11-01) shipped the beta architecture and moved xfn out of tree, v1.17.0 (2024-08-29) graduated functions to v1 and deprecated native patch and transform, and v2.0.0 (2025-08-14) removed native patch and transform. Not confirmed from a current runtime source: whether an xfn-like container-wrapping function is still maintained anywhere; the design doc only proposed it.
+
+## Gap: KRM function specification and runtime requirements
+
+The spec (raw text read) requires: containerization, stdin/stdout `ResourceList` (`config.kubernetes.io/v1` or `v1beta1`), a required `items` array, optional `functionConfig` input and optional `results` output, YAML (UTF-8) serialization, non-structured errors on stderr, zero exit code for success, ability to run as non-root `nobody` when host filesystem access is not needed, and reserved `internal.config.kubernetes.io` annotations (`path`, `index`) that the orchestrator adds and strips. It is a client-side standard; it does not describe in-cluster execution. The kpt book says the spec was created by the kpt project and donated to Kubernetes SIG-CLI. kpt adds recommended (non-spec) function properties: deterministic, idempotent, hermetic and unprivileged.
+
+Runtime behavior beyond the spec lives in the orchestrators. kpt: default no network and no host filesystem for containers (opt in with `--network` and `--mount` on `fn eval`); `exec` functions need `--allow-exec` and are discouraged. Kustomize: containerized functions are declared with a `config.kubernetes.io/function` annotation with a `container.image` key and need `--enable-alpha-plugins`; exec functions need `--enable-exec` as well; both guides carry an alpha-status warning. The kpt function-development page's quickstart needs Docker and Go 1.24 or later (page text), which shows the container requirement in practice.
+
+On "which tools can run functions without containers": verified are kpt (`exec`, with `--allow-exec`) and Kustomize (exec KRM functions). Not examined in this run: Argo CD, Flux, or any Helm-inflation behavior, so the wiki's claim about those tools remains as it was. No evidence was read about WASM or in-process function runtimes (searched the kpt chapters and Kustomize guides read; found nothing, though no dedicated search of other repositories was run).
+
+Claims:
+- The spec says a function must be implemented as a container. Status: VERIFIED. URL: https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/cmd/config/docs/api-conventions/functions-spec.md. Version: master, spec `apiVersion: v1`, read 2026-11-26. Quote: "A function MUST be implemented as a container."
+- Input and output wire format is a `ResourceList` on stdin and stdout. Status: VERIFIED. Same URL. Quote: "A function MUST accept input from `stdin` and MUST output to `stdout` a Kubernetes object of kind `ResourceList`"
+- `items` is the only required ResourceList property; `functionConfig` is optional input and `results` optional output. Status: VERIFIED. Same URL. Quote: "FunctionConfig is an optional Kubernetes object for passing arguments to a function invocation."
+- Non-root requirement. Status: VERIFIED. Same URL. Quote: "A function container MUST be capable of running as a non-root user `nobody` if it does not require access to host filesystem."
+- Exit codes. Status: VERIFIED. Same URL. Quote: "A non-zero exit code indicates a failure."
+- Spec is decoupled from the cluster. Status: VERIFIED. Same URL. Quote: "completely decoupled from Kubernetes API machinery and does not depend on any in-cluster components."
+- YAML is mandatory serialization and comments should be preserved. Status: VERIFIED. Same URL. Quote: "A function MUST support YAML as a serialization format for the input and output."
+- Internal annotation prefix is reserved. Status: VERIFIED. Same URL. Quote: "Annotation prefix `internal.config.kubernetes.io` is reserved for use for internal annotations."
+- Functions may create, update, or delete items. Status: VERIFIED. Same URL. Quote: "A function MAY Create, Update, or Delete any number of items in the `items` field"
+- The spec originated in kpt and was donated to SIG-CLI. [corrected in verification: the page says the standard was "donated to the CNCF as part of the Kubernetes SIG-CLI", not simply to SIG-CLI] Status: VERIFIED (kpt's own statement). URL: https://kpt.dev/book/05-developing-functions/. Version: page last modified 2026-11-18. Quote: "the kpt project created a standard for the inter-process communication between the orchestrator"
+- kpt recommends deterministic, idempotent functions. Status: VERIFIED. Same kpt URL. Quote: "Executing a function with the same input should produce the same output."
+- kpt exec functions need an opt-in flag. Status: VERIFIED. URL: https://github.com/kptdev/kpt/blob/main/documentation/content/en/book/04-using-functions/_index.md (read via gh api, main branch, 2026-11-26). Quote: "must run with `--allow-exec` option to allow running function binaries"
+- kpt discourages exec for portability and security. Status: VERIFIED. Same URL. Quote: "Executing binaries is not secure, since they can perform privileged operations in the system."
+- kpt containers have no network by default. Status: VERIFIED. Same URL. Quote: "By default, the functions cannot access the network."
+- kpt containers have no host filesystem by default. Status: VERIFIED. Same URL. Quote: "By default, the functions cannot access the host file system."
+- Kustomize containerized KRM functions are alpha and recommended. Status: VERIFIED. URL: https://kubectl.docs.kubernetes.io/guides/extending_kustomize/containerized_krm_functions/. Version: page last modified 2021-10-30. Quote: "This is the recommended style of plugin, but you should be aware that it is still in alpha."
+- Kustomize exec functions need two flags. Status: VERIFIED. URL: https://kubectl.docs.kubernetes.io/guides/extending_kustomize/exec_krm_functions/. Version: page last modified 2025-08-24. Quote: "$DEMO/bin/kustomize build --enable-alpha-plugins --enable-exec $MYAPP" [corrected in verification: the page's command line is prefixed with `$DEMO/bin/`]
+- Kustomize exec functions have no sandbox. Status: VERIFIED. Same URL. Quote: "Kustomize does not provide an execution sandbox of any kind."
+- Kustomize calls its exec guide's own containerized-link and says reusable plugins should be containerized. Status: VERIFIED. Same URL. Quote: "Plugins intended for reuse should be containerized."
+- Argo CD, Flux, and Helm-inflation container constraints. Status: UNVERIFIED (not read in this run).
+
+## Gap: Crossplane function runner architecture history
+
+Alpha (Crossplane v1.11.0, released 2023-01-31): functions were run-to-completion OCI containers executed by a sidecar container `xfn` in the Crossplane pod, each in a rootless container. The beta design doc (status Accepted) says the reference runner had "known scalability and compatibility constraints" and that no alternative runner appeared; it rejects webhook functions to avoid fragmenting the ecosystem. The beta design makes a Function a long-running gRPC server deployed by the package manager as a Deployment (same as a Provider), reachable through a headless Service whose address is exposed in the active FunctionRevision's `status.endpoint`, secured with mTLS. Scaling is by raising Deployment replicas. The design proposed moving xfn out of crossplane/crossplane and offering it as an alternative way to build a function that wraps an OCI container, where each wrapped function is its own Deployment and reads a JSON `RunFunctionRequest` on stdin.
+
+Release notes confirm the sequence. v1.13.0 (2023-07-27) still contains xfn fixes (stdout limits, AppArmor profile), so the sidecar existed through v1.13. v1.14.0 (2023-11-01) promoted functions to v1beta1 "with a new, more scalable architecture", states v1beta1 is incompatible with v1alpha1 functions, and lists "Introduce Function CRDs", "Deploy Functions with package manager", "Move xfn out-of-tree", and "add xfn v1beta1 grpc interface". The `cmd` directory of crossplane/crossplane on main now contains only `crossplane`, and a commit to the xfn path is titled "feat: remove xfn". v1.17.0 (2024-08-29) graduated functions to v1 and deprecated native patch and transform (development stopped except security fixes, not removed). v2.0.0 (2025-08-14) removed native patch and transform (`mode: Resources`) and noted a migration command. The current docs say installing a Function creates a function pod, in the Crossplane namespace by default, and that Functions are packages like Providers; the beta design's runtime-config idea is realized as `DeploymentRuntimeConfig` (beta in the provider docs; `runtimeConfigRef` defaults mentioned for Providers and Functions).
+
+Function revision handling: Function packages get FunctionRevisions managed by the package manager with one active revision. Pipeline steps that use `functionRef` call whatever version is active, so upgrading a Function changes behavior for every CompositionRevision, including XRs pinned with the `Manual` update policy. An alpha feature (`--enable-pipeline-oci-references`) lets a pipeline step reference a package by digest with the `function` field; Crossplane then creates "external" FunctionRevisions owned by the CompositionRevision or Operation, multiple of which can be active at once and which are listed in the Function's `status.externalRevisionRefs`. A one-pager on controlled rollout of function changes was added in the v1.20.0 notes; its content was not read.
+
+Difference from KRM functions: Crossplane's contract is the protobuf `FunctionRunnerService` with `RunFunction(RunFunctionRequest) returns (RunFunctionResponse)` carrying observed and desired state, rather than `ResourceList` over stdio. Crossplane's request contains observed and desired state, required resources, and schemas; KRM functions carry flat `items`. The alpha design used a YAML `FunctionIO`; the beta design merged it into the protobuf message. Remaining unconfirmed: whether any maintained "container wrapper" function exists today, and exact FunctionRevision pod spec behavior (Go source for the package runtime was not read).
+
+Claims:
+- Alpha shipped in v1.11. Status: VERIFIED. URL: https://github.com/crossplane/crossplane/releases/tag/v1.11.0. Version: v1.11.0, published 2023-01-31. Quote: "Composition Function support introduced in alpha by @negz"
+- Alpha runner was an xfn sidecar running rootless containers. Status: VERIFIED. URL: https://github.com/crossplane/crossplane/blob/main/design/design-doc-composition-functions.md. Version: main, status Accepted. Quote: "A sidecar container in the Crossplane pod - `xfn` - runs each of them in a rootless container."
+- No alternative runners appeared in alpha. Status: VERIFIED. Same URL. Quote: "Since alpha, no alternative Function runners have appeared."
+- Beta design: functions are Deployments. Status: VERIFIED. Same URL. Quote: "Functions are long-running processes. When you install one, the package manager deploys it using a Kubernetes Deployment"
+- Headless Service requirement and endpoint exposure. Status: VERIFIED. Same URL. Quote: "The Service must be headless in order for Crossplane's gRPC client to load-balance connections"
+- Endpoint reported on FunctionRevision status. Status: VERIFIED. Same URL. Quote: "exposed as the `status.endpoint` of the active FunctionRevision resource"
+- Beta design proposed moving xfn out of core and wrapping containers per Deployment. Status: VERIFIED (proposal text). Same URL. Quote: "I propose we move the `xfn` Function runner out of crossplane/crossplane, simplify it"
+- Alpha design document is marked defunct. Status: VERIFIED. URL: https://github.com/crossplane/crossplane/blob/main/design/defunct/design-doc-composition-functions.md. Version: main. Quote: "Status: Defunct"
+- xfn still maintained in v1.13. Status: VERIFIED. URL: https://github.com/crossplane/crossplane/releases/tag/v1.13.0. Version: v1.13.0, 2023-07-27. Quote: "Run xfn with unconfined AppArmor profile by @negz"
+- v1.14 shipped beta architecture, incompatible with alpha. Status: VERIFIED. URL: https://github.com/crossplane/crossplane/releases/tag/v1.14.0. Version: v1.14.0, 2023-11-01. Quote: "The `v1beta1` implementation of Composition Functions is incompatible with existing `v1alpha1` functions."
+- v1.14 moved xfn out of tree and added Function CRDs and package-manager deployment. Status: VERIFIED. Same URL. Quote: "Move xfn out-of-tree by @phisco"
+- xfn removed from the repository. Status: VERIFIED (directory listing and commit title; no date read). URL: https://github.com/crossplane/crossplane/tree/main/cmd. Version: main, read 2026-11-26. Quote: "feat: remove xfn"
+- v1.17 graduated functions to v1 and deprecated P&T. Status: VERIFIED. URL: https://github.com/crossplane/crossplane/releases/tag/v1.17.0. Version: v1.17.0, 2024-08-29. Quote: "graduated Composition Functions to v1 while deprecating native patch and transform compositions."
+- v1.17 did not remove native P&T. Status: VERIFIED. Same URL. Quote: "We don't plan to remove native patch and transform from Crossplane, but we no longer recommend using it."
+- v2.0 removed native P&T. Status: VERIFIED. URL: https://github.com/crossplane/crossplane/releases/tag/v2.0.0. Version: v2.0.0, 2025-08-14. Quote: "Native patch and transform within composition (`mode: Resources`)"
+- gRPC interface. Status: VERIFIED. URL: https://github.com/crossplane/crossplane/blob/main/proto/fn/v1/run_function.proto. Version: main. Quote: "rpc RunFunction(RunFunctionRequest) returns (RunFunctionResponse) {}"
+- Current docs: function pods and package model. Status: VERIFIED. URL: https://github.com/crossplane/docs/blob/master/content/master/composition/compositions.md. Version: docs master, read 2026-11-26. Quote: "Installing a Function creates a function pod."
+- Functions are packages like Providers. Status: VERIFIED. URL: https://github.com/crossplane/docs/blob/master/content/master/packages/functions.md. Version: docs master. Quote: "Functions are packages, like [Providers]"
+- Function upgrades affect pinned revisions when using functionRef. Status: VERIFIED. URL: https://github.com/crossplane/docs/blob/master/content/master/composition/composition-revisions.md. Version: docs master. Quote: "including revisions you've pinned XRs to with the `Manual` update policy."
+- Digest-pinned function references are alpha and create external revisions. Status: VERIFIED. URL: https://github.com/crossplane/docs/blob/master/content/master/packages/functions.md. Version: docs master. Quote: "Multiple external revisions of the same Function can be active at once"
+- Alpha feature flag name. Status: VERIFIED. Same URL. Quote: "setting the `--enable-pipeline-oci-references` feature flag."
+- Runtime configuration for pods via DeploymentRuntimeConfig. Status: VERIFIED (provider docs; v1.14 notes introduce it). URLs: https://github.com/crossplane/crossplane/releases/tag/v1.14.0 and https://github.com/crossplane/docs/blob/master/content/master/packages/providers.md. Quote (v1.14 notes): "A new [Provider DeploymentRuntimeConfig]"
+- Function response caching is alpha (v1.20). Status: VERIFIED. URL: https://github.com/crossplane/crossplane/releases/tag/v1.20.0. Version: v1.20.0, 2025-05-21. Quote: "enabled with `--enable-function-response-cache`"
+- Function credentials added in v1.16. Status: VERIFIED. URL: https://github.com/crossplane/crossplane/releases/tag/v1.16.0. Version: v1.16.0, 2024-05-16. Quote: "a new `credentials` field on function pipeline steps"
+- Latest Crossplane release observed is v2.5.0 (2026-11-24). Status: SECONDARY-ONLY (release list metadata, notes not read). [verification: v2.5.0 published 2026-11-24T11:10Z confirmed via release API; backports v2.4.4, v2.3.8, v1.20.15 were published the same day] URL: https://github.com/crossplane/crossplane/releases. Quote: none.
+- Whether an xfn-like container-wrapper function is currently maintained. Status: UNVERIFIED.
+- Exact function pod/Deployment construction in the package manager source. Status: UNVERIFIED (Go source not read).
+- Content of the controlled-rollout one-pager. Status: UNVERIFIED (file listed in design directory; not read).
+
+## Unreadable sources
+
+- https://docs.crossplane.io/latest/concepts/composition-functions/ : web_scrape returned an empty body (likely moved or JS-rendered); substituted the docs repository sources read through gh.
+
+## Not found
+
+- Searched the kpt book chapters 4 and 5 and the Kustomize containerized and exec guides for WASM or in-process function runtimes; found nothing.
+- Searched for Argo CD, Flux, or Helm-inflation function constraints: not searched in this run (out of cluster scope given time); remains for another pass.
+- No evidence read for a dated xfn removal commit; only the commit title and v1.14.0 note "Move xfn out-of-tree".
+- Crossplane's `FunctionRevision` pod construction details and any current non-gRPC container-runner path: not found in docs read.
+
+## Removed in verification
+
+- None. All sampled claims were reproduced or corrected in place. Not re-checked: the "cmd directory / feat: remove xfn" commit title, and docs-repo claims on DeploymentRuntimeConfig defaults.

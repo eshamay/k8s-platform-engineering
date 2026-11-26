@@ -3,11 +3,14 @@ title: Moving Kustomize Helm inflation to KRM functions needs a container runtim
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-o7-krm-functions
+    hash: 35b3cd859ba9
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, kustomize, krm-functions, helm, argo-cd, containers]
 ---
@@ -21,6 +24,10 @@ In a GitHub issue titled "Helm support: long term plan", Kustomize maintainers p
 ## Why it matters
 
 The dispute is a concrete cost of the KRM function model, and it shows that render-time abstractions fight over where code runs. A function that needs a container runtime cannot run on a laptop without one, in a CI runner that forbids nested containers, or inside the Argo CD repo server. Crossplane avoids the problem by running its composition functions in-cluster as gRPC services, and kro avoids it by evaluating CEL in process, so server-side abstractions move that execution requirement into the cluster. See [[entities/kpt]], [[entities/kustomize]], and [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]].
+
+## Update from the KRM specification
+
+The container requirement the commenters ran into is a MUST in the KRM Functions Specification, so it is not a Kustomize choice, see [[findings/the-krm-functions-spec-requires-a-container-with-a-resourcelist-on-stdin-and-stdout-and-a-non-zero-exit-on-failure]]. The only verified non-container path is the opt-in exec extension, see [[findings/kpt-and-kustomize-run-functions-without-containers-only-through-opt-in-exec-extensions-that-both-docs-discourage]]. The claims here about Argo CD and CI runners are still unverified by primary text. [[sources/research-gap-o7-krm-functions]]
 
 ## Evidence strength
 

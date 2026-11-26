@@ -73,7 +73,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/flux-operator]] — operator that installs Flux and automates controller sharding (draft)
 - [[entities/terraform]] — plan-and-apply infrastructure tool and the contrast case for reconciliation (draft)
 - [[entities/kustomize]] — template-free YAML customization with bases, overlays, and patches (draft)
-- [[entities/kpt]] — Configuration as Data toolchain and the KRM function model (draft)
+- [[entities/kpt]] — Configuration as Data toolchain and the KRM function model (active)
 - [[entities/score]] — developer workload spec translated into Compose or Kubernetes manifests (active)
 - [[entities/radius]] — application platform with per-environment Recipes, secondary evidence only (active)
 - [[entities/backstage]] — developer portal framework with catalog and templates, not a provisioner (active)
@@ -150,6 +150,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-o4-config-connector-ack]] — verified dossier on Config Connector modes and deletion, Config Connector versus Crossplane, GitOps and ACK failure modes, and first-party pitfalls for kro, ACK, and Cluster API, read 2026-11-26 (active)
 - [[sources/research-gap-o5-kro-ecosystem]] — verified dossier on kro governance and the Graph API, kro scaling evidence, function-kro parity, and community direction for the Kubernetes-as-a-kernel model, 2026-11-26 (active)
 - [[sources/research-gap-o6-platform-landscape]] — verified dossier on Radius and Score primary status, Kratix Destinations and GitStateStores, Backstage and the operator pattern, neutral Crossplane comparisons, and tofu-controller and Terraform Operator maintenance, 2026-11-26 (active)
+- [[sources/research-gap-o7-krm-functions]] — verified dossier on the KRM function specification and runtime requirements and the Crossplane function runner history, 2026-11-26
 
 ## Examples
 
@@ -437,6 +438,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/tofu-controller-v0-17-0-removed-the-v1alpha1-api-on-2026-11-16]] — breaking release (active)
 - [[examples/radius-v0-62-0-was-released-on-2026-10-27-with-breaking-changes-and-one-supported-channel]] — release cadence and support window (active)
 - [[examples/superorbital-s-2022-evaluation-reported-no-terraform-plan-equivalent-for-crossplane]] — dated consultancy evaluation (active)
+- [[examples/crossplane-v1-14-0-shipped-beta-functions-on-2023-11-01-and-broke-compatibility-with-alpha-functions]] — alpha to beta cutover (active)
+- [[examples/a-kustomize-exec-krm-function-runs-only-with-enable-alpha-plugins-and-enable-exec]] — exec invocation and flags (active)
 
 ## Comparisons
 
@@ -549,6 +552,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/use-config-connector-directly-wrap-it-in-crossplane-through-the-kubernetes-provider-or-use-a-crossplane-gcp-provider]] — options without a recommendation (draft)
 - [[decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api]] — RGD or alpha Graph, options and evidence without a recommendation (active)
 - [[decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane]] — options and evidence, no recommendation (draft)
+- [[decisions/run-a-krm-function-as-a-container-or-as-an-exec-binary]] — options and evidence, no recommendation (draft)
 
 ## Findings
 
@@ -919,6 +923,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api]] — maintenance status (active)
 - [[findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer]] — maintenance status (active)
 - [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]] — evidence-quality caveat (active)
+- [[findings/the-krm-functions-spec-requires-a-container-with-a-resourcelist-on-stdin-and-stdout-and-a-non-zero-exit-on-failure]] — KRM spec wire contract and container MUST (active)
+- [[findings/the-krm-functions-spec-is-a-client-side-standard-decoupled-from-the-cluster-and-reserves-internal-annotations]] — KRM spec is client-side and kpt-originated (active)
+- [[findings/kpt-and-kustomize-run-functions-without-containers-only-through-opt-in-exec-extensions-that-both-docs-discourage]] — exec as the only non-container path (active)
+- [[findings/kpt-containers-get-no-network-and-no-host-filesystem-by-default]] — kpt sandbox defaults (active)
+- [[findings/crossplane-moved-composition-functions-from-an-xfn-sidecar-in-v1-11-to-package-manager-deployments-in-v1-14]] — function runner history (active)
+- [[findings/crossplane-functions-speak-a-grpc-runfunction-contract-that-differs-from-the-krm-resourcelist-over-stdio]] — gRPC versus ResourceList (active)
+- [[findings/upgrading-a-crossplane-function-changes-every-composition-revision-that-uses-functionref-including-manual-pins]] — function upgrades reach Manual pins (active)
 
 ## Outputs
 

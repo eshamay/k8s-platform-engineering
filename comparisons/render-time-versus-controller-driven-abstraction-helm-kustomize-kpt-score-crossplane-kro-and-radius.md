@@ -3,11 +3,14 @@ title: Render-time versus controller-driven abstraction, Helm, Kustomize, kpt, S
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-o7-krm-functions
+    hash: 35b3cd859ba9
+    ingested: 2026-11-26
 aliases: []
 tags: [abstraction, helm, kustomize, kpt, score, crossplane, kro, radius, platform-engineering]
 ---
@@ -44,4 +47,4 @@ The Coding Protocols post argues that mature platforms layer three of them: Helm
 
 ## Caveats
 
-The table is the wiki's synthesis of several single-source claims, and the Radius and Score rows rest on a third-party review and the project's own site respectively. The KRM function specification was not read. See [[entities/helm]], [[entities/kustomize]], [[entities/kpt]], [[entities/score]], [[entities/radius]], [[entities/crossplane]], and [[entities/kro]].
+The table is the wiki's synthesis of several single-source claims, and the Radius and Score rows rest on a third-party review and the project's own site respectively. The KRM function specification has since been read, see [[findings/the-krm-functions-spec-requires-a-container-with-a-resourcelist-on-stdin-and-stdout-and-a-non-zero-exit-on-failure]]. Crossplane's function contract differs from it, see [[findings/crossplane-functions-speak-a-grpc-runfunction-contract-that-differs-from-the-krm-resourcelist-over-stdio]]. [[sources/research-gap-o7-krm-functions]] See [[entities/helm]], [[entities/kustomize]], [[entities/kpt]], [[entities/score]], [[entities/radius]], [[entities/crossplane]], and [[entities/kro]].

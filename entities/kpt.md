@@ -1,13 +1,16 @@
 ---
 title: kpt and KRM functions
 type: entity
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-o7-krm-functions
+    hash: 35b3cd859ba9
+    ingested: 2026-11-26
 aliases: [kpt, KRM functions, Configuration as Data]
 tags: [tool, render-time, krm-functions, configuration-as-data]
 ---
@@ -22,8 +25,8 @@ The kpt repository describes Configuration as Data as "an approach to management
 
 ## KRM functions
 
-A KRM function is an idempotent program, run in a container, that reads a list of Kubernetes objects and writes a list of Kubernetes objects. It can be written in any language. The dossier notes that Crossplane's composition functions and Kustomize's plugin system echo this model, but it did not fetch the KRM function specification itself, so the exact input and output contract is not established here and is tracked in [[open-knowledge-gaps]]. The container requirement has a real cost, shown in [[findings/moving-kustomize-helm-inflation-to-krm-functions-needs-a-container-runtime-that-laptops-ci-and-argo-cd-often-lack]]. Crossplane avoids that cost by running its functions in-cluster as gRPC services, and kro avoids it by evaluating CEL in process. [[sources/research-kro-and-abstraction-models]]
+A KRM function is a program that reads a list of Kubernetes objects and writes a list of Kubernetes objects. It can be written in any language. The KRM Functions Specification says "A function MUST be implemented as a container" that reads a `ResourceList` on stdin and writes one on stdout, exits non-zero on failure, and can run as the non-root user `nobody`, see [[findings/the-krm-functions-spec-requires-a-container-with-a-resourcelist-on-stdin-and-stdout-and-a-non-zero-exit-on-failure]]. The standard originated in kpt, was donated to Kubernetes SIG-CLI, and is decoupled from any in-cluster component, see [[findings/the-krm-functions-spec-is-a-client-side-standard-decoupled-from-the-cluster-and-reserves-internal-annotations]]. kpt recommends, outside the spec, that functions be deterministic and idempotent, and its containers get no network or host filesystem by default, see [[findings/kpt-containers-get-no-network-and-no-host-filesystem-by-default]]. kpt can also run `exec` functions behind `--allow-exec`, which its docs discourage, see [[findings/kpt-and-kustomize-run-functions-without-containers-only-through-opt-in-exec-extensions-that-both-docs-discourage]]. Correction note: the earlier text called a KRM function idempotent as a definition, but idempotence is kpt guidance and not a spec rule. [[sources/research-gap-o7-krm-functions]] The container requirement has a real cost, shown in [[findings/moving-kustomize-helm-inflation-to-krm-functions-needs-a-container-runtime-that-laptops-ci-and-argo-cd-often-lack]]. Crossplane avoids that cost by running its functions in-cluster as gRPC services, and kro avoids it by evaluating CEL in process. [[sources/research-kro-and-abstraction-models]]
 
 ## Related
 
-[[entities/kustomize]], [[entities/crossplane]], [[concepts/composition]], [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]]
+[[entities/kustomize]], [[entities/crossplane]], [[decisions/run-a-krm-function-as-a-container-or-as-an-exec-binary]], [[findings/crossplane-functions-speak-a-grpc-runfunction-contract-that-differs-from-the-krm-resourcelist-over-stdio]], [[concepts/composition]], [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]]

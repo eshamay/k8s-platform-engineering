@@ -40,6 +40,7 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-part-4-kratix-passage-with-the-destination-mechanics]] — open
 - [[#update-part-4-terraform-in-a-cluster-passage-with-the-maintenance-status]] — open
 - [[#update-crossplane-ramp-up-terraform-passage-with-the-maintenance-status]] — open
+- [[#update-crossplane-ramp-up-function-pinning-passage-with-the-functionref-limit]] — open
 
 ## Open
 
@@ -980,6 +981,13 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/crossplane-ramp-up.md`, section 13, the paragraph beginning "Terraform and tofu-controller" ends with "The wiki did not check maintenance levels after Weaveworks' wind-down." It should state the verified maintenance status of both controllers and note that the plan-preview claim rests on a dated 2022 source.
 - **Why:** The passage predates the dossier [[sources/research-gap-o6-platform-landscape]].
 - **Acceptance:** Passage revised and citing [[findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api]], [[findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer]], and [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up function-pinning passage with the functionRef limit — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph beginning "Finally, functions are packages" says each Composition revision can reference specific function digests so composites pinned to older revisions keep running the old function. Only the alpha `--enable-pipeline-oci-references` digest feature does that, and a `functionRef` step follows the active Function revision for every CompositionRevision, including Manual pins.
+- **Why:** The passage conflicts with [[sources/research-gap-o7-krm-functions]].
+- **Acceptance:** Passage revised and citing [[findings/upgrading-a-crossplane-function-changes-every-composition-revision-that-uses-functionref-including-manual-pins]].
 - **Drafted by:** agent on 2026-11-26
 
 ## Dropped

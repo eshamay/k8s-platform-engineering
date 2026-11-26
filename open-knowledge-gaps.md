@@ -872,6 +872,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/crossplane]] and [[findings/composition-functions-add-moving-parts-that-must-be-healthy]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, composition-functions, verification
+- **Possible resolution from [[sources/research-gap-o7-krm-functions]]:** Largely settled for history, and the user decides whether to close it. The alpha `xfn` sidecar (v1.11.0, 2023-01-31) was replaced in v1.14.0 (2023-11-01) by package-manager Deployments behind headless Services, xfn moved out of tree, and a "feat: remove xfn" commit is on main, see [[findings/crossplane-moved-composition-functions-from-an-xfn-sidecar-in-v1-11-to-package-manager-deployments-in-v1-14]]. The 2023 VSHN sidecar description and the design document describe different eras. Not settled: whether an xfn-like container wrapper is maintained, the exact function pod construction in source, and the controlled-rollout one-pager.
 
 ## Config Connector and ACK behavior when wrapped by compositions — status: open
 
@@ -1027,6 +1028,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/kpt]] and [[findings/moving-kustomize-helm-inflation-to-krm-functions-needs-a-container-runtime-that-laptops-ci-and-argo-cd-often-lack]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** krm-functions, kpt, kustomize, containers
+- **Possible resolution from [[sources/research-gap-o7-krm-functions]]:** Largely settled for the specification, and the user decides whether to close it. The spec says a function MUST be a container exchanging a `ResourceList` over stdin and stdout, is decoupled from in-cluster components, and requires non-root capability and a non-zero exit on failure, see [[findings/the-krm-functions-spec-requires-a-container-with-a-resourcelist-on-stdin-and-stdout-and-a-non-zero-exit-on-failure]]. kpt and Kustomize run functions without containers only through opt-in exec extensions, see [[findings/kpt-and-kustomize-run-functions-without-containers-only-through-opt-in-exec-extensions-that-both-docs-discourage]]. Not settled: Argo CD, Flux, and Helm-inflation constraints were not read, and no WASM or in-process runtime was searched for beyond the kpt and Kustomize pages.
 
 ## Config Connector namespaced versus cluster mode and deletion policies — status: open
 

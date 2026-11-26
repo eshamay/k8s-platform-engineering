@@ -88,7 +88,7 @@ The dossier also places Flux, Argo CD, Config Connector, ACK, and Cluster API ar
 ## Open questions from the dossier
 
 - Crossplane docs versions disagree on naming, and older `docs.crossplane.io/latest/concepts/...` URLs return empty content, so writers should cite the `composition/` paths and check the version banner.
-- The design doc describes functions as Deployments behind a headless Service, while the 2023 VSHN post describes a sidecar runner, and it is unclear which parts of the earlier runner model remain. See [[open-knowledge-gaps]].
+- The design doc describes functions as Deployments behind a headless Service, while the 2023 VSHN post describes a sidecar runner, and it is unclear which parts of the earlier runner model remain. Resolved in part by [[sources/research-gap-o7-krm-functions]]: the sidecar was the alpha model and Deployments are current, see [[findings/crossplane-moved-composition-functions-from-an-xfn-sidecar-in-v1-11-to-package-manager-deployments-in-v1-14]].
 - The kro Graph and RGD APIs differ in how readiness gates dependents, and kro's Readiness and Controller Tuning pages were not read.
 - No source compared Crossplane Compositions and kro head to head, and no source describes how Config Connector or ACK behave when wrapped by a composition.
 - The Crossplane ADOPTERS file and conference talks were not fetched, so named-organization evidence is limited to VSHN and Imagine Learning.

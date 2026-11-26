@@ -3,7 +3,7 @@ title: Composition functions add moving parts that must be healthy
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-composite-resource
     hash: 8640896d06b9
@@ -11,6 +11,9 @@ sources:
   - id: research-composition
     hash: f57d89652816
     ingested: 2026-11-25
+  - id: research-gap-o7-krm-functions
+    hash: 35b3cd859ba9
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, crossplane, functions, operations, kro]
 ---
@@ -32,3 +35,7 @@ The Crossplane docs and blog recommend `crossplane render`, unit tests, and a Ku
 ## Further operational evidence
 
 The Compositions dossier adds that OpenShift's crun runtime initially could not run functions, which is a runtime-compatibility dependency, and that function load and memory become new capacity concerns, see [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]] and [[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]]. [[sources/research-composition]]
+
+## Update from the function runner history
+
+The moving parts are package-manager Deployments behind headless Services, not the alpha `xfn` sidecar, and a Function upgrade changes behavior for every CompositionRevision that uses `functionRef`. See [[findings/crossplane-moved-composition-functions-from-an-xfn-sidecar-in-v1-11-to-package-manager-deployments-in-v1-14]] and [[findings/upgrading-a-crossplane-function-changes-every-composition-revision-that-uses-functionref-including-manual-pins]]. [[sources/research-gap-o7-krm-functions]]
