@@ -23,6 +23,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-g1-other-tool-pitfalls
+    hash: a942f0ae1b1b
+    ingested: 2026-11-26
 aliases: []
 tags: [deletion, retain, abandon, orphan]
 ---
@@ -60,3 +63,7 @@ The managed resource dossier adds that in Crossplane v2 the way to keep the clou
 ## Reported prune incident
 
 ACK issue 2911 (2026) reports an Argo CD prune of an ACK CR that removed the AWS resource and then left the CR in `Terminating` because the controller mishandled the not-found error, see [[examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+
+## First-party deletion reports from the other-tool pitfalls dossier
+
+Reporter claims from 2026 qualify the opt-outs in this table. ACK's namespace-level retain annotation is reported ignored in single `--watch-namespace` installs ([[findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs]]). Config Connector's `abandon` is reported not to release Direct-controller resources stuck in Terminating ([[findings/config-connector-direct-controller-resources-stick-in-terminating-when-a-parent-is-deleted-first-and-abandon-does-not-release-them]]), and a stale deletion can run after leader failover ([[findings/config-connector-leader-election-across-clusters-can-run-a-stale-deletion-against-live-google-cloud-resources]]). All are open and unconfirmed by maintainers. [[sources/research-gap-g1-other-tool-pitfalls]]

@@ -17,6 +17,9 @@ sources:
   - id: research-gap-g1-named-incident-reports
     hash: 3c7df7bb12f1
     ingested: 2026-11-26
+  - id: research-gap-g1-other-tool-pitfalls
+    hash: a942f0ae1b1b
+    ingested: 2026-11-26
 aliases: []
 tags: [source-quality, evidence, postmortems, crossplane, caveat]
 ---
@@ -44,3 +47,5 @@ The 2026-11-26 GitOps dossier adds reporter-level incident evidence but still no
 ## Update from the named-incident dossier
 
 The 2026-11-26 named-incident pass tried to read the Skyscanner, Reddit, Spotify, and Jetstack primaries. Only Jetstack could be read. Reddit is now known from a secondary retelling that matches the index on the Calico and label mechanism, and Skyscanner and Spotify remain index-only because the scraper returned empty pages and some fetch routes were blocked. See [[sources/research-gap-g1-named-incident-reports]] and [[examples/reddit-s-march-2023-pi-day-outage-is-known-only-from-the-k8s-af-index-and-a-secondary-retelling]].
+
+Correction, 2026-11-26: the claim that nothing was read for kro, Config Connector, ACK, or Cluster API is superseded. A later dossier read their issue trackers and release notes, with no named-organization postmortems found. See [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]]. [[sources/research-gap-g1-other-tool-pitfalls]]

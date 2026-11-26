@@ -65,6 +65,9 @@ sources:
   - id: research-gap-g1-named-adopters
     hash: 9f6a50098233
     ingested: 2026-11-26
+  - id: research-gap-g1-other-tool-pitfalls
+    hash: a942f0ae1b1b
+    ingested: 2026-11-26
 aliases: [ACK, AWS Controllers for Kubernetes]
 tags: [tool, provider, aws]
 ---
@@ -161,3 +164,7 @@ The 2026-11-26 dossier collects reporter-level evidence on two ACK weaknesses. F
 ## Adopters file
 
 ACK's ADOPTERS file calls itself "a self-reported list of users". The first three rows name Adobe, BT, and Continuum Industries, with no object counts. See [[examples/adobe-lists-ack-for-global-kubernetes-cluster-provisioning-and-stateful-service-infrastructure]]. [[sources/research-gap-g1-named-adopters]]
+
+## First-party pitfall reports from the other-tool pitfalls dossier
+
+The 2026-11-26 dossier read the ACK community tracker. Most issues below were filed on 2026-11-09 by one reporter and so are one audit and not independent corroboration. Issue 3142 says ownership is recorded only in CR status, so overlapping controllers or a restored copy can give one AWS resource two owners ([[findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource]]). Issues 3152 and 3136 say adoption under Argo CD or Flux overwrites the AWS resource with the git spec, and a failed adoption patch can write a stub spec ([[findings/ack-adoption-under-a-gitops-agent-overwrites-the-aws-resource-with-the-spec-in-git-and-a-failed-adoption-patch-can-write-a-stub-spec]]). Issues 3153 and 3154 say pruning deletes the AWS resource and the namespace retain annotation is ignored in single `--watch-namespace` installs ([[findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs]]). Issue 3122 (sapphirew, 2026-10-31) is a separate reporter and a CI reproduction, already covered above. All were open with no maintainer root-cause confirmation. No ACK release-note breaking changes were retrieved. [[sources/research-gap-g1-other-tool-pitfalls]]

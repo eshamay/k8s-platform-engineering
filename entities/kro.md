@@ -71,6 +71,9 @@ sources:
   - id: research-gap-g1-named-adopters
     hash: 9f6a50098233
     ingested: 2026-11-26
+  - id: research-gap-g1-other-tool-pitfalls
+    hash: a942f0ae1b1b
+    ingested: 2026-11-26
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -198,3 +201,7 @@ The latest stable release is v0.10.0, published 2026-11-10. The previous stable 
 Correction note: this page says above that kro "starts a dedicated controller" for each ResourceGraphDefinition and that the scaling limits of one dedicated controller per RGD are uncovered. The tuning page on main describes one shared dynamic controller with a single shared queue, lazy informers per registered RGD, and metadata-only watches, and says per-RGD queues are a possible future change. The scaling question is therefore about one shared queue. No kro benchmark was found, and issue 1464 reports a watch teardown and hot loop on a Graph. See [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]] and [[findings/a-kro-hard-apply-failure-discarded-watches-and-hot-looped-while-large-collections-re-listed-against-the-apiserver]].
 
 kro has no ADOPTERS.md at the repository root and no named production adopter with a reported scale was found. A third-party blog (bex.co, 2026-07-29) says the CNCF and SlashData Q1 2026 Platform Engineering Radar placed kro in "Adopt" from a Q4 2025 survey of 400 or more developers, and that AWS's EKS documentation ships a kro concepts page. These are secondary-only claims and the radar was not read. [[sources/research-gap-g1-named-adopters]]
+
+## First-party pitfall reports from the other-tool pitfalls dossier
+
+The 2026-11-26 dossier read kro's issue tracker and release notes and found user reports and one fault-injection finding, but no production postmortem. kro v0.8.0 (2026-01-28) blocks breaking CRD changes by default with the `kro.run/allow-breaking-changes` override, and issue 1395 says the error did not name the override, which pushed a live-cluster user toward deleting the RGD. Issue 1391 says an added `enum=` or CEL `validation=` marker is accepted but never patched into the live CRD. See [[findings/a-kro-breaking-change-error-did-not-name-the-override-annotation-and-an-added-enum-or-cel-marker-was-not-patched-into-the-live-crd]]. Issue 886 says one misconfigured RGD blocked updates to every other RGD until it was deleted and the controller restarted ([[findings/one-unhealthy-kro-resource-graph-definition-blocked-updates-to-every-other-definition]]). Issue 1171, from the fault-injection tool kamera on v0.8.4, says a crash mid-deletion can leave the instance finalizer and children, and it was open and unconfirmed ([[findings/a-kro-controller-crash-during-instance-deletion-can-leave-the-finalizer-and-children-according-to-a-fault-injection-report]]). v0.10.0 (2026-11-10) lists graph-cleanup fixes and a per-resource deletion policy, but the dossier did not tie them to 1171. [[sources/research-gap-g1-other-tool-pitfalls]]

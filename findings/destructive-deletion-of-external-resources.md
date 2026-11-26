@@ -1,7 +1,7 @@
 ---
 title: Destructive deletion of external resources
 type: finding
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
@@ -25,6 +25,9 @@ sources:
     ingested: 2026-11-25
   - id: research-gap-g1-leaked-resources-adoption
     hash: 472b18eb451a
+    ingested: 2026-11-26
+  - id: research-gap-g1-other-tool-pitfalls
+    hash: a942f0ae1b1b
     ingested: 2026-11-26
 aliases: []
 tags: [pitfall, deletion, finalizers, safety]
@@ -71,3 +74,7 @@ The managed resource dossier confirms that deleting the Kubernetes object delete
 ## Evidence from the leaked-resources dossier
 
 In the ACK issue 3149 reproduction, deleting either of two custom resources that had adopted the same IAM role deleted the role in 4 ms, and the surviving custom resource created a replacement with a new role ID on its next resync. The run was against moto and not real AWS. See [[examples/ack-issue-3149-adopt-or-create-let-two-custom-resources-overwrite-one-iam-role-and-deleting-either-deleted-it]]. [[sources/research-gap-g1-leaked-resources-adoption]]
+
+## First-party reports from the other-tool pitfalls dossier
+
+Four open 2026 reports add first-party evidence for this pattern. ACK issue 3153 says a pruned CR deletes the AWS resource irreversibly and issue 3154 says the namespace retain annotation is ignored in single-namespace installs ([[findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs]]). Config Connector issue 16444 says a stale deletion after leader failover removed live GCP resources ([[findings/config-connector-leader-election-across-clusters-can-run-a-stale-deletion-against-live-google-cloud-resources]]), and issue 15930 says `abandon` does not release stuck Direct-controller resources ([[findings/config-connector-direct-controller-resources-stick-in-terminating-when-a-parent-is-deleted-first-and-abandon-does-not-release-them]]). kro issue 1171 reports children left behind after a crash mid-deletion ([[findings/a-kro-controller-crash-during-instance-deletion-can-leave-the-finalizer-and-children-according-to-a-fault-injection-report]]). All are single-reporter claims. The page is promoted to active because the pattern now has first-party evidence for ACK, Config Connector, and kro as well as the earlier sources. [[sources/research-gap-g1-other-tool-pitfalls]]

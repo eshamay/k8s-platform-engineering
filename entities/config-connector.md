@@ -65,6 +65,9 @@ sources:
   - id: research-gap-g1-named-adopters
     hash: 9f6a50098233
     ingested: 2026-11-26
+  - id: research-gap-g1-other-tool-pitfalls
+    hash: a942f0ae1b1b
+    ingested: 2026-11-26
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -160,3 +163,7 @@ The dossier adds two dated Config Connector reports. Issue 14236 (2026-10-21, v1
 ## Adopters file
 
 The 2026-11-26 adopters dossier found no adopters file at the root of the GoogleCloudPlatform/k8s-config-connector repository, so no named Config Connector adopter is recorded from the project itself. [[sources/research-gap-g1-named-adopters]]
+
+## First-party pitfall reports from the other-tool pitfalls dossier
+
+The 2026-11-26 dossier read the Config Connector issue tracker (latest release v1.162.0, 2026-11-23). Issue 16444 says multi-cluster leader election can run a stale deletion against live GCP resources after failover ([[findings/config-connector-leader-election-across-clusters-can-run-a-stale-deletion-against-live-google-cloud-resources]]). Issue 15930 says Direct-controller resources stick in Terminating when a parent is deleted first, and `deletion-policy: abandon` does not release them ([[findings/config-connector-direct-controller-resources-stick-in-terminating-when-a-parent-is-deleted-first-and-abandon-does-not-release-them]]). The claim in issue 13335 that abandon leaves `managed-by-cnrm` and lease labels is SECONDARY-ONLY and unreproduced. Issue 12944 says a StorageBucket `spec.location` edit reported UpToDate while the bucket stayed put ([[findings/a-config-connector-storagebucket-location-edit-reported-uptodate-while-the-bucket-did-not-move]]). All were open reporter claims, not postmortems. The abandon guidance above therefore has a reported exception. [[sources/research-gap-g1-other-tool-pitfalls]]

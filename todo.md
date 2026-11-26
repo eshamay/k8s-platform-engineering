@@ -38,6 +38,9 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-part-5-failure-mode-evidence-note-with-the-operator-loop-incidents]] — open
 - [[#update-part-2-observedgeneration-passage-with-the-2026-early-ready-cases]] — open
 - [[#update-part-5-webhook-outage-paragraph-with-the-jetstack-primary-post]] — open
+- [[#update-part-1-evidence-note-with-the-other-tool-pitfall-reports]] — open
+- [[#update-part-4-kro-passages-with-the-breaking-change-gate-reports]] — open
+- [[#update-part-5-deletion-guardrails-with-the-ack-and-config-connector-reports]] — open
 
 ## Open
 
@@ -328,6 +331,27 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the paragraph beginning "Webhook outages are a recurring class in the k8s.af index" (around line 254) says the wiki read only index-level descriptions. The Jetstack post has now been read in full, and the paragraph should say so, name its mechanism, and avoid attributing any `failurePolicy` advice to Jetstack.
 - **Why:** See [[sources/research-gap-g1-named-incident-reports]]. Cite [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]].
 - **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-1 evidence note with the other-tool pitfall reports — status: open
+
+- **What:** In `outputs/part-1-core-architectural-principles.md`, the evidence note near line 280 says the wiki "found no pitfalls specif..." to kro, Config Connector, ACK, or Cluster API. It should say that first-party issue-level reports now exist for all four, as open reporter claims with no named-organization postmortem.
+- **Why:** See [[sources/research-gap-g1-other-tool-pitfalls]]. Cite [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]].
+- **Acceptance:** Passage revised and citing the page named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 kro passages with the breaking-change gate reports — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the rollout and maturity paragraph near line 239 (beginning "Rollout and maturity matter too") says breaking schema changes are blocked unless the override annotation is set. It should add that two September 2026 user reports say the error did not name the annotation and that an added enum or CEL marker was not patched into the live CRD, plus the issue 886 shared-failure-domain report.
+- **Why:** See [[sources/research-gap-g1-other-tool-pitfalls]]. Cite [[findings/a-kro-breaking-change-error-did-not-name-the-override-annotation-and-an-added-enum-or-cel-marker-was-not-patched-into-the-live-crd]] and [[findings/one-unhealthy-kro-resource-graph-definition-blocked-updates-to-every-other-definition]].
+- **Acceptance:** Passage revised and citing the pages named above.
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-5 deletion guardrails with the ACK and Config Connector reports — status: open
+
+- **What:** In `outputs/part-5-platform-architecture-principles-and-operating-at-scale.md`, the deletion paragraphs near lines 172 and 174 and the guardrails paragraph near line 266 say ACK and Config Connector offer retain and abandon opt-outs. They should note the open 2026 reports that the ACK namespace retain annotation is ignored in single-namespace installs, that a pruned ACK CR deletes the AWS resource irreversibly, that Config Connector `abandon` does not release stuck Direct-controller resources, and that a stale deletion can run after leader failover.
+- **Why:** See [[sources/research-gap-g1-other-tool-pitfalls]]. Cite [[findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs]], [[findings/config-connector-direct-controller-resources-stick-in-terminating-when-a-parent-is-deleted-first-and-abandon-does-not-release-them]], and [[findings/config-connector-leader-election-across-clusters-can-run-a-stale-deletion-against-live-google-cloud-resources]].
+- **Acceptance:** Passages revised and citing the pages named above.
 - **Drafted by:** agent on 2026-11-26
 
 ## Done

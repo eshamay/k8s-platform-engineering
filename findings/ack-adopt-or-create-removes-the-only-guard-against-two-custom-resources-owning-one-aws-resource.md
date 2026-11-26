@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g1-leaked-resources-adoption
     hash: 472b18eb451a
     ingested: 2026-11-26
+  - id: research-gap-g1-other-tool-pitfalls
+    hash: a942f0ae1b1b
+    ingested: 2026-11-26
 aliases: []
 tags: [ack, adopt-or-create, adoption, ownership, deletion, iam-controller]
 ---
@@ -37,3 +40,7 @@ No production frequency exists, and the dossier says most of the late-2026 ACK a
 ## Related
 
 [[findings/adopt-or-create-can-take-over-a-look-alike-resource]], [[entities/ack]], [[findings/destructive-deletion-of-external-resources]], [[examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name]]
+
+## Ownership is not recorded in AWS
+
+ACK issue 3142 says the absence of an owner check is general and not only an adopt-or-create effect, because ownership lives only in CR status. See [[findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource]]. [[sources/research-gap-g1-other-tool-pitfalls]]

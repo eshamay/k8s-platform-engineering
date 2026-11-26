@@ -17,6 +17,9 @@ sources:
   - id: research-gap-g1-gitops-drift-incidents
     hash: 0a1a75f3cab5
     ingested: 2026-11-26
+  - id: research-gap-g1-other-tool-pitfalls
+    hash: a942f0ae1b1b
+    ingested: 2026-11-26
 aliases: []
 tags: [pitfall, prune, deletion, gitops]
 ---
@@ -54,3 +57,7 @@ The finalizers dossier shows that the GitOps object can cascade as well. Argo CD
 ## Update from the GitOps incidents dossier
 
 Correction, 2026-11-26: the Caveat above said no incident write-ups of an accidental prune were found. The 2026-11-26 dossier found reporter accounts, though no named-organization postmortem. Argo CD issue 15441 (2023) reports a namespace deleted and recreated when its explicit manifest was removed under `CreateNamespace=true`, ACK issue 2911 (2026) reports an Argo CD prune leaving a WebACL CR stuck on its finalizer, and issues 6046 and 20440 report cascades from deleting or recreating the parent. See [[findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed]], [[findings/pruning-a-custom-resource-whose-controller-does-not-map-a-not-found-error-leaves-it-terminating-on-its-finalizer]], and [[sources/research-gap-g1-gitops-drift-incidents]].
+
+## ACK prune reports from the other-tool pitfalls dossier
+
+ACK issues 3153 and 3154 (2026-11-09, open) say pruning an ACK CR from git deletes the AWS resource and cannot be undone, and that the namespace retain annotation is ignored in single `--watch-namespace` installs. See [[findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs]]. [[sources/research-gap-g1-other-tool-pitfalls]]

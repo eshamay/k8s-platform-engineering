@@ -68,6 +68,9 @@ sources:
   - id: research-gap-g1-named-adopters
     hash: 9f6a50098233
     ingested: 2026-11-26
+  - id: research-gap-g1-other-tool-pitfalls
+    hash: a942f0ae1b1b
+    ingested: 2026-11-26
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -176,3 +179,7 @@ Rancher's cluster-api-provider-rke2 v0.22.0 onward had a self-sustaining loop of
 ## Adopters file
 
 A code search of the Cluster API repository in the 2026-11-26 adopters dossier found only a providers reference page and no adopters page. The repository root was not read, so this negative result is unverified. [[sources/research-gap-g1-named-adopters]]
+
+## Pitfall evidence from the other-tool pitfalls dossier
+
+The 2026-11-26 dossier found release-note breaking changes and a webhook-availability issue, but no deletion or data-loss incident from the last two years. The v1.14.0 release (2026-08-11) lists four breaking changes, including a webhook version-validation fix that rejects invalid pre-release or build tags, and says v1beta1 is on track to be unserved in v1.16 and Docker* resources are removed in v1.15 ([[findings/cluster-api-v1-14-0-lists-four-breaking-changes-and-schedules-v1beta1-and-docker-removals]]). Issue 10522 says cert-manager rotation can make webhooks unreachable for up to 90 seconds and failed a clusterctl upgrade test ([[findings/cluster-api-webhooks-can-be-unreachable-for-up-to-90-seconds-during-cert-manager-certificate-rotation]]). The latest stable releases read were v1.14.4 and v1.13.8 (2026-11-03). [[sources/research-gap-g1-other-tool-pitfalls]]

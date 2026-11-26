@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g1-leaked-resources-adoption
     hash: 472b18eb451a
     ingested: 2026-11-26
+  - id: research-gap-g1-other-tool-pitfalls
+    hash: a942f0ae1b1b
+    ingested: 2026-11-26
 aliases: [ACK issue 3122]
 tags: [ack, ec2-controller, duplicate-resource, client-token, leader-election, idempotency]
 ---
@@ -37,3 +40,7 @@ It is the best timestamped reproduction in the dossier of a duplicate cloud reso
 ## Related
 
 [[entities/ack]], [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]], [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]]
+
+## Seen again in the other-tool pitfalls dossier
+
+The 2026-11-26 other-tool pitfalls dossier re-read issue 3122 and confirmed the reporter (sapphirew, not gecube), the 2026-10-31 filing date, the 2026-10-30 CI run, and that the evidence is specific to `CreateVpcEndpoint`, with the title's "Create calls" generalizing. See [[findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource]] for the ownership issue filed separately. [[sources/research-gap-g1-other-tool-pitfalls]]

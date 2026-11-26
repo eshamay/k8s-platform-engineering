@@ -127,6 +127,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-g1-gitops-drift-incidents]] — verified dossier on GitOps adopters, drift-correction and prune incidents, and finalizer orphaning, 2026-11-26 (active)
 - [[sources/research-gap-g1-operator-loop-failures]] — verified dossier on issue-level operator reconcile loops, lost events, and early-Ready status bugs, with no formal operator postmortem found, 2026-11-26 (active)
 - [[sources/research-gap-g1-leaked-resources-adoption]] — verified dossier on leaked or duplicated cloud resources from ambiguous creates and on adopt-or-create versus explicit import, from GitHub issues only, 2026-11-26 (active)
+- [[sources/research-gap-g1-other-tool-pitfalls]] — verified dossier on first-party pitfall issues and release notes for kro, Config Connector, ACK, and Cluster API, with no named-organization postmortem, 2026-11-26 (active)
 
 ## Examples
 
@@ -336,6 +337,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/config-connector-issue-14236-acquiring-an-existing-storage-bucket-removed-its-encryption-enforcement-config]] — acquisition dropped unmodeled settings (active)
 - [[examples/config-connector-issue-648-an-alert-policy-was-created-on-every-reconcile-although-the-create-returned-http-400]] — a failed create that still created the resource (active)
 - [[examples/crossplane-issue-6260-unstructured-caching-in-1-17-let-the-composite-reconciler-leak-composed-resources]] — stale cached read leading to a second create (active)
+- [[examples/kro-issue-1171-a-fault-injection-tool-found-that-a-controller-crash-mid-deletion-leaves-the-instance-finalizer-and-children]] — kro v0.8.4 crash mid-deletion, fault-injection report (active)
+- [[examples/kro-issue-1395-a-user-on-a-live-cluster-was-pushed-toward-deleting-a-resource-graph-definition-by-an-unhelpful-breaking-change-error]] — breaking-change gate error without the override name (active)
+- [[examples/config-connector-issue-16444-a-gitops-delete-recreate-failover-sequence-deleted-live-gcp-resources-on-a-former-leader-cluster]] — stale deletion after leader failover (active)
+- [[examples/config-connector-issue-15930-direct-controller-resources-stuck-terminating-after-a-parent-was-deleted-first]] — abandon does not release stuck resources (active)
+- [[examples/ack-issue-3142-a-restored-cluster-copy-or-overlapping-controller-install-can-give-one-aws-resource-two-owners]] — no owner check before update or delete (active)
+- [[examples/ack-issue-3153-pruning-a-custom-resource-from-git-deletes-the-aws-resource-irreversibly]] — prune deletes the AWS resource (active)
+- [[examples/ack-issue-3152-adoption-under-argo-cd-or-flux-overwrites-the-adopted-aws-resource-with-the-git-spec]] — adoption overwrites with the git spec (active)
+- [[examples/cluster-api-issue-10522-cert-manager-rotation-made-webhooks-unreachable-and-failed-a-clusterctl-upgrade-test]] — 90 second webhook window (active)
 
 ## Comparisons
 
@@ -655,6 +664,18 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/ack-adoption-semantics-are-inconsistent-across-kinds-and-adopted-resources-can-fail-to-converge]] — Role versus Policy, EKS and RDS adoption loops (active)
 - [[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]] — Config Connector acquisition side effect, single report (draft)
 - [[findings/no-named-postmortem-or-production-comparison-was-found-for-leaked-resources-or-adopt-or-create-versus-explicit-import]] — evidence caveat (draft)
+- [[findings/a-kro-breaking-change-error-did-not-name-the-override-annotation-and-an-added-enum-or-cel-marker-was-not-patched-into-the-live-crd]] — kro schema gate edges, issues 1395 and 1391 (active)
+- [[findings/one-unhealthy-kro-resource-graph-definition-blocked-updates-to-every-other-definition]] — kro issue 886 shared failure domain (active)
+- [[findings/a-kro-controller-crash-during-instance-deletion-can-leave-the-finalizer-and-children-according-to-a-fault-injection-report]] — kro issue 1171, unconfirmed (active)
+- [[findings/config-connector-leader-election-across-clusters-can-run-a-stale-deletion-against-live-google-cloud-resources]] — KCC issue 16444 (active)
+- [[findings/config-connector-direct-controller-resources-stick-in-terminating-when-a-parent-is-deleted-first-and-abandon-does-not-release-them]] — KCC issue 15930 (active)
+- [[findings/a-config-connector-storagebucket-location-edit-reported-uptodate-while-the-bucket-did-not-move]] — KCC issue 12944 silent drift (active)
+- [[findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource]] — ACK issue 3142 (active)
+- [[findings/ack-adoption-under-a-gitops-agent-overwrites-the-aws-resource-with-the-spec-in-git-and-a-failed-adoption-patch-can-write-a-stub-spec]] — ACK issues 3152 and 3136 (active)
+- [[findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs]] — ACK issues 3153 and 3154 (active)
+- [[findings/cluster-api-webhooks-can-be-unreachable-for-up-to-90-seconds-during-cert-manager-certificate-rotation]] — CAPI issue 10522 (active)
+- [[findings/cluster-api-v1-14-0-lists-four-breaking-changes-and-schedules-v1beta1-and-docker-removals]] — CAPI v1.14.0 release notes (active)
+- [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]] — evidence caveat (draft)
 
 ## Outputs
 

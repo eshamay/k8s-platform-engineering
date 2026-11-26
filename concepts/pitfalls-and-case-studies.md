@@ -20,6 +20,9 @@ sources:
   - id: research-gap-g1-leaked-resources-adoption
     hash: 472b18eb451a
     ingested: 2026-11-26
+  - id: research-gap-g1-other-tool-pitfalls
+    hash: a942f0ae1b1b
+    ingested: 2026-11-26
 aliases: [failure modes, postmortems, platform pitfalls]
 tags: [pitfalls, postmortems, cascades, finalizers, deletion, drift, ssa, guard-rails]
 ---
@@ -72,3 +75,7 @@ The 2026-11-26 operator dossier found no formal organization-authored postmortem
 ## Update from the leaked-resources dossier
 
 A third gap on the evidence side is partly filled. The 2026-11-26 dossier found no named postmortem or conference talk about leaked or duplicated cloud resources, and it records issue-level cases: a duplicate VPC endpoint from an ACK controller restart, duplicate Route 53 hosted zones from a two-cluster GitOps bootstrap, a reported $155 retry-loop cost in an upjet provider, and two custom resources overwriting one IAM role under `adopt-or-create`. Figures are self-reported. See [[findings/no-named-postmortem-or-production-comparison-was-found-for-leaked-resources-or-adopt-or-create-versus-explicit-import]] and [[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]]. [[sources/research-gap-g1-leaked-resources-adoption]]
+
+## Update from the other-tool pitfalls dossier
+
+Correction, 2026-11-26: the statement above that no source covers pitfalls specific to kro, Config Connector, ACK, or Cluster API is out of date. The 2026-11-26 dossier read first-party issues and release notes for all four. It found open reporter claims, not named-organization postmortems: kro's breaking-change gate and crash-during-deletion report ([[findings/a-kro-breaking-change-error-did-not-name-the-override-annotation-and-an-added-enum-or-cel-marker-was-not-patched-into-the-live-crd]], [[findings/a-kro-controller-crash-during-instance-deletion-can-leave-the-finalizer-and-children-according-to-a-fault-injection-report]]), Config Connector's stale deletion after failover and stuck Terminating resources ([[findings/config-connector-leader-election-across-clusters-can-run-a-stale-deletion-against-live-google-cloud-resources]], [[findings/config-connector-direct-controller-resources-stick-in-terminating-when-a-parent-is-deleted-first-and-abandon-does-not-release-them]]), ACK's ownership, adoption, and prune issues ([[findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource]], [[findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs]]), and Cluster API's webhook window and breaking changes ([[findings/cluster-api-webhooks-can-be-unreachable-for-up-to-90-seconds-during-cert-manager-certificate-rotation]], [[findings/cluster-api-v1-14-0-lists-four-breaking-changes-and-schedules-v1beta1-and-docker-removals]]). The evidence caveat is in [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]]. [[sources/research-gap-g1-other-tool-pitfalls]]
