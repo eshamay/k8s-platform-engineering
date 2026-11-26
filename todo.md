@@ -440,6 +440,8 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Why:** The tutorials still understate the wiki's own evidence, and the mechanics gaps are the core of Parts 2 and 3.
 - **Acceptance:** Twelve verified dossiers ingested serially, a triage page, the seven tutorials revised and reviewed, a cross-document consistency pass, and a final commit.
 - **Drafted by:** agent on 2026-11-26
+- **Paused:** 2026-11-26 at the user's request, mid-run (run `wf_449f204e-c5c`, 11 clusters). Done and committed: research and verify for all but the SSA cluster, and serial ingests through seq 54 (the four accuracy clusters and m1-finalizers). Written but not yet ingested (untracked in `raw/`): the m2, m3, m5, m6 and m7 dossiers. Not yet run: m4 (SSA and conflict policy) research or verify, the remaining ingests, triage, the tutorial revisions, the consistency check, and finalize. The working tree was clean when paused.
+- **Resume:** run the Workflow tool with `scriptPath` `workflows/mechanics-and-accuracy-pass.js`, `resumeFromRunId` `wf_449f204e-c5c`, and `args` `{"today":"2026-11-26","baseSha":"8ada735"}`. Finished research, verify and ingest calls replay from cache; the in-flight calls rerun. If the cache is gone, relaunch without `resumeFromRunId`, but first move the five untracked dossiers aside or delete them so the researchers do not overwrite verified text, and skip the clusters already ingested (edit `CLUSTERS` to drop the b1 clusters and m1).
 
 ## Batch 2 (P3): other-tool coverage research pass — status: open
 
