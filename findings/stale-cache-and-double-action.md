@@ -8,6 +8,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
 aliases: [Expectations problem]
 tags: [pitfall, controllers, cache, level-triggered]
 ---
@@ -29,6 +32,10 @@ The controller-runtime FAQ lists two approaches used by built-in controllers. St
 ## Caveat
 
 The Ayson post was read only through a summarizing fetch, and the "Kubernetes Controller Writing Guide" it cites was not located. See [[open-knowledge-gaps]].
+
+## Kubernetes v1.36 staleness work
+
+Kubernetes v1.36 adds staleness mitigation and metrics for cache synchronization and watch latency, and optimistic concurrency through `resourceVersion` turns a write based on stale data into a 409 conflict that the controller retries. [[sources/research-eventual-consistency-and-convergence]] See [[concepts/informers-reflectors-and-workqueues]].
 
 ## Related
 

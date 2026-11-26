@@ -8,6 +8,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
 aliases: [sigs.k8s.io/controller-runtime]
 tags: [tool, controllers, framework]
 ---
@@ -23,6 +26,10 @@ The reconcile package states that "Reconciliation is level-based, meaning action
 ## Author guidance from the FAQ
 
 The FAQ recommends one controller per root object type, with other objects mapped to the root through owner or map-function handlers. It tells authors not to branch on create, update, or delete, to reconcile idempotently by reading all needed state and then writing updates, to assume cache reads can be stale, and to test with envtest rather than fake clients. See [[findings/event-specific-logic-in-reconcilers]], [[findings/stale-cache-and-double-action]], and [[concepts/idempotency]].
+
+## Requeue semantics
+
+A third-party guide summarizes the return values: nil with an empty result means converged, `RequeueAfter` means waiting, and an error means failure with exponential backoff. [[sources/research-eventual-consistency-and-convergence]] See [[findings/errors-used-as-timers-in-reconcilers]].
 
 ## Related
 

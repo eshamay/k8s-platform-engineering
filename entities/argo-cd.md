@@ -14,6 +14,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -41,3 +44,7 @@ Argo CD polls on `timeout.reconciliation` in the `argocd-cm` ConfigMap, which th
 ## To research
 
 The dossier read the sync-waves page only through a summarizing fetch. Drift detection and self-heal behavior, application sets, and multi-cluster scale were not covered. See [[open-knowledge-gaps]].
+
+## Convergence behavior
+
+Self-heal syncs after a default delay of about 5 seconds when live state drifts from Git, prune is off by default, retries use configurable exponential backoff with unlimited retries possible, and a failed sync of the same commit and parameters is not retried unless self-heal is on. Sync order is phase, wave, kind, then name, and each wave must be Healthy before the next. [[sources/research-eventual-consistency-and-convergence]] See [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]] and [[comparisons/retry-and-backoff-controls-across-tools]].

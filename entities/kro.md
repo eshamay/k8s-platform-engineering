@@ -14,6 +14,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -31,6 +34,10 @@ Use cases from the announcement are in [[examples/self-service-gke-cluster-with-
 ## Resource graph details
 
 The overview documentation says a ResourceGraphDefinition holds a schema, resource templates, and CEL expressions, and kro turns it into a CRD and controller. kro infers dependency order from expressions, waits on status values that do not exist yet, supports conditionals and forEach collections, and validates definitions at apply time. CEL is deliberately non-Turing-complete so definitions terminate and are auditable. The example composes an ACK S3 bucket and a Deployment behind a WebApp API, and the page showed version 0.10.0 with a Graph feature in alpha. [[sources/research-declarative-vs-imperative]] See [[examples/platform-team-self-service-apis-with-crossplane-and-kro]].
+
+## Controller tuning
+
+kro handles all instances from one shared queue and documents its tuning values in the unreleased "next" docs: one worker by default, exponential backoff of 200ms to 1000s with a token bucket of 10 per second and burst 100, client QPS 100 and burst 150, a 10-hour full resync, and 20 retries before an item is dropped. Instance status conditions remain unverified because the instances page returned no content. [[sources/research-eventual-consistency-and-convergence]] See [[examples/kro-shared-queue-tunes-throughput]].
 
 ## Related concepts
 

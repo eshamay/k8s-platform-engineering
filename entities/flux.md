@@ -17,6 +17,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -38,6 +41,10 @@ The concepts page defines sources that produce artifacts, which Kustomization an
 ## Interval, retry, and suspend
 
 The Kustomization `.spec.interval` (minimum 60 seconds) re-fetches, builds, and applies on a schedule, with a server-side apply dry run each cycle for drift detection. `.spec.retryInterval` governs failures, reconcile also runs immediately on source revision or metadata changes, `.spec.suspend` stops applying and drift detection, and `.spec.force` recreates objects on immutable-field conflicts. [[sources/research-level-triggered-vs-edge-triggered]] See [[comparisons/reconcile-cadence-and-off-switches-across-tools]] and [[examples/gitops-reverts-a-hand-edited-deployment]].
+
+## Convergence behavior
+
+Flux re-reconciles a Kustomization at `spec.interval` (minimum 60 seconds), uses a server-side apply dry run to detect drift, reconciles immediately when the generation or source revision changes, and separates `retryInterval` for failures. `dependsOn` makes dependents wait for Ready, and `wait` and `healthChecks` define readiness. `force` handles immutable fields at the risk of downtime. [[sources/research-eventual-consistency-and-convergence]] See [[examples/flux-dependson-and-health-checks-gate-rollout]] and [[findings/drift-detection-latency-is-the-interval]].
 
 ## Related concepts
 

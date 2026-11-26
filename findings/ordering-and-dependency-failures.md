@@ -8,6 +8,9 @@ sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, ordering, dependencies]
 ---
@@ -26,3 +29,7 @@ CRDs and their controllers must exist before the custom resources that use them,
 ## Why it matters
 
 Because the system is eventually consistent (see [[concepts/eventual-consistency-and-convergence]]), many ordering errors resolve themselves through retries, but a wave-based or hook-based tool can instead stop and mark the sync failed. See [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]].
+
+## Health-gated ordering in the convergence dossier
+
+Kubernetes does not order dependent resources itself. Flux uses `dependsOn` with health checks, Argo CD uses health-gated waves and hooks that must be idempotent, and Crossplane uses composition function readiness. [[sources/research-eventual-consistency-and-convergence]] See [[examples/flux-dependson-and-health-checks-gate-rollout]] and [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]].

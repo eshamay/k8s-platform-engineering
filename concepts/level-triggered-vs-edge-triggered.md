@@ -14,6 +14,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
 aliases: [State-based vs event-based]
 tags: [architecture, controllers]
 ---
@@ -51,6 +54,10 @@ Pure level-triggering is not free. A cache read can lag the controller's own wri
 ## In practice
 
 See [[examples/gitops-reverts-a-hand-edited-deployment]], [[examples/cloud-console-changes-reverted-by-provider-controllers]], and [[examples/controller-pattern-for-digital-twins]].
+
+## Convergence framing
+
+The convergence dossier repeats Tim Hockin's framing, "State is more useful than events," and the replica scenario in which a level-triggered controller ends at the final count while an edge-triggered one can end at zero. It treats level-triggering as the mechanism that makes eventual consistency robust. [[sources/research-eventual-consistency-and-convergence]] See [[concepts/eventual-consistency-and-convergence]] and [[examples/deployment-replica-changes-converge-to-the-final-count]].
 
 ## Related
 

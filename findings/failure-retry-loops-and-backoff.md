@@ -8,6 +8,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, retries, backoff, level-triggered]
 ---
@@ -25,6 +28,10 @@ Permanent errors, such as an invalid spec, should be marked terminal so they sto
 ## Mitigations
 
 Return terminal errors for unfixable input, surface failure through [[concepts/conditions]], and tune retry caps for external APIs with quotas. See [[findings/cost-of-constant-reconciliation]].
+
+## Bounded retries in the convergence dossier
+
+kro caps retries at 20, Argo CD will not repeat a failed sync of the same commit, and a secondary GitHub account shows what unbounded retries can do to a struggling dependency. [[sources/research-eventual-consistency-and-convergence]] See [[findings/retry-storms-and-unbounded-retries]] and [[comparisons/retry-and-backoff-controls-across-tools]].
 
 ## Related
 

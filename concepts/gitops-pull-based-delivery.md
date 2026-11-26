@@ -14,6 +14,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
 aliases: [GitOps, Pull-based delivery]
 tags: [architecture, principle, gitops]
 ---
@@ -35,6 +38,10 @@ A Red Hat interview with Intuit states the GitOps principle that desired state i
 ## Level-triggered reconciliation in GitOps tools
 
 GitOps tools turn "Git is truth" into a repeating comparison between Git and the cluster, with interval polling as the safety net and source-change events as a latency optimization. [[sources/research-level-triggered-vs-edge-triggered]] See [[examples/gitops-reverts-a-hand-edited-deployment]] and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
+
+## Ordering and retries in GitOps tools
+
+Flux uses `dependsOn` and health checks, and Argo CD uses health-gated sync waves, to impose order on an otherwise concurrent apply. The two bound retries differently. [[sources/research-eventual-consistency-and-convergence]] See [[examples/flux-dependson-and-health-checks-gate-rollout]], [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]], and [[comparisons/retry-and-backoff-controls-across-tools]].
 
 ## Related
 

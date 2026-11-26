@@ -11,6 +11,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
 aliases: [client-go caching, controller-runtime cache]
 tags: [controllers, scale]
 ---
@@ -28,6 +31,10 @@ This machinery is why one controller can watch thousands of objects cheaply, and
 ## Events as hints and cache lag
 
 Watch events delivered through informers are hints that enqueue an object key, and the reconciler then reads the full object from the cache. Because the cache can lag the controller's own writes, controllers need deterministic names or expectations to avoid acting twice. [[sources/research-level-triggered-vs-edge-triggered]] See [[decisions/events-as-hints-state-as-truth]] and [[findings/stale-cache-and-double-action]]. The exact semantics of resync (replaying cached state to handlers, not relisting from the API server) were not explained by any source in the dossier.
+
+## Staleness and observability in v1.36
+
+Informer caches can lag the API server when watch events are delayed or missed, so controllers may act on outdated state. The Kubernetes v1.36 blog describes staleness mitigation and metrics for cache synchronization and watch latency, which makes the lag observable. The dossier's summary of the specific mechanisms was generic and needs verification. The work queue deduplicates keys and applies exponential backoff to failures, and kro's tuning page gives concrete queue numbers. [[sources/research-eventual-consistency-and-convergence]] See [[findings/stale-cache-and-double-action]] and [[examples/kro-shared-queue-tunes-throughput]].
 
 ## Related
 

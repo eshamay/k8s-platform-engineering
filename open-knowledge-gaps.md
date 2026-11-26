@@ -24,6 +24,9 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#origin-of-level-driven-not-edge-driven-guidance]] — open, unassigned
 - [[#incidents-caused-by-lost-events-or-edge-triggered-design]] — open, unassigned
 - [[#reconcile-defaults-for-crossplane-ack-and-cluster-api]] — open, unassigned
+- [[#kubernetes-v136-staleness-mitigation-mechanisms-and-metrics]] — open, unassigned
+- [[#named-end-user-case-study-of-convergence-trouble]] — open, unassigned
+- [[#kro-released-version-tuning-defaults-and-instance-conditions]] — open, unassigned
 
 ---
 
@@ -42,6 +45,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-universal-control-plane]]:** The dossier covers Flux only at the component and Kustomization API level (`dependsOn`, `prune`, `healthChecks`, drift correction through server-side apply dry runs). It does not trace the source-controller to kustomize-controller handoff, so it only partly helps. See [[entities/flux]].
 - **Possible resolution from [[sources/research-declarative-vs-imperative]]:** The dossier adds Flux Kustomization details that belong in the trace: sources produce artifacts that Kustomizations apply, drift is detected with a server-side apply dry run each interval, `prune` and the deletion policy govern removal, and `suspend` pauses reconciliation. It still does not trace finalizer registration or status condition updates, so it only partly helps. See [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]].
 - **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Only marginally helpful. The dossier shows that Flux's Kustomization reconciles on its interval and immediately on source revision changes, runs a server-side apply dry run each cycle, and uses `retryInterval` on failure, which fits the trigger and retry steps of the trace. It does not trace source-controller handoff, finalizers, or condition updates. See [[entities/flux]] and [[examples/gitops-reverts-a-hand-edited-deployment]].
+- **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Only marginally helpful. The dossier adds Flux Kustomization behavior that belongs in the trace: reconcile at `spec.interval`, immediate reconcile on a generation or source revision change, a server-side apply dry run for drift, `dependsOn` and `healthChecks` for readiness, and `retryInterval` for failures. It does not trace source-controller handoff, finalizers, or condition updates. See [[entities/flux]] and [[examples/flux-dependson-and-health-checks-gate-rollout]].
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
 
@@ -58,6 +62,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-universal-control-plane]]:** The dossier supplies the execution models: Crossplane uses an XRD plus a Composition that runs a pipeline of gRPC functions with observed-state feedback on each reconcile, while kro uses a ResourceGraphDefinition with CEL references from which ordering is derived. kro was pre-1.0 (0.10.0) and its dependency mechanics were not read. A first draft is in [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]]. See [[entities/crossplane]] and [[entities/kro]].
 - **Possible resolution from [[sources/research-declarative-vs-imperative]]:** The dossier adds that kro validates schemas, expressions, and references at apply time, infers dependency order from CEL expressions, waits on not-yet-existing status values, supports conditionals and forEach, and keeps CEL non-Turing-complete so definitions terminate and are auditable. Crossplane instead uses a gRPC function pipeline for flexible composition. Readiness mechanics are still not described. See [[examples/platform-team-self-service-apis-with-crossplane-and-kro]].
 - **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Only marginally helpful. The dossier adds Crossplane's reconcile mechanics (`forProvider` compared to the external resource, `managementPolicies`, pause annotation) but does not mention kro or composition functions, and the default poll interval was not confirmed. See [[entities/crossplane]] and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
+- **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Partly helpful. The dossier adds that a Crossplane composite resource is Ready only when its composition function pipeline reports every composed resource ready, and gives kro's controller numbers (single shared queue, backoff, token bucket, 20-retry cap) from unreleased docs. It could not read kro's instance semantics, so readiness comparison is still incomplete. See [[comparisons/retry-and-backoff-controls-across-tools]] and [[examples/kro-shared-queue-tunes-throughput]].
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
 
@@ -74,6 +79,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-universal-control-plane]]:** The dossier covers the etcd and API server side of scale (single write leader, 8 GB cap, list and watch amplification, Kine, separate Events etcd, per-tenant control planes), not informer, workqueue, or sharding behavior of Flux and Crossplane. See [[findings/etcd-scale-limits-of-the-shared-store]].
 - **Possible resolution from [[sources/research-declarative-vs-imperative]]:** Only marginally helpful. The dossier explains that controllers re-list and reconcile full state and that Kubebuilder controllers use the status subresource and owner references, but it has no sharding, concurrency, or rate-limit data. See [[entities/kubebuilder]].
 - **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Partly helpful. The dossier explains why events are hints that enqueue keys, how cache lag causes double action, how errors requeue with exponential backoff, and how intervals and jitter limit API load. It has no sharding or concurrency data and does not explain informer resync semantics. See [[findings/stale-cache-and-double-action]], [[findings/cost-of-constant-reconciliation]], and [[concepts/informers-reflectors-and-workqueues]].
+- **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Partly helpful. The dossier gives kro's workqueue and client rate limits (default one worker, token bucket 10 per second with burst 100, QPS 100 with burst 150), explains Kubernetes v1.36 staleness metrics, and describes leader election for multi-replica controllers. It has no Flux or Crossplane sharding data. See [[examples/kro-shared-queue-tunes-throughput]], [[findings/duplicate-work-from-replicas-without-leader-election]], and [[concepts/informers-reflectors-and-workqueues]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -226,3 +232,37 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Fill the rows in [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, ack, cluster-api, intervals
+
+## Kubernetes v1.36 staleness mitigation mechanisms and metrics — status: open
+
+- **Question:** What are the actual feature names, mechanisms, and metric names in the Kubernetes v1.36 staleness mitigation work, and how do they change the guidance in [[findings/stale-cache-and-double-action]]?
+- **Why it matters:** The dossier read only the first 100,000 characters of the blog post and its summary of the mitigations was generic, so the wiki cannot yet say how upstream makes cache lag observable.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the v1.36 blog post and the linked KEPs directly.
+  - [ ] Update [[concepts/informers-reflectors-and-workqueues]] and [[findings/stale-cache-and-double-action]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** staleness, informers, v1-36, verification
+
+## Named end-user case study of convergence trouble — status: open
+
+- **Question:** Is there a named-company case study or primary postmortem in which retry amplification, stale caches, or slow convergence in a Kubernetes controller caused an incident?
+- **Why it matters:** The dossier found none, and its only retry-storm postmortem is a secondary vendor-blog account of a GitHub incident that did not involve Kubernetes. See [[findings/retry-storms-and-unbounded-retries]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Locate GitHub's primary postmortem and judge whether the secondary account matches it.
+  - [ ] Search for Kubernetes controller incident reports and conference talks.
+  - [ ] Add `findings/` or `examples/` pages for each documented incident.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** postmortem, retries, case-study
+
+## kro released-version tuning defaults and instance conditions — status: open
+
+- **Question:** Do the kro controller tuning defaults match the released versions, and what status conditions and per-instance reconcile semantics does kro expose?
+- **Why it matters:** The numbers in [[examples/kro-shared-queue-tunes-throughput]] come from unreleased "next" docs, and the instances concept page returned empty content.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the released kro tuning and instances documentation.
+  - [ ] Update [[entities/kro]] and [[comparisons/retry-and-backoff-controls-across-tools]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, verification, conditions

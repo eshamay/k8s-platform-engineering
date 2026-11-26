@@ -14,6 +14,9 @@ sources:
   - id: research-level-triggered-vs-edge-triggered
     hash: 27a34aa0de59
     ingested: 2026-11-25
+  - id: research-eventual-consistency-and-convergence
+    hash: bb35eafbd239
+    ingested: 2026-11-25
 aliases: [Drift correction]
 tags: [architecture, principle]
 ---
@@ -35,6 +38,10 @@ Flux reconciles Kustomizations on an interval and reverts manual changes unless 
 ## Cadence and cost
 
 Drift correction is level-triggered reconciliation applied repeatedly, so its latency and cost are set by intervals and jitter: Flux uses a 60 second minimum interval, Argo CD polls with 120 seconds plus up to 60 seconds of jitter, and Config Connector offers an interval annotation where longer intervals reduce API quota use. [[sources/research-level-triggered-vs-edge-triggered]] See [[comparisons/reconcile-cadence-and-off-switches-across-tools]], [[findings/cost-of-constant-reconciliation]], and [[findings/continuous-loops-override-intentional-changes]].
+
+## Drift detection latency
+
+Flux detects drift with a server-side apply dry run each interval, Crossplane with a poll interval, and Argo CD with self-heal, which triggers a sync after a default delay of about 5 seconds. Detection latency is therefore the interval, and long intervals trade API load for slower correction. [[sources/research-eventual-consistency-and-convergence]] See [[findings/drift-detection-latency-is-the-interval]].
 
 ## Related
 
