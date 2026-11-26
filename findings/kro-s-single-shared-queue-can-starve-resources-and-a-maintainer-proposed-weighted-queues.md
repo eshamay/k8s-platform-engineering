@@ -8,6 +8,9 @@ sources:
   - id: research-gap-g1-named-adopters
     hash: 9f6a50098233
     ingested: 2026-11-26
+  - id: research-gap-o5-kro-ecosystem
+    hash: 7905031da128
+    ingested: 2026-11-26
 aliases: [kro issue 198]
 tags: [kro, workqueue, starvation, scale, proposal]
 ---
@@ -29,3 +32,7 @@ Earlier wiki pages described kro as starting a dedicated controller per Resource
 ## Related
 
 [[examples/kro-shared-queue-tunes-throughput]], [[findings/a-kro-hard-apply-failure-discarded-watches-and-hot-looped-while-large-collections-re-listed-against-the-apiserver]], [[concepts/informers-reflectors-and-workqueues]]
+
+## Update from the o5 dossier
+
+Update 2026-11-26: the shared-queue model is confirmed against the v0.10.0 source (`Name: "dynamic-controller-queue"`), and the docs FAQ is the outlier, see [[findings/the-kro-docs-faq-says-a-dedicated-controller-per-rgd-while-the-tuning-page-and-source-describe-one-shared-queue]]. Issue 198 and issue 610 are still open. Pull request 1159, which raised deletion latency at large scale, was closed unmerged on 2026-08-11. See [[findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter]]. [[sources/research-gap-o5-kro-ecosystem]]

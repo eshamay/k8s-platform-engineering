@@ -3,11 +3,14 @@ title: Non-container appliances on the Kubernetes API
 type: example
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-gap-o5-kro-ecosystem
+    hash: 7905031da128
+    ingested: 2026-11-26
 aliases: []
 tags: [use-case, aenix, distributions, vision]
 ---
@@ -25,3 +28,7 @@ This is the most explicit statement of the [[concepts/universal-control-plane]] 
 ## Evidence quality
 
 The dossier calls this a vision with limited production evidence. Ænix lists its own risks: a single small maintaining team, limited production testing, new patching processes, a fleet center that is a single point of failure, and no shell for debugging at 3 a.m. It is unclear whether the model reflects community direction, since no SIG or KEP source was read. See [[findings/blast-radius-and-privilege-centralization]].
+
+## Update from the o5 dossier: community direction
+
+Update 2026-11-26: a targeted search found no SIG charter, KEP, or talk adopting a distribution model, so the Aenix view remains one vendor's proposal, see [[findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post]] and [[examples/aenix-describes-kuberoot-as-a-small-lab-tested-distribution-positioned-against-k3s-and-k0s]]. [[sources/research-gap-o5-kro-ecosystem]]

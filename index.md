@@ -52,7 +52,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/config-connector]] — Google Cloud resources as Kubernetes objects (active)
 - [[entities/ack]] — AWS services as Kubernetes objects, one controller per service (active)
 - [[entities/cluster-api]] — management cluster that creates workload clusters (active)
-- [[entities/kcp]] — node-less multi-tenant API workspaces (draft)
+- [[entities/kcp]] — node-less multi-tenant API workspaces (active)
 - [[entities/kubectl]] — CLI behind imperative and declarative techniques (draft)
 - [[entities/kluctl]] — deployment tool that decides SSA conflicts per field (draft)
 - [[entities/kubebuilder]] — controller framework and Reconcile tutorial (draft)
@@ -67,7 +67,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/cert-manager]] — operator with validation, defaulting, and conversion webhooks (draft)
 - [[entities/operator-sdk]] — Operator Framework SDK and its five capability levels (active)
 - [[entities/crossplane-provider-btp]] — SAP provider with explicit external names and bounded create recovery (draft)
-- [[entities/function-kro]] — Crossplane function that runs kro-style resource graphs in a pipeline step (draft)
+- [[entities/function-kro]] — Crossplane function that runs kro-style resource graphs in a pipeline step (active)
 - [[entities/upjet]] — generator of Crossplane providers from Terraform providers (active)
 - [[entities/azure-service-operator]] — Azure resources as Kubernetes objects, CRDs generated from ARM schemas (draft)
 - [[entities/flux-operator]] — operator that installs Flux and automates controller sharding (draft)
@@ -148,6 +148,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-o2-flux-internals]] — verified dossier on Flux source-controller artifact serving, sharding labels, image automation API status, and composite resource health, read from source and docs at main on 2026-11-26 (active)
 - [[sources/research-gap-o3-gitops-provider-managed]] — verified dossier on GitOps agents and provider-managed resources: deletion defaults and opt-outs, Argo CD Lua health scripts, Flux kstatus and CEL, drift fights, and ACK wrapped by kro, read from docs and source on 2026-11-26 (active)
 - [[sources/research-gap-o4-config-connector-ack]] — verified dossier on Config Connector modes and deletion, Config Connector versus Crossplane, GitOps and ACK failure modes, and first-party pitfalls for kro, ACK, and Cluster API, read 2026-11-26 (active)
+- [[sources/research-gap-o5-kro-ecosystem]] — verified dossier on kro governance and the Graph API, kro scaling evidence, function-kro parity, and community direction for the Kubernetes-as-a-kernel model, 2026-11-26 (active)
 
 ## Examples
 
@@ -427,6 +428,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/config-connector-issue-479-a-containernodepool-delete-stuck-after-a-quota-error-on-kcc-1-46-0]] — KCC issue 479 stuck node pool delete, secondary-only (active)
 - [[examples/crossplane-provider-gcp-issue-283-a-crossplane-maintainer-says-config-connector-through-the-kubernetes-provider-is-not-a-replacement-for-a-provider]] — provider-gcp issue 283 maintainer position (active)
 - [[examples/crossplane-provider-gcp-issue-518-asked-why-provider-gcp-is-needed-when-config-connector-exists-and-had-no-comments]] — provider-gcp issue 518 unanswered question (active)
+- [[examples/function-kro-v0-4-0-moved-onto-the-kro-v0-10-0-graph-engine-on-2026-11-26-with-one-listed-maintainer]] — function-kro v0.4.0 release and maintainership (active)
+- [[examples/aenix-describes-kuberoot-as-a-small-lab-tested-distribution-positioned-against-k3s-and-k0s]] — Aenix's kuberoot proposal and its own caveats (active)
+- [[examples/the-cozystack-cncf-sandbox-application-issue-87-was-closed-on-2024-08-20-over-governance-and-adopter-concerns]] — Cozystack Sandbox application closure (active)
+- [[examples/kcp-generic-controlplane-aims-at-an-api-server-without-kubernetes-and-says-it-is-not-ready-for-production]] — API server without Kubernetes, not production-ready (active)
 
 ## Comparisons
 
@@ -537,6 +542,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/gate-flux-image-automation-with-semver-ranges-a-separate-push-branch-or-staging-only-automation]] — evidence-only options for promotion control (draft)
 - [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]] — evidence-only options, no recommendation (active)
 - [[decisions/use-config-connector-directly-wrap-it-in-crossplane-through-the-kubernetes-provider-or-use-a-crossplane-gcp-provider]] — options without a recommendation (draft)
+- [[decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api]] — RGD or alpha Graph, options and evidence without a recommendation (active)
 
 ## Findings
 
@@ -893,6 +899,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]] — two vendor positions, no neutral comparison (active)
 - [[findings/kro-v0-10-0-fixes-partial-apply-cleanup-and-duplicate-rgd-identities-and-pull-request-1445-adds-an-alpha-deletion-policy-behind-an-off-by-default-gate]] — kro v0.10.0 fixes and alpha deletion policy (active)
 - [[findings/a-flux-waitfortermination-deletion-policy-gives-up-at-spec-timeout-and-lets-the-kustomization-be-deleted-while-a-provider-resource-may-still-be-finalizing]] — Flux WaitForTermination timeout (active)
+- [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]] — documented differences behind the parity claim (active)
+- [[findings/the-kro-docs-faq-says-a-dedicated-controller-per-rgd-while-the-tuning-page-and-source-describe-one-shared-queue]] — FAQ wording conflicts with tuning page and source (active)
+- [[findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter]] — no benchmark or named adopter (active)
+- [[findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post]] — no SIG or KEP backs the distribution model (active)
 
 ## Outputs
 

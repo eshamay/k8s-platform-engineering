@@ -1,7 +1,7 @@
 ---
 title: kcp
 type: entity
-status: draft
+status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
@@ -10,6 +10,9 @@ sources:
     ingested: 2026-11-25
   - id: research-gap-g1-named-adopters
     hash: 9f6a50098233
+    ingested: 2026-11-26
+  - id: research-gap-o5-kro-ecosystem
+    hash: 7905031da128
     ingested: 2026-11-26
 aliases: [kcp.io]
 tags: [tool, multi-tenancy, api-server]
@@ -34,3 +37,7 @@ kcp isolates only the API, so it provides no compute and its tooling is less mat
 ## Adopters
 
 The kcp ADOPTERS file marks Upbound "Production" and SAP, SNCF Group, Kubermatic, Faros.sh, and KubeStellar "Development", all self-reported. See [[examples/upbound-is-the-only-kcp-adopter-marked-production-in-the-adopters-file]]. [[sources/research-gap-g1-named-adopters]]
+
+## Update from the o5 dossier: CNCF status and generic-controlplane
+
+Update 2026-11-26: cncf.io says kcp was accepted at the Sandbox maturity on 2023-09-19. The latest release read was v0.33.6 (2026-11-04). The kcp-dev/generic-controlplane repository says it is "not yet ready for production use" and aims at a control plane usable without Kubernetes, see [[examples/kcp-generic-controlplane-aims-at-an-api-server-without-kubernetes-and-says-it-is-not-ready-for-production]]. The kcp homepage links a KubeCon EU 2024 talk that was not read. See [[findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post]]. [[sources/research-gap-o5-kro-ecosystem]]

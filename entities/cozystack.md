@@ -11,6 +11,9 @@ sources:
   - id: research-gap-o2-flux-internals
     hash: 866650ffd3aa
     ingested: 2026-11-26
+  - id: research-gap-o5-kro-ecosystem
+    hash: 7905031da128
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, paas, bare-metal, talos]
 ---
@@ -30,3 +33,7 @@ The documentation lists Talos Linux, Kubernetes, KubeVirt, LINSTOR and DRBD, and
 ## Flux sharding operator
 
 Cozystack's repository ships a `flux-shard-operator` that creates label-selected helm-controller shards at about 100 HelmReleases per shard. See [[examples/cozystack-s-flux-shard-operator-creates-helm-controller-shards-at-about-100-helmreleases-per-shard]]. [[sources/research-gap-o2-flux-internals]]
+
+## Update from the o5 dossier: Sandbox application closed
+
+Update 2026-11-26: Cozystack's CNCF Sandbox application (cncf/sandbox issue 87) was closed on 2024-08-20, see [[examples/the-cozystack-cncf-sandbox-application-issue-87-was-closed-on-2024-08-20-over-governance-and-adopter-concerns]]. Cozystack is Aenix's own project, and Aenix's kuberoot proposal is described in [[examples/aenix-describes-kuberoot-as-a-small-lab-tested-distribution-positioned-against-k3s-and-k0s]]. [[sources/research-gap-o5-kro-ecosystem]]

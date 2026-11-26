@@ -162,6 +162,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find SIG discussions or KEPs and conference talks on API server aggregation, server-side apply, and streaming lists.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** distributions, aenix, kep
+- **Possible resolution from [[sources/research-gap-o5-kro-ecosystem]]:** Not settled in favor of the model, and the user decides whether to close it. No SIG charter, KEP, or talk adopting a distribution model was found, and the only direct source is Aenix's own post, which calls its project lab-tested and small. Adjacent signals exist in kcp (CNCF Sandbox), its not-production-ready generic-controlplane, and API-machinery KEPs that do not mention the model, see [[findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post]].
 
 ## Adoption, observe-only, and ignore-differences controls — status: open
 
@@ -858,6 +859,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Find independent reports of running it in production.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** function-kro, kro, crossplane, verification
+- **Possible resolution from [[sources/research-gap-o5-kro-ecosystem]]:** Partly settled, and the user decides whether to close it. The README claims full parity, but the repository lists concrete behavioral differences from kro, and v0.4.0 (2026-11-26) runs kro v0.10.0's own graph engine, so parity reads as the same engine with documented gaps, see [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]]. Still unanswered: independent production reports, whether the SSA desired-state problem is fixed, and how GraphRevision maps to CompositionRevision.
 
 ## Crossplane function runner architecture history — status: open
 
@@ -986,6 +988,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, governance, graph, cncf
 - **Possible resolution from [[sources/research-gap-g3-kro]]:** Governance is settled and the Graph future is only partly answered, so the user should decide whether to close it. kro is a subproject of Kubernetes SIG Cloud Provider according to its README, kro.run, and the SIG's own README, and no first-party page read calls it a CNCF project in its own right (the kro.run footer's CNCF sentence is about Kubernetes; absence from the CNCF landscape was not verified). The maintainer roster is active. On the Graph API, the design text says it is additive and does not replace or deprecate RGD, and that RGD is internally a graph. Not settled: no promotion timeline from alpha was found, the in-repo roadmap (last updated 2026-04-03) lags the release, and live roadmap pages and GitHub issue threads were not read. See [[findings/the-kro-in-repo-roadmap-predates-the-v0-10-0-release-and-gives-no-graph-promotion-timeline]] and [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]].
+- **Possible resolution from [[sources/research-gap-o5-kro-ecosystem]]:** Governance is confirmed and the Graph future is still open, and the user decides whether to close it. kro is a subproject of Kubernetes SIG Cloud Provider according to the README, the SIG README, kro.run, and the OWNERS files, and no first-party source calls it a CNCF project in its own right, though absence from the CNCF project list was not checked. Graph shipped in v0.10.0 (2026-11-10) as alpha and off by default, and the design document says RGD internally runs on the graph engine and is not replaced or deprecated. No promotion timeline was found, and the live kro.run roadmap still shows v0.10.0 as Next. See [[decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api]].
 
 ## Scaling limits of per-RGD kro controllers and named production kro adopters — status: open
 
@@ -998,6 +1001,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-gap-g1-named-adopters]]:** Partly settled, and the user decides whether to close it. The premise needs correcting: the released docs describe one shared dynamic controller with a single queue and not a dedicated controller per RGD, with per-RGD queues as a possible future change, see [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]]. No measured scaling limit and no named production kro adopter were found, and kro has no ADOPTERS.md. The adoption evidence is secondary-only (a bex.co summary of the CNCF and SlashData radar placing kro in "Adopt", and an AWS EKS concepts page). The only scale-related failure report is [[findings/a-kro-hard-apply-failure-discarded-watches-and-hot-looped-while-large-collections-re-listed-against-the-apiserver]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, scale, adopters, production
+- **Possible resolution from [[sources/research-gap-o5-kro-ecosystem]]:** Not settled, and the user decides whether to close it. The premise is corrected again: kro runs one shared queue and one worker by default, and only the docs FAQ still says a dedicated controller per RGD, see [[findings/the-kro-docs-faq-says-a-dedicated-controller-per-rgd-while-the-tuning-page-and-source-describe-one-shared-queue]]. No measured scaling limit, benchmark, ADOPTERS file, or named production adopter was found, and the only scale evidence is open issues 198 and 610 plus a closed unmerged pull request, see [[findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter]].
 
 ## Primary-source status of Radius and Score — status: open
 

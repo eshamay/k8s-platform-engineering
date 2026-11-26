@@ -1,13 +1,16 @@
 ---
 title: function-kro
 type: entity
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-gap-o5-kro-ecosystem
+    hash: 7905031da128
+    ingested: 2026-11-26
 aliases: [function-kro Crossplane function]
 tags: [tool, crossplane, kro, composition-function]
 ---
@@ -21,3 +24,7 @@ tags: [tool, crossplane, kro, composition-function]
 ## What it adds and what it implies
 
 Running the graph inside Crossplane keeps the schema separate from the implementation and brings CompositionRevisions for pinning and rollback, extra pipeline steps for policy or tagging, multiple Compositions behind one API, pause annotations, and `crossplane render` for local tests. The command `crossplane xrd generate --from simpleschema` produces an XRD from a kro-style schema. The post says "One schema, many implementations." Its claim of full feature parity is the project's own and is not independently verified. The function is a sign that the Crossplane and kro models are converging. See [[examples/function-kro-runs-a-kro-resource-graph-as-a-crossplane-pipeline-step]], [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], [[entities/crossplane]], and [[entities/kro]].
+
+## Update from the o5 dossier: documented differences and v0.4.0
+
+Update 2026-11-26: the parity claim is now checked against the repository. v0.4.0 (2026-11-26) runs kro v0.10.0's own graph engine, yet `patches/UPSTREAM_DIFFERENCES.md` lists concrete behavioral differences, so "full feature parity" is best read as the same engine with documented gaps. OWNERS.md lists one maintainer, Jared Watts, and no independent production report was found. See [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]] and [[examples/function-kro-v0-4-0-moved-onto-the-kro-v0-10-0-graph-engine-on-2026-11-26-with-one-listed-maintainer]]. [[sources/research-gap-o5-kro-ecosystem]]

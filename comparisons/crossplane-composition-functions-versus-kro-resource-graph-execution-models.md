@@ -11,6 +11,9 @@ sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-gap-o5-kro-ecosystem
+    hash: 7905031da128
+    ingested: 2026-11-26
 aliases: []
 tags: [crossplane, kro, composition, resource-graph, execution-model]
 ---
@@ -50,3 +53,7 @@ The dossier gives no performance or scale numbers for either side and no inciden
 ## Where the readiness signal comes from (2026-11-26)
 
 Correction note: the readiness row says the XR is Ready when composed resources are. In v2.5.0 source, a composed resource counts as ready only when a function sets `READY_TRUE`, and an unspecified value counts as not ready, so the XR `Ready` is a function-authored summary that shows `Creating` with an "Unready resources" message until then, see [[findings/a-crossplane-composed-resource-counts-as-ready-only-when-the-function-sets-ready-true-so-unspecified-readiness-leaves-the-xr-creating]]. In kro the controller itself computes the instance `Ready` as the root of `InstanceManaged`, `GraphResolved`, and `ResourcesReady`. [[sources/research-gap-b1-recheck-kro-crossplane]]
+
+## Update from the o5 dossier
+
+Update 2026-11-26: the overlap through `function-kro` has documented limits. The repository lists differences from standalone kro, see [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]], and v0.4.0 now runs kro v0.10.0's graph engine. [[sources/research-gap-o5-kro-ecosystem]]

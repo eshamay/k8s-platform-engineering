@@ -101,6 +101,9 @@ sources:
   - id: research-gap-o4-config-connector-ack
     hash: c0d708f1d445
     ingested: 2026-11-26
+  - id: research-gap-o5-kro-ecosystem
+    hash: 7905031da128
+    ingested: 2026-11-26
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -254,3 +257,9 @@ The ACK documentation includes a kro guide that composes ACK Bucket and Table ob
 ## v0.10.0 fixes and the alpha deletion policy (o4 dossier)
 
 kro v0.10.0 (2026-11-10) fixes Graph cleanup after partial apply failures, rejects duplicate RGD identities before adopting objects, and fails closed on schema changes, and pull request 1445 (merged 2026-10-29) adds an alpha per-resource `deletionPolicy` behind an off-by-default gate, see [[findings/kro-v0-10-0-fixes-partial-apply-cleanup-and-duplicate-rgd-identities-and-pull-request-1445-adds-an-alpha-deletion-policy-behind-an-off-by-default-gate]]. [[sources/research-gap-o4-config-connector-ack]]
+
+## Updates from the o5 kro ecosystem dossier
+
+Update 2026-11-26: the o5 dossier confirms the governance wording above from the README, the SIG README, and OWNERS files, and adds that the live kro.run roadmap still lists v0.10.0 as "Next" after the release. The Graph design document says an RGD "internally is a graph" and Graph "does not replace or deprecate the RGD Kind", and a newer proposal, KREP-026 propagation control (issue 1510), was opened 2026-11-13. No Graph promotion timeline and no CNCF listing check exist yet. See [[decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api]]. [[sources/research-gap-o5-kro-ecosystem]]
+
+Correction note: the docs FAQ still says kro "deploys a dedicated controller" per RGD, but the tuning page and the v0.10.0 source describe one shared queue, see [[findings/the-kro-docs-faq-says-a-dedicated-controller-per-rgd-while-the-tuning-page-and-source-describe-one-shared-queue]]. Scale evidence stays qualitative, see [[findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter]]. The function-kro integration now has a documented difference list, see [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]].

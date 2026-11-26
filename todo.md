@@ -34,6 +34,8 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-flux-ramp-up-source-controller-passage-with-leader-election-artifact-serving]] — open
 - [[#update-flux-ramp-up-sharding-passage-with-the-verified-helmchart-labeling-rule]] — open
 - [[#update-flux-ramp-up-image-automation-passage-with-the-v1-api-and-promotion-options]] — open
+- [[#update-part-4-function-kro-passage-with-the-documented-upstream-differences]] — open
+- [[#update-crossplane-ramp-up-function-kro-passage-with-the-documented-upstream-differences]] — open
 
 ## Open
 
@@ -932,6 +934,20 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "GitOps tools sit above all of these" says Argo CD needs Lua checks for CRDs. It should add that Argo CD v3.6.3 ships built-in scripts for the Config Connector, ACK, Crossplane, and Upbound groups, and that Flux relies on kstatus or CEL `healthCheckExprs` with no per-provider logic.
 - **Why:** The passage predates the dossier [[sources/research-gap-o3-gitops-provider-managed]].
 - **Acceptance:** Passage revised and citing [[findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves]] and [[findings/flux-judges-provider-managed-resources-through-kstatus-or-cel-health-check-expressions-and-its-cel-cheatsheet-lists-crossplane-but-not-config-connector-or-ack]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 function-kro passage with the documented upstream differences — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "The wiki also notes that the Crossplane project's `function-kro`" says the feature-parity claim is the project's own and unverified. It should add that the repository lists behavioral differences from kro and that v0.4.0 runs kro v0.10.0's graph engine.
+- **Why:** The passage predates the dossier [[sources/research-gap-o5-kro-ecosystem]].
+- **Acceptance:** Passage revised and citing [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up function-kro passage with the documented upstream differences — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, the paragraph after the `${vpc.status.atProvider.id}` example says "The project claims full feature parity". It should add the documented behavioral differences and the v0.4.0 engine change.
+- **Why:** The passage predates the dossier [[sources/research-gap-o5-kro-ecosystem]].
+- **Acceptance:** Passage revised and citing [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]] and [[examples/function-kro-v0-4-0-moved-onto-the-kro-v0-10-0-graph-engine-on-2026-11-26-with-one-listed-maintainer]].
 - **Drafted by:** agent on 2026-11-26
 
 ## Dropped

@@ -1,13 +1,16 @@
 ---
 title: function-kro runs a kro resource graph as a Crossplane pipeline step
 type: example
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
+  - id: research-gap-o5-kro-ecosystem
+    hash: 7905031da128
+    ingested: 2026-11-26
 aliases: []
 tags: [crossplane, kro, function-kro, networking, convergence]
 ---
@@ -27,3 +30,7 @@ The post lists what Crossplane adds around the graph: the schema is separated fr
 ## Why the example matters
 
 It is the clearest evidence in the dossier that the two models are converging, with kro-style graphs becoming one way of authoring a Crossplane function. The claim of full feature parity is the project's own. See [[entities/function-kro]], [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], and [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]].
+
+## Update from the o5 dossier
+
+Update 2026-11-26: the full-parity claim above is the project's own. The repository lists behavioral differences, see [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]], and v0.4.0 moved the function onto kro v0.10.0's graph engine, see [[examples/function-kro-v0-4-0-moved-onto-the-kro-v0-10-0-graph-engine-on-2026-11-26-with-one-listed-maintainer]]. [[sources/research-gap-o5-kro-ecosystem]]
