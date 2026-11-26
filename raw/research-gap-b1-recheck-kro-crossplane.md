@@ -52,7 +52,7 @@ Claims:
 - Claim: Synced is ReconcileSuccess unless a composed resource is unsynced. Status: VERIFIED. URL: same reconciler.go. Version: v2.5.0. Quote: `synced := xpv2.ReconcileSuccess()`.
 - Claim: the docs describe Ready as True when the pipeline reports all composed resources ready. Status: VERIFIED. URL: https://github.com/crossplane/docs/blob/master/content/v2.5/composition/composite-resources.md. Version: docs v2.5. Quote: "composition function pipeline reports that all its composed resources are ready."
 - Claim: the proto defines Ready as UNSPECIFIED, TRUE, FALSE, documented as "True means the resource has been observed to be ready." Status: VERIFIED. URL: https://github.com/crossplane/crossplane/blob/v2.5.0/proto/fn/v1/run_function.proto. Version: v2.5.0. Quote: "True means the resource has been observed to be ready."
-- Claim: function-auto-ready marks a resource ready from its observed Ready=True condition when readiness is unspecified. Status: VERIFIED. URL: https://github.com/crossplane-contrib/function-auto-ready/blob/main/fn.go. Version: main, read 2026-11-26. Quote: "Ignoring desired resource that already has explicit readiness".
+- Claim: function-auto-ready marks a resource ready from its observed Ready=True condition when readiness is unspecified. [corrected in verification: fn.go skips resources with explicit readiness, and for the rest it uses optional CEL queries and resource-specific health checks for standard Kubernetes resources before falling back to an observed Ready=True condition, so the Ready=True condition is only the final fallback.] Status: VERIFIED. URL: https://github.com/crossplane-contrib/function-auto-ready/blob/main/fn.go. Version: main, read 2026-11-26. Quote: "Ignoring desired resource that already has explicit readiness".
 - Claim: kro half (spec.schema.status CEL, conditions and state added, five RGD conditions) was already settled by the wiki; this pass adds only source confirmation of the four instance conditions (see previous gap). Status: VERIFIED for conditions. URL: https://github.com/kubernetes-sigs/kro/blob/v0.10.0/api/v1alpha1/conditions.go. Version: v0.10.0. Quote: "Instance built-in condition types."
 - Claim: kro validates author conditions at build time: runtime.newCondition status must be True, False, or Unknown; type non-empty; no duplicate declared types; runtime.condition(schema, ...) must name a built-in type. Status: VERIFIED. URL: https://github.com/kubernetes-sigs/kro/blob/v0.10.0/pkg/graph/conditions.go. Version: v0.10.0. Quote: "status must be one of True, False, Unknown".
 
@@ -129,7 +129,7 @@ Claims:
 ## Not found
 
 - Searched the kro v0.9.4 and v0.10.0 instance controller files for use of `InstanceStateFailed`; found nothing in the three files grepped (repo-wide search not possible).
-- Searched the v0.10.0 files read (`cmd/controller/main.go`, `dynamic_controller.go`) for the collection limit of 1000 items and 10 dimensions; found nothing there.
+- Searched the v0.10.0 files read (`cmd/controller/main.go`, `dynamic_controller.go`) for the collection limit of 1000 items and 10 dimensions; found nothing there. [corrected in verification: the limits are defined in the same `cmd/controller/main.go` as flags `rgd-max-collection-size` 1000 and `rgd-max-collection-dimension-size` 10 at both tags; this bullet is superseded.]
 - Searched the Crossplane v2.5 docs tree, pods guide, and release notes v2.1 to v2.5 for numeric limits on XRs or composed resources per controller; found nothing.
 - Searched issue 7453 comments for a reproduction or a closing note; found only one maintainer comment (not reproduced) and the stale bot notice.
 - Did not run a cluster to reproduce issue 7453 (kind, kubectl, and docker are installed, but no run was made).
@@ -138,6 +138,7 @@ Claims:
 ## Removed in verification
 
 - Nothing removed. All sampled claims were reproduced or corrected in place.
+- Second verification pass (2026-11-26): re-fetched kro release dates, main.go flags at both tags, instance_state.go (FAILED deprecated comment), backoff.go, status.go, conditions.go; Crossplane v2.5.0 core.go defaults, composition_functions.go, reconciler.go lines, PR/issue states, v2.1.0/v2.3.0/v2.4.0/v2.5.0 release data, v2.5 docs pods/MRD/composite-resources/scalable-composition, run_function.proto, function-auto-ready fn.go. All reproduced except the function-auto-ready wording (corrected) and the stale "Not found" bullet (corrected). Not re-checked: provider-aws 2287, the 7062/8033 body text beyond titles.
 
 ## Verification notes
 

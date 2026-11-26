@@ -714,3 +714,13 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 - fact conflicts: 0
 - gaps drafted: 0 (the possible-resolution note under the open Ready-versus-Available gap, the updates to the closed MachineHealthCheck, ClusterClass, sharding, and reconcile-interval gaps, and the follow-up todos from seq 51 all stand unchanged)
 - rationale: The raw dossier was edited after seq 51 by a second adversarial verification pass. It re-fetched the release listings, feature gates, MachineHealthCheck types, status proposal, kstatus sources, Argo CD sharding and interval sources, and pull request 22342, and all checked quotes reproduced with no further corrections. No claim changed, so the source page carries the new hash and a revision note, and the pages written at seq 51 keep their original hash. Nothing under outputs/ was touched.
+
+## [2026-11-26] ingest | Recheck of kro and Crossplane gaps, revised snapshot (b1-recheck-kro-crossplane)
+- source: [[sources/research-gap-b1-recheck-kro-crossplane]]
+- raw: `raw/research-gap-b1-recheck-kro-crossplane.md` (sha256: ecd45fe657c9; supersedes content hash ccee0efa5bdd of the same raw file)
+- pages touched: [[sources/research-gap-b1-recheck-kro-crossplane]], [[findings/a-crossplane-composed-resource-counts-as-ready-only-when-the-function-sets-ready-true-so-unspecified-readiness-leaves-the-xr-creating]], [[open-knowledge-gaps]], [[index]]
+- new pages: none
+- contradictions raised: 0 (one wording corrected in place with a correction note: `function-auto-ready` tries CEL queries and resource-specific health checks before the observed Ready=True fallback)
+- fact conflicts: 0
+- gaps drafted: 0 (the possible-resolution note under the open kro status schema and Crossplane v2 status propagation gap now carries the corrected function-auto-ready wording; no gap was closed, and the closed and open notes written at seq 52 otherwise stand)
+- rationale: The raw dossier was edited after seq 52 by a second verification pass. Every re-fetched value reproduced except the function-auto-ready description, and the stale "not found" bullet on the kro collection limit was superseded by the two flags already recorded in the wiki. The source page and the readiness finding carry the new hash and a revision note, and the other pages written at seq 52 keep the first hash because no claim on them changed. The existing outputs todo that cites the readiness finding stays valid. Nothing under outputs/ was touched.

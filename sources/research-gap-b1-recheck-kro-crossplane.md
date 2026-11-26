@@ -6,7 +6,7 @@ created: 2026-11-26
 updated: 2026-11-26
 sources:
   - id: research-gap-b1-recheck-kro-crossplane
-    hash: ccee0efa5bdd
+    hash: ecd45fe657c9
     ingested: 2026-11-26
 aliases: []
 tags: [kro, crossplane, research-dossier, gap-closing, targeted-pass, verification, source-code]
@@ -15,7 +15,7 @@ tags: [kro, crossplane, research-dossier, gap-closing, targeted-pass, verificati
 # Research dossier: recheck of kro and Crossplane gaps (b1-recheck-kro-crossplane)
 
 > [!NOTE]
-> **Raw file:** `raw/research-gap-b1-recheck-kro-crossplane.md` (sha256 prefix ccee0efa5bdd)<br>
+> **Raw file:** `raw/research-gap-b1-recheck-kro-crossplane.md` (sha256 prefix ecd45fe657c9; revised from ccee0efa5bdd, see Revision note)<br>
 > **Kind:** Verified research dossier for gap cluster b1-recheck-kro-crossplane, dated 2026-11-26<br>
 > **Ingested:** 2026-11-26 as a targeted pass over the kro and Crossplane pages that rested on documentation alone<br>
 > **Caveat:** The evidence is Go source, release notes, and GitHub issue and pull request text read through `gh api`. No cluster was run, so issue 7453 was not reproduced, and the dossier ran no independent scale benchmark.
@@ -41,7 +41,7 @@ For Crossplane it read v2.5.0 (released 2026-11-24). It settles how a function's
 - kro validates author conditions at build time: `runtime.newCondition` status must be True, False, or Unknown, the type must be non-empty, declared types must be unique, and `runtime.condition(schema, ...)` must name a built-in type. VERIFIED. https://github.com/kubernetes-sigs/kro/blob/v0.10.0/pkg/graph/conditions.go
 - In Crossplane v2.5.0 a composed resource counts as ready only when the function returns `READY_TRUE` (`Ready: dr.GetReady() == fnv1.Ready_READY_TRUE`), so `READY_FALSE` and `READY_UNSPECIFIED` both count as not ready. VERIFIED. https://github.com/crossplane/crossplane/blob/v2.5.0/internal/controller/apiextensions/composite/composition_functions.go
 - The XR `Ready` condition is `Available` when no composed resource is unready and `Creating` with the message "Unready resources: ..." otherwise. An explicit XR-level ready from the function supersedes the derived value, and a deleting XR is `Deleting`. `Synced` is `ReconcileSuccess` unless a composed resource is unsynced, which gives `ReconcileError` with "Unsynced resources: ...". VERIFIED. https://github.com/crossplane/crossplane/blob/v2.5.0/internal/controller/apiextensions/composite/reconciler.go
-- `function-auto-ready` honors explicit readiness first and otherwise marks a resource ready when its observed `Ready` condition is True. VERIFIED. https://github.com/crossplane-contrib/function-auto-ready/blob/main/fn.go
+- `function-auto-ready` skips a desired resource that already has explicit readiness. For the rest it uses optional CEL queries and resource-specific health checks for standard Kubernetes resources, and only then falls back to an observed `Ready` condition equal to True, so that condition is the final fallback and not the first test. VERIFIED (corrected in the second verification pass). https://github.com/crossplane-contrib/function-auto-ready/blob/main/fn.go
 - Pull request 8080 ("fix(composite): stop stale XR condition replay", opened 2026-11-20, updated 2026-11-23) is open and unmerged, with review decision REVIEW_REQUIRED. It says `Fixes #7062` and `Fixes #8033`, both XR-level stale-cache condition replays, and it does not target the asynchronous managed-resource `Synced` signaling of provider-aws issue 2287. VERIFIED. https://github.com/crossplane/crossplane/pull/8080
 - The v2.5.0 source still has the two-write pattern (a `Status().Patch` in `composition_functions.go` and a `Status().Update` in `reconciler.go`), so pull request 8080 is not in v2.5.0. VERIFIED by source structure.
 - v2.5.0 applies resource references and status with `client.Apply` and `ForceOwnership` under the field owner `apiextensions.crossplane.io/composite`, and composed resources use per-XR owners prefixed `apiextensions.crossplane.io/composed`. A `TODO(adamwg)` says to stop using `client.Apply` after v2.2, and it is still present on main. VERIFIED. https://github.com/crossplane/crossplane/blob/v2.5.0/internal/controller/apiextensions/composite/composition_functions.go
@@ -53,11 +53,16 @@ For Crossplane it read v2.5.0 (released 2026-11-24). It settles how a function's
 - Numeric limits for XRs or composed resources per Crossplane controller, and independent benchmarks of Crossplane v2 scale, are UNVERIFIED. Nothing was found in the pods guide, the v2.1 to v2.5 release notes, or the docs tree.
 - Asynchronous `Synced` behavior for managed resources (provider-aws 2287, upjet) was not rechecked, so the earlier finding stands. UNVERIFIED in this pass.
 
+## Revision note
+
+The raw file was revised on 2026-11-26 after a second verification pass that re-fetched the kro release dates, the `main.go` flags at both tags, `instance_state.go`, `backoff.go`, `status.go`, and `conditions.go`, and the Crossplane v2.5.0 `core.go`, `composition_functions.go`, and `reconciler.go`, the pull request, issue, and release states, the v2.5 docs, `run_function.proto`, and `function-auto-ready` `fn.go`. Everything reproduced except one wording: `function-auto-ready` tries CEL queries and resource-specific health checks before the observed `Ready=True` fallback. The finding [[findings/a-crossplane-composed-resource-counts-as-ready-only-when-the-function-sets-ready-true-so-unspecified-readiness-leaves-the-xr-creating]] was corrected and carries the new hash. The other pages written at seq 52 keep the first hash, because their claims did not change: the collection-limit flags and the FAILED deprecation comment were already in the wiki. The pass did not re-check provider-aws issue 2287 or the 7062 and 8033 bodies beyond their titles.
+
 ## Not found
 
 - A reproduction of issue 7453, a maintainer closing note for it, and any code path in v2.5.0 that clears `managedFields` (not every write path was traced, including the finalizer update and claim propagation).
 - A design one-pager for the XR circuit breaker, and the release in which its default moved from 50 burst to 100.
 - A repository-wide search for use of `InstanceStateFailed` in kro v0.9.4.
+- The earlier statement that the collection limit of 1000 items and 10 dimensions was not found in `main.go` is superseded: the limits are the flags `rgd-max-collection-size` and `rgd-max-collection-dimension-size` at both tags.
 
 ## Unreadable sources
 
