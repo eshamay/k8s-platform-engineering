@@ -14,6 +14,9 @@ sources:
   - id: research-gap-m7-operators-idempotency
     hash: 6c986668a6dc
     ingested: 2026-11-26
+  - id: research-gap-o6-platform-landscape
+    hash: caa824f6fb9e
+    ingested: 2026-11-26
 aliases: []
 tags: [tool, portal, catalog, cncf]
 ---
@@ -41,3 +44,7 @@ The Kubernetes plugin reads custom resources only from the `kubernetes.customRes
 ## Backstage and the operator pattern (m7 dossier)
 
 The "Open points" section above is extended. The Kubernetes plugin matches entities to cluster objects by the `backstage.io/kubernetes-id` label, offers a proxy for custom resource access beyond the defaults, and supports watching. No Backstage document read describes an operator pattern, and Software Templates were not read. An operator that deploys Backstage exists as a Red Hat product, see [[examples/red-hat-developer-hub-operator-deploys-backstage-on-kubernetes-and-openshift]]. See [[findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern]]. [[sources/research-gap-m7-operators-idempotency]]
+
+## Scaffolder and the operator pattern (o6 dossier)
+
+The Software Templates overview describes the Scaffolder as a skeleton-to-repository tool in which each run is a unique task, so it is a run-once task runner and not a reconcile loop. The Kubernetes configuration page confirms that custom resources default to an empty list and that the label selector annotation takes precedence over the `backstage.io/kubernetes-id` label. The nearest operator-style integration is the third-party TeraSky Kubernetes Ingestor, see [[findings/the-backstage-scaffolder-is-a-one-shot-task-runner-and-the-nearest-operator-style-integration-is-a-third-party-plugin]] and [[examples/the-terasky-kubernetes-ingestor-ingests-crossplane-claims-and-kro-instances-into-the-backstage-catalog]]. Backstage is CNCF incubating per the landscape file. Whether a built-in Scaffolder action creates custom resources is unverified. [[sources/research-gap-o6-platform-landscape]]

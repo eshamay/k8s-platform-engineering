@@ -1,13 +1,16 @@
 ---
 title: Radius maturity and governance claims rest on a single third-party blog
 type: finding
-status: draft
+status: contradicted
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-o6-platform-landscape
+    hash: caa824f6fb9e
+    ingested: 2026-11-26
 aliases: []
 tags: [radius, evidence-quality, maturity, governance, caveat]
 ---
@@ -25,3 +28,12 @@ A reader choosing between a manifest generator such as Score and a control plane
 ## What would resolve it
 
 Reading the primary Radius documentation and the CNCF project listings would settle the status questions. The wiki tracks this in [[open-knowledge-gaps]].
+
+## Contradictions
+
+> [!WARNING]
+> This page said everything the wiki knows about Radius rests on one third-party blog and that its CNCF status is unverified. Primary listings now settle the status and governance claims.
+
+- Earlier claim on this page: "Everything the wiki knows about Radius comes from one DevOpsBoys review" and "three claims are unverified against primary sources: Radius originated at Microsoft, it has been a CNCF Sandbox project since 2024".
+- Verified in [[sources/research-gap-o6-platform-landscape]]: the CNCF landscape file lists Radius as `project: sandbox`, accepted 2024-04-16, the sandbox issue passed its vote, all four listed maintainers are Microsoft employees, and the sandbox application used microsoft.com contacts. See [[findings/radius-and-score-are-both-cncf-sandbox-projects-per-the-landscape-file-and-both-passed-sandbox-votes]] and [[findings/all-four-radius-maintainers-are-microsoft-employees-and-only-the-newest-minor-channel-is-supported]]. The Bicep dependency and the "early maturity" wording are still only the review's claims, and the pre-1.0 release history is consistent with early maturity.
+- Suggested resolution: the status can return to active as a narrower finding that the Bicep dependency rests on one blog, or be archived. The same caution for Score is partly lifted, since the sandbox application names Humanitec as sponsoring company.

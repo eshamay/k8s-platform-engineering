@@ -11,6 +11,9 @@ sources:
   - id: research-gap-o4-config-connector-ack
     hash: c0d708f1d445
     ingested: 2026-11-26
+  - id: research-gap-o6-platform-landscape
+    hash: caa824f6fb9e
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, crossplane, ack, config-connector, azure-service-operator, provider]
 ---
@@ -36,3 +39,7 @@ Both camps follow the same controller pattern, see [[concepts/provider]], and sh
 ## Update from the o4 dossier
 
 The table above compares features from Crossplane's and the vendors' own pages. The o4 dossier searched for a neutral Config Connector versus Crossplane comparison and found none: the evidence is a Crossplane maintainer's 2021 post and 2020 to 2022 issue comments, an unanswered 2024 question, and a Google 2023 blog that compares Config Connector with Terraform, see [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]]. Additional first-party contrasts: Config Connector's mean re-enqueue is 10 minutes against Crossplane's 1 minute runtime poll, the Config Connector add-on can lag releases by 12 months or more ([[findings/the-gke-config-connector-add-on-can-lag-the-latest-release-by-12-months-or-more-and-google-discourages-it-for-production]]), and Crossplane's cluster-scoped managed resources in the 2021 post are dated for v2. The option set is in [[decisions/use-config-connector-directly-wrap-it-in-crossplane-through-the-kubernetes-provider-or-use-a-crossplane-gcp-provider]]. [[sources/research-gap-o4-config-connector-ack]]
+
+## Neutral evidence check (o6 dossier)
+
+No independent comparison of Config Connector, ACK, or Azure Service Operator against Crossplane was found, and no primary-document comparison was read in the o6 pass. The readable material is a 2021 VSHN post saying cloud operators are "specific to the cloud they are engineered for" and a Crossplane project post saying Crossplane "even shares code with some of these addons". Both are attributed positions, not neutral evidence. See [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]]. [[sources/research-gap-o6-platform-landscape]]

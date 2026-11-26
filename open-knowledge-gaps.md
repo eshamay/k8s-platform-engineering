@@ -642,6 +642,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** backstage, platform-engineering
 - **Possible resolution from [[sources/research-composite-resource]]:** Not helpful. The dossier does not mention Backstage, although it notes that composite kinds are consumed as products by other teams and that Kratix uses Crossplane as a component.
 - **Possible resolution from [[sources/research-gap-m7-operators-idempotency]]:** Partly settled, and the user decides whether to close it. The Kubernetes plugin is documented as entity-label driven and read-oriented, with configured custom resources, a proxy endpoint, and silent skipping of a missing CRD, so Backstage is a portal over operator-produced resources and not an operator. No Backstage document describes an operator pattern, Software Templates were not read, and the community Crossplane and Argo CD plugins are SECONDARY-ONLY. See [[findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern]] and [[examples/red-hat-developer-hub-operator-deploys-backstage-on-kubernetes-and-openshift]].
+- **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Partly settled, and the user decides whether to close it. The Kubernetes configuration page shows a label-driven, read-oriented portal with custom resources defaulting to an empty list and a proxy option, and the Software Templates overview describes the Scaffolder as a run-once task runner, so no Backstage document read describes an operator pattern. The nearest operator-style integration is the third-party TeraSky Kubernetes Ingestor, which syncs Crossplane claims and kro instances into the catalog (SECONDARY-ONLY). Not settled: the Scaffolder builtin-actions and writing-templates pages were not read, so whether any action creates Kubernetes custom resources is unverified. See [[findings/the-backstage-scaffolder-is-a-one-shot-task-runner-and-the-nearest-operator-style-integration-is-a-third-party-plugin]] and [[examples/the-terasky-kubernetes-ingestor-ingests-crossplane-claims-and-kro-instances-into-the-backstage-catalog]].
 
 ## Named postmortems of runaway reconcile loops — status: open
 
@@ -976,6 +977,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Revise [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, terraform, comparison, bias
+- **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Not settled, and the user decides whether to keep it open. The readable material is vendor, consultancy, or lab writing: a Spacelift article (vendor), a Crossplane-friendly VSHN post, a 2021 Crossplane project post, a lab migration walkthrough, and a 2022 SuperOrbital post that is the most independent and predates Crossplane v2. No independent benchmark, named adopter migration post-mortem, or primary-document comparison of Config Connector, ACK, and Azure Service Operator was found, and two Medium posts were unreadable. See [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]] and [[decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane]].
 
 ## kro governance status and the future of the Graph API — status: open
 
@@ -1013,6 +1015,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Revise [[entities/radius]], [[entities/score]], and [[comparisons/score-versus-radius-as-developer-facing-workload-abstractions]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** radius, score, cncf, verification
+- **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Largely settled for status and governance, and the user decides whether to close it. Both are CNCF Sandbox per the CNCF landscape file (Radius accepted 2024-04-16, Score 2024-07-08) and both sandbox issues passed their votes. All four Radius maintainers are Microsoft employees, its main-repository GOVERNANCE.md holds only a code-of-conduct pointer, and only channel 0.62 (v0.62.0, 2026-10-27) is supported. Score's maintainers span Oracle, an independent, Docker, and Checkly, and its sandbox application names Humanitec as the "sponsoring company". Not settled: no primary text says Humanitec created Score, and the radapp.io and score.dev documentation sites were not read, so what each tool does rests on READMEs. See [[findings/radius-and-score-are-both-cncf-sandbox-projects-per-the-landscape-file-and-both-passed-sandbox-votes]], [[findings/all-four-radius-maintainers-are-microsoft-employees-and-only-the-newest-minor-channel-is-supported]], and [[findings/score-maintainers-span-four-employers-and-the-sandbox-application-names-humanitec-as-sponsoring-company]].
 
 ## KRM function specification and runtime requirements — status: open
 
@@ -1047,6 +1050,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Expand [[entities/kratix]] and [[examples/kratix-promises-scatter-workloads-across-standard-pci-and-terraform-destinations]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kratix, destinations, gitops
+- **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Mostly settled from the Kratix reference documentation and the GitStateStore Go type, and the user decides whether to close it. A Destination is a cluster-scoped record of a system Kratix writes documents to, with `dependencies` and `resources` directories and an immutable `filepath.mode`. A GitStateStore holds the repository, branch, auth method (`basicAuth`, `ssh`, `githubApp`), and an `insecure` field that defaults to true when unset. Scheduling is two-stage label matching with random selection among several matches and a documented precedence order. Not settled: the scheduler and work-creator source code was not read, and the vendor PCI example was not checked against it. See [[findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable]], [[findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match]], and [[findings/the-kratix-gitstatestore-insecure-field-defaults-to-true-when-unset-in-the-go-type]].
 
 ## Maintenance status of tofu-controller and Terraform Operator — status: open
 
@@ -1058,6 +1062,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[entities/tofu-controller]], [[entities/terraform-operator]], and [[comparisons/tofu-controller-versus-terraform-operator-as-terraform-in-cluster-controllers]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** terraform, tofu-controller, maintenance
+- **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Settled as of 2026-11-26, and the user decides whether to close it. tofu-controller is community maintained at flux-iac with five active maintainers, releases through v0.17.0 (2026-11-16), and a last push on 2026-11-25. The Terraform Operator (now GalleyBytes) has had no release since v0.17.1 (2024-05-17) and no commit since 2025-12-09, with one author behind 196 of about 206 commits, and no deprecation notice was found. See [[findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api]] and [[findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer]].
 
 ## Independent benchmarks for Argo CD footprint and portal claims — status: open
 

@@ -3,11 +3,14 @@ title: "Backstage versus Port versus Kratix as portal and orchestration layers"
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-landscape
     hash: d28204a90545
     ingested: 2026-11-25
+  - id: research-gap-o6-platform-landscape
+    hash: caa824f6fb9e
+    ingested: 2026-11-26
 aliases: []
 tags: [comparison, portal, backstage, port, kratix, vendor-claim]
 ---
@@ -30,3 +33,7 @@ The Kratix documentation explicitly expects Backstage in front of it, so the two
 ## Related
 
 [[concepts/tooling-landscape]], [[comparisons/delivery-versus-provisioning-versus-platform-layers-in-the-kubernetes-tooling-landscape]]
+
+## Integration shapes (o6 dossier)
+
+Two documented shapes connect these tools. Kratix's Destination documentation names a Backstage catalog filled from a Git repository as a use case, so Git is the hand-off, see [[findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable]]. The third-party TeraSky Kubernetes Ingestor instead syncs Crossplane claims and kro instances from the cluster into the Backstage catalog, see [[examples/the-terasky-kubernetes-ingestor-ingests-crossplane-claims-and-kro-instances-into-the-backstage-catalog]]. The Backstage Scaffolder is a run-once task runner, see [[findings/the-backstage-scaffolder-is-a-one-shot-task-runner-and-the-nearest-operator-style-integration-is-a-third-party-plugin]]. [[sources/research-gap-o6-platform-landscape]]

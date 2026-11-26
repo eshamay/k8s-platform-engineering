@@ -3,11 +3,14 @@ title: Crossplane versus Terraform, reconciliation versus plan and apply
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-crossplane-deep-dive
     hash: 44034359219f
     ingested: 2026-11-25
+  - id: research-gap-o6-platform-landscape
+    hash: caa824f6fb9e
+    ingested: 2026-11-26
 aliases: []
 tags: [crossplane, terraform, drift, comparison, iac]
 ---
@@ -42,3 +45,7 @@ Encore lists Terraform and OpenTofu, Pulumi, and AWS CDK as the main substitutes
 ## Open points
 
 The dossier does not measure drift-correction latency or the cost of either approach, and it does not compare how each handles deletion safety beyond noting that Crossplane offers `managementPolicies` and Terraform has plan review. See [[decisions/choose-management-policies-for-an-imported-resource]] and [[findings/destructive-deletion-of-external-resources]].
+
+## Neutral evidence check (o6 dossier)
+
+A later search for neutral comparisons found none that is both independent and current. The most independent source is a 2022 SuperOrbital post that reports no `terraform plan` equivalent and recreate-forcing field changes that may be ignored while the provider reports in sync, and it predates Crossplane v2, see [[examples/superorbital-s-2022-evaluation-reported-no-terraform-plan-equivalent-for-crossplane]]. The Spacelift article is a vendor of Terraform orchestration, and the VSHN post comes from a Crossplane-using integrator. Crossplane is CNCF graduated per the landscape file. The "no plan preview" row above therefore rests on a dated secondary source. See [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]] and [[decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane]]. [[sources/research-gap-o6-platform-landscape]]

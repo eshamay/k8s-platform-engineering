@@ -58,7 +58,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/kubebuilder]] — controller framework and Reconcile tutorial (draft)
 - [[entities/controller-runtime]] — Go controller library and the level-based Reconciler contract (active)
 - [[entities/kube-rs]] — Rust controller library and single-replica availability guidance (draft)
-- [[entities/tofu-controller]] — Terraform and OpenTofu from Flux-style resources, detection-only model (draft)
+- [[entities/tofu-controller]] — Terraform and OpenTofu from Flux-style resources, detection-only model (active)
 - [[entities/client-go]] — Go client library with the discovery client and RESTMapper constructors (active)
 - [[entities/helm]] — package manager whose charts do not upgrade or delete CRDs (active)
 - [[entities/kstatus]] — generic status computation for conforming resources (active)
@@ -74,13 +74,13 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/terraform]] — plan-and-apply infrastructure tool and the contrast case for reconciliation (draft)
 - [[entities/kustomize]] — template-free YAML customization with bases, overlays, and patches (draft)
 - [[entities/kpt]] — Configuration as Data toolchain and the KRM function model (draft)
-- [[entities/score]] — developer workload spec translated into Compose or Kubernetes manifests (draft)
-- [[entities/radius]] — application platform with per-environment Recipes, secondary evidence only (draft)
+- [[entities/score]] — developer workload spec translated into Compose or Kubernetes manifests (active)
+- [[entities/radius]] — application platform with per-environment Recipes, secondary evidence only (active)
 - [[entities/backstage]] — developer portal framework with catalog and templates, not a provisioner (active)
-- [[entities/kratix]] — Promise-based orchestration framework behind a portal (draft)
+- [[entities/kratix]] — Promise-based orchestration framework behind a portal (active)
 - [[entities/port]] — commercial SaaS developer portal with blueprints and actions (draft)
 - [[entities/cozystack]] — packaged PaaS for building a cloud on bare metal (draft)
-- [[entities/terraform-operator]] — community CRD that starts Terraform workflow pods (draft)
+- [[entities/terraform-operator]] — community CRD that starts Terraform workflow pods (active)
 - [[entities/gardener]] — managed-Kubernetes project with operator sizing guidance (draft)
 
 ## Sources
@@ -149,6 +149,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-o3-gitops-provider-managed]] — verified dossier on GitOps agents and provider-managed resources: deletion defaults and opt-outs, Argo CD Lua health scripts, Flux kstatus and CEL, drift fights, and ACK wrapped by kro, read from docs and source on 2026-11-26 (active)
 - [[sources/research-gap-o4-config-connector-ack]] — verified dossier on Config Connector modes and deletion, Config Connector versus Crossplane, GitOps and ACK failure modes, and first-party pitfalls for kro, ACK, and Cluster API, read 2026-11-26 (active)
 - [[sources/research-gap-o5-kro-ecosystem]] — verified dossier on kro governance and the Graph API, kro scaling evidence, function-kro parity, and community direction for the Kubernetes-as-a-kernel model, 2026-11-26 (active)
+- [[sources/research-gap-o6-platform-landscape]] — verified dossier on Radius and Score primary status, Kratix Destinations and GitStateStores, Backstage and the operator pattern, neutral Crossplane comparisons, and tofu-controller and Terraform Operator maintenance, 2026-11-26 (active)
 
 ## Examples
 
@@ -432,6 +433,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/aenix-describes-kuberoot-as-a-small-lab-tested-distribution-positioned-against-k3s-and-k0s]] — Aenix's kuberoot proposal and its own caveats (active)
 - [[examples/the-cozystack-cncf-sandbox-application-issue-87-was-closed-on-2024-08-20-over-governance-and-adopter-concerns]] — Cozystack Sandbox application closure (active)
 - [[examples/kcp-generic-controlplane-aims-at-an-api-server-without-kubernetes-and-says-it-is-not-ready-for-production]] — API server without Kubernetes, not production-ready (active)
+- [[examples/the-terasky-kubernetes-ingestor-ingests-crossplane-claims-and-kro-instances-into-the-backstage-catalog]] — community plugin syncing claims and instances into the catalog (active)
+- [[examples/tofu-controller-v0-17-0-removed-the-v1alpha1-api-on-2026-11-16]] — breaking release (active)
+- [[examples/radius-v0-62-0-was-released-on-2026-10-27-with-breaking-changes-and-one-supported-channel]] — release cadence and support window (active)
+- [[examples/superorbital-s-2022-evaluation-reported-no-terraform-plan-equivalent-for-crossplane]] — dated consultancy evaluation (active)
 
 ## Comparisons
 
@@ -482,10 +487,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]] — always-on controllers versus on-demand plans (draft)
 - [[comparisons/render-time-versus-controller-driven-abstraction-helm-kustomize-kpt-score-crossplane-kro-and-radius]] — the two families of abstraction (draft)
 - [[comparisons/crossplane-versus-kro-packaging-distribution-and-governance-according-to-an-engineers-blog]] — packaging and governance table (draft)
-- [[comparisons/score-versus-radius-as-developer-facing-workload-abstractions]] — generator versus control plane (draft)
+- [[comparisons/score-versus-radius-as-developer-facing-workload-abstractions]] — generator versus control plane (active)
 - [[comparisons/delivery-versus-provisioning-versus-platform-layers-in-the-kubernetes-tooling-landscape]] — three layers, tools, units of work, ordering, identity (draft)
 - [[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers]] — portals and the orchestration layer behind them (draft)
-- [[comparisons/tofu-controller-versus-terraform-operator-as-terraform-in-cluster-controllers]] — two ways to run Terraform in pods (draft)
+- [[comparisons/tofu-controller-versus-terraform-operator-as-terraform-in-cluster-controllers]] — two ways to run Terraform in pods (active)
 - [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]] — label key versus cluster key for splitting controller work (draft)
 - [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]] — how each tool settles a field two writers set (active)
 - [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]] — cache scope, rate limits, and resync mechanism per tool (active)
@@ -543,6 +548,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]] — evidence-only options, no recommendation (active)
 - [[decisions/use-config-connector-directly-wrap-it-in-crossplane-through-the-kubernetes-provider-or-use-a-crossplane-gcp-provider]] — options without a recommendation (draft)
 - [[decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api]] — RGD or alpha Graph, options and evidence without a recommendation (active)
+- [[decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane]] — options and evidence, no recommendation (draft)
 
 ## Findings
 
@@ -696,7 +702,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/default-owner-references-delete-out-of-order-and-cannot-link-namespaced-to-cluster-scoped-objects-so-kro-uses-applysets]] — why kro avoids owner references (active)
 - [[findings/helm-values-and-kustomize-patches-leak-the-underlying-manifests-into-the-abstraction]] — abstraction leakage (draft)
 - [[findings/go-template-compositions-need-hand-written-ordering-and-deletion-guards]] — manual order and deletion safety (draft)
-- [[findings/radius-maturity-and-governance-claims-rest-on-a-single-third-party-blog]] — weak evidence caveat (draft)
+- [[findings/radius-maturity-and-governance-claims-rest-on-a-single-third-party-blog]] — weak evidence caveat (contradicted)
 - [[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]] — single-source ordering pitfall (draft)
 - [[findings/controllers-that-act-with-their-own-cloud-identity-give-whoever-can-create-a-resource-that-identity-s-rights]] — blast radius of controller identity (draft)
 - [[findings/terraform-in-cluster-controllers-keep-state-in-secrets-gate-apply-on-git-approval-and-couple-to-specific-versions]] — state, approval, and version coupling (draft)
@@ -903,6 +909,16 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/the-kro-docs-faq-says-a-dedicated-controller-per-rgd-while-the-tuning-page-and-source-describe-one-shared-queue]] — FAQ wording conflicts with tuning page and source (active)
 - [[findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter]] — no benchmark or named adopter (active)
 - [[findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post]] — no SIG or KEP backs the distribution model (active)
+- [[findings/radius-and-score-are-both-cncf-sandbox-projects-per-the-landscape-file-and-both-passed-sandbox-votes]] — primary CNCF status (active)
+- [[findings/all-four-radius-maintainers-are-microsoft-employees-and-only-the-newest-minor-channel-is-supported]] — Radius governance and support policy (active)
+- [[findings/score-maintainers-span-four-employers-and-the-sandbox-application-names-humanitec-as-sponsoring-company]] — Score governance and lineage (active)
+- [[findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match]] — Kratix scheduling rules (active)
+- [[findings/the-kratix-gitstatestore-insecure-field-defaults-to-true-when-unset-in-the-go-type]] — a notable default (active)
+- [[findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable]] — Destination layout and fields (active)
+- [[findings/the-backstage-scaffolder-is-a-one-shot-task-runner-and-the-nearest-operator-style-integration-is-a-third-party-plugin]] — Backstage and operators (active)
+- [[findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api]] — maintenance status (active)
+- [[findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer]] — maintenance status (active)
+- [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]] — evidence-quality caveat (active)
 
 ## Outputs
 

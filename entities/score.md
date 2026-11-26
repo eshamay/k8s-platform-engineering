@@ -1,13 +1,16 @@
 ---
 title: Score
 type: entity
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-o6-platform-landscape
+    hash: caa824f6fb9e
+    ingested: 2026-11-26
 aliases: [score.dev, score-compose, score-k8s]
 tags: [tool, workload-spec, abstraction, developer-experience]
 ---
@@ -18,7 +21,7 @@ Score is a developer-facing, platform-agnostic workload specification that is tr
 
 ## What it is
 
-A developer writes one `score.yaml` that declares containers, ports, and abstract resources such as `type: postgres`. Implementation CLIs, `score-compose` and `score-k8s`, generate Docker Compose files or Kubernetes manifests from it. The project describes the result as "the 'how' becomes an environment specific implementation detail" (https://score.dev/). The site describes Score as a CNCF Sandbox project that originated at Humanitec, but the dossier did not verify that lineage, or its relationship to Radius-style platforms, from primary documents. [[sources/research-kro-and-abstraction-models]]
+A developer writes one `score.yaml` that declares containers, ports, and abstract resources such as `type: postgres`. Implementation CLIs, `score-compose` and `score-k8s`, generate Docker Compose files or Kubernetes manifests from it. The project describes the result as "the 'how' becomes an environment specific implementation detail" (https://score.dev/). The site describes Score as a CNCF Sandbox project that originated at Humanitec. The sandbox status is now verified from primary listings, and Humanitec is named as the sponsoring company in the sandbox application, but no primary text says Humanitec created Score, see below. [[sources/research-kro-and-abstraction-models]]
 
 ## Position among abstraction models
 
@@ -31,3 +34,7 @@ The only adopter evidence in the dossier is a set of testimonials on the project
 ## Related
 
 [[entities/radius]], [[entities/helm]], [[entities/kro]]
+
+## Primary-source status (o6 dossier)
+
+Score is a CNCF Sandbox project, accepted 2024-07-08 per the CNCF landscape file, see [[findings/radius-and-score-are-both-cncf-sandbox-projects-per-the-landscape-file-and-both-passed-sandbox-votes]]. Its maintainers span Oracle, an independent, Docker, and Checkly, and the sandbox application names Humanitec as the "sponsoring company", see [[findings/score-maintainers-span-four-employers-and-the-sandbox-application-names-humanitec-as-sponsoring-company]]. The spec releases slowly (0.4.1 on 2026-05-25) and the implementations release often (score-k8s 0.23.0 and score-compose 0.50.0 on 2026-11-14). The example spec uses `apiVersion: score.dev/v1b1`. The score.dev documentation was not read, so what the tool does rests on the READMEs. [[sources/research-gap-o6-platform-landscape]]

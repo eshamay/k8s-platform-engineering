@@ -1,13 +1,16 @@
 ---
 title: Score versus Radius as developer-facing workload abstractions
 type: comparison
-status: draft
+status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-kro-and-abstraction-models
     hash: d43d3775cbbd
     ingested: 2026-11-25
+  - id: research-gap-o6-platform-landscape
+    hash: caa824f6fb9e
+    ingested: 2026-11-26
 aliases: []
 tags: [score, radius, workload-spec, developer-experience, comparison]
 ---
@@ -15,7 +18,7 @@ tags: [score, radius, workload-spec, developer-experience, comparison]
 # Score versus Radius as developer-facing workload abstractions
 
 > [!NOTE]
-> Score evidence comes from the project's own site, and Radius evidence comes from one third-party review because the primary docs could not be read. Treat both columns as claims, not verified facts.
+> Maturity and governance rows now rest on primary CNCF listings and repository files. The workload and runtime rows still rest on the project's own site (Score) and one third-party review (Radius), because the radapp.io and score.dev documentation sites were not read.
 
 ## The shared idea
 
@@ -28,9 +31,10 @@ Both tools let a developer describe a workload and ask for abstract backing reso
 | What the developer writes | One `score.yaml` with containers, ports, and resources such as `type: postgres` | An application with containers, databases, and connections |
 | How the implementation is chosen | The implementation CLI (`score-compose` or `score-k8s`) maps resource types for its environment | Platform engineers supply Recipes per environment |
 | Runtime | None, output is generated manifests | Its own control plane |
-| Targets | Docker Compose and Kubernetes | Described as Azure-leaning, with a Bicep dependency |
-| Maturity signals | CNCF Sandbox per its own site, origin at Humanitec | CNCF Sandbox since 2024 per a third-party review, origin at Microsoft, described as early |
-| Evidence | Vendor-site testimonials | One blog review |
+| Targets | Docker Compose and Kubernetes | README lists local, private cloud, Azure, and AWS environments, and a review adds a Bicep dependency |
+| Maturity signals | CNCF Sandbox, accepted 2024-07-08 (landscape file), spec 0.4.1 on 2026-05-25 | CNCF Sandbox, accepted 2024-04-16 (landscape file), v0.62.0 on 2026-10-27, one supported channel, breaking changes listed |
+| Governance | Four maintainers from Oracle, an independent, Docker, and Checkly, and Humanitec named as sponsoring company in the sandbox application | Four maintainers, all Microsoft employees |
+| Evidence | Primary listings plus vendor-site testimonials | Primary listings plus one blog review |
 
 ## Trade-offs
 
@@ -38,4 +42,6 @@ Score stays out of the cluster, so it adds no operational surface beyond the CLI
 
 ## Open points
 
-Score's relationship to Humanitec and to Radius-style platforms was not verified from primary documents. See [[findings/radius-maturity-and-governance-claims-rest-on-a-single-third-party-blog]] and [[open-knowledge-gaps]].
+No primary text says Humanitec created Score, and neither documentation site was read. Neither tool is an operator-style reconciler for arbitrary resources: Radius is a platform with its own control plane and Score is a specification consumed by CLIs. See [[findings/score-maintainers-span-four-employers-and-the-sandbox-application-names-humanitec-as-sponsoring-company]], [[findings/all-four-radius-maintainers-are-microsoft-employees-and-only-the-newest-minor-channel-is-supported]], and [[open-knowledge-gaps]].
+
+Correction note: the earlier "origin at Humanitec" and "CNCF Sandbox per a third-party review" cells are replaced by the primary listings above. [[sources/research-gap-o6-platform-landscape]]

@@ -3,11 +3,14 @@ title: "Teams with large Terraform estates run Terraform inside the cluster with
 type: example
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
   - id: research-landscape
     hash: d28204a90545
     ingested: 2026-11-25
+  - id: research-gap-o6-platform-landscape
+    hash: caa824f6fb9e
+    ingested: 2026-11-26
 aliases: []
 tags: [use-case, terraform, tofu-controller, gitops]
 ---
@@ -29,3 +32,7 @@ State in Secrets, Git-based approvals, and tight coupling to Terraform and Flux 
 ## Related
 
 [[examples/tofu-controller-detects-terraform-drift-without-applying]], [[comparisons/tofu-controller-versus-terraform-operator-as-terraform-in-cluster-controllers]]
+
+## Maintenance of the two controllers (o6 dossier)
+
+As of 2026-11-26 tofu-controller is actively released (v0.17.0 on 2026-11-16) and Terraform Operator has had no release since v0.17.1 on 2024-05-17. See [[findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api]], [[findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer]], and [[decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane]]. [[sources/research-gap-o6-platform-landscape]]

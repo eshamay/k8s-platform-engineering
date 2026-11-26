@@ -36,6 +36,10 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-flux-ramp-up-image-automation-passage-with-the-v1-api-and-promotion-options]] — open
 - [[#update-part-4-function-kro-passage-with-the-documented-upstream-differences]] — open
 - [[#update-crossplane-ramp-up-function-kro-passage-with-the-documented-upstream-differences]] — open
+- [[#update-part-4-radius-and-score-passage-with-the-primary-source-status]] — open
+- [[#update-part-4-kratix-passage-with-the-destination-mechanics]] — open
+- [[#update-part-4-terraform-in-a-cluster-passage-with-the-maintenance-status]] — open
+- [[#update-crossplane-ramp-up-terraform-passage-with-the-maintenance-status]] — open
 
 ## Open
 
@@ -948,6 +952,34 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/crossplane-ramp-up.md`, the paragraph after the `${vpc.status.atProvider.id}` example says "The project claims full feature parity". It should add the documented behavioral differences and the v0.4.0 engine change.
 - **Why:** The passage predates the dossier [[sources/research-gap-o5-kro-ecosystem]].
 - **Acceptance:** Passage revised and citing [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]] and [[examples/function-kro-v0-4-0-moved-onto-the-kro-v0-10-0-graph-engine-on-2026-11-26-with-one-listed-maintainer]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 Radius and Score passage with the primary-source status — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "Score and Radius move the abstraction higher" says everything the wiki knows about Radius comes from one third-party review, and the sentence beginning "The table is the wiki's synthesis" says the Radius and Score rows rest on one review and the project's own site. Both should state that CNCF Sandbox status, Microsoft-only maintainers, and the one-channel support policy are now verified from primary listings.
+- **Why:** The passage predates the dossier [[sources/research-gap-o6-platform-landscape]].
+- **Acceptance:** Passage revised and citing [[findings/radius-and-score-are-both-cncf-sandbox-projects-per-the-landscape-file-and-both-passed-sandbox-votes]] and [[findings/all-four-radius-maintainers-are-microsoft-employees-and-only-the-newest-minor-channel-is-supported]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 Kratix passage with the Destination mechanics — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "Kratix, from the vendor Syntasso" says the wiki did not retrieve details of how Destinations work. It should describe label-matched two-stage scheduling and the state-store layout.
+- **Why:** The passage predates the dossier [[sources/research-gap-o6-platform-landscape]].
+- **Acceptance:** Passage revised and citing [[findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match]] and [[findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update part-4 Terraform-in-a-cluster passage with the maintenance status — status: open
+
+- **What:** In `outputs/part-4-platform-abstractions.md`, the paragraph beginning "Terraform in a cluster is the pragmatic route" says tofu-controller's maintenance status is unchecked. It should say tofu-controller released v0.17.0 on 2026-11-16 and that the Terraform Operator has had no release since 2024-05-17.
+- **Why:** The passage predates the dossier [[sources/research-gap-o6-platform-landscape]].
+- **Acceptance:** Passage revised and citing [[findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api]] and [[findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer]].
+- **Drafted by:** agent on 2026-11-26
+
+## Update crossplane-ramp-up Terraform passage with the maintenance status — status: open
+
+- **What:** In `outputs/crossplane-ramp-up.md`, section 13, the paragraph beginning "Terraform and tofu-controller" ends with "The wiki did not check maintenance levels after Weaveworks' wind-down." It should state the verified maintenance status of both controllers and note that the plan-preview claim rests on a dated 2022 source.
+- **Why:** The passage predates the dossier [[sources/research-gap-o6-platform-landscape]].
+- **Acceptance:** Passage revised and citing [[findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api]], [[findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer]], and [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]].
 - **Drafted by:** agent on 2026-11-26
 
 ## Dropped

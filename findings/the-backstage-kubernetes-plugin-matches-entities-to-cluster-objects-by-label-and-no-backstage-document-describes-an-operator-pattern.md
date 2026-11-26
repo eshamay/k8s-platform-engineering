@@ -8,6 +8,9 @@ sources:
   - id: research-gap-m7-operators-idempotency
     hash: 6c986668a6dc
     ingested: 2026-11-26
+  - id: research-gap-o6-platform-landscape
+    hash: caa824f6fb9e
+    ingested: 2026-11-26
 aliases: [Backstage and operators]
 tags: [backstage, portal, custom-resources, operators, platform-engineering]
 ---
@@ -20,8 +23,12 @@ Backstage's Kubernetes feature is "designed around the needs of service owners, 
 
 ## What it means for the operator pattern
 
-This makes Backstage a read-oriented portal over whatever operators produce, which fits the wiki's earlier description of it as a user interface and metadata layer. No Backstage document read describes an operator pattern, and Software Templates were not read, so the claim that templates and the catalog form a platform layer above operators is unverified. Two further facts are separate from Backstage itself. Red Hat publishes an operator that deploys Red Hat Developer Hub, see [[examples/red-hat-developer-hub-operator-deploys-backstage-on-kubernetes-and-openshift]]. Community plugins for Crossplane and Argo CD exist under TeraSky-OSS and backstage/community-plugins, which is SECONDARY-ONLY because only listings and a repository description were read. [[sources/research-gap-m7-operators-idempotency]]
+This makes Backstage a read-oriented portal over whatever operators produce, which fits the wiki's earlier description of it as a user interface and metadata layer. No Backstage document read describes an operator pattern, and Software Templates were not read in the first pass, so the claim that templates and the catalog form a platform layer above operators was unverified. The overview page has since been read and describes a run-once task runner, see the correction note below. Two further facts are separate from Backstage itself. Red Hat publishes an operator that deploys Red Hat Developer Hub, see [[examples/red-hat-developer-hub-operator-deploys-backstage-on-kubernetes-and-openshift]]. Community plugins for Crossplane and Argo CD exist under TeraSky-OSS and backstage/community-plugins, which is SECONDARY-ONLY because only listings and a repository description were read. [[sources/research-gap-m7-operators-idempotency]]
 
 ## Related
 
 [[findings/backstage-reads-custom-resources-only-from-the-kubernetes-custom-resources-list-and-silently-skips-a-missing-crd]], [[entities/backstage]], [[concepts/operator-pattern]], [[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers]]
+
+## Update from the o6 dossier
+
+Correction note: the Software Templates overview was read in a later pass. It describes the Scaffolder as a tool that loads code skeletons, templates variables, and publishes the result, with each run a unique task, so it is not an operator. The TeraSky Kubernetes Ingestor README, now read, says it auto-ingests Crossplane claims and kro instances as catalog components, which upgrades that item from listing-only to a README-level SECONDARY-ONLY claim. The `backstage/community-plugins` repository has no crossplane or kro workspace. See [[findings/the-backstage-scaffolder-is-a-one-shot-task-runner-and-the-nearest-operator-style-integration-is-a-third-party-plugin]]. [[sources/research-gap-o6-platform-landscape]]
