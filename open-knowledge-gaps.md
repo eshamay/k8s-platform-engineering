@@ -32,6 +32,11 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#production-incidents-from-drift-correction]] — open, unassigned
 - [[#current-cluster-api-machinehealthcheck-behavior]] — open, unassigned
 - [[#kro-drift-issue-history-and-comparability-of-ten-hour-resyncs]] — open, unassigned
+- [[#argo-cd-multi-cluster-hub-and-spoke-and-applicationsets]] — open, unassigned
+- [[#secret-management-in-gitops-agents]] — open, unassigned
+- [[#named-gitops-adopters-and-gitops-caused-outages]] — open, unassigned
+- [[#config-connector-and-ack-behavior-under-a-gitops-agent]] — open, unassigned
+- [[#git-versus-oci-as-the-canonical-gitops-source]] — open, unassigned
 
 ---
 
@@ -52,6 +57,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Only marginally helpful. The dossier shows that Flux's Kustomization reconciles on its interval and immediately on source revision changes, runs a server-side apply dry run each cycle, and uses `retryInterval` on failure, which fits the trigger and retry steps of the trace. It does not trace source-controller handoff, finalizers, or condition updates. See [[entities/flux]] and [[examples/gitops-reverts-a-hand-edited-deployment]].
 - **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Only marginally helpful. The dossier adds Flux Kustomization behavior that belongs in the trace: reconcile at `spec.interval`, immediate reconcile on a generation or source revision change, a server-side apply dry run for drift, `dependsOn` and `healthChecks` for readiness, and `retryInterval` for failures. It does not trace source-controller handoff, finalizers, or condition updates. See [[entities/flux]] and [[examples/flux-dependson-and-health-checks-gate-rollout]].
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Marginally helpful. The dossier shows part of the Flux flow for drift: kustomize-controller and helm-controller run a server-side apply dry-run each interval, and a failing dry-run (for example from field-manager conflicts) stops correction before apply. It does not trace source fetch, finalizers, or status conditions end to end. See [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]] and [[entities/flux]].
+- **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Only marginally helpful. The dossier names the Flux controllers (source, kustomize, helm, notification, image automation), says Kustomizations reconcile every 5 minutes and that bootstrap commits Flux's own manifests, and describes Argo CD's API server, repository server, and application controller. It does not trace the handoff between controllers, finalizers, or condition updates. See [[comparisons/flux-versus-argo-cd-architecture]] and [[entities/flux]].
 
 
 ## Crossplane Compositions vs kro dynamic resource graphs — status: open
@@ -71,6 +77,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Only marginally helpful. The dossier adds Crossplane's reconcile mechanics (`forProvider` compared to the external resource, `managementPolicies`, pause annotation) but does not mention kro or composition functions, and the default poll interval was not confirmed. See [[entities/crossplane]] and [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
 - **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Partly helpful. The dossier adds that a Crossplane composite resource is Ready only when its composition function pipeline reports every composed resource ready, and gives kro's controller numbers (single shared queue, backoff, token bucket, 20-retry cap) from unreleased docs. It could not read kro's instance semantics, so readiness comparison is still incomplete. See [[comparisons/retry-and-backoff-controls-across-tools]] and [[examples/kro-shared-queue-tunes-throughput]].
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Only marginally helpful. The dossier adds drift behavior on each side: Crossplane managed resources enforce `forProvider` with management policies and a pause annotation, while kro's dynamic controller resyncs instances every 10 hours through one shared rate-limited queue, and a drift bug in kro was closed in late 2025. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[comparisons/drift-detection-mechanisms-across-tools]] and [[entities/kro]].
+- **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Only marginally helpful. The dossier shows that both Crossplane and kro sit beneath a GitOps agent and bring their own reconcile loops, that Crossplane needs custom health checks in Argo CD, and that kro validates CEL at creation time and composes with ACK and Config Connector. It does not compare Composition functions with ResourceGraphDefinition graphs. See [[findings/two-reconcile-loops-hide-status-and-drift-at-two-layers]] and [[examples/crossplane-resources-hosted-by-argo-cd]].
 
 
 ## Scale: informers, rate-limited workqueues, and sharding — status: open
@@ -90,6 +97,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-level-triggered-vs-edge-triggered]]:** Partly helpful. The dossier explains why events are hints that enqueue keys, how cache lag causes double action, how errors requeue with exponential backoff, and how intervals and jitter limit API load. It has no sharding or concurrency data and does not explain informer resync semantics. See [[findings/stale-cache-and-double-action]], [[findings/cost-of-constant-reconciliation]], and [[concepts/informers-reflectors-and-workqueues]].
 - **Possible resolution from [[sources/research-eventual-consistency-and-convergence]]:** Partly helpful. The dossier gives kro's workqueue and client rate limits (default one worker, token bucket 10 per second with burst 100, QPS 100 with burst 150), explains Kubernetes v1.36 staleness metrics, and describes leader election for multi-replica controllers. It has no Flux or Crossplane sharding data. See [[examples/kro-shared-queue-tunes-throughput]], [[findings/duplicate-work-from-replicas-without-leader-election]], and [[concepts/informers-reflectors-and-workqueues]].
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Partly helpful on cost. The dossier explains that external-API controllers use long resyncs to limit API cost (ACK about 10 hours with per-kind overrides, kro 10 hours with a single rate-limited queue and one worker by default) and that Argo CD's refresh reads only the Kubernetes API and Git. It has no Flux or Crossplane sharding data. See [[decisions/choosing-a-drift-check-interval-for-external-resources]] and [[findings/cost-of-constant-reconciliation]].
+- **Possible resolution from [[sources/research-gitops-pull-based-delivery]]:** Marginally helpful. The only scale datum is Crossplane's guidance to raise the Argo CD Kubernetes client QPS to 300 because of the many CRDs. It has no sharding or concurrency data for Flux or Crossplane controllers. See [[examples/crossplane-resources-hosted-by-argo-cd]].
 
 
 ## Named production adopters of control-plane tools — status: open
@@ -337,3 +345,58 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Read the kro and ACK source for how the resync is scheduled.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, ack, resync, verification
+
+## Argo CD multi-cluster hub-and-spoke and ApplicationSets — status: open
+
+- **Question:** How does Argo CD handle hub-and-spoke multi-cluster delivery (pull versus push from a central instance), and how do ApplicationSets generate applications across a fleet?
+- **Why it matters:** The dossier's AWS multi-cluster GitOps article returned only site navigation, so the fleet story for Argo CD is missing, and "pull" is less clear when one central Argo CD instance reaches into many clusters.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Argo CD ApplicationSet and cluster-management documentation.
+  - [ ] Compare against Flux fleet layouts in [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** argo-cd, multi-cluster, applicationset
+
+## Secret management in GitOps agents — status: open
+
+- **Question:** How do Argo CD and Flux handle secrets (SOPS, KMS, external secret operators), and what are the failure modes?
+- **Why it matters:** The dossier says Flux decrypts SOPS and KMS secrets in the controller but did not read Argo CD's secret-management page, so the comparison is one-sided.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read Argo CD's secret management documentation and the Flux SOPS guide.
+  - [ ] Add a comparison page under `comparisons/`.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** secrets, sops, argo-cd, flux
+
+## Named GitOps adopters and GitOps-caused outages — status: open
+
+- **Question:** Which named organizations run pull-based GitOps at scale, and what outages or near-misses has it caused (bad prune, runaway sync, credential compromise of the agent)?
+- **Why it matters:** The dossier found no named production case studies, scale figures, or postmortems, so pitfalls on the GitOps pages rest on documentation warnings.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Collect CNCF end-user case studies, ADOPTERS files, and conference talks.
+  - [ ] Write `examples/` pages for each documented adopter and add evidence to the pitfall findings.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** adoption, postmortems, gitops
+
+## Config Connector and ACK behavior under a GitOps agent — status: open
+
+- **Question:** What happens to cloud resources when a GitOps agent prunes a Config Connector or ACK object, and how do deletion and abandon policies interact with Argo CD prune and Flux garbage collection?
+- **Why it matters:** The dossier covered neither ACK specifics nor Config Connector deletion and abandon behavior, yet pruning a custom resource can delete real infrastructure.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Config Connector deletion policy and ACK adoption and deletion documentation.
+  - [ ] Update [[comparisons/deletion-policies-across-gitops-and-provider-tools]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** config-connector, ack, deletion, prune
+
+## Git versus OCI as the canonical GitOps source — status: open
+
+- **Question:** Do independent sources show measurable security or operational benefits from signed OCI artifacts over direct Git pulls, and when does Argo CD support equivalent flows?
+- **Why it matters:** The only evidence in the dossier is a vendor reference architecture, and Flux and Argo CD documentation frame the choice differently. See [[decisions/git-versus-oci-as-the-canonical-source]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find independent write-ups or security reviews of OCI-based Flux delivery.
+  - [ ] Check Argo CD's OCI source support in current documentation.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** oci, git, supply-chain

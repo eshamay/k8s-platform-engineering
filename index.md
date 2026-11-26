@@ -11,7 +11,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/level-triggered-vs-edge-triggered]] — state-driven versus event-driven controller logic (active)
 - [[concepts/eventual-consistency-and-convergence]] — concurrent apply, retry, converge, with costs and mitigations (active)
 - [[concepts/self-healing-and-drift-detection]] — reverting out-of-band changes, with tool controls and failure modes (active)
-- [[concepts/gitops-pull-based-delivery]] — in-cluster agent pulls from Git (draft)
+- [[concepts/gitops-pull-based-delivery]] — four principles, pull versus push, and the two-layer loop (active)
 
 ### KRM and API machinery
 
@@ -62,6 +62,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-level-triggered-vs-edge-triggered]] — research dossier on level-triggered versus edge-triggered reconciliation, 14 web sources, 2026-11-25
 - [[sources/research-eventual-consistency-and-convergence]] — research dossier on eventual consistency and convergence, 15 web sources, 2026-11-25
 - [[sources/research-self-healing-and-drift-detection]] — research dossier on self-healing and drift detection, 19 web sources, 2026-11-25
+- [[sources/research-gitops-pull-based-delivery]] — research dossier on GitOps pull-based delivery, 15 web sources, 2026-11-25
 
 ## Examples
 
@@ -90,6 +91,9 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/tofu-controller-detects-terraform-drift-without-applying]] — detection-only Terraform drift (draft)
 - [[examples/ack-resync-period-tuning-for-stateful-resources]] — freshness versus AWS API cost (draft)
 - [[examples/crossplane-managed-resource-enforces-forprovider-and-observes-adopted-resources]] — enforce, observe, or pause (draft)
+- [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]] — signed OCI artifacts replace Git pulls (draft)
+- [[examples/crossplane-resources-hosted-by-argo-cd]] — health checks and tracking for the seam (draft)
+- [[examples/gitops-agent-on-non-kubernetes-targets]] — GitOps as a pattern beyond Kubernetes (draft)
 
 ## Comparisons
 
@@ -102,6 +106,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/retry-and-backoff-controls-across-tools]] — backoff, caps, and waiting states (draft)
 - [[comparisons/drift-detection-mechanisms-across-tools]] — what each tool compares, and how often (draft)
 - [[comparisons/exemption-and-ignore-controls-across-tools]] — ignore, observe, and pause controls (draft)
+- [[comparisons/push-versus-pull-delivery]] — credentials, reach, and reconciliation (draft)
+- [[comparisons/flux-versus-argo-cd-architecture]] — controllers versus three components (draft)
 
 ## Decisions
 
@@ -111,6 +117,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/single-replica-versus-leader-election]] — controller availability trade-off (draft)
 - [[decisions/staged-adoption-of-automated-drift-correction]] — observe, correct selectively, then enforce (draft)
 - [[decisions/choosing-a-drift-check-interval-for-external-resources]] — freshness versus API cost (draft)
+- [[decisions/git-versus-oci-as-the-canonical-source]] — where the cluster pulls desired state from (draft)
 
 ## Findings
 
@@ -138,6 +145,10 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/controllers-fighting-over-fields-cause-revert-loops]] — webhooks, HPAs, and image updaters (draft)
 - [[findings/remediation-can-amplify-an-outage]] — mass replacement and the maxUnhealthy brake (draft)
 - [[findings/late-initialized-fields-create-false-drift]] — provider defaults and LateInitialize (draft)
+- [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]] — Lua checks and tracking for CRDs (draft)
+- [[findings/rollback-is-blocked-while-automated-sync-is-on]] — rollback requires a Git revert (draft)
+- [[findings/mutable-remote-references-change-what-a-commit-renders]] — pin tags or SHAs (draft)
+- [[findings/two-reconcile-loops-hide-status-and-drift-at-two-layers]] — GitOps loop over domain loop (draft)
 
 ## Outputs
 

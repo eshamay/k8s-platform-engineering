@@ -8,6 +8,9 @@ sources:
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
+  - id: research-gitops-pull-based-delivery
+    hash: 335ba8f50b2b
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, security, rbac, blast-radius]
 ---
@@ -25,3 +28,7 @@ Splitting controllers by scope reduces blast radius, whereas a single management
 ## Related
 
 [[examples/non-container-appliances-on-the-kubernetes-api]]
+
+## GitOps agents as powerful identities
+
+Push pipelines hold credentials for every target, and pull agents shift that exposure but become powerful themselves. Flux counters with service-account impersonation per tenant, Config Connector centralizes cloud access on one controller identity, and the Flux D2 design removes the cluster-to-Git connection with signed OCI artifacts. [[sources/research-gitops-pull-based-delivery]] See [[comparisons/push-versus-pull-delivery]] and [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]].

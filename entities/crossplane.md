@@ -23,6 +23,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-gitops-pull-based-delivery
+    hash: 335ba8f50b2b
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -60,3 +63,7 @@ Architecture, composition functions, provider scaling, claims, adoption stories,
 ## Drift behavior of managed resources
 
 `spec.forProvider` is the source of truth and external edits are reverted. `managementPolicies` limit actions (Observe gives read-only adoption), the poll interval is configurable, `crossplane.io/paused` stops reconciliation, and finalizers delete external resources first. The design one-pager keeps provider-defaulted fields optional in spec, with `LateInitialize` filling them without false drift. [[sources/research-self-healing-and-drift-detection]] See [[examples/crossplane-managed-resource-enforces-forprovider-and-observes-adopted-resources]], [[findings/late-initialized-fields-create-false-drift]], and [[comparisons/drift-detection-mechanisms-across-tools]]. Crossplane drift pitfalls such as conflicts with autoscalers were not covered.
+
+## Hosting Crossplane under a GitOps agent
+
+Crossplane's own guide for Argo CD requires annotation-based resource tracking, custom Lua health checks for `crossplane.io` and `upbound.io` resources, exclusion of `ProviderConfigUsage` objects, and a client QPS of 300 because of the many CRDs. A generic GitOps agent does not understand custom-resource health unless told. [[sources/research-gitops-pull-based-delivery]] See [[examples/crossplane-resources-hosted-by-argo-cd]] and [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]].

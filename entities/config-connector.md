@@ -17,6 +17,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-gitops-pull-based-delivery
+    hash: 335ba8f50b2b
+    ingested: 2026-11-25
 aliases: [KCC, Google Config Connector]
 tags: [tool, provider, gcp]
 ---
@@ -48,3 +51,7 @@ The dossier read only the delete and manage page, through a summarizing fetch. R
 ## Controller types
 
 Config Connector has direct (Go SDK), Terraform-based, DCL-based, and IAM controllers behind a routing controller whose namespace-level overrides beat build-time defaults. Direct controllers use less CPU and memory and give better latency and status. The controller-types page says nothing about reconcile intervals or drift cadence, so that remains a gap. [[sources/research-self-healing-and-drift-detection]] See [[comparisons/drift-detection-mechanisms-across-tools]] and [[open-knowledge-gaps]].
+
+## Credentials and GitOps role
+
+Config Connector installs CRDs and controllers that reconcile Kubernetes objects into Google Cloud resources asynchronously, using the controller's own IAM service account instead of individual developers' identities. This centralizes cloud authorization behind Kubernetes RBAC, the same credential-concentration trade-off GitOps agents raise. The dossier did not read deletion or abandon behavior. [[sources/research-gitops-pull-based-delivery]] See [[findings/blast-radius-and-privilege-centralization]] and [[concepts/gitops-pull-based-delivery]].

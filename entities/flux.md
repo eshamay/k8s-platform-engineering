@@ -23,6 +23,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-gitops-pull-based-delivery
+    hash: 335ba8f50b2b
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -60,3 +63,7 @@ Component architecture, multi-tenancy, health checking, dependency ordering, sca
 ## Helm drift detection and field ownership
 
 A HelmRelease has `spec.driftDetection.mode` with `disabled` (the default), `warn`, and `enabled`. The controller runs a server-side dry-run apply of the stored Helm manifest and patches differences, ignore rules take JSON Pointers with optional target selectors, and `.spec.interval` sets the cadence. Since Flux v2.2.0 this is a per-release option and no longer a controller-wide feature gate. The Kustomization `ssa` annotation (`IfNotPresent`, `Ignore`) opts single objects out. A community discussion shows the dry-run failing after a `kubectl edit` of a Service port, with `--override-manager` reported as the fix. [[sources/research-self-healing-and-drift-detection]] See [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]], [[findings/field-ownership-blocks-drift-correction]], [[comparisons/exemption-and-ignore-controls-across-tools]], and [[entities/tofu-controller]].
+
+## Components, sources, and tenancy
+
+Flux is built from GitOps Toolkit controllers: source controllers fetch from Git, OCI, Helm repositories, and buckets and expose artifacts; the Kustomize and Helm controllers apply them; the notification controller handles alerts and webhooks; and image automation controllers update manifests. Kustomizations reconcile every 5 minutes by default and revert manual changes unless suspended. Bootstrap installs Flux and commits its own manifests so Flux manages itself. The Kustomize controller adds SOPS and KMS decryption, health assessment, `dependsOn` ordering, garbage collection, and service-account impersonation for multi-tenant RBAC isolation. In the ControlPlane D2 design, Flux pulls signed OCI artifacts through a FluxInstance and ResourceSet resources so that clusters never connect to Git. [[sources/research-gitops-pull-based-delivery]] See [[comparisons/flux-versus-argo-cd-architecture]], [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]], and [[decisions/git-versus-oci-as-the-canonical-source]].

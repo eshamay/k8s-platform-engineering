@@ -20,6 +20,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-gitops-pull-based-delivery
+    hash: 335ba8f50b2b
+    ingested: 2026-11-25
 aliases: [kube-resource-orchestrator]
 tags: [tool, platform]
 ---
@@ -53,3 +56,7 @@ Resource graph definition, dependency and ordering semantics, CEL usage, maturit
 ## Drift resync and maturity
 
 kro's dynamic controller resyncs all instances every 36,000 seconds (10 hours) to find drift, with `dynamicControllerConcurrentReconciles` defaulting to 1, and instances waiting on dependencies requeue with exponential backoff. An issue reporting that drift in managed resources was not reconciled was closed as completed on 2025-11-04 as a duplicate of issue 323, though the exact history is unverified, so check the version before relying on self-healing. [[sources/research-self-healing-and-drift-detection]] See [[decisions/choosing-a-drift-check-interval-for-external-resources]] and [[findings/immature-abstractions-in-the-control-plane-ecosystem]].
+
+## Relationship to GitOps
+
+A platform team defines a ResourceGraphDefinition that becomes a new CRD, and developers commit one small instance to Git that kro expands into underlying resources, composing with ACK, Config Connector, and Azure Service Operator. kro brings its own in-cluster dynamic controller with continuous reconciliation and drift detection, so it runs a second loop beneath the GitOps agent's loop, and it validates CEL expressions at creation time. [[sources/research-gitops-pull-based-delivery]] See [[findings/two-reconcile-loops-hide-status-and-drift-at-two-layers]] and [[concepts/gitops-pull-based-delivery]].

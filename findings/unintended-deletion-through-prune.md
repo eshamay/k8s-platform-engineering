@@ -8,6 +8,9 @@ sources:
   - id: research-declarative-vs-imperative
     hash: 570767ba4094
     ingested: 2026-11-25
+  - id: research-gitops-pull-based-delivery
+    hash: 335ba8f50b2b
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, prune, deletion, gitops]
 ---
@@ -33,3 +36,7 @@ The dossier found no incident write-ups of an accidental prune, so the severity 
 ## Related
 
 [[findings/destructive-deletion-of-external-resources]], [[entities/kubectl]]
+
+## GitOps agent defaults
+
+Argo CD's automated sync does not delete resources that are removed from Git unless prune is enabled, as a stated safety mechanism, and allow-empty is a separate guard against pruning an application to zero resources. The Flux Kustomize controller garbage-collects objects removed from the source when pruning is enabled. The dossier covers no per-resource deletion policy for cloud resources. [[sources/research-gitops-pull-based-delivery]] See [[concepts/gitops-pull-based-delivery]].

@@ -20,6 +20,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-gitops-pull-based-delivery
+    hash: 335ba8f50b2b
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -55,3 +58,7 @@ Self-heal syncs after a default delay of about 5 seconds when live state drifts 
 ## Self-heal, diffing, and incremental adoption
 
 `selfHeal` re-syncs after a default 5-second timeout, a sync runs only when the app is OutOfSync, and rollback is disallowed under automated sync. The diffing customization page explains false OutOfSync status from mutating webhooks, HPA field rewrites, non-deterministic Helm templates, and dropped unknown fields, and offers `ignoreDifferences` by JSON pointer, JQ path, or `managedFieldsManagers`. Akuity describes manual sync for risky workloads during adoption and self-heal for stateless apps. [[sources/research-self-healing-and-drift-detection]] See [[examples/argo-cd-app-of-apps-out-of-sync-from-image-updater]], [[examples/incremental-gitops-adoption-with-manual-sync-and-self-heal]], [[findings/controllers-fighting-over-fields-cause-revert-loops]], and [[comparisons/exemption-and-ignore-controls-across-tools]].
+
+## Architecture and best practices
+
+Argo CD has three components: an API server that serves the UI, CLI, and CI systems and handles RBAC, credentials, and webhooks; a repository server that caches Git and renders manifests; and an application controller that compares live to target state, flags OutOfSync, optionally corrects it, and runs PreSync, Sync, and PostSync hooks. Its best practices recommend separate repositories for config and application source, pinning remote Helm and Kustomize references to tags or SHAs, and leaving fields owned by other controllers (such as HPA replica counts) out of Git. Rollback is blocked while automated sync is on. Hosting Crossplane needs custom Lua health checks and annotation tracking. [[sources/research-gitops-pull-based-delivery]] See [[comparisons/flux-versus-argo-cd-architecture]], [[findings/rollback-is-blocked-while-automated-sync-is-on]], [[findings/mutable-remote-references-change-what-a-commit-renders]], and [[examples/crossplane-resources-hosted-by-argo-cd]].

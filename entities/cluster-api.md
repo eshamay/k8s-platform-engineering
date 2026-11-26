@@ -17,6 +17,9 @@ sources:
   - id: research-self-healing-and-drift-detection
     hash: 98edc2019c6b
     ingested: 2026-11-25
+  - id: research-gitops-pull-based-delivery
+    hash: 335ba8f50b2b
+    ingested: 2026-11-25
 aliases: [CAPI]
 tags: [tool, provider, cluster-lifecycle]
 ---
@@ -48,3 +51,7 @@ The level-triggered dossier could not confirm Cluster API controller details, be
 ## MachineHealthCheck
 
 A MachineHealthCheck evaluates Node conditions against timeouts and remediates unhealthy Machines, typically by replacement, with `maxUnhealthy` as a brake. Only machines owned by a MachineSet or KubeadmControlPlane are supported. The source is the older v0.4 book, so current behavior may differ. [[sources/research-self-healing-and-drift-detection]] See [[examples/cluster-api-machine-health-check-replaces-failed-nodes]] and [[findings/remediation-can-amplify-an-outage]].
+
+## Fleets as GitOps targets
+
+A management cluster runs Cluster API and providers that reconcile Cluster, Machine, MachineDeployment, and KubeadmControlPlane resources into workload clusters, and machines are replaced rather than patched in place. The declarative model makes cluster fleets natural GitOps targets, with the hub cluster pulling cluster definitions from Git and workload clusters pulling their own add-ons. [[sources/research-gitops-pull-based-delivery]] See [[examples/cluster-fleet-lifecycle-with-cluster-api]] and [[concepts/gitops-pull-based-delivery]].
