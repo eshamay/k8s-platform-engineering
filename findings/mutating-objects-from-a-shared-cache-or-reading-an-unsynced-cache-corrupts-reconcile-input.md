@@ -8,6 +8,9 @@ sources:
   - id: research-operator-pattern
     hash: eab72eca2e1b
     ingested: 2026-11-25
+  - id: research-informers-reflectors-and-workqueues
+    hash: f9de5ca73ab6
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, informers, caches, controllers]
 ---
@@ -25,3 +28,7 @@ Both mistakes are silent. The controller keeps running and simply reasons from w
 ## Related
 
 [[concepts/informers-reflectors-and-workqueues]], [[findings/stale-cache-and-double-action]], [[entities/controller-runtime]], [[concepts/operator-pattern]]
+
+## Related caching guidance in the informers dossier
+
+The informers dossier restates that the Indexer is shared by every consumer in a process and that controllers read it through read-only Listers, which is why mutating a cached object affects every other reader. [[sources/research-informers-reflectors-and-workqueues]] See [[concepts/informers-reflectors-and-workqueues]].

@@ -11,6 +11,9 @@ sources:
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
+  - id: research-informers-reflectors-and-workqueues
+    hash: f9de5ca73ab6
+    ingested: 2026-11-25
 aliases: [Expectations problem]
 tags: [pitfall, controllers, cache, level-triggered]
 ---
@@ -40,3 +43,7 @@ Kubernetes v1.36 adds staleness mitigation and metrics for cache synchronization
 ## Related
 
 [[concepts/informers-reflectors-and-workqueues]], [[concepts/idempotency]], [[concepts/level-triggered-vs-edge-triggered]]
+
+## Cache-backed client reads in the informers dossier
+
+The controller-runtime cache blog says the cache-backed client reads from the cache and writes go to the API server, so a read right after a write can return old data. The remedies it and the pitfalls blog give are the expectations pattern and explicit uncached reads where authority is required. [[sources/research-informers-reflectors-and-workqueues]] See [[concepts/informers-reflectors-and-workqueues]].

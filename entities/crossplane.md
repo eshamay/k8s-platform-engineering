@@ -50,6 +50,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-informers-reflectors-and-workqueues
+    hash: f9de5ca73ab6
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -123,3 +126,7 @@ The managed resource design one-pager describes a CRUD-style external client (Ob
 ## Idempotency and external names
 
 The idempotency dossier adds detail on how Crossplane keeps creates safe. The managed resources documentation treats `spec.forProvider` as the source of truth, keeps a stable `crossplane.io/external-name` (a VPC named `my-test-vpc` has external name `vpc-01353cfe93950a8ff`) for Observe, Update, and Delete, offers `initProvider` for creation-only settings, and lets `managementPolicies` grant any subset of Observe, Create, Update, Delete, and LateInitialize, where an empty list pauses the resource. A provider writes `external-create-pending` before a cloud create and stops with "cannot determine creation result" when the outcome is unknown, which needs a human to remove the annotation. Issue 1863 on the annotation's role was closed without a decision. [[sources/research-idempotency]] See [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]], [[findings/external-identity-takes-different-forms-across-cloud-apis]], [[examples/crossplane-initprovider-lets-an-autoscaler-own-node-group-size]], [[entities/crossplane-provider-btp]], and [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]].
+
+## Reconcile rate as an external API budget
+
+Crossplane issue 2595 led to a `--max-reconcile-rate` flag, merged for Crossplane 1.6 and adopted by providers, that caps reconciles per second and stands in for the cloud API call rate. It replaced scattered knobs (`QPS`, `PollInterval`, `MaxConcurrentReconciles`, `RateLimiter`). Crossplane's current performance guide was not read, so present defaults are unknown. [[sources/research-informers-reflectors-and-workqueues]] See [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]].

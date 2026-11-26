@@ -8,6 +8,9 @@ sources:
   - id: research-gvk-and-gvr
     hash: 5c56bb1e05a8
     ingested: 2026-11-25
+  - id: research-informers-reflectors-and-workqueues
+    hash: f9de5ca73ab6
+    ingested: 2026-11-25
 aliases: [k8s.io/client-go]
 tags: [client-library, go, discovery]
 ---
@@ -25,3 +28,7 @@ The restmapper package offers `NewDiscoveryRESTMapper` for a mapper built from d
 ## Related
 
 [[concepts/api-discovery-and-restmapper]], [[comparisons/restmapper-strategies-static-deferred-and-dynamic]], [[entities/controller-runtime]], [[findings/stale-restmapper-hides-newly-installed-crds]]
+
+## Reflector, DeltaFIFO, Indexer, and workqueue
+
+client-go's `tools/cache` package implements the Reflector (LIST then WATCH), the DeltaFIFO, and the thread-safe Indexer with optional secondary indexes, and `util/workqueue` provides the base, delaying, and rate-limiting queues. The architecture documents describe handlers that only enqueue keys, watch bookmarks, and relisting on 410 Gone. [[sources/research-informers-reflectors-and-workqueues]] See [[concepts/informers-reflectors-and-workqueues]] and [[findings/an-expired-resourceversion-forces-a-relist-and-synchronized-relists-can-storm]].

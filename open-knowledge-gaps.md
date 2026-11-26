@@ -72,6 +72,10 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#kro-and-cluster-api-idempotency-for-external-and-infrastructure-creates]] — open, unassigned
 - [[#production-outcomes-of-adopt-or-create-versus-explicit-import]] — open, unassigned
 - [[#postmortems-of-leaked-or-duplicated-cloud-resources-from-ambiguous-creates]] — open, unassigned
+- [[#cache-narrowing-options-in-controller-runtime]] — open, unassigned
+- [[#flux-shared-caches-and-crossplane-performance-guidance]] — open, unassigned
+- [[#informer-and-cache-choices-of-kro-config-connector-ack-and-cluster-api]] — open, unassigned
+- [[#primary-openai-kubernetes-outage-postmortem]] — open, unassigned
 
 ---
 
@@ -154,6 +158,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-operator-pattern]]:** Marginally helpful. The dossier restates the controller guidelines (shared informers, rate-limited workqueues processing one key at a time, waiting for cache sync) and warns that blocking on errors inside the loop stalls other objects, but it has no sharding, concurrency, or scale numbers. See [[findings/blocking-on-errors-inside-the-sync-loop-stalls-every-other-object]] and [[findings/mutating-objects-from-a-shared-cache-or-reading-an-unsynced-cache-corrupts-reconcile-input]].
 - **Possible resolution from [[sources/research-reconciliation-loop]]:** Partly helpful. The dossier gives kro's shared queue, default of 1 worker, token bucket of 10 events per second, 20-retry cap, and client QPS 100 with burst 150, and notes Flux jitter and Argo CD jitter, plus the controller-runtime rate-limited workqueue. It has no sharding data and no Crossplane concurrency data. See [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]].
 - **Possible resolution from [[sources/research-idempotency]]:** Marginally helpful. The dossier notes that Flux jitter and `retryInterval` and Argo CD's `maxDuration` limit retry load, and that many objects sharing one interval can spike API load. It has no informer, sharding, or concurrency data. See [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]].
+- **Possible resolution from [[sources/research-informers-reflectors-and-workqueues]]:** Partly helpful. The dossier explains the reflector, DeltaFIFO, indexer, and workqueue pipeline, the default limiter, cache memory growth, and relist behavior, and gives tool knobs: Flux `--concurrent` and Helm cache flags, Argo CD cluster sharding with processor counts and `GOMEMLIMIT`, and Crossplane `--max-reconcile-rate`. It has no Flux sharding data and no Crossplane performance guide. See [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] and [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]].
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -277,6 +282,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[concepts/informers-reflectors-and-workqueues]] and [[concepts/level-triggered-vs-edge-triggered]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** informers, resync, client-go
+- **Possible resolution from [[sources/research-informers-reflectors-and-workqueues]]:** Marginally helpful. One source calls periodic resync a defense against reconciler bugs that is usually disabled, and the pitfalls blog lists misunderstanding it as a common error. No source explains what resync replays or whether it refetches from the API server. See [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]].
 
 ## Origin of the Level driven, not edge driven guidance — status: open
 
@@ -310,6 +316,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Fill the rows in [[comparisons/reconcile-cadence-and-off-switches-across-tools]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, ack, cluster-api, intervals
+- **Possible resolution from [[sources/research-informers-reflectors-and-workqueues]]:** Marginally helpful, for Crossplane only. Crossplane providers gained `--max-reconcile-rate` in 1.6 alongside `--poll-interval`, but no default value is stated and the current performance guide was not read. See [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]].
 - **Possible resolution from [[sources/research-self-healing-and-drift-detection]]:** Partly helpful. ACK defaults to about 10 hours after `ResourceSynced` with per-kind overrides. Crossplane's poll interval is configurable but its default is still not stated, and the Cluster API source is the v0.4 book. See [[comparisons/drift-detection-mechanisms-across-tools]].
 
 
@@ -830,3 +837,47 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Check whether the Crossplane maintainers' proposed opt-out for deterministic identifiers shipped.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** postmortem, idempotency, external-resources
+
+## Cache narrowing options in controller-runtime — status: open
+
+- **Question:** Which controller-runtime options (cache selectors, transforms, disabling the cache for specific types, metadata-only informers) reduce informer cache memory, and what do they cost?
+- **Why it matters:** The cache blog says memory grows with watched objects and has no eviction, but only about 100,000 of about 150,000 characters were read, so the mitigations may be in the unread part.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the rest of the controller-runtime cache blog and the cache package documentation.
+  - [ ] Update [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cache, memory, controller-runtime
+
+## Flux shared caches and Crossplane performance guidance — status: open
+
+- **Question:** How do Flux controllers share or isolate informer caches, and what does Crossplane's current performance and sharding guidance say?
+- **Why it matters:** The dossier found Flux tuning flags but no informer internals, and the guessed Crossplane performance guide URL returned 404, so the scale gap still has no Flux or Crossplane sharding data.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Flux controller source and the current Crossplane performance documentation.
+  - [ ] Update [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, crossplane, sharding, scale
+
+## Informer and cache choices of kro, Config Connector, ACK, and Cluster API — status: open
+
+- **Question:** What informer, cache, concurrency, and rate-limit choices do kro, Config Connector, ACK, and Cluster API make?
+- **Why it matters:** No page in the informers dossier covered these tools, so the comparison tables have empty cells for them. Backstage was also not covered by any source.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read each project's controller configuration documentation or source.
+  - [ ] Extend [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kro, config-connector, ack, cluster-api, informers
+
+## Primary OpenAI Kubernetes outage postmortem — status: open
+
+- **Question:** What does the primary OpenAI postmortem say about the telemetry service, API server load, and DNS dependency, and does it involve list and watch clients?
+- **Why it matters:** The dossier read only Ahmet Alp Balkan's commentary, so the quotations and the causal chain are second-hand, and [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]] rests on them.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Locate and read the primary postmortem.
+  - [ ] Update [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** postmortem, api-server, outage

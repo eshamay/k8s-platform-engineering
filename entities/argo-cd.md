@@ -44,6 +44,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-informers-reflectors-and-workqueues
+    hash: f9de5ca73ab6
+    ingested: 2026-11-25
 aliases: [ArgoCD]
 tags: [tool, gitops]
 ---
@@ -111,3 +114,7 @@ Automated sync polls on `timeout.reconciliation`, default 120 seconds plus 60 se
 ## Self-heal and retry as idempotency
 
 The automated sync page says self-heal is off by default, pruning is blocked from leaving an application empty unless `allowEmpty` is set, and a failed sync can retry with exponential backoff using `limit`, `duration`, `factor`, and `maxDuration`. In multi-source applications, disabling self-heal does not guarantee that live changes persist. [[sources/research-idempotency]] See [[concepts/idempotency]] and [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]].
+
+## Cluster cache, sharding, and processor counts
+
+The application controller maintains a lightweight cluster cache from watch APIs. The high availability page scales it by sharding clusters across replicas (`legacy`, `round-robin`, `consistent-hashing`), by tuning `--status-processors` and `--operation-processors` (defaults 20 and 10 as extracted), and by setting `GOMEMLIMIT` to 80 to 90 percent of the container limit. [[sources/research-informers-reflectors-and-workqueues]] See [[examples/argo-cd-application-controller-shards-clusters-and-tunes-processor-counts]] and [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]].

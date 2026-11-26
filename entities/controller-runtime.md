@@ -23,6 +23,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-informers-reflectors-and-workqueues
+    hash: f9de5ca73ab6
+    ingested: 2026-11-25
 aliases: [sigs.k8s.io/controller-runtime]
 tags: [tool, controllers, framework]
 ---
@@ -66,3 +69,7 @@ The reconcile package defines `Request` (name and namespace only), `Result` with
 ## FAQ guidance on idempotent reconcilers
 
 The controller-runtime FAQ says reconcile functions must be idempotent and must read all the state they need before writing updates, so skipped or coalesced events and restarts are harmless. It recommends deterministic object names so the API server rejects a duplicate create, tracking actions and requeueing when names are generated, and testing with envtest against resulting state and not against which API calls were made. The dossier read the raw GitHub copy because the rendered page was empty. [[sources/research-idempotency]] See [[examples/built-in-controllers-use-deterministic-names-to-avoid-duplicate-children]] and [[concepts/idempotency]].
+
+## Cache, cache-backed client, and default limiter
+
+The Kubernetes blog describes the cache as an in-memory, watch-fed copy that the manager's cache-backed client reads from, while writes and status updates go to the API server and authoritative reads need an explicit uncached reader. Memory grows with watched objects and there is no eviction. The default workqueue limiter, as extracted, takes the maximum of a per-item exponential limiter (5 ms base, 1000 s cap) and a token bucket (10 per second, burst 100). `Owns()` and `Watches()` register informers and event-to-key mappings. [[sources/research-informers-reflectors-and-workqueues]] See [[concepts/informers-reflectors-and-workqueues]], [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]], and [[findings/stale-cache-and-double-action]].

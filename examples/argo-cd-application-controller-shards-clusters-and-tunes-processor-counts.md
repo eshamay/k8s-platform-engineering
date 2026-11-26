@@ -1,0 +1,27 @@
+---
+title: Argo CD application controller shards clusters and tunes processor counts
+type: example
+status: draft
+created: 2026-11-25
+updated: 2026-11-25
+sources:
+  - id: research-informers-reflectors-and-workqueues
+    hash: f9de5ca73ab6
+    ingested: 2026-11-25
+aliases: []
+tags: [argo-cd, sharding, cache, memory, scale]
+---
+
+# Argo CD application controller shards clusters and tunes processor counts
+
+## Scenario
+
+An Argo CD installation manages many applications across many clusters. The application controller must compare live state with desired state for all of them without repeated API queries or running out of memory. [[sources/research-informers-reflectors-and-workqueues]]
+
+## What the operator manual says
+
+The controller keeps a lightweight cluster cache fed by Kubernetes watch APIs and does not query repeatedly. To scale it, the manual describes three levers. Clusters can be sharded across controller replicas with one of three algorithms: `legacy`, `round-robin`, or `consistent-hashing`. The `--status-processors` and `--operation-processors` flags set the worker counts, with defaults of 20 and 10 as extracted by the dossier and higher values suggested for around 1000 applications. Setting `GOMEMLIMIT` to 80 to 90 percent of the container memory limit helps the Go runtime collect garbage before the container is killed for running out of memory. URL: https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/.
+
+## Lesson
+
+Argo CD answers the cache-memory problem by splitting the cache across replicas, which is sharding by cluster, and answers the concurrency problem with explicit worker counts. This is the only sharding evidence in the wiki so far, and it covers Argo CD alone. See [[entities/argo-cd]], [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]], and [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].

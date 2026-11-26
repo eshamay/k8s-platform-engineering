@@ -28,7 +28,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/operator-pattern]] — the two-domain controller, mechanics, maturity levels, ecosystem, and pitfall catalog (active)
 - [[concepts/reconciliation-loop]] — level-based contract, mechanics, requeue semantics, tool timing, and pitfalls (active)
 - [[concepts/idempotency]] — safe repeated reconciliation at the loop, API, and cloud-API layers (active)
-- [[concepts/informers-reflectors-and-workqueues]] — watch, cache, queue machinery (draft)
+- [[concepts/informers-reflectors-and-workqueues]] — reflector, DeltaFIFO, indexer, workqueue contract, resync, and tuning costs (active)
 - [[concepts/finalizers]] — block deletion until external cleanup (draft)
 - [[concepts/owner-references-and-garbage-collection]] — cascading deletion (draft)
 - [[concepts/conditions]] — machine-readable status (draft)
@@ -82,6 +82,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-operator-pattern]] — research dossier on the operator pattern, 17 web sources, 2026-11-25
 - [[sources/research-reconciliation-loop]] — research dossier on the reconciliation loop, 15 web sources, 2026-11-25
 - [[sources/research-idempotency]] — research dossier on idempotency, 15 web sources, 2026-11-25
+- [[sources/research-informers-reflectors-and-workqueues]] — research dossier on informers, reflectors, and workqueues, 14 web sources, 2026-11-25
 
 ## Examples
 
@@ -165,6 +166,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/config-connector-acquires-an-existing-google-cloud-resource-by-name]] — acquire on name match (draft)
 - [[examples/crossplane-initprovider-lets-an-autoscaler-own-node-group-size]] — creation-only settings (draft)
 - [[examples/ec2-client-token-makes-a-retried-runinstances-call-safe]] — server-side retry contract (draft)
+- [[examples/flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs]] — concurrent flags and Helm cache (draft)
+- [[examples/argo-cd-application-controller-shards-clusters-and-tunes-processor-counts]] — cluster sharding and GOMEMLIMIT (draft)
+- [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]] — reconcile rate as API budget (draft)
+- [[examples/kubebuilder-owns-and-a-field-indexer-wire-child-changes-to-the-owner]] — child informers and indexers (draft)
+- [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]] — public outage commentary (draft)
 
 ## Comparisons
 
@@ -194,6 +200,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]] — three ways to a custom API (draft)
 - [[comparisons/how-flux-ack-and-cluster-api-split-controllers]] — three axes of controller separation (draft)
 - [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]] — queues, jitter, workers, and resync (draft)
+- [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]] — workers, cache, sharding, and rate caps (draft)
 - [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] — lost-create recovery and adoption (draft)
 
 ## Decisions
@@ -201,6 +208,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/crd-versus-aggregated-api]] — how to serve new API kinds (draft)
 - [[decisions/choosing-an-object-management-technique]] — imperative, replace, or apply (draft)
 - [[decisions/events-as-hints-state-as-truth]] — level-based correctness with watch-based latency (draft)
+- [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]] — safety net versus steady-state load (draft)
 - [[decisions/single-replica-versus-leader-election]] — controller availability trade-off (draft)
 - [[decisions/staged-adoption-of-automated-drift-correction]] — observe, correct selectively, then enforce (draft)
 - [[decisions/choosing-a-drift-check-interval-for-external-resources]] — freshness versus API cost (draft)
@@ -294,6 +302,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/external-identity-takes-different-forms-across-cloud-apis]] — names, IDs, ARNs, and compound keys (draft)
 - [[findings/adopt-or-create-can-take-over-a-look-alike-resource]] — accidental adoption (draft)
 - [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]] — retry safety depends on the API (draft)
+- [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]] — cache memory has no eviction (draft)
+- [[findings/an-expired-resourceversion-forces-a-relist-and-synchronized-relists-can-storm]] — 410 Gone and relist cost (draft)
+- [[findings/skipping-done-or-forget-on-the-workqueue-leaves-items-stuck-or-retrying]] — workqueue bookkeeping (draft)
+- [[findings/heavy-event-handlers-and-expensive-reconciles-waste-api-calls]] — handlers only enqueue (draft)
+- [[findings/control-plane-overload-blocks-the-remediation-that-would-fix-it]] — many clients overload the API server (draft)
 
 ## Outputs
 

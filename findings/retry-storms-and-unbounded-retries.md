@@ -14,6 +14,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-informers-reflectors-and-workqueues
+    hash: f9de5ca73ab6
+    ingested: 2026-11-25
 aliases: [Retry amplification]
 tags: [pitfall, retries, backoff, postmortem]
 ---
@@ -46,3 +49,7 @@ The dossier contrasts controller-runtime, which retries failures forever with ex
 ## Idempotency of the retried call
 
 The AWS Builders' Library article adds that blind retry is safe only when the target API is idempotent, and that Flux jitter and `retryInterval` and Argo CD's `maxDuration` cap address load and not duplicate side effects. [[sources/research-idempotency]] See [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]].
+
+## The default workqueue limiter
+
+The rate-limiting walkthrough explains why the default limiter pairs per-item exponential backoff with an overall token bucket: without the bucket, thousands of failing objects could produce tens of thousands of requeues per second, and synchronized backoff creates thundering herds. The default may not fit controllers that share an external API. [[sources/research-informers-reflectors-and-workqueues]] See [[concepts/informers-reflectors-and-workqueues]] and [[findings/skipping-done-or-forget-on-the-workqueue-leaves-items-stuck-or-retrying]].

@@ -50,6 +50,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-informers-reflectors-and-workqueues
+    hash: f9de5ca73ab6
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -123,3 +126,7 @@ The Kustomization reference describes `spec.interval` as the periodic reconcile 
 ## Repeated apply as idempotency
 
 The idempotency dossier treats the Kustomization as scheduled, repeated apply: each `.spec.interval` runs a server-side apply dry-run to detect and correct drift, a new revision or generation is handled immediately, `.spec.prune` garbage-collects dropped objects with a `prune: disabled` annotation as protection, `.spec.retryInterval` retries failures, and jitter avoids load spikes. Conflicting field ownership is the signal that another actor changed the object. The dossier's quoted example uses a ten-minute interval, which is an example and not a stated default. [[sources/research-idempotency]] See [[concepts/idempotency]].
+
+## Concurrency and cache knobs
+
+The vertical scaling page says Flux raises parallel reconciles with `--concurrent` flags, caches Helm indexes in the source controller with `--helm-cache-max-size` and `--helm-cache-ttl`, prefers persistent volumes to EmptyDir for artifacts, and warns that tmpfs counts against pod memory. The page describes tuning and not the informer implementation or sharding. [[sources/research-informers-reflectors-and-workqueues]] See [[examples/flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs]] and [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].

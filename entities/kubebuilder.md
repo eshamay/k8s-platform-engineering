@@ -32,6 +32,9 @@ sources:
   - id: research-idempotency
     hash: 4704ffd77903
     ingested: 2026-11-25
+  - id: research-informers-reflectors-and-workqueues
+    hash: f9de5ca73ab6
+    ingested: 2026-11-25
 aliases: [Kubebuilder Book]
 tags: [tool, operators, framework]
 ---
@@ -79,3 +82,7 @@ The CronJob controller implementation chapter teaches idempotency, rebuilding st
 ## Idempotency in the good-practices page
 
 The good-practices page says directly that the reconciliation loop needs to be idempotent, so it handles unexpected events, startup, and upgrades, and that logic keyed to specific events goes against the operator pattern and can leave resources stuck. [[sources/research-idempotency]] See [[findings/event-specific-logic-in-reconcilers]] and [[concepts/idempotency]].
+
+## Owns and field indexers in the CronJob tutorial
+
+The CronJob implementation page registers an informer on child Jobs with `Owns(&Job{})` so child changes reconcile the owner, and adds a field indexer on the owner reference so listing owned Jobs does not scan the whole cache. [[sources/research-informers-reflectors-and-workqueues]] See [[examples/kubebuilder-owns-and-a-field-indexer-wire-child-changes-to-the-owner]].

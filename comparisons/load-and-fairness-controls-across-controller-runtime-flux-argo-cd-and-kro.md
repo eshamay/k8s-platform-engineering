@@ -8,6 +8,9 @@ sources:
   - id: research-reconciliation-loop
     hash: df7d66206baf
     ingested: 2026-11-25
+  - id: research-informers-reflectors-and-workqueues
+    hash: f9de5ca73ab6
+    ingested: 2026-11-25
 aliases: []
 tags: [comparison, load, rate-limiting, jitter, workqueue]
 ---
@@ -28,3 +31,7 @@ The values below are as stated on the fetched pages. The kro numbers come from t
 ## Reading the table
 
 kro states the fairness goal outright: "All resource events flow through one rate-limited queue, preventing any single RGD from overwhelming the system." The trade-off is that a single worker serializes instances, so a slow instance can delay others unless the worker count is raised. Flux and Argo CD address synchronization of many objects mostly through jitter, and they differ on retries. See [[examples/kro-shared-queue-tunes-throughput]], [[comparisons/reconcile-cadence-and-off-switches-across-tools]], and [[comparisons/retry-and-backoff-controls-across-tools]]. The dossier gives no sharding data, which is tracked in [[open-knowledge-gaps]]. [[sources/research-reconciliation-loop]]
+
+## Concurrency data from the informers dossier
+
+The informers dossier fills some empty cells: Flux raises concurrency with `--concurrent` flags, and Argo CD exposes `--status-processors` and `--operation-processors` and shards clusters. [[sources/research-informers-reflectors-and-workqueues]] See [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
