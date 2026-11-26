@@ -2,3 +2,7 @@ study-guide/
 build/
 .DS_Store
 .obsidian/
+.bundle/
+vendor/
+_site/
+.jekyll-cache/

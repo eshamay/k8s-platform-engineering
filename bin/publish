@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# Actions-independent publish: build the site (strict) and push it to the `gh-pages` branch
+# via a git worktree that shares THIS repo's remotes + credentials (no remote URL is copied
+# into a temp repo, so an embedded token can never leak to disk). Pages then serves it
+# (Settings -> Pages -> Deploy from a branch -> gh-pages / root).
+#
+# Safety: refuses a dirty worktree; builds with --strict (broken links fail the build);
+# pushes with --force-with-lease (won't clobber an unexpected remote gh-pages); cleans up
+# the worktree on any exit. Run from anywhere inside the wiki repo.
+#
+# Env overrides: PAGES_BRANCH (default gh-pages), PAGES_REMOTE (default origin).
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+BRANCH="${PAGES_BRANCH:-gh-pages}"
+REMOTE="${PAGES_REMOTE:-origin}"
+HERE="$(cd "$(dirname "$0")" && pwd)"
+
+# 1. require a clean, committed source tree
+if ! git diff-index --quiet HEAD -- 2>/dev/null; then
+  echo "refusing to publish: working tree is dirty. Commit or stash first." >&2
+  exit 1
+fi
+SRC_SHA="$(git rev-parse --short HEAD)"
+
+# 2. build (strict) + Jekyll
+python3 "$HERE/build_site.py" --strict
+bundle exec jekyll build --source build --destination _site
+touch _site/.nojekyll
+[ -f CNAME ] && cp CNAME _site/CNAME || true   # preserve custom domain if configured
+
+# 3. publish through a shared-credential worktree
+WT="$(mktemp -d)"
+cleanup() { git worktree remove --force "$WT" >/dev/null 2>&1 || true; rm -rf "$WT"; }
+trap cleanup EXIT INT TERM
+
+git fetch -q "$REMOTE" "$BRANCH" 2>/dev/null || true
+EXPECT=""
+if git show-ref --verify --quiet "refs/remotes/$REMOTE/$BRANCH"; then
+  git worktree add -q -B "$BRANCH" "$WT" "$REMOTE/$BRANCH"
+  EXPECT="$(git rev-parse "$REMOTE/$BRANCH")"
+else
+  git worktree add -q --detach "$WT"
+  git -C "$WT" checkout -q --orphan "$BRANCH"
+  git -C "$WT" rm -rq . >/dev/null 2>&1 || true
+fi
+
+# replace worktree contents with the freshly built site
+find "$WT" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+cp -R _site/. "$WT/"
+git -C "$WT" add -A
+if git -C "$WT" diff --cached --quiet; then
+  echo "No changes to publish (site identical to ${REMOTE}/${BRANCH})."
+  exit 0
+fi
+git -C "$WT" commit -q -m "Publish site from ${SRC_SHA}"
+if [ -n "$EXPECT" ]; then
+  git -C "$WT" push --force-with-lease="${BRANCH}:${EXPECT}" "$REMOTE" "$BRANCH"
+else
+  git -C "$WT" push "$REMOTE" "$BRANCH"
+fi
+echo "Published ${SRC_SHA} -> ${REMOTE}/${BRANCH}"

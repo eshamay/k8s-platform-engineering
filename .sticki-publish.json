@@ -1,0 +1,22 @@
+{
+  "title": "Kubernetes Platform Engineering",
+  "description": "A tutorial series on the Kubernetes Resource Model, controllers and operators, and the platforms built on them: Flux, Crossplane, kro and their neighbors.",
+  "feature_dir": "outputs",
+  "include_sources": false,
+  "publish_info_pages": false,
+  "publish_status": ["draft", "active", "stale", "contradicted"],
+  "publish_dirs": ["outputs"],
+  "exclude_dirs": [],
+  "nav_order_stems": [
+    "part-1-core-architectural-principles",
+    "part-2-krm-and-api-machinery",
+    "part-3-controller-and-operator-mechanics",
+    "part-4-platform-abstractions",
+    "part-5-platform-architecture-principles-and-operating-at-scale",
+    "flux-ramp-up",
+    "crossplane-ramp-up"
+  ],
+  "url": "https://eshamay.github.io",
+  "baseurl": "/k8s-platform-engineering",
+  "blob_base": "https://github.com/eshamay/k8s-platform-engineering/blob/main"
+}

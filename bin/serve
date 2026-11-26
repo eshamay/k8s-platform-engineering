@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Local preview: regenerate the Jekyll tree from the vault and serve it.
+# Run from anywhere inside the wiki repo.
+#
+# NOTE: Jekyll watches the generated build/ tree, not the vault source. After editing a
+# source page, re-run this script (or run `bin/build_site.py`) to regenerate. Preview is
+# non-destructive: it never pushes anything. Jekyll prints the local server URL on startup;
+# append the site's baseurl (from .sticki-publish.json / _config.yml) to reach the home page.
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+HERE="$(cd "$(dirname "$0")" && pwd)"
+python3 "$HERE/build_site.py"
+bundle exec jekyll serve --source build --destination _site --watch --livereload
