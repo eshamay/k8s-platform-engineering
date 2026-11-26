@@ -83,6 +83,9 @@ sources:
   - id: research-landscape
     hash: d28204a90545
     ingested: 2026-11-25
+  - id: research-scale-and-sharding
+    hash: d082d1d36d7e
+    ingested: 2026-11-25
 aliases: []
 tags: [tool, platform]
 ---
@@ -210,3 +213,7 @@ An engineer's July 2026 blog describes Crossplane's shape as an XRD plus a Compo
 ## Position in the tooling landscape
 
 Crossplane is the multi-cloud member of the provisioning layer in [[concepts/tooling-landscape]]. The overview describes it as a framework to "build control planes to manage your cloud native software," with providers packaging managed resources, Compositions running function pipelines in YAML, Python, Go, or KCL, XRDs defining the new API, and Operations running pipelines to completion for tasks such as certificate checks. It positions Crossplane against Kubebuilder, where you write the controller, and against cloud CLIs, which are not declarative (https://docs.crossplane.io/latest/whats-crossplane/). The self-reported adopters list adds SAP at 100 or more KRM-based control planes as of February 2024, Stone Payments across several clouds and SaaS, and Akamai's provider-ceph at up to 200,000 managed resources, see [[examples/rtl-nederland-provisions-whole-kubernetes-clusters-with-crossplane-which-overlaps-with-cluster-api]]. [[sources/research-landscape]]
+
+## CRD count, provider families, and scale in the scale dossier
+
+The scale dossier records why Crossplane strains the control plane: providers installed hundreds of CRDs where most add-ons install tens, provider-aws installed more than 900, and installation could leave the API unresponsive for up to an hour. The project chose provider families over CRD filtering or lazy loading, which cuts a typical user from more than 900 CRDs to about 176 at the cost of about 9 provider pods instead of 2. The dossier found no source on cloud API rate limits or on Crossplane v2 scaling guidance after 2023. See [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]], [[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory]], [[examples/upbound-tested-a-multi-cloud-control-plane-of-about-2000-managed-resources-and-upstreamed-kubernetes-fixes]], [[concepts/scale-and-sharding]], and [[sources/research-scale-and-sharding]].

@@ -122,6 +122,12 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#maintenance-status-of-tofu-controller-and-terraform-operator]] — open, unassigned
 - [[#independent-benchmarks-for-argo-cd-footprint-and-portal-claims]] — open, unassigned
 - [[#direct-comparison-of-config-connector-and-crossplane]] — open, unassigned
+- [[#cloud-api-rate-limits-and-crossplane-provider-reconcile-tuning]] — open, unassigned
+- [[#scaling-behavior-of-kro-ack-cluster-api-and-config-connector-controllers]] — open, unassigned
+- [[#current-crossplane-v2-scaling-guidance]] — open, unassigned
+- [[#argo-cd-sharding-algorithm-maturity-in-current-releases]] — open, unassigned
+- [[#named-flux-sharding-adopters-and-api-priority-and-fairness-incidents]] — open, unassigned
+- [[#scale-numbers-from-model-digests-need-recheck]] — open, unassigned
 
 ---
 
@@ -238,6 +244,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-crossplane-deep-dive]]:** Marginally helpful on the API-server side only. The Upbound post explains why thousands of CRDs hurt (hundreds of throttled discovery requests, increasingly expensive serialization on each CRD change, about 4 MiB of memory per CRD) and lists upstream mitigations, and the upgrade guide names managed resource activation policies as the Crossplane v2 remedy without explaining them. It has no informer, workqueue, or controller sharding data. See [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]] and [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]].
 - **Possible resolution from [[sources/research-kro-and-abstraction-models]]:** Not helpful. The dossier says the scaling limits of per-RGD dedicated controllers are not covered in the sources read and found no large-scale kro benchmark. See [[open-knowledge-gaps]] for the follow-up on kro scale.
 - **Possible resolution from [[sources/research-landscape]]:** Marginally helpful. The self-reported Crossplane adopters list gives SAP at 100 or more control planes and Akamai's provider-ceph at up to 200,000 managed resources, and Akuity claims Argo CD has a heavier footprint than Flux. All are unverified or vendor claims, so no tuning guidance follows. See [[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]].
+- **Possible resolution from [[sources/research-scale-and-sharding]]:** Largely helpful. The dossier gives the cluster envelope, client-go informer, workqueue, and rate-limiter limits, API Priority and Fairness, Flux label sharding with `sharding.fluxcd.io/key`, Argo CD cluster sharding, and Crossplane provider families with CRD counts, and it states that leader election makes extra replicas add availability and not throughput. It does not cover cloud API rate limits, kro, ACK, Cluster API, or Config Connector scale, or named adopters, and most numbers came from digests. See [[concepts/scale-and-sharding]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], and [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]]. The gap stays open for human closure via `sticki-gaps`.
 
 ## Named production adopters of control-plane tools — status: open
 
@@ -1499,3 +1506,70 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Extend [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** config-connector, crossplane, comparison
+
+## Cloud API rate limits and Crossplane provider reconcile tuning — status: open
+
+- **Question:** How do AWS, Azure, and GCP API rate limits constrain Crossplane providers, Config Connector, and ACK, and how are poll intervals and `max-reconcile-rate` tuned in practice?
+- **Why it matters:** Cloud throttling is invisible to the Kubernetes machinery, so an operator can fix every Kubernetes-side limit and still be throttled by the cloud. The scale dossier found no source on it, and a search for Crossplane tuning docs failed with a 503.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read docs.crossplane.io tuning guidance and the provider repositories.
+  - [ ] Find ACK and Config Connector guidance on cloud API quotas.
+  - [ ] Extend [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cloud-api, rate-limit, crossplane, config-connector, ack
+
+## Scaling behavior of kro, ACK, Cluster API, and Config Connector controllers — status: open
+
+- **Question:** How do the kro, ACK, Cluster API, and Config Connector controllers behave as managed object counts grow?
+- **Why it matters:** The scale dossier covers Flux, Argo CD, and Crossplane only, and the Config Connector page fetch was redirected and not retried.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find scaling or tuning documentation for each controller.
+  - [ ] Add scale sections to [[entities/ack]], [[entities/cluster-api]], [[entities/config-connector]], and [[entities/kro]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** scale, kro, ack, cluster-api, config-connector
+
+## Current Crossplane v2 scaling guidance — status: open
+
+- **Question:** What does current Crossplane v2 documentation say about scaling, and does it change the provider-family guidance from 2023?
+- **Why it matters:** The provider-family sources date from 2023, so the decision recorded in [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]] may have been refined since.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current Crossplane v2 documentation on providers, activation policies, and resource limits.
+  - [ ] Update [[entities/crossplane]] and the decision page.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, v2, scale, provider-family
+
+## Argo CD sharding algorithm maturity in current releases — status: open
+
+- **Question:** Are the round-robin and consistent-hashing sharding algorithms still labelled experimental in current Argo CD releases?
+- **Why it matters:** The dossier's digest called them experimental, and the label may be stale. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current high-availability page directly and record the version.
+  - [ ] Revise the finding and [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** argo-cd, sharding, maturity
+
+## Named Flux sharding adopters and API Priority and Fairness incidents — status: open
+
+- **Question:** Which organizations run sharded Flux, and are there published incidents or postmortems involving API Priority and Fairness throttling?
+- **Why it matters:** The dossier found no named case studies for either, so sharding thresholds and APF failure modes rest on documentation alone.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Search adopter lists, conference talks, and postmortem collections.
+  - [ ] Extend [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]] if a case is found.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, sharding, apf, incidents
+
+## Scale numbers from model digests need rechecking — status: open
+
+- **Question:** Do the CRD memory, Gardener limit, Argo CD processor size, and SIG Scalability figures in the scale dossier match the raw pages?
+- **Why it matters:** Most figures came from summarizing fetches, and the APF page and KEP-1040 were only partly read. See [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Reread each page in full and compare the figures.
+  - [ ] Fully read the API Priority and Fairness page and KEP-1040.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** source-quality, scale, verification

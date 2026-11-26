@@ -11,6 +11,9 @@ sources:
   - id: research-crossplane-deep-dive
     hash: 44034359219f
     ingested: 2026-11-25
+  - id: research-scale-and-sharding
+    hash: d082d1d36d7e
+    ingested: 2026-11-25
 aliases: []
 tags: [pitfall, scale, crd, crossplane, api-server, discovery]
 ---
@@ -32,3 +35,7 @@ Crossplane v2 activates only needed types through ManagedResourceDefinitions and
 ## Upbound explanation of the mechanism
 
 The Upbound engineering post gives the mechanism in plain terms. Clients make hundreds of discovery requests and get throttled, the API server does increasingly expensive serialization work each time a CRD is added or updated, and memory reaches roughly 4 MiB per CRD. Upstream mitigations include higher kubectl discovery rate limits, cheaper client caching, lazy OpenAPI computation, and shared etcd clients and loggers. The post covers upstream fixes and does not itself detail managed resource activation policies. [[sources/research-crossplane-deep-dive]] See [[entities/crossplane]] and [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]].
+
+## Additional evidence from the scale dossier
+
+The scale dossier adds that CRD count was never an official Kubernetes scaling threshold, that SIG Scalability's tested envelope does not include it, and that the Crossplane design doc puts the onset of problems around 500 CRDs. The fix chosen was provider families. See [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]], [[examples/upbound-tested-a-multi-cloud-control-plane-of-about-2000-managed-resources-and-upstreamed-kubernetes-fixes]], [[concepts/scale-and-sharding]], and [[sources/research-scale-and-sharding]].

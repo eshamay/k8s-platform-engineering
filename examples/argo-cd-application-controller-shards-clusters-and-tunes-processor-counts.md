@@ -8,6 +8,9 @@ sources:
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
     ingested: 2026-11-25
+  - id: research-scale-and-sharding
+    hash: d082d1d36d7e
+    ingested: 2026-11-25
 aliases: []
 tags: [argo-cd, sharding, cache, memory, scale]
 ---
@@ -25,3 +28,7 @@ The controller keeps a lightweight cluster cache fed by Kubernetes watch APIs an
 ## Lesson
 
 Argo CD answers the cache-memory problem by splitting the cache across replicas, which is sharding by cluster, and answers the concurrency problem with explicit worker counts. This is the only sharding evidence in the wiki so far, and it covers Argo CD alone. See [[entities/argo-cd]], [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]], and [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
+
+## Additional evidence from the scale dossier
+
+The scale dossier confirms the sharding description from the same high-availability page and adds the details that `ARGOCD_CONTROLLER_REPLICAS` tells each replica the total, that clusters can be pinned to a shard through the cluster secret, and that the legacy algorithm is uneven while round-robin and consistent-hashing were labelled experimental in the digest. The two internal queues handle reconciliation in milliseconds and syncing in seconds. Hub-and-spoke setups, where one control plane manages many destination clusters, are the typical scenario. Still no named adopter is given. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], and [[sources/research-scale-and-sharding]].

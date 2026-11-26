@@ -29,6 +29,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[concepts/reconciliation-loop]] — level-based contract, mechanics, requeue semantics, tool timing, and pitfalls (active)
 - [[concepts/idempotency]] — safe repeated reconciliation at the loop, API, and cloud-API layers (active)
 - [[concepts/informers-reflectors-and-workqueues]] — reflector, DeltaFIFO, indexer, workqueue contract, resync, and tuning costs (active)
+- [[concepts/scale-and-sharding]] — cluster envelope, controller limits, APF, sharding keys, and CRD count (active)
 - [[concepts/finalizers]] — two-phase delete, API rules, controller pattern, tool policies, and the stuck-deletion catalog (active)
 - [[concepts/owner-references-and-garbage-collection]] — owner references, the garbage collector, propagation modes, tool behavior, and pitfalls (active)
 - [[concepts/conditions]] — anatomy, observedGeneration, per-stack vocabularies, consumers, and pitfalls (active)
@@ -79,6 +80,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[entities/port]] — commercial SaaS developer portal with blueprints and actions (draft)
 - [[entities/cozystack]] — packaged PaaS for building a cloud on bare metal (draft)
 - [[entities/terraform-operator]] — community CRD that starts Terraform workflow pods (draft)
+- [[entities/gardener]] — managed-Kubernetes project with operator sizing guidance (draft)
 
 ## Sources
 
@@ -109,6 +111,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-crossplane-deep-dive]] — research dossier on Crossplane layers, v2 changes, adopters, and criticism, 15 web sources, 2026-11-25
 - [[sources/research-kro-and-abstraction-models]] — research dossier on kro, Crossplane, Helm, Kustomize, kpt, Score, and Radius, 14 web sources, 2026-11-25
 - [[sources/research-landscape]] — research dossier on the delivery, provisioning, and platform tooling landscape, 17 web sources, 2026-11-25
+- [[sources/research-scale-and-sharding]] — research dossier on scale limits, APF, sharding, and CRD count, 13 web sources, 2026-11-25
 
 ## Examples
 
@@ -261,6 +264,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/kratix-promises-scatter-workloads-across-standard-pci-and-terraform-destinations]] — vendor example of multi-cluster segmentation (draft)
 - [[examples/cozystack-turns-commodity-servers-into-a-cloud-with-kubernetes-databases-and-vms]] — bare-metal cloud building (draft)
 - [[examples/rtl-nederland-provisions-whole-kubernetes-clusters-with-crossplane-which-overlaps-with-cluster-api]] — self-reported adopter and layer overlap (draft)
+- [[examples/gardener-advises-keeping-most-clusters-under-about-500-nodes-and-controlling-webhooks-and-object-counts]] — operator advice below tested maximums (draft)
+- [[examples/upbound-tested-a-multi-cloud-control-plane-of-about-2000-managed-resources-and-upstreamed-kubernetes-fixes]] — what broke with thousands of CRDs and the upstream fixes (draft)
 
 ## Comparisons
 
@@ -315,6 +320,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[comparisons/delivery-versus-provisioning-versus-platform-layers-in-the-kubernetes-tooling-landscape]] — three layers, tools, units of work, ordering, identity (draft)
 - [[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers]] — portals and the orchestration layer behind them (draft)
 - [[comparisons/tofu-controller-versus-terraform-operator-as-terraform-in-cluster-controllers]] — two ways to run Terraform in pods (draft)
+- [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]] — label key versus cluster key for splitting controller work (draft)
 
 ## Decisions
 
@@ -349,6 +355,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[decisions/scope-provider-credentials-per-namespace-or-cluster-wide]] — one identity or many (draft)
 - [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]] — vertical tuning versus label sharding (draft)
 - [[decisions/run-one-crossplane-control-plane-or-several-domain-scoped-ones]] — one shared control plane or several by domain (draft)
+- [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]] — Crossplane's CRD-count decision and rejected alternatives (draft)
 
 ## Findings
 
@@ -493,6 +500,11 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/terraform-in-cluster-controllers-keep-state-in-secrets-gate-apply-on-git-approval-and-couple-to-specific-versions]] — state, approval, and version coupling (draft)
 - [[findings/a-portal-alone-gives-visibility-but-not-provisioning-so-ticket-queues-can-persist-according-to-a-kratix-vendor]] — vendor claim about portals (draft)
 - [[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]] — source-quality caveat (draft)
+- [[findings/client-side-throttling-and-server-side-apf-are-separate-layers]] — two throttling layers, two places to look (draft)
+- [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]] — cluster sharding limits and maturity label (draft)
+- [[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory]] — cost moves from the API server to provider pods (draft)
+- [[findings/tested-scalability-maximums-and-operator-advice-differ-by-an-order-of-magnitude]] — 5,000 tested nodes versus 500 advised (draft)
+- [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]] — source-quality caveat (draft)
 
 ## Outputs
 

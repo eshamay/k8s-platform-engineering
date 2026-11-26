@@ -8,6 +8,9 @@ sources:
   - id: research-flux-deep-dive
     hash: e640ec8046bc
     ingested: 2026-11-25
+  - id: research-scale-and-sharding
+    hash: d082d1d36d7e
+    ingested: 2026-11-25
 aliases: []
 tags: [decision, flux, scale, sharding]
 ---
@@ -33,3 +36,7 @@ Tuning first keeps the system simple and delays label bookkeeping, at the price 
 ## Related
 
 [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]], [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]], [[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents]], [[decisions/choosing-a-drift-check-interval-for-external-resources]], [[entities/flux]]
+
+## Additional evidence from the scale dossier
+
+The scale dossier states the documented order: for hundreds of applications deployed many times a day, the Flux documentation first raises `--concurrent` to a suggested 10 to 20 and the resource limits, and sharding comes next. It still names no threshold and no organization running Flux shards. See [[concepts/scale-and-sharding]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], and [[sources/research-scale-and-sharding]].

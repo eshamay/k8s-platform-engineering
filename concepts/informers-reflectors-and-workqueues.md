@@ -17,6 +17,9 @@ sources:
   - id: research-informers-reflectors-and-workqueues
     hash: f9de5ca73ab6
     ingested: 2026-11-25
+  - id: research-scale-and-sharding
+    hash: d082d1d36d7e
+    ingested: 2026-11-25
 aliases: [client-go caching, controller-runtime cache]
 tags: [controllers, scale, informers, workqueue, client-go]
 ---
@@ -85,3 +88,7 @@ Heavy handlers and expensive reconciles waste API calls ([[findings/heavy-event-
 ## To research
 
 Resync semantics, controller sharding in Flux and Crossplane, cache-narrowing options such as selectors and transforms, and the informer choices of kro, Config Connector, ACK, and Cluster API. See [[open-knowledge-gaps]].
+
+## Scale limits in the scale dossier
+
+The scale dossier adds that the workqueue never processes one key concurrently, so worker count and reconcile duration, and not object count, bound throughput, that leader election makes extra replicas standbys, and that API Priority and Fairness is the server-side counterpart to the client's QPS and burst. The wider picture is in [[concepts/scale-and-sharding]] and [[sources/research-scale-and-sharding]].

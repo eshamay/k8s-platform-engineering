@@ -74,6 +74,9 @@ sources:
   - id: research-landscape
     hash: d28204a90545
     ingested: 2026-11-25
+  - id: research-scale-and-sharding
+    hash: d082d1d36d7e
+    ingested: 2026-11-25
 aliases: [Flux CD, FluxCD]
 tags: [tool, gitops]
 ---
@@ -183,3 +186,7 @@ The pitfalls the dossier names are covered in [[findings/without-lockdown-flags-
 ## Position in the tooling landscape
 
 Flux is the toolkit-style option in the delivery layer of [[concepts/tooling-landscape]]. Its documentation describes source controllers that fetch from Git, OCI, Helm repositories, and buckets, kustomize and helm controllers that apply, a notification controller, and image automation controllers, each owning a CRD, under the tagline "composable APIs, reusable Go packages for GitOps" (https://fluxcd.io/flux/components/). Akuity says Flux uses native Kubernetes RBAC with a lockdown mode, has a lower and more predictable footprint, suits air-gapped setups, relies on CI or Flagger for promotion, and gets its official UI from the Flux Operator, all from a vendor that sells Argo CD. See [[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]] and [[entities/tofu-controller]] for the Flux-family Terraform controller. [[sources/research-landscape]]
+
+## Sharding and vertical scaling in the scale dossier
+
+The scale dossier describes two ways to add capacity to Flux. Vertical scaling raises `--concurrent` to a suggested 10 to 20, raises CPU and memory limits for the kustomize, helm, and source controllers, puts `/tmp` on a memory-backed `emptyDir` to speed up Kustomize builds, tunes the Helm index cache flags, and uses persistent volumes so artifacts survive restarts. Sharding runs several instances of the source, kustomize, and helm controllers, each started with a `--watch-label-selector`, and assigns objects to a shard through the label `sharding.fluxcd.io/key`. Notification-controller and source-watcher cannot be sharded. Multi-tenant platforms are the typical sharding scenario, and the dossier names no organization running Flux shards. See [[concepts/scale-and-sharding]], [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]], [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]], and [[sources/research-scale-and-sharding]]. URLs: https://fluxcd.io/flux/installation/configuration/sharding/ and https://fluxcd.io/flux/installation/configuration/vertical-scaling/.
