@@ -676,6 +676,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/cluster-api-webhooks-can-be-unreachable-for-up-to-90-seconds-during-cert-manager-certificate-rotation]] — CAPI issue 10522 (active)
 - [[findings/cluster-api-v1-14-0-lists-four-breaking-changes-and-schedules-v1beta1-and-docker-removals]] — CAPI v1.14.0 release notes (active)
 - [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]] — evidence caveat (draft)
+- [[findings/evidence-and-fact-check-pass-gap-dispositions]] — triage of the 49 group 1 and 3 gaps against the 14 research dossiers: 22 resolved-candidate, 23 partial, 4 still-open (active)
 
 ## Outputs
 
