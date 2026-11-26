@@ -514,3 +514,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Crossplane v2 claims and the concepts pages
 - closed by: Eric Shamay
 - resolution: Settled: the v2.5 docs have no claims page and the concepts section became composition and managed-resources, so older claims and patch-and-transform tutorials no longer match current Crossplane ([[findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane]]). Not settled: whether the old concepts URLs redirect was not checked.
+
+## [2026-11-26] gaps | close | Crossplane v2 condition behavior and the fix for async Synced signaling
+- closed by: Eric Shamay
+- resolution: Settled: there is no fix. provider-aws issue 2287 was closed as stale and the source on main still reports ReconcileSuccess while an async operation runs ([[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]]). Not settled: the body of open PR 8080 was not read, so a fix in flight is unconfirmed.

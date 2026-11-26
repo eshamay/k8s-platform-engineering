@@ -83,7 +83,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#what-happens-when-blockownerdeletion-is-set-without-finalizers-permission]] — open, unassigned
 - [[#crossplane-v2-namespaced-composites-and-managementpolicies-versus-garbage-collection]] — open, unassigned
 - [[#keps-on-cross-namespace-ownership-and-garbage-collector-performance]] — open, unassigned
-- [[#crossplane-v2-condition-behavior-and-the-fix-for-async-synced-signaling]] — open, unassigned
 - [[#how-a-platform-should-choose-condition-polarity]] — open, unassigned
 - [[#which-parts-of-the-config-connector-reconcile-status-design-shipped]] — open, unassigned
 - [[#managementpolicies-feature-status-and-the-observeonly-to-policy-list-mapping]] — open, unassigned
@@ -1034,18 +1033,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** keps, garbage-collection, verification
 
-## Crossplane v2 condition behavior and the fix for async Synced signaling — status: open
-
-- **Question:** Do Crossplane v2 and current upjet and crossplane-runtime releases still overwrite a pending state with `ReconcileSuccess` during long async operations, and is `AsyncOperation` now part of the recommended alert surface?
-- **Why it matters:** The dossier read the v1.20 managed resources page and the issue thread only, so the fix status of provider-aws issue 2287 is unknown. See [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read current Crossplane v2 managed resource documentation and the upjet and crossplane-runtime changes linked to the issue.
-  - [ ] Update [[entities/crossplane]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** crossplane, conditions, upjet, verification
-- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Answered, with a negative result. There is no fix. Provider-aws issue 2287 was closed by the stale bot on 2026-06-25 with no linked change, and upjet and crossplane-runtime source on `main` still returns up-to-date from Observe during an async operation and marks `ReconcileSuccess`. `AsyncOperation` is documented as provider detail, not as an alerting recommendation, and the docs and code disagree on its status value. v2.0.0 made XR and claim conditions persist `observedGeneration`. Not settled: the body of open PR 8080 ("stop stale XR condition replay") was not read. See [[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]].
-
 ## How a platform should choose condition polarity — status: open
 
 - **Question:** Should new condition types be abnormal-true (as kstatus prefers) or positive (as the Cluster API proposal and the API conventions lean), and what evidence shows which choice produces fewer misreadings by generic tools?
@@ -1711,3 +1698,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: the v2.5 docs have no claims page and the concepts section became composition and managed-resources, so older claims and patch-and-transform tutorials no longer match current Crossplane ([[findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane]]). Not settled: whether the old concepts URLs redirect was not checked.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. The concepts section was reorganized into `composition/` and `managed-resources/`, the v2.5 docs have no claims page (v1.20 had one), and the Compositions page does not mention claims. Claims appear only in the XRD page, What's New, and the upgrade guide, as a backward-compatibility note. [[concepts/composite-resource]] now says so. Not settled: whether the old `/latest/concepts/compositions/` URL redirects, which was not checked.
+
+## Crossplane v2 condition behavior and the fix for async Synced signaling — status: closed (2026-11-26)
+
+- **Question:** Do Crossplane v2 and current upjet and crossplane-runtime releases still overwrite a pending state with `ReconcileSuccess` during long async operations, and is `AsyncOperation` now part of the recommended alert surface?
+- **Why it matters:** The dossier read the v1.20 managed resources page and the issue thread only, so the fix status of provider-aws issue 2287 is unknown. See [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read current Crossplane v2 managed resource documentation and the upjet and crossplane-runtime changes linked to the issue.
+  - [ ] Update [[entities/crossplane]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, conditions, upjet, verification
+- **Resolution:** Settled: there is no fix. provider-aws issue 2287 was closed as stale and the source on main still reports ReconcileSuccess while an async operation runs ([[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]]). Not settled: the body of open PR 8080 was not read, so a fix in flight is unconfirmed.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Answered, with a negative result. There is no fix. Provider-aws issue 2287 was closed by the stale bot on 2026-06-25 with no linked change, and upjet and crossplane-runtime source on `main` still returns up-to-date from Observe during an async operation and marks `ReconcileSuccess`. `AsyncOperation` is documented as provider detail, not as an alerting recommendation, and the docs and code disagree on its status value. v2.0.0 made XR and claim conditions persist `observedGeneration`. Not settled: the body of open PR 8080 ("stop stale XR condition replay") was not read. See [[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]].
