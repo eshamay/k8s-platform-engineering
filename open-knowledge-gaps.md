@@ -45,7 +45,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#crossplane-v2-server-side-apply-behavior-and-external-writers]] — open, unassigned
 - [[#cluster-api-field-ownership-rules-and-argo-cd-server-side-diff-stability]] — open, unassigned
 - [[#kyverno-webhook-failure-modes-and-availability]] — open, unassigned
-- [[#cel-cost-limits-and-per-request-budgets]] — open, unassigned
 - [[#named-operator-failure-postmortems]] — open, unassigned
 - [[#criteria-for-choosing-an-operator-framework-or-language]] — open, unassigned
 - [[#operator-sdk-capability-levels-for-composition-based-operators]] — open, unassigned
@@ -586,18 +585,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kyverno, webhooks, availability
 - **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Partly settled, and the user decides whether to close it. Kyverno policies default to failure policy Fail with a 10 second timeout, the Kyverno and kube-system namespaces are excluded by default, three admission replicas are the HA minimum, and an all-pods-down outage is recovered by deleting the resource webhook configurations. Not settled: measured availability numbers, and any resilience comparison of Kyverno-generated native ValidatingAdmissionPolicy with webhook mode. See [[findings/kyverno-defaults-to-failure-policy-fail-with-a-10-second-timeout-and-needs-three-admission-replicas-for-high-availability]] and [[findings/kyverno-fail-closed-policies-time-out-api-requests-when-all-kyverno-pods-are-down-unless-the-kyverno-namespace-is-excluded]].
-
-## CEL cost limits and per-request budgets — status: open
-
-- **Question:** What are the exact CEL cost limits for CRD validation rules and admission policies, and what per-request budgets apply?
-- **Why it matters:** Schema authors need the numbers to decide how tightly to bound lists and strings. See [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the Kubernetes CRD validation rules documentation on cost estimation.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** cel, limits, crd
-- **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on mechanism only. The dossier found no named-company postmortem for stuck finalizers and says so, but it collects the causes (missing controller, always-failing cleanup, child finalizers) and the dangers of forced removal. See [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]].
-- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Settled from Kubernetes source, and the user decides whether to close it. The static estimate limit is 10,000,000 per expression and 100,000,000 per CRD, the runtime limit is 1,000,000 per call, the runtime budget is 10,000,000 per binding or custom resource, and matchConditions have 2,500,000. The CRD docs advise `maxItems`, `maxProperties` and `maxLength` because unbounded inputs get worst-case cost. Values were read on master, not pinned to a release tag. See [[findings/cel-cost-limits-are-10-million-per-expression-and-100-million-per-crd-statically-and-1-million-per-call-and-10-million-per-request-at-runtime]] and [[findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set]].
 
 ## Named operator failure postmortems — status: open
 
@@ -1818,3 +1805,18 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Closed by:** Eric Shamay on 2026-11-26
 
 - **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Largely settled, and the user decides whether to close it. Crossplane ships one Fail Usage webhook and uses CEL for XRD and Composition validation. kro and ACK ship no webhook in the files read, and kro relies on CRD schema and CEL. Config Connector and Cluster API ship many webhooks, all Fail. Gatekeeper defaults to Ignore with a documented fail-closed path. Not settled: Argo CD webhook absence is UNVERIFIED because only tree paths were searched, and namespace exclusions in the Cluster API and Config Connector manifests were not searched exhaustively. See [[comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno]].
+
+## CEL cost limits and per-request budgets — status: closed (2026-11-26)
+
+- **Question:** What are the exact CEL cost limits for CRD validation rules and admission policies, and what per-request budgets apply?
+- **Why it matters:** Schema authors need the numbers to decide how tightly to bound lists and strings. See [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Kubernetes CRD validation rules documentation on cost estimation.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** cel, limits, crd
+- **Resolution:** Settled from Kubernetes source. The static estimate limit is 10,000,000 per expression and 100,000,000 per CRD, the runtime limit is 1,000,000 per call, the runtime budget is 10,000,000 per binding or custom resource, and matchConditions have 2,500,000. The CRD docs advise `maxItems`, `maxProperties` and `maxLength` because unbounded inputs get worst-case cost. Values were read on master, not pinned to a release tag. See [[findings/cel-cost-limits-are-10-million-per-expression-and-100-million-per-crd-statically-and-1-million-per-call-and-10-million-per-request-at-runtime]] and [[findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-finalizers]]:** Partly helpful on mechanism only. The dossier found no named-company postmortem for stuck finalizers and says so, but it collects the causes (missing controller, always-failing cleanup, child finalizers) and the dangers of forced removal. See [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]].
+- **Possible resolution from [[sources/research-gap-m6-admission-crds]]:** Settled from Kubernetes source, and the user decides whether to close it. The static estimate limit is 10,000,000 per expression and 100,000,000 per CRD, the runtime limit is 1,000,000 per call, the runtime budget is 10,000,000 per binding or custom resource, and matchConditions have 2,500,000. The CRD docs advise `maxItems`, `maxProperties` and `maxLength` because unbounded inputs get worst-case cost. Values were read on master, not pinned to a release tag. See [[findings/cel-cost-limits-are-10-million-per-expression-and-100-million-per-crd-statically-and-1-million-per-call-and-10-million-per-request-at-runtime]] and [[findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set]].
