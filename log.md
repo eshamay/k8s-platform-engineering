@@ -526,3 +526,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | managementPolicies feature status and the ObserveOnly-to-policy-list mapping
 - closed by: Eric Shamay
 - resolution: Settled: managementPolicies is beta in v2.5; the mapping from older advice is an Observe list for observe-only, an empty list that pauses reconciliation, and Orphan meaning no Delete ([[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]], [[decisions/choose-management-policies-for-an-imported-resource]]). Not settled: the mapping is assembled from three sources because no single official table exists.
+
+## [2026-11-26] gaps | close | Crossplane Operations maturity and API stability
+- closed by: Eric Shamay
+- resolution: Settled: Operations are alpha with v1alpha1 CRDs behind --enable-operations, and cannot delete resources or set owner references ([[findings/crossplane-operations-are-alpha-and-cannot-delete-resources-or-set-owner-references]]). Not settled: no beta graduation plan or tracking issue was found.

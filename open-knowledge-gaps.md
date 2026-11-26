@@ -103,7 +103,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#flux-sharding-in-production-and-the-helmchart-labeling-rule]] — open, unassigned
 - [[#flux-image-automation-api-status-and-safe-promotion-policy]] — open, unassigned
 - [[#crossplane-package-dependency-resolution-revision-activation-and-upgrade-policy]] — open, unassigned
-- [[#crossplane-operations-maturity-and-api-stability]] — open, unassigned
 - [[#managed-resource-activation-policy-mechanism-and-defaults]] — open, unassigned
 - [[#neutral-comparisons-of-crossplane-with-terraform-and-single-cloud-operators]] — open, unassigned
 - [[#kro-governance-status-and-the-future-of-the-graph-api]] — open, unassigned
@@ -1254,18 +1253,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** crossplane, packages, upgrades, verification
 
-## Crossplane Operations maturity and API stability — status: open
-
-- **Question:** What are Crossplane Operations for day-two tasks, which API version and stability level do they have, and how do they differ from composition functions?
-- **Why it matters:** Only a CNCF community blog describes Operations as scheduled day-two work, and that blog is forward-looking advocacy. See [[sources/research-crossplane-deep-dive]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the official Crossplane documentation on Operations and its release notes.
-  - [ ] Add a concept page or update [[entities/crossplane]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** crossplane, operations, v2, verification
-- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Operations are alpha in v2.5 (`state: alpha`, `--enable-operations`, only `ops.crossplane.io/v1alpha1` CRDs), arrived in v2.0.0, and differ from composition functions by running once to completion, force-applying without owner references, and being unable to delete resources. Not settled: no beta graduation plan or tracking issue was found. See [[findings/crossplane-operations-are-alpha-and-cannot-delete-resources-or-set-owner-references]].
-
 ## Managed resource activation policy mechanism and defaults — status: open
 
 - **Question:** How do managed resource activation policies decide which CRDs a provider installs, and what are their defaults and failure modes?
@@ -1714,3 +1701,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: managementPolicies is beta in v2.5; the mapping from older advice is an Observe list for observe-only, an empty list that pauses reconciliation, and Orphan meaning no Delete ([[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]], [[decisions/choose-management-policies-for-an-imported-resource]]). Not settled: the mapping is assembled from three sources because no single official table exists.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. `managementPolicies` is beta in the v2.5 managed resources page and import guide (on by default, removal needs two releases of deprecation per the feature-lifecycle page). The mapping is `ObserveOnly` to `["Observe"]`, pause to an empty list, `deletionPolicy: Orphan` to a list without `Delete`, and default `["*"]`. No single official page tabulates it, so it is assembled from release notes, docs, and runtime code. See [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]].
+
+## Crossplane Operations maturity and API stability — status: closed (2026-11-26)
+
+- **Question:** What are Crossplane Operations for day-two tasks, which API version and stability level do they have, and how do they differ from composition functions?
+- **Why it matters:** Only a CNCF community blog describes Operations as scheduled day-two work, and that blog is forward-looking advocacy. See [[sources/research-crossplane-deep-dive]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the official Crossplane documentation on Operations and its release notes.
+  - [ ] Add a concept page or update [[entities/crossplane]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, operations, v2, verification
+- **Resolution:** Settled: Operations are alpha with v1alpha1 CRDs behind --enable-operations, and cannot delete resources or set owner references ([[findings/crossplane-operations-are-alpha-and-cannot-delete-resources-or-set-owner-references]]). Not settled: no beta graduation plan or tracking issue was found.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Largely settled, and the user can close it. Operations are alpha in v2.5 (`state: alpha`, `--enable-operations`, only `ops.crossplane.io/v1alpha1` CRDs), arrived in v2.0.0, and differ from composition functions by running once to completion, force-applying without owner references, and being unable to delete resources. Not settled: no beta graduation plan or tracking issue was found. See [[findings/crossplane-operations-are-alpha-and-cannot-delete-resources-or-set-owner-references]].
