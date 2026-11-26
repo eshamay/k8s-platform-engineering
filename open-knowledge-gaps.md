@@ -109,7 +109,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#cloud-api-rate-limits-and-crossplane-provider-reconcile-tuning]] — open, unassigned
 - [[#scaling-behavior-of-kro-ack-cluster-api-and-config-connector-controllers]] — open, unassigned
 - [[#current-crossplane-v2-scaling-guidance]] — open, unassigned
-- [[#argo-cd-sharding-algorithm-maturity-in-current-releases]] — open, unassigned
 - [[#named-flux-sharding-adopters-and-api-priority-and-fairness-incidents]] — open, unassigned
 - [[#scale-numbers-from-model-digests-need-recheck]] — open, unassigned
 - [[#first-party-pitfall-and-incident-evidence-for-kro-config-connector-ack-and-cluster-api]] — open, unassigned
@@ -1300,18 +1299,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** crossplane, v2, scale, provider-family
 - **Possible resolution from [[sources/research-gap-g3-crossplane-v2]]:** Partly settled. There is no single v2 scaling page. Guidance is in the Pods guide (default polling one minute, hourly full re-check), the v2.1.0 notes (API Priority and Fairness, an XR circuit breaker, `--max-concurrent-reconciles`), and the Accepted MRD design doc, which says families "helped alleviate" the problem and does not retire them. The 2023 family-split decision still stands, now with an alpha alternative. Not settled: no numeric limits for XRs or composed resources per controller, and no independent benchmarks. See [[examples/crossplane-v2-4-and-v2-5-cut-memory-on-clusters-with-hundreds-to-two-thousand-crds]] and [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]].
 
-## Argo CD sharding algorithm maturity in current releases — status: open
-
-- **Question:** Are the round-robin and consistent-hashing sharding algorithms still labelled experimental in current Argo CD releases?
-- **Why it matters:** The dossier's digest called them experimental, and the label may be stale. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the current high-availability page directly and record the version.
-  - [ ] Revise the finding and [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** argo-cd, sharding, maturity
-- **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Settled, and the user can close it. In the Argo CD v3.6.3 docs (released 2026-11-24), both `round-robin` and `consistent-hashing` are still "an experimental feature", and the feature-maturity page lists them as Alpha, introduced in v2.8.0 and v2.12.0. The warning text is the same at v2.14.0 and v3.0.0, so the wiki label is not stale and nothing read says either algorithm graduated. The `legacy` method is "uid based distribution (non-uniform)". Not settled: whether `legacy` is still the default, because the v3.6.3 page drops the "(default)" marker shown at v3.0.0, and the CNOE benchmark blog the docs cite (secondary only) was not read. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]], and [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]].
-
 ## Named Flux sharding adopters and API Priority and Fairness incidents — status: open
 
 - **Question:** Which organizations run sharded Flux, and are there published incidents or postmortems involving API Priority and Fairness throttling?
@@ -1721,3 +1708,17 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Resolution:** Settled: the flag is --override-manager-before-dry-run, first shipped in kustomize-controller v1.10.0 and Flux v2.10.0; it transfers all fields of the named managers and is not reverted if the apply fails ([[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]], [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]]). Not settled: helm-controller driftDetection and Helm 4 server-side apply were not researched in this pass.
 - **Closed by:** Eric Shamay on 2026-11-26
 - **Possible resolution from [[sources/research-gap-g3-flux-ssa-helm]]:** Settled, and the user can close it. The shipped flag is `--override-manager-before-dry-run`, the name issue 1722 proposed, delivered by kustomize-controller PR 1747 (merged 2026-10-23) with fluxcd/pkg PR 1276. It first shipped in kustomize-controller v1.10.0 (2026-10-24) and is bundled in Flux v2.10.0 (2026-10-26). It is a separate opt-in list, and `--override-manager` still takes over the named managers only after a successful dry-run. The documentation says the pre-dry-run takeover transfers all fields of the named managers, prunes fields missing from the source, is not reverted if the apply fails, matches names exactly, and should be used only to recover stuck objects and then removed. The default managers stay on the post-dry-run path. The flags are documented on the controller options page and not on the Kustomization spec page. Not settled: the helm-controller `--override-manager` claim and the since-v1.5.0 version, which the dossier did not research. See [[entities/flux]], [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]], [[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]], [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]], and [[examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag]].
+
+## Argo CD sharding algorithm maturity in current releases — status: closed (2026-11-26)
+
+- **Question:** Are the round-robin and consistent-hashing sharding algorithms still labelled experimental in current Argo CD releases?
+- **Why it matters:** The dossier's digest called them experimental, and the label may be stale. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current high-availability page directly and record the version.
+  - [ ] Revise the finding and [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** argo-cd, sharding, maturity
+- **Resolution:** Settled: round-robin and consistent-hashing are still labelled experimental (Alpha) at v3.6.3, and legacy sharding can distribute clusters unevenly ([[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]]). Not settled: the v3.6.3 high-availability page no longer marks legacy as the default ([[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]]), so which method is the default is unconfirmed.
+- **Closed by:** Eric Shamay on 2026-11-26
+- **Possible resolution from [[sources/research-gap-g3-argocd-capi]]:** Settled, and the user can close it. In the Argo CD v3.6.3 docs (released 2026-11-24), both `round-robin` and `consistent-hashing` are still "an experimental feature", and the feature-maturity page lists them as Alpha, introduced in v2.8.0 and v2.12.0. The warning text is the same at v2.14.0 and v3.0.0, so the wiki label is not stale and nothing read says either algorithm graduated. The `legacy` method is "uid based distribution (non-uniform)". Not settled: whether `legacy` is still the default, because the v3.6.3 page drops the "(default)" marker shown at v3.0.0, and the CNOE benchmark blog the docs cite (secondary only) was not read. See [[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]], [[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]], and [[comparisons/flux-label-sharding-versus-argo-cd-cluster-sharding]].

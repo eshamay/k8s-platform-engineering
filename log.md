@@ -562,3 +562,7 @@ Structural lint over 651 content pages (concepts 27, entities 37, sources 43, ex
 ## [2026-11-26] gaps | close | Flux pre-dry-run manager takeover flag and current SSA documentation
 - closed by: Eric Shamay
 - resolution: Settled: the flag is --override-manager-before-dry-run, first shipped in kustomize-controller v1.10.0 and Flux v2.10.0; it transfers all fields of the named managers and is not reverted if the apply fails ([[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]], [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]]). Not settled: helm-controller driftDetection and Helm 4 server-side apply were not researched in this pass.
+
+## [2026-11-26] gaps | close | Argo CD sharding algorithm maturity in current releases
+- closed by: Eric Shamay
+- resolution: Settled: round-robin and consistent-hashing are still labelled experimental (Alpha) at v3.6.3, and legacy sharding can distribute clusters unevenly ([[findings/argo-cd-legacy-sharding-can-be-uneven-and-the-other-algorithms-were-labelled-experimental]]). Not settled: the v3.6.3 high-availability page no longer marks legacy as the default ([[findings/the-argo-cd-v3-6-3-high-availability-page-no-longer-marks-legacy-as-the-default-sharding-method]]), so which method is the default is unconfirmed.
