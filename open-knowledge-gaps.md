@@ -62,7 +62,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#cache-narrowing-options-in-controller-runtime]] — open, unassigned
 - [[#flux-shared-caches-and-crossplane-performance-guidance]] — open, unassigned
 - [[#informer-and-cache-choices-of-kro-config-connector-ack-and-cluster-api]] — open, unassigned
-- [[#flux-kustomization-finalizer-name-and-behavior]] — open, unassigned
 - [[#resolution-of-crossplane-issue-7801-on-credential-protection]] — open, unassigned
 - [[#how-ack-config-connector-and-kro-name-and-remove-their-finalizers]] — open, unassigned
 - [[#cluster-api-issue-1514-on-blocking-deletion-with-a-finalizer-or-annotation]] — open, unassigned
@@ -804,19 +803,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** kro, config-connector, ack, cluster-api, informers
 - **Possible resolution from [[sources/research-gap-m5-informers-caches]]:** Settled from source for the four tools, and the user decides whether to close it. kro holds one metadata-only informer per GVR, Config Connector caches only its own configuration kinds, ACK scopes by namespace and label selector, and Cluster API caches only cluster-labelled Secrets and gives each workload cluster its own cache, with rate limits and concurrency defaults in the comparison table. Not settled: no production memory figures were found, and Backstage was not researched. See [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]].
-
-## Flux Kustomization finalizer name and behavior — status: open
-
-- **Question:** What is Flux's own finalizer on a Kustomization, and how does `WaitForTermination` interact with the finalizers of child objects?
-- **Why it matters:** The dossier read about 100 KB of a page of about 121 KB and did not isolate the finalizer section or confirm `finalizers.fluxcd.io`. See [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the full Kustomization reference and the kustomize-controller source.
-  - [ ] Update [[entities/flux]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** flux, finalizers, verification
-- **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Marginally helpful. The dossier read about 100,000 of 121,000 characters of the Kustomization page, found `deletionPolicy` and inventory-based pruning, and did not isolate the finalizer name or say whether Flux uses owner references. See [[entities/flux]].
-- **Possible resolution from [[sources/research-gap-m1-finalizers]]:** Settled, and the user decides whether to close it. The Kustomization finalizer is `finalizers.fluxcd.io`, which the reconciler adds first to avoid a race with deletion. A suspended Kustomization or one with an empty inventory deletes nothing, MirrorPrune follows `spec.prune`, Delete and WaitForTermination always delete, and Orphan never does. WaitForTermination polls every 2 seconds up to the Kustomization timeout, and if the wait fails Flux logs an error and removes the finalizer anyway, so a timeout does not hold the Kustomization. A missing impersonation account also logs the stale objects and continues. Flux deletes by inventory and not owner references in the code read. Not settled: older beta API versions were not read. See [[findings/flux-kustomization-uses-finalizers-fluxcd-io-and-removes-it-even-when-waitfortermination-times-out]].
 
 ## Resolution of Crossplane issue 7801 on credential protection — status: open
 
@@ -1800,3 +1786,19 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 
 - **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Partly helpful. The Argo CD App Deletion page says cascade needs the `resources-finalizer.argocd.argoproj.io` finalizer, that cascade uses foreground propagation by default, and that background and non-cascading deletes are selectable. The Foreground and Background finalizer variants and `PrunePropagationPolicy` were still not read. See [[examples/gitops-tools-garbage-collect-through-inventory-and-finalizers-not-owner-references]].
 - **Possible resolution from [[sources/research-gap-m1-finalizers]]:** Settled, and the user decides whether to close it. Argo CD has three cascade finalizer names, the bare `resources-finalizer.argocd.argoproj.io` (documented default, foreground), `.../foreground`, and `.../background`, and the controller uses background propagation only for the exact `/background` name. Separate `pre-delete-finalizer.argocd.argoproj.io` and `post-delete-finalizer.argocd.argoproj.io` track hooks. Options for deleting an Application without its workloads are `argocd app delete APPNAME --cascade=false`, unsetting the finalizer before a kubectl delete, the UI choice Non-Cascading (Orphan), and `preserveResourcesOnDeletion` for ApplicationSets. The `PrunePropagationPolicy` sync option governs pruning during sync, not Application deletion. Not settled: whether the `/foreground` spelling differs from the bare name anywhere in the code, since no distinct branch was found. All reads were of the master branch on 2026-11-26. See [[findings/argo-cd-applications-use-three-cascade-finalizer-names-and-a-non-cascading-delete-removes-the-finalizer]] and [[examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads]].
+
+## Flux Kustomization finalizer name and behavior — status: closed (2026-11-26)
+
+- **Question:** What is Flux's own finalizer on a Kustomization, and how does `WaitForTermination` interact with the finalizers of child objects?
+- **Why it matters:** The dossier read about 100 KB of a page of about 121 KB and did not isolate the finalizer section or confirm `finalizers.fluxcd.io`. See [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the full Kustomization reference and the kustomize-controller source.
+  - [ ] Update [[entities/flux]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** flux, finalizers, verification
+- **Resolution:** Settled. The Kustomization finalizer is `finalizers.fluxcd.io`, which the reconciler adds first to avoid a race with deletion. A suspended Kustomization or one with an empty inventory deletes nothing, MirrorPrune follows `spec.prune`, Delete and WaitForTermination always delete, and Orphan never does. WaitForTermination polls every 2 seconds up to the Kustomization timeout, and if the wait fails Flux logs an error and removes the finalizer anyway, so a timeout does not hold the Kustomization. A missing impersonation account also logs the stale objects and continues. Flux deletes by inventory and not owner references in the code read. Not settled: older beta API versions were not read. See [[findings/flux-kustomization-uses-finalizers-fluxcd-io-and-removes-it-even-when-waitfortermination-times-out]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-owner-references-and-garbage-collection]]:** Marginally helpful. The dossier read about 100,000 of 121,000 characters of the Kustomization page, found `deletionPolicy` and inventory-based pruning, and did not isolate the finalizer name or say whether Flux uses owner references. See [[entities/flux]].
+- **Possible resolution from [[sources/research-gap-m1-finalizers]]:** Settled, and the user decides whether to close it. The Kustomization finalizer is `finalizers.fluxcd.io`, which the reconciler adds first to avoid a race with deletion. A suspended Kustomization or one with an empty inventory deletes nothing, MirrorPrune follows `spec.prune`, Delete and WaitForTermination always delete, and Orphan never does. WaitForTermination polls every 2 seconds up to the Kustomization timeout, and if the wait fails Flux logs an error and removes the finalizer anyway, so a timeout does not hold the Kustomization. A missing impersonation account also logs the stale objects and continues. Flux deletes by inventory and not owner references in the code read. Not settled: older beta API versions were not read. See [[findings/flux-kustomization-uses-finalizers-fluxcd-io-and-removes-it-even-when-waitfortermination-times-out]].
