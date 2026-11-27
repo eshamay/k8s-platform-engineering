@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: kubernetes-finalizers-blog
+    hash: 31da0061e2fb
+    ingested: 2026-11-26
   - id: research-gap-m2-ownership-gc
     hash: 62aafaded9c0
     ingested: 2026-11-26
@@ -54,3 +57,7 @@ Still no rate: the Kubernetes finalizers page was re-read on 2026-11-26 and it w
 ## Namespace-deletion evidence from Crossplane v2
 
 Crossplane issue 7801 states that when a namespace is deleted and the credentials Secret goes first, "The only way out today is to remove finalizers by hand, which orphans the external resources." That is a statement in the issue, not a release note. Whether the same happens with the provider absent is not documented. [[sources/research-gap-m2-ownership-gc]] See [[examples/crossplane-issue-7801-asks-how-to-protect-provider-credentials-during-namespace-deletion-and-is-open-with-no-maintainer-reply]].
+
+## A second failure class from the Kubernetes finalizers blog
+
+The 2021 Kubernetes blog post adds an in-cluster failure class to the external-resource leaks above: forcing a namespace through the `finalize` subresource can leave orphan objects inside a namespace that no longer exists. It gives no frequency, so the question of how often forced removal orphans guarded resources stays open. See [[findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back]]. [[sources/kubernetes-finalizers-blog]]

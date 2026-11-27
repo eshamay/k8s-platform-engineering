@@ -1079,3 +1079,13 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 - fact conflicts: 0
 - gaps drafted: 1
 - rationale: A short auto-generated transcript treated as the speaker's account, with recognition errors recorded under Limits. It agrees with the wiki's description of kcp and adds unmeasured timing claims and a note on per-version controllers for CRDs. It does not address the distribution model the earlier todo expected, so three open gaps received not-settled notes, one gap about the CVE the speaker mentioned was drafted, and one optional output todo was appended.
+
+## [2026-11-26] ingest | Kubernetes blog: Using Finalizers to Control Deletion (Aaron Alpar, Kasten, 2021)
+- source: [[sources/kubernetes-finalizers-blog]]
+- raw: `raw/kubernetes-finalizers-blog` (sha256: 31da0061e2fb)
+- pages touched: [[concepts/finalizers]], [[concepts/owner-references-and-garbage-collection]], [[comparisons/background-foreground-and-orphan-propagation-modes]], [[decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller]], [[examples/stuck-terminating-namespace-fixed-through-the-finalize-subresource]], [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]], [[sources/research-finalizers]], [[sources/research-owner-references-and-garbage-collection]], open-knowledge-gaps
+- new pages: [[sources/kubernetes-finalizers-blog]], [[examples/a-configmap-with-a-finalizer-no-controller-handles-stays-in-deletion-until-kubectl-patch-removes-the-finalizer-list]], [[findings/the-2021-kubernetes-finalizers-blog-says-kubectl-cannot-set-the-propagation-policy-while-its-own-example-uses-cascade-orphan]], [[findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back]]
+- contradictions raised: 0 (correction notes on two dossier source pages whose summaries of the blog the full text does not support, and one finding on the blog's own dated claim)
+- fact conflicts: 0
+- gaps drafted: 0
+- rationale: The official blog post is now read in full after earlier summary-only citations. Its content agrees with the wiki's finalizer and propagation pages and adds a worked dead-finalizer example and a warning about orphans after forced namespace finalization. Two dossier summaries of it were wrong in detail and received correction notes, and the post's own statement that kubectl cannot set the propagation policy is recorded as dated. Three open gaps received notes and none was closed. No output passage was affected.

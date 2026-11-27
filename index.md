@@ -156,6 +156,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/resource-composition-with-kro]] — Amazon EKS documentation overview of managed kro under EKS Capabilities, with the ACK and Argo CD integrations (draft)
 - [[sources/bex-co-kro-radar-post]] — secondary bex.co blog post reporting a CNCF and SlashData radar placing kro in Adopt, and weighing kro for a Cluster API platform (draft)
 - [[sources/kcp-kubecon-talk]] — auto-generated transcript of a short KubeCon talk on kcp workspaces by Yan Vegas of Accenture, the speaker's account (draft)
+- [[sources/kubernetes-finalizers-blog]] — official Kubernetes blog post of 2021 by Aaron Alpar of Kasten on finalizers, owner references, propagation policy, and forcing namespace finalization (draft)
 
 ## Examples
 
@@ -454,6 +455,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/kubernetes-pull-request-143314-fixed-the-informer-store-resource-version-gauge-reporting-zero-before-a-store-recorded-a-version]] — 1.38 changelog fix for the gauge reporting 0 (active)
 - [[examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner]] — a company evaluating, not adopting, kro against a hand-rolled controller, secondary (draft)
 - [[examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour]] — a speaker's unmeasured timing claim and CRD-version handling for kcp (draft)
+- [[examples/a-configmap-with-a-finalizer-no-controller-handles-stays-in-deletion-until-kubectl-patch-removes-the-finalizer-list]] — a dead finalizer on a ConfigMap keeps a delete pending until a JSON patch clears it (draft)
 
 ## Comparisons
 
@@ -965,6 +967,8 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/kep-5647-is-implementable-with-a-beta-v1-37-target-and-an-open-tracking-issue-labelled-lifecycle-stale]] — KEP and tracking-issue status (active)
 - [[findings/the-amazon-eks-kro-overview-lists-resourcegraphdefinition-as-the-only-primary-resource-type-and-names-no-kro-version]] — the AWS overview names only RGD as kro's primary resource type and no kro version (draft)
 - [[findings/one-blog-reports-that-the-cncf-and-slashdata-q1-2026-radar-rated-kro-adopt-from-a-survey-of-more-than-400-developers]] — the radar placement is reported by one blog and the radar was not read (draft)
+- [[findings/the-2021-kubernetes-finalizers-blog-says-kubectl-cannot-set-the-propagation-policy-while-its-own-example-uses-cascade-orphan]] — a dated statement in the blog that current documentation and the blog's own example contradict (draft)
+- [[findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back]] — the blog's warning and recovery step for forced namespace finalization (draft)
 
 ## Outputs
 

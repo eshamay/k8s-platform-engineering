@@ -3,8 +3,11 @@ title: "Research dossier: Finalizers"
 type: source
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: kubernetes-finalizers-blog
+    hash: 31da0061e2fb
+    ingested: 2026-11-26
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
@@ -71,3 +74,7 @@ The dossier did not read Cluster API issue 1514, Flux garbage collection order w
 ## Related
 
 [[concepts/finalizers]], [[concepts/owner-references-and-garbage-collection]], [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]]
+
+## Correction note on the Kubernetes finalizers blog summary
+
+Correction note, 2026-11-26: the claim above that the Kubernetes blog post "Using Finalizers to Control Deletion" demonstrates behavior with a ConfigMap and a Job, shows `kubectl delete --cascade` selecting the three modes, and lists pitfalls of cleanup that fails or loops is not supported by the full text. The post uses ConfigMaps only, says the propagation policy cannot be set from kubectl while using `--cascade=orphan` in an example, and does not discuss failing or looping cleanup. The quoted opening sentence is accurate. See [[sources/kubernetes-finalizers-blog]]. The dossier's other claims are unchanged.

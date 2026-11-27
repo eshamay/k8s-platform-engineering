@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: kubernetes-finalizers-blog
+    hash: 31da0061e2fb
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -76,3 +79,7 @@ How ACK handles deletion and whether Flux relies on owner references anywhere ar
 ## Additions from the admission and CRD dossier
 
 The garbage collector no longer blocks on a failed cache sync since Kubernetes 1.32, but owners with `blockOwnerDeletion: true` in an unsynced resource type are not known to it. See [[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]] and [[examples/kubernetes-pull-request-125796-let-the-garbage-collector-proceed-after-a-failed-cache-sync-and-closed-issue-101078-in-v1-32]]. [[sources/research-gap-m6-admission-crds]]
+
+## Owner references and cascade in the Kubernetes finalizers blog
+
+The 2021 finalizers blog, now read in full, says an owner reference holds a name and a UID and links resources within one namespace, that deleting a parent cascades to children while deleting a child leaves the parent, and that `--cascade=orphan` deletes the parent and keeps the child. It labels Foreground as children before the parent (post-order), Background as parent before children (pre-order), and Orphan as owner references ignored, and it notes that from kubectl v1.20 the default cascade is background. These labels agree with the documentation summarized above. The earlier worry that the post called foreground a default for some resources is not supported by the full text, which does not say it. Finalizers are still honored during a cascade, so a tree can be left partly deleted. [[sources/kubernetes-finalizers-blog]]

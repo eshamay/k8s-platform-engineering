@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: kubernetes-finalizers-blog
+    hash: 31da0061e2fb
+    ingested: 2026-11-26
   - id: research-gap-m2-ownership-gc
     hash: 62aafaded9c0
     ingested: 2026-11-26
@@ -36,3 +39,7 @@ Background suits most deletes because it returns quickly. Foreground is the only
 ## Tool defaults and the old design archive
 
 Argo CD prunes with foreground deletion by default and accepts `PrunePropagationPolicy` values of background, foreground, and orphan. Namespace deletion uses background propagation, according to KEP-5080. The archived garbage collection design says `OrphanDependents` defaulted to true because pre-1.2 controllers expected orphaning, which is outdated against current documentation. [[sources/research-gap-m2-ownership-gc]] See [[findings/argo-cd-tracks-resources-by-annotation-by-default-and-label-mode-truncates-and-collides-with-other-tools]] and [[findings/no-kep-covers-cross-namespace-ownership-or-garbage-collector-performance-and-the-nearest-proposals-are-5080-and-2336]].
+
+## Check against the finalizers blog
+
+Correction note: the paragraph above says two summaries, the finalizers blog and the design proposal, labeled the modes differently from current documentation. The blog is now read in full, and its labels agree with the documentation: Foreground deletes children first, Background deletes the parent first, and Orphan ignores owner references, with background as the kubectl default from v1.20. The mismatch came from the earlier summary and not from the post. The design proposal was not re-read in this pass. The post's statement that kubectl cannot set the policy is dated, see [[findings/the-2021-kubernetes-finalizers-blog-says-kubectl-cannot-set-the-propagation-policy-while-its-own-example-uses-cascade-orphan]]. [[sources/kubernetes-finalizers-blog]]

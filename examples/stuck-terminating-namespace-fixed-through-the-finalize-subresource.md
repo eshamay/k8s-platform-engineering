@@ -3,8 +3,11 @@ title: "A stuck Terminating namespace is fixed through the finalize subresource"
 type: example
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: kubernetes-finalizers-blog
+    hash: 31da0061e2fb
+    ingested: 2026-11-26
   - id: research-finalizers
     hash: ca11dffc241b
     ingested: 2026-11-25
@@ -36,3 +39,7 @@ The namespace finalizer is a field in `spec` and has its own subresource, which 
 ## Addition from the pitfalls dossier
 
 The pitfalls dossier summarizes this same Red Hat guide. The namespace status condition `NamespaceFinalizersRemaining` names the culprit, here a custom resource finalizer (`tackles.tackle.io/finalizer`) whose controller was not removing it. The author's CI created and deleted namespaces, and operator finalizers left them Terminating. The dossier also notes that the guide treats force removal as the fix without warning that it can orphan guarded resources. See [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]] and [[sources/research-pitfalls-and-case-studies]].
+
+## The Kubernetes blog's caution and recovery step
+
+The official Kubernetes blog post of 2021 describes the same last-resort update to the namespace `finalize` subresource and warns that it may delete the namespace only and leave orphan objects in a namespace that no longer exists. It says re-creating the namespace manually can sometimes make the orphans reappear so they can be cleaned up. See [[findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back]]. [[sources/kubernetes-finalizers-blog]]

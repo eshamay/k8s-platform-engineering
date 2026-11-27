@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: kubernetes-finalizers-blog
+    hash: 31da0061e2fb
+    ingested: 2026-11-26
   - id: research-gap-m1-finalizers
     hash: 014549e333b6
     ingested: 2026-11-26
@@ -94,3 +97,9 @@ A namespace stuck in Terminating reports the condition `NamespaceFinalizersRemai
 ## Update from the GitOps incidents dossier
 
 Primary issues show orphaning without any forced removal, when a controller restarts mid-delete or when the finalizer is added after the delete, see [[findings/resources-are-orphaned-when-a-controller-misses-the-delete-or-the-finalizer-is-added-too-late]]. No source gives a rate for orphaning after forced removal, see [[findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+
+## Update from the Kubernetes finalizers blog, read in full
+
+The official Kubernetes blog post "Using Finalizers to Control Deletion" (Aaron Alpar of Kasten, 2021-05-14) is now read in full. It describes finalizers as keys that signal pre-delete work and "don't necessarily name code", so they are lists of keys much like annotations and can be edited by anyone with access. It names `kubernetes.io/pv-protection` and `kubernetes.io/pvc-protection` as common built-in finalizers and shows a "dead" finalizer, the namespace key `kubernetes` placed on a ConfigMap that no controller handles, which keeps the object in deletion until a JSON patch removes `/metadata/finalizers`. See [[examples/a-configmap-with-a-finalizer-no-controller-handles-stays-in-deletion-until-kubectl-patch-removes-the-finalizer-list]]. It also warns that forcing a namespace through the `finalize` subresource can leave orphan objects in a namespace that no longer exists, and that re-creating the namespace may bring them back, see [[findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back]].
+
+Correction note: the earlier dossier summary of this post, cited above through [[sources/research-finalizers]], said it used a ConfigMap and a Job and showed `kubectl delete --cascade` selecting each propagation mode. The full text uses ConfigMaps only, and it says the propagation policy cannot be set from kubectl, a dated claim recorded in [[findings/the-2021-kubernetes-finalizers-blog-says-kubectl-cannot-set-the-propagation-policy-while-its-own-example-uses-cascade-orphan]]. The post covers no platform controller and says nothing about how Crossplane, ACK, Config Connector, or kro name finalizers. [[sources/kubernetes-finalizers-blog]]

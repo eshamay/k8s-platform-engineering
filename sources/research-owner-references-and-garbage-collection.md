@@ -3,8 +3,11 @@ title: "Research dossier: Owner References and Garbage Collection"
 type: source
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: kubernetes-finalizers-blog
+    hash: 31da0061e2fb
+    ingested: 2026-11-26
   - id: research-owner-references-and-garbage-collection
     hash: bd4cc1219f2d
     ingested: 2026-11-25
@@ -67,3 +70,7 @@ The dossier could not read kro's instances or FAQ pages, found no ACK deletion-p
 ## Related
 
 [[concepts/owner-references-and-garbage-collection]], [[concepts/finalizers]], [[sources/research-finalizers]]
+
+## Correction note on the Kubernetes finalizers blog summary
+
+Correction note, 2026-11-26: the caveat and the bullet above say a summary of the Kubernetes finalizers blog called foreground "default for some resources" and conflicted with current documentation. The full text of the post, now ingested, does not say that. It labels Background as parent first and Foreground as children first and says the kubectl default became background from v1.20, which agrees with the documentation. The earlier conflict came from the summarizing fetch. See [[sources/kubernetes-finalizers-blog]]. The design proposal summary was not re-read.
