@@ -36,8 +36,12 @@ Four classes. The contract is enforced by skill scoping and by warning headers i
 |---|---|---|
 | **Human-only-edit** | `irrefutable-facts.md` | Agents read; agents draft proposed facts via gap entries; humans add via the `sticki-facts` skill. Agents never edit this file. |
 | **Human-only-edit, agent-may-suggest** | `purpose.md` | Agents read on every operation; agents may propose updates via `todo.md` entries. Agents never edit `purpose.md` directly. |
-| **Append-only** | `log.md`, `.sticki/events.jsonl` | Agents append new entries; nobody mutates past ones. `log.md` uses the greppable `## [YYYY-MM-DD] <op> \| <subject>` header. |
+| **Append-only** | `log.md`, `log-archive.md`, `.sticki/events.jsonl` | Agents append new entries; nobody mutates past ones. `log.md` uses the greppable `## [YYYY-MM-DD] <op> \| <subject>` header. |
 | **Agent-may-write** | `index.md`, `todo.md`, `open-knowledge-gaps.md` (drafts only; `closed` is human-only via `sticki-gaps`), `.sticki/state.json`, all content folders | Per the lifecycle rules. `.sticki/derived.json` is consumer-owned. |
+
+## Archive files
+
+To keep the active anchor files small, finished material is moved verbatim into three archive files: `open-knowledge-gaps-archive.md` (closed gaps), `todo-archive.md` (done and dropped todos), and `log-archive.md` (older log entries). Closed gaps are still the project's reasoning trail; they live in the archive instead of being deleted, and a closed entry keeps its Resolution, Closed-by line and notes unchanged. Only the active files are on the read order below. `sticki-gaps` and `sticki-todo` still write new closes and completions into the active file, and these are moved to the archive in a later housekeeping pass. Anchor links to an archived entry use the form `[[open-knowledge-gaps-archive#slug]]` or `[[todo-archive#slug]]`.
 
 ## Read order on every operation
 
@@ -123,7 +127,7 @@ graph:
 bounded_write_authority:
   human_only_edit: [irrefutable-facts.md]
   human_only_edit_agent_may_suggest: [purpose.md]
-  append_only: [log.md]
+  append_only: [log.md, log-archive.md]
   agent_may_write:
     - index.md
     - todo.md
