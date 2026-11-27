@@ -242,3 +242,6 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 
 ## [2026-11-26] todo | lint and markdown links
 - added a todo: sticki-lint orphan and dangling-link checks only recognize wikilinks; use bin/gh_links.py --check until fixed
+
+## [2026-11-27] housekeeping | sidebar sections
+- each published document now expands in the sidebar into its sections: nav_sections in .sticki-publish.json, a sections list emitted by bin/build_site.py, and theme overrides in site_overlay/

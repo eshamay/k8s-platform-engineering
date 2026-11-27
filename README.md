@@ -52,3 +52,7 @@ python3 -I bin/gh_links.py --check    # verify every link and anchor (exit 0 mea
 ```
 
 `outputs/` and `raw/` are not converted (the Pages build resolves the wikilinks in `outputs/`). After closing a gap or todo, `python3 -I bin/gh_links.py --refresh-anchors` repairs anchors whose heading status suffix changed.
+
+## Sidebar sections
+
+Each published document expands in the left sidebar into its numbered sections. `bin/build_site.py` writes a `sections` list (one entry per `##` heading) into each page when `"nav_sections": true` is set in `.sticki-publish.json`, and `site_overlay/` (copied into `build/` on every build) holds the theme overrides that render it: `_includes/components/nav/links.html` is a copy of the just-the-docs 0.10.1 file with the section list added (re-diff it when the theme version in `Gemfile.lock` changes), `_includes/footer_custom.html` expands the open document and highlights the section being read, and `_includes/head_custom.html` holds the styling.
