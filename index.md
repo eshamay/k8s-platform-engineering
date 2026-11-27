@@ -157,6 +157,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/bex-co-kro-radar-post]] — secondary bex.co blog post reporting a CNCF and SlashData radar placing kro in Adopt, and weighing kro for a Cluster API platform (draft)
 - [[sources/kcp-kubecon-talk]] — auto-generated transcript of a short KubeCon talk on kcp workspaces by Yan Vegas of Accenture, the speaker's account (draft)
 - [[sources/kubernetes-finalizers-blog]] — official Kubernetes blog post of 2021 by Aaron Alpar of Kasten on finalizers, owner references, propagation policy, and forcing namespace finalization (draft)
+- [[sources/medium-config-connector-pitfalls]] — secondary Medium post by Michał Marszałek, 2023, on Config Connector dependency order, Argo CD sync waves, and a finalizer-clearing CronJob (draft)
 
 ## Examples
 
@@ -456,6 +457,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner]] — a company evaluating, not adopting, kro against a hand-rolled controller, secondary (draft)
 - [[examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour]] — a speaker's unmeasured timing claim and CRD-version handling for kcp (draft)
 - [[examples/a-configmap-with-a-finalizer-no-controller-handles-stays-in-deletion-until-kubectl-patch-removes-the-finalizer-list]] — a dead finalizer on a ConfigMap keeps a delete pending until a JSON patch clears it (draft)
+- [[examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first]] — a single practitioner's workaround for BigQuery tables stuck in DeleteFailed, secondary (draft)
 
 ## Comparisons
 

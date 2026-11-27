@@ -1089,3 +1089,13 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 - fact conflicts: 0
 - gaps drafted: 0
 - rationale: The official blog post is now read in full after earlier summary-only citations. Its content agrees with the wiki's finalizer and propagation pages and adds a worked dead-finalizer example and a warning about orphans after forced namespace finalization. Two dossier summaries of it were wrong in detail and received correction notes, and the post's own statement that kubectl cannot set the propagation policy is recorded as dated. Three open gaps received notes and none was closed. No output passage was affected.
+
+## [2026-11-26] ingest | Medium post: Navigating Config Connector Challenges (Michał Marszałek, 2023)
+- source: [[sources/medium-config-connector-pitfalls]]
+- raw: `raw/medium-config-connector-pitfalls` (sha256: c5b9825d753a)
+- pages touched: [[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]], [[entities/config-connector]], [[entities/argo-cd]], [[entities/terraform]], [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]], [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]], [[decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller]], open-knowledge-gaps
+- new pages: [[sources/medium-config-connector-pitfalls]], [[examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first]]
+- contradictions raised: 0 (one discrepancy note on Argo CD deletion ordering against the wave-reversal record)
+- fact conflicts: 0
+- gaps drafted: 0
+- rationale: A secondary practitioner post that the wiki had cited only through a brief extraction. The full text confirms the earlier summary, adds the sync-wave values, the two cited upstream issues, and the CronJob workaround, and stays attributed to its author. The post's statement that Argo CD has no deletion ordering differs from the wiki's wave-reversal record for pruning, so a discrepancy note was added and the stronger page was kept. Five open gaps received not-settled or partly-informative notes and none was closed.

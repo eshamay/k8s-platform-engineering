@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: medium-config-connector-pitfalls
+    hash: c5b9825d753a
+    ingested: 2026-11-26
   - id: research-provider
     hash: 7e43edcd71be
     ingested: 2026-11-25
@@ -43,3 +46,7 @@ The table above compares features from Crossplane's and the vendors' own pages. 
 ## Neutral evidence check (o6 dossier)
 
 No independent comparison of Config Connector, ACK, or Azure Service Operator against Crossplane was found, and no primary-document comparison was read in the o6 pass. The readable material is a 2021 VSHN post saying cloud operators are "specific to the cloud they are engineered for" and a Crossplane project post saying Crossplane "even shares code with some of these addons". Both are attributed positions, not neutral evidence. See [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]]. [[sources/research-gap-o6-platform-landscape]]
+
+## A practitioner's view of Config Connector against Crossplane and Terraform
+
+A 2023 Medium post by a Config Connector user lists Crossplane's multi-cloud support as its one advantage over Config Connector and adds that most resources served by Terraform providers are available in Crossplane, linking an early Terrajet article. It gives no measurement, and the author's main complaint about Config Connector, ordering, is not compared with Crossplane's behavior. This is a secondary opinion and not a neutral comparison. See [[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]]. [[sources/medium-config-connector-pitfalls]]

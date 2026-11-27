@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: medium-config-connector-pitfalls
+    hash: c5b9825d753a
+    ingested: 2026-11-26
   - id: resource-composition-with-kro
     hash: 1d5781610376
     ingested: 2026-11-26
@@ -322,3 +325,7 @@ The o4 dossier re-read the automated-sync, sync-options, and application-deletio
 ## Argo CD as the multi-cluster delivery capability for kro resources on EKS
 
 The EKS overview page for kro lists Argo CD as the managed capability that deploys kro custom resources across multiple clusters, which positions Argo CD as the GitOps delivery layer above kro in AWS's managed stack. The page does not address how Argo CD tracks the children kro creates, and the tracking-id and owner-reference recipe from the kro FAQ above is still the only documented approach in this wiki. [[sources/resource-composition-with-kro]]
+
+## Discrepancy on deletion ordering (practitioner post)
+
+Discrepancy note: a 2023 Medium post says Argo CD "does not support deletion ordering" and cites Argo CD issue 14505, so a Config Connector child can enter `DeleteFailed` when its parent is removed first. This page records that wave order is reversed during pruning. The two statements may describe different deletes, for example pruning a resource versus cascading an Application delete, but the post does not say which it means and issue 14505 was not read here. The page's statement stands because it comes from the Argo CD documentation, and the post stays a secondary report. See [[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]]. [[sources/medium-config-connector-pitfalls]]

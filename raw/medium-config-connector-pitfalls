@@ -1,0 +1,287 @@
+Navigating Config Connector Challenges: A Guide to Overcoming Pitfalls
+Michał Marszałek
+Michał Marszałek
+
+Follow
+6 min read
+·
+Dec 20, 2023
+10
+
+
+
+
+Press enter or click to view image in full size
+
+Config Connector is a Kubernetes-native tool that allows you to manage Google Cloud resources using Kubernetes-style declarations. With Config Connector, you can define and manage Google Cloud resources such as Compute Engine instances, Cloud Storage buckets, and many others using Kubernetes manifests.
+
+Benefits over terraform
+The Config Connector is a 100% Kubernetes-native tool, offering numerous benefits, such as the ability to create Kubernetes resources alongside Google Cloud Platform (GCP) infrastructure resources. Utilizing tools like ArgoCD to deploy Kubernetes manifests, Helm charts, or Kustomize to the Kubernetes cluster allows for the deployment of infrastructure resources on which the application depends. From my perspective, this approach is significantly more straightforward, deploying resources like buckets, BigQuery datasets, tables, and Pub/Sub topic/subscriptions in conjunction with the application.
+
+It is essential to note that this does not imply that Terraform is incapable of deploying Kubernetes manifests. Terraform provides a provider for Helm charts, enabling the release of Helm charts through Terraform.
+
+Let’s delve into the question of why we might need another tool. While Terraform is widely recognized and has proven its efficacy, it primarily relies on HashiCorp Configuration Language (HCL), posing an entry barrier for developers. Additionally, it necessitates an understanding of how state management functions in Terraform. On the contrary, the Config Connector operates on a fully declarative model. Notably, Config Connector is developed by Google and exclusively supports GCP, whereas Terraform boasts multi-cloud support.
+
+Deep dive into config connector
+Let’s assume that we want to create a few GCP resources using a config connector. These resources will include a BigQuery dataset, a BigQuery table, a GCS bucket, a PubSub Topic, and a PubSub Subscription. The code below creates all the mentioned resources.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "<project_id>"
+    cnrm.cloud.google.com/delete-contents-on-destroy: "true"
+  name: test-dataset
+spec:
+  description: Data Mesh Dataset CDM_Schedule
+  resourceID: test_dataset
+  friendlyName: test_dataset
+  location: EU
+
+---
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "<project_id>"
+  name: test-table
+spec:
+  resourceID: test_table
+  friendlyName: test_table
+  datasetRef:
+    name: test-dataset
+  description: Test bigquery table
+  schema: |-
+    [
+      {
+        "mode": "NULLABLE",
+        "name": "created_at",
+        "type": "TIMESTAMP"
+      }
+    ]
+
+---
+
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "<project_id>"
+  name: test-subscription
+spec:
+  ackDeadlineSeconds: 15
+  messageRetentionDuration: 86400s
+  retainAckedMessages: false
+  topicRef:
+    name: test-topic
+---
+
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "<project_id>"
+  name: test-topic
+spec: {}
+
+---
+
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/force-destroy: "true"
+    cnrm.cloud.google.com/project-id: "<project_id>"
+  name: "test-bucket"
+spec:
+  location: "europe-west4"
+  uniformBucketLevelAccess: true
+Is the config connector really that flawless?
+Unfortunately, it doesn’t. The main pain point in this situation is the dependency order. At the time this article was created, there was an issue: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/384, and the Config Connector is not able to create dependencies in the proper order. The biggest advantage of Terraform is the way it handles dependencies. It can deduce, based on resource references and the generated dependency graph, which resources depend on others. If that is not sufficient, we can enforce resource dependencies by adding the depends_on keyword.
+
+Get Michał Marszałek’s stories in your inbox
+Join Medium for free to get updates from this writer.
+
+Enter your email
+Subscribe
+
+Remember me for faster sign in
+
+The example below illustrates the implicit dependency between the PubSub topic and the PubSub subscription in Terraform code. A reference in HCL code establishes that dependency: topic = google_pubsub_topic.example.name
+
+resource "google_pubsub_topic" "example" {
+  name = "example-topic"
+}
+
+resource "google_pubsub_subscription" "example" {
+  name  = "example-subscription"
+  topic = google_pubsub_topic.example.name
+
+  ack_deadline_seconds = 20
+
+  labels = {
+    foo = "bar"
+  }
+
+  push_config {
+    push_endpoint = "https://example.com/push"
+
+    attributes = {
+      x-goog-version = "v1"
+    }
+  }
+}
+In cases where there is no implicit dependency between resources, that dependency may be explicitly created by using the depends_on keyword. In the example below, the compute instance depends on the storage bucket, and the VM will be created after the bucket.
+
+# main.tf
+
+# Configure the GCP provider
+provider "google" {
+  credentials = file("<path-to-your-service-account-key>")
+  project     = "<your-gcp-project-id>"
+  region      = "us-central1"
+}
+
+# Create a GCP storage bucket
+resource "google_storage_bucket" "my_bucket" {
+  name     = "my-unique-bucket-name"
+  location = "US"
+}
+
+# Create a GCP Compute Engine instance
+resource "google_compute_instance" "my_instance" {
+  name         = "my-instance"
+  machine_type = "n1-standard-1"
+  zone         = "us-central1-a"
+
+  # Specify the storage bucket as a dependency
+  depends_on = [google_storage_bucket.my_bucket]
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
+
+  network_interface {
+    network = "default"
+  }
+}
+How does the Config Connector handle dependencies?
+
+It depends on the resources. Let’s focus on the BigQuery table. The table has a reference to a dataset through a property called datasetRef. The reference is based on the name of the Kubernetes manifest. When the manifest is present on the cluster, and the BigQuery dataset is created, a table will be created as well. The problem occurs when the manifest is present, or the dataset is not created. In that case, the table cannot be created. To address the issue of resource creation in the correct order, we can enforce creation ordering by adding, for example, ArgoCD waves annotations or Helm hooks.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "<project_id>"
+    cnrm.cloud.google.com/delete-contents-on-destroy: "true"
+    argocd.argoproj.io/sync-wave: "-1"
+....
+
+---
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "<project_id>"
+    argocd.argoproj.io/sync-wave: "0"
+....
+Enforcing the proper order of resource creation resolves the problem during creation, but what about deletion? Unfortunately, as of the moment this article is created, ArgoCD does not support deletion ordering (refer to https://github.com/argoproj/argo-cd/issues/14505). If the parent resource is removed earlier than the child resource, the child resource enters a DeleteFailed state. The reason why it wasn’t deleted can be checked using the kubectl describe command.
+
+I will address how to deal with this issue in the next section.
+
+Workaround for resource deletion in Config Connector
+A workaround for removing resources, in case parent resources were removed earlier, is to run a job or cronjob that checks whether the parent resources still exist on the cluster. If they do not exist, patch the BigQuery table by removing finalizers. When finalizers are removed, Kubernetes can remove the table manifest. In the context of the dataset, this makes sense because when the dataset is removed from GCP, all child resources such as tables, views, and routines are also removed.
+
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: resource-cleaner
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: resource-cleaner
+rules:
+- apiGroups:
+  - "bigquery.cnrm.cloud.google.com"
+  resources:
+  - "*"
+  verbs:
+  - "*"
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: resource-cleaner-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: resource-cleaner
+subjects:
+- kind: ServiceAccount
+  name: resource-cleaner
+  namespace: default
+
+---
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: resource-cleaner
+spec:
+  jobTemplate:
+    metadata:
+      name: resource-cleaner
+    spec:
+      ttlSecondsAfterFinished: 300
+      template:
+        spec:
+          serviceAccountName: resource-cleaner
+          containers:
+          - image: bitnami/kubectl
+            name: cleaner
+            command: ["/bin/bash"]
+            args: ["/etc/script.sh"]
+            volumeMounts:
+            - name: resource-cleaner-volume
+              mountPath: /etc/script.sh
+              subPath: script.sh
+          restartPolicy: Never
+          volumes:
+          - name: resource-cleaner-volume
+            configMap:
+              name: resource-cleaner-script
+  schedule: "0/5 * * * *"
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: resource-cleaner-script
+data:
+  script.sh: |
+    #!/bin/bash
+    table_names=$(kubectl get BigQueryTable|grep DeleteFailed|awk '{print $1}')
+    for table_name in ${table_names[@]}; do
+        dataset_name=$(kubectl get BigQueryTable $table_name -o jsonpath='{.spec.datasetRef.name}')
+        kubectl get BigQueryDataset ${dataset_name} &>/dev/null  
+        if [[ $? -ne 0 ]]; then
+            kubectl patch BigQueryTable ${table_name} --type json -p='[{"op": "remove", "path": "/metadata/finalizers"}]'
+        fi
+    done
+
+Alternatives
+Crossplane is also used in the context of Kubernetes, where it is a project that extends Kubernetes to enable the management of infrastructure resources, including databases, storage, and more as if they were native Kubernetes resources. Learn more at https://www.crossplane.io/.
+
+Crossplane has one advantage over Config Connector: its support for multi-cloud. Additionally, the majority of resources served by Terraform providers are available in Crossplane. You can read more about it here: https://blog.crossplane.io/deep-dive-terrajet-part-i/

@@ -3,8 +3,11 @@ title: Argo CD sync waves order CRDs, operators, and workloads
 type: example
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: medium-config-connector-pitfalls
+    hash: c5b9825d753a
+    ingested: 2026-11-26
   - id: research-eventual-consistency-and-convergence
     hash: bb35eafbd239
     ingested: 2026-11-25
@@ -29,3 +32,7 @@ Ordering is phase, then wave, then kind, then name. Each wave must become Health
 ## Lesson
 
 Waves are how a GitOps tool imposes order on a cluster that otherwise converges concurrently. The price is that hooks and waves require idempotent operations. See [[entities/argo-cd]], [[findings/ordering-and-dependency-failures]], [[examples/gitops-reverts-a-hand-edited-deployment]], and [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]].
+
+## A practitioner's use of waves for Config Connector
+
+A 2023 Medium post uses sync-wave annotations to order Config Connector resources, the BigQuery dataset at `-1` and its table at `0`, because the table cannot be created until the dataset exists, and says waves fix creation but Argo CD has no deletion ordering for the same pair. See [[examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first]]. [[sources/medium-config-connector-pitfalls]]

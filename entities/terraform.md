@@ -3,8 +3,11 @@ title: Terraform
 type: entity
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: medium-config-connector-pitfalls
+    hash: c5b9825d753a
+    ingested: 2026-11-26
   - id: research-crossplane-deep-dive
     hash: 44034359219f
     ingested: 2026-11-25
@@ -34,3 +37,7 @@ State locking details, drift behavior in practice, and neutral comparisons with 
 ## Terraform inside the cluster
 
 Two controllers run Terraform from Kubernetes custom resources, [[entities/tofu-controller]] and [[entities/terraform-operator]], and both still require writing Terraform. See [[examples/teams-with-large-terraform-estates-run-terraform-inside-the-cluster-with-tofu-controller-or-terraform-operator]]. [[sources/research-landscape]]
+
+## A practitioner's comparison with Config Connector
+
+A 2023 Medium post by a Config Connector user says Terraform's strength is its dependency graph, inferred from references and extendable with `depends_on`, and its weaknesses are the HCL entry barrier for developers and the need to understand state, while Config Connector is fully declarative but supports only Google Cloud. This is one practitioner's opinion and not a controlled comparison. [[sources/medium-config-connector-pitfalls]]
