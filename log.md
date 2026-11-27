@@ -996,3 +996,6 @@ Structural lint over 806 content pages (concepts 27, entities 37, sources 58, ex
 
 ## [2026-11-26] lint | k8s-platform-engineering
 Structural lint over 927 content pages (concepts 27, entities 37, sources 67, examples 291, comparisons 56, decisions 54, findings 388, outputs 7). No transitions were applied automatically. Frontmatter drift, dangling links, orphans, supersede violations, thin concepts, and index drift are all zero (the dispositions page was added to index.md before the run); no page is a staleness candidate because every page was created on 2026-11-25 or 2026-11-26. Left for the user: 7 contradicted pages with Contradictions blocks (the new one is the Radius single-blog finding), and the known source-page integrity mismatch for sources/spotify-kubecon-2019-keynote-slides-with-notes, whose raw file is stored under a long title name. Facts and purpose headers are intact and neither file was touched; no gap was closed; the gaps file shows 40 closed and 87 open entries, none to escalate; stuck-gap and derived-artifact checks have nothing to report (no derived.json, no output pointer pages, first gaps cross 60 days around 2027-01-24).
+
+## [2026-11-26] todo | split the other-tool manual-fetch todo
+- dropped the umbrella todo and added 12 per-source todos for the unreadable sources listed in [[findings/other-tool-coverage-pass-gap-dispositions]]

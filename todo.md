@@ -30,8 +30,19 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#update-flux-ramp-up-waitfortermination-passage-with-the-timeout-behavior]] — open
 - [[#close-the-resolved-candidate-gaps-from-the-other-tool-coverage-pass]] — open
 - [[#decide-on-the-19-partial-and-5-still-open-other-tool-gaps]] — open
-- [[#fetch-the-sources-the-other-tool-coverage-pass-could-not-read]] — open
 - [[#review-the-radius-single-blog-finding-that-the-other-tool-pass-marked-contradicted]] — open
+- [[#fetch-the-flux-ocirepository-docs-from-the-controller-repository]] — open
+- [[#fetch-the-flux-changelog-and-adopters-list]] — open
+- [[#fetch-the-argo-cd-resource-hooks-and-applicationset-docs]] — open
+- [[#find-named-flux-versus-argo-cd-migration-case-studies]] — open
+- [[#get-a-transcript-of-the-kubecon-kcp-talk]] — open
+- [[#fetch-the-aws-eks-kro-page]] — open
+- [[#fetch-the-bexco-kro-cncf-radar-post]] — open
+- [[#fetch-the-medium-post-comparing-terraform-opentofu-and-crossplane]] — open
+- [[#fetch-the-medium-post-on-config-connector-pitfalls]] — open
+- [[#fetch-the-crossplane-composition-functions-docs-page]] — open
+- [[#find-the-function-kro-engine-and-crossplane-package-revision-source-files]] — open
+- [[#read-the-kro-crossplane-eks-idp-lab-repository]] — open
 
 ## Open
 
@@ -164,19 +175,97 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Each gap has a decision recorded.
 - **Drafted by:** agent on 2026-11-26
 
-## Fetch the sources the other-tool coverage pass could not read — status: open
-
-- **What:** Save the pages listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] into `raw/`, then ingest them. They include the Medium posts on Terraform, OpenTofu and Crossplane and on Config Connector pitfalls, the Crossplane composition-functions docs page, the KubeCon kcp talk, the AWS EKS kro page, and the Flux and Argo CD docs paths that returned 404.
-- **Why:** The scrape tools returned empty bodies, 404s, or no results.
-- **Acceptance:** Each source is saved and ingested, or recorded as unavailable.
-- **Drafted by:** agent on 2026-11-26
-
 ## Review the Radius single-blog finding that the other-tool pass marked contradicted — status: open
 
 - **What:** [[findings/radius-maturity-and-governance-claims-rest-on-a-single-third-party-blog]] moved to `contradicted` because primary listings now settle Radius status and governance. Decide whether to narrow it to the Bicep-dependency claim, which still rests on one blog, or archive it, and resolve its Contradictions block.
 - **Why:** The contradiction is documented, but the lifecycle transition is a judgment call.
 - **Acceptance:** The page is `active` (narrowed) or `archived`, with the Contradictions block resolved.
 - **Drafted by:** agent on 2026-11-26
+
+## Fetch the Flux OCIRepository docs from the controller repository — status: open
+
+- **What:** The path `content/en/flux/components/source/ocirepositories.md` in fluxcd/website returned 404, so the Flux side of the Git versus OCI comparison rests on other pages. Find where the OCIRepository documentation now lives (the source-controller repository docs or fluxcd.io), save it into `raw/`, and ingest it.
+- **Why:** Flux's own OCIRepository behavior (provenance, signature verification, polling) is the Flux half of the gap 'Git versus OCI as the canonical GitOps source'. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o1-argocd-flux-gitops).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Fetch the Flux changelog and adopters list — status: open
+
+- **What:** The paths CHANGELOG.md, docs/adopters.md and ADOPTERS.md in fluxcd/flux2 all returned 404. Locate the current adopters file and release history (it may sit in the fluxcd/community repository or on fluxcd.io), save them into `raw/`, and ingest them.
+- **Why:** Named adopters and release dates are the missing evidence for 'Named GitOps adopters and GitOps-caused outages' and for Flux release-cadence claims. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o1-argocd-flux-gitops).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Fetch the Argo CD resource hooks and ApplicationSet docs — status: open
+
+- **What:** The paths docs/user-guide/resource_hooks.md and docs/operator-manual/applicationset.md in argoproj/argo-cd returned 404 (the docs may have moved under docs/operator-manual/applicationset/ or to a new site). Find the current locations, save the pages into `raw/`, and ingest them.
+- **Why:** Hooks and ApplicationSet generators are the Argo CD half of the hub-and-spoke and Argo CD versus Flux gaps. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o1-argocd-flux-gitops).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Find named Flux-versus-Argo-CD migration case studies — status: open
+
+- **What:** A web search for 'Flux vs Argo CD comparison CNCF case study migrated adopter' returned zero results. Try CNCF case studies, KubeCon talk write-ups and vendor engineering blogs with different queries; save any primary account into `raw/` and ingest it.
+- **Why:** Named adopters who moved between the two tools are the evidence the head-to-head gap lacks. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o1-argocd-flux-gitops).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Get a transcript of the KubeCon kcp talk — status: open
+
+- **What:** The video https://www.youtube.com/watch?v=-GJgzn3pyvM (the KubeCon EU 2024 kcp talk linked from kcp.io) could not be read and no transcript was retrieved. Save the auto-generated transcript or the slides into `raw/` (as was done for the Spotify talk) and ingest it.
+- **Why:** The talk is the main primary source for community direction of the Kubernetes-as-a-kernel distribution model. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o5-kro-ecosystem).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Fetch the AWS EKS kro page — status: open
+
+- **What:** https://docs.aws.amazon.com/eks/latest/userguide/kro.html appeared in search results with null content. Save the page into `raw/` and ingest it.
+- **Why:** AWS documentation of kro on EKS is evidence of vendor adoption and of supported scale or limits. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o5-kro-ecosystem).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Fetch the bex.co kro CNCF radar post — status: open
+
+- **What:** https://bex.co/blog/2026/07/29/kro-kube-resource-orchestrator-cncf-radar-adopt appeared in search with null content. Save the page into `raw/` and ingest it, marking it secondary if it is an analyst or adopter opinion.
+- **Why:** It may name a production adopter of kro, which the gap 'Scaling limits of per-RGD kro controllers and named production kro adopters' still lacks. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o5-kro-ecosystem).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Fetch the Medium post comparing Terraform, OpenTofu and Crossplane — status: open
+
+- **What:** https://medium.com/@maclarensg_50191/choosing-between-terraform-opentofu-and-crossplane-3fdbacbefc68 returned an empty body (Medium blocks the scraper). Save the page text into `raw/` and ingest it, marking it as an individual author's opinion.
+- **Why:** It is a candidate neutral comparison for 'Neutral comparisons of Crossplane with Terraform and single-cloud operators'. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o6-platform-landscape).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Fetch the Medium post on Config Connector pitfalls — status: open
+
+- **What:** https://medium.com/@michamarszaek/navigating-config-connector-challenges-a-guide-to-overcoming-pitfalls-a63777ae7ed1 returned an empty body. Save the page text into `raw/` and ingest it, marking it as an individual author's account.
+- **Why:** It is a practitioner account of Config Connector problems, which the first-party pitfall evidence gap needs to compare against. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o6-platform-landscape).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Fetch the Crossplane composition functions docs page — status: open
+
+- **What:** https://docs.crossplane.io/latest/concepts/composition-functions/ returned an empty body; the pass read the same content from the crossplane/docs repository through gh instead. Save the rendered page into `raw/` only if the rendered text differs from the repository source, otherwise record the substitution as sufficient.
+- **Why:** The rendered page is what readers see and what the tutorials cite. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o7-krm-functions).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Find the function-kro engine and Crossplane package revision source files — status: open
+
+- **What:** The contents API returned 404 for crossplane-contrib/function-kro `engine.go` and crossplane/crossplane `apis/pkg/v1/revision.go`; the files were probably renamed or moved. List the repository trees, find the current paths, read them, and ingest the findings (function-kro feature parity, package revision activation).
+- **Why:** The two source files settle function-kro parity with standalone kro and the package revision and upgrade policy. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o8-crossplane-residuals).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
+## Read the kro-crossplane-eks-idp-lab repository — status: open
+
+- **What:** https://github.com/suzuki0430/kro-crossplane-eks-idp-lab was found by search and not read. Read its README and manifests; if it shows kro and Crossplane used together, record it as a third-party example with the caveat that it is a lab, not a production use.
+- **Why:** It may show how kro status feeds a Crossplane composite, which the residual gap on status propagation asks about. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o8-crossplane-residuals).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+
 
 ## Done
 
@@ -1067,3 +1156,11 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
 
 ## Dropped
+
+## Fetch the sources the other-tool coverage pass could not read — status: dropped
+
+- **What:** Save the pages listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] into `raw/`, then ingest them. They include the Medium posts on Terraform, OpenTofu and Crossplane and on Config Connector pitfalls, the Crossplane composition-functions docs page, the KubeCon kcp talk, the AWS EKS kro page, and the Flux and Argo CD docs paths that returned 404.
+- **Why:** The scrape tools returned empty bodies, 404s, or no results.
+- **Acceptance:** Each source is saved and ingested, or recorded as unavailable.
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: dropped, split into one todo per unreadable source (listed below it in the open index) so each can be closed independently.
