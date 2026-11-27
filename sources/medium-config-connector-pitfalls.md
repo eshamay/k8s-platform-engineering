@@ -25,7 +25,7 @@ tags: [config-connector, argo-cd, sync-waves, finalizers, deletion-ordering, ter
 
 The author argues that Config Connector is a good way to create Google Cloud resources next to the application that needs them when Argo CD, Helm, or Kustomize already deliver the manifests, and then describes the main pain point he met, dependency order. He shows five manifests for a BigQuery dataset and table, a Cloud Storage bucket, and a Pub/Sub topic and subscription, contrasts Config Connector's reference handling with Terraform's implicit dependency graph and `depends_on`, and describes a workaround of Argo CD sync waves for creation and a CronJob that clears finalizers for deletion. He ends with a short note that Crossplane supports multiple clouds.
 
-The wiki already cited this post second-hand in [[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]], from a brief fetch extraction. This ingest reads the full text and keeps the claims attributed to the author.
+The wiki already cited this post second-hand in [findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering](../findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering.md), from a brief fetch extraction. This ingest reads the full text and keeps the claims attributed to the author.
 
 ## Key claims
 
@@ -42,13 +42,13 @@ All claims are the author's own account and are not reproduced here.
 
 ## Entities and concepts
 
-- Entities: [[entities/config-connector]], [[entities/argo-cd]], [[entities/terraform]], [[entities/crossplane]].
-- Concepts: [[concepts/finalizers]].
+- Entities: [entities/config-connector](../entities/config-connector.md), [entities/argo-cd](../entities/argo-cd.md), [entities/terraform](../entities/terraform.md), [entities/crossplane](../entities/crossplane.md).
+- Concepts: [concepts/finalizers](../concepts/finalizers.md).
 
 ## Limits
 
-The post is one practitioner's account from December 2023. The status of Config Connector issue 384 and Argo CD issue 14505 was not read in this pass, and the author says only that they were open when he wrote. The manifests were not run. The CronJob script runs in the default namespace and matches `DeleteFailed` by text, details the post does not discuss. The claim that Argo CD has no deletion ordering conflicts in part with this wiki's record that wave order is reversed during pruning, see [[entities/argo-cd]], and the post does not say which kind of delete it means. The post compares Config Connector with Terraform and Crossplane in a few sentences of opinion and gives no measurement.
+The post is one practitioner's account from December 2023. The status of Config Connector issue 384 and Argo CD issue 14505 was not read in this pass, and the author says only that they were open when he wrote. The manifests were not run. The CronJob script runs in the default namespace and matches `DeleteFailed` by text, details the post does not discuss. The claim that Argo CD has no deletion ordering conflicts in part with this wiki's record that wave order is reversed during pruning, see [entities/argo-cd](../entities/argo-cd.md), and the post does not say which kind of delete it means. The post compares Config Connector with Terraform and Crossplane in a few sentences of opinion and gives no measurement.
 
 ## Pages touched
 
-[[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]], [[entities/config-connector]], [[entities/argo-cd]], [[entities/terraform]], [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]], [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]], [[decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller]], and the new [[examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first]].
+[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering](../findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering.md), [entities/config-connector](../entities/config-connector.md), [entities/argo-cd](../entities/argo-cd.md), [entities/terraform](../entities/terraform.md), [comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso](../comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso.md), [examples/argo-cd-sync-waves-order-crds-operators-and-workloads](../examples/argo-cd-sync-waves-order-crds-operators-and-workloads.md), [decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller](../decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller.md), and the new [examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first](../examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first.md).

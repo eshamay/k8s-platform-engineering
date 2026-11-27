@@ -98,4 +98,4 @@ First-party pitfall evidence for kro, ACK, Cluster API
 
 ## Pages touched
 
-See [[log]] for the full list of pages created and updated by this ingest.
+See [log](../log.md) for the full list of pages created and updated by this ingest.

@@ -42,8 +42,8 @@ All claims are the speaker's, as heard in the transcript.
 
 ## Entities and concepts
 
-- Entities: [[entities/kcp]], [[entities/kubectl]], [[entities/helm]], [[entities/client-go]].
-- Concepts: [[concepts/universal-control-plane]], [[concepts/crd-versioning-and-storage-migration]], [[concepts/custom-resource-definition]].
+- Entities: [entities/kcp](../entities/kcp.md), [entities/kubectl](../entities/kubectl.md), [entities/helm](../entities/helm.md), [entities/client-go](../entities/client-go.md).
+- Concepts: [concepts/universal-control-plane](../concepts/universal-control-plane.md), [concepts/crd-versioning-and-storage-migration](../concepts/crd-versioning-and-storage-migration.md), [concepts/custom-resource-definition](../concepts/custom-resource-definition.md).
 
 ## Limits
 
@@ -51,4 +51,4 @@ The transcript is auto-generated and has recognition errors that change meaning 
 
 ## Pages touched
 
-[[entities/kcp]], [[comparisons/tenancy-models-namespaces-vcluster-kcp]], [[concepts/crd-versioning-and-storage-migration]], [[concepts/universal-control-plane]], [[examples/multi-tenant-api-hosting-with-kcp]], [[findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post]], and the new [[examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour]].
+[entities/kcp](../entities/kcp.md), [comparisons/tenancy-models-namespaces-vcluster-kcp](../comparisons/tenancy-models-namespaces-vcluster-kcp.md), [concepts/crd-versioning-and-storage-migration](../concepts/crd-versioning-and-storage-migration.md), [concepts/universal-control-plane](../concepts/universal-control-plane.md), [examples/multi-tenant-api-hosting-with-kcp](../examples/multi-tenant-api-hosting-with-kcp.md), [findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post](../findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post.md), and the new [examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour](../examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour.md).

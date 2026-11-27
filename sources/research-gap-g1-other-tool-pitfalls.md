@@ -72,4 +72,4 @@ Several ACK issues were filed on 2026-11-09 by one reporter (gecube), so they ar
 
 ## Related wiki pages
 
-[[entities/kro]], [[entities/config-connector]], [[entities/ack]], [[entities/cluster-api]], [[concepts/pitfalls-and-case-studies]], [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]]
+[entities/kro](../entities/kro.md), [entities/config-connector](../entities/config-connector.md), [entities/ack](../entities/ack.md), [entities/cluster-api](../entities/cluster-api.md), [concepts/pitfalls-and-case-studies](../concepts/pitfalls-and-case-studies.md), [findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api](../findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api.md)

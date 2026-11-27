@@ -87,4 +87,4 @@ Crossplane issue 7801 is the exception. It is still open with no maintainer repl
 
 ## Related pages
 
-[[concepts/finalizers]], [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]], [[entities/argo-cd]], [[entities/flux]], [[entities/ack]], [[entities/config-connector]], [[entities/kro]], [[entities/cluster-api]], [[entities/crossplane]]
+[concepts/finalizers](../concepts/finalizers.md), [comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api](../comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api.md), [entities/argo-cd](../entities/argo-cd.md), [entities/flux](../entities/flux.md), [entities/ack](../entities/ack.md), [entities/config-connector](../entities/config-connector.md), [entities/kro](../entities/kro.md), [entities/cluster-api](../entities/cluster-api.md), [entities/crossplane](../entities/crossplane.md)

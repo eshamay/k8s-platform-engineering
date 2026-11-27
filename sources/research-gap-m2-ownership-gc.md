@@ -96,4 +96,4 @@ Argo CD's three tracking methods and its foreground prune default are read from 
 
 ## Related pages
 
-[[concepts/owner-references-and-garbage-collection]], [[entities/kro]], [[entities/argo-cd]], [[entities/cluster-api]], [[entities/controller-runtime]], [[entities/crossplane]], [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]]
+[concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md), [entities/kro](../entities/kro.md), [entities/argo-cd](../entities/argo-cd.md), [entities/cluster-api](../entities/cluster-api.md), [entities/controller-runtime](../entities/controller-runtime.md), [entities/crossplane](../entities/crossplane.md), [comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers](../comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers.md)

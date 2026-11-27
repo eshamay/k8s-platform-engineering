@@ -21,34 +21,34 @@ tags: [vocabulary, krm, seed]
 
 ## Summary
 
-A four-part glossary describing the shared vocabulary that tools like Crossplane and Flux use when they build on the Kubernetes Resource Model (KRM). It closes with three suggested deep-dives: a full lifecycle trace from a Flux Git commit, a comparison of Crossplane Compositions with kro, and scale management through informers, workqueues, and sharding. Those three follow-ups are tracked in [[open-knowledge-gaps]].
+A four-part glossary describing the shared vocabulary that tools like Crossplane and Flux use when they build on the Kubernetes Resource Model (KRM). It closes with three suggested deep-dives: a full lifecycle trace from a Flux Git commit, a comparison of Crossplane Compositions with kro, and scale management through informers, workqueues, and sharding. Those three follow-ups are tracked in [open-knowledge-gaps](../open-knowledge-gaps.md).
 
 ## Key claims
 
 ### Core architectural principles
 
-- The Kubernetes API server and etcd can act as a general database and orchestration engine for any infrastructure, not only containers. See [[concepts/universal-control-plane]].
-- Declarative specs describe an end-state instead of a command sequence. See [[concepts/declarative-vs-imperative]].
-- Level-triggered controllers act on current state rather than on events, so a missed event is repaired by the next reconcile. See [[concepts/level-triggered-vs-edge-triggered]].
-- Complex systems converge eventually; resources apply concurrently and retry until dependencies exist. See [[concepts/eventual-consistency-and-convergence]].
-- Controllers continuously compare live infrastructure with etcd and revert out-of-band changes. See [[concepts/self-healing-and-drift-detection]].
-- In pull-based GitOps an in-cluster agent pulls manifests from Git, rather than a pipeline pushing them. See [[concepts/gitops-pull-based-delivery]].
+- The Kubernetes API server and etcd can act as a general database and orchestration engine for any infrastructure, not only containers. See [concepts/universal-control-plane](../concepts/universal-control-plane.md).
+- Declarative specs describe an end-state instead of a command sequence. See [concepts/declarative-vs-imperative](../concepts/declarative-vs-imperative.md).
+- Level-triggered controllers act on current state rather than on events, so a missed event is repaired by the next reconcile. See [concepts/level-triggered-vs-edge-triggered](../concepts/level-triggered-vs-edge-triggered.md).
+- Complex systems converge eventually; resources apply concurrently and retry until dependencies exist. See [concepts/eventual-consistency-and-convergence](../concepts/eventual-consistency-and-convergence.md).
+- Controllers continuously compare live infrastructure with etcd and revert out-of-band changes. See [concepts/self-healing-and-drift-detection](../concepts/self-healing-and-drift-detection.md).
+- In pull-based GitOps an in-cluster agent pulls manifests from Git, rather than a pipeline pushing them. See [concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md).
 
 ### KRM and API machinery
 
-- GVK names a schema; GVR names a REST endpoint. See [[concepts/gvk-and-gvr]].
-- A CRD registers a new GVK with native storage, RBAC, and validation. See [[concepts/custom-resource-definition]].
-- Users own `.spec`; controllers own `.status`, enforced via the `/status` subresource. See [[concepts/spec-status-split]].
-- Server-side apply tracks field ownership in `managedFields`. See [[concepts/server-side-apply-and-field-ownership]].
-- Admission webhooks and CEL rules mutate or validate requests before persistence. See [[concepts/admission-webhooks-and-cel]].
+- GVK names a schema; GVR names a REST endpoint. See [concepts/gvk-and-gvr](../concepts/gvk-and-gvr.md).
+- A CRD registers a new GVK with native storage, RBAC, and validation. See [concepts/custom-resource-definition](../concepts/custom-resource-definition.md).
+- Users own `.spec`; controllers own `.status`, enforced via the `/status` subresource. See [concepts/spec-status-split](../concepts/spec-status-split.md).
+- Server-side apply tracks field ownership in `managedFields`. See [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md).
+- Admission webhooks and CEL rules mutate or validate requests before persistence. See [concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md).
 
 ### Controller and operator mechanics
 
-- See [[concepts/operator-pattern]], [[concepts/reconciliation-loop]], [[concepts/idempotency]], [[concepts/informers-reflectors-and-workqueues]], [[concepts/finalizers]], [[concepts/owner-references-and-garbage-collection]], and [[concepts/conditions]].
+- See [concepts/operator-pattern](../concepts/operator-pattern.md), [concepts/reconciliation-loop](../concepts/reconciliation-loop.md), [concepts/idempotency](../concepts/idempotency.md), [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md), [concepts/finalizers](../concepts/finalizers.md), [concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md), and [concepts/conditions](../concepts/conditions.md).
 
 ### Platform engineering and abstraction terms
 
-- See [[concepts/managed-resource]], [[concepts/composite-resource]], [[concepts/composition]], and [[concepts/provider]]. The tools are [[entities/crossplane]], [[entities/kro]], and [[entities/flux]].
+- See [concepts/managed-resource](../concepts/managed-resource.md), [concepts/composite-resource](../concepts/composite-resource.md), [concepts/composition](../concepts/composition.md), and [concepts/provider](../concepts/provider.md). The tools are [entities/crossplane](../entities/crossplane.md), [entities/kro](../entities/kro.md), and [entities/flux](../entities/flux.md).
 
 ## Limits of this source
 

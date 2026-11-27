@@ -44,15 +44,15 @@ Claims about kro, as stated by the post:
 
 Claims about alternatives, as the author's opinion:
 - A hand-rolled operator has the highest cost per new resource type. Crossplane Compositions need a heavier control plane to operate and are strongest for external cloud resources such as RDS and IAM. A kro RGD needs only YAML and CEL but carries an alpha API.
-- The post says Backstage "has been CNCF-graduated since 2022", which differs from this wiki's record, see [[entities/backstage]].
+- The post says Backstage "has been CNCF-graduated since 2022", which differs from this wiki's record, see [entities/backstage](../entities/backstage.md).
 
 Claims about the author's platform:
 - kro starts one layer above Cluster API and does not decide where a cluster comes from. The author lists five gaps for bex: the alpha API, no cluster provisioning, no per-tenant TLS or custom-domain model, portability that a Hetzner-only fleet does not need, and type checking that cannot see a platform's own CRD fields unless the platform adds validation.
 
 ## Entities and concepts
 
-- Entities: [[entities/kro]], [[entities/function-kro]], [[entities/crossplane]], [[entities/cluster-api]], [[entities/helm]], [[entities/backstage]].
-- Concepts: [[concepts/composition]], [[concepts/composite-resource]].
+- Entities: [entities/kro](../entities/kro.md), [entities/function-kro](../entities/function-kro.md), [entities/crossplane](../entities/crossplane.md), [entities/cluster-api](../entities/cluster-api.md), [entities/helm](../entities/helm.md), [entities/backstage](../entities/backstage.md).
+- Concepts: [concepts/composition](../concepts/composition.md), [concepts/composite-resource](../concepts/composite-resource.md).
 
 ## Limits
 
@@ -60,4 +60,4 @@ The post is a company blog and the radar's own methodology, scores, and wording 
 
 ## Pages touched
 
-[[entities/kro]], [[entities/backstage]], [[entities/cluster-api]], [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]], [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]], [[findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter]], and the new [[findings/one-blog-reports-that-the-cncf-and-slashdata-q1-2026-radar-rated-kro-adopt-from-a-survey-of-more-than-400-developers]] and [[examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner]].
+[entities/kro](../entities/kro.md), [entities/backstage](../entities/backstage.md), [entities/cluster-api](../entities/cluster-api.md), [comparisons/hand-written-operator-versus-crossplane-composition-versus-kro](../comparisons/hand-written-operator-versus-crossplane-composition-versus-kro.md), [decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer](../decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer.md), [findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter](../findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter.md), and the new [findings/one-blog-reports-that-the-cncf-and-slashdata-q1-2026-radar-rated-kro-adopt-from-a-survey-of-more-than-400-developers](../findings/one-blog-reports-that-the-cncf-and-slashdata-q1-2026-radar-rated-kro-adopt-from-a-survey-of-more-than-400-developers.md) and [examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner](../examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner.md).

@@ -25,7 +25,7 @@ tags: [kro, eks, aws, eks-capabilities, managed-kro, ack, argo-cd, vendor-docs, 
 
 The page is the short overview of kro inside the Amazon EKS "Capabilities" documentation. It describes kro as an open-source, Kubernetes-native project for defining custom Kubernetes APIs, and it says that under EKS Capabilities AWS runs kro as a fully managed service so customers do not install, maintain, or scale kro controllers on their clusters. It then explains how a ResourceGraphDefinition works, lists the benefits, gives a small `WebApplication` example that produces a Deployment and a Service, names two integrations with other EKS managed capabilities, and ends with three getting-started steps.
 
-The page is an overview and not a reference. It states no scale limits, no supported kro version, no pricing, no controller resource settings, and no deletion or finalizer behavior, so it adds product facts to the wiki and adds no operating numbers. The wiki already held a different and longer AWS page on kro use cases, which composes ACK S3 buckets with Deployments, see [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]]. This page is the front door to that material and does not repeat it.
+The page is an overview and not a reference. It states no scale limits, no supported kro version, no pricing, no controller resource settings, and no deletion or finalizer behavior, so it adds product facts to the wiki and adds no operating numbers. The wiki already held a different and longer AWS page on kro use cases, which composes ACK S3 buckets with Deployments, see [examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps](../examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps.md). This page is the front door to that material and does not repeat it.
 
 ## Key claims
 
@@ -43,8 +43,8 @@ The page is an overview and not a reference. It states no scale limits, no suppo
 
 ## Entities and concepts
 
-- Entities: [[entities/kro]], [[entities/ack]], [[entities/argo-cd]].
-- Concepts: [[concepts/composition]], [[concepts/composite-resource]], [[concepts/custom-resource-definition]].
+- Entities: [entities/kro](../entities/kro.md), [entities/ack](../entities/ack.md), [entities/argo-cd](../entities/argo-cd.md).
+- Concepts: [concepts/composition](../concepts/composition.md), [concepts/composite-resource](../concepts/composite-resource.md), [concepts/custom-resource-definition](../concepts/custom-resource-definition.md).
 
 ## Limits
 
@@ -52,4 +52,4 @@ The page is vendor documentation and promotional in tone ("seamlessly", "greatly
 
 ## Pages touched
 
-[[entities/kro]], [[entities/ack]], [[entities/argo-cd]], [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]], [[decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api]], and the new [[findings/the-amazon-eks-kro-overview-lists-resourcegraphdefinition-as-the-only-primary-resource-type-and-names-no-kro-version]].
+[entities/kro](../entities/kro.md), [entities/ack](../entities/ack.md), [entities/argo-cd](../entities/argo-cd.md), [examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps](../examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps.md), [decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api](../decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api.md), and the new [findings/the-amazon-eks-kro-overview-lists-resourcegraphdefinition-as-the-only-primary-resource-type-and-names-no-kro-version](../findings/the-amazon-eks-kro-overview-lists-resourcegraphdefinition-as-the-only-primary-resource-type-and-names-no-kro-version.md).
