@@ -16,7 +16,7 @@ tags: [gitops, secrets, sops, argo-cd, flux, decision]
 
 ## Status
 
-Open. This page sets out options with evidence from [[sources/research-gap-o1-argocd-flux-gitops]] and makes no recommendation, because the dossier found no independent comparison of failure modes.
+Open. This page sets out options with evidence from [sources/research-gap-o1-argocd-flux-gitops](../sources/research-gap-o1-argocd-flux-gitops.md) and makes no recommendation, because the dossier found no independent comparison of failure modes.
 
 ## Context
 
@@ -36,4 +36,4 @@ No failure-mode collection for Flux SOPS and no independent security comparison 
 
 ## Related
 
-[[findings/argo-cd-recommends-destination-cluster-secret-operators-and-warns-that-generation-plugins-cache-plaintext-manifests-in-redis]], [[findings/flux-kustomize-controller-decrypts-only-sops-and-requires-metadata-kind-and-apiversion-to-stay-in-plaintext]], [[entities/argo-cd]], [[entities/flux]]
+[findings/argo-cd-recommends-destination-cluster-secret-operators-and-warns-that-generation-plugins-cache-plaintext-manifests-in-redis](../findings/argo-cd-recommends-destination-cluster-secret-operators-and-warns-that-generation-plugins-cache-plaintext-manifests-in-redis.md), [findings/flux-kustomize-controller-decrypts-only-sops-and-requires-metadata-kind-and-apiversion-to-stay-in-plaintext](../findings/flux-kustomize-controller-decrypts-only-sops-and-requires-metadata-kind-and-apiversion-to-stay-in-plaintext.md), [entities/argo-cd](../entities/argo-cd.md), [entities/flux](../entities/flux.md)

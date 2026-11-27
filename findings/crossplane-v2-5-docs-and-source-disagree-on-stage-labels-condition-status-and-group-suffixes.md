@@ -16,7 +16,7 @@ tags: [pitfall, crossplane, docs, verification, source-quality]
 
 ## Observation
 
-Three places where the v2.5 documentation and the code read on 2026-11-26 do not match. Each is verified in both directions. [[sources/research-gap-g3-crossplane-v2]]
+Three places where the v2.5 documentation and the code read on 2026-11-26 do not match. Each is verified in both directions. [sources/research-gap-g3-crossplane-v2](../sources/research-gap-g3-crossplane-v2.md)
 
 - **Stage of the MRD conversion flag.** The docs label managed resource definitions and activation policies alpha (`state: alpha`, `alphaVersion: 2.0`), yet `core.go` on `main` lists the flag "Enable support CRD to MRD conversion when installing a package" under "Beta Features" with default true.
 - **Status of the `AsyncOperation` condition.** The managed resources docs show `AsyncOperation` with reason `Ongoing` and `Status: True`, while upjet's `AsyncOperationOngoingCondition` sets `Status: False`, and the reporter of provider-aws issue 2287 observed False.
@@ -28,4 +28,4 @@ A tutorial copied from the MRAP page may activate nothing, because the pattern d
 
 ## Mitigations
 
-When the two disagree, say so and cite both: docs v2.5 and the file in `main` as read on 2026-11-26. Check a live resource for the status value and the provider's real group names before writing alert rules or activation patterns. See [[findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs]], [[findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off]], and [[entities/crossplane]].
+When the two disagree, say so and cite both: docs v2.5 and the file in `main` as read on 2026-11-26. Check a live resource for the status value and the provider's real group names before writing alert rules or activation patterns. See [findings/upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs](upjet-and-crossplane-runtime-source-still-reports-reconcilesuccess-while-an-async-operation-runs.md), [findings/the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off](the-default-crossplane-helm-install-activates-every-managed-resource-so-activation-policies-need-the-default-turned-off.md), and [entities/crossplane](../entities/crossplane.md).

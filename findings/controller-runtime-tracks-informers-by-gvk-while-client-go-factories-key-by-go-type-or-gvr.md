@@ -16,7 +16,7 @@ tags: [gvk, gvr, informers, cache, controller-runtime, client-go, mechanism]
 
 ## Observation
 
-Three keying schemes coexist. [[sources/research-gap-m5-informers-caches]]
+Three keying schemes coexist. [sources/research-gap-m5-informers-caches](../sources/research-gap-m5-informers-caches.md)
 
 client-go's generated typed informer factory keys informers by Go type: `informers map[reflect.Type]cache.SharedIndexInformer`. https://github.com/kubernetes/client-go/blob/master/informers/factory.go
 
@@ -26,8 +26,8 @@ controller-runtime's informer tracker keys by GVK in three maps, for example `St
 
 ## Consequence for CRD changes
 
-Because controller-runtime keys by GVK and resolves the GVR once, a CRD that changes under the same GVK can leave stale state. Two closed issues show this, and both are user reports and not maintainer-confirmed behavior: [[examples/controller-runtime-issue-3303-a-recreated-crd-with-a-different-scope-was-not-picked-up-by-the-client-or-restmapper]] and [[examples/controller-runtime-issue-2589-a-controller-started-before-its-crd-existed-did-not-recover-until-the-cache-sync-timeout]]. What a running informer does when its CRD is deleted, or when served versions change, was not read from source or documentation and is UNVERIFIED.
+Because controller-runtime keys by GVK and resolves the GVR once, a CRD that changes under the same GVK can leave stale state. Two closed issues show this, and both are user reports and not maintainer-confirmed behavior: [examples/controller-runtime-issue-3303-a-recreated-crd-with-a-different-scope-was-not-picked-up-by-the-client-or-restmapper](../examples/controller-runtime-issue-3303-a-recreated-crd-with-a-different-scope-was-not-picked-up-by-the-client-or-restmapper.md) and [examples/controller-runtime-issue-2589-a-controller-started-before-its-crd-existed-did-not-recover-until-the-cache-sync-timeout](../examples/controller-runtime-issue-2589-a-controller-started-before-its-crd-existed-did-not-recover-until-the-cache-sync-timeout.md). What a running informer does when its CRD is deleted, or when served versions change, was not read from source or documentation and is UNVERIFIED.
 
 ## Related
 
-[[concepts/gvk-and-gvr]], [[comparisons/gvk-versus-gvr]], [[concepts/informers-reflectors-and-workqueues]], [[findings/stale-restmapper-hides-newly-installed-crds]], [[entities/controller-runtime]], [[entities/client-go]].
+[concepts/gvk-and-gvr](../concepts/gvk-and-gvr.md), [comparisons/gvk-versus-gvr](../comparisons/gvk-versus-gvr.md), [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md), [findings/stale-restmapper-hides-newly-installed-crds](stale-restmapper-hides-newly-installed-crds.md), [entities/controller-runtime](../entities/controller-runtime.md), [entities/client-go](../entities/client-go.md).

@@ -16,11 +16,11 @@ tags: [flux, apf, client-side-throttling, retry-after, pkg]
 
 ## Observation
 
-Flux's June 2022 update says "all Flux controllers conform to the Kubernetes API Priority and Fairness". The change behind it is fluxcd/pkg PR 270 (closed around 2022-05-11), which disables client-side throttling when the server has the APF filter enabled, because "client-go respects the `Retry-After` response header set by the APF filter." In fluxcd/pkg PR 1118 (closed 2026-02-16) the author noticed "client-side ratelimiting messages from the kustomization controller" and fixed a path where a custom kubeconfig still used client-side rate limiting even when APF is supported. [[sources/research-gap-g1-named-adopters]] URLs: https://github.com/fluxcd/pkg/pull/270 and https://github.com/fluxcd/pkg/pull/1118.
+Flux's June 2022 update says "all Flux controllers conform to the Kubernetes API Priority and Fairness". The change behind it is fluxcd/pkg PR 270 (closed around 2022-05-11), which disables client-side throttling when the server has the APF filter enabled, because "client-go respects the `Retry-After` response header set by the APF filter." In fluxcd/pkg PR 1118 (closed 2026-02-16) the author noticed "client-side ratelimiting messages from the kustomization controller" and fixed a path where a custom kubeconfig still used client-side rate limiting even when APF is supported. [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md) URLs: https://github.com/fluxcd/pkg/pull/270 and https://github.com/fluxcd/pkg/pull/1118.
 
 ## What it shows
 
-The server-side and client-side layers described in [[findings/client-side-throttling-and-server-side-apf-are-separate-layers]] can disagree in a real tool: a controller that believes it conforms to APF can still wait on its own limiter in one configuration. It took about four years to catch the custom-kubeconfig path.
+The server-side and client-side layers described in [findings/client-side-throttling-and-server-side-apf-are-separate-layers](client-side-throttling-and-server-side-apf-are-separate-layers.md) can disagree in a real tool: a controller that believes it conforms to APF can still wait on its own limiter in one configuration. It took about four years to catch the custom-kubeconfig path.
 
 ## What was not found
 
@@ -28,4 +28,4 @@ No published incident or postmortem ties Flux or sharded Flux to APF throttling.
 
 ## Related
 
-[[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]], [[concepts/scale-and-sharding]], [[entities/flux]]
+[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro](../comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro.md), [concepts/scale-and-sharding](../concepts/scale-and-sharding.md), [entities/flux](../entities/flux.md)

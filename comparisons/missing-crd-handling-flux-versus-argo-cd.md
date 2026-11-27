@@ -21,8 +21,8 @@ tags: [flux, argo-cd, crd-ordering]
 | Evidence quality | Official documentation read by the dossier | Search-result titles only; unverified |
 | Health checks | Reference resources by apiVersion and kind, so they depend on discovery | Not established |
 
-[[sources/research-gvk-and-gvr]]
+[sources/research-gvk-and-gvr](../sources/research-gvk-and-gvr.md)
 
 ## Reading the table
 
-Flux applies a dependent Kustomization only after the Kustomizations it names are ready: "the Kustomization is only applied after the referred Kustomizations are ready". The Argo CD column is thin because the Argo-specific posts failed to resolve, so do not treat it as a settled comparison. See [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]], [[findings/custom-resources-applied-before-their-crd-exists]], and [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]].
+Flux applies a dependent Kustomization only after the Kustomizations it names are ready: "the Kustomization is only applied after the referred Kustomizations are ready". The Argo CD column is thin because the Argo-specific posts failed to resolve, so do not treat it as a settled comparison. See [comparisons/ordering-models-flux-argo-cd-kro-crossplane](ordering-models-flux-argo-cd-kro-crossplane.md), [findings/custom-resources-applied-before-their-crd-exists](../findings/custom-resources-applied-before-their-crd-exists.md), and [examples/argo-cd-sync-waves-order-crds-operators-and-workloads](../examples/argo-cd-sync-waves-order-crds-operators-and-workloads.md).

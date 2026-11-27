@@ -16,7 +16,7 @@ tags: [ack, references, backoff, kro, ordering, latency]
 
 ## Observation
 
-ACK issue 3131 (open, 2026-11-05) says that "Referenced kinds are not watched." The reporter's reading of runtime v0.67.0 is that a custom resource using a `*Ref` field is not re-reconciled when the referenced resource becomes Synced, and instead waits for its exponential backoff, which can reach about 16 minutes 40 seconds. URL: https://github.com/aws-controllers-k8s/community/issues/3131. [[sources/research-gap-o3-gitops-provider-managed]]
+ACK issue 3131 (open, 2026-11-05) says that "Referenced kinds are not watched." The reporter's reading of runtime v0.67.0 is that a custom resource using a `*Ref` field is not re-reconciled when the referenced resource becomes Synced, and instead waits for its exponential backoff, which can reach about 16 minutes 40 seconds. URL: https://github.com/aws-controllers-k8s/community/issues/3131. [sources/research-gap-o3-gitops-provider-managed](../sources/research-gap-o3-gitops-provider-managed.md)
 
 ## Why it matters under GitOps and graphs
 
@@ -28,4 +28,4 @@ The claim is a reporter's reading of code and is not maintainer-confirmed, so th
 
 ## Related
 
-[[entities/ack]], [[findings/ordering-and-dependency-failures]], [[findings/retry-storms-and-unbounded-retries]], [[examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources]]
+[entities/ack](../entities/ack.md), [findings/ordering-and-dependency-failures](ordering-and-dependency-failures.md), [findings/retry-storms-and-unbounded-retries](retry-storms-and-unbounded-retries.md), [examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources](../examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources.md)

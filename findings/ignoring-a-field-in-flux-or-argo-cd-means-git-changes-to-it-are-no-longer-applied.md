@@ -16,7 +16,7 @@ tags: [pitfall, flux, argo-cd, ignore-rules, ignoredifferences, drift]
 
 ## Observation
 
-Flux's new Kustomization `.spec.ignore` rules stop the drift fight over a field by stripping it from the apply payload when another manager owns it, or by adopting the live value when Flux is the sole owner. The Flux blog states the limitation that Git changes to an ignored field are no longer applied, and changes to ignored fields do not trigger reconciliation. URL: https://fluxcd.io/blog/2026/08/ignore-rules-drift-detection/. Argo CD's `ignoreDifferences` with `RespectIgnoreDifferences` is the equivalent at sync time. URL: https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/. [[sources/research-pitfalls-and-case-studies]]
+Flux's new Kustomization `.spec.ignore` rules stop the drift fight over a field by stripping it from the apply payload when another manager owns it, or by adopting the live value when Flux is the sole owner. The Flux blog states the limitation that Git changes to an ignored field are no longer applied, and changes to ignored fields do not trigger reconciliation. URL: https://fluxcd.io/blog/2026/08/ignore-rules-drift-detection/. Argo CD's `ignoreDifferences` with `RespectIgnoreDifferences` is the equivalent at sync time. URL: https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/. [sources/research-pitfalls-and-case-studies](../sources/research-pitfalls-and-case-studies.md)
 
 ## Why it matters
 
@@ -28,4 +28,4 @@ Both claims come from first-party documentation or project blogs. No source meas
 
 ## Related
 
-[[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]], [[comparisons/exemption-and-ignore-controls-across-tools]], [[examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed]]
+[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights](../comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights.md), [comparisons/exemption-and-ignore-controls-across-tools](../comparisons/exemption-and-ignore-controls-across-tools.md), [examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed](../examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed.md)

@@ -16,7 +16,7 @@ tags: [argo-cd, applicationset, generators, limits]
 
 ## Observation
 
-The ApplicationSet generator pages document several limits. The matrix generator "currently only supports combining the outputs of only two child generators". "Combination-type generators (matrix or merge) can only be nested once." The Pull Request generator "polls every `requeueAfterSeconds` interval (defaulting to every 30 minutes)" and "will make anonymous requests which have a lower rate limit" when no token is configured. The OCI generator polls "defaulting to every 3 minutes", with a webhook refresh option. URLs under https://github.com/argoproj/argo-cd/blob/main/docs/operator-manual/applicationset/: Generators-Matrix.md, Generators-Pull-Request.md, Generators-OCI.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [[sources/research-gap-o1-argocd-flux-gitops]]
+The ApplicationSet generator pages document several limits. The matrix generator "currently only supports combining the outputs of only two child generators". "Combination-type generators (matrix or merge) can only be nested once." The Pull Request generator "polls every `requeueAfterSeconds` interval (defaulting to every 30 minutes)" and "will make anonymous requests which have a lower rate limit" when no token is configured. The OCI generator polls "defaulting to every 3 minutes", with a webhook refresh option. URLs under https://github.com/argoproj/argo-cd/blob/main/docs/operator-manual/applicationset/: Generators-Matrix.md, Generators-Pull-Request.md, Generators-OCI.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [sources/research-gap-o1-argocd-flux-gitops](../sources/research-gap-o1-argocd-flux-gitops.md)
 
 ## The generator count
 
@@ -28,4 +28,4 @@ The Cluster generator works "based on the list of clusters defined within (and m
 
 ## Related
 
-[[entities/argo-cd]], [[findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity]], [[examples/argo-cd-issue-20440-an-applicationset-generated-application-was-deleted-with-its-namespaces-and-argo-cd-itself]]
+[entities/argo-cd](../entities/argo-cd.md), [findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity](argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity.md), [examples/argo-cd-issue-20440-an-applicationset-generated-application-was-deleted-with-its-namespaces-and-argo-cd-itself](../examples/argo-cd-issue-20440-an-applicationset-generated-application-was-deleted-with-its-namespaces-and-argo-cd-itself.md)

@@ -16,7 +16,7 @@ tags: [flux, sharding, helm, labels, mechanism]
 
 ## Observation
 
-The Flux sharding page states the rule: "Source object kinds which have a dependency on another kind (i.e. `HelmChart` on a `HelmRepository`) need to have the same labels." Because a HelmChart is generated from a HelmRelease and not written by hand, the label is set through the HelmRelease's `.spec.chart.metadata.labels`, and the page describes this as setting "the sharding key on the generated Flux `HelmChart` object". For bulk assignment, a parent Kustomization applies `commonMetadata.labels` and a patch that adds the chart label on every HelmRelease. [[sources/research-gap-o2-flux-internals]]
+The Flux sharding page states the rule: "Source object kinds which have a dependency on another kind (i.e. `HelmChart` on a `HelmRepository`) need to have the same labels." Because a HelmChart is generated from a HelmRelease and not written by hand, the label is set through the HelmRelease's `.spec.chart.metadata.labels`, and the page describes this as setting "the sharding key on the generated Flux `HelmChart` object". For bulk assignment, a parent Kustomization applies `commonMetadata.labels` and a patch that adds the chart label on every HelmRelease. [sources/research-gap-o2-flux-internals](../sources/research-gap-o2-flux-internals.md)
 
 URL: https://github.com/fluxcd/website/blob/main/content/en/flux/installation/configuration/sharding.md, read on `main` on 2026-11-26.
 
@@ -26,4 +26,4 @@ The main controllers are told to ignore any keyed object with `--watch-label-sel
 
 ## Related
 
-[[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents]], [[findings/flux-notification-controller-and-source-watcher-do-not-support-sharding-and-the-documented-recipe-leaves-image-automation-unsharded]], [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]], [[entities/flux]]
+[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents](sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents.md), [findings/flux-notification-controller-and-source-watcher-do-not-support-sharding-and-the-documented-recipe-leaves-image-automation-unsharded](flux-notification-controller-and-source-watcher-do-not-support-sharding-and-the-documented-recipe-leaves-image-automation-unsharded.md), [examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances](../examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances.md), [entities/flux](../entities/flux.md)

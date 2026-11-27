@@ -19,11 +19,11 @@ tags: [ack, adopt-or-create, adoption, ownership, deletion, iam-controller]
 
 ## Observation
 
-In ACK, a custom resource without the adoption annotation stops with a terminal "Resource already exists" when a resource with its name is found. With `adopt-or-create` the found resource is adopted without checking whether another custom resource already manages it. The author of ACK issue 3149 puts it this way: "So the annotation turns off the only guard there is." [[sources/research-gap-g1-leaked-resources-adoption]] URL: https://github.com/aws-controllers-k8s/community/issues/3149
+In ACK, a custom resource without the adoption annotation stops with a terminal "Resource already exists" when a resource with its name is found. With `adopt-or-create` the found resource is adopted without checking whether another custom resource already manages it. The author of ACK issue 3149 puts it this way: "So the annotation turns off the only guard there is." [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md) URL: https://github.com/aws-controllers-k8s/community/issues/3149
 
 ## Consequences in the reproduction
 
-The reproduction used iam-controller v1.11.3 and runtime v0.67.0 against moto, so it is not a real AWS run. Two custom resources then rewrote the same role on every resync and flipped its trust policy, both reported `Synced` and `Ready`, and deleting either one deleted the role in 4 ms. The surviving custom resource created a replacement role with a new role ID on its next resync. See [[examples/ack-issue-3149-adopt-or-create-let-two-custom-resources-overwrite-one-iam-role-and-deleting-either-deleted-it]].
+The reproduction used iam-controller v1.11.3 and runtime v0.67.0 against moto, so it is not a real AWS run. Two custom resources then rewrote the same role on every resync and flipped its trust policy, both reported `Synced` and `Ready`, and deleting either one deleted the role in 4 ms. The surviving custom resource created a replacement role with a new role ID on its next resync. See [examples/ack-issue-3149-adopt-or-create-let-two-custom-resources-overwrite-one-iam-role-and-deleting-either-deleted-it](../examples/ack-issue-3149-adopt-or-create-let-two-custom-resources-overwrite-one-iam-role-and-deleting-either-deleted-it.md).
 
 ## The intended use cannot be told apart
 
@@ -31,7 +31,7 @@ A role created outside ACK and tagged `team=terraform` was adopted and its tag r
 
 ## Mitigations under discussion
 
-ACK issue 3143 (2026-11-09) is an open proposal to record the owner in AWS tags "on the resource itself, at the moment it is created", so the controller can refuse foreign resources and recover lost IDs. ACK maintainers pointed to an earlier work-in-progress tag-check adoption change in runtime pull request 261. Neither is shipped. Until then the strict `adopt` policy or an explicit import is the way to keep the guard. See [[decisions/adopt-or-create-or-require-explicit-import]].
+ACK issue 3143 (2026-11-09) is an open proposal to record the owner in AWS tags "on the resource itself, at the moment it is created", so the controller can refuse foreign resources and recover lost IDs. ACK maintainers pointed to an earlier work-in-progress tag-check adoption change in runtime pull request 261. Neither is shipped. Until then the strict `adopt` policy or an explicit import is the way to keep the guard. See [decisions/adopt-or-create-or-require-explicit-import](../decisions/adopt-or-create-or-require-explicit-import.md).
 
 ## Evidence limits
 
@@ -39,8 +39,8 @@ No production frequency exists, and the dossier says most of the late-2026 ACK a
 
 ## Related
 
-[[findings/adopt-or-create-can-take-over-a-look-alike-resource]], [[entities/ack]], [[findings/destructive-deletion-of-external-resources]], [[examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name]]
+[findings/adopt-or-create-can-take-over-a-look-alike-resource](adopt-or-create-can-take-over-a-look-alike-resource.md), [entities/ack](../entities/ack.md), [findings/destructive-deletion-of-external-resources](destructive-deletion-of-external-resources.md), [examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name](../examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name.md)
 
 ## Ownership is not recorded in AWS
 
-ACK issue 3142 says the absence of an owner check is general and not only an adopt-or-create effect, because ownership lives only in CR status. See [[findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource]]. [[sources/research-gap-g1-other-tool-pitfalls]]
+ACK issue 3142 says the absence of an owner check is general and not only an adopt-or-create effect, because ownership lives only in CR status. See [findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource](ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource.md). [sources/research-gap-g1-other-tool-pitfalls](../sources/research-gap-g1-other-tool-pitfalls.md)

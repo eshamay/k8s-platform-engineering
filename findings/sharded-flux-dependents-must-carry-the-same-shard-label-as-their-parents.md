@@ -22,7 +22,7 @@ tags: [pitfall, flux, sharding, labels, helm]
 
 ## Observation
 
-A Flux shard reconciles only objects labeled with its `sharding.fluxcd.io/key` value, and the default controllers skip labeled objects. The sharding page says dependent objects must carry matching labels, for example the HelmRepository, the HelmChart, and the HelmRelease that uses them. An unlabeled child is picked up by the default controller while its parent sits on a shard, or by no controller that can serve it. Parent Kustomizations can label their children in bulk through `commonMetadata` and patches. The dossier notes a caveat about HelmChart labeling whose exact rule was not verified. [[sources/research-flux-deep-dive]]
+A Flux shard reconciles only objects labeled with its `sharding.fluxcd.io/key` value, and the default controllers skip labeled objects. The sharding page says dependent objects must carry matching labels, for example the HelmRepository, the HelmChart, and the HelmRelease that uses them. An unlabeled child is picked up by the default controller while its parent sits on a shard, or by no controller that can serve it. Parent Kustomizations can label their children in bulk through `commonMetadata` and patches. The dossier notes a caveat about HelmChart labeling whose exact rule was not verified. [sources/research-flux-deep-dive](../sources/research-flux-deep-dive.md)
 
 ## Mitigations
 
@@ -30,12 +30,12 @@ Label the whole chain from one parent, and verify each shard's objects after the
 
 ## Related
 
-[[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]], [[entities/flux-operator]], [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]], [[entities/flux]]
+[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances](../examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances.md), [entities/flux-operator](../entities/flux-operator.md), [findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity](extra-replicas-of-a-flux-controller-add-failover-not-capacity.md), [entities/flux](../entities/flux.md)
 
 ## Reported failure with dependsOn
 
-The label rule applies to `dependsOn` targets too. kustomize-controller issue 1175 (2024-05-30) reports "dependency 'application2-namespace/app' not found" in a sharded setup, fixed by PR 1248 on 2024-09-26. See [[findings/a-flux-dependson-across-shards-failed-with-dependency-not-found-until-a-2024-fix]]. [[sources/research-gap-g1-named-adopters]]
+The label rule applies to `dependsOn` targets too. kustomize-controller issue 1175 (2024-05-30) reports "dependency 'application2-namespace/app' not found" in a sharded setup, fixed by PR 1248 on 2024-09-26. See [findings/a-flux-dependson-across-shards-failed-with-dependency-not-found-until-a-2024-fix](a-flux-dependson-across-shards-failed-with-dependency-not-found-until-a-2024-fix.md). [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md)
 
 ## Correction: the HelmChart labeling rule is now verified
 
-Correction note, 2026-11-26: the Observation section above says the exact HelmChart labeling rule was not verified. The o2 dossier read it. A HelmChart is generated from a HelmRelease, so its shard label is set through `.spec.chart.metadata.labels` on the HelmRelease, and the docs say source kinds with a dependency on another kind "need to have the same labels". See [[findings/a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels]]. The docs still do not state the failure symptom of a mismatch. [[sources/research-gap-o2-flux-internals]]
+Correction note, 2026-11-26: the Observation section above says the exact HelmChart labeling rule was not verified. The o2 dossier read it. A HelmChart is generated from a HelmRelease, so its shard label is set through `.spec.chart.metadata.labels` on the HelmRelease, and the docs say source kinds with a dependency on another kind "need to have the same labels". See [findings/a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels](a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels.md). The docs still do not state the failure symptom of a mismatch. [sources/research-gap-o2-flux-internals](../sources/research-gap-o2-flux-internals.md)

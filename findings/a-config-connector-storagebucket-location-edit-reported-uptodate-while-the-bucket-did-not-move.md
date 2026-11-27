@@ -16,16 +16,16 @@ tags: [config-connector, immutable-fields, drift, status, storagebucket, pitfall
 
 ## Observation
 
-Config Connector issue 12944 (2026-09-15) says that editing `spec.location` on a StorageBucket reconciles to Ready and UpToDate while the real bucket stays where it was. The reporter says the immutability check was removed in KCC 1.132.0 and calls the result "silent drift with a green status". The reporter ran KCC 1.155.1 and says they now reject such edits in their own validation layer. [[sources/research-gap-g1-other-tool-pitfalls]] URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/12944
+Config Connector issue 12944 (2026-09-15) says that editing `spec.location` on a StorageBucket reconciles to Ready and UpToDate while the real bucket stays where it was. The reporter says the immutability check was removed in KCC 1.132.0 and calls the result "silent drift with a green status". The reporter ran KCC 1.155.1 and says they now reject such edits in their own validation layer. [sources/research-gap-g1-other-tool-pitfalls](../sources/research-gap-g1-other-tool-pitfalls.md) URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/12944
 
 ## Why it matters
 
-A bucket location cannot change in place on Google Cloud, so the desired spec and the real resource disagree permanently while the status says they match. This is the Config Connector instance of the pattern in [[findings/immutable-fields-and-drift-collisions]] and [[findings/misleading-readiness-and-stale-status]]: when a controller ignores or swallows an immutable-field change, the condition stops being evidence of convergence.
+A bucket location cannot change in place on Google Cloud, so the desired spec and the real resource disagree permanently while the status says they match. This is the Config Connector instance of the pattern in [findings/immutable-fields-and-drift-collisions](immutable-fields-and-drift-collisions.md) and [findings/misleading-readiness-and-stale-status](misleading-readiness-and-stale-status.md): when a controller ignores or swallows an immutable-field change, the condition stops being evidence of convergence.
 
 ## Evidence limits
 
-One reporter's account, not reproduced by the dossier, and the removal of the immutability check in 1.132.0 is the reporter's attribution. The behavior at v1.162.0 was not checked. Cross-check with [[findings/crossplane-does-not-delete-and-recreate-to-change-immutable-fields]], which describes a different tool with a similar outcome.
+One reporter's account, not reproduced by the dossier, and the removal of the immutability check in 1.132.0 is the reporter's attribution. The behavior at v1.162.0 was not checked. Cross-check with [findings/crossplane-does-not-delete-and-recreate-to-change-immutable-fields](crossplane-does-not-delete-and-recreate-to-change-immutable-fields.md), which describes a different tool with a similar outcome.
 
 ## Related
 
-[[entities/config-connector]], [[examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure]], [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]]
+[entities/config-connector](../entities/config-connector.md), [examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure](../examples/config-connector-ready-condition-moves-through-updating-uptodate-and-updatefailure.md), [findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost](cel-policies-cannot-reach-external-data-and-have-bounded-cost.md)

@@ -16,7 +16,7 @@ tags: [pitfall, status-subresource, rbac, kubebuilder, conflicts]
 
 ## Observation
 
-A Kubebuilder-oriented walkthrough names four recurring implementation mistakes. The first is using the normal client instead of `Status()`, so status writes are silently ignored or hit the wrong endpoint. The second is forgetting RBAC on the `/status` subresource, because the subresource has its own authorization scope. The third is not retrying on resourceVersion conflicts, and the fourth is not setting `ObservedGeneration`, which leaves consumers unable to tell stale status from fresh. Its guidance is "Always use the status client for status updates." A second tutorial adds that `Update()` needs a current resourceVersion and is conflict-prone, `Patch()` is safer, and spec and status should not be updated in the same call. [[sources/research-spec-status-split]] URLs: https://oneuptime.com/blog/post/2026-02-09-operator-status-subresource/view and https://www.farishuskovic.dev/blog/k8s-status-subresource/.
+A Kubebuilder-oriented walkthrough names four recurring implementation mistakes. The first is using the normal client instead of `Status()`, so status writes are silently ignored or hit the wrong endpoint. The second is forgetting RBAC on the `/status` subresource, because the subresource has its own authorization scope. The third is not retrying on resourceVersion conflicts, and the fourth is not setting `ObservedGeneration`, which leaves consumers unable to tell stale status from fresh. Its guidance is "Always use the status client for status updates." A second tutorial adds that `Update()` needs a current resourceVersion and is conflict-prone, `Patch()` is safer, and spec and status should not be updated in the same call. [sources/research-spec-status-split](../sources/research-spec-status-split.md) URLs: https://oneuptime.com/blog/post/2026-02-09-operator-status-subresource/view and https://www.farishuskovic.dev/blog/k8s-status-subresource/.
 
 ## Why it matters
 
@@ -24,8 +24,8 @@ These mistakes produce controllers that appear to work in a test cluster with br
 
 ## Mitigations
 
-Grant the controller `update` and `patch` on `<resource>/status` explicitly, route all status writes through one helper, retry on conflict, and set `observedGeneration` in the same helper. See [[findings/missing-observedgeneration-hides-stale-status]], [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]], and [[entities/kubebuilder]].
+Grant the controller `update` and `patch` on `<resource>/status` explicitly, route all status writes through one helper, retry on conflict, and set `observedGeneration` in the same helper. See [findings/missing-observedgeneration-hides-stale-status](missing-observedgeneration-hides-stale-status.md), [findings/status-writes-through-the-main-resource-retrigger-reconcile-loops](status-writes-through-the-main-resource-retrigger-reconcile-loops.md), and [entities/kubebuilder](../entities/kubebuilder.md).
 
 ## Related
 
-[[concepts/spec-status-split]], [[concepts/operator-pattern]], [[entities/controller-runtime]]
+[concepts/spec-status-split](../concepts/spec-status-split.md), [concepts/operator-pattern](../concepts/operator-pattern.md), [entities/controller-runtime](../entities/controller-runtime.md)

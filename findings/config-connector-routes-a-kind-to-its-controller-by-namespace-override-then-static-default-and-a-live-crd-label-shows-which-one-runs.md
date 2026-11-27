@@ -16,13 +16,13 @@ tags: [config-connector, controllers, routing, labels, annotations]
 
 ## Observation
 
-The controller-types page gives a two-step routing precedence for the parent controller. A namespace override in the ConfigConnectorContext (`experiments.controllerOverrides`) wins, and otherwise the kind uses "the build-time reconciler defined in the Config Connector static mapping config". The same page documents a per-resource annotation `alpha.cnrm.cloud.google.com/reconciler` with the values `direct`, `tf` and `dcl`. [[sources/research-gap-o9-cadence-and-staleness]] https://docs.cloud.google.com/config-connector/docs/concepts/controller-types
+The controller-types page gives a two-step routing precedence for the parent controller. A namespace override in the ConfigConnectorContext (`experiments.controllerOverrides`) wins, and otherwise the kind uses "the build-time reconciler defined in the Config Connector static mapping config". The same page documents a per-resource annotation `alpha.cnrm.cloud.google.com/reconciler` with the values `direct`, `tf` and `dcl`. [sources/research-gap-o9-cadence-and-staleness](../sources/research-gap-o9-cadence-and-staleness.md) https://docs.cloud.google.com/config-connector/docs/concepts/controller-types
 
 At registration time the controller switches on the kind's `SupportedControllers` list and builds a Terraform, DCL, direct or IAM reconciler for each CRD, so an override can only select a controller that the table lists as supported for that kind. https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/registration/registration_controller.go
 
 ## How to tell which controller a kind uses
 
-Read the labels on the live CRD. `cnrm.cloud.google.com/tf2crd: "true"` means the Terraform-based controller, `cnrm.cloud.google.com/dcl2crd: "true"` means the DCL-based controller, and the page says "Absence of these labels: The direct controller manages the resource." For the build-time default of every kind see [[findings/config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them]].
+Read the labels on the live CRD. `cnrm.cloud.google.com/tf2crd: "true"` means the Terraform-based controller, `cnrm.cloud.google.com/dcl2crd: "true"` means the DCL-based controller, and the page says "Absence of these labels: The direct controller manages the resource." For the build-time default of every kind see [findings/config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them](config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them.md).
 
 ## Limits
 
@@ -30,4 +30,4 @@ The page does not state the support level of the `alpha.`-prefixed annotation be
 
 ## Related
 
-[[entities/config-connector]], [[decisions/accept-the-build-time-controller-for-a-config-connector-kind-or-override-it-per-namespace-or-per-resource]]
+[entities/config-connector](../entities/config-connector.md), [decisions/accept-the-build-time-controller-for-a-config-connector-kind-or-override-it-per-namespace-or-per-resource](../decisions/accept-the-build-time-controller-for-a-config-connector-kind-or-override-it-per-namespace-or-per-resource.md)

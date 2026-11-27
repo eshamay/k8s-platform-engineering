@@ -25,11 +25,11 @@ tags: [pitfall, server-side-apply, ownership]
 
 ## Observation
 
-When humans, a GitOps tool, an autoscaler, and other controllers all write to the same object, client-side apply can silently clobber another writer's changes, because it only knows the `last-applied-configuration` annotation. Server-side apply tracks which manager owns each field and raises a conflict when another manager owns a differing field, with an explicit force override. [[sources/research-declarative-vs-imperative]]
+When humans, a GitOps tool, an autoscaler, and other controllers all write to the same object, client-side apply can silently clobber another writer's changes, because it only knows the `last-applied-configuration` annotation. Server-side apply tracks which manager owns each field and raises a conflict when another manager owns a differing field, with an explicit force override. [sources/research-declarative-vs-imperative](../sources/research-declarative-vs-imperative.md)
 
 ## Interpretation
 
-Declarative configuration is meant to support multiple writers, but only if ownership is explicit. The server-side apply documentation says "fields that have a different value and are owned by another manager will result in a conflict." Flux relies on a server-side apply dry run for its drift detection, so its behavior depends on the same ownership model. See [[concepts/server-side-apply-and-field-ownership]] and [[entities/flux]].
+Declarative configuration is meant to support multiple writers, but only if ownership is explicit. The server-side apply documentation says "fields that have a different value and are owned by another manager will result in a conflict." Flux relies on a server-side apply dry run for its drift detection, so its behavior depends on the same ownership model. See [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md) and [entities/flux](../entities/flux.md).
 
 ## Mitigations
 
@@ -37,20 +37,20 @@ Use server-side apply, resolve a conflict by coordinating, giving up the field, 
 
 ## Caveat
 
-Flux field-manager details were not read in the dossier, so the exact conflict behavior of GitOps tools is unverified. See [[open-knowledge-gaps]].
+Flux field-manager details were not read in the dossier, so the exact conflict behavior of GitOps tools is unverified. See [open-knowledge-gaps](../open-knowledge-gaps.md).
 
 ## Related
 
-[[findings/mixing-management-techniques-on-one-object]], [[concepts/declarative-vs-imperative]]
+[findings/mixing-management-techniques-on-one-object](mixing-management-techniques-on-one-object.md), [concepts/declarative-vs-imperative](../concepts/declarative-vs-imperative.md)
 
 ## Worked cases
 
-Field ownership can block correction altogether, and a second automation tool can look like drift. See [[findings/field-ownership-blocks-drift-correction]], [[findings/controllers-fighting-over-fields-cause-revert-loops]], and [[comparisons/exemption-and-ignore-controls-across-tools]]. The Flux and Argo CD field-manager behavior left unverified above is now partly covered by the Flux discussion and Argo CD's `managedFieldsManagers`. [[sources/research-self-healing-and-drift-detection]]
+Field ownership can block correction altogether, and a second automation tool can look like drift. See [findings/field-ownership-blocks-drift-correction](field-ownership-blocks-drift-correction.md), [findings/controllers-fighting-over-fields-cause-revert-loops](controllers-fighting-over-fields-cause-revert-loops.md), and [comparisons/exemption-and-ignore-controls-across-tools](../comparisons/exemption-and-ignore-controls-across-tools.md). The Flux and Argo CD field-manager behavior left unverified above is now partly covered by the Flux discussion and Argo CD's `managedFieldsManagers`. [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md)
 
 ## Server-side apply mechanics and policy
 
-The mechanics behind this pitfall are field managers and conflicts: the later apply errors unless the applier forces, drops the field, or shares ownership by setting the same value. Tools resolve the tension differently, and the dossier records that the best default is unsettled. [[sources/research-server-side-apply-and-field-ownership]] See [[comparisons/ssa-conflict-policy-across-tools]], [[decisions/force-conflicts-or-surface-them-to-humans]], and [[findings/forcing-conflicts-hides-disagreements-between-writers]].
+The mechanics behind this pitfall are field managers and conflicts: the later apply errors unless the applier forces, drops the field, or shares ownership by setting the same value. Tools resolve the tension differently, and the dossier records that the best default is unsettled. [sources/research-server-side-apply-and-field-ownership](../sources/research-server-side-apply-and-field-ownership.md) See [comparisons/ssa-conflict-policy-across-tools](../comparisons/ssa-conflict-policy-across-tools.md), [decisions/force-conflicts-or-surface-them-to-humans](../decisions/force-conflicts-or-surface-them-to-humans.md), and [findings/forcing-conflicts-hides-disagreements-between-writers](forcing-conflicts-hides-disagreements-between-writers.md).
 
 ## Ignore and exemption controls (o1 dossier)
 
-The documented mitigations for a second writer differ in scope. Argo CD `ignoreDifferences` changes only the diff by default ([[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]]), and a Flux ignore rule needs a target selector to stay narrow ([[findings/a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages]]). [[sources/research-gap-o1-argocd-flux-gitops]]
+The documented mitigations for a second writer differ in scope. Argo CD `ignoreDifferences` changes only the diff by default ([findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist](argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist.md)), and a Flux ignore rule needs a target selector to stay narrow ([findings/a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages](a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages.md)). [sources/research-gap-o1-argocd-flux-gitops](../sources/research-gap-o1-argocd-flux-gitops.md)

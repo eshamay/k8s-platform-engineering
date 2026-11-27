@@ -26,7 +26,7 @@ tags: [flux, scale, sharding, comparison, tuning]
 | Object-store source (S3) instead of a self-hosted Git provider | Moves artifact fetching off the Git host | Used by Morgan Stanley for availability and compliance | A different source type to manage |
 | Webhook Receivers | Starts reconciliation on push | Notification controller docs | Extra endpoints and credentials |
 
-[[sources/research-flux-deep-dive]]
+[sources/research-flux-deep-dive](../sources/research-flux-deep-dive.md)
 
 ## Reading the table
 
@@ -34,8 +34,8 @@ Only the first, second, and fifth rows were used in production by the one named 
 
 ## Related
 
-[[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]], [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]], [[examples/flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs]], [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]], [[findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity]]
+[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first](../decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first.md), [comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane](concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane.md), [examples/flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs](../examples/flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs.md), [examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding](../examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding.md), [findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity](../findings/extra-replicas-of-a-flux-controller-add-failover-not-capacity.md)
 
 ## Evidence from the named-adopters dossier
 
-The sharding page advises sharding at "tens of thousands of applications", the project benchmark reconciles 1000 Kustomizations in 4m13s at concurrency 20, and no organization was found that runs sharded Flux. Morgan Stanley, at more than 500 clusters, scaled by intervals, concurrency, and limits. See [[examples/the-flux-benchmark-reconciles-1000-kustomizations-in-4-minutes-13-seconds-on-flux-v2-10-0]] and [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]]. [[sources/research-gap-g1-named-adopters]]
+The sharding page advises sharding at "tens of thousands of applications", the project benchmark reconciles 1000 Kustomizations in 4m13s at concurrency 20, and no organization was found that runs sharded Flux. Morgan Stanley, at more than 500 clusters, scaled by intervals, concurrency, and limits. See [examples/the-flux-benchmark-reconciles-1000-kustomizations-in-4-minutes-13-seconds-on-flux-v2-10-0](../examples/the-flux-benchmark-reconciles-1000-kustomizations-in-4-minutes-13-seconds-on-flux-v2-10-0.md) and [examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding](../examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding.md). [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md)

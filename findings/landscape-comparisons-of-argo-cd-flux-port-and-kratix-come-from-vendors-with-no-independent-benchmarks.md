@@ -16,12 +16,12 @@ tags: [source-quality, vendor-bias, benchmarks, argo-cd, flux]
 
 ## Observation
 
-The comparative claims in this landscape mostly come from companies that sell one of the compared tools. Akuity, a commercial Argo CD vendor, says Flux has a lower and more predictable footprint than Argo CD and that Argo CD runs in nearly 60% of clusters according to a 2025 survey (https://akuity.io/blog/argo-cd-flux-comparison). Port positions itself against Backstage as more automation and AI-agent oriented (https://docs.port.io/getting-started/overview), and Syntasso argues that a portal is not enough (https://www.syntasso.io/post/kratix-backstage-upgrade-your-portal-to-a-platform). [[sources/research-landscape]]
+The comparative claims in this landscape mostly come from companies that sell one of the compared tools. Akuity, a commercial Argo CD vendor, says Flux has a lower and more predictable footprint than Argo CD and that Argo CD runs in nearly 60% of clusters according to a 2025 survey (https://akuity.io/blog/argo-cd-flux-comparison). Port positions itself against Backstage as more automation and AI-agent oriented (https://docs.port.io/getting-started/overview), and Syntasso argues that a portal is not enough (https://www.syntasso.io/post/kratix-backstage-upgrade-your-portal-to-a-platform). [sources/research-landscape](../sources/research-landscape.md)
 
 ## What the wiki does about it
 
-The dossier found no independent benchmarks for any of these claims, and they conflict in emphasis. The wiki attributes each claim to its vendor and keeps the Argo CD footprint point separate from the measured scale material in [[comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog]] and [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
+The dossier found no independent benchmarks for any of these claims, and they conflict in emphasis. The wiki attributes each claim to its vendor and keeps the Argo CD footprint point separate from the measured scale material in [comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog](../comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog.md) and [comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane](../comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane.md).
 
 ## Related
 
-[[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers]], [[concepts/tooling-landscape]]
+[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers](../comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers.md), [concepts/tooling-landscape](../concepts/tooling-landscape.md)

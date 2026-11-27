@@ -16,11 +16,11 @@ tags: [ack, idempotency, duplicate-resource, client-token, audit, runtime]
 
 ## Observation
 
-ACK community issue 3177 (2026-11-13, gecube) states that when a Create response is lost, "48 resources in 22 controllers either create a second AWS resource (28) or fail on every following reconcile" because the name is already taken (20). It adds 12 more resources that depend on undocumented behavior. This is the author's own audit of code and documentation at main on 2026-11-13. It is not an observed production incident count, and the dossier did not re-run it. [[sources/research-gap-g1-leaked-resources-adoption]] URL: https://github.com/aws-controllers-k8s/community/issues/3177
+ACK community issue 3177 (2026-11-13, gecube) states that when a Create response is lost, "48 resources in 22 controllers either create a second AWS resource (28) or fail on every following reconcile" because the name is already taken (20). It adds 12 more resources that depend on undocumented behavior. This is the author's own audit of code and documentation at main on 2026-11-13. It is not an observed production incident count, and the dossier did not re-run it. [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md) URL: https://github.com/aws-controllers-k8s/community/issues/3177
 
 ## Mechanism
 
-ACK controllers record the AWS identifier in status after the create call returns. A controller that stops before that write leaves a resource in AWS whose identifier the custom resource does not have. For server-generated identifiers the next reconcile creates a second resource. For caller-named resources the next create fails because the name exists, and the custom resource wedges. This is the failure that [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]] describes in general, now with a count for one project.
+ACK controllers record the AWS identifier in status after the create call returns. A controller that stops before that write leaves a resource in AWS whose identifier the custom resource does not have. For server-generated identifiers the next reconcile creates a second resource. For caller-named resources the next create fails because the name exists, and the custom resource wedges. This is the failure that [findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource](a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource.md) describes in general, now with a count for one project.
 
 ## The fix in progress
 
@@ -28,8 +28,8 @@ ACK runtime pull request 292 (opened 2026-11-13, merged 2026-11-20) moves the st
 
 ## Observed instance
 
-The audit's mechanism matches the dated reproduction in [[examples/ack-issue-3122-a-controller-restart-during-a-rollout-created-a-second-vpc-endpoint-and-blocked-subnet-deletion-for-about-two-hours]], and the two-cluster variant in [[examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name]].
+The audit's mechanism matches the dated reproduction in [examples/ack-issue-3122-a-controller-restart-during-a-rollout-created-a-second-vpc-endpoint-and-blocked-subnet-deletion-for-about-two-hours](../examples/ack-issue-3122-a-controller-restart-during-a-rollout-created-a-second-vpc-endpoint-and-blocked-subnet-deletion-for-about-two-hours.md), and the two-cluster variant in [examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name](../examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name.md).
 
 ## Related
 
-[[entities/ack]], [[concepts/idempotency]], [[decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout]], [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]]
+[entities/ack](../entities/ack.md), [concepts/idempotency](../concepts/idempotency.md), [decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout](../decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout.md), [comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector](../comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector.md)

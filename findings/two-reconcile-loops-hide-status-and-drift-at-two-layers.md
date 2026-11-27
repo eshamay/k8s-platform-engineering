@@ -16,7 +16,7 @@ tags: [pitfall, gitops, kro, crossplane, layering]
 
 ## Observation
 
-With kro or Crossplane beneath a GitOps agent, two independent loops are active. The GitOps agent reconciles Git into the Kubernetes API, and the abstraction controller (kro's dynamic controller or Crossplane's composition machinery) reconciles the resulting custom resource into the underlying resources. kro's project site states that its controller does continuous reconciliation and drift detection of its own, so status and drift can be reported at both layers. [[sources/research-gitops-pull-based-delivery]]
+With kro or Crossplane beneath a GitOps agent, two independent loops are active. The GitOps agent reconciles Git into the Kubernetes API, and the abstraction controller (kro's dynamic controller or Crossplane's composition machinery) reconciles the resulting custom resource into the underlying resources. kro's project site states that its controller does continuous reconciliation and drift detection of its own, so status and drift can be reported at both layers. [sources/research-gitops-pull-based-delivery](../sources/research-gitops-pull-based-delivery.md)
 
 ## Why it matters
 
@@ -24,8 +24,8 @@ A green sync in the GitOps agent says only that the custom resource matches Git,
 
 ## Mitigation
 
-Read both layers: the agent's sync status for "Git versus API", and the custom resource's conditions for "API versus reality". Make sure the agent evaluates those conditions, as in [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]].
+Read both layers: the agent's sync status for "Git versus API", and the custom resource's conditions for "API versus reality". Make sure the agent evaluates those conditions, as in [findings/generic-gitops-agents-cannot-judge-custom-resource-health](generic-gitops-agents-cannot-judge-custom-resource-health.md).
 
 ## Related
 
-[[concepts/gitops-pull-based-delivery]], [[findings/controllers-fighting-over-fields-cause-revert-loops]], [[entities/kro]], [[entities/crossplane]], [[concepts/self-healing-and-drift-detection]]
+[concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md), [findings/controllers-fighting-over-fields-cause-revert-loops](controllers-fighting-over-fields-cause-revert-loops.md), [entities/kro](../entities/kro.md), [entities/crossplane](../entities/crossplane.md), [concepts/self-healing-and-drift-detection](../concepts/self-healing-and-drift-detection.md)

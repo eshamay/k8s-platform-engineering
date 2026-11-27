@@ -16,7 +16,7 @@ tags: [kubernetes, mutating-admission-policy, feature-gates, documentation-confl
 
 ## Observation
 
-The live Mutating Admission Policy page says "Feature state: Stable since Kubernetes v1.36; enabled by default" and, in its body, "It was first available in the v1.30 release." The gate table at tag v1.36.0 starts the feature at Alpha 1.32. The two statements look contradictory, and the code explains both. [[sources/research-gap-b1-recheck-flux-k8s]] https://kubernetes.io/docs/reference/access-authn-authz/mutating-admission-policy/
+The live Mutating Admission Policy page says "Feature state: Stable since Kubernetes v1.36; enabled by default" and, in its body, "It was first available in the v1.30 release." The gate table at tag v1.36.0 starts the feature at Alpha 1.32. The two statements look contradictory, and the code explains both. [sources/research-gap-b1-recheck-flux-k8s](../sources/research-gap-b1-recheck-flux-k8s.md) https://kubernetes.io/docs/reference/access-authn-authz/mutating-admission-policy/
 
 ## What the code shows
 
@@ -32,4 +32,4 @@ The first release with a usable API, and the KEP's alpha milestone, is v1.32. Th
 
 ## Related
 
-This resolves the first mismatch listed in [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]]. See also [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]], [[concepts/admission-webhooks-and-cel]], and [[findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes]].
+This resolves the first mismatch listed in [findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage](kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage.md). See also [comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules](../comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules.md), [concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md), and [findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes](crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes.md).

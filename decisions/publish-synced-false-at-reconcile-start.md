@@ -16,7 +16,7 @@ tags: [ack, conditions, observedgeneration, stale-status]
 
 ## Status
 
-Open question framed by the sources, not an ADR authored by this wiki. ACK issue 1583 proposes one option and was open with a frozen label when the dossier fetched it. [[sources/research-spec-status-split]]
+Open question framed by the sources, not an ADR authored by this wiki. ACK issue 1583 proposes one option and was open with a frozen label when the dossier fetched it. [sources/research-spec-status-split](../sources/research-spec-status-split.md)
 
 ## Context
 
@@ -28,8 +28,8 @@ The controller can add `observedGeneration` to each condition, so consumers comp
 
 ## Consequences
 
-Publishing `False` at the start costs an extra status write per reconcile and makes the condition flap during normal operation, which consumers must not read as failure (compare Flux's `Reconciling=True`, which is normal progress). Adding `observedGeneration` is the convention-aligned fix and does not flap. The dossier does not say which option ACK chose. See [[findings/missing-observedgeneration-hides-stale-status]] and [[comparisons/observedgeneration-top-level-versus-per-condition]].
+Publishing `False` at the start costs an extra status write per reconcile and makes the condition flap during normal operation, which consumers must not read as failure (compare Flux's `Reconciling=True`, which is normal progress). Adding `observedGeneration` is the convention-aligned fix and does not flap. The dossier does not say which option ACK chose. See [findings/missing-observedgeneration-hides-stale-status](../findings/missing-observedgeneration-hides-stale-status.md) and [comparisons/observedgeneration-top-level-versus-per-condition](../comparisons/observedgeneration-top-level-versus-per-condition.md).
 
 ## Related
 
-[[entities/ack]], [[concepts/conditions]], [[concepts/spec-status-split]]
+[entities/ack](../entities/ack.md), [concepts/conditions](../concepts/conditions.md), [concepts/spec-status-split](../concepts/spec-status-split.md)

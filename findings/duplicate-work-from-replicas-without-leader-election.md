@@ -16,7 +16,7 @@ tags: [pitfall, leader-election, replicas, kube-rs]
 
 ## Observation
 
-Running two replicas of a controller without leader election makes both reconcile the same objects, which duplicates work and produces racy writes. The kube-rs availability guide explains the cause: a controller is a queue consumer, so every replica consumes the same stream of keys. URL: https://kube.rs/controllers/availability/. [[sources/research-eventual-consistency-and-convergence]]
+Running two replicas of a controller without leader election makes both reconcile the same objects, which duplicates work and produces racy writes. The kube-rs availability guide explains the cause: a controller is a queue consumer, so every replica consumes the same stream of keys. URL: https://kube.rs/controllers/availability/. [sources/research-eventual-consistency-and-convergence](../sources/research-eventual-consistency-and-convergence.md)
 
 ## Costs of the fix
 
@@ -24,8 +24,8 @@ Lease-based leader election prevents the duplication, and the guide recommends s
 
 ## Mitigations
 
-Use leader election for multi-replica controllers, release the lease on shutdown, and keep reconcilers idempotent so that overlap is harmless. See [[decisions/single-replica-versus-leader-election]], [[entities/kube-rs]], and [[concepts/idempotency]].
+Use leader election for multi-replica controllers, release the lease on shutdown, and keep reconcilers idempotent so that overlap is harmless. See [decisions/single-replica-versus-leader-election](../decisions/single-replica-versus-leader-election.md), [entities/kube-rs](../entities/kube-rs.md), and [concepts/idempotency](../concepts/idempotency.md).
 
 ## Related
 
-[[concepts/eventual-consistency-and-convergence]], [[findings/stale-cache-and-double-action]]
+[concepts/eventual-consistency-and-convergence](../concepts/eventual-consistency-and-convergence.md), [findings/stale-cache-and-double-action](stale-cache-and-double-action.md)

@@ -16,7 +16,7 @@ tags: [kubernetes, apf, kep-1040, priority-and-fairness, lifecycle, documentatio
 
 ## Observation
 
-API Priority and Fairness (APF) is tracked in KEP-1040, and the two files in the KEP directory record different amounts of its history. `kep.yaml` (read 2026-11-26) gives status `implemented`, stage `stable`, latest milestone v1.30, alpha v1.18, beta v1.20, stable v1.29, and the gate `APIPriorityAndFairness` with `disable-supported: true`. The README's Implementation History stops at "v1.26: introduce concurrency borrowing between priority levels", and the GA entry for v1.29 appears only in `kep.yaml`. The last README commit is dated 2024-05-08. [[sources/research-gap-b1-recheck-flux-k8s]] https://github.com/kubernetes/enhancements/blob/master/keps/sig-api-machinery/1040-priority-and-fairness/kep.yaml
+API Priority and Fairness (APF) is tracked in KEP-1040, and the two files in the KEP directory record different amounts of its history. `kep.yaml` (read 2026-11-26) gives status `implemented`, stage `stable`, latest milestone v1.30, alpha v1.18, beta v1.20, stable v1.29, and the gate `APIPriorityAndFairness` with `disable-supported: true`. The README's Implementation History stops at "v1.26: introduce concurrency borrowing between priority levels", and the GA entry for v1.29 appears only in `kep.yaml`. The last README commit is dated 2024-05-08. [sources/research-gap-b1-recheck-flux-k8s](../sources/research-gap-b1-recheck-flux-k8s.md) https://github.com/kubernetes/enhancements/blob/master/keps/sig-api-machinery/1040-priority-and-fairness/kep.yaml
 
 ## Graduation criteria and tests
 
@@ -28,8 +28,8 @@ The production readiness answers on scalability say new self-requests and new AP
 
 ## Why it matters
 
-A reader who takes the README alone would conclude APF was last changed in v1.26 and may not know it graduated, and a reader who takes `kep.yaml` alone would miss that the README's coverage figures date from 2023. Cite the stage from `kep.yaml` and the release notes, and cite design and test details from the README with its date. The earlier digest-based figures in [[findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking]] left the rest of the README unread, and this pass reads it.
+A reader who takes the README alone would conclude APF was last changed in v1.26 and may not know it graduated, and a reader who takes `kep.yaml` alone would miss that the README's coverage figures date from 2023. Cite the stage from `kep.yaml` and the release notes, and cite design and test details from the README with its date. The earlier digest-based figures in [findings/the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking](the-scale-dossier-relies-on-model-digests-for-most-numbers-so-limits-need-rechecking.md) left the rest of the README unread, and this pass reads it.
 
 ## Related
 
-[[findings/apf-fair-queuing-allocates-seats-equally-and-a-slow-reader-can-hold-hand-size-times-ten-seats]], [[concepts/scale-and-sharding]], [[findings/client-side-throttling-and-server-side-apf-are-separate-layers]], [[findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage]]
+[findings/apf-fair-queuing-allocates-seats-equally-and-a-slow-reader-can-hold-hand-size-times-ten-seats](apf-fair-queuing-allocates-seats-equally-and-a-slow-reader-can-hold-hand-size-times-ten-seats.md), [concepts/scale-and-sharding](../concepts/scale-and-sharding.md), [findings/client-side-throttling-and-server-side-apf-are-separate-layers](client-side-throttling-and-server-side-apf-are-separate-layers.md), [findings/kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage](kubernetes-docs-pages-disagree-with-the-code-on-mutating-admission-policy-and-storage-version-migration-stage.md)

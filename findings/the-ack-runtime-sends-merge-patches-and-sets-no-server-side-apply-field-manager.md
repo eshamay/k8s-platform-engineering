@@ -16,7 +16,7 @@ tags: [ack, server-side-apply, merge-patch, field-manager, verified]
 
 ## Observation
 
-The AWS Controllers for Kubernetes runtime reconciler writes with controller-runtime merge patches, for example `client.MergeFrom(desiredCleaned.RuntimeObject())`, and uses `StrategicMergeFrom` for Secrets and ConfigMaps. A search of the non-test, non-mock Go files for `ForceOwnership`, `FieldOwner`, and `client.Apply` found nothing outside a mock. [[sources/research-gap-m4-ssa-conflict-policy]] URL: https://github.com/aws-controllers-k8s/runtime/blob/main/pkg/runtime/reconciler.go (commit b1f8861, 2026-11-26).
+The AWS Controllers for Kubernetes runtime reconciler writes with controller-runtime merge patches, for example `client.MergeFrom(desiredCleaned.RuntimeObject())`, and uses `StrategicMergeFrom` for Secrets and ConfigMaps. A search of the non-test, non-mock Go files for `ForceOwnership`, `FieldOwner`, and `client.Apply` found nothing outside a mock. [sources/research-gap-m4-ssa-conflict-policy](../sources/research-gap-m4-ssa-conflict-policy.md) URL: https://github.com/aws-controllers-k8s/runtime/blob/main/pkg/runtime/reconciler.go (commit b1f8861, 2026-11-26).
 
 ## Limits of the evidence
 
@@ -24,8 +24,8 @@ The conclusion rests on absence in the runtime repository, and the individual pe
 
 ## Why it matters
 
-A merge patch from a controller is an Update-type write, so the API server records the manager from the User-Agent and never raises a conflict for it. ACK therefore cannot lose a field-ownership dispute in the server-side apply sense, and a GitOps tool that applies the same resource with server-side apply and force can take fields from it silently. The wiki's ACK adoption findings show the practical result: see [[examples/ack-issue-3152-adoption-under-argo-cd-or-flux-overwrites-the-adopted-aws-resource-with-the-git-spec]] and [[concepts/server-side-apply-and-field-ownership]].
+A merge patch from a controller is an Update-type write, so the API server records the manager from the User-Agent and never raises a conflict for it. ACK therefore cannot lose a field-ownership dispute in the server-side apply sense, and a GitOps tool that applies the same resource with server-side apply and force can take fields from it silently. The wiki's ACK adoption findings show the practical result: see [examples/ack-issue-3152-adoption-under-argo-cd-or-flux-overwrites-the-adopted-aws-resource-with-the-git-spec](../examples/ack-issue-3152-adoption-under-argo-cd-or-flux-overwrites-the-adopted-aws-resource-with-the-git-spec.md) and [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md).
 
 ## Related
 
-[[entities/ack]], [[comparisons/ssa-conflict-policy-across-tools]], [[findings/multiple-writers-on-one-object]]
+[entities/ack](../entities/ack.md), [comparisons/ssa-conflict-policy-across-tools](../comparisons/ssa-conflict-policy-across-tools.md), [findings/multiple-writers-on-one-object](multiple-writers-on-one-object.md)

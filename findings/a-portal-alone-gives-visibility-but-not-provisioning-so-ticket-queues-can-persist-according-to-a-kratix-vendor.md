@@ -16,7 +16,7 @@ tags: [pitfall, portal, backstage, kratix, vendor-claim]
 
 ## Observation
 
-Backstage's own documentation describes a catalog, templates, and TechDocs, which is a user interface and metadata layer and not a provisioner (https://backstage.io/docs/overview/what-is-backstage). Syntasso adds the claim that a portal gives only visibility, so developers still wait on tickets unless a provisioning layer sits behind it, and that Kratix Promises and workflows fill that role (https://www.syntasso.io/post/kratix-backstage-upgrade-your-portal-to-a-platform). [[sources/research-landscape]]
+Backstage's own documentation describes a catalog, templates, and TechDocs, which is a user interface and metadata layer and not a provisioner (https://backstage.io/docs/overview/what-is-backstage). Syntasso adds the claim that a portal gives only visibility, so developers still wait on tickets unless a provisioning layer sits behind it, and that Kratix Promises and workflows fill that role (https://www.syntasso.io/post/kratix-backstage-upgrade-your-portal-to-a-platform). [sources/research-landscape](../sources/research-landscape.md)
 
 ## Evidence strength
 
@@ -24,4 +24,4 @@ The first half is documented fact, and the second half is a vendor claim from th
 
 ## Related
 
-[[entities/backstage]], [[entities/kratix]], [[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers]], [[concepts/tooling-landscape]]
+[entities/backstage](../entities/backstage.md), [entities/kratix](../entities/kratix.md), [comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers](../comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers.md), [concepts/tooling-landscape](../concepts/tooling-landscape.md)

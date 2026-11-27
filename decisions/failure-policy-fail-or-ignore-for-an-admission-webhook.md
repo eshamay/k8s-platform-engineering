@@ -29,7 +29,7 @@ Active as an evidence record. It lays out options with source evidence and makes
 
 ## Context
 
-Every admission webhook configuration must say what happens when the call fails or times out. The `v1` default is `Fail`, and `timeoutSeconds` defaults to 10 seconds. The choice trades enforcement against availability, because the API server blocks on the call. [[sources/research-admission-webhooks-and-cel]]
+Every admission webhook configuration must say what happens when the call fails or times out. The `v1` default is `Fail`, and `timeoutSeconds` defaults to 10 seconds. The choice trades enforcement against availability, because the API server blocks on the call. [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)
 
 ## Options
 
@@ -41,20 +41,20 @@ The vendor blog advises that security-critical validations should use `Fail` and
 
 ## Consequences
 
-`Fail` raises the cost of a webhook outage, as in [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]], while `Ignore` weakens guarantees. Moving a check to an in-process CEL policy sidesteps the question for simple rules; see [[decisions/validate-with-cel-rules-or-a-validating-webhook]]. ValidatingAdmissionPolicy has its own `failurePolicy` that applies to evaluation errors.
+`Fail` raises the cost of a webhook outage, as in [findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them](../findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them.md), while `Ignore` weakens guarantees. Moving a check to an in-process CEL policy sidesteps the question for simple rules; see [decisions/validate-with-cel-rules-or-a-validating-webhook](validate-with-cel-rules-or-a-validating-webhook.md). ValidatingAdmissionPolicy has its own `failurePolicy` that applies to evaluation errors.
 
 ## Evidence from the Jetstack incident
 
-Jetstack's 2019 post is a primary example of the `Fail` deadlock and of the scoping mitigation. It limited the webhook to namespaces where policy applies, enabled it only for Ingress and Service resources, and added a livenessProbe to OPA. It did not change the failure policy, and the post-level evidence says nothing about `Ignore`. See [[examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook]]. [[sources/research-gap-g1-outage-postmortems]]
+Jetstack's 2019 post is a primary example of the `Fail` deadlock and of the scoping mitigation. It limited the webhook to namespaces where policy applies, enabled it only for Ingress and Service resources, and added a livenessProbe to OPA. It did not change the failure policy, and the post-level evidence says nothing about `Ignore`. See [examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook](../examples/jetstack-s-2019-gke-master-upgrade-stalled-on-an-unresponsive-opa-validating-webhook.md). [sources/research-gap-g1-outage-postmortems](../sources/research-gap-g1-outage-postmortems.md)
 
 ## Related
 
-[[concepts/admission-webhooks-and-cel]] and [[findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window]].
+[concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md) and [findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window](../findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window.md).
 
 ## Correction note from the named-incident dossier
 
-A second read confirmed that Jetstack's post never mentions `failurePolicy`. The evidence above is about scoping and probes only, and no `failurePolicy` recommendation should be cited to Jetstack. [[sources/research-gap-g1-named-incident-reports]]
+A second read confirmed that Jetstack's post never mentions `failurePolicy`. The evidence above is about scoping and probes only, and no `failurePolicy` recommendation should be cited to Jetstack. [sources/research-gap-g1-named-incident-reports](../sources/research-gap-g1-named-incident-reports.md)
 
 ## Evidence from tool defaults, 2026-11-26
 
-The options are visible in what tools ship. Fail-open: Gatekeeper's default (Ignore, with an audit backstop) and Kyverno's catch-all fallback when auto-update is disabled. Fail-closed: Cluster API, Config Connector, the Crossplane Usage webhook and Kyverno's default. Each side has a documented cost. Fail-closed needs the self-exclusion and replica measures in [[findings/kyverno-fail-closed-policies-time-out-api-requests-when-all-kyverno-pods-are-down-unless-the-kyverno-namespace-is-excluded]] and a deadlock exit (delete the webhook configuration), and Crossplane exposes Ignore for managed Kubernetes services that reject Fail with wildcard rules. Fail-open skips checks while the webhook is down, which Gatekeeper's docs address through audit. The full table is in [[comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno]]. [[sources/research-gap-m6-admission-crds]]
+The options are visible in what tools ship. Fail-open: Gatekeeper's default (Ignore, with an audit backstop) and Kyverno's catch-all fallback when auto-update is disabled. Fail-closed: Cluster API, Config Connector, the Crossplane Usage webhook and Kyverno's default. Each side has a documented cost. Fail-closed needs the self-exclusion and replica measures in [findings/kyverno-fail-closed-policies-time-out-api-requests-when-all-kyverno-pods-are-down-unless-the-kyverno-namespace-is-excluded](../findings/kyverno-fail-closed-policies-time-out-api-requests-when-all-kyverno-pods-are-down-unless-the-kyverno-namespace-is-excluded.md) and a deadlock exit (delete the webhook configuration), and Crossplane exposes Ignore for managed Kubernetes services that reject Fail with wildcard rules. Fail-open skips checks while the webhook is down, which Gatekeeper's docs address through audit. The full table is in [comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno](../comparisons/admission-webhooks-and-failure-policies-across-crossplane-kro-argo-cd-config-connector-ack-cluster-api-gatekeeper-and-kyverno.md). [sources/research-gap-m6-admission-crds](../sources/research-gap-m6-admission-crds.md)

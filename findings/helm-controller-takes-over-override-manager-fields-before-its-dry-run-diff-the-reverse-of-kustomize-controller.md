@@ -16,13 +16,13 @@ tags: [flux, helm-controller, kustomize-controller, override-manager, dry-run, s
 
 ## Observation
 
-In helm-controller, `DetermineReleaseState` calls `action.Diff` with the disallowed field managers when drift detection is enabled. Inside `Diff`, if that list is non-empty, a non-dry-run client runs `replaceDisallowedFieldManagers` on each live object and patches `managedFields` before the dry-run client computes the diff. The error text on failure is "failed to clean-up disallowed field managers". So helm-controller's takeover happens before its server-side dry-run diff. [[sources/research-gap-m4-ssa-conflict-policy]] URL: https://github.com/fluxcd/helm-controller/blob/main/internal/action/diff.go (commit 072b907).
+In helm-controller, `DetermineReleaseState` calls `action.Diff` with the disallowed field managers when drift detection is enabled. Inside `Diff`, if that list is non-empty, a non-dry-run client runs `replaceDisallowedFieldManagers` on each live object and patches `managedFields` before the dry-run client computes the diff. The error text on failure is "failed to clean-up disallowed field managers". So helm-controller's takeover happens before its server-side dry-run diff. [sources/research-gap-m4-ssa-conflict-policy](../sources/research-gap-m4-ssa-conflict-policy.md) URL: https://github.com/fluxcd/helm-controller/blob/main/internal/action/diff.go (commit 072b907).
 
-kustomize-controller is the reverse. Its documentation says `--override-manager` "takes over the named field managers only after a successful server-side apply dry-run", and it added `--override-manager-before-dry-run` for objects whose dry-run fails on every reconcile. See [[findings/the-flux-override-manager-flag-takes-over-only-after-a-successful-dry-run-so-it-cannot-recover-an-object-stuck-at-dry-run-validation]].
+kustomize-controller is the reverse. Its documentation says `--override-manager` "takes over the named field managers only after a successful server-side apply dry-run", and it added `--override-manager-before-dry-run` for objects whose dry-run fails on every reconcile. See [findings/the-flux-override-manager-flag-takes-over-only-after-a-successful-dry-run-so-it-cannot-recover-an-object-stuck-at-dry-run-validation](the-flux-override-manager-flag-takes-over-only-after-a-successful-dry-run-so-it-cannot-recover-an-object-stuck-at-dry-run-validation.md).
 
 ## What this settles
 
-The question left open by [[findings/helm-controller-has-had-a-repeatable-override-manager-flag-since-v1-5-0-and-it-is-unrelated-to-helm-v4-server-side-apply]] was whether the helm-controller flag acts before or after its dry-run. By source order it acts before, so it can clear a stale manager such as `kubectl-edit` that wedges the dry-run. That matches the community answer recorded in [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]], and it explains why helm-controller needed no separate recovery flag.
+The question left open by [findings/helm-controller-has-had-a-repeatable-override-manager-flag-since-v1-5-0-and-it-is-unrelated-to-helm-v4-server-side-apply](helm-controller-has-had-a-repeatable-override-manager-flag-since-v1-5-0-and-it-is-unrelated-to-helm-v4-server-side-apply.md) was whether the helm-controller flag acts before or after its dry-run. By source order it acts before, so it can clear a stale manager such as `kubectl-edit` that wedges the dry-run. That matches the community answer recorded in [examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port](../examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port.md), and it explains why helm-controller needed no separate recovery flag.
 
 ## What is not settled
 
@@ -30,4 +30,4 @@ The body of `ssa.PatchReplaceFieldsManagers` was not read. `Diff` runs `Graceful
 
 ## Related
 
-[[entities/flux]], [[findings/field-ownership-blocks-drift-correction]], [[concepts/server-side-apply-and-field-ownership]]
+[entities/flux](../entities/flux.md), [findings/field-ownership-blocks-drift-correction](field-ownership-blocks-drift-correction.md), [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md)

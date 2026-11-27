@@ -16,12 +16,12 @@ tags: [pitfall, orphan, cleanup, gitops]
 
 ## Observation
 
-With `--cascade=orphan` the dependents survive. The KKloud Tarus lab shows that the Pods keep running and their `ownerReferences` becomes empty, so nothing will ever collect them automatically and they need manual deletion. The GitOps equivalents are Flux's `Orphan` deletion policy and Argo CD's non-cascading delete. [[sources/research-owner-references-and-garbage-collection]]
+With `--cascade=orphan` the dependents survive. The KKloud Tarus lab shows that the Pods keep running and their `ownerReferences` becomes empty, so nothing will ever collect them automatically and they need manual deletion. The GitOps equivalents are Flux's `Orphan` deletion policy and Argo CD's non-cascading delete. [sources/research-owner-references-and-garbage-collection](../sources/research-owner-references-and-garbage-collection.md)
 
 ## Consequence
 
-Orphaning is useful for migrations and for keeping workloads alive across a controller change, but the objects become unmanaged. They keep consuming resources and no controller reconciles them. The Argo CD ApplicationSet case adds a twist: orphaning the ApplicationSet leaves Applications whose finalizer still deletes workloads later. See [[examples/kubectl-cascade-modes-compared-in-a-hands-on-lab]], [[examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads]], and [[comparisons/deletion-policies-across-gitops-and-provider-tools]].
+Orphaning is useful for migrations and for keeping workloads alive across a controller change, but the objects become unmanaged. They keep consuming resources and no controller reconciles them. The Argo CD ApplicationSet case adds a twist: orphaning the ApplicationSet leaves Applications whose finalizer still deletes workloads later. See [examples/kubectl-cascade-modes-compared-in-a-hands-on-lab](../examples/kubectl-cascade-modes-compared-in-a-hands-on-lab.md), [examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads](../examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads.md), and [comparisons/deletion-policies-across-gitops-and-provider-tools](../comparisons/deletion-policies-across-gitops-and-provider-tools.md).
 
 ## Related
 
-[[concepts/owner-references-and-garbage-collection]], [[findings/api-client-default-propagation-policy-can-differ-from-kubectl-and-orphan-dependents]]
+[concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md), [findings/api-client-default-propagation-policy-can-differ-from-kubectl-and-orphan-dependents](api-client-default-propagation-policy-can-differ-from-kubectl-and-orphan-dependents.md)

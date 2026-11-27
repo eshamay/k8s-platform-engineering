@@ -19,7 +19,7 @@ tags: [pitfall, conditions, cluster-api, ready, available]
 
 ## Observation
 
-Cluster API's older condition model required a `Ready` condition that summarized everything, used a custom `Severity` field, and diverged from the Kubernetes API conventions. The 2024 improvement proposal found this too rigid and replaced it with `metav1.Condition`, a separate `Available` condition, and operation conditions such as `ScalingUp` and `Remediating`. The stated reason is that "higher level abstractions in Cluster API are designed to remain operational during lifecycle operations." [[sources/research-conditions]] URL: https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md.
+Cluster API's older condition model required a `Ready` condition that summarized everything, used a custom `Severity` field, and diverged from the Kubernetes API conventions. The 2024 improvement proposal found this too rigid and replaced it with `metav1.Condition`, a separate `Available` condition, and operation conditions such as `ScalingUp` and `Remediating`. The stated reason is that "higher level abstractions in Cluster API are designed to remain operational during lifecycle operations." [sources/research-conditions](../sources/research-conditions.md) URL: https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md.
 
 ## Why it matters
 
@@ -27,8 +27,8 @@ A single summary has to pick one meaning, and an object that is working but chan
 
 ## Mitigations
 
-Publish a small set of orthogonal conditions (availability, in-progress operations) and derive any summary from them, and tell generic consumers which condition to read. See [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]], [[findings/premature-readiness-in-kstatus-based-tools]], [[comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro]], and [[entities/cluster-api]].
+Publish a small set of orthogonal conditions (availability, in-progress operations) and derive any summary from them, and tell generic consumers which condition to read. See [examples/cluster-api-adds-available-and-operation-conditions-beside-ready](../examples/cluster-api-adds-available-and-operation-conditions-beside-ready.md), [findings/premature-readiness-in-kstatus-based-tools](premature-readiness-in-kstatus-based-tools.md), [comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro](../comparisons/provider-fixed-versus-author-defined-condition-semantics-crossplane-versus-kro.md), and [entities/cluster-api](../entities/cluster-api.md).
 
 ## Update from the v1beta2 API
 
-The change landed as the v1beta2 API in Cluster API v1.11.0 (2025-08-19). Higher-level objects drop `Ready` and gain `Available`, and Machine keeps `Ready` redefined as the ability to host workloads. See [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]] and [[sources/research-gap-g3-argocd-capi]].
+The change landed as the v1beta2 API in Cluster API v1.11.0 (2025-08-19). Higher-level objects drop `Ready` and gain `Available`, and Machine keeps `Ready` redefined as the ability to host workloads. See [examples/cluster-api-adds-available-and-operation-conditions-beside-ready](../examples/cluster-api-adds-available-and-operation-conditions-beside-ready.md) and [sources/research-gap-g3-argocd-capi](../sources/research-gap-g3-argocd-capi.md).

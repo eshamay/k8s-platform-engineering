@@ -20,9 +20,9 @@ tags: [comparison, load, rate-limiting, jitter, workqueue]
 
 # Load and fairness controls across controller-runtime, Flux, Argo CD, and kro
 
-The values below are as stated on the fetched pages. The kro numbers first came from the `next` documentation, and the released v0.10.0 tuning page confirms them (correction note: the earlier caveat about released versions is resolved). The v0.10.0 page also lists a 30 second watch sync timeout, a Graph controller concurrency of 1, and `applyConcurrency` 20. [[sources/research-gap-g3-kro]] [[sources/research-reconciliation-loop]]
+The values below are as stated on the fetched pages. The kro numbers first came from the `next` documentation, and the released v0.10.0 tuning page confirms them (correction note: the earlier caveat about released versions is resolved). The v0.10.0 page also lists a 30 second watch sync timeout, a Graph controller concurrency of 1, and `applyConcurrency` 20. [sources/research-gap-g3-kro](../sources/research-gap-g3-kro.md) [sources/research-reconciliation-loop](../sources/research-reconciliation-loop.md)
 
-| Control | [[entities/controller-runtime]] | [[entities/flux]] | [[entities/argo-cd]] | [[entities/kro]] |
+| Control | [entities/controller-runtime](../entities/controller-runtime.md) | [entities/flux](../entities/flux.md) | [entities/argo-cd](../entities/argo-cd.md) | [entities/kro](../entities/kro.md) |
 |---|---|---|---|---|
 | Queue | Rate-limited workqueue per controller | Not described | Not described | One shared rate-limited queue for all instances |
 | Failure delay | Per-item exponential backoff, tunable with `RateLimiter` | `retryInterval`, default `interval` | Configurable retry backoff | 3 seconds growing to 5 minutes |
@@ -33,8 +33,8 @@ The values below are as stated on the fetched pages. The kro numbers first came 
 
 ## Reading the table
 
-kro states the fairness goal outright: "All resource events flow through one rate-limited queue, preventing any single RGD from overwhelming the system." The trade-off is that a single worker serializes instances, so a slow instance can delay others unless the worker count is raised. Flux and Argo CD address synchronization of many objects mostly through jitter, and they differ on retries. See [[examples/kro-shared-queue-tunes-throughput]], [[comparisons/reconcile-cadence-and-off-switches-across-tools]], and [[comparisons/retry-and-backoff-controls-across-tools]]. The dossier gives no sharding data, which is tracked in [[open-knowledge-gaps]]. [[sources/research-reconciliation-loop]]
+kro states the fairness goal outright: "All resource events flow through one rate-limited queue, preventing any single RGD from overwhelming the system." The trade-off is that a single worker serializes instances, so a slow instance can delay others unless the worker count is raised. Flux and Argo CD address synchronization of many objects mostly through jitter, and they differ on retries. See [examples/kro-shared-queue-tunes-throughput](../examples/kro-shared-queue-tunes-throughput.md), [comparisons/reconcile-cadence-and-off-switches-across-tools](reconcile-cadence-and-off-switches-across-tools.md), and [comparisons/retry-and-backoff-controls-across-tools](retry-and-backoff-controls-across-tools.md). The dossier gives no sharding data, which is tracked in [open-knowledge-gaps](../open-knowledge-gaps.md). [sources/research-reconciliation-loop](../sources/research-reconciliation-loop.md)
 
 ## Concurrency data from the informers dossier
 
-The informers dossier fills some empty cells: Flux raises concurrency with `--concurrent` flags, and Argo CD exposes `--status-processors` and `--operation-processors` and shards clusters. [[sources/research-informers-reflectors-and-workqueues]] See [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]].
+The informers dossier fills some empty cells: Flux raises concurrency with `--concurrent` flags, and Argo CD exposes `--status-processors` and `--operation-processors` and shards clusters. [sources/research-informers-reflectors-and-workqueues](../sources/research-informers-reflectors-and-workqueues.md) See [comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane](concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane.md).

@@ -16,7 +16,7 @@ tags: [backstage, crd, kubernetes-plugin, configuration, verified]
 
 ## Observation
 
-The Backstage Kubernetes plugin does not discover CRDs. Custom resources are fetched only if listed under `kubernetes.customResources` with group, apiVersion and plural. The property can be set globally and "is overridden by `customResources` at the clusters level". For a missing CRD "it is silently skipped and its absence is logged at debug level." https://raw.githubusercontent.com/backstage/backstage/master/docs/features/kubernetes/configuration.md, read 2026-11-26 (latest release v1.57.3). [[sources/research-gap-m6-admission-crds]]
+The Backstage Kubernetes plugin does not discover CRDs. Custom resources are fetched only if listed under `kubernetes.customResources` with group, apiVersion and plural. The property can be set globally and "is overridden by `customResources` at the clusters level". For a missing CRD "it is silently skipped and its absence is logged at debug level." https://raw.githubusercontent.com/backstage/backstage/master/docs/features/kubernetes/configuration.md, read 2026-11-26 (latest release v1.57.3). [sources/research-gap-m6-admission-crds](../sources/research-gap-m6-admission-crds.md)
 
 ## Not found
 
@@ -24,4 +24,4 @@ Backstage's catalog handling of CRDs beyond this configuration was not read, bec
 
 ## Related
 
-[[entities/backstage]] and [[findings/custom-resources-applied-before-their-crd-exists]].
+[entities/backstage](../entities/backstage.md) and [findings/custom-resources-applied-before-their-crd-exists](custom-resources-applied-before-their-crd-exists.md).

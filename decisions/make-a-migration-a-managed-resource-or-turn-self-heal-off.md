@@ -16,11 +16,11 @@ tags: [decision, argo-cd, self-heal, hooks, migration]
 
 ## Status
 
-Draft. The options come from one author's lab and an unnamed customer incident, not from an Argo CD project recommendation. [[sources/research-gap-g1-gitops-drift-incidents]]
+Draft. The options come from one author's lab and an unnamed customer incident, not from an Argo CD project recommendation. [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md)
 
 ## Context
 
-A database migration written as an Argo CD sync hook can be skipped when self-heal runs a partial sync, as in [[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]]. The mechanism is the author's claim, see [[findings/argo-cd-self-heal-runs-a-partial-sync-that-skips-hooks-according-to-one-author-so-a-migration-hook-can-be-missed]].
+A database migration written as an Argo CD sync hook can be skipped when self-heal runs a partial sync, as in [examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications](../examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications.md). The mechanism is the author's claim, see [findings/argo-cd-self-heal-runs-a-partial-sync-that-skips-hooks-according-to-one-author-so-a-migration-hook-can-be-missed](../findings/argo-cd-self-heal-runs-a-partial-sync-that-skips-hooks-according-to-one-author-so-a-migration-hook-can-be-missed.md).
 
 ## Options
 
@@ -29,8 +29,8 @@ A database migration written as an Argo CD sync hook can be skipped when self-he
 
 ## Consequences
 
-The first keeps drift correction and changes how the migration is written. The second keeps the existing hook and gives up drift correction on those Applications. The post does not rank them, and the wiki has no test of either. See [[decisions/staged-adoption-of-automated-drift-correction]] and [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]].
+The first keeps drift correction and changes how the migration is written. The second keeps the existing hook and gives up drift correction on those Applications. The post does not rank them, and the wiki has no test of either. See [decisions/staged-adoption-of-automated-drift-correction](staged-adoption-of-automated-drift-correction.md) and [examples/argo-cd-sync-waves-order-crds-operators-and-workloads](../examples/argo-cd-sync-waves-order-crds-operators-and-workloads.md).
 
 ## Related
 
-[[entities/argo-cd]], [[concepts/self-healing-and-drift-detection]]
+[entities/argo-cd](../entities/argo-cd.md), [concepts/self-healing-and-drift-detection](../concepts/self-healing-and-drift-detection.md)

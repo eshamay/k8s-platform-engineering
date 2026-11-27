@@ -16,7 +16,7 @@ tags: [crossplane, documentation, redirects, v2, pitfall, verified]
 
 ## Observation
 
-A request to `https://docs.crossplane.io/latest/concepts/compositions/` on 2026-11-26 returned HTTP 404 with zero redirects. The same was true for the `/latest/concepts/` pages for composition revisions, managed resources, providers, composition functions, and composite resources. The moved equivalents answer 200: `/latest/composition/compositions/`, `/latest/composition/composition-revisions/`, and `/latest/managed-resources/managed-resources/`. The status codes came from curl, because the scraping tool returned an empty body for the 404 page. [[sources/research-gap-b1-unverified-claims]]
+A request to `https://docs.crossplane.io/latest/concepts/compositions/` on 2026-11-26 returned HTTP 404 with zero redirects. The same was true for the `/latest/concepts/` pages for composition revisions, managed resources, providers, composition functions, and composite resources. The moved equivalents answer 200: `/latest/composition/compositions/`, `/latest/composition/composition-revisions/`, and `/latest/managed-resources/managed-resources/`. The status codes came from curl, because the scraping tool returned an empty body for the 404 page. [sources/research-gap-b1-unverified-claims](../sources/research-gap-b1-unverified-claims.md)
 
 The versioned path `https://docs.crossplane.io/v1.20/concepts/compositions/` still answers 200 and is not redirected, because Netlify does not redirect a page that exists.
 
@@ -26,4 +26,4 @@ The docs repository `netlify.toml` has a catch-all rule that sends paths of end-
 
 ## What to do with old links
 
-A blog post, runbook, or tutorial that links to a `/latest/concepts/...` page will not land on the current page. Use the v1.20 path if the content describes v1 behavior, or the `/latest/composition/` and `/latest/managed-resources/` paths for v2. This answers the question left open in [[findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane]]. Absent redirects also explain why search results for older Crossplane questions return dead pages. See [[entities/crossplane]].
+A blog post, runbook, or tutorial that links to a `/latest/concepts/...` page will not land on the current page. Use the v1.20 path if the content describes v1 behavior, or the `/latest/composition/` and `/latest/managed-resources/` paths for v2. This answers the question left open in [findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane](older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane.md). Absent redirects also explain why search results for older Crossplane questions return dead pages. See [entities/crossplane](../entities/crossplane.md).

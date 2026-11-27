@@ -16,12 +16,12 @@ tags: [pitfall, finalizers, controllers, ordering]
 
 ## Observation
 
-Once `deletionTimestamp` is set, nobody can add new finalizers and the timestamp cannot be changed. The only permitted edit to the list is removal, and the object cannot be resurrected. A controller that waits until a delete arrives to register its finalizer will find that it cannot. The farishuskovic.dev tutorial says it directly: "The finalizer must be on the resource before the delete request arrives." [[sources/research-finalizers]]
+Once `deletionTimestamp` is set, nobody can add new finalizers and the timestamp cannot be changed. The only permitted edit to the list is removal, and the object cannot be resurrected. A controller that waits until a delete arrives to register its finalizer will find that it cannot. The farishuskovic.dev tutorial says it directly: "The finalizer must be on the resource before the delete request arrives." [sources/research-finalizers](../sources/research-finalizers.md)
 
 ## Consequence for controller design
 
-The finalizer has to be added on the first reconcile, before the controller creates any external resource. Otherwise a delete that arrives between creation and registration leaves the external resource with no hook. The Kubebuilder pattern in [[examples/kubebuilder-reconcile-adds-a-finalizer-before-external-work-and-removes-it-after-cleanup]] does this by adding the finalizer and updating the object first.
+The finalizer has to be added on the first reconcile, before the controller creates any external resource. Otherwise a delete that arrives between creation and registration leaves the external resource with no hook. The Kubebuilder pattern in [examples/kubebuilder-reconcile-adds-a-finalizer-before-external-work-and-removes-it-after-cleanup](../examples/kubebuilder-reconcile-adds-a-finalizer-before-external-work-and-removes-it-after-cleanup.md) does this by adding the finalizer and updating the object first.
 
 ## Related
 
-[[concepts/finalizers]], [[concepts/reconciliation-loop]], [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]]
+[concepts/finalizers](../concepts/finalizers.md), [concepts/reconciliation-loop](../concepts/reconciliation-loop.md), [findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource](a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource.md)

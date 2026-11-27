@@ -22,7 +22,7 @@ tags: [pitfall, crd, versioning, conversion]
 
 ## Observation
 
-Two hazards come from the Kubernetes versioning pages. First, `conversion.strategy: None` only rewrites the `apiVersion`, so versions whose schemas differ need a conversion webhook. Second, an old version must stop being served and have its stored objects migrated before it is removed. The documented sequence is to add the new version, migrate clients, set the old version `served: false`, upgrade stored objects, and then remove the old version. A StorageVersionMigration object does the rewriting. URLs: https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definition-versioning/ and https://kubernetes.io/docs/tasks/manage-kubernetes-objects/storage-version-migration/. [[sources/research-gvk-and-gvr]]
+Two hazards come from the Kubernetes versioning pages. First, `conversion.strategy: None` only rewrites the `apiVersion`, so versions whose schemas differ need a conversion webhook. Second, an old version must stop being served and have its stored objects migrated before it is removed. The documented sequence is to add the new version, migrate clients, set the old version `served: false`, upgrade stored objects, and then remove the old version. A StorageVersionMigration object does the rewriting. URLs: https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definition-versioning/ and https://kubernetes.io/docs/tasks/manage-kubernetes-objects/storage-version-migration/. [sources/research-gvk-and-gvr](../sources/research-gvk-and-gvr.md)
 
 ## Inference
 
@@ -30,10 +30,10 @@ The dossier states the required order but does not describe a specific outage. T
 
 ## Related
 
-[[concepts/crd-versioning-and-storage-migration]], [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]]
+[concepts/crd-versioning-and-storage-migration](../concepts/crd-versioning-and-storage-migration.md), [decisions/conversion-webhook-versus-new-xrd-for-breaking-changes](../decisions/conversion-webhook-versus-new-xrd-for-breaking-changes.md)
 
 ## Additions from the CRD dossier
 
-The versioning page tells authors to check `status.storedVersions` before dropping an old version, and the sources report a built-in StorageVersionMigration API as GA in v1.37. [[sources/research-custom-resource-definition]] See [[concepts/crd-versioning-and-storage-migration]].
+The versioning page tells authors to check `status.storedVersions` before dropping an old version, and the sources report a built-in StorageVersionMigration API as GA in v1.37. [sources/research-custom-resource-definition](../sources/research-custom-resource-definition.md) See [concepts/crd-versioning-and-storage-migration](../concepts/crd-versioning-and-storage-migration.md).
 
-The v1.37 migration is verified as GA but is not automatic: the user must create the `StorageVersionMigration` object, so skipping that step still strands objects. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]].
+The v1.37 migration is verified as GA but is not automatic: the user must create the `StorageVersionMigration` object, so skipping that step still strands objects. [sources/research-gap-g3-k8s-and-controller-runtime](../sources/research-gap-g3-k8s-and-controller-runtime.md) See [findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object](storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object.md).

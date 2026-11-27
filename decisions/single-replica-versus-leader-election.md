@@ -19,7 +19,7 @@ tags: [controllers, availability, leader-election, kube-rs]
 
 ## Status
 
-Open guidance from the kube-rs project, not an ADR authored by this wiki. [[sources/research-eventual-consistency-and-convergence]]
+Open guidance from the kube-rs project, not an ADR authored by this wiki. [sources/research-eventual-consistency-and-convergence](../sources/research-eventual-consistency-and-convergence.md)
 
 ## Context
 
@@ -31,12 +31,12 @@ The kube-rs guide says most controllers can run as a single replica. They are qu
 
 ## Consequences
 
-A single replica is simple and tolerates restarts because of eventual consistency, but convergence pauses during a restart or a rollout. Leader election reduces that pause only to the lease expiry, and it adds a coordination component. Rollout surge can briefly create overlap. See [[findings/duplicate-work-from-replicas-without-leader-election]] and [[concepts/idempotency]].
+A single replica is simple and tolerates restarts because of eventual consistency, but convergence pauses during a restart or a rollout. Leader election reduces that pause only to the lease expiry, and it adds a coordination component. Rollout surge can briefly create overlap. See [findings/duplicate-work-from-replicas-without-leader-election](../findings/duplicate-work-from-replicas-without-leader-election.md) and [concepts/idempotency](../concepts/idempotency.md).
 
 ## Related
 
-[[entities/kube-rs]], [[concepts/eventual-consistency-and-convergence]]
+[entities/kube-rs](../entities/kube-rs.md), [concepts/eventual-consistency-and-convergence](../concepts/eventual-consistency-and-convergence.md)
 
 ## Flux source-controller as a worked case
 
-The 2026-11-26 o2 dossier shows one controller where the trade-off is concrete. Flux source-controller ships with one replica, a Recreate strategy, and `--enable-leader-election`, and the artifact server runs only on the leader, so standbys give failover and no capacity. During a restart the Service has no ready endpoint until the new pod is elected, and dependents fail fetches until artifacts exist again. See [[findings/flux-source-controller-starts-its-artifact-server-only-after-winning-leader-election-and-standbys-fail-readiness]] and [[findings/the-stock-flux-source-controller-keeps-artifacts-in-an-emptydir-with-one-minute-retention-so-a-restart-rebuilds-them]]. [[sources/research-gap-o2-flux-internals]]
+The 2026-11-26 o2 dossier shows one controller where the trade-off is concrete. Flux source-controller ships with one replica, a Recreate strategy, and `--enable-leader-election`, and the artifact server runs only on the leader, so standbys give failover and no capacity. During a restart the Service has no ready endpoint until the new pod is elected, and dependents fail fetches until artifacts exist again. See [findings/flux-source-controller-starts-its-artifact-server-only-after-winning-leader-election-and-standbys-fail-readiness](../findings/flux-source-controller-starts-its-artifact-server-only-after-winning-leader-election-and-standbys-fail-readiness.md) and [findings/the-stock-flux-source-controller-keeps-artifacts-in-an-emptydir-with-one-minute-retention-so-a-restart-rebuilds-them](../findings/the-stock-flux-source-controller-keeps-artifacts-in-an-emptydir-with-one-minute-retention-so-a-restart-rebuilds-them.md). [sources/research-gap-o2-flux-internals](../sources/research-gap-o2-flux-internals.md)

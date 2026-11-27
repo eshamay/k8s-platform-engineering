@@ -16,7 +16,7 @@ tags: [ack, adoption, adopt-or-create, reconcile-loop, health-checks, kro]
 
 ## Observation
 
-Three ACK issues show that adoption behaves differently by resource kind and can leave an adopted resource unable to reach `Synced`. All are reporter accounts and none was shown to be fixed. [[sources/research-gap-g1-leaked-resources-adoption]]
+Three ACK issues show that adoption behaves differently by resource kind and can leave an adopted resource unable to reach `Synced`. All are reporter accounts and none was shown to be fixed. [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md)
 
 ## Inconsistent semantics
 
@@ -28,8 +28,8 @@ ACK issue 3123 (2026-10-31) reports that an EKS Cluster adopted over an existing
 
 ## Interpretation
 
-Operators cannot assume that an annotation that works for one ACK kind behaves the same for another, and an adopted resource that never reaches `Synced` also hits the readiness gaps in [[findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed]]. The kro case links to the loop mechanics in [[findings/defaulting-and-drift-reconcile-loops]].
+Operators cannot assume that an annotation that works for one ACK kind behaves the same for another, and an adopted resource that never reaches `Synced` also hits the readiness gaps in [findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed](ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed.md). The kro case links to the loop mechanics in [findings/defaulting-and-drift-reconcile-loops](defaulting-and-drift-reconcile-loops.md).
 
 ## Related
 
-[[entities/ack]], [[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]], [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]]
+[entities/ack](../entities/ack.md), [findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource](ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource.md), [examples/ack-adopt-or-create-brings-existing-aws-resources-under-management](../examples/ack-adopt-or-create-brings-existing-aws-resources-under-management.md)

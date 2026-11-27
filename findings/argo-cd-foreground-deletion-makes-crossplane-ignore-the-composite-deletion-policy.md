@@ -19,7 +19,7 @@ tags: [pitfall, crossplane, argo-cd, deletion, propagation]
 
 ## Observation
 
-The Crossplane composite resources page documents an alpha deletion policy with the values Background, Foreground, and Pipeline. It also warns that Argo CD deletes with foreground propagation by default, and in that case Crossplane ignores the policy and emits a warning event. The fix is the `PrunePropagationPolicy=background` sync option together with a background finalizer. A stuck Foreground or Pipeline deletion leaves the XR in Deleting until the finalizer is removed by hand. [[sources/research-composite-resource]] URL: https://docs.crossplane.io/latest/composition/composite-resources/.
+The Crossplane composite resources page documents an alpha deletion policy with the values Background, Foreground, and Pipeline. It also warns that Argo CD deletes with foreground propagation by default, and in that case Crossplane ignores the policy and emits a warning event. The fix is the `PrunePropagationPolicy=background` sync option together with a background finalizer. A stuck Foreground or Pipeline deletion leaves the XR in Deleting until the finalizer is removed by hand. [sources/research-composite-resource](../sources/research-composite-resource.md) URL: https://docs.crossplane.io/latest/composition/composite-resources/.
 
 ## Why it matters
 
@@ -27,4 +27,4 @@ A team can choose Pipeline deletion to get ordered teardown, then lose that orde
 
 ## Mitigations
 
-Set the Argo CD sync option explicitly for Applications that host composites, and watch for the warning event. Removing a stuck finalizer by hand skips cleanup and can leak resources, see [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]]. See [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]], [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]], and [[entities/argo-cd]]. The dossier read no Flux guidance for the same situation.
+Set the Argo CD sync option explicitly for Applications that host composites, and watch for the warning event. Removing a stuck finalizer by hand skips cleanup and can leak resources, see [findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data](forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data.md). See [decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown](../decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown.md), [examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown](../examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown.md), and [entities/argo-cd](../entities/argo-cd.md). The dossier read no Flux guidance for the same situation.

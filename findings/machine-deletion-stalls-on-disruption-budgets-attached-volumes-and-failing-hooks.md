@@ -16,7 +16,7 @@ tags: [pitfall, cluster-api, deletion, drain]
 
 ## Observation
 
-The Cluster API machine deletion page lists what blocks a teardown: PodDisruptionBudgets, pods that are themselves terminating, volumes that are still attached, failing hooks, and unreachable nodes. The project provides controlled escape hatches, namely the `exclude-node-draining` annotation and `nodeDrainTimeout`. [[sources/research-finalizers]]
+The Cluster API machine deletion page lists what blocks a teardown: PodDisruptionBudgets, pods that are themselves terminating, volumes that are still attached, failing hooks, and unreachable nodes. The project provides controlled escape hatches, namely the `exclude-node-draining` annotation and `nodeDrainTimeout`. [sources/research-finalizers](../sources/research-finalizers.md)
 
 ## Why it matters
 
@@ -24,4 +24,4 @@ Each blocker is a safety property: a disruption budget protects availability, an
 
 ## Related
 
-[[entities/cluster-api]], [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]], [[findings/remediation-can-amplify-an-outage]]
+[entities/cluster-api](../entities/cluster-api.md), [examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node](../examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node.md), [findings/remediation-can-amplify-an-outage](remediation-can-amplify-an-outage.md)

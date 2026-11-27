@@ -22,7 +22,7 @@ tags: [drift, intervals, api-cost, ack, kro]
 
 ## Status
 
-Guidance drawn from ACK and kro documentation, not an ADR authored by this wiki. [[sources/research-self-healing-and-drift-detection]]
+Guidance drawn from ACK and kro documentation, not an ADR authored by this wiki. [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md)
 
 ## Context
 
@@ -34,16 +34,16 @@ Default to long intervals and shorten them only where fast correction matters. A
 
 ## Consequences
 
-An out-of-band change can sit uncorrected for hours on the defaults, so detection latency is the interval. Shortening it raises cost and throttling risk. See [[examples/ack-resync-period-tuning-for-stateful-resources]], [[findings/drift-detection-latency-is-the-interval]], and [[findings/cost-of-constant-reconciliation]].
+An out-of-band change can sit uncorrected for hours on the defaults, so detection latency is the interval. Shortening it raises cost and throttling risk. See [examples/ack-resync-period-tuning-for-stateful-resources](../examples/ack-resync-period-tuning-for-stateful-resources.md), [findings/drift-detection-latency-is-the-interval](../findings/drift-detection-latency-is-the-interval.md), and [findings/cost-of-constant-reconciliation](../findings/cost-of-constant-reconciliation.md).
 
 ## Related
 
-[[entities/ack]], [[entities/kro]], [[comparisons/drift-detection-mechanisms-across-tools]]
+[entities/ack](../entities/ack.md), [entities/kro](../entities/kro.md), [comparisons/drift-detection-mechanisms-across-tools](../comparisons/drift-detection-mechanisms-across-tools.md)
 
 ## Verified defaults to weigh
 
-The defaults a team starts from are now primary-source verified: ACK 10 hours after `ResourceSynced`, Config Connector a 10 minute mean with 0.5x to 1.5x jitter (setting 0 is irreversible), Crossplane 1 minute in core and runtime and 10 minutes in Upjet providers with a per-resource annotation and `--max-reconcile-rate` as the API budget, and Cluster API with no verified infrastructure drift period. [[sources/research-gap-g3-reconcile-defaults]] See [[findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers]] and [[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]].
+The defaults a team starts from are now primary-source verified: ACK 10 hours after `ResourceSynced`, Config Connector a 10 minute mean with 0.5x to 1.5x jitter (setting 0 is irreversible), Crossplane 1 minute in core and runtime and 10 minutes in Upjet providers with a per-resource annotation and `--max-reconcile-rate` as the API budget, and Cluster API with no verified infrastructure drift period. [sources/research-gap-g3-reconcile-defaults](../sources/research-gap-g3-reconcile-defaults.md) See [findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers](../findings/crossplane-poll-interval-defaults-differ-by-layer-with-one-minute-in-core-and-runtime-and-ten-minutes-in-upjet-providers.md) and [findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible](../findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible.md).
 
 ## Config Connector per-kind values from the o9 dossier
 
-Update 2026-11-26: for Config Connector the starting default is the same 10-minute mean for all three controller kinds, and three kinds (ServiceUsage `Service`, BigtableInstance, BigtableTable) ship with an hour while two ship with 0 ([[findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds]]). A team lengthening the interval for one resource uses the annotation, and setting 0 stays irreversible. Page status promoted to active because its defaults are now read from primary sources. [[sources/research-gap-o9-cadence-and-staleness]]
+Update 2026-11-26: for Config Connector the starting default is the same 10-minute mean for all three controller kinds, and three kinds (ServiceUsage `Service`, BigtableInstance, BigtableTable) ship with an hour while two ship with 0 ([findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds](../findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds.md)). A team lengthening the interval for one resource uses the annotation, and setting 0 stays irreversible. Page status promoted to active because its defaults are now read from primary sources. [sources/research-gap-o9-cadence-and-staleness](../sources/research-gap-o9-cadence-and-staleness.md)

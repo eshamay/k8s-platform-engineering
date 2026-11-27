@@ -16,7 +16,7 @@ tags: [crossplane, provider-family, memory, source-quality, scale]
 
 ## Observation
 
-The Crossplane smaller-providers design doc gives memory figures of about 600 MB for the Crossplane provider process and about 300 MB for each Terraform provider process. The sentence that introduces them reads "we suspect we can get providers down to at least: ~600MB memory for the Crossplane provider process." These are goals the authors hoped to reach, not values they measured. The document's header status is Draft, and its last commit was on 2023-04-25. https://github.com/crossplane/crossplane/blob/main/design/design-doc-smaller-providers.md [[sources/research-gap-g3-scale-recheck]]
+The Crossplane smaller-providers design doc gives memory figures of about 600 MB for the Crossplane provider process and about 300 MB for each Terraform provider process. The sentence that introduces them reads "we suspect we can get providers down to at least: ~600MB memory for the Crossplane provider process." These are goals the authors hoped to reach, not values they measured. The document's header status is Draft, and its last commit was on 2023-04-25. https://github.com/crossplane/crossplane/blob/main/design/design-doc-smaller-providers.md [sources/research-gap-g3-scale-recheck](../sources/research-gap-g3-scale-recheck.md)
 
 ## Why it matters
 
@@ -24,4 +24,4 @@ Earlier wiki text said Upjet-based providers "need about" these amounts, which r
 
 ## Related pages
 
-[[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory]], [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]], [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]], [[concepts/scale-and-sharding]].
+[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory](splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory.md), [decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds](../decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds.md), [findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation](one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation.md), [concepts/scale-and-sharding](../concepts/scale-and-sharding.md).

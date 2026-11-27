@@ -23,8 +23,8 @@ tags: [restmapper, client-go, controller-runtime]
 | Deferred mapper (`DeferredDiscoveryRESTMapper`) | Lazily on first use | Invalidates and rebuilds its delegate if the cache is not fresh, then retries | client-go |
 | Dynamic rate-limited mapper | At startup, then on demand | Invalidates on lookup failure, with a rate limit; the default since controller-runtime v0.3.0 | controller-runtime issue 321, v0.3.0 release notes, and v0.3.0 `manager.go` |
 
-[[sources/research-gvk-and-gvr]]
+[sources/research-gvk-and-gvr](../sources/research-gvk-and-gvr.md)
 
 ## Reading the table
 
-A mapper that is built once is a snapshot, which is the root of [[findings/stale-restmapper-hides-newly-installed-crds]]. The deferred and dynamic variants self-heal after a CRD is installed. The v0.3.0 default claim is confirmed by the release notes and the tag source ([[findings/the-dynamic-restmapper-is-confirmed-as-the-controller-runtime-default-at-v0-3-0-from-the-release-notes-and-tag-source]]); correction note, 2026-11-26. See [[concepts/api-discovery-and-restmapper]], [[entities/client-go]], and [[entities/controller-runtime]].
+A mapper that is built once is a snapshot, which is the root of [findings/stale-restmapper-hides-newly-installed-crds](../findings/stale-restmapper-hides-newly-installed-crds.md). The deferred and dynamic variants self-heal after a CRD is installed. The v0.3.0 default claim is confirmed by the release notes and the tag source ([findings/the-dynamic-restmapper-is-confirmed-as-the-controller-runtime-default-at-v0-3-0-from-the-release-notes-and-tag-source](../findings/the-dynamic-restmapper-is-confirmed-as-the-controller-runtime-default-at-v0-3-0-from-the-release-notes-and-tag-source.md)); correction note, 2026-11-26. See [concepts/api-discovery-and-restmapper](../concepts/api-discovery-and-restmapper.md), [entities/client-go](../entities/client-go.md), and [entities/controller-runtime](../entities/controller-runtime.md).

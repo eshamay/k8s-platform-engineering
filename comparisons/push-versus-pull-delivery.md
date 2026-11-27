@@ -25,16 +25,16 @@ tags: [gitops, push, pull, security]
 | Reconciliation | Typically one-shot (`kubectl apply`, `helm upgrade`) | Continuous: observes actual state and re-applies desired state |
 | Fit with OpenGitOps | Fails the "continuously reconciled" principle if it never re-checks | Meets all four principles |
 
-[[sources/research-gitops-pull-based-delivery]]
+[sources/research-gitops-pull-based-delivery](../sources/research-gitops-pull-based-delivery.md)
 
 ## Reading the table
 
-INNOQ makes the security case that a push CI server accumulates credentials for all targets, whereas a pull operator "executes the deployment process exclusively within the target environment." The comparison is not absolute. The dossier notes that Flux supports push-style triggers (webhooks) alongside pull, and that the pull agent becomes a powerful identity, which Flux counters with per-tenant service-account impersonation and which the Flux D2 design counters by removing cluster-to-Git connections. See [[findings/blast-radius-and-privilege-centralization]] and [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]].
+INNOQ makes the security case that a push CI server accumulates credentials for all targets, whereas a pull operator "executes the deployment process exclusively within the target environment." The comparison is not absolute. The dossier notes that Flux supports push-style triggers (webhooks) alongside pull, and that the pull agent becomes a powerful identity, which Flux counters with per-tenant service-account impersonation and which the Flux D2 design counters by removing cluster-to-Git connections. See [findings/blast-radius-and-privilege-centralization](../findings/blast-radius-and-privilege-centralization.md) and [examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts](../examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts.md).
 
 ## Related
 
-[[concepts/gitops-pull-based-delivery]], [[examples/gitops-agent-on-non-kubernetes-targets]]
+[concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md), [examples/gitops-agent-on-non-kubernetes-targets](../examples/gitops-agent-on-non-kubernetes-targets.md)
 
 ## Update from the o1 dossier, 2026-11-26
 
-Argo CD's central-instance model is a hybrid: Applications pull from Git, while the hub pushes into registered clusters. The argocd-agent Labs project inverts this with agents that reach back to the hub, and its maturity is UNVERIFIED. See [[findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity]] and [[decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes]]. [[sources/research-gap-o1-argocd-flux-gitops]]
+Argo CD's central-instance model is a hybrid: Applications pull from Git, while the hub pushes into registered clusters. The argocd-agent Labs project inverts this with agents that reach back to the hub, and its maturity is UNVERIFIED. See [findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity](../findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity.md) and [decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes](../decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes.md). [sources/research-gap-o1-argocd-flux-gitops](../sources/research-gap-o1-argocd-flux-gitops.md)

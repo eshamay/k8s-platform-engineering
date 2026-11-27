@@ -16,7 +16,7 @@ tags: [decision, prune, deletion-policy, gitops, ack, config-connector, evidence
 
 ## Status
 
-Open. The evidence documents each control and one reporter's failure of a controller-wide setting. It does not show which layer is safer, so this page records the options with no recommendation. [[sources/research-gap-o3-gitops-provider-managed]]
+Open. The evidence documents each control and one reporter's failure of a controller-wide setting. It does not show which layer is safer, so this page records the options with no recommendation. [sources/research-gap-o3-gitops-provider-managed](../sources/research-gap-o3-gitops-provider-managed.md)
 
 ## Context
 
@@ -35,4 +35,4 @@ Provider-side retention survives any client that deletes the object, including `
 
 ## Related
 
-[[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]], [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]], [[findings/unintended-deletion-through-prune]], [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]]
+[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted](delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted.md), [findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain](../findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain.md), [comparisons/deletion-policies-across-gitops-and-provider-tools](../comparisons/deletion-policies-across-gitops-and-provider-tools.md), [findings/unintended-deletion-through-prune](../findings/unintended-deletion-through-prune.md), [examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan](../examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan.md)

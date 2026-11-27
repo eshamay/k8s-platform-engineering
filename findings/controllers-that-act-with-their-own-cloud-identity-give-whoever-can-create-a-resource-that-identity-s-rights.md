@@ -16,12 +16,12 @@ tags: [pitfall, identity, blast-radius, config-connector, aso, rbac]
 
 ## Observation
 
-Config Connector acts against Google Cloud with its own IAM service account and not the user's identity. That centralizes authorization and decouples developer permissions from cloud resource rights, but it also means whoever can create a custom resource effectively gets that service account's rights (https://docs.cloud.google.com/config-connector/docs/overview). [[sources/research-landscape]]
+Config Connector acts against Google Cloud with its own IAM service account and not the user's identity. That centralizes authorization and decouples developer permissions from cloud resource rights, but it also means whoever can create a custom resource effectively gets that service account's rights (https://docs.cloud.google.com/config-connector/docs/overview). [sources/research-landscape](../sources/research-landscape.md)
 
 ## How tools narrow the blast radius
 
-Config Connector offers namespaced mode, and Azure Service Operator v2 offers multi-tenant and reduced-permission modes, workload identity among them (https://azure.github.io/azure-service-operator/). On the delivery side, Argo CD uses AppProjects and Flux uses Kubernetes RBAC with a lockdown mode, per the Akuity comparison, which is a vendor source. The dossier did not confirm how Config Connector's namespaced and cluster modes behave in detail. The wiki's existing page [[examples/config-connector-namespaced-mode-maps-namespaces-to-projects-and-service-accounts]] has more from another dossier, and ACK's equivalent is [[examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management]].
+Config Connector offers namespaced mode, and Azure Service Operator v2 offers multi-tenant and reduced-permission modes, workload identity among them (https://azure.github.io/azure-service-operator/). On the delivery side, Argo CD uses AppProjects and Flux uses Kubernetes RBAC with a lockdown mode, per the Akuity comparison, which is a vendor source. The dossier did not confirm how Config Connector's namespaced and cluster modes behave in detail. The wiki's existing page [examples/config-connector-namespaced-mode-maps-namespaces-to-projects-and-service-accounts](../examples/config-connector-namespaced-mode-maps-namespaces-to-projects-and-service-accounts.md) has more from another dossier, and ACK's equivalent is [examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management](../examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management.md).
 
 ## Related
 
-[[entities/config-connector]], [[entities/azure-service-operator]], [[concepts/tooling-landscape]]
+[entities/config-connector](../entities/config-connector.md), [entities/azure-service-operator](../entities/azure-service-operator.md), [concepts/tooling-landscape](../concepts/tooling-landscape.md)

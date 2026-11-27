@@ -17,9 +17,9 @@ tags: [comparison, terraform, tofu-controller, terraform-operator]
 
 # tofu-controller versus Terraform Operator as Terraform-in-cluster controllers
 
-Both projects wrap existing Terraform code in a CRD and run it in pods, so neither removes the need to write Terraform. The dossier read only each project's own documentation. [[sources/research-landscape]]
+Both projects wrap existing Terraform code in a CRD and run it in pods, so neither removes the need to write Terraform. The dossier read only each project's own documentation. [sources/research-landscape](../sources/research-landscape.md)
 
-| Aspect | [[entities/tofu-controller]] | [[entities/terraform-operator]] |
+| Aspect | [entities/tofu-controller](../entities/tofu-controller.md) | [entities/terraform-operator](../entities/terraform-operator.md) |
 |---|---|---|
 | Family | Flux family (flux-iac), formerly Weave TF-Controller | Independent community project (isaaguilar, now under GalleyBytes) |
 | Trigger | Reconciles a Terraform custom resource | Starts workflow pods when the manifest changes |
@@ -31,12 +31,12 @@ Both projects wrap existing Terraform code in a CRD and run it in pods, so neith
 
 ## Reading the comparison
 
-The table has many blanks on the Terraform Operator side because the dossier read only a short README. The wiki does not fill them from general knowledge. For the Kubernetes-native alternative, see [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]].
+The table has many blanks on the Terraform Operator side because the dossier read only a short README. The wiki does not fill them from general knowledge. For the Kubernetes-native alternative, see [comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply](crossplane-versus-terraform-reconciliation-versus-plan-and-apply.md).
 
 ## Related
 
-[[findings/terraform-in-cluster-controllers-keep-state-in-secrets-gate-apply-on-git-approval-and-couple-to-specific-versions]], [[concepts/tooling-landscape]]
+[findings/terraform-in-cluster-controllers-keep-state-in-secrets-gate-apply-on-git-approval-and-couple-to-specific-versions](../findings/terraform-in-cluster-controllers-keep-state-in-secrets-gate-apply-on-git-approval-and-couple-to-specific-versions.md), [concepts/tooling-landscape](../concepts/tooling-landscape.md)
 
 ## Maintenance status (o6 dossier)
 
-The maintenance row is now filled from release, commit, and maintainer files read on 2026-11-26. tofu-controller is actively released, and v0.17.0 removed the v1alpha1 API. The Terraform Operator has had no release in about 18 months, though it is not archived and no deprecation notice was found. See [[findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api]], [[findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer]], and [[decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane]]. The other blank cells (state, drift, approval, version coupling) for the Terraform Operator remain blank. [[sources/research-gap-o6-platform-landscape]]
+The maintenance row is now filled from release, commit, and maintainer files read on 2026-11-26. tofu-controller is actively released, and v0.17.0 removed the v1alpha1 API. The Terraform Operator has had no release in about 18 months, though it is not archived and no deprecation notice was found. See [findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api](../findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api.md), [findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer](../findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer.md), and [decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane](../decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane.md). The other blank cells (state, drift, approval, version coupling) for the Terraform Operator remain blank. [sources/research-gap-o6-platform-landscape](../sources/research-gap-o6-platform-landscape.md)

@@ -16,14 +16,14 @@ tags: [config-connector, gke-add-on, version-lag, cost, installation]
 
 ## Observation
 
-Google's installation-types page (last updated 2026-11-19) says the GKE add-on is available on GKE Standard only and "can lag behind the latest Config Connector releases by 12 months or more". A 2023-05-31 Google Cloud blog post on how Config Connector compares for infrastructure management says "we would like to discourage you using it in production because of the significant lag", and says Config Controller may bring Anthos fees. The manual install, in namespaced or cluster mode, has an operational cost the add-on avoids. [[sources/research-gap-o4-config-connector-ack]]
+Google's installation-types page (last updated 2026-11-19) says the GKE add-on is available on GKE Standard only and "can lag behind the latest Config Connector releases by 12 months or more". A 2023-05-31 Google Cloud blog post on how Config Connector compares for infrastructure management says "we would like to discourage you using it in production because of the significant lag", and says Config Controller may bring Anthos fees. The manual install, in namespaced or cluster mode, has an operational cost the add-on avoids. [sources/research-gap-o4-config-connector-ack](../sources/research-gap-o4-config-connector-ack.md)
 
 Config Connector itself has no price: the pricing page says "You will incur costs for these resources", meaning the Google Cloud resources it creates.
 
 ## Why it matters
 
-Lag matters because fixes land on the release line: the known-issues page lists version-specific regressions, see [[findings/config-connector-known-issues-record-a-webhook-tls-race-before-1-134-1-and-direct-reconciler-regressions-in-1-132-0-and-1-134-0]]. The cost of ownership statement is the only one the dossier found for Config Connector, and it found none for Crossplane, see [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]]. The blog compares Config Connector with Terraform and Cloud Build and does not name Crossplane.
+Lag matters because fixes land on the release line: the known-issues page lists version-specific regressions, see [findings/config-connector-known-issues-record-a-webhook-tls-race-before-1-134-1-and-direct-reconciler-regressions-in-1-132-0-and-1-134-0](config-connector-known-issues-record-a-webhook-tls-race-before-1-134-1-and-direct-reconciler-regressions-in-1-132-0-and-1-134-0.md). The cost of ownership statement is the only one the dossier found for Config Connector, and it found none for Crossplane, see [findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions](no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions.md). The blog compares Config Connector with Terraform and Cloud Build and does not name Crossplane.
 
 ## Related
 
-[[entities/config-connector]], [[findings/config-connector-namespaced-mode-is-the-crd-default-and-needs-one-configconnectorcontext-per-namespace-while-cluster-mode-takes-exactly-one-credential]]
+[entities/config-connector](../entities/config-connector.md), [findings/config-connector-namespaced-mode-is-the-crd-default-and-needs-one-configconnectorcontext-per-namespace-while-cluster-mode-takes-exactly-one-credential](config-connector-namespaced-mode-is-the-crd-default-and-needs-one-configconnectorcontext-per-namespace-while-cluster-mode-takes-exactly-one-credential.md)

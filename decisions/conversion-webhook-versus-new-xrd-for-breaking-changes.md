@@ -26,7 +26,7 @@ Draft. This records a decision point described in Crossplane and Kubernetes docu
 
 ## Context
 
-A platform team has published a composite resource API through an XRD and now needs a breaking schema change. An XRD's group and names are immutable, so renaming the type is not an option, and the sources give two ways to ship the change. [[sources/research-gvk-and-gvr]]
+A platform team has published a composite resource API through an XRD and now needs a breaking schema change. An XRD's group and names are immutable, so renaming the type is not an option, and the sources give two ways to ship the change. [sources/research-gvk-and-gvr](../sources/research-gvk-and-gvr.md)
 
 ## Options
 
@@ -38,12 +38,12 @@ Crossplane documentation recommends new XRDs or conversion webhooks for breaking
 
 ## Consequences
 
-Either path makes the GVK a versioned product contract. See [[concepts/crd-versioning-and-storage-migration]], [[findings/group-and-plural-names-are-effectively-permanent]], and [[entities/crossplane]].
+Either path makes the GVK a versioned product contract. See [concepts/crd-versioning-and-storage-migration](../concepts/crd-versioning-and-storage-migration.md), [findings/group-and-plural-names-are-effectively-permanent](../findings/group-and-plural-names-are-effectively-permanent.md), and [entities/crossplane](../entities/crossplane.md).
 
 ## Additions from the CRD dossier
 
-A down conversion webhook can stall garbage collection, which raises the cost of the webhook option. [[sources/research-custom-resource-definition]] See [[findings/a-down-conversion-webhook-can-stall-garbage-collection]] and [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]].
+A down conversion webhook can stall garbage collection, which raises the cost of the webhook option. [sources/research-custom-resource-definition](../sources/research-custom-resource-definition.md) See [findings/a-down-conversion-webhook-can-stall-garbage-collection](../findings/a-down-conversion-webhook-can-stall-garbage-collection.md) and [comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke](../comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke.md).
 
 ## Update from the v2.5 verification pass (2026-11-26)
 
-Crossplane itself shows the new-API-version route: the XRD API moved from v1 to v2 with different scope semantics, and the v1 version is marked deprecated but is still served and still the storage version in the v2.5 manifest. [[sources/research-gap-g3-crossplane-v2]] See [[findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api]] and [[findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged]].
+Crossplane itself shows the new-API-version route: the XRD API moved from v1 to v2 with different scope semantics, and the v1 version is marked deprecated but is still served and still the storage version in the v2.5 manifest. [sources/research-gap-g3-crossplane-v2](../sources/research-gap-g3-crossplane-v2.md) See [findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api](../findings/the-crossplane-xrd-docs-list-legacycluster-beside-v2-scopes-although-it-exists-only-on-the-v1-xrd-api.md) and [findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged](../findings/pluto-and-kubent-ship-no-crossplane-rules-so-deprecated-crossplane-gvks-pass-unflagged.md).

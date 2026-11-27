@@ -19,7 +19,7 @@ tags: [pitfall, crossplane, upjet, conditions, async, synced]
 
 ## Observation
 
-The pitfall reported in provider-aws issue 2287 is not fixed. The issue (opened 2026-03-11) described `Synced=True` and `ReconcileSuccess` rewritten on every reconcile during a 60-minute MSK update, while `AsyncOperation=False` with reason `Ongoing` was set. The stale bot marked it stale on 2026-06-10 and closed it on 2026-06-25 with no maintainer comment and no linked fix. https://github.com/crossplane-contrib/provider-aws/issues/2287 [[sources/research-gap-g3-crossplane-v2]]
+The pitfall reported in provider-aws issue 2287 is not fixed. The issue (opened 2026-03-11) described `Synced=True` and `ReconcileSuccess` rewritten on every reconcile during a 60-minute MSK update, while `AsyncOperation=False` with reason `Ongoing` was set. The stale bot marked it stale on 2026-06-10 and closed it on 2026-06-25 with no maintainer comment and no linked fix. https://github.com/crossplane-contrib/provider-aws/issues/2287 [sources/research-gap-g3-crossplane-v2](../sources/research-gap-g3-crossplane-v2.md)
 
 ## Mechanism in the source
 
@@ -27,7 +27,7 @@ Reading `main` on 2026-11-26 explains why. In upjet's async Terraform plugin SDK
 
 ## Alert surface
 
-The v2.5 managed resources docs list the upjet conditions `AsyncOperation` (reasons Finished, Ongoing) and `LastAsyncOperation` (ApplyFailure, DestroyFailure, Success) as provider-specific detail, not as an alerting recommendation. The reporter's own wording was that the condition "is not part of standard Crossplane alerting conventions". Docs and code also disagree on the status value of `AsyncOperation`, see [[findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes]].
+The v2.5 managed resources docs list the upjet conditions `AsyncOperation` (reasons Finished, Ongoing) and `LastAsyncOperation` (ApplyFailure, DestroyFailure, Success) as provider-specific detail, not as an alerting recommendation. The reporter's own wording was that the condition "is not part of standard Crossplane alerting conventions". Docs and code also disagree on the status value of `AsyncOperation`, see [findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes](crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes.md).
 
 ## Related v2 changes
 
@@ -35,8 +35,8 @@ Crossplane v2.0.0 made XR and claim conditions persist `observedGeneration`. An 
 
 ## Mitigations
 
-Poll or alert on `AsyncOperation` as well as `Synced` for upjet-based providers, and compare `observedGeneration` where it exists. Do not treat `Synced=True` as proof that no long operation is running. See [[findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running]], [[examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update]], [[concepts/conditions]], and [[entities/crossplane]].
+Poll or alert on `AsyncOperation` as well as `Synced` for upjet-based providers, and compare `observedGeneration` where it exists. Do not treat `Synced=True` as proof that no long operation is running. See [findings/a-summary-condition-can-stay-true-while-a-long-async-operation-is-running](a-summary-condition-can-stay-true-while-a-long-async-operation-is-running.md), [examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update](../examples/crossplane-synced-stays-true-through-a-sixty-minute-async-msk-update.md), [concepts/conditions](../concepts/conditions.md), and [entities/crossplane](../entities/crossplane.md).
 
 ## Pull request 8080 does not change this (2026-11-26)
 
-Correction note: the sentence above says only the title of pull request 8080 was read. Its body is now read. It fixes XR-level stale condition replay (issues 7062 and 8033), not the asynchronous managed-resource signaling described here, and it is open and unmerged, see [[examples/crossplane-pull-request-8080-guards-the-xr-status-write-with-a-resource-version-to-stop-stale-condition-replay]]. The async behavior for managed resources was not rechecked in this pass, so the finding stands. [[sources/research-gap-b1-recheck-kro-crossplane]]
+Correction note: the sentence above says only the title of pull request 8080 was read. Its body is now read. It fixes XR-level stale condition replay (issues 7062 and 8033), not the asynchronous managed-resource signaling described here, and it is open and unmerged, see [examples/crossplane-pull-request-8080-guards-the-xr-status-write-with-a-resource-version-to-stop-stale-condition-replay](../examples/crossplane-pull-request-8080-guards-the-xr-status-write-with-a-resource-version-to-stop-stale-condition-replay.md). The async behavior for managed resources was not rechecked in this pass, so the finding stands. [sources/research-gap-b1-recheck-kro-crossplane](../sources/research-gap-b1-recheck-kro-crossplane.md)

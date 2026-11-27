@@ -19,15 +19,15 @@ tags: [crossplane, kro, composition, cel, comparison]
 
 ## The shared problem
 
-Both tools fight declarative DSL creep. The Crossplane design doc argues that adding conditionals and iteration to a REST-shaped configuration API leads to an incoherent DSL. Both tools accept some bound on expressiveness but place it in different spots. [[sources/research-composition]]
+Both tools fight declarative DSL creep. The Crossplane design doc argues that adding conditionals and iteration to a REST-shaped configuration API leads to an incoherent DSL. Both tools accept some bound on expressiveness but place it in different spots. [sources/research-composition](../sources/research-composition.md)
 
 ## Crossplane: bound the contract, free the code
 
-Crossplane moved logic out of the Composition into functions written in a real language or an existing DSL (Go, Python, CUE, KCL, Go templates). The bound is the gRPC contract: a function receives observed and desired state, returns a new desired state, and never calls the API server. The cost is operational: each function is a process with its own memory, availability, and runtime needs, see [[findings/composition-functions-add-moving-parts-that-must-be-healthy]] and [[findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory]].
+Crossplane moved logic out of the Composition into functions written in a real language or an existing DSL (Go, Python, CUE, KCL, Go templates). The bound is the gRPC contract: a function receives observed and desired state, returns a new desired state, and never calls the API server. The cost is operational: each function is a process with its own memory, availability, and runtime needs, see [findings/composition-functions-add-moving-parts-that-must-be-healthy](../findings/composition-functions-add-moving-parts-that-must-be-healthy.md) and [findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory](../findings/function-calls-scale-with-composite-count-and-large-composites-can-exhaust-function-memory.md).
 
 ## kro: bound the language, free the runtime
 
-kro uses CEL, which terminates, has no side effects, and is type-checked at apply time. Ordering is inferred from references, and `includeWhen` and `forEach` cover conditionals and collections, so there are no external function servers. The cost is that logic beyond CEL cannot be expressed, and the API is `v1alpha1` and has already renamed its core kind. See [[entities/kro]].
+kro uses CEL, which terminates, has no side effects, and is type-checked at apply time. Ordering is inferred from references, and `includeWhen` and `forEach` cover conditionals and collections, so there are no external function servers. The cost is that logic beyond CEL cannot be expressed, and the API is `v1alpha1` and has already renamed its core kind. See [entities/kro](../entities/kro.md).
 
 ## Side by side
 
@@ -43,8 +43,8 @@ Sources: https://github.com/crossplane/crossplane/blob/main/design/design-doc-co
 
 ## Convergence
 
-`function-kro` runs a kro graph as a Crossplane pipeline step, so the two bounds can be combined, see [[entities/function-kro]]. For the full execution-model comparison see [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]].
+`function-kro` runs a kro graph as a Crossplane pipeline step, so the two bounds can be combined, see [entities/function-kro](../entities/function-kro.md). For the full execution-model comparison see [comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models](crossplane-composition-functions-versus-kro-resource-graph-execution-models.md).
 
 ## Related
 
-[[concepts/composition]], [[findings/patch-and-transform-cannot-branch-loop-or-patch-between-composed-resources]], [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]]
+[concepts/composition](../concepts/composition.md), [findings/patch-and-transform-cannot-branch-loop-or-patch-between-composed-resources](../findings/patch-and-transform-cannot-branch-loop-or-patch-between-composed-resources.md), [decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer](../decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer.md)

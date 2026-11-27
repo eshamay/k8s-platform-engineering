@@ -20,12 +20,12 @@ tags: [operators, flux, ack, cluster-api, design]
 | What each controller reconciles | Its own CRDs against Git or other sources | Custom resources into one service's AWS API calls | Cluster and machine resources, with backend work in providers |
 | Benefit the dossier names | Composable APIs and one controller per concern | Scoped permissions and releases per service | Generic core with extensibility |
 
-[[sources/research-operator-pattern]]
+[sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## Reading the table
 
-All three apply the single-responsibility guidance from Kubebuilder, Google Cloud, and the Kubernetes controller documentation, but they cut along different axes: function, external API, and portability. The dossier gives no performance or operability comparison. See [[findings/multi-kind-controllers-break-encapsulation-and-scale-poorly]] and [[decisions/one-controller-per-kind-or-one-multi-kind-controller]]. URL: https://fluxcd.io/flux/components/, https://aws-controllers-k8s.github.io/community/docs/community/overview/, and https://cluster-api.sigs.k8s.io/user/concepts.
+All three apply the single-responsibility guidance from Kubebuilder, Google Cloud, and the Kubernetes controller documentation, but they cut along different axes: function, external API, and portability. The dossier gives no performance or operability comparison. See [findings/multi-kind-controllers-break-encapsulation-and-scale-poorly](../findings/multi-kind-controllers-break-encapsulation-and-scale-poorly.md) and [decisions/one-controller-per-kind-or-one-multi-kind-controller](../decisions/one-controller-per-kind-or-one-multi-kind-controller.md). URL: https://fluxcd.io/flux/components/, https://aws-controllers-k8s.github.io/community/docs/community/overview/, and https://cluster-api.sigs.k8s.io/user/concepts.
 
 ## Related
 
-[[examples/flux-splits-gitops-into-single-purpose-controllers]], [[examples/ack-ships-one-controller-per-aws-service]], [[examples/cluster-api-keeps-core-controllers-generic-with-provider-controllers]]
+[examples/flux-splits-gitops-into-single-purpose-controllers](../examples/flux-splits-gitops-into-single-purpose-controllers.md), [examples/ack-ships-one-controller-per-aws-service](../examples/ack-ships-one-controller-per-aws-service.md), [examples/cluster-api-keeps-core-controllers-generic-with-provider-controllers](../examples/cluster-api-keeps-core-controllers-generic-with-provider-controllers.md)

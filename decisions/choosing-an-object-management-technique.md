@@ -16,7 +16,7 @@ tags: [decision, kubectl, gitops]
 
 ## Context
 
-A team must decide how objects in a cluster will be created and changed: by imperative commands, by imperative object configuration, or by declarative configuration. The official documentation frames these as a spectrum with different learning curves, audit properties, and multi-writer tolerance. [[sources/research-declarative-vs-imperative]]
+A team must decide how objects in a cluster will be created and changed: by imperative commands, by imperative object configuration, or by declarative configuration. The official documentation frames these as a spectrum with different learning curves, audit properties, and multi-writer tolerance. [sources/research-declarative-vs-imperative](../sources/research-declarative-vs-imperative.md)
 
 ## Options
 
@@ -26,12 +26,12 @@ A team must decide how objects in a cluster will be created and changed: by impe
 
 ## Decision drivers
 
-Whether more than one actor writes to an object, whether changes need review and an audit trail, and whether the team can tolerate the debugging cost of merge logic. See [[comparisons/kubectl-object-management-techniques]].
+Whether more than one actor writes to an object, whether changes need review and an audit trail, and whether the team can tolerate the debugging cost of merge logic. See [comparisons/kubectl-object-management-techniques](../comparisons/kubectl-object-management-techniques.md).
 
 ## Consequences
 
-Choosing declarative configuration with a GitOps tool gives a reviewable history and drift correction, at the cost of exposure to [[findings/unintended-deletion-through-prune]] and [[findings/defaulting-and-drift-reconcile-loops]]. Whatever the choice, one technique should own each object ([[findings/mixing-management-techniques-on-one-object]]), and escape hatches such as suspend should be planned for incidents.
+Choosing declarative configuration with a GitOps tool gives a reviewable history and drift correction, at the cost of exposure to [findings/unintended-deletion-through-prune](../findings/unintended-deletion-through-prune.md) and [findings/defaulting-and-drift-reconcile-loops](../findings/defaulting-and-drift-reconcile-loops.md). Whatever the choice, one technique should own each object ([findings/mixing-management-techniques-on-one-object](../findings/mixing-management-techniques-on-one-object.md)), and escape hatches such as suspend should be planned for incidents.
 
 ## Status
 
-Draft. The dossier presents the official guidance and does not describe an organization's actual decision. See [[concepts/declarative-vs-imperative]].
+Draft. The dossier presents the official guidance and does not describe an organization's actual decision. See [concepts/declarative-vs-imperative](../concepts/declarative-vs-imperative.md).

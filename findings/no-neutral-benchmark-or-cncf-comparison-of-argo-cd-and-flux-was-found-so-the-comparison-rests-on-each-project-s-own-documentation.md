@@ -16,7 +16,7 @@ tags: [flux, argo-cd, comparison, evidence-gap]
 
 ## Observation
 
-The dossier ran one web search for a neutral comparison ("Flux vs Argo CD comparison CNCF case study migrated adopter") and it returned zero results. It was not retried with other queries, so the result is an unverified negative and not proof that no such comparison exists. [[sources/research-gap-o1-argocd-flux-gitops]]
+The dossier ran one web search for a neutral comparison ("Flux vs Argo CD comparison CNCF case study migrated adopter") and it returned zero results. It was not retried with other queries, so the result is an unverified negative and not proof that no such comparison exists. [sources/research-gap-o1-argocd-flux-gitops](../sources/research-gap-o1-argocd-flux-gitops.md)
 
 ## What the documentation does settle
 
@@ -28,4 +28,4 @@ No benchmark, failure-behavior comparison, UI or CLI comparison was found. Argo 
 
 ## Related
 
-[[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]], [[comparisons/flux-versus-argo-cd-architecture]], [[comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog]], [[findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks]]
+[comparisons/flux-versus-argo-cd-drift-and-prune-defaults](../comparisons/flux-versus-argo-cd-drift-and-prune-defaults.md), [comparisons/flux-versus-argo-cd-architecture](../comparisons/flux-versus-argo-cd-architecture.md), [comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog](../comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog.md), [findings/landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks](landscape-comparisons-of-argo-cd-flux-port-and-kratix-come-from-vendors-with-no-independent-benchmarks.md)

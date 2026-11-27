@@ -16,7 +16,7 @@ tags: [kro, graph, hot-loop, watch, apiserver-memory, issue-report]
 
 ## Observation
 
-kro issue 1464 (opened 2026-09-30, closed) reports that a hard apply failure on a Graph discarded the watches and then hot-looped without backoff. On a large collection, the reporter writes, "each rebuild re-issues a full WatchList, which drives apiserver memory up." The report was made on kro main and v0.10.0-rc0 against Kubernetes 1.35. [[sources/research-gap-g1-named-adopters]] URL: https://github.com/kubernetes-sigs/kro/issues/1464.
+kro issue 1464 (opened 2026-09-30, closed) reports that a hard apply failure on a Graph discarded the watches and then hot-looped without backoff. On a large collection, the reporter writes, "each rebuild re-issues a full WatchList, which drives apiserver memory up." The report was made on kro main and v0.10.0-rc0 against Kubernetes 1.35. [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md) URL: https://github.com/kubernetes-sigs/kro/issues/1464.
 
 ## Confidence
 
@@ -24,4 +24,4 @@ This is a reporter observation and not a measurement. The dossier did not read t
 
 ## Related
 
-The tuning page says the initial list of a kind with tens of thousands of objects can exceed the 30 second `watchSyncTimeout`, see [[examples/kro-shared-queue-tunes-throughput]]. See also [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]], [[findings/a-kro-foreach-collection-above-the-1000-item-default-limit-gets-stuck-during-deletion]], and [[findings/retry-storms-and-unbounded-retries]].
+The tuning page says the initial list of a kind with tens of thousands of objects can exceed the 30 second `watchSyncTimeout`, see [examples/kro-shared-queue-tunes-throughput](../examples/kro-shared-queue-tunes-throughput.md). See also [findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues](kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues.md), [findings/a-kro-foreach-collection-above-the-1000-item-default-limit-gets-stuck-during-deletion](a-kro-foreach-collection-above-the-1000-item-default-limit-gets-stuck-during-deletion.md), and [findings/retry-storms-and-unbounded-retries](retry-storms-and-unbounded-retries.md).

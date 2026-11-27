@@ -16,7 +16,7 @@ tags: [gvk, argo-cd, config-connector, ack, cluster-api, mechanism]
 
 ## Observation
 
-None of the four tools uses the version as part of a resource's identity. [[sources/research-gap-m5-informers-caches]]
+None of the four tools uses the version as part of a resource's identity. [sources/research-gap-m5-informers-caches](../sources/research-gap-m5-informers-caches.md)
 
 | Tool | Identity | Where the version comes from |
 |---|---|---|
@@ -33,4 +33,4 @@ For Argo CD, a manifest that uses a different API version of the same group and 
 
 ## Not settled
 
-How each tool behaves when a served CRD version is removed, and whether pruning or orphaning results, is UNVERIFIED. No behavioral documentation or tests were read for any of the five projects, and removal of a served version that the preferred-version listing depends on was not tested. See [[findings/removed-beta-gvks-break-pinned-manifests-and-clients]], [[concepts/gvk-and-gvr]], and [[examples/argo-cd-tracks-resources-by-group-kind-namespace-and-name-so-an-api-version-change-keeps-the-same-key]].
+How each tool behaves when a served CRD version is removed, and whether pruning or orphaning results, is UNVERIFIED. No behavioral documentation or tests were read for any of the five projects, and removal of a served version that the preferred-version listing depends on was not tested. See [findings/removed-beta-gvks-break-pinned-manifests-and-clients](removed-beta-gvks-break-pinned-manifests-and-clients.md), [concepts/gvk-and-gvr](../concepts/gvk-and-gvr.md), and [examples/argo-cd-tracks-resources-by-group-kind-namespace-and-name-so-an-api-version-change-keeps-the-same-key](../examples/argo-cd-tracks-resources-by-group-kind-namespace-and-name-so-an-api-version-change-keeps-the-same-key.md).

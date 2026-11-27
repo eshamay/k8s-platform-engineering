@@ -19,7 +19,7 @@ tags: [conditions, polarity, kstatus, api-design, decision]
 
 ## Status
 
-Open question framed by the sources, not an ADR authored by this wiki. The Kubernetes API conventions leave polarity to authors, and the sources the dossier read disagree on which to prefer. [[sources/research-conditions]]
+Open question framed by the sources, not an ADR authored by this wiki. The Kubernetes API conventions leave polarity to authors, and the sources the dossier read disagree on which to prefer. [sources/research-conditions](../sources/research-conditions.md)
 
 ## Context
 
@@ -31,11 +31,11 @@ With a positive polarity, a reader sees `Ready=True` and moves on, but `Ready=Fa
 
 ## Consequences
 
-Whichever polarity is chosen, the author should set `observedGeneration`, write an initial `Unknown` condition on first visit, and tell generic consumers which condition to read. The dossier gives no evidence on which option produces fewer incidents. See [[findings/condition-polarity-guidance-conflicts-between-kstatus-and-the-api-conventions]], [[findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy]], [[concepts/conditions]], and [[entities/kstatus]].
+Whichever polarity is chosen, the author should set `observedGeneration`, write an initial `Unknown` condition on first visit, and tell generic consumers which condition to read. The dossier gives no evidence on which option produces fewer incidents. See [findings/condition-polarity-guidance-conflicts-between-kstatus-and-the-api-conventions](../findings/condition-polarity-guidance-conflicts-between-kstatus-and-the-api-conventions.md), [findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy](../findings/abnormal-true-polarity-makes-a-stopped-controller-look-healthy.md), [concepts/conditions](../concepts/conditions.md), and [entities/kstatus](../entities/kstatus.md).
 
 ## Evidence from the m3 dossier
 
-This page records options and evidence and makes no recommendation. The conventions recommended abnormal-true, then positive in February 2020, and since June 2020 recommend neither. [[sources/research-gap-m3-status-conditions]] See [[findings/the-kubernetes-api-conventions-recommended-abnormal-true-then-positive-polarity-and-since-june-2020-recommend-neither]].
+This page records options and evidence and makes no recommendation. The conventions recommended abnormal-true, then positive in February 2020, and since June 2020 recommend neither. [sources/research-gap-m3-status-conditions](../sources/research-gap-m3-status-conditions.md) See [findings/the-kubernetes-api-conventions-recommended-abnormal-true-then-positive-polarity-and-since-june-2020-recommend-neither](../findings/the-kubernetes-api-conventions-recommended-abnormal-true-then-positive-polarity-and-since-june-2020-recommend-neither.md).
 
 ### Option A: abnormal-true
 
@@ -43,11 +43,11 @@ kstatus's `Reconciling` and `Stalled` follow it, and Flux marks them as present 
 
 ### Option B: positive
 
-The 2020 Cluster API proposal recommends the suffixes `Ready` and `Succeeded` and notes that Pod conditions are consistently positive while Node conditions mix polarities. The conventions warn that `Failed=False` can cause double-negative confusion, and Config Connector uses one positive `Ready`. kstatus's own `Ready` fallback treats False as InProgress and cannot distinguish doomed from slow, as a maintainer said in [[examples/cli-utils-issue-167-a-kstatus-maintainer-said-stalled-is-not-named-failed-because-slow-and-doomed-are-hard-to-tell-apart]].
+The 2020 Cluster API proposal recommends the suffixes `Ready` and `Succeeded` and notes that Pod conditions are consistently positive while Node conditions mix polarities. The conventions warn that `Failed=False` can cause double-negative confusion, and Config Connector uses one positive `Ready`. kstatus's own `Ready` fallback treats False as InProgress and cannot distinguish doomed from slow, as a maintainer said in [examples/cli-utils-issue-167-a-kstatus-maintainer-said-stalled-is-not-named-failed-because-slow-and-doomed-are-hard-to-tell-apart](../examples/cli-utils-issue-167-a-kstatus-maintainer-said-stalled-is-not-named-failed-because-slow-and-doomed-are-hard-to-tell-apart.md).
 
 ### Option C: both
 
-Flux publishes a positive `Ready` with abnormal-true `Stalled` and `Reconciling`. See [[examples/flux-stamps-the-current-generation-on-every-condition-and-also-keeps-a-top-level-observedgeneration]].
+Flux publishes a positive `Ready` with abnormal-true `Stalled` and `Reconciling`. See [examples/flux-stamps-the-current-generation-on-every-condition-and-also-keeps-a-top-level-observedgeneration](../examples/flux-stamps-the-current-generation-on-every-condition-and-also-keeps-a-top-level-observedgeneration.md).
 
 ### What the evidence does not show
 

@@ -19,7 +19,7 @@ tags: [crossplane, cache, performance, sharding, controller-runtime, mechanism]
 
 ## Observation
 
-Crossplane core (main) builds a dedicated cache for the API-extensions kinds with a transform whose comment reads "Strip the OpenAPI schemas (most of CRDs' size) from typed CRDs in this cache." It sets the client's `DisableFor` list to include Secret, sets the cache `SyncPeriod` from the sync-interval flag, and defaults the worker pool to 100 with the flag help "The maximum number of concurrent reconcile operations (worker pool size)." https://github.com/crossplane/crossplane/blob/main/cmd/crossplane/core/core.go [[sources/research-gap-m5-informers-caches]]
+Crossplane core (main) builds a dedicated cache for the API-extensions kinds with a transform whose comment reads "Strip the OpenAPI schemas (most of CRDs' size) from typed CRDs in this cache." It sets the client's `DisableFor` list to include Secret, sets the cache `SyncPeriod` from the sync-interval flag, and defaults the worker pool to 100 with the flag help "The maximum number of concurrent reconcile operations (worker pool size)." https://github.com/crossplane/crossplane/blob/main/cmd/crossplane/core/core.go [sources/research-gap-m5-informers-caches](../sources/research-gap-m5-informers-caches.md)
 
 The closest official guidance is the "Crossplane Pods" guide. It gives a default polling rate of "one minute", a sync interval that Crossplane runs "every one hour by default", and says "Most Providers use their own `--max-reconcile-rate`." https://github.com/crossplane/docs/blob/master/content/master/guides/pods.md (docs master, rendered as v2.x). The doc default for poll interval agrees with the source, and the one-hour sync interval was not cross-checked against the source flag default.
 
@@ -31,8 +31,8 @@ One vendor article, an Upbound knowledge-base page last updated "7 months ago", 
 
 ## Related
 
-[[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]], [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]], [[findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements]], [[entities/crossplane]].
+[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane](../comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane.md), [findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias](the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias.md), [findings/crossplane-provider-memory-figures-are-design-doc-targets-not-measurements](crossplane-provider-memory-figures-are-design-doc-targets-not-measurements.md), [entities/crossplane](../entities/crossplane.md).
 
 ## Update from the o8 dossier
 
-Update 2026-11-26: the o8 dossier re-searched the docs repository for "memory", "max-reconcile-rate", and the `guides/` listing, and the release notes from v2.1.0 to v2.5.0, and again found no numeric capacity limit, no CPU or memory sizing for the Crossplane pod, and no independent benchmark. The v2.5.0 notes report a maintainer-measured drop from 338 MiB to 190 MiB heap on a cluster with 791 CRDs. [[sources/research-gap-o8-crossplane-residuals]]
+Update 2026-11-26: the o8 dossier re-searched the docs repository for "memory", "max-reconcile-rate", and the `guides/` listing, and the release notes from v2.1.0 to v2.5.0, and again found no numeric capacity limit, no CPU or memory sizing for the Crossplane pod, and no independent benchmark. The v2.5.0 notes report a maintainer-measured drop from 338 MiB to 190 MiB heap on a cluster with 791 CRDs. [sources/research-gap-o8-crossplane-residuals](../sources/research-gap-o8-crossplane-residuals.md)

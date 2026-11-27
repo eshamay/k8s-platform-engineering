@@ -20,7 +20,7 @@ Draft. This records a decision point described in documentation, not a choice ma
 
 ## Context
 
-An operator that manages several related Kinds can implement them in one controller or give each Kind its own. The choice affects encapsulation, debugging, and scale. [[sources/research-operator-pattern]]
+An operator that manages several related Kinds can implement them in one controller or give each Kind its own. The choice affects encapsulation, debugging, and scale. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## Options
 
@@ -32,8 +32,8 @@ Kubebuilder recommends one controller per Kind and says multi-Kind controllers b
 
 ## Consequences
 
-Per-Kind controllers need a convention for coordinating shared state, usually through status and owner references. See [[findings/multi-kind-controllers-break-encapsulation-and-scale-poorly]] and [[comparisons/how-flux-ack-and-cluster-api-split-controllers]].
+Per-Kind controllers need a convention for coordinating shared state, usually through status and owner references. See [findings/multi-kind-controllers-break-encapsulation-and-scale-poorly](../findings/multi-kind-controllers-break-encapsulation-and-scale-poorly.md) and [comparisons/how-flux-ack-and-cluster-api-split-controllers](../comparisons/how-flux-ack-and-cluster-api-split-controllers.md).
 
 ## Related
 
-[[concepts/operator-pattern]], [[concepts/owner-references-and-garbage-collection]]
+[concepts/operator-pattern](../concepts/operator-pattern.md), [concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md)

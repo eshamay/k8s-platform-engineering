@@ -16,12 +16,12 @@ tags: [pitfall, watch, reflector, api-server, resourceVersion]
 
 ## Observation
 
-A watch resumes from a resource version. When that version is too old, the API server returns 410 Gone and the client must relist the whole collection before watching again. If many clients lose their watch at the same time, they all relist at once, which is expensive for the API server and etcd. [[sources/research-informers-reflectors-and-workqueues]]
+A watch resumes from a resource version. When that version is too old, the API server returns 410 Gone and the client must relist the whole collection before watching again. If many clients lose their watch at the same time, they all relist at once, which is expensive for the API server and etcd. [sources/research-informers-reflectors-and-workqueues](../sources/research-informers-reflectors-and-workqueues.md)
 
 ## Mitigations
 
-Watch bookmarks keep the cursor fresh during quiet periods so it is less likely to expire. The server's watch cache lets clients resume from recent versions without reading etcd. Streaming lists reduce the cost of large collections, and jittered backoff spreads out relists. The secondary explainer recommends jitter explicitly, and the API concepts page was read only through its first 100,000 characters. See [[concepts/informers-reflectors-and-workqueues]] and [[examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd]].
+Watch bookmarks keep the cursor fresh during quiet periods so it is less likely to expire. The server's watch cache lets clients resume from recent versions without reading etcd. Streaming lists reduce the cost of large collections, and jittered backoff spreads out relists. The secondary explainer recommends jitter explicitly, and the API concepts page was read only through its first 100,000 characters. See [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md) and [examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd](../examples/ant-group-large-cluster-tuning-of-apiserver-watch-cache-and-etcd.md).
 
 ## Related
 
-[[findings/etcd-scale-limits-of-the-shared-store]], [[findings/retry-storms-and-unbounded-retries]]
+[findings/etcd-scale-limits-of-the-shared-store](etcd-scale-limits-of-the-shared-store.md), [findings/retry-storms-and-unbounded-retries](retry-storms-and-unbounded-retries.md)

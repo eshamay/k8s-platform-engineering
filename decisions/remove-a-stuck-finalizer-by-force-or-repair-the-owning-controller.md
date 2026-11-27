@@ -25,7 +25,7 @@ tags: [decision, finalizers, troubleshooting, operations]
 
 ## Status
 
-Open as a judgment call. The sources agree on the order of preference but not on a threshold for forcing. [[sources/research-finalizers]]
+Open as a judgment call. The sources agree on the order of preference but not on a threshold for forcing. [sources/research-finalizers](../sources/research-finalizers.md)
 
 ## Context
 
@@ -42,16 +42,16 @@ Repair preserves the guarantee that cleanup runs, but it can take time when the 
 
 ## Related
 
-[[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]], [[examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete]], [[concepts/finalizers]]
+[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data](../findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data.md), [examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete](../examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete.md), [concepts/finalizers](../concepts/finalizers.md)
 
 ## Evidence from the GitOps incidents dossier
 
-ACK issue 2911 is a case where the maintainers' answer was to repair the controller (an exception-code mapping), and where the manual patch was safe only because the AWS resource was already gone, see [[examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone]]. No source gives a rate for orphaning after forced removal, see [[findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+ACK issue 2911 is a case where the maintainers' answer was to repair the controller (an exception-code mapping), and where the manual patch was safe only because the AWS resource was already gone, see [examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone](../examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone.md). No source gives a rate for orphaning after forced removal, see [findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources](../findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources.md). Source: [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md).
 
 ## Evidence from the Kubernetes finalizers blog
 
-The 2021 official Kubernetes blog post shows the force option in its simplest form, a JSON patch that removes `/metadata/finalizers` so a waiting delete completes, and the namespace form, an update to the `finalize` subresource with `spec.finalizers` null. Its advice is to investigate before removing a finalizer because there is often a reason it was added, and it warns that forced namespace finalization can leave orphan objects in a namespace that no longer exists, with namespace re-creation as a possible recovery. See [[examples/a-configmap-with-a-finalizer-no-controller-handles-stays-in-deletion-until-kubectl-patch-removes-the-finalizer-list]] and [[findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back]]. [[sources/kubernetes-finalizers-blog]]
+The 2021 official Kubernetes blog post shows the force option in its simplest form, a JSON patch that removes `/metadata/finalizers` so a waiting delete completes, and the namespace form, an update to the `finalize` subresource with `spec.finalizers` null. Its advice is to investigate before removing a finalizer because there is often a reason it was added, and it warns that forced namespace finalization can leave orphan objects in a namespace that no longer exists, with namespace re-creation as a possible recovery. See [examples/a-configmap-with-a-finalizer-no-controller-handles-stays-in-deletion-until-kubectl-patch-removes-the-finalizer-list](../examples/a-configmap-with-a-finalizer-no-controller-handles-stays-in-deletion-until-kubectl-patch-removes-the-finalizer-list.md) and [findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back](../findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back.md). [sources/kubernetes-finalizers-blog](../sources/kubernetes-finalizers-blog.md)
 
 ## A practitioner's automated force removal
 
-A 2023 Medium post automates the force option with a CronJob that removes the finalizers of Config Connector BigQuery tables whose dataset object is gone, arguing this is safe because deleting a dataset in Google Cloud also deletes its tables. The argument is the author's and holds only where the parent's deletion removes the child in the cloud. See [[examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first]]. [[sources/medium-config-connector-pitfalls]]
+A 2023 Medium post automates the force option with a CronJob that removes the finalizers of Config Connector BigQuery tables whose dataset object is gone, arguing this is safe because deleting a dataset in Google Cloud also deletes its tables. The argument is the author's and holds only where the parent's deletion removes the child in the cloud. See [examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first](../examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first.md). [sources/medium-config-connector-pitfalls](../sources/medium-config-connector-pitfalls.md)

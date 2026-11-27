@@ -16,11 +16,11 @@ tags: [pitfall, argo-cd, sync-options, replace, force, outage]
 
 ## Observation
 
-Argo CD's sync options page warns that `Replace=true` and `Force=true` use `kubectl replace` or a delete and create, and that they can cause outages. It also warns that manually setting the tracking annotation on a shared Namespace can lead to unintended deletion, and it recommends confirmation for critical resources: "Resources such as Namespaces are critical and should not be pruned without confirmation." URL: https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/. [[sources/research-pitfalls-and-case-studies]]
+Argo CD's sync options page warns that `Replace=true` and `Force=true` use `kubectl replace` or a delete and create, and that they can cause outages. It also warns that manually setting the tracking annotation on a shared Namespace can lead to unintended deletion, and it recommends confirmation for critical resources: "Resources such as Namespaces are critical and should not be pruned without confirmation." URL: https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/. [sources/research-pitfalls-and-case-studies](../sources/research-pitfalls-and-case-studies.md)
 
 ## Why it matters
 
-These options trade safety for the ability to apply changes that normal apply cannot, such as immutable fields. Crossplane takes the opposite position: it never deletes and recreates to change an immutable field, see [[findings/crossplane-does-not-delete-and-recreate-to-change-immutable-fields]]. The safer Argo CD settings are `Prune=confirm`, `Delete=confirm`, `PruneLast`, and `FailOnSharedResource`, see [[findings/unintended-deletion-through-prune]].
+These options trade safety for the ability to apply changes that normal apply cannot, such as immutable fields. Crossplane takes the opposite position: it never deletes and recreates to change an immutable field, see [findings/crossplane-does-not-delete-and-recreate-to-change-immutable-fields](crossplane-does-not-delete-and-recreate-to-change-immutable-fields.md). The safer Argo CD settings are `Prune=confirm`, `Delete=confirm`, `PruneLast`, and `FailOnSharedResource`, see [findings/unintended-deletion-through-prune](unintended-deletion-through-prune.md).
 
 ## Evidence quality
 
@@ -28,4 +28,4 @@ This is a single documentation page and no incident of these options is cited, s
 
 ## Related
 
-[[entities/argo-cd]], [[concepts/pitfalls-and-case-studies]]
+[entities/argo-cd](../entities/argo-cd.md), [concepts/pitfalls-and-case-studies](../concepts/pitfalls-and-case-studies.md)

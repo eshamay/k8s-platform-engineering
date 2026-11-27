@@ -16,7 +16,7 @@ tags: [pitfall, flux, prune, garbage-collection]
 
 ## Observation
 
-The Kustomization reference defines garbage collection as removing objects that were applied earlier but are missing from the current source revision. When `prune` is off, deleting a manifest from Git leaves the live object in the cluster, which breaks the claim that Git is the source of truth. The practitioner blog puts it this way: "Git is the only source of truth. Without prune, deleted manifests leave orphaned resources." It recommends enabling `prune` together with `healthChecks`. [[sources/research-flux-deep-dive]]
+The Kustomization reference defines garbage collection as removing objects that were applied earlier but are missing from the current source revision. When `prune` is off, deleting a manifest from Git leaves the live object in the cluster, which breaks the claim that Git is the source of truth. The practitioner blog puts it this way: "Git is the only source of truth. Without prune, deleted manifests leave orphaned resources." It recommends enabling `prune` together with `healthChecks`. [sources/research-flux-deep-dive](../sources/research-flux-deep-dive.md)
 
 ## Trade-off
 
@@ -24,4 +24,4 @@ The opposite risk is covered elsewhere in the wiki. Turning prune on means a bad
 
 ## Related
 
-[[findings/unintended-deletion-through-prune]], [[findings/destructive-deletion-of-external-resources]], [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]], [[entities/flux]]
+[findings/unintended-deletion-through-prune](unintended-deletion-through-prune.md), [findings/destructive-deletion-of-external-resources](destructive-deletion-of-external-resources.md), [comparisons/flux-versus-argo-cd-drift-and-prune-defaults](../comparisons/flux-versus-argo-cd-drift-and-prune-defaults.md), [entities/flux](../entities/flux.md)

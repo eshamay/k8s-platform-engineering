@@ -19,7 +19,7 @@ tags: [pitfall, argo-cd, server-side-apply, diff, drift]
 
 ## Observation
 
-Turning on server-side apply changes how a tool writes, not how it compares. Argo CD's default diff compares Git-rendered manifests with live state in its own process, so fields that the API server defaults, such as `volumeMode` and `status.phase` in StatefulSet `volumeClaimTemplates`, appear as differences and keep the Application OutOfSync after a successful sync. [[sources/research-server-side-apply-and-field-ownership]]
+Turning on server-side apply changes how a tool writes, not how it compares. Argo CD's default diff compares Git-rendered manifests with live state in its own process, so fields that the API server defaults, such as `volumeMode` and `status.phase` in StatefulSet `volumeClaimTemplates`, appear as differences and keep the Application OutOfSync after a successful sync. [sources/research-server-side-apply-and-field-ownership](../sources/research-server-side-apply-and-field-ownership.md)
 
 ## Mitigation and caveats
 
@@ -27,8 +27,8 @@ Server-Side Diff runs a dry-run apply for each resource and compares the results
 
 ## Related guidance
 
-`ignoreDifferences` also silences the false drift but hides real drift, so the article prefers Server-Side Diff and keeps `ignoreDifferences` for fields a controller rewrites on purpose. Argo CD's proposal adds that an SSA sync always exercises admission controllers, even when the client sees no diff. See [[examples/argo-cd-server-side-diff-ends-false-out-of-sync-from-server-defaults]], [[findings/defaulting-and-drift-reconcile-loops]], [[findings/late-initialized-fields-create-false-drift]], and [[entities/argo-cd]].
+`ignoreDifferences` also silences the false drift but hides real drift, so the article prefers Server-Side Diff and keeps `ignoreDifferences` for fields a controller rewrites on purpose. Argo CD's proposal adds that an SSA sync always exercises admission controllers, even when the client sees no diff. See [examples/argo-cd-server-side-diff-ends-false-out-of-sync-from-server-defaults](../examples/argo-cd-server-side-diff-ends-false-out-of-sync-from-server-defaults.md), [findings/defaulting-and-drift-reconcile-loops](defaulting-and-drift-reconcile-loops.md), [findings/late-initialized-fields-create-false-drift](late-initialized-fields-create-false-drift.md), and [entities/argo-cd](../entities/argo-cd.md).
 
 ## Update from the m4 dossier
 
-Update 2026-11-26: Server-Side Diff is documented as stable since Argo CD v3.1.0, but open issues show it can also miss changes or stay permanently OutOfSync. See [[findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs]]. [[sources/research-gap-m4-ssa-conflict-policy]]
+Update 2026-11-26: Server-Side Diff is documented as stable since Argo CD v3.1.0, but open issues show it can also miss changes or stay permanently OutOfSync. See [findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs](argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs.md). [sources/research-gap-m4-ssa-conflict-policy](../sources/research-gap-m4-ssa-conflict-policy.md)

@@ -16,7 +16,7 @@ tags: [level-triggered, provenance, controller-writing-guide, history]
 
 ## Observation
 
-The guide that earlier pages cited only through the Ayson post is "Writing Controllers", at `contributors/devel/sig-api-machinery/controllers.md` in kubernetes/community. "Level driven, not edge driven." is guideline 3 in its Guidelines list, after "Operate on one item at a time" and "Random ordering between resources". The guide says "Just like having a shell script that isn't running all the time, your controller may be off for an indeterminate amount of time", that "you can't count on having seen it turn from `false` to `true`, only that you now observe it being `true`", and that this holds "unless your controller is also marking the information it last made the decision on in the object's status." It opens with "Watches, etc, are all merely optimizations of this logic." https://github.com/kubernetes/community/blob/main/contributors/devel/sig-api-machinery/controllers.md (latest commit on the file 2026-05-08) [[sources/research-gap-m5-informers-caches]]
+The guide that earlier pages cited only through the Ayson post is "Writing Controllers", at `contributors/devel/sig-api-machinery/controllers.md` in kubernetes/community. "Level driven, not edge driven." is guideline 3 in its Guidelines list, after "Operate on one item at a time" and "Random ordering between resources". The guide says "Just like having a shell script that isn't running all the time, your controller may be off for an indeterminate amount of time", that "you can't count on having seen it turn from `false` to `true`, only that you now observe it being `true`", and that this holds "unless your controller is also marking the information it last made the decision on in the object's status." It opens with "Watches, etc, are all merely optimizations of this logic." https://github.com/kubernetes/community/blob/main/contributors/devel/sig-api-machinery/controllers.md (latest commit on the file 2026-05-08) [sources/research-gap-m5-informers-caches](../sources/research-gap-m5-informers-caches.md)
 
 ## Timeline
 
@@ -30,4 +30,4 @@ The Hacker Noon post of 2018-01-23 quotes Joe Beda, attributed to Cloud Native I
 
 ## Related
 
-[[concepts/level-triggered-vs-edge-triggered]], [[decisions/events-as-hints-state-as-truth]], [[findings/stale-cache-and-double-action]], [[findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down]].
+[concepts/level-triggered-vs-edge-triggered](../concepts/level-triggered-vs-edge-triggered.md), [decisions/events-as-hints-state-as-truth](../decisions/events-as-hints-state-as-truth.md), [findings/stale-cache-and-double-action](stale-cache-and-double-action.md), [findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down](a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down.md).

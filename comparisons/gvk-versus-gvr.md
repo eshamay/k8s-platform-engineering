@@ -25,12 +25,12 @@ tags: [gvk, gvr, api-machinery]
 | Go side | A root Go type registered in a Scheme | Taken directly by dynamic and unstructured clients |
 | Cardinality | One Kind can be served by many resources, such as `Scale` | A CRD gives each Kind exactly one resource |
 
-[[sources/research-gvk-and-gvr]]
+[sources/research-gvk-and-gvr](../sources/research-gvk-and-gvr.md)
 
 ## Reading the table
 
-The mapping is usually one to one and the resource is the lowercased plural of the kind, but this is not guaranteed. The RESTMapper translates between the two, using the API discovery documents. See [[concepts/gvk-and-gvr]], [[concepts/api-discovery-and-restmapper]], and [[examples/hpa-scales-any-workload-through-the-scale-subresource]].
+The mapping is usually one to one and the resource is the lowercased plural of the kind, but this is not guaranteed. The RESTMapper translates between the two, using the API discovery documents. See [concepts/gvk-and-gvr](../concepts/gvk-and-gvr.md), [concepts/api-discovery-and-restmapper](../concepts/api-discovery-and-restmapper.md), and [examples/hpa-scales-any-workload-through-the-scale-subresource](../examples/hpa-scales-any-workload-through-the-scale-subresource.md).
 
 ## Where caches and tools use each key
 
-controller-runtime keys informers by GVK and maps to a GVR through the RESTMapper, client-go's typed factory keys by Go type, its dynamic factory keys by GVR, kro holds one informer per GVR, and Argo CD, ACK and Config Connector identify resources by group and kind with no version. See [[findings/controller-runtime-tracks-informers-by-gvk-while-client-go-factories-key-by-go-type-or-gvr]] and [[findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately]]. [[sources/research-gap-m5-informers-caches]]
+controller-runtime keys informers by GVK and maps to a GVR through the RESTMapper, client-go's typed factory keys by Go type, its dynamic factory keys by GVR, kro holds one informer per GVR, and Argo CD, ACK and Config Connector identify resources by group and kind with no version. See [findings/controller-runtime-tracks-informers-by-gvk-while-client-go-factories-key-by-go-type-or-gvr](../findings/controller-runtime-tracks-informers-by-gvk-while-client-go-factories-key-by-go-type-or-gvr.md) and [findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately](../findings/argo-cd-ack-config-connector-and-cluster-api-identify-resources-by-group-and-kind-and-resolve-the-version-separately.md). [sources/research-gap-m5-informers-caches](../sources/research-gap-m5-informers-caches.md)

@@ -19,7 +19,7 @@ tags: [pitfall, conditions, status-writes, api-load]
 
 ## Observation
 
-A controller-author tutorial lists bumping `lastTransitionTime` on every loop as a pitfall, alongside vague messages, too many conditions, inconsistent types across CRDs, and a missing `observedGeneration`. The tutorial says the practice breaks the meaning of the field and adds API traffic. [[sources/research-conditions]] URL: https://oneuptime.com/blog/post/2026-02-09-crd-status-conditions-conventions/view. The source is a secondary vendor blog, so treat it as explanatory evidence.
+A controller-author tutorial lists bumping `lastTransitionTime` on every loop as a pitfall, alongside vague messages, too many conditions, inconsistent types across CRDs, and a missing `observedGeneration`. The tutorial says the practice breaks the meaning of the field and adds API traffic. [sources/research-conditions](../sources/research-conditions.md) URL: https://oneuptime.com/blog/post/2026-02-09-crd-status-conditions-conventions/view. The source is a secondary vendor blog, so treat it as explanatory evidence.
 
 ## Why it matters
 
@@ -27,8 +27,8 @@ A controller-author tutorial lists bumping `lastTransitionTime` on every loop as
 
 ## Mitigations
 
-Use the shared helpers from KEP-1623 (`SetStatusCondition` and `FindStatusCondition`) and write status only when a condition actually changes; the dossier does not describe the helpers' exact timestamp behavior. Evaluate conditions on every reconcile, but compare before writing. See [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]], [[findings/cost-of-constant-reconciliation]], [[concepts/conditions]], and [[findings/self-triggered-reconcile-loops-generate-their-own-events]].
+Use the shared helpers from KEP-1623 (`SetStatusCondition` and `FindStatusCondition`) and write status only when a condition actually changes; the dossier does not describe the helpers' exact timestamp behavior. Evaluate conditions on every reconcile, but compare before writing. See [findings/status-writes-through-the-main-resource-retrigger-reconcile-loops](status-writes-through-the-main-resource-retrigger-reconcile-loops.md), [findings/cost-of-constant-reconciliation](cost-of-constant-reconciliation.md), [concepts/conditions](../concepts/conditions.md), and [findings/self-triggered-reconcile-loops-generate-their-own-events](self-triggered-reconcile-loops-generate-their-own-events.md).
 
 ## Related case from the operator loop dossier
 
-A volatile condition message produces the same effect as a bumped timestamp. In Longhorn issue 13831, request IDs and timestamps in a condition message made every status write differ, at about 6 reconciles per second. See [[findings/volatile-text-in-a-condition-message-defeats-the-equality-check-and-causes-a-reconcile-storm]]. Source: [[sources/research-gap-g1-operator-loop-failures]].
+A volatile condition message produces the same effect as a bumped timestamp. In Longhorn issue 13831, request IDs and timestamps in a condition message made every status write differ, at about 6 reconciles per second. See [findings/volatile-text-in-a-condition-message-defeats-the-equality-check-and-causes-a-reconcile-storm](volatile-text-in-a-condition-message-defeats-the-equality-check-and-causes-a-reconcile-storm.md). Source: [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md).

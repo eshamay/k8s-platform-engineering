@@ -16,7 +16,7 @@ tags: [pitfall, reconcile, error-handling, workqueue]
 
 ## Observation
 
-The Google Cloud operator guidance advises asynchronous sync loops that do not block on errors. A reconcile that sleeps, polls, or waits inside the loop occupies a worker, and because workqueues process keys through a limited set of workers, one slow or failing object delays unrelated objects. The dossier states the advice but gives no measurements. [[sources/research-operator-pattern]]
+The Google Cloud operator guidance advises asynchronous sync loops that do not block on errors. A reconcile that sleeps, polls, or waits inside the loop occupies a worker, and because workqueues process keys through a limited set of workers, one slow or failing object delays unrelated objects. The dossier states the advice but gives no measurements. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## Mitigation
 
@@ -24,4 +24,4 @@ The standard alternative is to return an error or a requeue so the rate-limited 
 
 ## Related
 
-[[findings/failure-retry-loops-and-backoff]], [[findings/errors-used-as-timers-in-reconcilers]], [[findings/retry-storms-and-unbounded-retries]], [[concepts/informers-reflectors-and-workqueues]]
+[findings/failure-retry-loops-and-backoff](failure-retry-loops-and-backoff.md), [findings/errors-used-as-timers-in-reconcilers](errors-used-as-timers-in-reconcilers.md), [findings/retry-storms-and-unbounded-retries](retry-storms-and-unbounded-retries.md), [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md)

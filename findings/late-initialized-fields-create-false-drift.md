@@ -16,16 +16,16 @@ tags: [pitfall, crossplane, defaulting, drift]
 
 ## Observation
 
-External providers fill in default values the user never set. If those defaults are compared against a spec that does not mention them, the controller sees a difference and tries to "fix" it. Crossplane's managed-resource design keeps provider-defaulted fields optional in `spec` and offers a `LateInitialize` management policy, so the controller can copy the provider's value into spec without treating it as drift. The design one-pager also separates `forProvider` (desired) from `atProvider` (observed). [[sources/research-self-healing-and-drift-detection]]
+External providers fill in default values the user never set. If those defaults are compared against a spec that does not mention them, the controller sees a difference and tries to "fix" it. Crossplane's managed-resource design keeps provider-defaulted fields optional in `spec` and offers a `LateInitialize` management policy, so the controller can copy the provider's value into spec without treating it as drift. The design one-pager also separates `forProvider` (desired) from `atProvider` (observed). [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md)
 
 ## Interpretation
 
-Drift detection needs a rule for fields the user did not declare. Crossplane's answer is to fill them in deliberately, while Config Connector's legacy Merge mode did so implicitly and produced endless reconcile loops. See [[findings/defaulting-and-drift-reconcile-loops]] and [[concepts/spec-status-split]].
+Drift detection needs a rule for fields the user did not declare. Crossplane's answer is to fill them in deliberately, while Config Connector's legacy Merge mode did so implicitly and produced endless reconcile loops. See [findings/defaulting-and-drift-reconcile-loops](defaulting-and-drift-reconcile-loops.md) and [concepts/spec-status-split](../concepts/spec-status-split.md).
 
 ## Mitigations
 
-Make provider-defaulted fields optional, use `LateInitialize` where available, and avoid copying live values into the spec for fields the user never meant to own. See [[comparisons/exemption-and-ignore-controls-across-tools]].
+Make provider-defaulted fields optional, use `LateInitialize` where available, and avoid copying live values into the spec for fields the user never meant to own. See [comparisons/exemption-and-ignore-controls-across-tools](../comparisons/exemption-and-ignore-controls-across-tools.md).
 
 ## Related
 
-[[entities/crossplane]], [[concepts/managed-resource]], [[concepts/self-healing-and-drift-detection]]
+[entities/crossplane](../entities/crossplane.md), [concepts/managed-resource](../concepts/managed-resource.md), [concepts/self-healing-and-drift-detection](../concepts/self-healing-and-drift-detection.md)

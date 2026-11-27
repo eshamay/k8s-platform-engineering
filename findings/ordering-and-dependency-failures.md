@@ -22,21 +22,21 @@ tags: [pitfall, ordering, dependencies]
 
 ## Observation
 
-CRDs and their controllers must exist before the custom resources that use them, and dependencies must be ready before dependents. Each stack handles this differently, and each has failure modes. [[sources/research-universal-control-plane]]
+CRDs and their controllers must exist before the custom resources that use them, and dependencies must be ready before dependents. Each stack handles this differently, and each has failure modes. [sources/research-universal-control-plane](../sources/research-universal-control-plane.md)
 
-- [[entities/flux]] uses `dependsOn` plus health checks between Kustomizations, and it requires CRDs and controllers to be reconciled first.
-- [[entities/argo-cd]] uses phases and waves with health gating. PreSync hooks can run before the ConfigMaps or Secrets they need, hooks run every sync so they must be idempotent, and long migrations can time out while still running.
-- [[entities/kro]] derives ordering from references between resources in its graph, although the dossier could not see the mechanics.
-- [[entities/crossplane]] functions see observed state each loop and can withhold dependent resources until they are ready.
+- [entities/flux](../entities/flux.md) uses `dependsOn` plus health checks between Kustomizations, and it requires CRDs and controllers to be reconciled first.
+- [entities/argo-cd](../entities/argo-cd.md) uses phases and waves with health gating. PreSync hooks can run before the ConfigMaps or Secrets they need, hooks run every sync so they must be idempotent, and long migrations can time out while still running.
+- [entities/kro](../entities/kro.md) derives ordering from references between resources in its graph, although the dossier could not see the mechanics.
+- [entities/crossplane](../entities/crossplane.md) functions see observed state each loop and can withhold dependent resources until they are ready.
 
 ## Why it matters
 
-Because the system is eventually consistent (see [[concepts/eventual-consistency-and-convergence]]), many ordering errors resolve themselves through retries, but a wave-based or hook-based tool can instead stop and mark the sync failed. See [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]].
+Because the system is eventually consistent (see [concepts/eventual-consistency-and-convergence](../concepts/eventual-consistency-and-convergence.md)), many ordering errors resolve themselves through retries, but a wave-based or hook-based tool can instead stop and mark the sync failed. See [comparisons/ordering-models-flux-argo-cd-kro-crossplane](../comparisons/ordering-models-flux-argo-cd-kro-crossplane.md).
 
 ## Health-gated ordering in the convergence dossier
 
-Kubernetes does not order dependent resources itself. Flux uses `dependsOn` with health checks, Argo CD uses health-gated waves and hooks that must be idempotent, and Crossplane uses composition function readiness. [[sources/research-eventual-consistency-and-convergence]] See [[examples/flux-dependson-and-health-checks-gate-rollout]] and [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]].
+Kubernetes does not order dependent resources itself. Flux uses `dependsOn` with health checks, Argo CD uses health-gated waves and hooks that must be idempotent, and Crossplane uses composition function readiness. [sources/research-eventual-consistency-and-convergence](../sources/research-eventual-consistency-and-convergence.md) See [examples/flux-dependson-and-health-checks-gate-rollout](../examples/flux-dependson-and-health-checks-gate-rollout.md) and [examples/argo-cd-sync-waves-order-crds-operators-and-workloads](../examples/argo-cd-sync-waves-order-crds-operators-and-workloads.md).
 
 ## CRD-before-custom-resource ordering in the GVK dossier
 
-Applying a custom resource before its CRD is established fails with "no matches for kind" in Helm, Argo CD, and Flux. Flux orders with `dependsOn` and health checks, and Argo CD users rely on sync waves, though the Argo detail is unverified. [[sources/research-gvk-and-gvr]] See [[findings/custom-resources-applied-before-their-crd-exists]] and [[comparisons/missing-crd-handling-flux-versus-argo-cd]].
+Applying a custom resource before its CRD is established fails with "no matches for kind" in Helm, Argo CD, and Flux. Flux orders with `dependsOn` and health checks, and Argo CD users rely on sync waves, though the Argo detail is unverified. [sources/research-gvk-and-gvr](../sources/research-gvk-and-gvr.md) See [findings/custom-resources-applied-before-their-crd-exists](custom-resources-applied-before-their-crd-exists.md) and [comparisons/missing-crd-handling-flux-versus-argo-cd](../comparisons/missing-crd-handling-flux-versus-argo-cd.md).

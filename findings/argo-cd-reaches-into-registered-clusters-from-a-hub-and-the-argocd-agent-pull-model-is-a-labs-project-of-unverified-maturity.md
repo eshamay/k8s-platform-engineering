@@ -16,11 +16,11 @@ tags: [argo-cd, multi-cluster, hub-and-spoke, argocd-agent]
 
 ## Observation
 
-A central Argo CD instance targets remote clusters that are registered with it, so delivery to a fleet is a push from a hub even though each Application pulls from Git. The separate argocd-agent project (in `argoproj-labs`, not core Argo CD) describes the inverse: "instead of your control plane reaching out to remote clusters, lightweight agents reach back to a central hub." It documents Managed and Autonomous agent modes. URL: https://github.com/argoproj-labs/argocd-agent/blob/main/README.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [[sources/research-gap-o1-argocd-flux-gitops]]
+A central Argo CD instance targets remote clusters that are registered with it, so delivery to a fleet is a push from a hub even though each Application pulls from Git. The separate argocd-agent project (in `argoproj-labs`, not core Argo CD) describes the inverse: "instead of your control plane reaching out to remote clusters, lightweight agents reach back to a central hub." It documents Managed and Autonomous agent modes. URL: https://github.com/argoproj-labs/argocd-agent/blob/main/README.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [sources/research-gap-o1-argocd-flux-gitops](../sources/research-gap-o1-argocd-flux-gitops.md)
 
 ## Flux on the same axis
 
-A Flux Kustomization can target a remote cluster through `.spec.kubeConfig`, and the specification calls `.spec.kubeConfig.configMapRef` "(Recommended): Secret-less authentication". URL: https://github.com/fluxcd/kustomize-controller/blob/main/docs/spec/v1/kustomizations.md. The more common Flux layout runs a controller set in every cluster, see [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]].
+A Flux Kustomization can target a remote cluster through `.spec.kubeConfig`, and the specification calls `.spec.kubeConfig.configMapRef` "(Recommended): Secret-less authentication". URL: https://github.com/fluxcd/kustomize-controller/blob/main/docs/spec/v1/kustomizations.md. The more common Flux layout runs a controller set in every cluster, see [examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts](../examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts.md).
 
 ## Limits of the evidence
 
@@ -28,4 +28,4 @@ The dossier searched the argocd-agent README for alpha, beta, stable and product
 
 ## Related
 
-[[decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes]], [[comparisons/push-versus-pull-delivery]], [[findings/applicationset-generators-have-documented-limits-matrix-takes-two-children-nesting-is-once-and-pull-request-polling-defaults-to-30-minutes]]
+[decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes](../decisions/reach-spoke-clusters-from-a-central-argo-cd-hub-or-with-argocd-agent-pulling-from-the-spokes.md), [comparisons/push-versus-pull-delivery](../comparisons/push-versus-pull-delivery.md), [findings/applicationset-generators-have-documented-limits-matrix-takes-two-children-nesting-is-once-and-pull-request-polling-defaults-to-30-minutes](applicationset-generators-have-documented-limits-matrix-takes-two-children-nesting-is-once-and-pull-request-polling-defaults-to-30-minutes.md)

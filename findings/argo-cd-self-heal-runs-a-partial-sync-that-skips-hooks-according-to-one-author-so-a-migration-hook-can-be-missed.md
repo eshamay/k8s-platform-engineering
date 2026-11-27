@@ -16,7 +16,7 @@ tags: [pitfall, argo-cd, self-heal, hooks, migration, sync-window]
 
 ## Observation
 
-A CNCF blog post of 2026-11-20 says that when Argo CD self-heal fires, it can run a partial sync of only the out-of-sync resources, and that "healing drift never runs hooks". In the post's customer incident, two of five regional Applications therefore skipped a database migration hook that three others ran, and the regions ran mismatched code and schema for 36 to 44 minutes. [[sources/research-gap-g1-gitops-drift-incidents]] See [[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]].
+A CNCF blog post of 2026-11-20 says that when Argo CD self-heal fires, it can run a partial sync of only the out-of-sync resources, and that "healing drift never runs hooks". In the post's customer incident, two of five regional Applications therefore skipped a database migration hook that three others ran, and the regions ran mismatched code and schema for 36 to 44 minutes. [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md) See [examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications](../examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications.md).
 
 ## Mechanism, as the author states it
 
@@ -24,12 +24,12 @@ A level-1 refresh "mistook" the last compared revision for the last synced one, 
 
 ## Mitigations
 
-The author offers two: make the migration a managed resource with a sync wave and a release-specific name, or turn self-heal off so the timer-driven full sync runs the hook. Turning it off costs drift correction, because "Anyone who edits a resource by hand now leaves it OutOfSync". See [[decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off]].
+The author offers two: make the migration a managed resource with a sync wave and a release-specific name, or turn self-heal off so the timer-driven full sync runs the hook. Turning it off costs drift correction, because "Anyone who edits a resource by hand now leaves it OutOfSync". See [decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off](../decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off.md).
 
 ## Why it matters
 
-[[entities/argo-cd]] documents that hooks run on every sync. The incident suggests that self-heal does not always count as a sync for that purpose, so a migration written as a hook is not guaranteed to run. This is a correction to the unqualified wording on the entity page, which now carries a note.
+[entities/argo-cd](../entities/argo-cd.md) documents that hooks run on every sync. The incident suggests that self-heal does not always count as a sync for that purpose, so a migration written as a hook is not guaranteed to run. This is a correction to the unqualified wording on the entity page, which now carries a note.
 
 ## Related
 
-[[concepts/self-healing-and-drift-detection]], [[findings/ordering-and-dependency-failures]], [[decisions/staged-adoption-of-automated-drift-correction]]
+[concepts/self-healing-and-drift-detection](../concepts/self-healing-and-drift-detection.md), [findings/ordering-and-dependency-failures](ordering-and-dependency-failures.md), [decisions/staged-adoption-of-automated-drift-correction](../decisions/staged-adoption-of-automated-drift-correction.md)

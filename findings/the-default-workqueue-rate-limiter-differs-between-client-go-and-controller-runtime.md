@@ -18,7 +18,7 @@ tags: [workqueue, rate-limiter, client-go, controller-runtime, defaults]
 
 In client-go, `DefaultTypedControllerRateLimiter` is the maximum of two limiters: a per-item exponential failure limiter with a 5 ms base and a 1000 s cap, and a bucket limiter at 10 qps with a burst of 100. The source comment says the bucket is "only for retry speed and its only the overall factor (not per item)". https://github.com/kubernetes/client-go/blob/master/util/workqueue/default_rate_limiters.go
 
-controller-runtime does not always use that default. In the version read, `pkg/controller/controller.go` on main builds only `NewTypedItemExponentialFailureRateLimiter` with the same 5 ms and 1000 s values when its priority queue is enabled, which is the default, and falls back to the client-go default otherwise. It also sets `MaxConcurrentReconciles` to 1 by default. https://github.com/kubernetes-sigs/controller-runtime/blob/main/pkg/controller/controller.go (lines 272 to 275). An earlier citation of `pkg/internal/controller/controller.go` was wrong, since that file does not contain this code. [[sources/research-gap-g3-scale-recheck]]
+controller-runtime does not always use that default. In the version read, `pkg/controller/controller.go` on main builds only `NewTypedItemExponentialFailureRateLimiter` with the same 5 ms and 1000 s values when its priority queue is enabled, which is the default, and falls back to the client-go default otherwise. It also sets `MaxConcurrentReconciles` to 1 by default. https://github.com/kubernetes-sigs/controller-runtime/blob/main/pkg/controller/controller.go (lines 272 to 275). An earlier citation of `pkg/internal/controller/controller.go` was wrong, since that file does not contain this code. [sources/research-gap-g3-scale-recheck](../sources/research-gap-g3-scale-recheck.md)
 
 ## Why it matters
 
@@ -26,4 +26,4 @@ Documentation and blog posts often describe "the default workqueue limiter" as e
 
 ## Related pages
 
-[[entities/controller-runtime]], [[entities/client-go]], [[concepts/informers-reflectors-and-workqueues]], [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]].
+[entities/controller-runtime](../entities/controller-runtime.md), [entities/client-go](../entities/client-go.md), [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md), [findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history](a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history.md).

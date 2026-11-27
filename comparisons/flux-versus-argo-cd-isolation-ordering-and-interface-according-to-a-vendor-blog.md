@@ -14,14 +14,14 @@ tags: [gitops, flux, argo-cd, comparison, multi-tenancy]
 
 # Flux versus Argo CD isolation, ordering, and interface according to a vendor blog
 
-| Dimension | [[entities/flux]] | [[entities/argo-cd]] |
+| Dimension | [entities/flux](../entities/flux.md) | [entities/argo-cd](../entities/argo-cd.md) |
 |---|---|---|
 | Shape | Distributed controllers, each owning one job | Centralized model |
 | Tenant isolation | Namespaces and RBAC, with ServiceAccount impersonation | Projects |
 | Ordering | `dependsOn` with health checks or `wait` | Sync phases (pre-sync, sync, post-sync) and waves |
 | User interface | No native UI, though third-party UIs and the Flux Operator exist | Built-in UI |
 
-[[sources/research-flux-deep-dive]]
+[sources/research-flux-deep-dive](../sources/research-flux-deep-dive.md)
 
 ## Reading the table
 
@@ -29,4 +29,4 @@ The source is a blog by Devtron, a vendor that sells a platform around Argo CD, 
 
 ## Related
 
-[[comparisons/flux-versus-argo-cd-architecture]], [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]], [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]], [[examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation]], [[findings/without-lockdown-flags-a-flux-kustomization-applies-with-the-controllers-own-identity]]
+[comparisons/flux-versus-argo-cd-architecture](flux-versus-argo-cd-architecture.md), [comparisons/flux-versus-argo-cd-drift-and-prune-defaults](flux-versus-argo-cd-drift-and-prune-defaults.md), [comparisons/ordering-models-flux-argo-cd-kro-crossplane](ordering-models-flux-argo-cd-kro-crossplane.md), [examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation](../examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation.md), [findings/without-lockdown-flags-a-flux-kustomization-applies-with-the-controllers-own-identity](../findings/without-lockdown-flags-a-flux-kustomization-applies-with-the-controllers-own-identity.md)

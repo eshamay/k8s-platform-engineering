@@ -16,12 +16,12 @@ tags: [pitfall, owner-references, velero, cluster-api, restore]
 
 ## Observation
 
-The Cluster API book calls out Velero stripping owner references as a known hazard, and states "Owner references should be re-reconciled if they are lost for an object." The same page warns against unnecessary references, stale API versions inside references, and multiple owners. [[sources/research-owner-references-and-garbage-collection]]
+The Cluster API book calls out Velero stripping owner references as a known hazard, and states "Owner references should be re-reconciled if they are lost for an object." The same page warns against unnecessary references, stale API versions inside references, and multiple owners. [sources/research-owner-references-and-garbage-collection](../sources/research-owner-references-and-garbage-collection.md)
 
 ## Consequence
 
-Because cluster deletion and `clusterctl move` depend on the chain of references, a restore that drops them would break teardown and relocation until a controller repairs the links. The remedy is a level-based one: the controller treats the references as part of desired state and rewrites them on every reconcile. The dossier did not test Velero itself. See [[examples/cluster-api-owner-reference-chain-drives-cluster-deletion-and-clusterctl-move]] and [[concepts/reconciliation-loop]].
+Because cluster deletion and `clusterctl move` depend on the chain of references, a restore that drops them would break teardown and relocation until a controller repairs the links. The remedy is a level-based one: the controller treats the references as part of desired state and rewrites them on every reconcile. The dossier did not test Velero itself. See [examples/cluster-api-owner-reference-chain-drives-cluster-deletion-and-clusterctl-move](../examples/cluster-api-owner-reference-chain-drives-cluster-deletion-and-clusterctl-move.md) and [concepts/reconciliation-loop](../concepts/reconciliation-loop.md).
 
 ## Related
 
-[[entities/cluster-api]], [[concepts/owner-references-and-garbage-collection]]
+[entities/cluster-api](../entities/cluster-api.md), [concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md)

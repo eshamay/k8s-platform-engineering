@@ -22,7 +22,7 @@ tags: [pitfall, finalizers, deletion, operators]
 
 ## Observation
 
-Operators that manage external resources depend on finalizers to clean up before an object disappears. Deleting such an object sets a `deletionTimestamp`, and the object lingers until every controller removes its finalizer key. The Kubernetes finalizers page lists three reasons an object stays in Terminating: failing cleanup logic, a controller that is not running, or blocked dependencies. The page also warns that manually stripping finalizers is risky, because it skips the cleanup the finalizer existed to guarantee. [[sources/research-operator-pattern]]
+Operators that manage external resources depend on finalizers to clean up before an object disappears. Deleting such an object sets a `deletionTimestamp`, and the object lingers until every controller removes its finalizer key. The Kubernetes finalizers page lists three reasons an object stays in Terminating: failing cleanup logic, a controller that is not running, or blocked dependencies. The page also warns that manually stripping finalizers is risky, because it skips the cleanup the finalizer existed to guarantee. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## Implication for operator removal
 
@@ -30,12 +30,12 @@ Uninstalling an operator before its custom resources are deleted leaves those re
 
 ## Related
 
-[[concepts/finalizers]], [[findings/destructive-deletion-of-external-resources]], [[findings/operator-privileges-and-removal-behavior-set-the-blast-radius]], [[concepts/operator-pattern]]
+[concepts/finalizers](../concepts/finalizers.md), [findings/destructive-deletion-of-external-resources](destructive-deletion-of-external-resources.md), [findings/operator-privileges-and-removal-behavior-set-the-blast-radius](operator-privileges-and-removal-behavior-set-the-blast-radius.md), [concepts/operator-pattern](../concepts/operator-pattern.md)
 
 ## Additional evidence from the finalizers dossier
 
-The finalizers dossier names three usual causes of a stranded object: a controller that is gone, such as an uninstalled operator, a cleanup that errors forever, and a child that holds its own finalizer. It adds a diagnosis path (read the finalizers, find the owner, read its logs) and warns that the shortcut of forcing removal skips cleanup. [[sources/research-finalizers]] See [[concepts/finalizers]], [[findings/cleanup-that-always-errors-or-assumes-the-external-resource-exists-strands-the-object]], [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]], and [[findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone]].
+The finalizers dossier names three usual causes of a stranded object: a controller that is gone, such as an uninstalled operator, a cleanup that errors forever, and a child that holds its own finalizer. It adds a diagnosis path (read the finalizers, find the owner, read its logs) and warns that the shortcut of forcing removal skips cleanup. [sources/research-finalizers](../sources/research-finalizers.md) See [concepts/finalizers](../concepts/finalizers.md), [findings/cleanup-that-always-errors-or-assumes-the-external-resource-exists-strands-the-object](cleanup-that-always-errors-or-assumes-the-external-resource-exists-strands-the-object.md), [findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data](forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data.md), and [findings/deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone](deleting-the-cluster-first-orphans-cloud-resources-because-the-controller-is-gone.md).
 
 ## Addition from the GitOps incidents dossier
 
-ACK issue 2911 (2026) is a dated case of a failing controller stranding a pruned CR in `Terminating`, see [[findings/pruning-a-custom-resource-whose-controller-does-not-map-a-not-found-error-leaves-it-terminating-on-its-finalizer]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+ACK issue 2911 (2026) is a dated case of a failing controller stranding a pruned CR in `Terminating`, see [findings/pruning-a-custom-resource-whose-controller-does-not-map-a-not-found-error-leaves-it-terminating-on-its-finalizer](pruning-a-custom-resource-whose-controller-does-not-map-a-not-found-error-leaves-it-terminating-on-its-finalizer.md). Source: [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md).

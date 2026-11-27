@@ -16,7 +16,7 @@ tags: [crossplane, crossplane-runtime, upjet, provider-aws, external-create-pend
 
 ## Observation
 
-The opt-out that Crossplane maintainers proposed in issue 3037 for resources with deterministic identifiers did ship in the runtime. crossplane-runtime main has `WithDeterministicExternalName(b bool)`. When it is false the managed reconciler stops with "cannot determine creation result" after an incomplete create, and when it is true the safeguard is skipped, because "it is safe to re-queue a deterministically named resource." The dossier read the source file on 2026-11-26, and the latest crossplane-runtime release it listed was v2.4.4 (2026-11-24). [[sources/research-gap-g1-leaked-resources-adoption]]
+The opt-out that Crossplane maintainers proposed in issue 3037 for resources with deterministic identifiers did ship in the runtime. crossplane-runtime main has `WithDeterministicExternalName(b bool)`. When it is false the managed reconciler stops with "cannot determine creation result" after an incomplete create, and when it is true the safeguard is skipped, because "it is safe to re-queue a deterministically named resource." The dossier read the source file on 2026-11-26, and the latest crossplane-runtime release it listed was v2.4.4 (2026-11-24). [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md)
 
 ## What is not complete
 
@@ -24,12 +24,12 @@ provider-upjet-aws issue 2251 (2026-09-25, open) reports "Controllers don't set 
 
 ## Other ways the guard sticks
 
-crossplane-runtime issue 340 (2022-07-14) shows that provider-terraform can leave the pending annotation stuck if its pod is terminated during a multi-minute `terraform apply`, because the update that records the failure fails on a cancelled context. In issue 3037 the maintainer said providers had no graceful shutdown handling for in-flight creates at that time. See [[examples/provider-restart-blocks-a-crossplane-resource-on-external-create-pending]].
+crossplane-runtime issue 340 (2022-07-14) shows that provider-terraform can leave the pending annotation stuck if its pod is terminated during a multi-minute `terraform apply`, because the update that records the failure fails on a cancelled context. In issue 3037 the maintainer said providers had no graceful shutdown handling for in-flight creates at that time. See [examples/provider-restart-blocks-a-crossplane-resource-on-external-create-pending](../examples/provider-restart-blocks-a-crossplane-resource-on-external-create-pending.md).
 
 ## Interpretation
 
-The runtime offers the opt-out, but each provider must adopt it, so provider adoption is not complete as of the issue date. Operators of upjet-based providers should expect to remove the annotation by hand for deterministically named resources after a transient error. See [[decisions/set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses]] and [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]].
+The runtime offers the opt-out, but each provider must adopt it, so provider adoption is not complete as of the issue date. Operators of upjet-based providers should expect to remove the annotation by hand for deterministically named resources after a transient error. See [decisions/set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses](../decisions/set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses.md) and [findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes](an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes.md).
 
 ## Related
 
-[[entities/crossplane]], [[entities/upjet]], [[examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days]]
+[entities/crossplane](../entities/crossplane.md), [entities/upjet](../entities/upjet.md), [examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days](../examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days.md)

@@ -16,7 +16,7 @@ tags: [pitfall, crossplane, composition-functions, scale]
 
 ## The load arithmetic
 
-Composites are polled every 60 seconds by default and each function step is a gRPC call, so 100 XRs with one function step produce 100 calls per minute. The design doc lists the scaling levers as the poll interval, function replicas, and response caching by TTL. [[sources/research-composition]] The design doc is at https://github.com/crossplane/crossplane/blob/main/design/design-doc-composition-functions.md.
+Composites are polled every 60 seconds by default and each function step is a gRPC call, so 100 XRs with one function step produce 100 calls per minute. The design doc lists the scaling levers as the poll interval, function replicas, and response caching by TTL. [sources/research-composition](../sources/research-composition.md) The design doc is at https://github.com/crossplane/crossplane/blob/main/design/design-doc-composition-functions.md.
 
 ## Memory
 
@@ -24,8 +24,8 @@ A third-party article argues that functions run as OCI containers that receive t
 
 ## Design trade-off
 
-Imagine Learning chose one monolithic function to reduce idle pods, which trades isolation for fewer processes, see [[examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function]]. The same load question for a Crossplane pipeline versus kro's dynamic controllers is still open in [[open-knowledge-gaps]].
+Imagine Learning chose one monolithic function to reduce idle pods, which trades isolation for fewer processes, see [examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function](../examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function.md). The same load question for a Crossplane pipeline versus kro's dynamic controllers is still open in [open-knowledge-gaps](../open-knowledge-gaps.md).
 
 ## Related
 
-[[findings/composition-functions-add-moving-parts-that-must-be-healthy]], [[concepts/composition]], [[entities/crossplane]], [[comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro]], [[examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget]]
+[findings/composition-functions-add-moving-parts-that-must-be-healthy](composition-functions-add-moving-parts-that-must-be-healthy.md), [concepts/composition](../concepts/composition.md), [entities/crossplane](../entities/crossplane.md), [comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro](../comparisons/load-and-fairness-controls-across-controller-runtime-flux-argo-cd-and-kro.md), [examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget](../examples/crossplane-max-reconcile-rate-turns-reconcile-rate-into-an-api-call-budget.md)

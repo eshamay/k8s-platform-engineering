@@ -16,7 +16,7 @@ tags: [pitfall, flux, multi-tenancy, rbac, privilege]
 
 ## Observation
 
-The dossier states that without lockdown a Kustomization applies as the controller's cluster-admin identity, so any tenant who can commit a manifest to a repository that Flux watches can create anything the controller can. Flux addresses this with ServiceAccount impersonation through `spec.serviceAccountName`, plus the controller flags `--default-service-account`, `--no-cross-namespace-refs=true`, and `--no-remote-bases=true`. Objects without a named account use the `default` account in the tenant's namespace, and if that account has no RBAC, deployments fail. The reference repository adds that sharing a namespace between tenants breaks the isolation guarantees. [[sources/research-flux-deep-dive]]
+The dossier states that without lockdown a Kustomization applies as the controller's cluster-admin identity, so any tenant who can commit a manifest to a repository that Flux watches can create anything the controller can. Flux addresses this with ServiceAccount impersonation through `spec.serviceAccountName`, plus the controller flags `--default-service-account`, `--no-cross-namespace-refs=true`, and `--no-remote-bases=true`. Objects without a named account use the `default` account in the tenant's namespace, and if that account has no RBAC, deployments fail. The reference repository adds that sharing a namespace between tenants breaks the isolation guarantees. [sources/research-flux-deep-dive](../sources/research-flux-deep-dive.md)
 
 ## Why it matters
 
@@ -28,4 +28,4 @@ Start the controllers with all three lockdown flags, give every tenant a Service
 
 ## Related
 
-[[examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation]], [[findings/blast-radius-and-privilege-centralization]], [[findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions]], [[entities/flux]]
+[examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation](../examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation.md), [findings/blast-radius-and-privilege-centralization](blast-radius-and-privilege-centralization.md), [findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions](anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions.md), [entities/flux](../entities/flux.md)

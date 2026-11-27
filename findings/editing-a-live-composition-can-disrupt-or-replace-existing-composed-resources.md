@@ -16,7 +16,7 @@ tags: [pitfall, crossplane, composition, revisions, rollout]
 
 ## Observation
 
-The Crossplane v2 upgrade guide warns against editing a live Composition that existing XRs use, because the change could disrupt or replace resources. [[sources/research-composite-resource]] URL: https://docs.crossplane.io/latest/guides/upgrade-to-crossplane-v2/.
+The Crossplane v2 upgrade guide warns against editing a live Composition that existing XRs use, because the change could disrupt or replace resources. [sources/research-composite-resource](../sources/research-composite-resource.md) URL: https://docs.crossplane.io/latest/guides/upgrade-to-crossplane-v2/.
 
 ## Why it matters
 
@@ -24,4 +24,4 @@ Crossplane tracks Composition changes as CompositionRevisions, and an XR default
 
 ## Mitigations
 
-An XR can use `compositionUpdatePolicy: Manual` with `compositionRevisionRef` to pin a revision, or `compositionRevisionSelector` to choose one by label. The `function-kro` post lists revision pinning and rollback as a benefit of running graphs inside Crossplane, and `crossplane render` allows local testing before a change ships. The dossier also recommends unit tests and a Kuttl loop. See [[decisions/choose-automatic-or-manual-composition-update-policy]], [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]], and [[examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready]].
+An XR can use `compositionUpdatePolicy: Manual` with `compositionRevisionRef` to pin a revision, or `compositionRevisionSelector` to choose one by label. The `function-kro` post lists revision pinning and rollback as a benefit of running graphs inside Crossplane, and `crossplane render` allows local testing before a change ships. The dossier also recommends unit tests and a Kuttl loop. See [decisions/choose-automatic-or-manual-composition-update-policy](../decisions/choose-automatic-or-manual-composition-update-policy.md), [comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes](../comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes.md), and [examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready](../examples/crossplane-xr-spec-pins-composition-and-status-reports-synced-and-ready.md).

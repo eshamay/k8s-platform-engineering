@@ -16,12 +16,12 @@ tags: [pitfall, over-building, composition, platform-engineering]
 
 ## Observation
 
-The dossier calls over-building a pitfall. When a custom API is mostly a composition of existing resources, a Crossplane Composition or a kro ResourceGraphDefinition can stand in for a hand-written controller, and the team avoids scaffolding, testing, upgrading, and operating bespoke code. The Kubernetes custom resource documentation adds that a custom resource is appropriate only when the API is declarative. Not every automation needs a custom resource. [[sources/research-operator-pattern]]
+The dossier calls over-building a pitfall. When a custom API is mostly a composition of existing resources, a Crossplane Composition or a kro ResourceGraphDefinition can stand in for a hand-written controller, and the team avoids scaffolding, testing, upgrading, and operating bespoke code. The Kubernetes custom resource documentation adds that a custom resource is appropriate only when the API is declarative. Not every automation needs a custom resource. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## Caveat
 
-The dossier presents this as guidance, with no measurement of the maintenance saved. Composition tools carry their own limits, such as immature abstractions and a second reconcile layer. See [[findings/immature-abstractions-in-the-control-plane-ecosystem]] and [[findings/two-reconcile-loops-hide-status-and-drift-at-two-layers]]. URL: https://docs.crossplane.io/latest/composition/compositions/ and https://kro.run/docs/overview.
+The dossier presents this as guidance, with no measurement of the maintenance saved. Composition tools carry their own limits, such as immature abstractions and a second reconcile layer. See [findings/immature-abstractions-in-the-control-plane-ecosystem](immature-abstractions-in-the-control-plane-ecosystem.md) and [findings/two-reconcile-loops-hide-status-and-drift-at-two-layers](two-reconcile-loops-hide-status-and-drift-at-two-layers.md). URL: https://docs.crossplane.io/latest/composition/compositions/ and https://kro.run/docs/overview.
 
 ## Related
 
-[[decisions/build-a-custom-operator-or-compose-existing-resources]], [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]]
+[decisions/build-a-custom-operator-or-compose-existing-resources](../decisions/build-a-custom-operator-or-compose-existing-resources.md), [comparisons/hand-written-operator-versus-crossplane-composition-versus-kro](../comparisons/hand-written-operator-versus-crossplane-composition-versus-kro.md)

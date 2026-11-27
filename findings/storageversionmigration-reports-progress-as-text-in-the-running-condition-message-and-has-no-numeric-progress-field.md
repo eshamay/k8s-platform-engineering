@@ -16,7 +16,7 @@ tags: [kubernetes, v1-37, storage-migration, conditions, crd, versioning, verifi
 
 ## Observation
 
-At Kubernetes v1.37.0 the `storagemigration.k8s.io/v1` type has no numeric progress field. The type (marked `prerelease-lifecycle-gen:introduced=1.37`) has an immutable `spec.resource`, a `GroupResource`, and a `status` with `conditions` (a map list keyed by `type`, using standard `metav1.Condition`) and `resourceVersion`. The condition types are `Running`, `Succeeded`, and `Failed`. Progress is carried only in the `message` of the `Running` condition. [[sources/research-gap-b1-recheck-flux-k8s]] https://github.com/kubernetes/kubernetes/blob/v1.37.0/staging/src/k8s.io/api/storagemigration/v1/types.go
+At Kubernetes v1.37.0 the `storagemigration.k8s.io/v1` type has no numeric progress field. The type (marked `prerelease-lifecycle-gen:introduced=1.37`) has an immutable `spec.resource`, a `GroupResource`, and a `status` with `conditions` (a map list keyed by `type`, using standard `metav1.Condition`) and `resourceVersion`. The condition types are `Running`, `Succeeded`, and `Failed`. Progress is carried only in the `message` of the `Running` condition. [sources/research-gap-b1-recheck-flux-k8s](../sources/research-gap-b1-recheck-flux-k8s.md) https://github.com/kubernetes/kubernetes/blob/v1.37.0/staging/src/k8s.io/api/storagemigration/v1/types.go
 
 ## The message layout
 
@@ -34,8 +34,8 @@ For CRDs the controller also sets a `StorageMigrating` condition on the CRD. Pul
 
 ## Why it matters
 
-A runbook or a script that waits for migration cannot read a percentage. It should wait for the `Succeeded` condition, and it should treat the `Running` message as human-readable text whose wording can change, not as a parsed value. This is the same lesson as [[findings/free-text-in-a-condition-reason-breaks-consumers]]. The earlier wiki text said the exact field layout of the v1.37 progress reporting was not read, and this finding records it. The SVM GA blog and the KEP 4192 text for the progress layout were not read in this pass, so the layout comes from source alone.
+A runbook or a script that waits for migration cannot read a percentage. It should wait for the `Succeeded` condition, and it should treat the `Running` message as human-readable text whose wording can change, not as a parsed value. This is the same lesson as [findings/free-text-in-a-condition-reason-breaks-consumers](free-text-in-a-condition-reason-breaks-consumers.md). The earlier wiki text said the exact field layout of the v1.37 progress reporting was not read, and this finding records it. The SVM GA blog and the KEP 4192 text for the progress layout were not read in this pass, so the layout comes from source alone.
 
 ## Related
 
-[[concepts/crd-versioning-and-storage-migration]], [[examples/a-user-created-storageversionmigration-object-rewrites-stored-objects-so-a-crd-can-retire-an-old-version]], [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]], [[concepts/conditions]]
+[concepts/crd-versioning-and-storage-migration](../concepts/crd-versioning-and-storage-migration.md), [examples/a-user-created-storageversionmigration-object-rewrites-stored-objects-so-a-crd-can-retire-an-old-version](../examples/a-user-created-storageversionmigration-object-rewrites-stored-objects-so-a-crd-can-retire-an-old-version.md), [findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object](storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object.md), [concepts/conditions](../concepts/conditions.md)

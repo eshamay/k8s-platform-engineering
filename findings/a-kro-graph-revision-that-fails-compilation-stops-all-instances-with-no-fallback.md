@@ -16,7 +16,7 @@ tags: [pitfall, kro, graph-revision, rollout]
 
 ## Observation
 
-kro snapshots each change to a ResourceGraphDefinition as an immutable GraphRevision. The overview documentation states that if the latest revision fails compilation, instances stop progressing, and kro does not fall back to an older revision. [[sources/research-composite-resource]] URL: https://kro.run/docs/concepts/rgd/overview/.
+kro snapshots each change to a ResourceGraphDefinition as an immutable GraphRevision. The overview documentation states that if the latest revision fails compilation, instances stop progressing, and kro does not fall back to an older revision. [sources/research-composite-resource](../sources/research-composite-resource.md) URL: https://kro.run/docs/concepts/rgd/overview/.
 
 ## Why it matters
 
@@ -24,4 +24,4 @@ A bad edit to a shared definition therefore affects every instance of the API at
 
 ## Mitigations
 
-Static analysis catches many mistakes at definition time, including schema errors, missing kinds, CEL type errors, and cycles, and breaking schema changes are blocked without an explicit annotation, see [[findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion]]. Beyond that the sources give no rollback mechanism for kro, so changes to shared definitions should be treated as high risk. See [[comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes]], [[entities/kro]], and [[findings/immature-abstractions-in-the-control-plane-ecosystem]].
+Static analysis catches many mistakes at definition time, including schema errors, missing kinds, CEL type errors, and cycles, and breaking schema changes are blocked without an explicit annotation, see [findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion](platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion.md). Beyond that the sources give no rollback mechanism for kro, so changes to shared definitions should be treated as high risk. See [comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes](../comparisons/composition-revisions-versus-graph-revisions-for-rolling-out-platform-api-changes.md), [entities/kro](../entities/kro.md), and [findings/immature-abstractions-in-the-control-plane-ecosystem](immature-abstractions-in-the-control-plane-ecosystem.md).

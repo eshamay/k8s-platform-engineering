@@ -16,7 +16,7 @@ tags: [argo-cd, ignore-differences, drift, sync-options]
 
 ## Observation
 
-Argo CD's sync-options page says "By default, Argo CD uses the `ignoreDifferences` config just for computing the diff between the live and desired state which becomes the basis for the sync status". An ignored field therefore stops showing as OutOfSync, but the next sync still applies the full manifest from Git and can overwrite the ignored field. Setting the sync option `RespectIgnoreDifferences=true` makes the sync honor the ignore rules, and the page adds that it is "only effective when the resource is already created in the cluster", so a first create still applies every field. URL: https://github.com/argoproj/argo-cd/blob/main/docs/user-guide/sync-options.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [[sources/research-gap-o1-argocd-flux-gitops]]
+Argo CD's sync-options page says "By default, Argo CD uses the `ignoreDifferences` config just for computing the diff between the live and desired state which becomes the basis for the sync status". An ignored field therefore stops showing as OutOfSync, but the next sync still applies the full manifest from Git and can overwrite the ignored field. Setting the sync option `RespectIgnoreDifferences=true` makes the sync honor the ignore rules, and the page adds that it is "only effective when the resource is already created in the cluster", so a first create still applies every field. URL: https://github.com/argoproj/argo-cd/blob/main/docs/user-guide/sync-options.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [sources/research-gap-o1-argocd-flux-gitops](../sources/research-gap-o1-argocd-flux-gitops.md)
 
 ## What the diffing page adds
 
@@ -24,8 +24,8 @@ The diffing page says `ignoreDifferences` uses "RFC6902 JSON patches and JQ path
 
 ## Why it matters
 
-A team that adds an ignore rule to silence a false OutOfSync can still see the field reset on every sync, which looks like a revert loop even though the diff is clean. The opposite habit, setting `RespectIgnoreDifferences=true` and expecting it to protect a field on first create, does not work. Flux's `.spec.ignore` rules act during drift detection and correction directly, see [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]].
+A team that adds an ignore rule to silence a false OutOfSync can still see the field reset on every sync, which looks like a revert loop even though the diff is clean. The opposite habit, setting `RespectIgnoreDifferences=true` and expecting it to protect a field on first create, does not work. Flux's `.spec.ignore` rules act during drift detection and correction directly, see [comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights](../comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights.md).
 
 ## Related
 
-[[entities/argo-cd]], [[findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied]], [[findings/multiple-writers-on-one-object]], [[comparisons/exemption-and-ignore-controls-across-tools]]
+[entities/argo-cd](../entities/argo-cd.md), [findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied](ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied.md), [findings/multiple-writers-on-one-object](multiple-writers-on-one-object.md), [comparisons/exemption-and-ignore-controls-across-tools](../comparisons/exemption-and-ignore-controls-across-tools.md)

@@ -16,7 +16,7 @@ tags: [pitfall, gitops, helm, kustomize, immutability]
 
 ## Observation
 
-Argo CD's best-practices page recommends pinning Helm and Kustomize remote references to tags or SHAs instead of `HEAD`. If a manifest points at a moving reference, the same Git commit can render differently over time, so a new sync can change the cluster even though nobody changed the repository. [[sources/research-gitops-pull-based-delivery]]
+Argo CD's best-practices page recommends pinning Helm and Kustomize remote references to tags or SHAs instead of `HEAD`. If a manifest points at a moving reference, the same Git commit can render differently over time, so a new sync can change the cluster even though nobody changed the repository. [sources/research-gitops-pull-based-delivery](../sources/research-gitops-pull-based-delivery.md)
 
 ## Why it matters
 
@@ -24,8 +24,8 @@ The OpenGitOps principle that desired state is versioned and immutable assumes t
 
 ## Mitigation
 
-Pin remote bases and charts to immutable tags or commit SHAs, and update them through reviewed commits. Using signed OCI artifacts, as in [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]], pushes the same idea further.
+Pin remote bases and charts to immutable tags or commit SHAs, and update them through reviewed commits. Using signed OCI artifacts, as in [examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts](../examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts.md), pushes the same idea further.
 
 ## Related
 
-[[concepts/gitops-pull-based-delivery]], [[entities/argo-cd]], [[decisions/git-versus-oci-as-the-canonical-source]]
+[concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md), [entities/argo-cd](../entities/argo-cd.md), [decisions/git-versus-oci-as-the-canonical-source](../decisions/git-versus-oci-as-the-canonical-source.md)

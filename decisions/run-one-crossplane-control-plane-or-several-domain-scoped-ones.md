@@ -16,7 +16,7 @@ tags: [decision, crossplane, platform-engineering, blast-radius, v2]
 
 ## Status
 
-Open question framed by one practitioner blog, not an ADR authored by this wiki. The source offers an argument and no outcome data. [[sources/research-crossplane-deep-dive]]
+Open question framed by one practitioner blog, not an ADR authored by this wiki. The source offers an argument and no outcome data. [sources/research-crossplane-deep-dive](../sources/research-crossplane-deep-dive.md)
 
 ## Context
 
@@ -28,8 +28,8 @@ Run one shared control plane that hosts every platform API. Or run several small
 
 ## Consequences
 
-One control plane is simpler to operate and has one place to look, but the CRD load, provider credentials, and blast radius concentrate there. The scale cost of many CRDs is in [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]], and credential concentration is in [[findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions]] and [[findings/blast-radius-and-privilege-centralization]]. Several control planes narrow each blast radius and let teams upgrade independently, at the cost of more installations to run, a hosting cluster for each, and cross-domain composition across cluster boundaries. The sources give no numbers for either side.
+One control plane is simpler to operate and has one place to look, but the CRD load, provider credentials, and blast radius concentrate there. The scale cost of many CRDs is in [findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation](../findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation.md), and credential concentration is in [findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions](../findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions.md) and [findings/blast-radius-and-privilege-centralization](../findings/blast-radius-and-privilege-centralization.md). Several control planes narrow each blast radius and let teams upgrade independently, at the cost of more installations to run, a hosting cluster for each, and cross-domain composition across cluster boundaries. The sources give no numbers for either side.
 
 ## Related
 
-See [[examples/domain-scoped-crossplane-control-planes-are-proposed-in-place-of-one-monolithic-instance]], [[decisions/scope-provider-credentials-per-namespace-or-cluster-wide]], and [[entities/crossplane]].
+See [examples/domain-scoped-crossplane-control-planes-are-proposed-in-place-of-one-monolithic-instance](../examples/domain-scoped-crossplane-control-planes-are-proposed-in-place-of-one-monolithic-instance.md), [decisions/scope-provider-credentials-per-namespace-or-cluster-wide](scope-provider-credentials-per-namespace-or-cluster-wide.md), and [entities/crossplane](../entities/crossplane.md).

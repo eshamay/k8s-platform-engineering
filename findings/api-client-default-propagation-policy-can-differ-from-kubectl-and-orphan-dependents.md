@@ -16,12 +16,12 @@ tags: [pitfall, propagation-policy, client-libraries, race-condition, jobs]
 
 ## Observation
 
-An Israeli Tech Radar engineering post describes a team that deleted Jobs through the JavaScript Kubernetes client without a propagation policy. That client's default was orphan, while kubectl and the API default to background for most resources. The garbage collector stripped owner references from the Pods before the application's own suspend-and-delete step ran, which left orphaned pending Pods that held volume claims. The fix was an explicit `Foreground` propagation policy. The post attributes the race to the fact that the collector got to the Pods first. [[sources/research-owner-references-and-garbage-collection]]
+An Israeli Tech Radar engineering post describes a team that deleted Jobs through the JavaScript Kubernetes client without a propagation policy. That client's default was orphan, while kubectl and the API default to background for most resources. The garbage collector stripped owner references from the Pods before the application's own suspend-and-delete step ran, which left orphaned pending Pods that held volume claims. The fix was an explicit `Foreground` propagation policy. The post attributes the race to the fact that the collector got to the Pods first. [sources/research-owner-references-and-garbage-collection](../sources/research-owner-references-and-garbage-collection.md)
 
 ## Consequence
 
-Behavior learned at the command line does not transfer to code. The dossier's advice is to always pass an explicit propagation policy from code. The failure is silent: nothing errors, and leaked Pods hold on to storage until someone notices. This is a single secondary account, and the client default was not checked against the client's source. See [[concepts/owner-references-and-garbage-collection]] and [[comparisons/background-foreground-and-orphan-propagation-modes]].
+Behavior learned at the command line does not transfer to code. The dossier's advice is to always pass an explicit propagation policy from code. The failure is silent: nothing errors, and leaked Pods hold on to storage until someone notices. This is a single secondary account, and the client default was not checked against the client's source. See [concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md) and [comparisons/background-foreground-and-orphan-propagation-modes](../comparisons/background-foreground-and-orphan-propagation-modes.md).
 
 ## Related
 
-[[findings/orphaned-dependents-keep-running-with-empty-owner-references-until-someone-deletes-them]], [[examples/kubectl-cascade-modes-compared-in-a-hands-on-lab]]
+[findings/orphaned-dependents-keep-running-with-empty-owner-references-until-someone-deletes-them](orphaned-dependents-keep-running-with-empty-owner-references-until-someone-deletes-them.md), [examples/kubectl-cascade-modes-compared-in-a-hands-on-lab](../examples/kubectl-cascade-modes-compared-in-a-hands-on-lab.md)

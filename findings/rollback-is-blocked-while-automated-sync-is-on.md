@@ -16,7 +16,7 @@ tags: [pitfall, gitops, argo-cd, rollback]
 
 ## Observation
 
-Argo CD's automated sync policy blocks rollback while automation is enabled, because a rollback would put the live state out of line with Git and the controller would immediately re-sync it. A repeated sync of the same commit is also not retried unless self-heal applies, and syncs occur only when the application is OutOfSync. The fix path is therefore a Git revert, not a button in the UI. [[sources/research-gitops-pull-based-delivery]]
+Argo CD's automated sync policy blocks rollback while automation is enabled, because a rollback would put the live state out of line with Git and the controller would immediately re-sync it. A repeated sync of the same commit is also not retried unless self-heal applies, and syncs occur only when the application is OutOfSync. The fix path is therefore a Git revert, not a button in the UI. [sources/research-gitops-pull-based-delivery](../sources/research-gitops-pull-based-delivery.md)
 
 ## Why it matters
 
@@ -24,8 +24,8 @@ Under a pull model Git is the only legitimate writer, so an emergency rollback h
 
 ## Mitigation
 
-Plan for a Git revert as the rollback mechanism, configure webhooks for faster pickup, and keep a documented procedure for temporarily disabling automated sync. See [[decisions/staged-adoption-of-automated-drift-correction]] for adopting automation in stages.
+Plan for a Git revert as the rollback mechanism, configure webhooks for faster pickup, and keep a documented procedure for temporarily disabling automated sync. See [decisions/staged-adoption-of-automated-drift-correction](../decisions/staged-adoption-of-automated-drift-correction.md) for adopting automation in stages.
 
 ## Related
 
-[[entities/argo-cd]], [[findings/continuous-loops-override-intentional-changes]], [[concepts/gitops-pull-based-delivery]]
+[entities/argo-cd](../entities/argo-cd.md), [findings/continuous-loops-override-intentional-changes](continuous-loops-override-intentional-changes.md), [concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md)

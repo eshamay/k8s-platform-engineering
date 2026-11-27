@@ -16,7 +16,7 @@ tags: [argo-cd, secrets, redis, external-secrets]
 
 ## Observation
 
-Argo CD's secret-management page describes two families of approach and says "We strongly recommend the former, as it is more secure and provides a better user experience", meaning secrets populated on the destination cluster by an operator. It names Sealed Secrets, External Secrets Operator, the Secrets Store CSI Driver and Vault Secrets Operator as examples. URL: https://github.com/argoproj/argo-cd/blob/main/docs/operator-manual/secret-management.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [[sources/research-gap-o1-argocd-flux-gitops]]
+Argo CD's secret-management page describes two families of approach and says "We strongly recommend the former, as it is more secure and provides a better user experience", meaning secrets populated on the destination cluster by an operator. It names Sealed Secrets, External Secrets Operator, the Secrets Store CSI Driver and Vault Secrets Operator as examples. URL: https://github.com/argoproj/argo-cd/blob/main/docs/operator-manual/secret-management.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [sources/research-gap-o1-argocd-flux-gitops](../sources/research-gap-o1-argocd-flux-gitops.md)
 
 ## Cautions about manifest-generation plugins
 
@@ -24,8 +24,8 @@ The page cautions against plugins that inject secret values while Argo CD render
 
 ## What was not found
 
-The page does not mention SOPS or ksops at all (the dossier searched the file for both), so Argo CD's documented position on ksops or native SOPS is UNVERIFIED from this source. Flux takes the opposite stance for SOPS, see [[findings/flux-kustomize-controller-decrypts-only-sops-and-requires-metadata-kind-and-apiversion-to-stay-in-plaintext]]. The options are laid out in [[decisions/supply-gitops-secrets-from-a-destination-cluster-operator-a-generation-plugin-or-controller-side-sops]].
+The page does not mention SOPS or ksops at all (the dossier searched the file for both), so Argo CD's documented position on ksops or native SOPS is UNVERIFIED from this source. Flux takes the opposite stance for SOPS, see [findings/flux-kustomize-controller-decrypts-only-sops-and-requires-metadata-kind-and-apiversion-to-stay-in-plaintext](flux-kustomize-controller-decrypts-only-sops-and-requires-metadata-kind-and-apiversion-to-stay-in-plaintext.md). The options are laid out in [decisions/supply-gitops-secrets-from-a-destination-cluster-operator-a-generation-plugin-or-controller-side-sops](../decisions/supply-gitops-secrets-from-a-destination-cluster-operator-a-generation-plugin-or-controller-side-sops.md).
 
 ## Related
 
-[[entities/argo-cd]], [[concepts/gitops-pull-based-delivery]]
+[entities/argo-cd](../entities/argo-cd.md), [concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md)

@@ -16,7 +16,7 @@ tags: [informer, restart-gap, finalizers, lost-events, nvsentinel]
 
 ## Observation
 
-NVIDIA NVSentinel issue 1542 reports that if the kubernetes-object-monitor is down when a watched object is deleted, the new informer instance never receives the delete. The monitor sends no healthy event, and the node stays cordoned until someone manually unquarantines it. The report says most controllers avoid this with a finalizer, so the object still exists when the new informer starts. The issue was closed on 2026-10-21, and the fix was not read. [[sources/research-gap-g1-operator-loop-failures]] See [[examples/nvidia-nvsentinel-issue-1542-a-node-stayed-cordoned-after-an-object-was-deleted-while-the-monitor-was-down]].
+NVIDIA NVSentinel issue 1542 reports that if the kubernetes-object-monitor is down when a watched object is deleted, the new informer instance never receives the delete. The monitor sends no healthy event, and the node stays cordoned until someone manually unquarantines it. The report says most controllers avoid this with a finalizer, so the object still exists when the new informer starts. The issue was closed on 2026-10-21, and the fix was not read. [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md) See [examples/nvidia-nvsentinel-issue-1542-a-node-stayed-cordoned-after-an-object-was-deleted-while-the-monitor-was-down](../examples/nvidia-nvsentinel-issue-1542-a-node-stayed-cordoned-after-an-object-was-deleted-while-the-monitor-was-down.md).
 
 ## Interpretation
 
@@ -24,8 +24,8 @@ A fresh informer lists the objects that exist, so an absent object produces no e
 
 ## Mitigations
 
-Add a finalizer to objects whose deletion must trigger cleanup, or reconcile the controller's own recorded state against the cluster on start. See [[concepts/finalizers]].
+Add a finalizer to objects whose deletion must trigger cleanup, or reconcile the controller's own recorded state against the cluster on start. See [concepts/finalizers](../concepts/finalizers.md).
 
 ## Related
 
-[[findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down]], [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]], [[concepts/level-triggered-vs-edge-triggered]]
+[findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down](a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down.md), [findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing](finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing.md), [concepts/level-triggered-vs-edge-triggered](../concepts/level-triggered-vs-edge-triggered.md)

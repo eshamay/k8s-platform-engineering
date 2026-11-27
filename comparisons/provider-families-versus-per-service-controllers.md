@@ -14,7 +14,7 @@ tags: [comparison, crossplane, ack, crd-scaling, provider]
 
 # Provider families versus per-service controllers
 
-Both Crossplane and ACK ended up splitting a large cloud API into pieces that can be installed independently, but they arrived there from opposite directions. [[sources/research-provider]]
+Both Crossplane and ACK ended up splitting a large cloud API into pieces that can be installed independently, but they arrived there from opposite directions. [sources/research-provider](../sources/research-provider.md)
 
 | Aspect | Crossplane provider families | ACK per-service controllers |
 |---|---|---|
@@ -26,4 +26,4 @@ Both Crossplane and ACK ended up splitting a large cloud API into pieces that ca
 
 ## Reading the comparison
 
-The CRD count is the scaling variable in both cases, see [[findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation]]. Crossplane also added resource-type activation in version 2, see [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]], and the family story is told in [[examples/crossplane-provider-families-let-operators-install-only-the-cloud-services-they-use]]. The ACK side is covered in [[examples/ack-ships-one-controller-per-aws-service]]. See [[entities/crossplane]] and [[entities/ack]].
+The CRD count is the scaling variable in both cases, see [findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation](../findings/one-crd-per-external-resource-type-overloads-api-server-discovery-and-openapi-computation.md). Crossplane also added resource-type activation in version 2, see [examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs](../examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs.md), and the family story is told in [examples/crossplane-provider-families-let-operators-install-only-the-cloud-services-they-use](../examples/crossplane-provider-families-let-operators-install-only-the-cloud-services-they-use.md). The ACK side is covered in [examples/ack-ships-one-controller-per-aws-service](../examples/ack-ships-one-controller-per-aws-service.md). See [entities/crossplane](../entities/crossplane.md) and [entities/ack](../entities/ack.md).

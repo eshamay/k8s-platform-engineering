@@ -16,7 +16,7 @@ tags: [oci, flux, argo-cd, supply-chain, cosign]
 
 ## Observation on the Flux side
 
-The OCIRepository specification says a new Artifact is archived "When the current OCIRepository digest differs from the latest fetched digest". `.spec.verify` can "enable the verification of Cosign or Notation signatures", keyless verification matches identities through `.matchOIDCIdentity` ("a list of OIDC identity matchers"), and a Sigstore trust root can be pinned with `.spec.verify.trustedRootSecretRef`. URL: https://github.com/fluxcd/source-controller/blob/main/docs/spec/v1/ocirepositories.md. The Flux OCI cheatsheet says "Using OCI instead of Git is particularly useful when the Git repository doesn't contain the final Kubernetes manifests." URL: https://github.com/fluxcd/website/blob/main/content/en/flux/cheatsheets/oci-artifacts.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [[sources/research-gap-o1-argocd-flux-gitops]]
+The OCIRepository specification says a new Artifact is archived "When the current OCIRepository digest differs from the latest fetched digest". `.spec.verify` can "enable the verification of Cosign or Notation signatures", keyless verification matches identities through `.matchOIDCIdentity` ("a list of OIDC identity matchers"), and a Sigstore trust root can be pinned with `.spec.verify.trustedRootSecretRef`. URL: https://github.com/fluxcd/source-controller/blob/main/docs/spec/v1/ocirepositories.md. The Flux OCI cheatsheet says "Using OCI instead of Git is particularly useful when the Git repository doesn't contain the final Kubernetes manifests." URL: https://github.com/fluxcd/website/blob/main/content/en/flux/cheatsheets/oci-artifacts.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [sources/research-gap-o1-argocd-flux-gitops](../sources/research-gap-o1-argocd-flux-gitops.md)
 
 ## Observation on the Argo CD side
 
@@ -28,4 +28,4 @@ The dossier searched the Argo CD OCI page for sign, cosign and verify and found 
 
 ## Related
 
-[[decisions/git-versus-oci-as-the-canonical-source]], [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]], [[entities/flux]], [[entities/argo-cd]]
+[decisions/git-versus-oci-as-the-canonical-source](../decisions/git-versus-oci-as-the-canonical-source.md), [examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts](../examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts.md), [entities/flux](../entities/flux.md), [entities/argo-cd](../entities/argo-cd.md)

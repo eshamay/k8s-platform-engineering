@@ -16,7 +16,7 @@ tags: [cluster-api, topology, server-side-apply, field-ownership, co-authoring, 
 
 ## Observation
 
-The Cluster API topology controller applies with `client.FieldOwner("capi-topology")` and `client.ForceOwnership`, using the constant `TopologyManagerName = "capi-topology"`. [[sources/research-gap-m4-ssa-conflict-policy]] URL: https://github.com/kubernetes-sigs/cluster-api/blob/main/core/reconcilers/topology/cluster/structuredmerge/serversidepatchhelper.go (commit f11b064). The book's page on changing a ClusterClass says the controller uses server-side apply "to write/patch topology owned objects" and that "using SSA allows other controllers to co-author the generated objects", for example the AWS provider adding subnet information. It advises against ad hoc edits to the generated objects but publishes no per-field ownership table.
+The Cluster API topology controller applies with `client.FieldOwner("capi-topology")` and `client.ForceOwnership`, using the constant `TopologyManagerName = "capi-topology"`. [sources/research-gap-m4-ssa-conflict-policy](../sources/research-gap-m4-ssa-conflict-policy.md) URL: https://github.com/kubernetes-sigs/cluster-api/blob/main/core/reconcilers/topology/cluster/structuredmerge/serversidepatchhelper.go (commit f11b064). The book's page on changing a ClusterClass says the controller uses server-side apply "to write/patch topology owned objects" and that "using SSA allows other controllers to co-author the generated objects", for example the AWS provider adding subnet information. It advises against ad hoc edits to the generated objects but publishes no per-field ownership table.
 
 ## Two documented limits
 
@@ -28,8 +28,8 @@ A table of fields owned by the topology controller versus infrastructure and con
 
 ## Why it matters
 
-This is a case where forcing does not end the dispute: two writers appending to one list can reconcile forever even though the topology controller forces. See [[decisions/force-conflicts-or-surface-them-to-humans]] and [[findings/atomic-lists-and-unmarked-crds-block-shared-field-ownership]].
+This is a case where forcing does not end the dispute: two writers appending to one list can reconcile forever even though the topology controller forces. See [decisions/force-conflicts-or-surface-them-to-humans](../decisions/force-conflicts-or-surface-them-to-humans.md) and [findings/atomic-lists-and-unmarked-crds-block-shared-field-ownership](atomic-lists-and-unmarked-crds-block-shared-field-ownership.md).
 
 ## Related
 
-[[entities/cluster-api]], [[examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects]], [[comparisons/ssa-conflict-policy-across-tools]]
+[entities/cluster-api](../entities/cluster-api.md), [examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects](../examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects.md), [comparisons/ssa-conflict-policy-across-tools](../comparisons/ssa-conflict-policy-across-tools.md)

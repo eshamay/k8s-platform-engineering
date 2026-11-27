@@ -16,7 +16,7 @@ tags: [flux, image-automation, api-version, v1]
 
 ## Observation
 
-The current spec pages for ImageRepository, ImagePolicy, and ImageUpdateAutomation all use `image.toolkit.fluxcd.io/v1`. The image-reflector-controller spec index is headed "# image.toolkit.fluxcd.io/v1", the ImageUpdateAutomation spec example starts with `apiVersion: image.toolkit.fluxcd.io/v1`, and the ImagePolicy CRD lists `name: v1` with `served: true` and `storage: true`. The Go API directory still holds `v1beta1` and `v1beta2` packages. Both controllers' latest releases were v1.3.1, published 2026-11-20. [[sources/research-gap-o2-flux-internals]]
+The current spec pages for ImageRepository, ImagePolicy, and ImageUpdateAutomation all use `image.toolkit.fluxcd.io/v1`. The image-reflector-controller spec index is headed "# image.toolkit.fluxcd.io/v1", the ImageUpdateAutomation spec example starts with `apiVersion: image.toolkit.fluxcd.io/v1`, and the ImagePolicy CRD lists `name: v1` with `served: true` and `storage: true`. The Go API directory still holds `v1beta1` and `v1beta2` packages. Both controllers' latest releases were v1.3.1, published 2026-11-20. [sources/research-gap-o2-flux-internals](../sources/research-gap-o2-flux-internals.md)
 
 URLs: https://github.com/fluxcd/image-reflector-controller/blob/main/docs/spec/v1/README.md, https://github.com/fluxcd/image-automation-controller/blob/main/docs/spec/v1/imageupdateautomations.md, and https://github.com/fluxcd/image-reflector-controller/blob/main/config/crd/bases/image.toolkit.fluxcd.io_imagepolicies.yaml, all read on `main` on 2026-11-26.
 
@@ -26,4 +26,4 @@ The dossier did not read release notes stating when v1 graduated, so the date an
 
 ## Related
 
-[[examples/flux-image-automation-commits-new-tags-to-git-and-the-reference-repo-limits-it-to-staging]], [[findings/the-flux-image-update-guide-offers-semver-for-production-a-separate-push-branch-for-review-and-revert-by-narrowing-the-range]], [[entities/flux]]
+[examples/flux-image-automation-commits-new-tags-to-git-and-the-reference-repo-limits-it-to-staging](../examples/flux-image-automation-commits-new-tags-to-git-and-the-reference-repo-limits-it-to-staging.md), [findings/the-flux-image-update-guide-offers-semver-for-production-a-separate-push-branch-for-review-and-revert-by-narrowing-the-range](the-flux-image-update-guide-offers-semver-for-production-a-separate-push-branch-for-review-and-revert-by-narrowing-the-range.md), [entities/flux](../entities/flux.md)

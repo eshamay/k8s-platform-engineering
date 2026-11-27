@@ -19,7 +19,7 @@ tags: [pitfall, informers, caches, controllers]
 
 ## Observation
 
-The controller guidelines document two cache mistakes. The first is mutating an object returned from a shared informer cache, which changes what every other consumer of that cache sees. The second is acting before a secondary cache has synced, so the controller decides from incomplete data. The dossier gives the cure for both: copy objects before modifying them, and wait for caches to sync before starting workers. [[sources/research-operator-pattern]]
+The controller guidelines document two cache mistakes. The first is mutating an object returned from a shared informer cache, which changes what every other consumer of that cache sees. The second is acting before a secondary cache has synced, so the controller decides from incomplete data. The dossier gives the cure for both: copy objects before modifying them, and wait for caches to sync before starting workers. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## Interpretation
 
@@ -27,8 +27,8 @@ Both mistakes are silent. The controller keeps running and simply reasons from w
 
 ## Related
 
-[[concepts/informers-reflectors-and-workqueues]], [[findings/stale-cache-and-double-action]], [[entities/controller-runtime]], [[concepts/operator-pattern]]
+[concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md), [findings/stale-cache-and-double-action](stale-cache-and-double-action.md), [entities/controller-runtime](../entities/controller-runtime.md), [concepts/operator-pattern](../concepts/operator-pattern.md)
 
 ## Related caching guidance in the informers dossier
 
-The informers dossier restates that the Indexer is shared by every consumer in a process and that controllers read it through read-only Listers, which is why mutating a cached object affects every other reader. [[sources/research-informers-reflectors-and-workqueues]] See [[concepts/informers-reflectors-and-workqueues]].
+The informers dossier restates that the Indexer is shared by every consumer in a process and that controllers read it through read-only Listers, which is why mutating a cached object affects every other reader. [sources/research-informers-reflectors-and-workqueues](../sources/research-informers-reflectors-and-workqueues.md) See [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md).

@@ -16,7 +16,7 @@ tags: [pitfall, dns, coredns, ndots, retry-storm, blast-radius]
 
 ## Observation
 
-In Zalando's January 2019 outage, a timed-out downstream call made clients retry, and each retry multiplied DNS traffic. The Kubernetes default `ndots:5` produced about ten DNS queries for each external lookup, Node.js did not cache DNS, and connections were short-lived. CoreDNS pods limited to 100Mi of memory were OOM-killed together and could not recover. URL: https://github.com/zalando-incubator/kubernetes-on-aws/blob/dev/docs/postmortems/jan-2019-dns-outage.md. [[sources/research-pitfalls-and-case-studies]]
+In Zalando's January 2019 outage, a timed-out downstream call made clients retry, and each retry multiplied DNS traffic. The Kubernetes default `ndots:5` produced about ten DNS queries for each external lookup, Node.js did not cache DNS, and connections were short-lived. CoreDNS pods limited to 100Mi of memory were OOM-killed together and could not recover. URL: https://github.com/zalando-incubator/kubernetes-on-aws/blob/dev/docs/postmortems/jan-2019-dns-outage.md. [sources/research-pitfalls-and-case-studies](../sources/research-pitfalls-and-case-studies.md)
 
 ## Why it matters
 
@@ -24,8 +24,8 @@ DNS is a shared dependency of every workload, so its limits and isolation are pa
 
 ## Evidence quality
 
-This is a first-party postmortem from 2019, so the defaults and tooling it names may have changed. See [[examples/zalando-s-2019-coredns-outage-turned-a-retry-storm-into-a-total-dns-failure]].
+This is a first-party postmortem from 2019, so the defaults and tooling it names may have changed. See [examples/zalando-s-2019-coredns-outage-turned-a-retry-storm-into-a-total-dns-failure](../examples/zalando-s-2019-coredns-outage-turned-a-retry-storm-into-a-total-dns-failure.md).
 
 ## Related
 
-[[findings/retry-storms-and-unbounded-retries]], [[findings/monitoring-that-runs-inside-the-cluster-and-depends-on-cluster-dns-goes-blind-in-the-outage-it-should-report]], [[concepts/pitfalls-and-case-studies]]
+[findings/retry-storms-and-unbounded-retries](retry-storms-and-unbounded-retries.md), [findings/monitoring-that-runs-inside-the-cluster-and-depends-on-cluster-dns-goes-blind-in-the-outage-it-should-report](monitoring-that-runs-inside-the-cluster-and-depends-on-cluster-dns-goes-blind-in-the-outage-it-should-report.md), [concepts/pitfalls-and-case-studies](../concepts/pitfalls-and-case-studies.md)

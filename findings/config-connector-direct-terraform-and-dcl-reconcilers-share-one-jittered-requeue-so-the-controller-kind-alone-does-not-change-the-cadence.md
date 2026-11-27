@@ -16,7 +16,7 @@ tags: [config-connector, reconcile-interval, jitter, controllers, drift, cadence
 
 ## Observation
 
-All three reconcilers end a successful reconcile with `return reconcile.Result{RequeueAfter: jitteredPeriod}, nil`, and each obtains `jitteredPeriod` from the same `JitteredReenqueue` function. The code was read in `tf/controller.go`, `dcl/controller.go` (lines 270 to 275) and `directbase_controller.go` (lines 330 to 336) at master. [[sources/research-gap-o9-cadence-and-staleness]] https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/dcl/controller.go
+All three reconcilers end a successful reconcile with `return reconcile.Result{RequeueAfter: jitteredPeriod}, nil`, and each obtains `jitteredPeriod` from the same `JitteredReenqueue` function. The code was read in `tf/controller.go`, `dcl/controller.go` (lines 270 to 275) and `directbase_controller.go` (lines 330 to 336) at master. [sources/research-gap-o9-cadence-and-staleness](../sources/research-gap-o9-cadence-and-staleness.md) https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/dcl/controller.go
 
 ## How the delay is built
 
@@ -24,7 +24,7 @@ All three reconcilers end a successful reconcile with `return reconcile.Result{R
 
 ## What follows
 
-A direct-controller kind has no service-mapping or metadata entry of its own, so it gets 10 minutes unless annotated. The controller kind therefore does not itself set a different default cadence, and the only per-kind differences are the service-mapping overrides in [[findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds]].
+A direct-controller kind has no service-mapping or metadata entry of its own, so it gets 10 minutes unless annotated. The controller kind therefore does not itself set a different default cadence, and the only per-kind differences are the service-mapping overrides in [findings/config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds](config-connector-per-kind-reconcile-intervals-exist-only-as-five-terraform-service-mapping-overrides-and-262-of-267-reference-pages-show-600-seconds.md).
 
 ## Limits
 
@@ -32,4 +32,4 @@ The lookup is by group, version and kind. A kind that has a Terraform mapping an
 
 ## Related
 
-[[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible]], [[findings/config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them]], [[comparisons/reconcile-cadence-and-off-switches-across-tools]], [[entities/config-connector]]
+[findings/setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible](setting-a-config-connector-reconcile-interval-to-zero-switches-off-drift-correction-and-the-docs-call-it-irreversible.md), [findings/config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them](config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them.md), [comparisons/reconcile-cadence-and-off-switches-across-tools](../comparisons/reconcile-cadence-and-off-switches-across-tools.md), [entities/config-connector](../entities/config-connector.md)

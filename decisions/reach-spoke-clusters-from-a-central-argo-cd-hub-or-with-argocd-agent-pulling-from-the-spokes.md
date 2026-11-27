@@ -24,7 +24,7 @@ Argo CD delivers to a fleet either from one central instance that is registered 
 
 ## Options
 
-**Central instance reaching out.** Clusters are registered declaratively or by CLI. The Cluster generator works from "the list of clusters defined within (and managed by) Argo CD", targets local and non-local clusters unless excluded, and combines with Git, Pull Request and OCI generators, subject to the matrix and nesting limits in [[findings/applicationset-generators-have-documented-limits-matrix-takes-two-children-nesting-is-once-and-pull-request-polling-defaults-to-30-minutes]]. The hub holds credentials for every spoke.
+**Central instance reaching out.** Clusters are registered declaratively or by CLI. The Cluster generator works from "the list of clusters defined within (and managed by) Argo CD", targets local and non-local clusters unless excluded, and combines with Git, Pull Request and OCI generators, subject to the matrix and nesting limits in [findings/applicationset-generators-have-documented-limits-matrix-takes-two-children-nesting-is-once-and-pull-request-polling-defaults-to-30-minutes](../findings/applicationset-generators-have-documented-limits-matrix-takes-two-children-nesting-is-once-and-pull-request-polling-defaults-to-30-minutes.md). The hub holds credentials for every spoke.
 
 **argocd-agent.** A Labs project in which "instead of your control plane reaching out to remote clusters, lightweight agents reach back to a central hub", with Managed and Autonomous modes. The README read had no maturity statement.
 
@@ -36,4 +36,4 @@ No quantified scale limit for hub-and-spoke Argo CD, no adopter write-up and no 
 
 ## Related
 
-[[findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity]], [[comparisons/push-versus-pull-delivery]], [[entities/argo-cd]]
+[findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity](../findings/argo-cd-reaches-into-registered-clusters-from-a-hub-and-the-argocd-agent-pull-model-is-a-labs-project-of-unverified-maturity.md), [comparisons/push-versus-pull-delivery](../comparisons/push-versus-pull-delivery.md), [entities/argo-cd](../entities/argo-cd.md)

@@ -16,7 +16,7 @@ tags: [cache, memory, controller-runtime, selectors, transform, mechanism]
 
 ## Observation
 
-The package source answers the question of how to cut informer memory directly. The options and the cost the source names for each are below. [[sources/research-gap-m5-informers-caches]] https://github.com/kubernetes-sigs/controller-runtime/blob/main/pkg/cache/cache.go (main, read 2026-11-26)
+The package source answers the question of how to cut informer memory directly. The options and the cost the source names for each are below. [sources/research-gap-m5-informers-caches](../sources/research-gap-m5-informers-caches.md) https://github.com/kubernetes-sigs/controller-runtime/blob/main/pkg/cache/cache.go (main, read 2026-11-26)
 
 | Option | What it does | Cost named in the source |
 |---|---|---|
@@ -35,4 +35,4 @@ Precedence is "1. ByObject 2. DefaultNamespaces[namespace] 3. Default*". Unstruc
 
 ## What is not known
 
-No memory measurements were found for any option, so the size of the savings is unquantified. The risk text for `DefaultUnsafeDisableDeepCopy` was not quoted in the dossier. See [[findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size]] for the problem these options address, [[decisions/narrow-the-controller-cache-with-selectors-transforms-or-metadata-only-informers-or-bypass-it-for-some-types]] for the choice among them, and [[comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api]] for how projects combine them.
+No memory measurements were found for any option, so the size of the savings is unquantified. The risk text for `DefaultUnsafeDisableDeepCopy` was not quoted in the dossier. See [findings/informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size](informer-caches-hold-every-watched-object-and-memory-grows-with-cluster-size.md) for the problem these options address, [decisions/narrow-the-controller-cache-with-selectors-transforms-or-metadata-only-informers-or-bypass-it-for-some-types](../decisions/narrow-the-controller-cache-with-selectors-transforms-or-metadata-only-informers-or-bypass-it-for-some-types.md) for the choice among them, and [comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api](../comparisons/informer-and-cache-choices-across-kro-config-connector-ack-and-cluster-api.md) for how projects combine them.

@@ -16,13 +16,13 @@ tags: [operator-sdk, maturity-model, crossplane, kro, operators]
 
 ## Observation
 
-The Operator SDK capability-levels page defines five levels, from "Level 1 - Basic Install" to "Level 5 - Auto Pilot", and frames them around an Operator managing an Operand workload. It states one rule for operators outside that frame: "Operator that do not manage a workload and/or are delegating to off-clusters orchestration services would remain at Level 1." It also says "Each capability represents its own set of features and may be independent of each other", and it defines the managed resources of an operand as "the Kubernetes objects or off-cluster services the Operator uses to constitute an Operand". A search of the full page found no mention of Crossplane, kro, composition, or non-Go implementations. [[sources/research-gap-m7-operators-idempotency]]
+The Operator SDK capability-levels page defines five levels, from "Level 1 - Basic Install" to "Level 5 - Auto Pilot", and frames them around an Operator managing an Operand workload. It states one rule for operators outside that frame: "Operator that do not manage a workload and/or are delegating to off-clusters orchestration services would remain at Level 1." It also says "Each capability represents its own set of features and may be independent of each other", and it defines the managed resources of an operand as "the Kubernetes objects or off-cluster services the Operator uses to constitute an Operand". A search of the full page found no mention of Crossplane, kro, composition, or non-Go implementations. [sources/research-gap-m7-operators-idempotency](../sources/research-gap-m7-operators-idempotency.md)
 
 ## Two readings the text supports
 
-Under the strict reading, an operator whose job is to call a cloud API, such as a Crossplane managed resource or Config Connector, delegates to an off-cluster service and so caps at Level 1. kro composes in-cluster Kubernetes objects, so the sentence does not directly cover it. Under the loose reading, because capabilities "may be independent", a tool could claim features at higher levels without climbing in order. [[sources/research-gap-m7-operators-idempotency]]
+Under the strict reading, an operator whose job is to call a cloud API, such as a Crossplane managed resource or Config Connector, delegates to an off-cluster service and so caps at Level 1. kro composes in-cluster Kubernetes objects, so the sentence does not directly cover it. Under the loose reading, because capabilities "may be independent", a tool could claim features at higher levels without climbing in order. [sources/research-gap-m7-operators-idempotency](../sources/research-gap-m7-operators-idempotency.md)
 
-The level definitions use application terms: backup and restore "the operand from the operator itself" at Level 3, metrics and alerts at Level 4, and "configure the Operand to auto-scale as load picks up" at Level 5. How these map to a composite resource's operand is undefined. [[sources/research-gap-m7-operators-idempotency]]
+The level definitions use application terms: backup and restore "the operand from the operator itself" at Level 3, metrics and alerts at Level 4, and "configure the Operand to auto-scale as load picks up" at Level 5. How these map to a composite resource's operand is undefined. [sources/research-gap-m7-operators-idempotency](../sources/research-gap-m7-operators-idempotency.md)
 
 ## What this does and does not settle
 
@@ -30,4 +30,4 @@ The Level 1 sentence is direct evidence. A feature-by-feature mapping for Crossp
 
 ## Related
 
-[[entities/operator-sdk]], [[concepts/operator-pattern]], [[entities/crossplane]], [[entities/kro]], [[decisions/choose-an-operator-framework-or-language-from-kubebuilder-operator-sdk-josdk-kopf-shell-operator-metacontroller-or-composition]]
+[entities/operator-sdk](../entities/operator-sdk.md), [concepts/operator-pattern](../concepts/operator-pattern.md), [entities/crossplane](../entities/crossplane.md), [entities/kro](../entities/kro.md), [decisions/choose-an-operator-framework-or-language-from-kubebuilder-operator-sdk-josdk-kopf-shell-operator-metacontroller-or-composition](../decisions/choose-an-operator-framework-or-language-from-kubebuilder-operator-sdk-josdk-kopf-shell-operator-metacontroller-or-composition.md)

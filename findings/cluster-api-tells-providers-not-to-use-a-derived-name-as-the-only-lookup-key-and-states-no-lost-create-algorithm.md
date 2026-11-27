@@ -16,13 +16,13 @@ tags: [cluster-api, idempotency, providers, tags, providerid]
 
 ## Observation
 
-The Cluster API provider best-practices page (Cluster API v1.14.4, read on 2026-11-26) says "Do not use a derived infrastructure name as the sole lookup key" and requires that "More robust mechanisms MUST always be provided and used, such as provider-owned tags or labels". Where a name must be shortened to fit a cloud limit, the page asks for "a deterministic transformation that preserves a readable prefix where useful and incorporates a hash". [[sources/research-gap-m7-operators-idempotency]]
+The Cluster API provider best-practices page (Cluster API v1.14.4, read on 2026-11-26) says "Do not use a derived infrastructure name as the sole lookup key" and requires that "More robust mechanisms MUST always be provided and used, such as provider-owned tags or labels". Where a name must be shortened to fit a cloud limit, the page asks for "a deterministic transformation that preserves a readable prefix where useful and incorporates a hash". [sources/research-gap-m7-operators-idempotency](../sources/research-gap-m7-operators-idempotency.md)
 
-The InfraMachine contract says "Node's Provider id MUST surface on `spec.providerID` in the InfraMachine resource", and in v1beta2 the provider reports completion on `status.initialization.provisioned`. The older `status.infrastructure.provisioned` name appears only in the page's legacy step list. The contract also says "there is no more special treatment for provider's terminal failures within Cluster API", so terminal failures are expressed through conditions. [[sources/research-gap-m7-operators-idempotency]]
+The InfraMachine contract says "Node's Provider id MUST surface on `spec.providerID` in the InfraMachine resource", and in v1beta2 the provider reports completion on `status.initialization.provisioned`. The older `status.infrastructure.provisioned` name appears only in the page's legacy step list. The contract also says "there is no more special treatment for provider's terminal failures within Cluster API", so terminal failures are expressed through conditions. [sources/research-gap-m7-operators-idempotency](../sources/research-gap-m7-operators-idempotency.md)
 
 ## What the pages do not say
 
-Neither page states an idempotency algorithm for a create whose response was lost. The guidance relies on provider-owned tags to find a resource again and on the provider ID to bind it to a Machine. How a specific infrastructure provider recovers after a restart, for example how an AWS provider finds an instance, was not read. [[sources/research-gap-m7-operators-idempotency]]
+Neither page states an idempotency algorithm for a create whose response was lost. The guidance relies on provider-owned tags to find a resource again and on the provider ID to bind it to a Machine. How a specific infrastructure provider recovers after a restart, for example how an AWS provider finds an instance, was not read. [sources/research-gap-m7-operators-idempotency](../sources/research-gap-m7-operators-idempotency.md)
 
 ## Interpretation
 
@@ -30,4 +30,4 @@ Cluster API places the identity convention on the provider and leaves enforcemen
 
 ## Related
 
-[[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]], [[entities/cluster-api]], [[concepts/idempotency]], [[concepts/provider]]
+[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector](../comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector.md), [entities/cluster-api](../entities/cluster-api.md), [concepts/idempotency](../concepts/idempotency.md), [concepts/provider](../concepts/provider.md)

@@ -19,11 +19,11 @@ tags: [decision, idempotency, crossplane, recovery]
 
 ## Status
 
-Open. The dossier says the sources show no general solution for recovering from an ambiguous create at scale. [[sources/research-idempotency]]
+Open. The dossier says the sources show no general solution for recovering from an ambiguous create at scale. [sources/research-idempotency](../sources/research-idempotency.md)
 
 ## Context
 
-A provider wrote a pending marker, called a create API, and lost the outcome. The next reconcile must decide whether to create again, adopt something, or wait. See [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]].
+A provider wrote a pending marker, called a create API, and lost the outcome. The next reconcile must decide whether to create again, adopt something, or wait. See [findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes](../findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes.md).
 
 ## Options
 
@@ -34,12 +34,12 @@ A provider wrote a pending marker, called a create API, and lost the outcome. Th
 
 ## Consequences
 
-Halting costs human time on each restart during a failing create, while searching risks adopting the wrong resource if the key is weak. Prevention is the most robust choice when the API offers it. The maintainers also proposed letting resources with deterministic identifiers opt out of the pending marker, and that opt-out now exists in crossplane-runtime as `WithDeterministicExternalName` (see [[decisions/set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses]]). See [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]] and [[examples/sap-btp-provider-recovers-lost-ids-by-business-key-and-creation-window]].
+Halting costs human time on each restart during a failing create, while searching risks adopting the wrong resource if the key is weak. Prevention is the most robust choice when the API offers it. The maintainers also proposed letting resources with deterministic identifiers opt out of the pending marker, and that opt-out now exists in crossplane-runtime as `WithDeterministicExternalName` (see [decisions/set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses](set-withdeterministicexternalname-for-resources-whose-names-the-user-chooses.md)). See [comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector](../comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector.md) and [examples/sap-btp-provider-recovers-lost-ids-by-business-key-and-creation-window](../examples/sap-btp-provider-recovers-lost-ids-by-business-key-and-creation-window.md).
 
 ## Related
 
-[[concepts/idempotency]], [[entities/crossplane]], [[entities/crossplane-provider-btp]]
+[concepts/idempotency](../concepts/idempotency.md), [entities/crossplane](../entities/crossplane.md), [entities/crossplane-provider-btp](../entities/crossplane-provider-btp.md)
 
 ## Update from the leaked-resources dossier
 
-The dossier adds a fifth option under discussion in ACK: record the owner in an AWS tag at creation so a controller can recover a lost ID and refuse foreign resources (ACK issue 3143, an open proposal, with a work-in-progress tag-check change in runtime pull request 261). ACK runtime pull request 292 (merged 2026-11-20) patches status immediately after Create to narrow the window. See [[decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout]] and [[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]]. [[sources/research-gap-g1-leaked-resources-adoption]]
+The dossier adds a fifth option under discussion in ACK: record the owner in an AWS tag at creation so a controller can recover a lost ID and refuse foreign resources (ACK issue 3143, an open proposal, with a work-in-progress tag-check change in runtime pull request 261). ACK runtime pull request 292 (merged 2026-11-20) patches status immediately after Create to narrow the window. See [decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout](make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout.md) and [findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource](../findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource.md). [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md)

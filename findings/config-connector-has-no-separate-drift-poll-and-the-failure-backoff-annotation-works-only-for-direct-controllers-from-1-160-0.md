@@ -16,7 +16,7 @@ tags: [config-connector, drift, backoff, annotations, direct-controller, cadence
 
 ## Observation
 
-The dossier found no separate drift poll in Config Connector. Each reconcile reads the live state and compares it with the spec, so drift detection runs at the reconcile requeue cadence of [[findings/config-connector-direct-terraform-and-dcl-reconcilers-share-one-jittered-requeue-so-the-controller-kind-alone-does-not-change-the-cadence]]. The docs frame the interval as drift correction: setting it to 0 "disable[s] drift correction for a resource, but it does not disable resource actuation", and "Setting the reconciliation interval to 0 is irreversible." The annotation has been available since Config Connector 1.102. [[sources/research-gap-o9-cadence-and-staleness]] https://docs.cloud.google.com/config-connector/docs/concepts/reconciliation
+The dossier found no separate drift poll in Config Connector. Each reconcile reads the live state and compares it with the spec, so drift detection runs at the reconcile requeue cadence of [findings/config-connector-direct-terraform-and-dcl-reconcilers-share-one-jittered-requeue-so-the-controller-kind-alone-does-not-change-the-cadence](config-connector-direct-terraform-and-dcl-reconcilers-share-one-jittered-requeue-so-the-controller-kind-alone-does-not-change-the-cadence.md). The docs frame the interval as drift correction: setting it to 0 "disable[s] drift correction for a resource, but it does not disable resource actuation", and "Setting the reconciliation interval to 0 is irreversible." The annotation has been available since Config Connector 1.102. [sources/research-gap-o9-cadence-and-staleness](../sources/research-gap-o9-cadence-and-staleness.md) https://docs.cloud.google.com/config-connector/docs/concepts/reconciliation
 
 ## Failure retries are separate
 
@@ -24,7 +24,7 @@ Failed reconciles retry with exponential backoff that starts at 250 ms, doubles,
 
 ## Why it matters
 
-A Terraform-based or DCL-based kind keeps the 120-second ceiling and cannot tune it, so the controller kind matters for failure behavior even though it does not change the success cadence. A team that wants a longer ceiling needs the kind to run on the direct controller, see [[decisions/accept-the-build-time-controller-for-a-config-connector-kind-or-override-it-per-namespace-or-per-resource]].
+A Terraform-based or DCL-based kind keeps the 120-second ceiling and cannot tune it, so the controller kind matters for failure behavior even though it does not change the success cadence. A team that wants a longer ceiling needs the kind to run on the direct controller, see [decisions/accept-the-build-time-controller-for-a-config-connector-kind-or-override-it-per-namespace-or-per-resource](../decisions/accept-the-build-time-controller-for-a-config-connector-kind-or-override-it-per-namespace-or-per-resource.md).
 
 ## Limits
 
@@ -32,4 +32,4 @@ The three Google Cloud pages exceeded the tool's inline size limit and were read
 
 ## Related
 
-[[findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling]], [[findings/drift-detection-latency-is-the-interval]], [[entities/config-connector]]
+[findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling](argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling.md), [findings/drift-detection-latency-is-the-interval](drift-detection-latency-is-the-interval.md), [entities/config-connector](../entities/config-connector.md)

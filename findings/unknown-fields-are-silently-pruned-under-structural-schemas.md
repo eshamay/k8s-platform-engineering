@@ -16,7 +16,7 @@ tags: [pitfall, crd, schema, pruning]
 
 ## Observation
 
-Under a structural schema the apiserver drops any field that the schema does not declare, unless the author sets the `x-kubernetes-preserve-unknown-fields` escape hatch. An author who forgets to declare a field therefore sees the value disappear from stored objects without an error. URL: https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/. [[sources/research-custom-resource-definition]]
+Under a structural schema the apiserver drops any field that the schema does not declare, unless the author sets the `x-kubernetes-preserve-unknown-fields` escape hatch. An author who forgets to declare a field therefore sees the value disappear from stored objects without an error. URL: https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/. [sources/research-custom-resource-definition](../sources/research-custom-resource-definition.md)
 
 ## Why pruning exists
 
@@ -24,4 +24,4 @@ Plain OpenAPI describes what must be present but not what is forbidden, and a po
 
 ## Related
 
-[[concepts/custom-resource-definition]], [[comparisons/cel-validation-rules-versus-validating-webhooks]], and [[findings/defaulting-and-drift-reconcile-loops]].
+[concepts/custom-resource-definition](../concepts/custom-resource-definition.md), [comparisons/cel-validation-rules-versus-validating-webhooks](../comparisons/cel-validation-rules-versus-validating-webhooks.md), and [findings/defaulting-and-drift-reconcile-loops](defaulting-and-drift-reconcile-loops.md).

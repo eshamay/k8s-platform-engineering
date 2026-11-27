@@ -16,7 +16,7 @@ tags: [pitfall, webhooks, upgrades, api-evolution]
 
 ## Observation
 
-A webhook built against an older version of an API can silently drop fields it does not know about. The dossier cites the Pod API gaining sidecar containers in Kubernetes v1.29 as the example, and the good-practices page therefore recommends testing webhooks across minor upgrades. The page also recommends patching only the fields a webhook needs, which limits the damage. URL: https://kubernetes.io/docs/concepts/cluster-administration/admission-webhooks-good-practices/. [[sources/research-admission-webhooks-and-cel]]
+A webhook built against an older version of an API can silently drop fields it does not know about. The dossier cites the Pod API gaining sidecar containers in Kubernetes v1.29 as the example, and the good-practices page therefore recommends testing webhooks across minor upgrades. The page also recommends patching only the fields a webhook needs, which limits the damage. URL: https://kubernetes.io/docs/concepts/cluster-administration/admission-webhooks-good-practices/. [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)
 
 ## Limits of the evidence
 
@@ -24,4 +24,4 @@ The dossier gives the mechanism and the v1.29 example only as a summary and did 
 
 ## Related
 
-[[findings/unknown-fields-are-silently-pruned-under-structural-schemas]], [[findings/mutating-webhooks-can-run-repeatedly-and-in-no-guaranteed-order]], and [[concepts/admission-webhooks-and-cel]].
+[findings/unknown-fields-are-silently-pruned-under-structural-schemas](unknown-fields-are-silently-pruned-under-structural-schemas.md), [findings/mutating-webhooks-can-run-repeatedly-and-in-no-guaranteed-order](mutating-webhooks-can-run-repeatedly-and-in-no-guaranteed-order.md), and [concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md).

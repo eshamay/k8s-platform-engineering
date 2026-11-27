@@ -19,7 +19,7 @@ tags: [decision, crossplane, credentials, deletion-ordering]
 
 ## Status
 
-Open. As of 2026-11-26 Crossplane issue 7801 is open with no maintainer reply and no linked fix, so no option has been chosen. [[sources/research-finalizers]] [[sources/research-gap-m1-finalizers]]
+Open. As of 2026-11-26 Crossplane issue 7801 is open with no maintainer reply and no linked fix, so no option has been chosen. [sources/research-finalizers](../sources/research-finalizers.md) [sources/research-gap-m1-finalizers](../sources/research-gap-m1-finalizers.md)
 
 ## Context
 
@@ -37,8 +37,8 @@ A Secret finalizer adds one more object that can get stuck. Caching changes wher
 
 ## Evidence
 
-The issue body lists the three options as "none of them decided". A commenter on 2026-10-14 reported that a Secret finalizer fixed their provider-gitlab runs, and that caching worked 9 of 9 times in a prototype but failed after a provider restart. These are third-party measurements on one build and SECONDARY-ONLY. The ProviderConfig itself is already protected by crossplane-runtime pull request 1113, merged 2026-09-08, and the Secret is the part still unprotected. No maintainer has said which approach is preferred. See [[examples/crossplane-issue-7801-asks-how-to-protect-provider-credentials-during-namespace-deletion-and-is-open-with-no-maintainer-reply]] and [[findings/crossplane-protects-providerconfigs-while-managed-resources-terminate-but-the-credentials-secret-behind-them-is-still-unprotected]]. [[sources/research-gap-m1-finalizers]]
+The issue body lists the three options as "none of them decided". A commenter on 2026-10-14 reported that a Secret finalizer fixed their provider-gitlab runs, and that caching worked 9 of 9 times in a prototype but failed after a provider restart. These are third-party measurements on one build and SECONDARY-ONLY. The ProviderConfig itself is already protected by crossplane-runtime pull request 1113, merged 2026-09-08, and the Secret is the part still unprotected. No maintainer has said which approach is preferred. See [examples/crossplane-issue-7801-asks-how-to-protect-provider-credentials-during-namespace-deletion-and-is-open-with-no-maintainer-reply](../examples/crossplane-issue-7801-asks-how-to-protect-provider-credentials-during-namespace-deletion-and-is-open-with-no-maintainer-reply.md) and [findings/crossplane-protects-providerconfigs-while-managed-resources-terminate-but-the-credentials-secret-behind-them-is-still-unprotected](../findings/crossplane-protects-providerconfigs-while-managed-resources-terminate-but-the-credentials-secret-behind-them-is-still-unprotected.md). [sources/research-gap-m1-finalizers](../sources/research-gap-m1-finalizers.md)
 
 ## Related
 
-[[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup]], [[entities/crossplane]], [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]]
+[findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup](../findings/a-credentials-secret-without-a-finalizer-can-vanish-before-managed-resources-finish-cleanup.md), [entities/crossplane](../entities/crossplane.md), [examples/kro-deletes-instance-resources-in-reverse-dependency-waves](../examples/kro-deletes-instance-resources-in-reverse-dependency-waves.md)

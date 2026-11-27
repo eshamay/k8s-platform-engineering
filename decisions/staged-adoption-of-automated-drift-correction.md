@@ -19,7 +19,7 @@ tags: [drift, adoption, safety, gitops]
 
 ## Status
 
-Pattern drawn from tool documentation and one vendor blog, not an ADR authored by this wiki. [[sources/research-self-healing-and-drift-detection]]
+Pattern drawn from tool documentation and one vendor blog, not an ADR authored by this wiki. [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md)
 
 ## Context
 
@@ -31,12 +31,12 @@ Move through three stages. First observe: Flux's `warn` drift mode emits events 
 
 ## Consequences
 
-Staged adoption delays the benefit of enforcement and requires someone to read the drift reports. It reduces surprise reverts, and it surfaces the second-writer problems early so ignore rules can be written before enforcement. See [[findings/controllers-fighting-over-fields-cause-revert-loops]], [[findings/remediation-can-amplify-an-outage]], and [[findings/unintended-deletion-through-prune]].
+Staged adoption delays the benefit of enforcement and requires someone to read the drift reports. It reduces surprise reverts, and it surfaces the second-writer problems early so ignore rules can be written before enforcement. See [findings/controllers-fighting-over-fields-cause-revert-loops](../findings/controllers-fighting-over-fields-cause-revert-loops.md), [findings/remediation-can-amplify-an-outage](../findings/remediation-can-amplify-an-outage.md), and [findings/unintended-deletion-through-prune](../findings/unintended-deletion-through-prune.md).
 
 ## Related
 
-[[examples/incremental-gitops-adoption-with-manual-sync-and-self-heal]], [[comparisons/exemption-and-ignore-controls-across-tools]], [[entities/tofu-controller]], [[concepts/self-healing-and-drift-detection]]
+[examples/incremental-gitops-adoption-with-manual-sync-and-self-heal](../examples/incremental-gitops-adoption-with-manual-sync-and-self-heal.md), [comparisons/exemption-and-ignore-controls-across-tools](../comparisons/exemption-and-ignore-controls-across-tools.md), [entities/tofu-controller](../entities/tofu-controller.md), [concepts/self-healing-and-drift-detection](../concepts/self-healing-and-drift-detection.md)
 
 ## Evidence from the GitOps incidents dossier
 
-A reported production incident supports staging: self-heal skipped a migration hook on two of five regional Applications, and one mitigation is turning self-heal off for those Applications, see [[decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off]] and [[examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications]]. Source: [[sources/research-gap-g1-gitops-drift-incidents]].
+A reported production incident supports staging: self-heal skipped a migration hook on two of five regional Applications, and one mitigation is turning self-heal off for those Applications, see [decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off](make-a-migration-a-managed-resource-or-turn-self-heal-off.md) and [examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications](../examples/argo-cd-self-heal-after-a-deny-sync-window-closed-skipped-the-migration-hook-on-two-of-five-regional-applications.md). Source: [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md).

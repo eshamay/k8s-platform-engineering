@@ -16,12 +16,12 @@ tags: [ack, multi-tenancy, security, references, iam]
 
 ## Observation
 
-The ACK concepts page says cross-namespace references are off by default and states plainly that disabling them is not a tenant isolation control. [[sources/research-provider]]
+The ACK concepts page says cross-namespace references are off by default and states plainly that disabling them is not a tenant isolation control. [sources/research-provider](../sources/research-provider.md)
 
 ## Why it matters
 
-A reference setting only decides whether one ACK object may point at another in a different namespace. It does not change which AWS identity the controller uses, so a tenant who can create ACK objects can still act with whatever role the controller or the namespace's role selector provides. Treating the reference setting as a security boundary would give a false sense of separation between teams. [[sources/research-provider]]
+A reference setting only decides whether one ACK object may point at another in a different namespace. It does not change which AWS identity the controller uses, so a tenant who can create ACK objects can still act with whatever role the controller or the namespace's role selector provides. Treating the reference setting as a security boundary would give a false sense of separation between teams. [sources/research-provider](../sources/research-provider.md)
 
 ## What to do instead
 
-Isolation has to come from the identity layer, meaning `IAMRoleSelector` mappings from namespaces to least-privilege IAM roles, plus Kubernetes RBAC on who can create ACK objects at all. See [[examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management]] and [[findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions]]. The tool is [[entities/ack]].
+Isolation has to come from the identity layer, meaning `IAMRoleSelector` mappings from namespaces to least-privilege IAM roles, plus Kubernetes RBAC on who can create ACK objects at all. See [examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management](../examples/ack-iam-role-selectors-map-namespaces-to-aws-roles-for-cross-account-management.md) and [findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions](anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions.md). The tool is [entities/ack](../entities/ack.md).

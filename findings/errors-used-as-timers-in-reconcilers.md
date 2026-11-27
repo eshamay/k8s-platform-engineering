@@ -22,7 +22,7 @@ tags: [pitfall, requeue, backoff, controller-runtime]
 
 ## Observation
 
-A controller often finds that everything is healthy but a dependency is not ready yet. Returning an error for that case triggers workqueue exponential backoff and produces noisy failure signals, even though nothing failed. A third-party controller-runtime guide maps the return values this way: an empty result with a nil error means converged, `RequeueAfter` means healthy but waiting, and an error means the attempt failed. Its summary rule is "Errors should mean 'this reconcile attempt failed,' not 'come back in thirty seconds.'" URL: https://www.golinuxcloud.com/requeue-requeueafter-error-handling-controller-runtime/. [[sources/research-eventual-consistency-and-convergence]]
+A controller often finds that everything is healthy but a dependency is not ready yet. Returning an error for that case triggers workqueue exponential backoff and produces noisy failure signals, even though nothing failed. A third-party controller-runtime guide maps the return values this way: an empty result with a nil error means converged, `RequeueAfter` means healthy but waiting, and an error means the attempt failed. Its summary rule is "Errors should mean 'this reconcile attempt failed,' not 'come back in thirty seconds.'" URL: https://www.golinuxcloud.com/requeue-requeueafter-error-handling-controller-runtime/. [sources/research-eventual-consistency-and-convergence](../sources/research-eventual-consistency-and-convergence.md)
 
 ## Related mistakes
 
@@ -30,16 +30,16 @@ The same guide warns against tight `RequeueAfter` loops, against ignoring NotFou
 
 ## Mitigations
 
-Use `RequeueAfter` for waiting states, record terminal errors in status so retries stop, and watch owned children so events wake the controller instead of a timer. See [[findings/failure-retry-loops-and-backoff]], [[entities/controller-runtime]], and [[concepts/conditions]].
+Use `RequeueAfter` for waiting states, record terminal errors in status so retries stop, and watch owned children so events wake the controller instead of a timer. See [findings/failure-retry-loops-and-backoff](failure-retry-loops-and-backoff.md), [entities/controller-runtime](../entities/controller-runtime.md), and [concepts/conditions](../concepts/conditions.md).
 
 ## Related
 
-[[concepts/eventual-consistency-and-convergence]], [[concepts/reconciliation-loop]]
+[concepts/eventual-consistency-and-convergence](../concepts/eventual-consistency-and-convergence.md), [concepts/reconciliation-loop](../concepts/reconciliation-loop.md)
 
 ## Corroboration from the reconciliation-loop dossier
 
-The reconciliation-loop dossier repeats the guidance: errors for failures, `RequeueAfter` for planned polling, and `TerminalError` for failures retry cannot fix, and it notes that the semantics of `Requeue: true` are described inconsistently. [[sources/research-reconciliation-loop]] See [[decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler]].
+The reconciliation-loop dossier repeats the guidance: errors for failures, `RequeueAfter` for planned polling, and `TerminalError` for failures retry cannot fix, and it notes that the semantics of `Requeue: true` are described inconsistently. [sources/research-reconciliation-loop](../sources/research-reconciliation-loop.md) See [decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler](../decisions/choose-error-requeueafter-or-terminalerror-in-a-reconciler.md).
 
 ## Source-level backoff behavior at controller-runtime v0.25.3
 
-Reading the source settles the `Requeue: true` question the sections above leave open. A nil error with `Requeue: true` is a rate-limited requeue that keeps the per-item failure history, so it backs off exponentially, while `RequeueAfter > 0` calls `Queue.Forget(req)` first and waits exactly the given duration. An error also backs off, and an error ignores both `Result` fields. A reconciler that wants a fixed cadence should return `RequeueAfter`. [[sources/research-gap-g3-k8s-and-controller-runtime]] See [[findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history]].
+Reading the source settles the `Requeue: true` question the sections above leave open. A nil error with `Requeue: true` is a rate-limited requeue that keeps the per-item failure history, so it backs off exponentially, while `RequeueAfter > 0` calls `Queue.Forget(req)` first and waits exactly the given duration. An error also backs off, and an error ignores both `Result` fields. A reconciler that wants a fixed cadence should return `RequeueAfter`. [sources/research-gap-g3-k8s-and-controller-runtime](../sources/research-gap-g3-k8s-and-controller-runtime.md) See [findings/a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history](a-requeue-true-result-backs-off-exponentially-because-only-requeueafter-forgets-the-failure-history.md).

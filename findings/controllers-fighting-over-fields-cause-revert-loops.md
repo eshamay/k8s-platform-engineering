@@ -22,24 +22,24 @@ tags: [pitfall, drift, argo-cd, flux, webhooks, hpa]
 
 ## Observation
 
-When a mutating webhook, an HPA, or an image updater rewrites a field that a GitOps tool also manages, the result is endless OutOfSync status or a revert loop. Argo CD's diffing page names the usual causes: a controller or mutating webhook altering the object after submission, controllers rewriting fields (HPA metrics ordering), non-deterministic Helm templates, and fields dropped because the API does not know them. Issue 14591 shows the pattern in practice, where argocd-image-updater rewrote child Application specs. [[sources/research-self-healing-and-drift-detection]] See [[examples/argo-cd-app-of-apps-out-of-sync-from-image-updater]].
+When a mutating webhook, an HPA, or an image updater rewrites a field that a GitOps tool also manages, the result is endless OutOfSync status or a revert loop. Argo CD's diffing page names the usual causes: a controller or mutating webhook altering the object after submission, controllers rewriting fields (HPA metrics ordering), non-deterministic Helm templates, and fields dropped because the API does not know them. Issue 14591 shows the pattern in practice, where argocd-image-updater rewrote child Application specs. [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md) See [examples/argo-cd-app-of-apps-out-of-sync-from-image-updater](../examples/argo-cd-app-of-apps-out-of-sync-from-image-updater.md).
 
 ## Interpretation
 
-The drift is not a fault in either tool. Two writers disagree about one field, and the useful diagnostic step is to find the second writer. See [[findings/multiple-writers-on-one-object]] and [[findings/continuous-loops-override-intentional-changes]].
+The drift is not a fault in either tool. Two writers disagree about one field, and the useful diagnostic step is to find the second writer. See [findings/multiple-writers-on-one-object](multiple-writers-on-one-object.md) and [findings/continuous-loops-override-intentional-changes](continuous-loops-override-intentional-changes.md).
 
 ## Mitigations
 
-Argo CD uses `ignoreDifferences` by JSON pointer, JQ path, or `managedFieldsManagers`. Flux uses `driftDetection.ignore` and the `kustomize.toolkit.fluxcd.io/ssa` annotation with `Ignore` or `IfNotPresent`. Crossplane scopes what it does with `managementPolicies` and can be paused. See [[comparisons/exemption-and-ignore-controls-across-tools]].
+Argo CD uses `ignoreDifferences` by JSON pointer, JQ path, or `managedFieldsManagers`. Flux uses `driftDetection.ignore` and the `kustomize.toolkit.fluxcd.io/ssa` annotation with `Ignore` or `IfNotPresent`. Crossplane scopes what it does with `managementPolicies` and can be paused. See [comparisons/exemption-and-ignore-controls-across-tools](../comparisons/exemption-and-ignore-controls-across-tools.md).
 
 ## Related
 
-[[concepts/self-healing-and-drift-detection]], [[findings/defaulting-and-drift-reconcile-loops]], [[entities/argo-cd]], [[entities/flux]]
+[concepts/self-healing-and-drift-detection](../concepts/self-healing-and-drift-detection.md), [findings/defaulting-and-drift-reconcile-loops](defaulting-and-drift-reconcile-loops.md), [entities/argo-cd](../entities/argo-cd.md), [entities/flux](../entities/flux.md)
 
 ## The ownership view
 
-Server-side apply makes the disagreement visible: the autoscaler owns `replicas` while Git says otherwise, and a blanket force makes the two overwrite each other. The Kubernetes maintainers' recommendation is that CD tools surface such conflicts. [[sources/research-server-side-apply-and-field-ownership]] See [[examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict]] and [[decisions/force-conflicts-or-surface-them-to-humans]].
+Server-side apply makes the disagreement visible: the autoscaler owns `replicas` while Git says otherwise, and a blanket force makes the two overwrite each other. The Kubernetes maintainers' recommendation is that CD tools surface such conflicts. [sources/research-server-side-apply-and-field-ownership](../sources/research-server-side-apply-and-field-ownership.md) See [examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict](../examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict.md) and [decisions/force-conflicts-or-surface-them-to-humans](../decisions/force-conflicts-or-surface-them-to-humans.md).
 
 ## Addition from the GitOps incidents dossier
 
-Flux issue 2514 (2022) shows a one-time reset and not a loop: replicas dropped to 1 on the first reconciliation over an HPA-managed Deployment and then recovered. Argo CD issue 30398 (2026) shows a permanent OutOfSync under server-side diff with an `ignoreDifferences` entry on an HPA-managed field. Neither names an organization, and no named postmortem of a revert loop with an autoscaler was found. See [[findings/handing-replicas-between-git-and-an-hpa-can-reset-the-count-or-leave-an-application-permanently-out-of-sync]] and [[sources/research-gap-g1-gitops-drift-incidents]].
+Flux issue 2514 (2022) shows a one-time reset and not a loop: replicas dropped to 1 on the first reconciliation over an HPA-managed Deployment and then recovered. Argo CD issue 30398 (2026) shows a permanent OutOfSync under server-side diff with an `ignoreDifferences` entry on an HPA-managed field. Neither names an organization, and no named postmortem of a revert loop with an autoscaler was found. See [findings/handing-replicas-between-git-and-an-hpa-can-reset-the-count-or-leave-an-application-permanently-out-of-sync](handing-replicas-between-git-and-an-hpa-can-reset-the-count-or-leave-an-application-permanently-out-of-sync.md) and [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md).

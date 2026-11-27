@@ -16,12 +16,12 @@ tags: [pitfall, workqueue, client-go, retry]
 
 ## Observation
 
-The workqueue package expects a worker to call `Done()` after it finishes an item and `Forget()` after it succeeds. The package documentation reminds authors that otherwise retry tracking persists. Because a queue never processes one item concurrently, an item that is never marked done cannot be handed to another worker, and an item that is never forgotten keeps its accumulated backoff, so a healthy object can be delayed as if it were still failing. [[sources/research-informers-reflectors-and-workqueues]]
+The workqueue package expects a worker to call `Done()` after it finishes an item and `Forget()` after it succeeds. The package documentation reminds authors that otherwise retry tracking persists. Because a queue never processes one item concurrently, an item that is never marked done cannot be handed to another worker, and an item that is never forgotten keeps its accumulated backoff, so a healthy object can be delayed as if it were still failing. [sources/research-informers-reflectors-and-workqueues](../sources/research-informers-reflectors-and-workqueues.md)
 
 ## Interpretation
 
-The queue's guarantees depend on the caller's bookkeeping. Frameworks such as controller-runtime perform the calls for authors, so the hazard mostly affects hand-written client-go loops. The dossier states the rule but gives no incident. See [[concepts/informers-reflectors-and-workqueues]] and [[findings/retry-storms-and-unbounded-retries]].
+The queue's guarantees depend on the caller's bookkeeping. Frameworks such as controller-runtime perform the calls for authors, so the hazard mostly affects hand-written client-go loops. The dossier states the rule but gives no incident. See [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md) and [findings/retry-storms-and-unbounded-retries](retry-storms-and-unbounded-retries.md).
 
 ## Related
 
-[[findings/blocking-on-errors-inside-the-sync-loop-stalls-every-other-object]]
+[findings/blocking-on-errors-inside-the-sync-loop-stalls-every-other-object](blocking-on-errors-inside-the-sync-loop-stalls-every-other-object.md)

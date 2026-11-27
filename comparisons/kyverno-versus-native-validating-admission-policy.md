@@ -19,7 +19,7 @@ tags: [kyverno, validating-admission-policy, policy-engines, comparison]
 
 ## Summary
 
-Kyverno's ValidatingPolicy is described as a superset of the Kubernetes ValidatingAdmissionPolicy, so the two are related and not rivals. The native object gives in-process enforcement with no extra service. Kyverno adds features around it and can generate native objects so the enforcement path runs in the API server. [[sources/research-admission-webhooks-and-cel]]
+Kyverno's ValidatingPolicy is described as a superset of the Kubernetes ValidatingAdmissionPolicy, so the two are related and not rivals. The native object gives in-process enforcement with no extra service. Kyverno adds features around it and can generate native objects so the enforcement path runs in the API server. [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)
 
 ## Side by side
 
@@ -34,8 +34,8 @@ Kyverno's ValidatingPolicy is described as a superset of the Kubernetes Validati
 
 ## Notes
 
-The comparison is built from the Kyverno documentation and the Kubernetes tutorial. The 2026-11-26 dossier read Kyverno's failure-policy and availability pages ([[findings/kyverno-defaults-to-failure-policy-fail-with-a-10-second-timeout-and-needs-three-admission-replicas-for-high-availability]]) and Gatekeeper's ([[findings/gatekeeper-defaults-its-webhooks-to-fail-open-and-documents-a-fail-closed-deadlock-with-an-emergency-delete-of-the-webhook-configuration]]). Kyverno's webhook mode defaults to Fail with a 10 second timeout and three admission replicas for HA, while Gatekeeper defaults to Ignore. No measured availability numbers or generated-native-policy resilience comparison were found, so the resilience benefit stays unquantified. See [[open-knowledge-gaps]].
+The comparison is built from the Kyverno documentation and the Kubernetes tutorial. The 2026-11-26 dossier read Kyverno's failure-policy and availability pages ([findings/kyverno-defaults-to-failure-policy-fail-with-a-10-second-timeout-and-needs-three-admission-replicas-for-high-availability](../findings/kyverno-defaults-to-failure-policy-fail-with-a-10-second-timeout-and-needs-three-admission-replicas-for-high-availability.md)) and Gatekeeper's ([findings/gatekeeper-defaults-its-webhooks-to-fail-open-and-documents-a-fail-closed-deadlock-with-an-emergency-delete-of-the-webhook-configuration](../findings/gatekeeper-defaults-its-webhooks-to-fail-open-and-documents-a-fail-closed-deadlock-with-an-emergency-delete-of-the-webhook-configuration.md)). Kyverno's webhook mode defaults to Fail with a 10 second timeout and three admission replicas for HA, while Gatekeeper defaults to Ignore. No measured availability numbers or generated-native-policy resilience comparison were found, so the resilience benefit stays unquantified. See [open-knowledge-gaps](../open-knowledge-gaps.md).
 
 ## Related
 
-[[entities/kyverno]], [[examples/kyverno-validatingpolicy-generates-native-vap-objects]], and [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]].
+[entities/kyverno](../entities/kyverno.md), [examples/kyverno-validatingpolicy-generates-native-vap-objects](../examples/kyverno-validatingpolicy-generates-native-vap-objects.md), and [comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules](admission-mechanisms-webhooks-vap-map-and-crd-rules.md).

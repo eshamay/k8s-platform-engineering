@@ -16,7 +16,7 @@ tags: [pitfall, webhooks, dry-run, sideeffects, gitops]
 
 ## Observation
 
-Flux and other server-side-apply or dry-run clients fail against admission webhooks that do not declare `sideEffects` of `None` or `NoneOnDryRun`. The failure message is "admission webhook does not support dry run", and Flux surfaces it as a reconciliation failure. The Kubernetes reference explains `sideEffects` (`None`, `NoneOnDryRun`, `Some`) and why dry-run requests need it, and the Flux cheatsheet says to find the offending Validating or Mutating webhook configuration and fix `sideEffects`. URL: https://fluxcd.io/flux/cheatsheets/troubleshooting/ and https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/. [[sources/research-admission-webhooks-and-cel]]
+Flux and other server-side-apply or dry-run clients fail against admission webhooks that do not declare `sideEffects` of `None` or `NoneOnDryRun`. The failure message is "admission webhook does not support dry run", and Flux surfaces it as a reconciliation failure. The Kubernetes reference explains `sideEffects` (`None`, `NoneOnDryRun`, `Some`) and why dry-run requests need it, and the Flux cheatsheet says to find the offending Validating or Mutating webhook configuration and fix `sideEffects`. URL: https://fluxcd.io/flux/cheatsheets/troubleshooting/ and https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/. [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)
 
 ## Why it happens
 
@@ -24,8 +24,8 @@ A dry-run request must not persist anything, so the API server only sends it to 
 
 ## Where the fix lives
 
-The fix is on the webhook configuration, not in the GitOps tool. For an operator author, that means declaring `sideEffects` correctly as part of the webhook's contract. See [[examples/flux-dry-run-fails-against-webhooks-without-dry-run-support]].
+The fix is on the webhook configuration, not in the GitOps tool. For an operator author, that means declaring `sideEffects` correctly as part of the webhook's contract. See [examples/flux-dry-run-fails-against-webhooks-without-dry-run-support](../examples/flux-dry-run-fails-against-webhooks-without-dry-run-support.md).
 
 ## Related
 
-[[concepts/admission-webhooks-and-cel]], [[entities/flux]], and [[findings/diff-is-not-apply-server-defaults-look-like-drift]].
+[concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md), [entities/flux](../entities/flux.md), and [findings/diff-is-not-apply-server-defaults-look-like-drift](diff-is-not-apply-server-defaults-look-like-drift.md).

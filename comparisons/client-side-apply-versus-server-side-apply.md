@@ -24,12 +24,12 @@ tags: [comparison, server-side-apply, kubectl, three-way-merge]
 | Admission | The client may see no diff and skip the server | The server always runs admission controllers |
 | Lists and maps | Strategic merge keys | Schema markers such as `listType` and `listMapKey`, with atomic lists for unmarked CRDs |
 
-[[sources/research-server-side-apply-and-field-ownership]]
+[sources/research-server-side-apply-and-field-ownership](../sources/research-server-side-apply-and-field-ownership.md)
 
 ## Why the change
 
-KEP-555 lists the surprises of client-side apply: applying after a `kubectl edit`, GET-edit-apply, and two users applying in turn. It also depended on client version and on a strategic merge patch format that grew organically. The goals of the replacement include robustness to other writers and mutating webhooks and no dependence on earlier CI/CD steps. Server-side apply reached GA in Kubernetes 1.22. See [[concepts/server-side-apply-and-field-ownership]] and [[comparisons/kubectl-object-management-techniques]].
+KEP-555 lists the surprises of client-side apply: applying after a `kubectl edit`, GET-edit-apply, and two users applying in turn. It also depended on client version and on a strategic merge patch format that grew organically. The goals of the replacement include robustness to other writers and mutating webhooks and no dependence on earlier CI/CD steps. Server-side apply reached GA in Kubernetes 1.22. See [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md) and [comparisons/kubectl-object-management-techniques](kubectl-object-management-techniques.md).
 
 ## Migration
 
-The supported path is `kubectl apply --server-side`, but fields changed outside client-side apply, for example by `kubectl scale`, then conflict. The old managers also keep co-owning fields and block pruning. See [[findings/client-side-to-server-side-migration-leaves-stale-co-owners]] and [[findings/large-crds-exceed-the-client-side-apply-annotation-limit]].
+The supported path is `kubectl apply --server-side`, but fields changed outside client-side apply, for example by `kubectl scale`, then conflict. The old managers also keep co-owning fields and block pruning. See [findings/client-side-to-server-side-migration-leaves-stale-co-owners](../findings/client-side-to-server-side-migration-leaves-stale-co-owners.md) and [findings/large-crds-exceed-the-client-side-apply-annotation-limit](../findings/large-crds-exceed-the-client-side-apply-annotation-limit.md).

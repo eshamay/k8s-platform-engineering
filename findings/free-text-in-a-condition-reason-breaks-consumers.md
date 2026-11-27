@@ -16,7 +16,7 @@ tags: [pitfall, conditions, crossplane, conventions]
 
 ## Observation
 
-Crossplane issue 4094 reported that a claim's `Ready` condition put a free-text sentence into `reason`. The API conventions define `reason` as a CamelCase identifier meant for programs and `message` as the human-readable text. A maintainer agreed it was a slip, and it was fixed in v1.13 through PR 4125. The reporter's request was that "what is in the `reason` field right now should be in `message`." [[sources/research-spec-status-split]] URL: https://github.com/crossplane/crossplane/issues/4094.
+Crossplane issue 4094 reported that a claim's `Ready` condition put a free-text sentence into `reason`. The API conventions define `reason` as a CamelCase identifier meant for programs and `message` as the human-readable text. A maintainer agreed it was a slip, and it was fixed in v1.13 through PR 4125. The reporter's request was that "what is in the `reason` field right now should be in `message`." [sources/research-spec-status-split](../sources/research-spec-status-split.md) URL: https://github.com/crossplane/crossplane/issues/4094.
 
 ## Why it matters
 
@@ -24,8 +24,8 @@ Tooling switches on `reason`, so a sentence in that field breaks matching, makes
 
 ## Mitigations
 
-Keep `reason` to a short stable identifier and put detail in `message`. Reviewers of platform-authored status schemas should check this alongside the condition `type` naming rule that type names describe the current observed state. See [[concepts/conditions]], [[entities/crossplane]], and [[comparisons/health-and-readiness-models-across-tools]].
+Keep `reason` to a short stable identifier and put detail in `message`. Reviewers of platform-authored status schemas should check this alongside the condition `type` naming rule that type names describe the current observed state. See [concepts/conditions](../concepts/conditions.md), [entities/crossplane](../entities/crossplane.md), and [comparisons/health-and-readiness-models-across-tools](../comparisons/health-and-readiness-models-across-tools.md).
 
 ## Related
 
-[[concepts/spec-status-split]], [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]]
+[concepts/spec-status-split](../concepts/spec-status-split.md), [findings/generic-gitops-agents-cannot-judge-custom-resource-health](generic-gitops-agents-cannot-judge-custom-resource-health.md)

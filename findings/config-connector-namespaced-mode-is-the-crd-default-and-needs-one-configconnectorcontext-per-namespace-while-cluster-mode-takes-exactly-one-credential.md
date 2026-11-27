@@ -16,7 +16,7 @@ tags: [config-connector, installation-modes, namespaced, cluster-mode, identity]
 
 ## Observation
 
-Google's installation-types page (last updated 2026-11-19) says Config Connector can be installed in namespaced mode, "recommended for most use cases", or in cluster mode, and that namespaced mode "provides better permission isolation". The operator's `ConfigConnector` CRD agrees: the field comment reads "This can be either 'cluster' or 'namespaced'. The default is 'namespaced'." [[sources/research-gap-o4-config-connector-ack]]
+Google's installation-types page (last updated 2026-11-19) says Config Connector can be installed in namespaced mode, "recommended for most use cases", or in cluster mode, and that namespaced mode "provides better permission isolation". The operator's `ConfigConnector` CRD agrees: the field comment reads "This can be either 'cluster' or 'namespaced'. The default is 'namespaced'." [sources/research-gap-o4-config-connector-ack](../sources/research-gap-o4-config-connector-ack.md)
 
 In cluster mode one Google service account serves every resource, even across several projects. The CRD requires exactly one of `googleServiceAccount` or `credentialSecretName`: "You must specify either `credentialSecretName` or `googleServiceAccount` when in cluster mode, but not both."
 
@@ -26,12 +26,12 @@ Namespace annotations such as `cnrm.cloud.google.com/project-id` pick the target
 
 ## What remains unsettled
 
-The dossier did not read the manual-install or IAM pages, so it does not say whether the namespace annotation behavior or the number of controller pods differs between the two modes. A concrete scenario of one cluster serving several team projects is in [[examples/config-connector-namespaced-mode-maps-namespaces-to-projects-and-service-accounts]].
+The dossier did not read the manual-install or IAM pages, so it does not say whether the namespace annotation behavior or the number of controller pods differs between the two modes. A concrete scenario of one cluster serving several team projects is in [examples/config-connector-namespaced-mode-maps-namespaces-to-projects-and-service-accounts](../examples/config-connector-namespaced-mode-maps-namespaces-to-projects-and-service-accounts.md).
 
 ## Why it matters
 
-The mode decides which identity performs cloud calls, which is the access boundary described in [[findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions]]. The general trade-off is laid out in [[decisions/scope-provider-credentials-per-namespace-or-cluster-wide]].
+The mode decides which identity performs cloud calls, which is the access boundary described in [findings/anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions](anyone-who-can-create-a-provider-managed-object-gets-the-controllers-cloud-permissions.md). The general trade-off is laid out in [decisions/scope-provider-credentials-per-namespace-or-cluster-wide](../decisions/scope-provider-credentials-per-namespace-or-cluster-wide.md).
 
 ## Related
 
-[[entities/config-connector]], [[findings/config-connector-deletion-policy-has-two-source-values-and-only-abandon-changes-the-delete-path-and-the-terraform-based-controller-path-is-unverified]]
+[entities/config-connector](../entities/config-connector.md), [findings/config-connector-deletion-policy-has-two-source-values-and-only-abandon-changes-the-delete-path-and-the-terraform-based-controller-path-is-unverified](config-connector-deletion-policy-has-two-source-values-and-only-abandon-changes-the-delete-path-and-the-terraform-based-controller-path-is-unverified.md)

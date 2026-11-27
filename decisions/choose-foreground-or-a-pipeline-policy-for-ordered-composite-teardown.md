@@ -19,7 +19,7 @@ tags: [decision, crossplane, deletion-ordering, composition]
 
 ## Status
 
-Open. Crossplane documents the options but the issue that asked for per-resource deletion behavior was closed as stale in April 2025 without a design, and the dossier did not cover Crossplane v2 namespaced composites. [[sources/research-owner-references-and-garbage-collection]]
+Open. Crossplane documents the options but the issue that asked for per-resource deletion behavior was closed as stale in April 2025 without a design, and the dossier did not cover Crossplane v2 namespaced composites. [sources/research-owner-references-and-garbage-collection](../sources/research-owner-references-and-garbage-collection.md)
 
 ## Context
 
@@ -34,12 +34,12 @@ A composite resource owns composed resources whose cloud dependencies require an
 
 ## Trade-offs
 
-Foreground is a native Kubernetes mode with a clear meaning but only orders parent against child. Pipeline gives full control and moves the logic into function code that the team must maintain. The claim route is implicit behavior that depends on a controller default. kro offers a different model, reverse dependency waves, that is described in [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]].
+Foreground is a native Kubernetes mode with a clear meaning but only orders parent against child. Pipeline gives full control and moves the logic into function code that the team must maintain. The claim route is implicit behavior that depends on a controller default. kro offers a different model, reverse dependency waves, that is described in [examples/kro-deletes-instance-resources-in-reverse-dependency-waves](../examples/kro-deletes-instance-resources-in-reverse-dependency-waves.md).
 
 ## Related
 
-[[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]], [[findings/background-deletion-gives-no-teardown-ordering-between-dependents]], [[entities/crossplane]]
+[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown](../examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown.md), [findings/background-deletion-gives-no-teardown-ordering-between-dependents](../findings/background-deletion-gives-no-teardown-ordering-between-dependents.md), [entities/crossplane](../entities/crossplane.md)
 
 ## Update from the composite resources dossier
 
-The current Crossplane composite resources page documents the deletion policy (alpha) and warns that Argo CD's default foreground deletion makes Crossplane ignore it, with `PrunePropagationPolicy=background` and a background finalizer as the fix, so the choice here also depends on the GitOps tool's settings. A stuck Foreground or Pipeline deletion leaves the XR in Deleting until the finalizer is removed manually. [[sources/research-composite-resource]] See [[findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy]].
+The current Crossplane composite resources page documents the deletion policy (alpha) and warns that Argo CD's default foreground deletion makes Crossplane ignore it, with `PrunePropagationPolicy=background` and a background finalizer as the fix, so the choice here also depends on the GitOps tool's settings. A stuck Foreground or Pipeline deletion leaves the XR in Deleting until the finalizer is removed manually. [sources/research-composite-resource](../sources/research-composite-resource.md) See [findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy](../findings/argo-cd-foreground-deletion-makes-crossplane-ignore-the-composite-deletion-policy.md).

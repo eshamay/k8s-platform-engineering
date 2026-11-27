@@ -16,11 +16,11 @@ tags: [decision, finalizers, cluster-api, hooks, deletion]
 
 ## Status
 
-Open for any new platform. Cluster API decided its own case in 2020, and this page records the options with the evidence and makes no recommendation. [[sources/research-gap-m1-finalizers]]
+Open for any new platform. Cluster API decided its own case in 2020, and this page records the options with the evidence and makes no recommendation. [sources/research-gap-m1-finalizers](../sources/research-gap-m1-finalizers.md)
 
 ## Context
 
-An external controller needs to hold an object's deletion until it has finished its own work. In Cluster API, issue 1514 asked for this on Machines. The thread weighed several mechanisms before it was closed in favor of a CAEP. See [[examples/cluster-api-issue-1514-was-closed-in-april-2020-in-favor-of-a-proposal-that-chose-annotation-hooks]].
+An external controller needs to hold an object's deletion until it has finished its own work. In Cluster API, issue 1514 asked for this on Machines. The thread weighed several mechanisms before it was closed in favor of a CAEP. See [examples/cluster-api-issue-1514-was-closed-in-april-2020-in-favor-of-a-proposal-that-chose-annotation-hooks](../examples/cluster-api-issue-1514-was-closed-in-april-2020-in-favor-of-a-proposal-that-chose-annotation-hooks.md).
 
 ## Options
 
@@ -31,8 +31,8 @@ An external controller needs to hold an object's deletion until it has finished 
 
 ## Evidence
 
-Cluster API implemented the annotation option, with the prefixes `pre-drain.delete.hook.machine.cluster.x-k8s.io` and `pre-terminate.delete.hook.machine.cluster.x-k8s.io`, and the control plane provider uses a pre-terminate hook of its own. The evidence for the other options is the thread's discussion only, and no implementation was read. The Cluster API book page on the hooks could not be read. See [[findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers]]. [[sources/research-gap-m1-finalizers]]
+Cluster API implemented the annotation option, with the prefixes `pre-drain.delete.hook.machine.cluster.x-k8s.io` and `pre-terminate.delete.hook.machine.cluster.x-k8s.io`, and the control plane provider uses a pre-terminate hook of its own. The evidence for the other options is the thread's discussion only, and no implementation was read. The Cluster API book page on the hooks could not be read. See [findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers](../findings/cluster-api-chose-annotation-hooks-over-finalizers-for-machine-deletion-because-a-misbehaving-controller-could-remove-finalizers.md). [sources/research-gap-m1-finalizers](../sources/research-gap-m1-finalizers.md)
 
 ## Related
 
-[[concepts/finalizers]], [[entities/cluster-api]], [[decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller]]
+[concepts/finalizers](../concepts/finalizers.md), [entities/cluster-api](../entities/cluster-api.md), [decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller](remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller.md)

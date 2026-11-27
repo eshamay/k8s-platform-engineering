@@ -16,7 +16,7 @@ tags: [ack, crd, helm, versioning, verified]
 
 ## Observation
 
-The ACK install doc says "Each ACK service controller has a separate Helm chart" that installs the controller, its CRDs and RBAC. The s3-controller v1.16.0 chart carries three CRDs in `helm/crds`, the bucket CRD being 75,208 bytes. The shared runtime has a webhook registry, but only for conversion. The install doc tells users to check CRD changes before upgrades. https://raw.githubusercontent.com/aws-controllers-k8s/community/main/docs/content/docs/user-docs/install.md and https://github.com/aws-controllers-k8s/s3-controller/tree/main/helm/crds, read 2026-11-26. [[sources/research-gap-m6-admission-crds]]
+The ACK install doc says "Each ACK service controller has a separate Helm chart" that installs the controller, its CRDs and RBAC. The s3-controller v1.16.0 chart carries three CRDs in `helm/crds`, the bucket CRD being 75,208 bytes. The shared runtime has a webhook registry, but only for conversion. The install doc tells users to check CRD changes before upgrades. https://raw.githubusercontent.com/aws-controllers-k8s/community/main/docs/content/docs/user-docs/install.md and https://github.com/aws-controllers-k8s/s3-controller/tree/main/helm/crds, read 2026-11-26. [sources/research-gap-m6-admission-crds](../sources/research-gap-m6-admission-crds.md)
 
 ## Not found
 
@@ -24,4 +24,4 @@ A written ACK API-version stability policy was searched for in the community doc
 
 ## Related
 
-[[findings/helm-does-not-upgrade-or-delete-crds]], [[entities/ack]], and [[findings/kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only]].
+[findings/helm-does-not-upgrade-or-delete-crds](helm-does-not-upgrade-or-delete-crds.md), [entities/ack](../entities/ack.md), and [findings/kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only](kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only.md).

@@ -16,7 +16,7 @@ tags: [reconcile-loop, server-side-apply, owns, predicates, kube-shard]
 
 ## Observation
 
-In the Konflux kube-shard operator, `applyOTelCollector` server-side-applied one hashed ConfigMap twice with the same field manager but different label sets. Each apply bumped the resource version, and the controller owned ConfigMaps with no predicate, so every bump re-enqueued the APIShard and the reconcile applied the ConfigMap again. The reporter measured about 13 reconciles per second while the shard was Ready. [[sources/research-gap-g1-operator-loop-failures]] See [[examples/konflux-kube-shard-issue-121-two-server-side-applies-of-one-configmap-looped-at-about-13-reconciles-per-second]].
+In the Konflux kube-shard operator, `applyOTelCollector` server-side-applied one hashed ConfigMap twice with the same field manager but different label sets. Each apply bumped the resource version, and the controller owned ConfigMaps with no predicate, so every bump re-enqueued the APIShard and the reconcile applied the ConfigMap again. The reporter measured about 13 reconciles per second while the shard was Ready. [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md) See [examples/konflux-kube-shard-issue-121-two-server-side-applies-of-one-configmap-looped-at-about-13-reconciles-per-second](../examples/konflux-kube-shard-issue-121-two-server-side-applies-of-one-configmap-looped-at-about-13-reconciles-per-second.md).
 
 ## Interpretation
 
@@ -28,4 +28,4 @@ Build the final object once and apply it once, and add a predicate on `Owns` tha
 
 ## Related
 
-[[concepts/server-side-apply-and-field-ownership]], [[findings/self-triggered-reconcile-loops-generate-their-own-events]], [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]], [[examples/kubebuilder-owns-and-a-field-indexer-wire-child-changes-to-the-owner]]
+[concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md), [findings/self-triggered-reconcile-loops-generate-their-own-events](self-triggered-reconcile-loops-generate-their-own-events.md), [findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop](a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop.md), [examples/kubebuilder-owns-and-a-field-indexer-wire-child-changes-to-the-owner](../examples/kubebuilder-owns-and-a-field-indexer-wire-child-changes-to-the-owner.md)

@@ -16,11 +16,11 @@ tags: [decision, config-connector, conflicts, adoption, evidence-only]
 
 ## Status
 
-Open decision with options and evidence only. This page makes no recommendation. The "Managing conflicts" page documents the policy values and limits and does not recommend one, and the behavior was read from documentation and not tested. [[sources/research-gap-m7-operators-idempotency]]
+Open decision with options and evidence only. This page makes no recommendation. The "Managing conflicts" page documents the policy values and limits and does not recommend one, and the behavior was read from documentation and not tested. [sources/research-gap-m7-operators-idempotency](../sources/research-gap-m7-operators-idempotency.md)
 
 ## Context
 
-Config Connector acquires an existing cloud resource whose name matches the manifest. When two Kubernetes objects can target one cloud resource, the platform team decides whether the controller should arbitrate. See [[findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set]] and [[findings/adopt-or-create-can-take-over-a-look-alike-resource]].
+Config Connector acquires an existing cloud resource whose name matches the manifest. When two Kubernetes objects can target one cloud resource, the platform team decides whether the controller should arbitrate. See [findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set](../findings/config-connector-conflict-prevention-defaults-to-none-so-two-objects-can-manage-one-cloud-resource-unless-a-lease-policy-is-set.md) and [findings/adopt-or-create-can-take-over-a-look-alike-resource](../findings/adopt-or-create-can-take-over-a-look-alike-resource.md).
 
 ## Options
 
@@ -30,7 +30,7 @@ No lease is written and no conflict is reported. The evidence for it is that it 
 
 ### Option B: set the policy to resource on each object
 
-A lease stored in the labels `cnrm-lease-holder-id` and `cnrm-lease-expiration` lasts 40 minutes and a losing object reports `ManagementConflict`. The limits are stated by the page: it "does not work for resources that don't support labels", and two objects in one namespace that use `resourceID` for one resource conflict in a way Config Connector cannot manage. The policy is set per object, so an object that omits it is not protected. See [[examples/config-connector-lease-labels-gate-two-namespaces-that-manage-one-google-cloud-resource]].
+A lease stored in the labels `cnrm-lease-holder-id` and `cnrm-lease-expiration` lasts 40 minutes and a losing object reports `ManagementConflict`. The limits are stated by the page: it "does not work for resources that don't support labels", and two objects in one namespace that use `resourceID` for one resource conflict in a way Config Connector cannot manage. The policy is set per object, so an object that omits it is not protected. See [examples/config-connector-lease-labels-gate-two-namespaces-that-manage-one-google-cloud-resource](../examples/config-connector-lease-labels-gate-two-namespaces-that-manage-one-google-cloud-resource.md).
 
 ### Option C: avoid acquisition of look-alike resources
 
@@ -38,8 +38,8 @@ Use `resourceID` and the deletion policy `abandon` so that deleting an object do
 
 ## Consequences
 
-The options trade protection for coverage. Only Option C addresses deletion, and only Option B addresses concurrent management, so they can be combined. The dossier found no incident comparing them, and the wiki's reported acquisition case is a different failure, see [[examples/config-connector-issue-14236-acquiring-an-existing-storage-bucket-removed-its-encryption-enforcement-config]]. [[sources/research-gap-m7-operators-idempotency]]
+The options trade protection for coverage. Only Option C addresses deletion, and only Option B addresses concurrent management, so they can be combined. The dossier found no incident comparing them, and the wiki's reported acquisition case is a different failure, see [examples/config-connector-issue-14236-acquiring-an-existing-storage-bucket-removed-its-encryption-enforcement-config](../examples/config-connector-issue-14236-acquiring-an-existing-storage-bucket-removed-its-encryption-enforcement-config.md). [sources/research-gap-m7-operators-idempotency](../sources/research-gap-m7-operators-idempotency.md)
 
 ## Related
 
-[[decisions/adopt-or-create-or-require-explicit-import]], [[entities/config-connector]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]]
+[decisions/adopt-or-create-or-require-explicit-import](adopt-or-create-or-require-explicit-import.md), [entities/config-connector](../entities/config-connector.md), [comparisons/deletion-policies-across-gitops-and-provider-tools](../comparisons/deletion-policies-across-gitops-and-provider-tools.md)

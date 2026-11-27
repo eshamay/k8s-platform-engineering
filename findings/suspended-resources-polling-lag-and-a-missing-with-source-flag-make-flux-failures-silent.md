@@ -16,7 +16,7 @@ tags: [pitfall, flux, observability, suspend, webhooks]
 
 ## Observation
 
-A practitioner blog in the dossier lists three ways Flux appears healthy while not delivering what an operator expects. A suspended resource stops reconciling and drift builds up unnoticed. Without webhook Receivers, a change waits for the next polling interval. And running `flux reconcile` without `--with-source` reconciles against the source's last fetched revision, so the command succeeds without picking up the new commit. The same post recommends alerting on `gotk_reconcile_error_total` and `gotk_suspend_status`. This is a secondary source that the vendor has not verified. [[sources/research-flux-deep-dive]]
+A practitioner blog in the dossier lists three ways Flux appears healthy while not delivering what an operator expects. A suspended resource stops reconciling and drift builds up unnoticed. Without webhook Receivers, a change waits for the next polling interval. And running `flux reconcile` without `--with-source` reconciles against the source's last fetched revision, so the command succeeds without picking up the new commit. The same post recommends alerting on `gotk_reconcile_error_total` and `gotk_suspend_status`. This is a secondary source that the vendor has not verified. [sources/research-flux-deep-dive](../sources/research-flux-deep-dive.md)
 
 ## Mitigations
 
@@ -24,4 +24,4 @@ The notification controller's Alerts and Receivers are the built-in answer, and 
 
 ## Related
 
-[[examples/flux-notification-receivers-start-reconciliation-without-waiting-for-the-poll-interval]], [[findings/drift-detection-latency-is-the-interval]], [[findings/continuous-loops-override-intentional-changes]], [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]], [[entities/flux]]
+[examples/flux-notification-receivers-start-reconciliation-without-waiting-for-the-poll-interval](../examples/flux-notification-receivers-start-reconciliation-without-waiting-for-the-poll-interval.md), [findings/drift-detection-latency-is-the-interval](drift-detection-latency-is-the-interval.md), [findings/continuous-loops-override-intentional-changes](continuous-loops-override-intentional-changes.md), [examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing](../examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing.md), [entities/flux](../entities/flux.md)

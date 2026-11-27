@@ -19,7 +19,7 @@ tags: [crd, conversion, versioning, kubebuilder]
 
 ## Summary
 
-A CRD that serves several versions must convert between them. The API offers two strategies, and the hub-and-spoke pattern is a way to organize the code behind the webhook strategy. [[sources/research-custom-resource-definition]]
+A CRD that serves several versions must convert between them. The API offers two strategies, and the hub-and-spoke pattern is a way to organize the code behind the webhook strategy. [sources/research-custom-resource-definition](../sources/research-custom-resource-definition.md)
 
 ## Side by side
 
@@ -39,8 +39,8 @@ Prefer `None` when schemas are compatible, because it removes the webhook depend
 
 ## Related
 
-[[concepts/crd-versioning-and-storage-migration]], [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]], [[examples/kubebuilder-hub-and-spoke-conversion-for-multi-version-crds]], and [[findings/a-down-conversion-webhook-can-stall-garbage-collection]].
+[concepts/crd-versioning-and-storage-migration](../concepts/crd-versioning-and-storage-migration.md), [decisions/conversion-webhook-versus-new-xrd-for-breaking-changes](../decisions/conversion-webhook-versus-new-xrd-for-breaking-changes.md), [examples/kubebuilder-hub-and-spoke-conversion-for-multi-version-crds](../examples/kubebuilder-hub-and-spoke-conversion-for-multi-version-crds.md), and [findings/a-down-conversion-webhook-can-stall-garbage-collection](../findings/a-down-conversion-webhook-can-stall-garbage-collection.md).
 
 ## Additions from the admission and CRD dossier
 
-A down conversion webhook stalled garbage collection until Kubernetes 1.32 ([[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]]). Cluster API uses conversion webhooks at `/convert` and its own migrator ([[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration]]). [[sources/research-gap-m6-admission-crds]]
+A down conversion webhook stalled garbage collection until Kubernetes 1.32 ([findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type](../findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type.md)). Cluster API uses conversion webhooks at `/convert` and its own migrator ([findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration](../findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration.md)). [sources/research-gap-m6-admission-crds](../sources/research-gap-m6-admission-crds.md)

@@ -16,11 +16,11 @@ tags: [decision, crossplane, crossplane-runtime, external-create-pending, idempo
 
 ## Status
 
-Open for each provider. The option exists in crossplane-runtime main, and provider-upjet-aws does not yet set it according to an open issue. This page records the trade-off and is not a ruling. [[sources/research-gap-g1-leaked-resources-adoption]]
+Open for each provider. The option exists in crossplane-runtime main, and provider-upjet-aws does not yet set it according to an open issue. This page records the trade-off and is not a ruling. [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md)
 
 ## Context
 
-Crossplane writes `external-create-pending` before a create and halts when it later finds the marker with no outcome. The guard covers three leak scenarios the maintainer named: cloud-generated names that cannot be stored, eventually consistent APIs reporting that a resource does not exist, and stale cache reads of the managed resource. For a resource whose name the user chooses, the first scenario does not apply, and the halt is only an inconvenience. See [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]].
+Crossplane writes `external-create-pending` before a create and halts when it later finds the marker with no outcome. The guard covers three leak scenarios the maintainer named: cloud-generated names that cannot be stored, eventually consistent APIs reporting that a resource does not exist, and stale cache reads of the managed resource. For a resource whose name the user chooses, the first scenario does not apply, and the halt is only an inconvenience. See [findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes](../findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes.md).
 
 ## Options
 
@@ -29,8 +29,8 @@ Crossplane writes `external-create-pending` before a create and halts when it la
 
 ## Consequences
 
-The first option is what upjet providers do today, and issue 2251 reports about 500 managed resources wedged after a dropped API connection. The second option relies on the cloud API's rejection of a duplicate name, as the 409 in [[examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days]] shows, so a retry of a deterministically named create fails closed. The dossier read the runtime source but not the upjet template.
+The first option is what upjet providers do today, and issue 2251 reports about 500 managed resources wedged after a dropped API connection. The second option relies on the cloud API's rejection of a duplicate name, as the 409 in [examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days](../examples/provider-upjet-aws-issue-2199-a-lost-external-name-after-a-provider-restart-became-a-409-retry-loop-reported-at-about-155-dollars-over-15-days.md) shows, so a retry of a deterministically named create fails closed. The dossier read the runtime source but not the upjet template.
 
 ## Related
 
-[[findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error]], [[decisions/recover-from-an-ambiguous-create-by-halting-searching-or-tagging]], [[decisions/external-name-annotation-or-spec-field]], [[entities/crossplane]]
+[findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error](../findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error.md), [decisions/recover-from-an-ambiguous-create-by-halting-searching-or-tagging](recover-from-an-ambiguous-create-by-halting-searching-or-tagging.md), [decisions/external-name-annotation-or-spec-field](external-name-annotation-or-spec-field.md), [entities/crossplane](../entities/crossplane.md)

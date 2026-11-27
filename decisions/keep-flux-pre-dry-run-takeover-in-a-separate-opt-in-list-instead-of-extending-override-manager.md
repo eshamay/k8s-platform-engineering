@@ -16,11 +16,11 @@ tags: [decision, flux, kustomize-controller, server-side-apply, field-manager]
 
 ## Status
 
-Accepted by the Flux maintainers. It shipped in kustomize-controller v1.10.0 (2026-10-24) through PR 1747. This page records the decision as the project documented it. [[sources/research-gap-g3-flux-ssa-helm]]
+Accepted by the Flux maintainers. It shipped in kustomize-controller v1.10.0 (2026-10-24) through PR 1747. This page records the decision as the project documented it. [sources/research-gap-g3-flux-ssa-helm](../sources/research-gap-g3-flux-ssa-helm.md)
 
 ## Context
 
-Flux runs a server-side apply dry-run before it applies. A legacy controller's stale `Update` manager can co-own a list entry's key, which leaves a half-removed object that fails dry-run validation on every reconcile (see [[examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag]]). The existing `--override-manager` flag reclaims fields only after a successful dry-run, so it cannot help. Taking over before the dry-run fixes the stuck object, but it mutates ownership before validation.
+Flux runs a server-side apply dry-run before it applies. A legacy controller's stale `Update` manager can co-own a list entry's key, which leaves a half-removed object that fails dry-run validation on every reconcile (see [examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag](../examples/flux-issue-1722-a-stale-legacy-manager-wedges-the-dry-run-until-the-v1-10-0-pre-dry-run-flag.md)). The existing `--override-manager` flag reclaims fields only after a successful dry-run, so it cannot help. Taking over before the dry-run fixes the stuck object, but it mutates ownership before validation.
 
 ## Options
 
@@ -34,8 +34,8 @@ Option 3. The pull request states that "the always-on default managers stay on t
 
 ## Consequences
 
-Operators get a recovery path for wedged objects and must opt in by naming each manager exactly. The documentation says to remove the flag once the objects reconcile, because the takeover transfers all fields of the named managers, prunes fields missing from the source, and is not reverted if the apply fails. See [[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]] and [[findings/the-flux-override-manager-flag-takes-over-only-after-a-successful-dry-run-so-it-cannot-recover-an-object-stuck-at-dry-run-validation]].
+Operators get a recovery path for wedged objects and must opt in by naming each manager exactly. The documentation says to remove the flag once the objects reconcile, because the takeover transfers all fields of the named managers, prunes fields missing from the source, and is not reverted if the apply fails. See [findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails](../findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails.md) and [findings/the-flux-override-manager-flag-takes-over-only-after-a-successful-dry-run-so-it-cannot-recover-an-object-stuck-at-dry-run-validation](../findings/the-flux-override-manager-flag-takes-over-only-after-a-successful-dry-run-so-it-cannot-recover-an-object-stuck-at-dry-run-validation.md).
 
 ## Related
 
-[[decisions/force-conflicts-or-surface-them-to-humans]], [[entities/flux]]
+[decisions/force-conflicts-or-surface-them-to-humans](force-conflicts-or-surface-them-to-humans.md), [entities/flux](../entities/flux.md)

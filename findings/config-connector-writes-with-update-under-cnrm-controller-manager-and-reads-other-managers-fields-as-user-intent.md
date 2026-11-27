@@ -16,7 +16,7 @@ tags: [config-connector, server-side-apply, field-manager, managed-fields, verif
 
 ## Observation
 
-Config Connector's lifecycle handler writes with `Update` and `Status().Update` under the field owner `cnrm-controller-manager`, for example `r.Client.Status().Update(ctx, u, client.FieldOwner(r.fieldOwner))`. It does not apply with server-side apply. [[sources/research-gap-m4-ssa-conflict-policy]] URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/lifecyclehandler/handler.go (commit 793f18c).
+Config Connector's lifecycle handler writes with `Update` and `Status().Update` under the field owner `cnrm-controller-manager`, for example `r.Client.Status().Update(ctx, u, client.FieldOwner(r.fieldOwner))`. It does not apply with server-side apply. [sources/research-gap-m4-ssa-conflict-policy](../sources/research-gap-m4-ssa-conflict-policy.md) URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/lifecyclehandler/handler.go (commit 793f18c).
 
 ## How it reads other managers
 
@@ -24,12 +24,12 @@ A helper in `pkg/k8s/managedfields.go` builds the set of spec fields owned by ot
 
 ## What is not known
 
-The public Config Connector documentation page on installation returned empty content, and no other public page about field managers or behavior under Argo CD or Flux was found, so every statement here rests on source and on contributor issues. See [[examples/config-connector-issue-11689-a-collaborator-proposal-says-argo-cd-needs-server-side-apply-for-config-connector-s-crds]].
+The public Config Connector documentation page on installation returned empty content, and no other public page about field managers or behavior under Argo CD or Flux was found, so every statement here rests on source and on contributor issues. See [examples/config-connector-issue-11689-a-collaborator-proposal-says-argo-cd-needs-server-side-apply-for-config-connector-s-crds](../examples/config-connector-issue-11689-a-collaborator-proposal-says-argo-cd-needs-server-side-apply-for-config-connector-s-crds.md).
 
 ## Why it matters
 
-Because Config Connector writes with Update, a GitOps tool's Flux Strip rule does not apply to it, and the Flux Adopt rule is the one that fits. This is an inference from the Flux specification and the source, not a statement by either project. See [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]].
+Because Config Connector writes with Update, a GitOps tool's Flux Strip rule does not apply to it, and the Flux Adopt rule is the one that fits. This is an inference from the Flux specification and the source, not a statement by either project. See [decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field](../decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field.md).
 
 ## Related
 
-[[entities/config-connector]], [[comparisons/ssa-conflict-policy-across-tools]], [[concepts/server-side-apply-and-field-ownership]]
+[entities/config-connector](../entities/config-connector.md), [comparisons/ssa-conflict-policy-across-tools](../comparisons/ssa-conflict-policy-across-tools.md), [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md)

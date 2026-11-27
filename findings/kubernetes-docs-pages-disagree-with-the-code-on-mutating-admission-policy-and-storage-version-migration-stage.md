@@ -19,7 +19,7 @@ tags: [pitfall, kubernetes, documentation, feature-gates, mutating-admission-pol
 
 ## Observation
 
-Feature stage is the claim most likely to be wrong when it is copied from one page. The dossier found four mismatches between kubernetes.io pages, KEP metadata, and the feature-gate tables. [[sources/research-gap-g3-k8s-and-controller-runtime]]
+Feature stage is the claim most likely to be wrong when it is copied from one page. The dossier found four mismatches between kubernetes.io pages, KEP metadata, and the feature-gate tables. [sources/research-gap-g3-k8s-and-controller-runtime](../sources/research-gap-g3-k8s-and-controller-runtime.md)
 
 - **Mutating Admission Policy start version.** The live docs page says it "was first available in the v1.30 release", while the gate table at tag v1.36.0 starts at Alpha 1.32 (off), then Beta 1.34 (off), then GA 1.36 (on). The dossier did not resolve the conflict, so cite the gate table for alpha and beta versions.
 - **StorageVersionMigration task page header.** The page at https://kubernetes.io/docs/tasks/manage-kubernetes-objects/storage-version-migration shows "Beta since Kubernetes v1.35; disabled by default" in its header, while its body says the gate and the API are enabled by default. The header is stale and should not be cited for stage.
@@ -36,8 +36,8 @@ Cite the feature-gate table at a release tag and the CHANGELOG for stage and def
 
 ## Related
 
-[[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]], [[concepts/crd-versioning-and-storage-migration]], [[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source]], [[findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes]]
+[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules](../comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules.md), [concepts/crd-versioning-and-storage-migration](../concepts/crd-versioning-and-storage-migration.md), [findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source](the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source.md), [findings/crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes](crossplane-v2-5-docs-and-source-disagree-on-stage-labels-condition-status-and-group-suffixes.md)
 
 ## Update from the Flux and Kubernetes recheck
 
-Correction note, 2026-11-26: the first mismatch above said the dossier did not resolve the v1.30 conflict. It is now explained: the gate was registered in v1.30.0 as an inert Alpha placeholder and the usable API arrived in v1.32 ([[findings/the-mutating-admission-policy-gate-was-registered-in-v1-30-as-an-inert-alpha-placeholder-and-the-usable-api-arrived-in-v1-32]]). The fourth mismatch is detailed in [[findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source]]. [[sources/research-gap-b1-recheck-flux-k8s]]
+Correction note, 2026-11-26: the first mismatch above said the dossier did not resolve the v1.30 conflict. It is now explained: the gate was registered in v1.30.0 as an inert Alpha placeholder and the usable API arrived in v1.32 ([findings/the-mutating-admission-policy-gate-was-registered-in-v1-30-as-an-inert-alpha-placeholder-and-the-usable-api-arrived-in-v1-32](the-mutating-admission-policy-gate-was-registered-in-v1-30-as-an-inert-alpha-placeholder-and-the-usable-api-arrived-in-v1-32.md)). The fourth mismatch is detailed in [findings/kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source](kep-5647-lists-a-different-gate-shape-from-the-shipped-code-and-monitorinformerstaleness-is-not-found-in-kubernetes-source.md). [sources/research-gap-b1-recheck-flux-k8s](../sources/research-gap-b1-recheck-flux-k8s.md)

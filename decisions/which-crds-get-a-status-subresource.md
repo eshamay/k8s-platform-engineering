@@ -16,7 +16,7 @@ tags: [status-subresource, prometheus-operator, crd-design]
 
 ## Status
 
-Decided by Prometheus Operator in an implemented design proposal, recorded here as a worked decision for CRD authors. [[sources/research-spec-status-split]]
+Decided by Prometheus Operator in an implemented design proposal, recorded here as a worked decision for CRD authors. [sources/research-spec-status-split](../sources/research-spec-status-split.md)
 
 ## Context
 
@@ -28,8 +28,8 @@ Add the status subresource to CRDs that materialize as Pod objects and have a si
 
 ## Consequences
 
-Users get a direct availability signal and controllers can write status without retriggering themselves. Config-style objects stay statusless, so users get no acceptance feedback for them. Enabling the subresource on an existing CRD changes write semantics, because writes to the main resource then ignore status. See [[findings/config-style-crds-with-several-reconcilers-get-no-status]], [[findings/status-writes-through-the-main-resource-retrigger-reconcile-loops]], and [[examples/prometheus-operator-retrofits-status-onto-workload-crds]].
+Users get a direct availability signal and controllers can write status without retriggering themselves. Config-style objects stay statusless, so users get no acceptance feedback for them. Enabling the subresource on an existing CRD changes write semantics, because writes to the main resource then ignore status. See [findings/config-style-crds-with-several-reconcilers-get-no-status](../findings/config-style-crds-with-several-reconcilers-get-no-status.md), [findings/status-writes-through-the-main-resource-retrigger-reconcile-loops](../findings/status-writes-through-the-main-resource-retrigger-reconcile-loops.md), and [examples/prometheus-operator-retrofits-status-onto-workload-crds](../examples/prometheus-operator-retrofits-status-onto-workload-crds.md).
 
 ## Related
 
-[[concepts/custom-resource-definition]], [[concepts/spec-status-split]], [[entities/prometheus-operator]]
+[concepts/custom-resource-definition](../concepts/custom-resource-definition.md), [concepts/spec-status-split](../concepts/spec-status-split.md), [entities/prometheus-operator](../entities/prometheus-operator.md)

@@ -16,12 +16,12 @@ tags: [pitfall, webhooks, tls, cabundle, connectivity]
 
 ## Observation
 
-Every webhook owner must solve certificate and network bootstrapping. The cert-manager webhook page documents two practical failure modes. The first is connectivity from the API server to the webhook on GKE private clusters and on EKS with custom CNIs. The second is an initial unavailability after install, while the webhook waits for leader election, certificate generation, and CA bundle injection. cert-manager addresses TLS with a self-signed CA and automatic renewal of the serving certificate. URL: https://cert-manager.io/docs/concepts/webhook/. [[sources/research-admission-webhooks-and-cel]]
+Every webhook owner must solve certificate and network bootstrapping. The cert-manager webhook page documents two practical failure modes. The first is connectivity from the API server to the webhook on GKE private clusters and on EKS with custom CNIs. The second is an initial unavailability after install, while the webhook waits for leader election, certificate generation, and CA bundle injection. cert-manager addresses TLS with a self-signed CA and automatic renewal of the serving certificate. URL: https://cert-manager.io/docs/concepts/webhook/. [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)
 
 ## Why it matters
 
-During the window a webhook that is registered with `failurePolicy: Fail` can reject or stall matching writes, which ties this pitfall to [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]]. The Kubernetes reference adds that the API server authenticates to the webhook using kubeconfig-based credentials and mutual TLS, so credential and CA configuration is part of the contract.
+During the window a webhook that is registered with `failurePolicy: Fail` can reject or stall matching writes, which ties this pitfall to [findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them](fail-closed-webhooks-can-block-the-writes-needed-to-repair-them.md). The Kubernetes reference adds that the API server authenticates to the webhook using kubeconfig-based credentials and mutual TLS, so credential and CA configuration is part of the contract.
 
 ## Related
 
-[[examples/cert-manager-runs-validation-defaulting-and-conversion-webhooks]], [[entities/cert-manager]], and [[concepts/admission-webhooks-and-cel]].
+[examples/cert-manager-runs-validation-defaulting-and-conversion-webhooks](../examples/cert-manager-runs-validation-defaulting-and-conversion-webhooks.md), [entities/cert-manager](../entities/cert-manager.md), and [concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md).

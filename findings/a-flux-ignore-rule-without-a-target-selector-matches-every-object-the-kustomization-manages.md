@@ -16,7 +16,7 @@ tags: [flux, ignore-rules, drift, pitfall]
 
 ## Observation
 
-The kustomize-controller specification says "Omitting the `target` selector causes the rule to match **all** objects managed by the Kustomization". Ignore rules are lists of JSON Pointer (RFC 6901) paths "to exclude from drift detection", and a rule can carry an optional target selector (with optional regular expressions) to narrow it to chosen objects. URL: https://github.com/fluxcd/kustomize-controller/blob/main/docs/spec/v1/kustomizations.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [[sources/research-gap-o1-argocd-flux-gitops]]
+The kustomize-controller specification says "Omitting the `target` selector causes the rule to match **all** objects managed by the Kustomization". Ignore rules are lists of JSON Pointer (RFC 6901) paths "to exclude from drift detection", and a rule can carry an optional target selector (with optional regular expressions) to narrow it to chosen objects. URL: https://github.com/fluxcd/kustomize-controller/blob/main/docs/spec/v1/kustomizations.md. Dossier-verified from docs at `main` on 2026-11-26, not a pinned release tag. [sources/research-gap-o1-argocd-flux-gitops](../sources/research-gap-o1-argocd-flux-gitops.md)
 
 ## Context
 
@@ -28,4 +28,4 @@ A rule written for one Deployment's `/spec/replicas` that omits the target would
 
 ## Related
 
-[[entities/flux]], [[comparisons/exemption-and-ignore-controls-across-tools]], [[examples/flux-ssa-annotations-and-ignore-rules-share-fields-with-other-controllers]], [[findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied]]
+[entities/flux](../entities/flux.md), [comparisons/exemption-and-ignore-controls-across-tools](../comparisons/exemption-and-ignore-controls-across-tools.md), [examples/flux-ssa-annotations-and-ignore-rules-share-fields-with-other-controllers](../examples/flux-ssa-annotations-and-ignore-rules-share-fields-with-other-controllers.md), [findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied](ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied.md)

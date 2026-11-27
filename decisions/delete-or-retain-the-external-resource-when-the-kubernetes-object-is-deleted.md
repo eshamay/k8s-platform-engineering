@@ -19,7 +19,7 @@ tags: [decision, deletion, retain, crossplane, ack, config-connector]
 
 ## Status
 
-Open. The sources document the defaults and the opt-outs but do not recommend one setting, so this page records the options. [[sources/research-finalizers]]
+Open. The sources document the defaults and the opt-outs but do not recommend one setting, so this page records the options. [sources/research-finalizers](../sources/research-finalizers.md)
 
 ## Context
 
@@ -37,8 +37,8 @@ Retention protects data and enables migration, but it needs a policy applied bef
 
 ## Related
 
-[[findings/destructive-deletion-of-external-resources]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]], [[decisions/adopt-or-create-or-require-explicit-import]]
+[findings/destructive-deletion-of-external-resources](../findings/destructive-deletion-of-external-resources.md), [comparisons/deletion-policies-across-gitops-and-provider-tools](../comparisons/deletion-policies-across-gitops-and-provider-tools.md), [decisions/adopt-or-create-or-require-explicit-import](adopt-or-create-or-require-explicit-import.md)
 
 ## Update from the o3 dossier
 
-For the GitOps prune case specifically, the options by layer, with evidence and no recommendation, are on [[decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out]]. The ACK lookup order (resource, namespace, controller default) means a controller-wide retain can be overridden by a resource-level annotation. [[sources/research-gap-o3-gitops-provider-managed]]
+For the GitOps prune case specifically, the options by layer, with evidence and no recommendation, are on [decisions/protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out](protect-a-provider-managed-object-from-gitops-prune-with-a-provider-retain-policy-or-an-agent-side-prune-opt-out.md). The ACK lookup order (resource, namespace, controller default) means a controller-wide retain can be overridden by a resource-level annotation. [sources/research-gap-o3-gitops-provider-managed](../sources/research-gap-o3-gitops-provider-managed.md)

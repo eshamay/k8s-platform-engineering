@@ -19,16 +19,16 @@ tags: [pitfall, crd-ordering, gitops, helm]
 
 ## Observation
 
-Applying a custom resource whose CRD is missing, or present but not yet established, fails with "no matches for kind X in version Y". The dossier reports this in Helm, Argo CD, and Flux alike. Other causes listed are a wrong apiVersion and version skew between an operator and its CRDs. URL: https://oneuptime.com/blog/post/2026-08-27-fix-no-matches-kind-servicemonitor-helm-argo-cd/view. [[sources/research-gvk-and-gvr]]
+Applying a custom resource whose CRD is missing, or present but not yet established, fails with "no matches for kind X in version Y". The dossier reports this in Helm, Argo CD, and Flux alike. Other causes listed are a wrong apiVersion and version skew between an operator and its CRDs. URL: https://oneuptime.com/blog/post/2026-08-27-fix-no-matches-kind-servicemonitor-helm-argo-cd/view. [sources/research-gvk-and-gvr](../sources/research-gvk-and-gvr.md)
 
 ## Mitigations in the sources
 
 - Ordering: Flux separates CRD-providing controllers and custom resources into Kustomizations linked by `dependsOn`, with health checks. Argo CD users reach for sync waves and skipping dry-run on missing resources, but those Argo CD details are unverified because the pages could not be read.
 - Installing a pinned, compatible CRD set first and waiting for it to become established.
-- Mapper invalidation in clients, as in [[findings/stale-restmapper-hides-newly-installed-crds]].
+- Mapper invalidation in clients, as in [findings/stale-restmapper-hides-newly-installed-crds](stale-restmapper-hides-newly-installed-crds.md).
 
-Flux health checks reference resources by apiVersion and kind, so they also depend on discovery. See [[comparisons/missing-crd-handling-flux-versus-argo-cd]], [[findings/ordering-and-dependency-failures]], and [[examples/servicemonitor-no-matches-for-kind-in-helm-and-argo-cd]].
+Flux health checks reference resources by apiVersion and kind, so they also depend on discovery. See [comparisons/missing-crd-handling-flux-versus-argo-cd](../comparisons/missing-crd-handling-flux-versus-argo-cd.md), [findings/ordering-and-dependency-failures](ordering-and-dependency-failures.md), and [examples/servicemonitor-no-matches-for-kind-in-helm-and-argo-cd](../examples/servicemonitor-no-matches-for-kind-in-helm-and-argo-cd.md).
 
 ## Additions from the CRD dossier
 
-Flux recommends `dependsOn` so that CRDs and their controllers exist before dependent releases, and Helm will not upgrade CRDs. [[sources/research-custom-resource-definition]] See [[findings/helm-does-not-upgrade-or-delete-crds]] and [[examples/flux-helmrelease-crd-policies-createreplace-and-dependson]].
+Flux recommends `dependsOn` so that CRDs and their controllers exist before dependent releases, and Helm will not upgrade CRDs. [sources/research-custom-resource-definition](../sources/research-custom-resource-definition.md) See [findings/helm-does-not-upgrade-or-delete-crds](helm-does-not-upgrade-or-delete-crds.md) and [examples/flux-helmrelease-crd-policies-createreplace-and-dependson](../examples/flux-helmrelease-crd-policies-createreplace-and-dependson.md).

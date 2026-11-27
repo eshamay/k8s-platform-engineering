@@ -16,7 +16,7 @@ tags: [observedgeneration, conditions, api-design, decision, evidence-only]
 
 ## Status
 
-Open decision with options and evidence only. This page makes no recommendation. No source states a rule for choosing a placement, and the Kubernetes API conventions document both without ranking them. [[sources/research-gap-m3-status-conditions]]
+Open decision with options and evidence only. This page makes no recommendation. No source states a rule for choosing a placement, and the Kubernetes API conventions document both without ranking them. [sources/research-gap-m3-status-conditions](../sources/research-gap-m3-status-conditions.md)
 
 ## Context
 
@@ -26,16 +26,16 @@ An API author who publishes status must decide where to record the generation th
 
 ### Option A: top-level only
 
-This is the placement that kstatus and Argo CD consume. kstatus's condition struct has no per-condition field, Argo CD's docs tell health-check authors to use `status.observedGeneration`, and Config Connector's direct controllers write only the top-level value. The cost is that every condition shares one staleness marker. See [[findings/kstatus-reads-only-the-top-level-observedgeneration-because-its-condition-struct-has-no-per-condition-field]] and [[examples/config-connector-direct-controllers-write-a-top-level-observedgeneration-and-leave-the-per-condition-line-commented-out]].
+This is the placement that kstatus and Argo CD consume. kstatus's condition struct has no per-condition field, Argo CD's docs tell health-check authors to use `status.observedGeneration`, and Config Connector's direct controllers write only the top-level value. The cost is that every condition shares one staleness marker. See [findings/kstatus-reads-only-the-top-level-observedgeneration-because-its-condition-struct-has-no-per-condition-field](../findings/kstatus-reads-only-the-top-level-observedgeneration-because-its-condition-struct-has-no-per-condition-field.md) and [examples/config-connector-direct-controllers-write-a-top-level-observedgeneration-and-leave-the-per-condition-line-commented-out](../examples/config-connector-direct-controllers-write-a-top-level-observedgeneration-and-leave-the-per-condition-line-commented-out.md).
 
 ### Option B: per condition only
 
-This is what `metav1.Condition` supports, and it lets each condition go stale independently, which matters when several writers or phases update different conditions. The ACK issue behind [[findings/missing-observedgeneration-hides-stale-status]] asks for this form. The cost is that kstatus and Argo CD cannot see the value, so their generation check is skipped. See [[findings/a-kstatus-resource-whose-controller-never-writes-status-observedgeneration-skips-the-generation-check-and-can-read-current-early]]. Cluster API's 2024 proposal moves its own conditions to this type. See [[examples/cluster-api-s-2020-conditions-proposal-had-no-observedgeneration-and-the-2024-proposal-moves-to-metav1-conditions]].
+This is what `metav1.Condition` supports, and it lets each condition go stale independently, which matters when several writers or phases update different conditions. The ACK issue behind [findings/missing-observedgeneration-hides-stale-status](../findings/missing-observedgeneration-hides-stale-status.md) asks for this form. The cost is that kstatus and Argo CD cannot see the value, so their generation check is skipped. See [findings/a-kstatus-resource-whose-controller-never-writes-status-observedgeneration-skips-the-generation-check-and-can-read-current-early](../findings/a-kstatus-resource-whose-controller-never-writes-status-observedgeneration-skips-the-generation-check-and-can-read-current-early.md). Cluster API's 2024 proposal moves its own conditions to this type. See [examples/cluster-api-s-2020-conditions-proposal-had-no-observedgeneration-and-the-2024-proposal-moves-to-metav1-conditions](../examples/cluster-api-s-2020-conditions-proposal-had-no-observedgeneration-and-the-2024-proposal-moves-to-metav1-conditions.md).
 
 ### Option C: both
 
-The conventions permit this, and Flux does it: its setter stamps the current generation on every condition and its Kustomization status also keeps a top-level field. Simple and precise consumers then both work, at the cost of two places that must stay correct. See [[examples/flux-stamps-the-current-generation-on-every-condition-and-also-keeps-a-top-level-observedgeneration]].
+The conventions permit this, and Flux does it: its setter stamps the current generation on every condition and its Kustomization status also keeps a top-level field. Simple and precise consumers then both work, at the cost of two places that must stay correct. See [examples/flux-stamps-the-current-generation-on-every-condition-and-also-keeps-a-top-level-observedgeneration](../examples/flux-stamps-the-current-generation-on-every-condition-and-also-keeps-a-top-level-observedgeneration.md).
 
 ## Consequences
 
-Whichever option is chosen, a consumer that reads a different placement from the one the author writes sees no staleness signal. The dossier found no incident that compares the options, and a third-party gist (SECONDARY-ONLY, read in part) describes setting `observedGeneration` even on a Stalled result. See [[comparisons/observedgeneration-top-level-versus-per-condition]], [[concepts/conditions]], and [[entities/kstatus]].
+Whichever option is chosen, a consumer that reads a different placement from the one the author writes sees no staleness signal. The dossier found no incident that compares the options, and a third-party gist (SECONDARY-ONLY, read in part) describes setting `observedGeneration` even on a Stalled result. See [comparisons/observedgeneration-top-level-versus-per-condition](../comparisons/observedgeneration-top-level-versus-per-condition.md), [concepts/conditions](../concepts/conditions.md), and [entities/kstatus](../entities/kstatus.md).

@@ -16,7 +16,7 @@ tags: [flux, sharding, notification-controller, image-automation, limits]
 
 ## Observation
 
-The Flux sharding page says of notification-controller and source-watcher that "these controllers do not support sharding". Its example also deletes the image-reflector and image-automation Deployments from the shard sets, so the documented recipe shards the source, kustomize, and helm controllers and leaves image automation to the default instance. The page advises sharding "when Flux is managing tens of thousands of applications". [[sources/research-gap-o2-flux-internals]]
+The Flux sharding page says of notification-controller and source-watcher that "these controllers do not support sharding". Its example also deletes the image-reflector and image-automation Deployments from the shard sets, so the documented recipe shards the source, kustomize, and helm controllers and leaves image automation to the default instance. The page advises sharding "when Flux is managing tens of thousands of applications". [sources/research-gap-o2-flux-internals](../sources/research-gap-o2-flux-internals.md)
 
 URL: https://github.com/fluxcd/website/blob/main/content/en/flux/installation/configuration/sharding.md, read on `main` on 2026-11-26.
 
@@ -30,4 +30,4 @@ A sharding plan that targets load from notifications or image scanning will not 
 
 ## Related
 
-[[findings/a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels]], [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]], [[entities/flux-operator]], [[entities/flux]]
+[findings/a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels](a-flux-helmchart-generated-from-a-helmrelease-takes-its-shard-label-from-spec-chart-metadata-labels.md), [examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances](../examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances.md), [entities/flux-operator](../entities/flux-operator.md), [entities/flux](../entities/flux.md)

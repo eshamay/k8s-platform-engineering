@@ -16,13 +16,13 @@ tags: [cel, limits, crd, validating-admission-policy, verified]
 
 ## Observation
 
-The numbers come from Kubernetes source on master, read on 2026-11-26 (latest release v1.37.3). In `staging/src/k8s.io/apiserver/pkg/apis/cel/config.go`, `PerCallLimit = 1000000` is the runtime limit for one expression call, described as "roughly 0.1 second for each expression validation call". `RuntimeCELCostBudget = 10000000` is the overall runtime budget per ValidatingAdmissionPolicyBinding or per custom resource, described as roughly one second. `RuntimeCELCostBudgetMatchConditions = 2500000` covers matchConditions, roughly a quarter second. `MaxRequestSizeBytes` is 3 MiB and is used as the worst-case size in estimates, and `MaxEvaluatedMessageExpressionSizeBytes` is 5 KiB. https://raw.githubusercontent.com/kubernetes/kubernetes/master/staging/src/k8s.io/apiserver/pkg/apis/cel/config.go [[sources/research-gap-m6-admission-crds]]
+The numbers come from Kubernetes source on master, read on 2026-11-26 (latest release v1.37.3). In `staging/src/k8s.io/apiserver/pkg/apis/cel/config.go`, `PerCallLimit = 1000000` is the runtime limit for one expression call, described as "roughly 0.1 second for each expression validation call". `RuntimeCELCostBudget = 10000000` is the overall runtime budget per ValidatingAdmissionPolicyBinding or per custom resource, described as roughly one second. `RuntimeCELCostBudgetMatchConditions = 2500000` covers matchConditions, roughly a quarter second. `MaxRequestSizeBytes` is 3 MiB and is used as the worst-case size in estimates, and `MaxEvaluatedMessageExpressionSizeBytes` is 5 KiB. https://raw.githubusercontent.com/kubernetes/kubernetes/master/staging/src/k8s.io/apiserver/pkg/apis/cel/config.go [sources/research-gap-m6-admission-crds](../sources/research-gap-m6-admission-crds.md)
 
 In `staging/src/k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/validation/validation.go`, `StaticEstimatedCostLimit` is 10,000,000 for one expression and `StaticEstimatedCRDCostLimit = 100000000` is the total for all `x-kubernetes-validations` rules of one CRD. The per-expression check is suppressed when the schema is unchanged (`suppressPerExpressionCost`), so older CRDs are not broken when estimates tighten. https://raw.githubusercontent.com/kubernetes/kubernetes/master/staging/src/k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/validation/validation.go
 
 ## Why it matters
 
-Schema authors now have the numbers that the earlier wiki pages said were missing. The static limits decide whether a CRD is accepted at creation, and the runtime limits decide whether a single request is denied while it is evaluated. See [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]].
+Schema authors now have the numbers that the earlier wiki pages said were missing. The static limits decide whether a CRD is accepted at creation, and the runtime limits decide whether a single request is denied while it is evaluated. See [findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost](cel-policies-cannot-reach-external-data-and-have-bounded-cost.md).
 
 ## Limits of the evidence
 
@@ -30,4 +30,4 @@ The values are read from the default branch, not pinned to a release tag, so a g
 
 ## Related
 
-[[concepts/admission-webhooks-and-cel]], [[decisions/validate-with-cel-rules-or-a-validating-webhook]], and [[findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set]].
+[concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md), [decisions/validate-with-cel-rules-or-a-validating-webhook](../decisions/validate-with-cel-rules-or-a-validating-webhook.md), and [findings/an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set](an-unbounded-list-or-string-makes-the-cel-cost-estimate-reject-a-crd-rule-until-maxitems-and-maxlength-are-set.md).

@@ -16,7 +16,7 @@ tags: [pitfall, finalizers, orphans, service-controller, cluster-api, deletion]
 
 ## Observation
 
-Orphaning has causes other than forced finalizer removal, and the dossier's primary evidence is about those. Kubernetes issue 53451 (2017) says the service controller can leave orphaned load balancers if it restarts while a delete is pending, because the Service is already gone from etcd. Issue 43730 (2017, Azure, v1.5.3) reports public IP and load balancer frontend leaks after Service deletion filling a 10-entry pool. Cluster API issue 8172 (2023, v1.3.0) says that deleting objects before the controller adds its finalizer means "the resources created by these objects get orphaned". [[sources/research-gap-g1-gitops-drift-incidents]]
+Orphaning has causes other than forced finalizer removal, and the dossier's primary evidence is about those. Kubernetes issue 53451 (2017) says the service controller can leave orphaned load balancers if it restarts while a delete is pending, because the Service is already gone from etcd. Issue 43730 (2017, Azure, v1.5.3) reports public IP and load balancer frontend leaks after Service deletion filling a 10-entry pool. Cluster API issue 8172 (2023, v1.3.0) says that deleting objects before the controller adds its finalizer means "the resources created by these objects get orphaned". [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md)
 
 ## Evidence quality
 
@@ -24,4 +24,4 @@ These are issue texts from the reporters. Issue 53451 proposed a finalizer on al
 
 ## Related
 
-[[examples/kubernetes-issues-53451-and-43730-service-deletions-leaked-cloud-load-balancers-and-public-ips]], [[examples/cluster-api-issue-8172-deleting-parents-before-the-controller-adds-its-finalizer-orphans-their-resources]], [[findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources]], [[findings/a-finalizer-added-after-the-delete-request-is-too-late-and-new-ones-are-refused]], [[concepts/finalizers]]
+[examples/kubernetes-issues-53451-and-43730-service-deletions-leaked-cloud-load-balancers-and-public-ips](../examples/kubernetes-issues-53451-and-43730-service-deletions-leaked-cloud-load-balancers-and-public-ips.md), [examples/cluster-api-issue-8172-deleting-parents-before-the-controller-adds-its-finalizer-orphans-their-resources](../examples/cluster-api-issue-8172-deleting-parents-before-the-controller-adds-its-finalizer-orphans-their-resources.md), [findings/no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources](no-source-quantifies-how-often-forced-finalizer-removal-orphans-guarded-resources.md), [findings/a-finalizer-added-after-the-delete-request-is-too-late-and-new-ones-are-refused](a-finalizer-added-after-the-delete-request-is-too-late-and-new-ones-are-refused.md), [concepts/finalizers](../concepts/finalizers.md)

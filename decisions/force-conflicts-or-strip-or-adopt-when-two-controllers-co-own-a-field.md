@@ -16,7 +16,7 @@ tags: [decision, server-side-apply, flux, argo-cd, conflict-policy, evidence-onl
 
 ## Status
 
-Open, and evidence-only. This page lists the options and the evidence for each. It makes no recommendation, because no source compares the policies and no experiment was run. [[sources/research-gap-m4-ssa-conflict-policy]]
+Open, and evidence-only. This page lists the options and the evidence for each. It makes no recommendation, because no source compares the policies and no experiment was run. [sources/research-gap-m4-ssa-conflict-policy](../sources/research-gap-m4-ssa-conflict-policy.md)
 
 ## Context
 
@@ -32,8 +32,8 @@ Two controllers sometimes legitimately write one field, for example a GitOps too
 
 ## Evidence and limits
 
-Strip applies only to Apply-type managers, so a controller that writes with Update, such as Config Connector's `cnrm-controller-manager`, would be covered by adopt and not strip. That is an inference from the Flux specification and Config Connector source and is not a statement by either project. The kube-green write-up reports that manager-scoped ignores depend on the other controller using server-side apply under a stable name. Forcing also has limits, since a forced apply failed in [[examples/kubernetes-issue-130292-a-forced-server-side-apply-could-not-revert-an-edited-service-port]].
+Strip applies only to Apply-type managers, so a controller that writes with Update, such as Config Connector's `cnrm-controller-manager`, would be covered by adopt and not strip. That is an inference from the Flux specification and Config Connector source and is not a statement by either project. The kube-green write-up reports that manager-scoped ignores depend on the other controller using server-side apply under a stable name. Forcing also has limits, since a forced apply failed in [examples/kubernetes-issue-130292-a-forced-server-side-apply-could-not-revert-an-edited-service-port](../examples/kubernetes-issue-130292-a-forced-server-side-apply-could-not-revert-an-edited-service-port.md).
 
 ## Consequences
 
-Choosing force keeps Git authoritative and risks silent loss of the other controller's writes. Choosing strip or adopt keeps the other controller's writes and means Git changes to the ignored field no longer apply, see [[findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied]]. The broader default-policy question is in [[decisions/force-conflicts-or-surface-them-to-humans]], and the tools are compared in [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]].
+Choosing force keeps Git authoritative and risks silent loss of the other controller's writes. Choosing strip or adopt keeps the other controller's writes and means Git changes to the ignored field no longer apply, see [findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied](../findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied.md). The broader default-policy question is in [decisions/force-conflicts-or-surface-them-to-humans](force-conflicts-or-surface-them-to-humans.md), and the tools are compared in [comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights](../comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights.md).

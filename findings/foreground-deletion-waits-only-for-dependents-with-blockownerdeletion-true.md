@@ -22,16 +22,16 @@ tags: [pitfall, garbage-collection, finalizers, owner-references]
 
 ## Observation
 
-The Kubernetes garbage collection page defines three propagation modes. In background mode, the default, the API server deletes the owner immediately and the garbage collector removes dependents later. In foreground mode the owner gets `deletionTimestamp` and the `foregroundDeletion` finalizer, and the finalizer is removed only after dependents with `blockOwnerDeletion=true` are gone. In orphan mode the `orphan` finalizer leaves the dependents behind. [[sources/research-finalizers]]
+The Kubernetes garbage collection page defines three propagation modes. In background mode, the default, the API server deletes the owner immediately and the garbage collector removes dependents later. In foreground mode the owner gets `deletionTimestamp` and the `foregroundDeletion` finalizer, and the finalizer is removed only after dependents with `blockOwnerDeletion=true` are gone. In orphan mode the `orphan` finalizer leaves the dependents behind. [sources/research-finalizers](../sources/research-finalizers.md)
 
 ## Consequence
 
-A parent can be stuck waiting on children, and a dependent without `blockOwnerDeletion=true` does not hold the parent at all. Someone who expects foreground deletion to guarantee that every child has left will be wrong for those dependents. Owner references also cannot cross namespaces. See [[concepts/owner-references-and-garbage-collection]].
+A parent can be stuck waiting on children, and a dependent without `blockOwnerDeletion=true` does not hold the parent at all. Someone who expects foreground deletion to guarantee that every child has left will be wrong for those dependents. Owner references also cannot cross namespaces. See [concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md).
 
 ## Related
 
-[[concepts/finalizers]], [[comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api]], [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]]
+[concepts/finalizers](../concepts/finalizers.md), [comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api](../comparisons/finalizer-gated-teardown-across-argo-cd-flux-kro-and-cluster-api.md), [findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing](finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing.md)
 
 ## Additional evidence
 
-The owner-reference dossier confirms the same rule and adds that setting `blockOwnerDeletion` is guarded by an admission check on delete permission, with an unverified claim of silent dropping. [[sources/research-owner-references-and-garbage-collection]] Correction 2026-11-26: the plugin source requires `update` on the owner's `finalizers` subresource and rejects the write with Forbidden, and the plugin is off by default upstream. [[sources/research-gap-m2-ownership-gc]] See [[findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed]] and [[comparisons/background-foreground-and-orphan-propagation-modes]].
+The owner-reference dossier confirms the same rule and adds that setting `blockOwnerDeletion` is guarded by an admission check on delete permission, with an unverified claim of silent dropping. [sources/research-owner-references-and-garbage-collection](../sources/research-owner-references-and-garbage-collection.md) Correction 2026-11-26: the plugin source requires `update` on the owner's `finalizers` subresource and rejects the write with Forbidden, and the plugin is off by default upstream. [sources/research-gap-m2-ownership-gc](../sources/research-gap-m2-ownership-gc.md) See [findings/blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed](blockownerdeletion-needs-permission-on-the-owner-and-the-failure-mode-is-disputed.md) and [comparisons/background-foreground-and-orphan-propagation-modes](../comparisons/background-foreground-and-orphan-propagation-modes.md).
