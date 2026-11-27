@@ -16,7 +16,7 @@ tags: [use-case, ack, aws, external-systems]
 
 ## Scenario
 
-AWS exposes hundreds of resource types through service-specific APIs. AWS Controllers for Kubernetes lets teams manage them as Kubernetes objects without running supporting services inside the cluster. [[sources/research-operator-pattern]]
+AWS exposes hundreds of resource types through service-specific APIs. AWS Controllers for Kubernetes lets teams manage them as Kubernetes objects without running supporting services inside the cluster. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ ACK ships one controller image per AWS service, and each reconciles custom resou
 
 ## Related
 
-[[entities/ack]], [[comparisons/how-flux-ack-and-cluster-api-split-controllers]], [[examples/ack-resync-period-tuning-for-stateful-resources]], [[examples/cloud-services-as-kubernetes-objects]]
+[entities/ack](../entities/ack.md), [comparisons/how-flux-ack-and-cluster-api-split-controllers](../comparisons/how-flux-ack-and-cluster-api-split-controllers.md), [examples/ack-resync-period-tuning-for-stateful-resources](ack-resync-period-tuning-for-stateful-resources.md), [examples/cloud-services-as-kubernetes-objects](cloud-services-as-kubernetes-objects.md)

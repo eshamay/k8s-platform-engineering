@@ -16,7 +16,7 @@ tags: [nvidia, nvsentinel, informer, restart-gap, finalizers, lost-events]
 
 ## Scenario
 
-NVIDIA's NVSentinel project received issue 1542 on 2026-07-27, and it was closed on 2026-10-21. The fix was not read. [[sources/research-gap-g1-operator-loop-failures]] URL: https://github.com/NVIDIA/NVSentinel/issues/1542
+NVIDIA's NVSentinel project received issue 1542 on 2026-07-27, and it was closed on 2026-10-21. The fix was not read. [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md) URL: https://github.com/NVIDIA/NVSentinel/issues/1542
 
 ## What happened
 
@@ -24,8 +24,8 @@ The kubernetes-object-monitor watches objects and sends health events. If the mo
 
 ## Why it belongs here
 
-It is the named case for [[findings/a-delete-that-happens-while-a-controller-is-down-is-never-delivered-so-finalizers-or-resync-must-cover-it]], and it shows an event-keyed design failing where a state-keyed one would have noticed the absence.
+It is the named case for [findings/a-delete-that-happens-while-a-controller-is-down-is-never-delivered-so-finalizers-or-resync-must-cover-it](../findings/a-delete-that-happens-while-a-controller-is-down-is-never-delivered-so-finalizers-or-resync-must-cover-it.md), and it shows an event-keyed design failing where a state-keyed one would have noticed the absence.
 
 ## Related
 
-[[findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down]], [[concepts/finalizers]], [[concepts/level-triggered-vs-edge-triggered]]
+[findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down](../findings/a-controller-that-relies-on-seeing-every-event-misses-changes-made-while-it-is-down.md), [concepts/finalizers](../concepts/finalizers.md), [concepts/level-triggered-vs-edge-triggered](../concepts/level-triggered-vs-edge-triggered.md)

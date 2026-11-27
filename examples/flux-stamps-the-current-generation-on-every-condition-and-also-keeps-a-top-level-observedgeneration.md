@@ -16,7 +16,7 @@ tags: [flux, conditions, observedgeneration, polarity, kstatus]
 
 ## Scenario
 
-Flux controllers publish status that both humans and generic tools read, including kstatus-based waiters. The Flux runtime library therefore has to satisfy the Kubernetes convention of a per-condition `observedGeneration` and the kstatus habit of reading only the top-level field. [[sources/research-gap-m3-status-conditions]]
+Flux controllers publish status that both humans and generic tools read, including kstatus-based waiters. The Flux runtime library therefore has to satisfy the Kubernetes convention of a per-condition `observedGeneration` and the kstatus habit of reading only the top-level field. [sources/research-gap-m3-status-conditions](../sources/research-gap-m3-status-conditions.md)
 
 ## How it works
 
@@ -26,4 +26,4 @@ On polarity, Flux mixes both styles. Its constants say `Stalled` and `Reconcilin
 
 ## Lesson
 
-Flux is the clearest worked case of the "both" option in [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]], at the cost of two places that must stay correct. It also shows the mixed-polarity option in [[decisions/choose-abnormal-true-or-positive-polarity-for-new-condition-types]]. See [[entities/flux]], [[entities/kstatus]], and [[comparisons/observedgeneration-top-level-versus-per-condition]].
+Flux is the clearest worked case of the "both" option in [decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both](../decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both.md), at the cost of two places that must stay correct. It also shows the mixed-polarity option in [decisions/choose-abnormal-true-or-positive-polarity-for-new-condition-types](../decisions/choose-abnormal-true-or-positive-polarity-for-new-condition-types.md). See [entities/flux](../entities/flux.md), [entities/kstatus](../entities/kstatus.md), and [comparisons/observedgeneration-top-level-versus-per-condition](../comparisons/observedgeneration-top-level-versus-per-condition.md).

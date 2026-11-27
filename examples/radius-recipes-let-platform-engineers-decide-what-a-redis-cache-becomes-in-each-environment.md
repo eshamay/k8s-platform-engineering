@@ -16,7 +16,7 @@ tags: [radius, recipes, example, application-platform]
 
 ## The use case
 
-In Radius, a developer describes an application with its containers, databases, and the connections between them, and asks for "a Redis cache" without specifying how to build one. A platform engineer then supplies a Recipe that decides what the `Redis` resource type becomes in a given environment. A third-party review describes this split as the heart of the product (https://devopsboys.com/blog/radius-application-platform-kubernetes-review-2026). [[sources/research-kro-and-abstraction-models]]
+In Radius, a developer describes an application with its containers, databases, and the connections between them, and asks for "a Redis cache" without specifying how to build one. A platform engineer then supplies a Recipe that decides what the `Redis` resource type becomes in a given environment. A third-party review describes this split as the heart of the product (https://devopsboys.com/blog/radius-application-platform-kubernetes-review-2026). [sources/research-kro-and-abstraction-models](../sources/research-kro-and-abstraction-models.md)
 
 ## Why it is an example of an abstraction model
 
@@ -24,4 +24,4 @@ The same application definition can therefore run with a lightweight implementat
 
 ## Caveats
 
-The review lists a Bicep dependency, an Azure lean, a separate control plane, and early maturity as limits. The primary Radius documentation could not be read, so this example has only secondary support. See [[entities/radius]] and [[findings/radius-maturity-and-governance-claims-rest-on-a-single-third-party-blog]].
+The review lists a Bicep dependency, an Azure lean, a separate control plane, and early maturity as limits. The primary Radius documentation could not be read, so this example has only secondary support. See [entities/radius](../entities/radius.md) and [findings/radius-maturity-and-governance-claims-rest-on-a-single-third-party-blog](../findings/radius-maturity-and-governance-claims-rest-on-a-single-third-party-blog.md).

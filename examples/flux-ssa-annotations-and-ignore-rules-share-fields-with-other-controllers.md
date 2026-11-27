@@ -19,7 +19,7 @@ tags: [flux, server-side-apply, ignore, annotations]
 
 ## Scenario
 
-A Flux Kustomization manages resources whose fields other controllers legitimately change later. The documentation names Secrets managed by cert-manager and ValidatingWebhookConfigurations as the use case. [[sources/research-server-side-apply-and-field-ownership]]
+A Flux Kustomization manages resources whose fields other controllers legitimately change later. The documentation names Secrets managed by cert-manager and ValidatingWebhookConfigurations as the use case. [sources/research-server-side-apply-and-field-ownership](../sources/research-server-side-apply-and-field-ownership.md)
 
 ## Per-resource annotations
 
@@ -31,12 +31,12 @@ The annotation `kustomize.toolkit.fluxcd.io/ssa` selects a policy. `Override` ma
 
 ## Limit
 
-Atomic lists such as `.spec.tolerations` cannot be shared between managers under the `Merge` policy, because only one manager can own an atomic list. See [[findings/atomic-lists-and-unmarked-crds-block-shared-field-ownership]].
+Atomic lists such as `.spec.tolerations` cannot be shared between managers under the `Merge` policy, because only one manager can own an atomic list. See [findings/atomic-lists-and-unmarked-crds-block-shared-field-ownership](../findings/atomic-lists-and-unmarked-crds-block-shared-field-ownership.md).
 
 ## Lesson
 
-Flux force-applies by default and then offers escape hatches in SSA vocabulary. See [[comparisons/ssa-conflict-policy-across-tools]], [[comparisons/exemption-and-ignore-controls-across-tools]], and [[entities/flux]].
+Flux force-applies by default and then offers escape hatches in SSA vocabulary. See [comparisons/ssa-conflict-policy-across-tools](../comparisons/ssa-conflict-policy-across-tools.md), [comparisons/exemption-and-ignore-controls-across-tools](../comparisons/exemption-and-ignore-controls-across-tools.md), and [entities/flux](../entities/flux.md).
 
 ## Update from the m4 dossier
 
-Update 2026-11-26: the Strip and Adopt wording above is confirmed by the kustomize-controller specification. Strip removes the field from the apply payload, which "relinquishes the controller's ownership". Adopt "preserves the current value without reverting changes made by Update-type operations", and changes to ignored fields alone do not trigger a reconciliation. Because Strip applies only to Apply-type managers, a controller that writes with Update, such as Config Connector's `cnrm-controller-manager`, would be covered by Adopt. That last point is an inference from the specification and the source, not a project statement. [[sources/research-gap-m4-ssa-conflict-policy]] See [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]].
+Update 2026-11-26: the Strip and Adopt wording above is confirmed by the kustomize-controller specification. Strip removes the field from the apply payload, which "relinquishes the controller's ownership". Adopt "preserves the current value without reverting changes made by Update-type operations", and changes to ignored fields alone do not trigger a reconciliation. Because Strip applies only to Apply-type managers, a controller that writes with Update, such as Config Connector's `cnrm-controller-manager`, would be covered by Adopt. That last point is an inference from the specification and the source, not a project statement. [sources/research-gap-m4-ssa-conflict-policy](../sources/research-gap-m4-ssa-conflict-policy.md) See [decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field](../decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field.md).

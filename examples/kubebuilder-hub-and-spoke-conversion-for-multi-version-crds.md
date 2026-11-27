@@ -16,7 +16,7 @@ tags: [crd, conversion, kubebuilder, versioning]
 
 ## Scenario
 
-A controller project has shipped several versions of the same API and needs the apiserver to serve every one of them. Each served version must convert to and from whichever version is stored. [[sources/research-custom-resource-definition]]
+A controller project has shipped several versions of the same API and needs the apiserver to serve every one of them. Each served version must convert to and from whichever version is stored. [sources/research-custom-resource-definition](../sources/research-custom-resource-definition.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ The Kubebuilder book describes picking one version as the hub, with every other 
 
 ## Lesson
 
-The pattern limits how much conversion code must be written and tested, but it still produces a webhook service that the apiserver calls, and the dossier documents what happens when that service is down. See [[findings/a-down-conversion-webhook-can-stall-garbage-collection]], [[comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke]], [[concepts/crd-versioning-and-storage-migration]], and [[entities/kubebuilder]].
+The pattern limits how much conversion code must be written and tested, but it still produces a webhook service that the apiserver calls, and the dossier documents what happens when that service is down. See [findings/a-down-conversion-webhook-can-stall-garbage-collection](../findings/a-down-conversion-webhook-can-stall-garbage-collection.md), [comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke](../comparisons/crd-conversion-strategies-none-webhook-and-hub-and-spoke.md), [concepts/crd-versioning-and-storage-migration](../concepts/crd-versioning-and-storage-migration.md), and [entities/kubebuilder](../entities/kubebuilder.md).

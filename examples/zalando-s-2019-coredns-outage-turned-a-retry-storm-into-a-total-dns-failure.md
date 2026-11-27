@@ -16,7 +16,7 @@ tags: [postmortem, dns, coredns, retry-storm, zalando, blast-radius]
 
 ## Scenario
 
-Zalando ran Kubernetes on AWS from 2016 and published its postmortems in the kubernetes-on-aws repository. On 2019-01-07 its product pages returned errors for over an hour. [[sources/research-pitfalls-and-case-studies]]
+Zalando ran Kubernetes on AWS from 2016 and published its postmortems in the kubernetes-on-aws repository. On 2019-01-07 its product pages returned errors for over an hour. [sources/research-pitfalls-and-case-studies](../sources/research-pitfalls-and-case-studies.md)
 
 ## What happened
 
@@ -28,8 +28,8 @@ Zalando raised the memory limits to 2000Mi, adopted a node-local design using Co
 
 ## Lesson
 
-The postmortem states the principle directly: "It should not be possible for a single application to 'DoS' our DNS infrastructure". The incident is a blast-radius cascade in which a shared platform service lacked isolation, limits, and independent monitoring. See [[findings/a-retry-storm-amplified-by-ndots-and-small-coredns-memory-limits-can-take-down-cluster-dns]], [[findings/monitoring-that-runs-inside-the-cluster-and-depends-on-cluster-dns-goes-blind-in-the-outage-it-should-report]], and [[findings/retry-storms-and-unbounded-retries]]. The author's wider framing is at https://srcco.de/posts/kubernetes-failure-stories.html.
+The postmortem states the principle directly: "It should not be possible for a single application to 'DoS' our DNS infrastructure". The incident is a blast-radius cascade in which a shared platform service lacked isolation, limits, and independent monitoring. See [findings/a-retry-storm-amplified-by-ndots-and-small-coredns-memory-limits-can-take-down-cluster-dns](../findings/a-retry-storm-amplified-by-ndots-and-small-coredns-memory-limits-can-take-down-cluster-dns.md), [findings/monitoring-that-runs-inside-the-cluster-and-depends-on-cluster-dns-goes-blind-in-the-outage-it-should-report](../findings/monitoring-that-runs-inside-the-cluster-and-depends-on-cluster-dns-goes-blind-in-the-outage-it-should-report.md), and [findings/retry-storms-and-unbounded-retries](../findings/retry-storms-and-unbounded-retries.md). The author's wider framing is at https://srcco.de/posts/kubernetes-failure-stories.html.
 
 ## Related
 
-[[concepts/pitfalls-and-case-studies]]
+[concepts/pitfalls-and-case-studies](../concepts/pitfalls-and-case-studies.md)

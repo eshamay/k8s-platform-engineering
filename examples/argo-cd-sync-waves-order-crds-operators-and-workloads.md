@@ -19,7 +19,7 @@ tags: [argo-cd, gitops, sync-waves, self-heal]
 
 ## Scenario
 
-An engineer hand-edits a live Deployment, and separately a team needs CRDs applied before the operators that use them, and operators before the workloads they manage. The dossier uses Argo CD for both situations. [[sources/research-eventual-consistency-and-convergence]]
+An engineer hand-edits a live Deployment, and separately a team needs CRDs applied before the operators that use them, and operators before the workloads they manage. The dossier uses Argo CD for both situations. [sources/research-eventual-consistency-and-convergence](../sources/research-eventual-consistency-and-convergence.md)
 
 ## Self-heal
 
@@ -31,8 +31,8 @@ Ordering is phase, then wave, then kind, then name. Each wave must become Health
 
 ## Lesson
 
-Waves are how a GitOps tool imposes order on a cluster that otherwise converges concurrently. The price is that hooks and waves require idempotent operations. See [[entities/argo-cd]], [[findings/ordering-and-dependency-failures]], [[examples/gitops-reverts-a-hand-edited-deployment]], and [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]].
+Waves are how a GitOps tool imposes order on a cluster that otherwise converges concurrently. The price is that hooks and waves require idempotent operations. See [entities/argo-cd](../entities/argo-cd.md), [findings/ordering-and-dependency-failures](../findings/ordering-and-dependency-failures.md), [examples/gitops-reverts-a-hand-edited-deployment](gitops-reverts-a-hand-edited-deployment.md), and [comparisons/ordering-models-flux-argo-cd-kro-crossplane](../comparisons/ordering-models-flux-argo-cd-kro-crossplane.md).
 
 ## A practitioner's use of waves for Config Connector
 
-A 2023 Medium post uses sync-wave annotations to order Config Connector resources, the BigQuery dataset at `-1` and its table at `0`, because the table cannot be created until the dataset exists, and says waves fix creation but Argo CD has no deletion ordering for the same pair. See [[examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first]]. [[sources/medium-config-connector-pitfalls]]
+A 2023 Medium post uses sync-wave annotations to order Config Connector resources, the BigQuery dataset at `-1` and its table at `0`, because the table cannot be created until the dataset exists, and says waves fix creation but Argo CD has no deletion ordering for the same pair. See [examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first](a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first.md). [sources/medium-config-connector-pitfalls](../sources/medium-config-connector-pitfalls.md)

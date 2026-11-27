@@ -16,7 +16,7 @@ tags: [argo-cd, gitops, adoption, self-heal, kargo]
 
 ## Scenario
 
-Teams adopting GitOps usually do not turn on automatic correction everywhere at once. An Akuity engineering blog (vendor material, not benchmarked) describes a split policy at https://akuity.io/blog/what-is-argo-cd-features-and-business-benefits. [[sources/research-self-healing-and-drift-detection]]
+Teams adopting GitOps usually do not turn on automatic correction everywhere at once. An Akuity engineering blog (vendor material, not benchmarked) describes a split policy at https://akuity.io/blog/what-is-argo-cd-features-and-business-benefits. [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md)
 
 ## The pattern
 
@@ -24,4 +24,4 @@ Stateless applications run with strict Git-as-truth: automated sync with `selfHe
 
 ## Lesson
 
-Detection and correction can be separated, so adoption can move from visibility to enforcement one workload class at a time. See [[decisions/staged-adoption-of-automated-drift-correction]], [[entities/argo-cd]], and [[examples/gitops-reverts-a-hand-edited-deployment]].
+Detection and correction can be separated, so adoption can move from visibility to enforcement one workload class at a time. See [decisions/staged-adoption-of-automated-drift-correction](../decisions/staged-adoption-of-automated-drift-correction.md), [entities/argo-cd](../entities/argo-cd.md), and [examples/gitops-reverts-a-hand-edited-deployment](gitops-reverts-a-hand-edited-deployment.md).

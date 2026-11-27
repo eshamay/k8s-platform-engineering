@@ -16,7 +16,7 @@ tags: [crossplane, deletion-policy, management-policies, issue, lifecycle]
 
 ## Scenario
 
-Crossplane managed resources historically carried `deletionPolicy` (Delete or Orphan) beside the newer `managementPolicies` list. Issue 5283, "Deprecate DeletionPolicy", was opened on 2024-01-25 to settle which field is canonical. [[sources/research-gap-g3-crossplane-v2]] https://github.com/crossplane/crossplane/issues/5283
+Crossplane managed resources historically carried `deletionPolicy` (Delete or Orphan) beside the newer `managementPolicies` list. Issue 5283, "Deprecate DeletionPolicy", was opened on 2024-01-25 to settle which field is canonical. [sources/research-gap-g3-crossplane-v2](../sources/research-gap-g3-crossplane-v2.md) https://github.com/crossplane/crossplane/issues/5283
 
 ## State as of 2026-11-26
 
@@ -28,4 +28,4 @@ Crossplane v2.0.0 (2025-08-14) removed `deletionPolicy` from the new namespaced 
 
 ## Lesson
 
-A feature can disappear from the docs and from new API types years before any formal deprecation. Teach `managementPolicies` for new work and treat `deletionPolicy` as a legacy field that still works on cluster-scoped MRs. See [[findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies]], [[decisions/choose-management-policies-for-an-imported-resource]], [[concepts/managed-resource]], and [[entities/crossplane]].
+A feature can disappear from the docs and from new API types years before any formal deprecation. Teach `managementPolicies` for new work and treat `deletionPolicy` as a legacy field that still works on cluster-scoped MRs. See [findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies](../findings/older-observeonly-and-deletionpolicy-advice-needs-translation-to-managementpolicies.md), [decisions/choose-management-policies-for-an-imported-resource](../decisions/choose-management-policies-for-an-imported-resource.md), [concepts/managed-resource](../concepts/managed-resource.md), and [entities/crossplane](../entities/crossplane.md).

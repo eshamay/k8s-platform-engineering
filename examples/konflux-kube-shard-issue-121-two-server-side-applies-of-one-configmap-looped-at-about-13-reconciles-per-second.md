@@ -16,7 +16,7 @@ tags: [konflux, kube-shard, server-side-apply, reconcile-loop, owns, operator-fa
 
 ## Scenario
 
-On 2026-09-07 gbenhaim filed an issue against the Konflux kube-shard operator and it was closed the same day, about 5 hours later. [[sources/research-gap-g1-operator-loop-failures]] URL: https://github.com/konflux-ci/kube-shard/issues/121
+On 2026-09-07 gbenhaim filed an issue against the Konflux kube-shard operator and it was closed the same day, about 5 hours later. [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md) URL: https://github.com/konflux-ci/kube-shard/issues/121
 
 ## What happened
 
@@ -24,8 +24,8 @@ A Ready APIShard sat in a tight reconcile loop. The function `applyOTelCollector
 
 ## Why it belongs here
 
-It is the named case for [[findings/applying-one-object-twice-in-a-reconcile-with-owns-and-no-predicate-loops-on-its-own-resource-version]], where the write is idempotent in meaning but not in bytes.
+It is the named case for [findings/applying-one-object-twice-in-a-reconcile-with-owns-and-no-predicate-loops-on-its-own-resource-version](../findings/applying-one-object-twice-in-a-reconcile-with-owns-and-no-predicate-loops-on-its-own-resource-version.md), where the write is idempotent in meaning but not in bytes.
 
 ## Related
 
-[[concepts/server-side-apply-and-field-ownership]], [[findings/self-triggered-reconcile-loops-generate-their-own-events]], [[entities/kubebuilder]]
+[concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md), [findings/self-triggered-reconcile-loops-generate-their-own-events](../findings/self-triggered-reconcile-loops-generate-their-own-events.md), [entities/kubebuilder](../entities/kubebuilder.md)

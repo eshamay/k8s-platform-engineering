@@ -19,7 +19,7 @@ tags: [crossplane, rate-limiting, external-api, providers]
 
 ## Scenario
 
-Crossplane providers reconcile external cloud resources, so every reconcile may become a call to a cloud API that has its own quotas. The dossier reads Crossplane issue 2595, which proposed a single flag to govern this. [[sources/research-informers-reflectors-and-workqueues]]
+Crossplane providers reconcile external cloud resources, so every reconcile may become a call to a cloud API that has its own quotas. The dossier reads Crossplane issue 2595, which proposed a single flag to govern this. [sources/research-informers-reflectors-and-workqueues](../sources/research-informers-reflectors-and-workqueues.md)
 
 ## The problem and the proposal
 
@@ -27,8 +27,8 @@ The issue argues that provider performance was governed by scattered knobs (`QPS
 
 ## Lesson
 
-A workqueue limiter normally protects the API server. For a provider, the same queue is also the budget for someone else's API. Choosing the reconcile rate as the single control makes the cloud call rate predictable. The dossier did not read Crossplane's current performance guide, so the present defaults are unknown. See [[entities/crossplane]], [[comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane]], [[findings/retry-storms-and-unbounded-retries]], and [[concepts/informers-reflectors-and-workqueues]].
+A workqueue limiter normally protects the API server. For a provider, the same queue is also the budget for someone else's API. Choosing the reconcile rate as the single control makes the cloud call rate predictable. The dossier did not read Crossplane's current performance guide, so the present defaults are unknown. See [entities/crossplane](../entities/crossplane.md), [comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane](../comparisons/concurrency-and-cache-memory-controls-across-flux-argo-cd-and-crossplane.md), [findings/retry-storms-and-unbounded-retries](../findings/retry-storms-and-unbounded-retries.md), and [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md).
 
 ## Later history of the flag (2026-11-26)
 
-Correction note: this page describes the 2021 proposal and the Crossplane 1.6 flag. The v2.1.0 release renamed `--max-reconcile-rate` to `--max-concurrent-reconciles`, and in v2.5.0 source the old name is an alias for a worker pool size with a default of 100, not a per-second rate. See [[findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias]]. [[sources/research-gap-b1-recheck-kro-crossplane]]
+Correction note: this page describes the 2021 proposal and the Crossplane 1.6 flag. The v2.1.0 release renamed `--max-reconcile-rate` to `--max-concurrent-reconciles`, and in v2.5.0 source the old name is an alias for a worker pool size with a default of 100, not a per-second rate. See [findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias](../findings/the-crossplane-v2-5-docs-describe-max-reconcile-rate-as-a-rate-but-source-treats-it-as-a-worker-pool-size-alias.md). [sources/research-gap-b1-recheck-kro-crossplane](../sources/research-gap-b1-recheck-kro-crossplane.md)

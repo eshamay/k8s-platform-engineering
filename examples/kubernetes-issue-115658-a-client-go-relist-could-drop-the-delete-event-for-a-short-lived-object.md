@@ -16,7 +16,7 @@ tags: [client-go, informer, deltafifo, relist, lost-events, fixed-upstream]
 
 ## Scenario
 
-Reporter odinuge opened kubernetes/kubernetes issue 115658 on 2023-02-09 after noticing production controllers drifting out of sync with the cluster. The reporter's employer is not stated. The issue was triaged by api-machinery and closed on 2023-03-20. [[sources/research-gap-g1-operator-loop-failures]] URL: https://github.com/kubernetes/kubernetes/issues/115658
+Reporter odinuge opened kubernetes/kubernetes issue 115658 on 2023-02-09 after noticing production controllers drifting out of sync with the cluster. The reporter's employer is not stated. The issue was triaged by api-machinery and closed on 2023-03-20. [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md) URL: https://github.com/kubernetes/kubernetes/issues/115658
 
 ## What happened
 
@@ -28,8 +28,8 @@ Pull request 115620, "client-go/cache: fix missing delete event on replace", was
 
 ## Why it belongs here
 
-It is the best primary case of a lost event in the library layer that most controllers trust, and it is the named case for [[findings/an-informer-relist-that-races-a-queued-create-can-drop-the-delete-event-for-the-object]].
+It is the best primary case of a lost event in the library layer that most controllers trust, and it is the named case for [findings/an-informer-relist-that-races-a-queued-create-can-drop-the-delete-event-for-the-object](../findings/an-informer-relist-that-races-a-queued-create-can-drop-the-delete-event-for-the-object.md).
 
 ## Related
 
-[[concepts/informers-reflectors-and-workqueues]], [[entities/client-go]], [[concepts/level-triggered-vs-edge-triggered]]
+[concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md), [entities/client-go](../entities/client-go.md), [concepts/level-triggered-vs-edge-triggered](../concepts/level-triggered-vs-edge-triggered.md)

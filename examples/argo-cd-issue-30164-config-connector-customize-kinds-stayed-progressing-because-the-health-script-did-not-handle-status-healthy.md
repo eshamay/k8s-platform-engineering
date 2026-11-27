@@ -16,7 +16,7 @@ tags: [argo-cd, config-connector, health-check, lua, wildcard]
 
 ## Scenario
 
-On 2026-10-13 a reporter running Config Connector 1.157.0 opened Argo CD issue 30164. Kinds in the `customize.core.cnrm.cloud.google.com` group "stay `Progressing` forever in Argo CD, even when the operator reports them healthy." The issue is closed. URL: https://github.com/argoproj/argo-cd/issues/30164. [[sources/research-gap-o3-gitops-provider-managed]]
+On 2026-10-13 a reporter running Config Connector 1.157.0 opened Argo CD issue 30164. Kinds in the `customize.core.cnrm.cloud.google.com` group "stay `Progressing` forever in Argo CD, even when the operator reports them healthy." The issue is closed. URL: https://github.com/argoproj/argo-cd/issues/30164. [sources/research-gap-o3-gitops-provider-managed](../sources/research-gap-o3-gitops-provider-managed.md)
 
 ## Mechanism
 
@@ -24,8 +24,8 @@ Argo CD matches Config Connector kinds with one wildcard script for the `cnrm.cl
 
 ## Lesson
 
-A group-wide health script is a single point of mismatch for every kind in the group. See [[findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves]] and [[examples/argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration]]. The issue is the reporter's account of an anonymous cluster, not an outage write-up.
+A group-wide health script is a single point of mismatch for every kind in the group. See [findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves](../findings/argo-cd-ships-built-in-lua-health-checks-for-config-connector-ack-crossplane-upbound-kro-and-cluster-api-kinds-and-an-unhealthy-provider-object-blocks-later-sync-waves.md) and [examples/argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration](argo-cd-s-config-connector-health-script-maps-uptodate-to-healthy-updatefailed-to-degraded-and-gates-on-observedgeneration.md). The issue is the reporter's account of an anonymous cluster, not an outage write-up.
 
 ## Related
 
-[[entities/argo-cd]], [[entities/config-connector]], [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]]
+[entities/argo-cd](../entities/argo-cd.md), [entities/config-connector](../entities/config-connector.md), [findings/generic-gitops-agents-cannot-judge-custom-resource-health](../findings/generic-gitops-agents-cannot-judge-custom-resource-health.md)

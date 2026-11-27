@@ -16,12 +16,12 @@ tags: [backstage, operators, red-hat, openshift, packaging]
 
 ## Scenario
 
-A team wants Backstage itself to run as a managed workload instead of a hand-built deployment. The repository https://github.com/redhat-developer/rhdh-operator describes itself as an "Operator for Deploying Red Hat Developer Hub (Backstage) on Kubernetes and OpenShift". The dossier verified this from the repository description only and did not read the operator's custom resources or code. [[sources/research-gap-m7-operators-idempotency]]
+A team wants Backstage itself to run as a managed workload instead of a hand-built deployment. The repository https://github.com/redhat-developer/rhdh-operator describes itself as an "Operator for Deploying Red Hat Developer Hub (Backstage) on Kubernetes and OpenShift". The dossier verified this from the repository description only and did not read the operator's custom resources or code. [sources/research-gap-m7-operators-idempotency](../sources/research-gap-m7-operators-idempotency.md)
 
 ## Reading
 
-This is the operator pattern applied to Backstage as the workload, and it is separate from the Backstage Kubernetes plugin, which reads other operators' custom resources. The two relationships point in opposite directions: an operator manages Backstage, and Backstage displays what operators manage. The Backstage project's own documents do not describe this relationship, so the packaging operator is a Red Hat product and not a Backstage feature. See [[findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern]]. [[sources/research-gap-m7-operators-idempotency]]
+This is the operator pattern applied to Backstage as the workload, and it is separate from the Backstage Kubernetes plugin, which reads other operators' custom resources. The two relationships point in opposite directions: an operator manages Backstage, and Backstage displays what operators manage. The Backstage project's own documents do not describe this relationship, so the packaging operator is a Red Hat product and not a Backstage feature. See [findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern](../findings/the-backstage-kubernetes-plugin-matches-entities-to-cluster-objects-by-label-and-no-backstage-document-describes-an-operator-pattern.md). [sources/research-gap-m7-operators-idempotency](../sources/research-gap-m7-operators-idempotency.md)
 
 ## Related
 
-[[entities/backstage]], [[concepts/operator-pattern]], [[examples/cluster-add-on-operators-turn-install-and-day-2-work-into-objects]]
+[entities/backstage](../entities/backstage.md), [concepts/operator-pattern](../concepts/operator-pattern.md), [examples/cluster-add-on-operators-turn-install-and-day-2-work-into-objects](cluster-add-on-operators-turn-install-and-day-2-work-into-objects.md)

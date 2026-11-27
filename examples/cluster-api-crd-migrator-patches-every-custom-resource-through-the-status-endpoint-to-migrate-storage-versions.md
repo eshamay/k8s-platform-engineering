@@ -16,7 +16,7 @@ tags: [cluster-api, crd, storage-version-migration, status, verified]
 
 ## Scenario
 
-The migrator in `controllers/crdmigrator/crd_migrator.go` applies "a no-op patch ... to all custom resources of the CRD", then sets `status.storedVersions`. It has an option to patch through the status subresource because webhook errors would otherwise block the no-op updates. https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/main/controllers/crdmigrator/crd_migrator.go [[sources/research-gap-m6-admission-crds]]
+The migrator in `controllers/crdmigrator/crd_migrator.go` applies "a no-op patch ... to all custom resources of the CRD", then sets `status.storedVersions`. It has an option to patch through the status subresource because webhook errors would otherwise block the no-op updates. https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/main/controllers/crdmigrator/crd_migrator.go [sources/research-gap-m6-admission-crds](../sources/research-gap-m6-admission-crds.md)
 
 ## Reliability
 
@@ -24,4 +24,4 @@ VERIFIED from the source file on main. Behavior on a very large number of custom
 
 ## Related
 
-[[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration]] and [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]].
+[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration](../findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration.md) and [findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object](../findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object.md).

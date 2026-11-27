@@ -16,7 +16,7 @@ tags: [use-case, flux, multi-tenancy, rbac, fleet-repo]
 
 ## Scenario
 
-A platform team runs shared clusters for several application teams. The team wants each tenant to deploy only through Git, without being able to create cluster-wide objects or touch another tenant's namespace. The `fluxcd/flux2-multi-tenancy` repository is the Flux project's reference design for this case. [[sources/research-flux-deep-dive]]
+A platform team runs shared clusters for several application teams. The team wants each tenant to deploy only through Git, without being able to create cluster-wide objects or touch another tenant's namespace. The `fluxcd/flux2-multi-tenancy` repository is the Flux project's reference design for this case. [sources/research-flux-deep-dive](../sources/research-flux-deep-dive.md)
 
 ## How it works
 
@@ -26,8 +26,8 @@ Isolation comes from the controllers. The administrators start them with `--no-c
 
 ## Caveats
 
-If the default ServiceAccount has no RBAC, tenant deployments fail until a Role and RoleBinding are added. The example also limits image automation to staging, which is discussed in [[examples/flux-image-automation-commits-new-tags-to-git-and-the-reference-repo-limits-it-to-staging]].
+If the default ServiceAccount has no RBAC, tenant deployments fail until a Role and RoleBinding are added. The example also limits image automation to staging, which is discussed in [examples/flux-image-automation-commits-new-tags-to-git-and-the-reference-repo-limits-it-to-staging](flux-image-automation-commits-new-tags-to-git-and-the-reference-repo-limits-it-to-staging.md).
 
 ## Related
 
-[[entities/flux]], [[findings/without-lockdown-flags-a-flux-kustomization-applies-with-the-controllers-own-identity]], [[findings/blast-radius-and-privilege-centralization]], [[comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog]], [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]]
+[entities/flux](../entities/flux.md), [findings/without-lockdown-flags-a-flux-kustomization-applies-with-the-controllers-own-identity](../findings/without-lockdown-flags-a-flux-kustomization-applies-with-the-controllers-own-identity.md), [findings/blast-radius-and-privilege-centralization](../findings/blast-radius-and-privilege-centralization.md), [comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog](../comparisons/flux-versus-argo-cd-isolation-ordering-and-interface-according-to-a-vendor-blog.md), [examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding](morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding.md)

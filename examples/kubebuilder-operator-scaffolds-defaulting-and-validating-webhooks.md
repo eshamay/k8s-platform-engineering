@@ -16,7 +16,7 @@ tags: [kubebuilder, webhooks, operators, controller-runtime]
 
 ## Scenario
 
-An operator author who builds a CRD with Kubebuilder wants defaults filled in and invalid objects rejected for the new kind. The Kubebuilder book's CronJob tutorial walks through the pattern that every controller-runtime operator follows. [[sources/research-admission-webhooks-and-cel]]
+An operator author who builds a CRD with Kubebuilder wants defaults filled in and invalid objects rejected for the new kind. The Kubebuilder book's CronJob tutorial walks through the pattern that every controller-runtime operator follows. [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)
 
 ## How it works
 
@@ -24,8 +24,8 @@ The author scaffolds with `kubebuilder create webhook`, implements `Default()` f
 
 ## Lesson
 
-The webhook shares a process, and therefore an availability profile, with the controller, and the operator owns certificate management; cert-manager is the usual helper but the dossier did not read that part of the book. The declarative portion of validation pairs well with CEL rules in the CRD, which keep simple checks off the webhook path. See [[examples/cert-manager-runs-validation-defaulting-and-conversion-webhooks]] and [[decisions/validate-with-cel-rules-or-a-validating-webhook]].
+The webhook shares a process, and therefore an availability profile, with the controller, and the operator owns certificate management; cert-manager is the usual helper but the dossier did not read that part of the book. The declarative portion of validation pairs well with CEL rules in the CRD, which keep simple checks off the webhook path. See [examples/cert-manager-runs-validation-defaulting-and-conversion-webhooks](cert-manager-runs-validation-defaulting-and-conversion-webhooks.md) and [decisions/validate-with-cel-rules-or-a-validating-webhook](../decisions/validate-with-cel-rules-or-a-validating-webhook.md).
 
 ## Related
 
-[[entities/kubebuilder]], [[concepts/operator-pattern]], and [[concepts/admission-webhooks-and-cel]].
+[entities/kubebuilder](../entities/kubebuilder.md), [concepts/operator-pattern](../concepts/operator-pattern.md), and [concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md).

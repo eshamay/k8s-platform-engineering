@@ -16,7 +16,7 @@ tags: [ack, adoption, gitops, argo-cd, flux, iam-controller]
 
 ## Scenario
 
-On 2026-11-09 gecube opened ACK community issue 3152, reproduced per the reporter on iam-controller v1.11.3. A CR is adopted onto an existing AWS resource while Argo CD or Flux delivers the CR from git. [[sources/research-gap-g1-other-tool-pitfalls]] URL: https://github.com/aws-controllers-k8s/community/issues/3152
+On 2026-11-09 gecube opened ACK community issue 3152, reproduced per the reporter on iam-controller v1.11.3. A CR is adopted onto an existing AWS resource while Argo CD or Flux delivers the CR from git. [sources/research-gap-g1-other-tool-pitfalls](../sources/research-gap-g1-other-tool-pitfalls.md) URL: https://github.com/aws-controllers-k8s/community/issues/3152
 
 ## What the reporter says
 
@@ -24,8 +24,8 @@ The adopted AWS resource is overwritten with the spec in git: "every spec field 
 
 ## Status and limits
 
-Open when read, one reporter, no maintainer confirmation. See [[findings/ack-adoption-under-a-gitops-agent-overwrites-the-aws-resource-with-the-spec-in-git-and-a-failed-adoption-patch-can-write-a-stub-spec]].
+Open when read, one reporter, no maintainer confirmation. See [findings/ack-adoption-under-a-gitops-agent-overwrites-the-aws-resource-with-the-spec-in-git-and-a-failed-adoption-patch-can-write-a-stub-spec](../findings/ack-adoption-under-a-gitops-agent-overwrites-the-aws-resource-with-the-spec-in-git-and-a-failed-adoption-patch-can-write-a-stub-spec.md).
 
 ## Related
 
-[[entities/ack]], [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]]
+[entities/ack](../entities/ack.md), [examples/ack-adopt-or-create-brings-existing-aws-resources-under-management](ack-adopt-or-create-brings-existing-aws-resources-under-management.md)

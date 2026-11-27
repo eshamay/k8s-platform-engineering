@@ -16,7 +16,7 @@ tags: [kro, webhooks, admission, status, test, verified]
 
 ## Scenario
 
-kro's integration suite includes a test titled "should report webhook denial in status and recover when policy is removed". It shows kro acting as a client of other people's admission: a denial from a policy or webhook outside kro is surfaced in the instance status. https://raw.githubusercontent.com/kubernetes-sigs/kro/main/test/integration/suites/core/webhook_denial_test.go [[sources/research-gap-m6-admission-crds]]
+kro's integration suite includes a test titled "should report webhook denial in status and recover when policy is removed". It shows kro acting as a client of other people's admission: a denial from a policy or webhook outside kro is surfaced in the instance status. https://raw.githubusercontent.com/kubernetes-sigs/kro/main/test/integration/suites/core/webhook_denial_test.go [sources/research-gap-m6-admission-crds](../sources/research-gap-m6-admission-crds.md)
 
 ## Reliability
 
@@ -24,4 +24,4 @@ VERIFIED for the test title. The test body and how the status message is worded 
 
 ## Related
 
-[[findings/kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only]] and [[entities/kro]].
+[findings/kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only](../findings/kro-and-ack-ship-no-admission-webhook-and-rely-on-crd-schema-and-cel-validation-and-no-argo-cd-webhook-was-found-in-a-tree-search-only.md) and [entities/kro](../entities/kro.md).

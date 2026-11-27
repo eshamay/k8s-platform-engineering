@@ -19,11 +19,11 @@ tags: [flux, kustomize-controller, server-side-apply, incident, issue-1722, pr-1
 
 ## Scenario
 
-An operator disabled Flux, patched a workload with a legacy controller, and re-enabled Flux. The legacy controller used a client-side PUT, so its field manager appears in `managedFields` with the operation `Update`. That manager co-owns a container's `name` key in the containers list but not the container's required `image` field. [[sources/research-gap-g3-flux-ssa-helm]]
+An operator disabled Flux, patched a workload with a legacy controller, and re-enabled Flux. The legacy controller used a client-side PUT, so its field manager appears in `managedFields` with the operation `Update`. That manager co-owns a container's `name` key in the containers list but not the container's required `image` field. [sources/research-gap-g3-flux-ssa-helm](../sources/research-gap-g3-flux-ssa-helm.md)
 
 ## What went wrong
 
-A later Git commit removed the container. Server-side apply dropped the fields Flux solely owned, but the stale manager still co-owned the name key, so the entry survived without its `image`. The dry-run then failed with `containers[N].image: Required value` on every reconcile, and the Kustomization could not converge. The existing `--override-manager` takeover could not help, because it runs only after a successful dry-run. See [[findings/the-flux-override-manager-flag-takes-over-only-after-a-successful-dry-run-so-it-cannot-recover-an-object-stuck-at-dry-run-validation]].
+A later Git commit removed the container. Server-side apply dropped the fields Flux solely owned, but the stale manager still co-owned the name key, so the entry survived without its `image`. The dry-run then failed with `containers[N].image: Required value` on every reconcile, and the Kustomization could not converge. The existing `--override-manager` takeover could not help, because it runs only after a successful dry-run. See [findings/the-flux-override-manager-flag-takes-over-only-after-a-successful-dry-run-so-it-cannot-recover-an-object-stuck-at-dry-run-validation](../findings/the-flux-override-manager-flag-takes-over-only-after-a-successful-dry-run-so-it-cannot-recover-an-object-stuck-at-dry-run-validation.md).
 
 ## Timeline
 
@@ -34,8 +34,8 @@ A later Git commit removed the container. Server-side apply dropped the fields F
 
 ## Resolution
 
-Running kustomize-controller with `--override-manager-before-dry-run=<manager>` makes it take over the named manager's fields before the dry-run, so the half-removed container is pruned and the dry-run passes. The documentation says to use the flag only to recover stuck objects and remove it afterwards, because the takeover transfers all of the named manager's fields, prunes fields missing from the source, and is not reverted if the apply fails. See [[findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails]] and [[decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager]].
+Running kustomize-controller with `--override-manager-before-dry-run=<manager>` makes it take over the named manager's fields before the dry-run, so the half-removed container is pruned and the dry-run passes. The documentation says to use the flag only to recover stuck objects and remove it afterwards, because the takeover transfers all of the named manager's fields, prunes fields missing from the source, and is not reverted if the apply fails. See [findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails](../findings/the-flux-pre-dry-run-takeover-transfers-all-fields-of-the-named-managers-and-is-not-reverted-if-the-apply-fails.md) and [decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager](../decisions/keep-flux-pre-dry-run-takeover-in-a-separate-opt-in-list-instead-of-extending-override-manager.md).
 
 ## Lesson
 
-A tool that dry-runs before it applies can be wedged by ownership records that only an apply could clear. The fix is an explicit, narrow, temporary recovery switch and not a standing policy. See [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]], [[findings/field-ownership-blocks-drift-correction]], and [[entities/flux]].
+A tool that dry-runs before it applies can be wedged by ownership records that only an apply could clear. The fix is an explicit, narrow, temporary recovery switch and not a standing policy. See [findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal](../findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal.md), [findings/field-ownership-blocks-drift-correction](../findings/field-ownership-blocks-drift-correction.md), and [entities/flux](../entities/flux.md).

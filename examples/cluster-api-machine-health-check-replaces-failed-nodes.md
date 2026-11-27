@@ -19,7 +19,7 @@ tags: [cluster-api, self-healing, machines, remediation]
 
 ## Scenario
 
-A platform team runs workload clusters through [[entities/cluster-api]] and wants failed nodes replaced without a human. A MachineHealthCheck evaluates Node conditions against timeouts and remediates unhealthy Machines, usually by replacing them. As the book puts it, "If any of these conditions are met for the duration of the timeout, the Machine will be remediated." The source is the older v0.4 Cluster API book at https://release-0-4.cluster-api.sigs.k8s.io/tasks/healthcheck. [[sources/research-self-healing-and-drift-detection]]
+A platform team runs workload clusters through [entities/cluster-api](../entities/cluster-api.md) and wants failed nodes replaced without a human. A MachineHealthCheck evaluates Node conditions against timeouts and remediates unhealthy Machines, usually by replacing them. As the book puts it, "If any of these conditions are met for the duration of the timeout, the Machine will be remediated." The source is the older v0.4 Cluster API book at https://release-0-4.cluster-api.sigs.k8s.io/tasks/healthcheck. [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md)
 
 ## How it works
 
@@ -27,8 +27,8 @@ The health check watches Node conditions, waits out the configured timeouts so b
 
 ## Lesson
 
-This is self-healing at the machine layer, where "drift" is a node that is no longer healthy and correction is replacement instead of patching. Correction 2026-11-26: the v0.4 book is out of date, and the v1beta2 behavior is below. See [[findings/remediation-can-amplify-an-outage]], [[examples/cluster-fleet-lifecycle-with-cluster-api]], and [[concepts/self-healing-and-drift-detection]].
+This is self-healing at the machine layer, where "drift" is a node that is no longer healthy and correction is replacement instead of patching. Correction 2026-11-26: the v0.4 book is out of date, and the v1beta2 behavior is below. See [findings/remediation-can-amplify-an-outage](../findings/remediation-can-amplify-an-outage.md), [examples/cluster-fleet-lifecycle-with-cluster-api](cluster-fleet-lifecycle-with-cluster-api.md), and [concepts/self-healing-and-drift-detection](../concepts/self-healing-and-drift-detection.md).
 
 ## Current behavior in v1beta2
 
-The v1beta2 MachineHealthCheck (v1.11.0 onward) names the brake `remediation.triggerIf.unhealthyLessThanOrEqualTo`, with `unhealthyInRange` taking precedence, and the brake is off by default. It adds `remediation.templateRef` for external remediation and, in v1.15.0-rc.0, CEL `unhealthyExpressions`. See [[examples/cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers]], [[findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set]], and [[sources/research-gap-g3-argocd-capi]].
+The v1beta2 MachineHealthCheck (v1.11.0 onward) names the brake `remediation.triggerIf.unhealthyLessThanOrEqualTo`, with `unhealthyInRange` taking precedence, and the brake is off by default. It adds `remediation.templateRef` for external remediation and, in v1.15.0-rc.0, CEL `unhealthyExpressions`. See [examples/cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers](cluster-api-v1beta2-machine-health-check-short-circuits-remediation-and-hands-off-to-external-controllers.md), [findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set](../findings/the-cluster-api-machine-health-check-short-circuit-is-off-by-default-so-remediation-is-unbounded-until-a-threshold-is-set.md), and [sources/research-gap-g3-argocd-capi](../sources/research-gap-g3-argocd-capi.md).

@@ -16,7 +16,7 @@ tags: [spec-status, deployment, baseline, tutorial]
 
 ## Scenario
 
-A user creates a Deployment with `replicas: 3`. The control plane works continually to make the observed state match that number, and the Deployment's status reports fields such as `readyReplicas` and `updatedReplicas`. The dossier calls this the baseline use case and the best first example for tutorials. [[sources/research-spec-status-split]]
+A user creates a Deployment with `replicas: 3`. The control plane works continually to make the observed state match that number, and the Deployment's status reports fields such as `readyReplicas` and `updatedReplicas`. The dossier calls this the baseline use case and the best first example for tutorials. [sources/research-spec-status-split](../sources/research-spec-status-split.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ The user, or a GitOps tool, writes only `spec`. The Deployment controller watche
 
 ## Lesson
 
-The example shows the whole contract in one small object: intent goes in one stanza, measurement comes out in another, and neither writer overwrites the other. Every custom resource that follows the conventions repeats this shape. See [[concepts/spec-status-split]], [[concepts/reconciliation-loop]], and [[examples/deployment-replica-changes-converge-to-the-final-count]].
+The example shows the whole contract in one small object: intent goes in one stanza, measurement comes out in another, and neither writer overwrites the other. Every custom resource that follows the conventions repeats this shape. See [concepts/spec-status-split](../concepts/spec-status-split.md), [concepts/reconciliation-loop](../concepts/reconciliation-loop.md), and [examples/deployment-replica-changes-converge-to-the-final-count](deployment-replica-changes-converge-to-the-final-count.md).

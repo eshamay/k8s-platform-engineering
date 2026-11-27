@@ -16,7 +16,7 @@ tags: [argo-cd, namespace, prune, createnamespace, incident]
 
 ## Scenario
 
-On 2023-09-11 an anonymous reporter described a change in which an explicit Namespace manifest was removed from Git in favor of the `CreateNamespace=true` sync option. [[sources/research-gap-g1-gitops-drift-incidents]] URL: https://github.com/argoproj/argo-cd/issues/15441
+On 2023-09-11 an anonymous reporter described a change in which an explicit Namespace manifest was removed from Git in favor of the `CreateNamespace=true` sync option. [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md) URL: https://github.com/argoproj/argo-cd/issues/15441
 
 ## What happened
 
@@ -24,8 +24,8 @@ The report says that doing so "actually deletes the namespace and recreates it d
 
 ## Why it belongs here
 
-It is a concrete case of the prune boundary being easy to misjudge, which [[findings/unintended-deletion-through-prune]] had only inferred from documentation warnings. See [[findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed]].
+It is a concrete case of the prune boundary being easy to misjudge, which [findings/unintended-deletion-through-prune](../findings/unintended-deletion-through-prune.md) had only inferred from documentation warnings. See [findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed](../findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed.md).
 
 ## Related
 
-[[entities/argo-cd]], [[concepts/gitops-pull-based-delivery]]
+[entities/argo-cd](../entities/argo-cd.md), [concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md)

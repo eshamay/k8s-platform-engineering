@@ -16,7 +16,7 @@ tags: [owner-references, garbage-collection, deployment, built-in-controllers]
 
 ## Scenario
 
-An engineer deletes a Deployment and expects the Pods to disappear without naming them. Nothing in the delete call mentions ReplicaSets or Pods, so the cleanup must come from the relationships that the built-in controllers recorded when they created those objects. [[sources/research-owner-references-and-garbage-collection]]
+An engineer deletes a Deployment and expects the Pods to disappear without naming them. Nothing in the delete call mentions ReplicaSets or Pods, so the cleanup must come from the relationships that the built-in controllers recorded when they created those objects. [sources/research-owner-references-and-garbage-collection](../sources/research-owner-references-and-garbage-collection.md)
 
 ## How it works
 
@@ -24,8 +24,8 @@ The Owners and Dependents page says Kubernetes sets owner references automatical
 
 ## Why the example matters
 
-This is the everyday case that the rest of the mechanism generalizes. A custom controller that sets the same references on its own children gets the same cascade for free. See [[examples/controller-runtime-sets-a-controller-reference-so-deleting-the-custom-resource-tears-down-its-children]]. Because background mode returns before the children are gone, the Pods briefly outlive their parent, which is why code that needs ordering must ask for foreground deletion. See [[findings/background-deletion-gives-no-teardown-ordering-between-dependents]].
+This is the everyday case that the rest of the mechanism generalizes. A custom controller that sets the same references on its own children gets the same cascade for free. See [examples/controller-runtime-sets-a-controller-reference-so-deleting-the-custom-resource-tears-down-its-children](controller-runtime-sets-a-controller-reference-so-deleting-the-custom-resource-tears-down-its-children.md). Because background mode returns before the children are gone, the Pods briefly outlive their parent, which is why code that needs ordering must ask for foreground deletion. See [findings/background-deletion-gives-no-teardown-ordering-between-dependents](../findings/background-deletion-gives-no-teardown-ordering-between-dependents.md).
 
 ## Related
 
-[[concepts/owner-references-and-garbage-collection]], [[examples/kubectl-cascade-modes-compared-in-a-hands-on-lab]]
+[concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md), [examples/kubectl-cascade-modes-compared-in-a-hands-on-lab](kubectl-cascade-modes-compared-in-a-hands-on-lab.md)

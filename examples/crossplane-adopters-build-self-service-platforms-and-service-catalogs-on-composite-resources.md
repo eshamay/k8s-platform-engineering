@@ -16,7 +16,7 @@ tags: [crossplane, adopters, self-service, internal-developer-platform, service-
 
 ## Scenario
 
-Self-service infrastructure APIs are the dominant use case that the dossier found for composite resources. The Crossplane adopters list names organizations that put composite resources between application teams and raw cloud resources. [[sources/research-composite-resource]]
+Self-service infrastructure APIs are the dominant use case that the dossier found for composite resources. The Crossplane adopters list names organizations that put composite resources between application teams and raw cloud resources. [sources/research-composite-resource](../sources/research-composite-resource.md)
 
 ## What the adopters report
 
@@ -26,4 +26,4 @@ A second pattern treats each composite kind as a product. VSHN's AppCat is liste
 
 ## Limits of the evidence
 
-The entries are short, self-reported, and unaudited. They show what organizations are building, not how it performed, and none gives object counts for composites specifically. For the managed-resource layer under these platforms, and for the larger counts that adopters report, see [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]]. The wiki still lacks named postmortems or case studies, as tracked in [[open-knowledge-gaps]]. See also [[examples/platform-team-self-service-apis-with-crossplane-and-kro]] and [[concepts/composite-resource]].
+The entries are short, self-reported, and unaudited. They show what organizations are building, not how it performed, and none gives object counts for composites specifically. For the managed-resource layer under these platforms, and for the larger counts that adopters report, see [examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand](crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand.md). The wiki still lacks named postmortems or case studies, as tracked in [open-knowledge-gaps](../open-knowledge-gaps.md). See also [examples/platform-team-self-service-apis-with-crossplane-and-kro](platform-team-self-service-apis-with-crossplane-and-kro.md) and [concepts/composite-resource](../concepts/composite-resource.md).

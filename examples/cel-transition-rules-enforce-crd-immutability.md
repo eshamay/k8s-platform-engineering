@@ -16,7 +16,7 @@ tags: [crd, cel, immutability, transition-rules]
 
 ## Scenario
 
-A CRD author has fields that must not change after creation, such as an immutable region or storage class on a claim for a managed resource, and lists that may only grow. A plain OpenAPI schema cannot compare the new value with the old one, so this was a webhook job. [[sources/research-admission-webhooks-and-cel]]
+A CRD author has fields that must not change after creation, such as an immutable region or storage class on a claim for a managed resource, and lists that may only grow. A plain OpenAPI schema cannot compare the new value with the old one, so this was a webhook job. [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)
 
 ## How it works
 
@@ -24,8 +24,8 @@ The Kubernetes immutability post shows three patterns using `x-kubernetes-valida
 
 ## Lesson
 
-Immutability is enforced by the apiserver with the CRD itself, so it travels with the definition and needs no service. The dossier presents the managed-resource immutable identifier as the typical use case and did not read a specific platform that ships such a rule, so the Crossplane and kro angle remains untested; see [[open-knowledge-gaps]]. Rule cost is bounded, so list-iterating rules need `maxItems` and `maxLength`; see [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]].
+Immutability is enforced by the apiserver with the CRD itself, so it travels with the definition and needs no service. The dossier presents the managed-resource immutable identifier as the typical use case and did not read a specific platform that ships such a rule, so the Crossplane and kro angle remains untested; see [open-knowledge-gaps](../open-knowledge-gaps.md). Rule cost is bounded, so list-iterating rules need `maxItems` and `maxLength`; see [findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost](../findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost.md).
 
 ## Related
 
-[[concepts/admission-webhooks-and-cel]], [[concepts/custom-resource-definition]], [[findings/immutable-fields-and-drift-collisions]], and [[examples/cel-rule-replaces-a-validating-webhook-for-cross-field-checks]].
+[concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md), [concepts/custom-resource-definition](../concepts/custom-resource-definition.md), [findings/immutable-fields-and-drift-collisions](../findings/immutable-fields-and-drift-collisions.md), and [examples/cel-rule-replaces-a-validating-webhook-for-cross-field-checks](cel-rule-replaces-a-validating-webhook-for-cross-field-checks.md).

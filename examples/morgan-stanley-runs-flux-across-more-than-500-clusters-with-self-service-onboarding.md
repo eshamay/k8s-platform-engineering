@@ -19,7 +19,7 @@ tags: [use-case, flux, gitops, scale, multi-tenancy, case-study]
 
 ## Scenario
 
-Morgan Stanley described its Flux adoption in a FluxCon NA 2025 talk by Tiffany Wang and Simon Bourassa, which the Flux team wrote up in March 2026. The reported footprint is "over 500 clusters, over 2,000 nodes, over 100,000 containers, and tens of thousands of Flux resources." Before Flux the firm used push pipelines, which suffered from drift and made cluster rebuilds fragile. [[sources/research-flux-deep-dive]]
+Morgan Stanley described its Flux adoption in a FluxCon NA 2025 talk by Tiffany Wang and Simon Bourassa, which the Flux team wrote up in March 2026. The reported footprint is "over 500 clusters, over 2,000 nodes, over 100,000 containers, and tens of thousands of Flux resources." Before Flux the firm used push pipelines, which suffered from drift and made cluster rebuilds fragile. [sources/research-flux-deep-dive](../sources/research-flux-deep-dive.md)
 
 ## How it works
 
@@ -33,8 +33,8 @@ This is the clearest evidence in the wiki that Flux's vertical tuning and per-te
 
 ## Related
 
-[[entities/flux]], [[examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation]], [[examples/flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs]], [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]], [[decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first]], [[decisions/git-versus-oci-as-the-canonical-source]]
+[entities/flux](../entities/flux.md), [examples/flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation](flux-multi-tenancy-repository-isolates-tenants-with-service-account-impersonation.md), [examples/flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs](flux-controllers-expose-worker-concurrency-and-helm-cache-size-as-tuning-knobs.md), [comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice](../comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice.md), [decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first](../decisions/shard-flux-controllers-or-tune-intervals-and-concurrency-first.md), [decisions/git-versus-oci-as-the-canonical-source](../decisions/git-versus-oci-as-the-canonical-source.md)
 
 ## Confirmation from the named-adopters dossier
 
-The 2026-11-26 dossier re-read the Flux blog post (dated 2026-03-15) and confirmed the footprint figures, which are self-reported by Morgan Stanley and relayed by the Flux maintainers. It also confirmed that "Exploring sharding Flux controllers to distribute load across multiple instances within a cluster" sits under "Looking Ahead", so Morgan Stanley is not a documented sharding user. Their scaling work was reconciliation intervals, `--concurrent` flags, and resource limits. No other organization was found that says it runs sharded Flux. [[sources/research-gap-g1-named-adopters]] URL: https://fluxcd.io/blog/2026/03/stairway-to-gitops-morgan-stanley/.
+The 2026-11-26 dossier re-read the Flux blog post (dated 2026-03-15) and confirmed the footprint figures, which are self-reported by Morgan Stanley and relayed by the Flux maintainers. It also confirmed that "Exploring sharding Flux controllers to distribute load across multiple instances within a cluster" sits under "Looking Ahead", so Morgan Stanley is not a documented sharding user. Their scaling work was reconciliation intervals, `--concurrent` flags, and resource limits. No other organization was found that says it runs sharded Flux. [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md) URL: https://fluxcd.io/blog/2026/03/stairway-to-gitops-morgan-stanley/.

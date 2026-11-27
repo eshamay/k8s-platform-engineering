@@ -16,16 +16,16 @@ tags: [controllers, composition-of-controllers, informers]
 
 ## Scenario
 
-The DevOps Toolkit deep dive walks through an Ingress object that three separate controllers all care about: an ingress controller, cert-manager, and a DNS controller. Each runs its own observe, compare, act, wait loop against the same object. [[sources/research-reconciliation-loop]]
+The DevOps Toolkit deep dive walks through an Ingress object that three separate controllers all care about: an ingress controller, cert-manager, and a DNS controller. Each runs its own observe, compare, act, wait loop against the same object. [sources/research-reconciliation-loop](../sources/research-reconciliation-loop.md)
 
 ## What happens
 
-Each controller has its own informer, which is the caching layer between the controller and the API server, and its own work queue. A change to the Ingress produces a key in each queue, and each controller does only its own job. The ingress controller programs routing, cert-manager obtains a certificate, and the DNS controller creates a record. None of them calls another, and they coordinate only through the shared object and what each writes back to it. [[sources/research-reconciliation-loop]]
+Each controller has its own informer, which is the caching layer between the controller and the API server, and its own work queue. A change to the Ingress produces a key in each queue, and each controller does only its own job. The ingress controller programs routing, cert-manager obtains a certificate, and the DNS controller creates a record. None of them calls another, and they coordinate only through the shared object and what each writes back to it. [sources/research-reconciliation-loop](../sources/research-reconciliation-loop.md)
 
 ## Why it matters
 
-The example shows the Kubernetes design preference for many small controllers that each own one aspect, as the official Controllers page puts it. It also shows that reconciliation composes without orchestration code, because every controller converges on its own concern. The source is a beginner-oriented explainer with no named author, so treat it as illustration and not as authority. [[sources/research-reconciliation-loop]]
+The example shows the Kubernetes design preference for many small controllers that each own one aspect, as the official Controllers page puts it. It also shows that reconciliation composes without orchestration code, because every controller converges on its own concern. The source is a beginner-oriented explainer with no named author, so treat it as illustration and not as authority. [sources/research-reconciliation-loop](../sources/research-reconciliation-loop.md)
 
 ## Related
 
-[[concepts/reconciliation-loop]], [[concepts/informers-reflectors-and-workqueues]], [[entities/cert-manager]], [[comparisons/how-flux-ack-and-cluster-api-split-controllers]]
+[concepts/reconciliation-loop](../concepts/reconciliation-loop.md), [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md), [entities/cert-manager](../entities/cert-manager.md), [comparisons/how-flux-ack-and-cluster-api-split-controllers](../comparisons/how-flux-ack-and-cluster-api-split-controllers.md)

@@ -16,7 +16,7 @@ tags: [cluster-api, rke2, reconcile-loop, status-writes, operator-failure]
 
 ## Scenario
 
-On 2026-05-18 a reporter, pydeepzp, described a regression in Rancher's cluster-api-provider-rke2 (CABPR) from v0.22.0 onward. The issue was open when the dossier read it. [[sources/research-gap-g1-operator-loop-failures]] URL: https://github.com/rancher/cluster-api-provider-rke2/issues/905
+On 2026-05-18 a reporter, pydeepzp, described a regression in Rancher's cluster-api-provider-rke2 (CABPR) from v0.22.0 onward. The issue was open when the dossier read it. [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md) URL: https://github.com/rancher/cluster-api-provider-rke2/issues/905
 
 ## What happened
 
@@ -24,8 +24,8 @@ The RKE2ControlPlane controller deferred a status patch with no equality check. 
 
 ## Why it belongs here
 
-It is a Cluster API provider and so the wiki's first provider-level hot loop, and it is the named case for [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]]. It also shows a loop spreading to other controllers that watch the same objects.
+It is a Cluster API provider and so the wiki's first provider-level hot loop, and it is the named case for [findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop](../findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop.md). It also shows a loop spreading to other controllers that watch the same objects.
 
 ## Related
 
-[[entities/cluster-api]], [[examples/crossplane-issue-7221-an-unconditional-status-update-kept-reconcile-ordering-tests-from-converging]], [[findings/self-triggered-reconcile-loops-generate-their-own-events]]
+[entities/cluster-api](../entities/cluster-api.md), [examples/crossplane-issue-7221-an-unconditional-status-update-kept-reconcile-ordering-tests-from-converging](crossplane-issue-7221-an-unconditional-status-update-kept-reconcile-ordering-tests-from-converging.md), [findings/self-triggered-reconcile-loops-generate-their-own-events](../findings/self-triggered-reconcile-loops-generate-their-own-events.md)

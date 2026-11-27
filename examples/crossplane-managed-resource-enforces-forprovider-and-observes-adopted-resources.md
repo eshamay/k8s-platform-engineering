@@ -19,7 +19,7 @@ tags: [crossplane, drift, management-policies, adoption]
 
 ## Scenario
 
-A platform team exposes a database or bucket as a [[concepts/managed-resource]] through [[entities/crossplane]]. The documentation at https://docs.crossplane.io/latest/managed-resources/managed-resources/ states that "Crossplane considers the `forProvider` field of a managed resource the 'source of truth' for external resources." Edits made outside Kubernetes are therefore reverted on the next poll. [[sources/research-self-healing-and-drift-detection]]
+A platform team exposes a database or bucket as a [concepts/managed-resource](../concepts/managed-resource.md) through [entities/crossplane](../entities/crossplane.md). The documentation at https://docs.crossplane.io/latest/managed-resources/managed-resources/ states that "Crossplane considers the `forProvider` field of a managed resource the 'source of truth' for external resources." Edits made outside Kubernetes are therefore reverted on the next poll. [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md)
 
 ## Controls
 
@@ -27,8 +27,8 @@ The `Ready` and `Synced` conditions separate "it exists" from "the last reconcil
 
 ## Lesson
 
-The same object can be an enforcer, an observer, or paused, depending on policy. See [[comparisons/exemption-and-ignore-controls-across-tools]], [[decisions/staged-adoption-of-automated-drift-correction]], [[findings/late-initialized-fields-create-false-drift]], and [[examples/crossplane-database-claim-reports-synced-and-ready]].
+The same object can be an enforcer, an observer, or paused, depending on policy. See [comparisons/exemption-and-ignore-controls-across-tools](../comparisons/exemption-and-ignore-controls-across-tools.md), [decisions/staged-adoption-of-automated-drift-correction](../decisions/staged-adoption-of-automated-drift-correction.md), [findings/late-initialized-fields-create-false-drift](../findings/late-initialized-fields-create-false-drift.md), and [examples/crossplane-database-claim-reports-synced-and-ready](crossplane-database-claim-reports-synced-and-ready.md).
 
 ## Further reading from the managed resource dossier
 
-The managed resource dossier explains the same controls in detail: [[examples/crossplane-import-of-an-existing-gcp-database-observes-first-then-takes-control]] for the import recipe, [[examples/an-observe-only-managed-resource-lets-a-composition-read-a-database-owned-by-another-team]] for permanent Observe, and [[findings/synced-false-with-ready-true-is-a-silent-failure-where-drift-correction-stops]] for the silent loss of management. [[sources/research-managed-resource]]
+The managed resource dossier explains the same controls in detail: [examples/crossplane-import-of-an-existing-gcp-database-observes-first-then-takes-control](crossplane-import-of-an-existing-gcp-database-observes-first-then-takes-control.md) for the import recipe, [examples/an-observe-only-managed-resource-lets-a-composition-read-a-database-owned-by-another-team](an-observe-only-managed-resource-lets-a-composition-read-a-database-owned-by-another-team.md) for permanent Observe, and [findings/synced-false-with-ready-true-is-a-silent-failure-where-drift-correction-stops](../findings/synced-false-with-ready-true-is-a-silent-failure-where-drift-correction-stops.md) for the silent loss of management. [sources/research-managed-resource](../sources/research-managed-resource.md)

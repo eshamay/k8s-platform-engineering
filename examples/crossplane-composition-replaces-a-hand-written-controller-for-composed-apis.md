@@ -16,7 +16,7 @@ tags: [use-case, crossplane, composition, platform-engineering]
 
 ## Scenario
 
-A platform team wants to offer developers a simple custom API, such as a database with a few fields, that fans out into many cloud resources. Writing and maintaining a bespoke operator for each such API is costly, and the dossier names composition as the alternative. [[sources/research-operator-pattern]]
+A platform team wants to offer developers a simple custom API, such as a database with a few fields, that fans out into many cloud resources. Writing and maintaining a bespoke operator for each such API is costly, and the dossier names composition as the alternative. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ Crossplane lets the platform team define a composite resource API with an XRD an
 
 ## Related
 
-[[entities/crossplane]], [[concepts/composition]], [[concepts/composite-resource]], [[examples/platform-team-self-service-apis-with-crossplane-and-kro]], [[decisions/build-a-custom-operator-or-compose-existing-resources]]
+[entities/crossplane](../entities/crossplane.md), [concepts/composition](../concepts/composition.md), [concepts/composite-resource](../concepts/composite-resource.md), [examples/platform-team-self-service-apis-with-crossplane-and-kro](platform-team-self-service-apis-with-crossplane-and-kro.md), [decisions/build-a-custom-operator-or-compose-existing-resources](../decisions/build-a-custom-operator-or-compose-existing-resources.md)

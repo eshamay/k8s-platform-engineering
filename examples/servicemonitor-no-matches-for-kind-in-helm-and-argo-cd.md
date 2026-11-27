@@ -16,7 +16,7 @@ tags: [gvk, crd-ordering, prometheus-operator, helm, argo-cd, flux]
 
 ## Scenario
 
-A chart or GitOps application includes a Prometheus Operator `ServiceMonitor` custom resource. The dossier calls this the most common everyday GVK-missing scenario. [[sources/research-gvk-and-gvr]]
+A chart or GitOps application includes a Prometheus Operator `ServiceMonitor` custom resource. The dossier calls this the most common everyday GVK-missing scenario. [sources/research-gvk-and-gvr](../sources/research-gvk-and-gvr.md)
 
 ## What goes wrong
 
@@ -28,4 +28,4 @@ Flux users place the controllers that provide CRDs in one Kustomization and the 
 
 ## Lesson
 
-The failure is not a bug in any one tool. It follows from discovery being a snapshot of what the cluster knows. See [[findings/custom-resources-applied-before-their-crd-exists]], [[comparisons/missing-crd-handling-flux-versus-argo-cd]], and [[examples/flux-dependson-and-health-checks-gate-rollout]].
+The failure is not a bug in any one tool. It follows from discovery being a snapshot of what the cluster knows. See [findings/custom-resources-applied-before-their-crd-exists](../findings/custom-resources-applied-before-their-crd-exists.md), [comparisons/missing-crd-handling-flux-versus-argo-cd](../comparisons/missing-crd-handling-flux-versus-argo-cd.md), and [examples/flux-dependson-and-health-checks-gate-rollout](flux-dependson-and-health-checks-gate-rollout.md).

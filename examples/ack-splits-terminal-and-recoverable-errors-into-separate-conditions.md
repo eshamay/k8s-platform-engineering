@@ -16,7 +16,7 @@ tags: [ack, conditions, aws, error-classification]
 
 ## Scenario
 
-An engineer creates an ACK resource, such as an S3 bucket or an RDS instance, and the AWS call fails. The engineer, or an alerting rule, has to decide whether to wait for the controller to retry or to edit the spec. [[sources/research-conditions]]
+An engineer creates an ACK resource, such as an S3 bucket or an RDS instance, and the AWS call fails. The engineer, or an alerting rule, has to decide whether to wait for the controller to retry or to edit the spec. [sources/research-conditions](../sources/research-conditions.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ ACK reports the answer in the conditions. `ACK.Recoverable` marks transient prob
 
 ## Lesson
 
-Separating the two error classes lets automation make a decision a single `Ready=False` cannot support: retry or page a human. Crossplane gets a similar signal less directly, through the message on `ReconcileError`. ACK conditions do not carry `observedGeneration` in the evidence the wiki holds, so a consumer reading `ResourceSynced=True` cannot always tell whether it describes the current spec. See [[findings/missing-observedgeneration-hides-stale-status]], [[decisions/publish-synced-false-at-reconcile-start]], [[comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api]], and [[entities/ack]].
+Separating the two error classes lets automation make a decision a single `Ready=False` cannot support: retry or page a human. Crossplane gets a similar signal less directly, through the message on `ReconcileError`. ACK conditions do not carry `observedGeneration` in the evidence the wiki holds, so a consumer reading `ResourceSynced=True` cannot always tell whether it describes the current spec. See [findings/missing-observedgeneration-hides-stale-status](../findings/missing-observedgeneration-hides-stale-status.md), [decisions/publish-synced-false-at-reconcile-start](../decisions/publish-synced-false-at-reconcile-start.md), [comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api](../comparisons/condition-vocabularies-across-crossplane-ack-config-connector-flux-kro-and-cluster-api.md), and [entities/ack](../entities/ack.md).

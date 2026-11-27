@@ -16,7 +16,7 @@ tags: [crossplane, sap, idempotency, external-name, recovery]
 
 ## Scenario
 
-SAP's BTP platform assigns identifiers to resources such as Subaccounts, ServiceInstances, and ServiceBindings, so a deterministic name cannot be assumed. The contributors of [[entities/crossplane-provider-btp]] wrote an architecture decision record on how to make a create whose response was lost recoverable without blindly adopting look-alike resources. [[sources/research-idempotency]]
+SAP's BTP platform assigns identifiers to resources such as Subaccounts, ServiceInstances, and ServiceBindings, so a deterministic name cannot be assumed. The contributors of [entities/crossplane-provider-btp](../entities/crossplane-provider-btp.md) wrote an architecture decision record on how to make a create whose response was lost recoverable without blindly adopting look-alike resources. [sources/research-idempotency](../sources/research-idempotency.md)
 
 ## The recovery steps
 
@@ -28,12 +28,12 @@ SAP's BTP platform assigns identifiers to resources such as Subaccounts, Service
 
 ## Related design choices
 
-An explicitly set external name signals that the resource should already exist, and the provider removes the default initializer so that a missing external name never turns into an accidental adoption. Compound keys use `/` as a delimiter with a 512 character limit. The ADR says plainly that this is not an import mechanism. [[sources/research-idempotency]]
+An explicitly set external name signals that the resource should already exist, and the provider removes the default initializer so that a missing external name never turns into an accidental adoption. Compound keys use `/` as a delimiter with a 512 character limit. The ADR says plainly that this is not an import mechanism. [sources/research-idempotency](../sources/research-idempotency.md)
 
 ## Lesson
 
-The creation-time window and the pending marker together narrow a search that would otherwise be unsafe. The approach needs a stable business key and a trustworthy creation timestamp, so it is custom per resource type. See [[decisions/recover-from-an-ambiguous-create-by-halting-searching-or-tagging]] and [[comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector]].
+The creation-time window and the pending marker together narrow a search that would otherwise be unsafe. The approach needs a stable business key and a trustworthy creation timestamp, so it is custom per resource type. See [decisions/recover-from-an-ambiguous-create-by-halting-searching-or-tagging](../decisions/recover-from-an-ambiguous-create-by-halting-searching-or-tagging.md) and [comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector](../comparisons/ambiguous-create-and-adoption-strategies-across-crossplane-sap-ack-and-config-connector.md).
 
 ## Related
 
-[[examples/provider-restart-blocks-a-crossplane-resource-on-external-create-pending]], [[concepts/idempotency]]
+[examples/provider-restart-blocks-a-crossplane-resource-on-external-create-pending](provider-restart-blocks-a-crossplane-resource-on-external-create-pending.md), [concepts/idempotency](../concepts/idempotency.md)

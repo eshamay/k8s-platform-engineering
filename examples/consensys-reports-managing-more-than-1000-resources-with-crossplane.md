@@ -16,7 +16,7 @@ tags: [crossplane, adopters, consensys, self-reported, scale]
 
 ## Scenario
 
-Consensys lists itself in the Crossplane ADOPTERS file with a resource count and a link to a KubeCon talk. [[sources/research-gap-g1-named-adopters]]
+Consensys lists itself in the Crossplane ADOPTERS file with a resource count and a link to a KubeCon talk. [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md)
 
 ## What the entry says
 
@@ -28,4 +28,4 @@ The count is modest next to the 10,000 and 200,000 figures elsewhere in the same
 
 ## Related
 
-[[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]], [[entities/crossplane]]
+[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand](crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand.md), [entities/crossplane](../entities/crossplane.md)

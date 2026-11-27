@@ -16,7 +16,7 @@ tags: [argo-cd, drift, image-updater, debugging]
 
 ## Scenario
 
-An Argo CD user reported that an app-of-apps drifted out of sync immediately after syncing, as described in https://github.com/argoproj/argo-cd/issues/14591. The parent application kept showing OutOfSync even though nothing in Git had changed. [[sources/research-self-healing-and-drift-detection]]
+An Argo CD user reported that an app-of-apps drifted out of sync immediately after syncing, as described in https://github.com/argoproj/argo-cd/issues/14591. The parent application kept showing OutOfSync even though nothing in Git had changed. [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md)
 
 ## Cause
 
@@ -24,4 +24,4 @@ Another automation tool was the second writer. argocd-image-updater rewrote the 
 
 ## Lesson
 
-"Drift" is often two writers disagreeing, and diagnosing it means finding the second writer. The remedies are to stop one writer from touching the field, or to tell Argo CD to ignore it with `ignoreDifferences`. See [[findings/controllers-fighting-over-fields-cause-revert-loops]], [[comparisons/exemption-and-ignore-controls-across-tools]], and [[entities/argo-cd]].
+"Drift" is often two writers disagreeing, and diagnosing it means finding the second writer. The remedies are to stop one writer from touching the field, or to tell Argo CD to ignore it with `ignoreDifferences`. See [findings/controllers-fighting-over-fields-cause-revert-loops](../findings/controllers-fighting-over-fields-cause-revert-loops.md), [comparisons/exemption-and-ignore-controls-across-tools](../comparisons/exemption-and-ignore-controls-across-tools.md), and [entities/argo-cd](../entities/argo-cd.md).

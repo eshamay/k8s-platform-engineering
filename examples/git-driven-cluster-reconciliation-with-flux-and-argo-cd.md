@@ -16,7 +16,7 @@ tags: [use-case, gitops, flux, argo-cd]
 
 ## Scenario
 
-A team wants the cluster to match a Git repository, with Git history as the audit trail and manual edits to live objects reverted automatically. Both [[entities/flux]] and [[entities/argo-cd]] serve this need. [[sources/research-declarative-vs-imperative]]
+A team wants the cluster to match a Git repository, with Git history as the audit trail and manual edits to live objects reverted automatically. Both [entities/flux](../entities/flux.md) and [entities/argo-cd](../entities/argo-cd.md) serve this need. [sources/research-declarative-vs-imperative](../sources/research-declarative-vs-imperative.md)
 
 ## How it works in Flux
 
@@ -24,12 +24,12 @@ Flux sources produce artifacts, and Kustomization and HelmRelease objects apply 
 
 ## How it works in Argo CD
 
-Argo CD automated sync applies Git state when an application is OutOfSync. Pruning and self-heal are opt-in, so a team must enable them before manual changes are reverted. See [[comparisons/flux-versus-argo-cd-drift-and-prune-defaults]].
+Argo CD automated sync applies Git state when an application is OutOfSync. Pruning and self-heal are opt-in, so a team must enable them before manual changes are reverted. See [comparisons/flux-versus-argo-cd-drift-and-prune-defaults](../comparisons/flux-versus-argo-cd-drift-and-prune-defaults.md).
 
 ## Pitfalls
 
-A prune setting can delete more than intended ([[findings/unintended-deletion-through-prune]]), and drift correction can fight server-defaulted values ([[findings/defaulting-and-drift-reconcile-loops]]). Flux suspend and Argo CD's blocked rollback under auto-sync are the intentional pause and override points.
+A prune setting can delete more than intended ([findings/unintended-deletion-through-prune](../findings/unintended-deletion-through-prune.md)), and drift correction can fight server-defaulted values ([findings/defaulting-and-drift-reconcile-loops](../findings/defaulting-and-drift-reconcile-loops.md)). Flux suspend and Argo CD's blocked rollback under auto-sync are the intentional pause and override points.
 
 ## Related
 
-[[concepts/gitops-pull-based-delivery]], [[concepts/self-healing-and-drift-detection]], [[examples/intuit-argo-cd-gitops-origin]]
+[concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md), [concepts/self-healing-and-drift-detection](../concepts/self-healing-and-drift-detection.md), [examples/intuit-argo-cd-gitops-origin](intuit-argo-cd-gitops-origin.md)

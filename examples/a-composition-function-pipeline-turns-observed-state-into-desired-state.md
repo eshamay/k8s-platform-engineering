@@ -16,7 +16,7 @@ tags: [crossplane, composition-functions, grpc, pipeline]
 
 ## Scenario
 
-A platform team needs to decide what a composite resource should own. Crossplane answers by running an ordered list of functions on every reconcile, and the design document explains why it chose that over a growing templating language. [[sources/research-composite-resource]]
+A platform team needs to decide what a composite resource should own. Crossplane answers by running an ordered list of functions on every reconcile, and the design document explains why it chose that over a growing templating language. [sources/research-composite-resource](../sources/research-composite-resource.md)
 
 ## How it works
 
@@ -26,4 +26,4 @@ The motive in the design document is to "Avoid organically growing a new configu
 
 ## Why the example matters
 
-It is the level-based loop applied to a bundle, with observed state in and desired state out on every pass. The design buys any authoring language at the cost of more moving parts, see [[findings/composition-functions-add-moving-parts-that-must-be-healthy]]. For the comparison with kro's single expression language see [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], and for the older replacement example see [[examples/crossplane-composition-replaces-a-hand-written-controller-for-composed-apis]].
+It is the level-based loop applied to a bundle, with observed state in and desired state out on every pass. The design buys any authoring language at the cost of more moving parts, see [findings/composition-functions-add-moving-parts-that-must-be-healthy](../findings/composition-functions-add-moving-parts-that-must-be-healthy.md). For the comparison with kro's single expression language see [comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models](../comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models.md), and for the older replacement example see [examples/crossplane-composition-replaces-a-hand-written-controller-for-composed-apis](crossplane-composition-replaces-a-hand-written-controller-for-composed-apis.md).

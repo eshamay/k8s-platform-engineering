@@ -16,7 +16,7 @@ tags: [crossplane, server-side-apply, managedfields, migration]
 
 ## Scenario
 
-Crossplane composed resources created by the older, Update-style path have every field owned by the manager `crossplane` with operation `Update`. When the composite resource controller moves to composition functions, it applies desired state with server-side apply instead. [[sources/research-server-side-apply-and-field-ownership]]
+Crossplane composed resources created by the older, Update-style path have every field owned by the manager `crossplane` with operation `Update`. When the composite resource controller moves to composition functions, it applies desired state with server-side apply instead. [sources/research-server-side-apply-and-field-ownership](../sources/research-server-side-apply-and-field-ownership.md)
 
 ## What happened
 
@@ -28,4 +28,4 @@ The issue states that "Without this managedFields upgrade, the composed resource
 
 ## Lesson
 
-The recipe is reusable by any controller moving from Update-style writes to Apply. It also shows how a platform layer depends on SSA, since claim to composite resource to composed resource propagation relies on correct ownership. Crossplane's own page (v1.20, alpha) says deleted fields and labels propagate downstream and that complex-field merging needs CRD merge markers. See [[findings/client-side-to-server-side-migration-leaves-stale-co-owners]], [[findings/atomic-lists-and-unmarked-crds-block-shared-field-ownership]], and [[entities/crossplane]].
+The recipe is reusable by any controller moving from Update-style writes to Apply. It also shows how a platform layer depends on SSA, since claim to composite resource to composed resource propagation relies on correct ownership. Crossplane's own page (v1.20, alpha) says deleted fields and labels propagate downstream and that complex-field merging needs CRD merge markers. See [findings/client-side-to-server-side-migration-leaves-stale-co-owners](../findings/client-side-to-server-side-migration-leaves-stale-co-owners.md), [findings/atomic-lists-and-unmarked-crds-block-shared-field-ownership](../findings/atomic-lists-and-unmarked-crds-block-shared-field-ownership.md), and [entities/crossplane](../entities/crossplane.md).

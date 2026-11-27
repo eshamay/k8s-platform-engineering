@@ -16,7 +16,7 @@ tags: [crossplane, webhooks, usage, failure-policy, verified]
 
 ## Scenario
 
-Crossplane core installs a ValidatingWebhookConfiguration named `crossplane-no-usages` that fires on DELETE for any resource carrying the label `crossplane.io/in-use=true`, with `failurePolicy: Fail`. The chart value lets operators set Ignore for managed Kubernetes services that reject Fail-policy webhooks with wildcard rules, and the chart comment names an AKS cluster stop as the case. https://raw.githubusercontent.com/crossplane/crossplane/main/cluster/webhookconfigurations/usage.yaml [[sources/research-gap-m6-admission-crds]]
+Crossplane core installs a ValidatingWebhookConfiguration named `crossplane-no-usages` that fires on DELETE for any resource carrying the label `crossplane.io/in-use=true`, with `failurePolicy: Fail`. The chart value lets operators set Ignore for managed Kubernetes services that reject Fail-policy webhooks with wildcard rules, and the chart comment names an AKS cluster stop as the case. https://raw.githubusercontent.com/crossplane/crossplane/main/cluster/webhookconfigurations/usage.yaml [sources/research-gap-m6-admission-crds](../sources/research-gap-m6-admission-crds.md)
 
 ## Reliability
 
@@ -24,4 +24,4 @@ VERIFIED from the default-branch file; release v2.5.0 is the latest tag and the 
 
 ## Related
 
-[[findings/crossplane-core-ships-one-fail-closed-usage-webhook-and-replaced-its-xrd-and-composition-webhooks-with-cel]] and [[entities/crossplane]].
+[findings/crossplane-core-ships-one-fail-closed-usage-webhook-and-replaced-its-xrd-and-composition-webhooks-with-cel](../findings/crossplane-core-ships-one-fail-closed-usage-webhook-and-replaced-its-xrd-and-composition-webhooks-with-cel.md) and [entities/crossplane](../entities/crossplane.md).

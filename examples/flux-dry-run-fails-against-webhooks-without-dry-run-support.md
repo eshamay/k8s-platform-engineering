@@ -16,7 +16,7 @@ tags: [flux, webhooks, dry-run, sideeffects, gitops]
 
 ## Scenario
 
-A cluster runs a policy or defaulting webhook, and Flux's kustomize-controller reconciles manifests into it. Flux applies with a server-side dry-run first, so every apply passes through the webhook once as a dry-run request. The dossier presents this as a concrete case of GitOps meeting admission. [[sources/research-admission-webhooks-and-cel]]
+A cluster runs a policy or defaulting webhook, and Flux's kustomize-controller reconciles manifests into it. Flux applies with a server-side dry-run first, so every apply passes through the webhook once as a dry-run request. The dossier presents this as a concrete case of GitOps meeting admission. [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)
 
 ## How it works
 
@@ -24,8 +24,8 @@ When the webhook's configuration does not declare `sideEffects` of `None` or `No
 
 ## Lesson
 
-The fix is on the webhook configuration, not on the GitOps tool, which is why webhook authors need to treat `sideEffects` as part of their API contract. The same cheatsheet covers the default five-minute health-check timeout and the `disableWait` option, which are separate failure sources. See [[findings/webhooks-without-sideeffects-declared-break-dry-run-clients]].
+The fix is on the webhook configuration, not on the GitOps tool, which is why webhook authors need to treat `sideEffects` as part of their API contract. The same cheatsheet covers the default five-minute health-check timeout and the `disableWait` option, which are separate failure sources. See [findings/webhooks-without-sideeffects-declared-break-dry-run-clients](../findings/webhooks-without-sideeffects-declared-break-dry-run-clients.md).
 
 ## Related
 
-[[entities/flux]], [[concepts/server-side-apply-and-field-ownership]], and [[concepts/admission-webhooks-and-cel]].
+[entities/flux](../entities/flux.md), [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md), and [concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md).

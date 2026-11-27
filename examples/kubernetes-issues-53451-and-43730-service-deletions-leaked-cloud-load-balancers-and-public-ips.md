@@ -16,7 +16,7 @@ tags: [finalizers, orphans, load-balancer, service-controller, azure, cloud-leak
 
 ## Scenario
 
-Two 2017 issues in the Kubernetes repository show cloud resources outliving the Services that created them. Neither involves a forced finalizer removal, so they show the orphaning mechanism and not its frequency. [[sources/research-gap-g1-gitops-drift-incidents]]
+Two 2017 issues in the Kubernetes repository show cloud resources outliving the Services that created them. Neither involves a forced finalizer removal, so they show the orphaning mechanism and not its frequency. [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md)
 
 ## What happened
 
@@ -26,8 +26,8 @@ Issue 43730, opened 2017-03-28 against v1.5.3 on Azure, reports "resource leaks 
 
 ## Why it belongs here
 
-A finalizer is the record that external work remains, which is why [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]] treats removing one as risky. These issues show the other side: with no finalizer, a missed delete also leaves the leak. See [[findings/resources-are-orphaned-when-a-controller-misses-the-delete-or-the-finalizer-is-added-too-late]].
+A finalizer is the record that external work remains, which is why [findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data](../findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data.md) treats removing one as risky. These issues show the other side: with no finalizer, a missed delete also leaves the leak. See [findings/resources-are-orphaned-when-a-controller-misses-the-delete-or-the-finalizer-is-added-too-late](../findings/resources-are-orphaned-when-a-controller-misses-the-delete-or-the-finalizer-is-added-too-late.md).
 
 ## Related
 
-[[concepts/finalizers]], [[findings/destructive-deletion-of-external-resources]]
+[concepts/finalizers](../concepts/finalizers.md), [findings/destructive-deletion-of-external-resources](../findings/destructive-deletion-of-external-resources.md)

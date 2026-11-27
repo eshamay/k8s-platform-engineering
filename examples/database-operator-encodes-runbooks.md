@@ -16,20 +16,20 @@ tags: [use-case, operators, stateful]
 
 ## Scenario
 
-Stateful services need human operational knowledge such as backup, upgrade, and failover. The Kubernetes operator documentation uses a hypothetical SampleDB custom resource to show how that knowledge moves into software. [[sources/research-declarative-vs-imperative]]
+Stateful services need human operational knowledge such as backup, upgrade, and failover. The Kubernetes operator documentation uses a hypothetical SampleDB custom resource to show how that knowledge moves into software. [sources/research-declarative-vs-imperative](../sources/research-declarative-vs-imperative.md)
 
 ## How it works
 
-A user edits a SampleDB custom resource to say what they want. The operator, which the page describes as a client of the Kubernetes API that acts as a controller for a custom resource, then creates the PVCs, StatefulSets, and Jobs needed to realize it. Runbook steps become reconcile logic that runs continuously, not commands a human types. See [[concepts/operator-pattern]] and [[concepts/reconciliation-loop]].
+A user edits a SampleDB custom resource to say what they want. The operator, which the page describes as a client of the Kubernetes API that acts as a controller for a custom resource, then creates the PVCs, StatefulSets, and Jobs needed to realize it. Runbook steps become reconcile logic that runs continuously, not commands a human types. See [concepts/operator-pattern](../concepts/operator-pattern.md) and [concepts/reconciliation-loop](../concepts/reconciliation-loop.md).
 
 ## Building one
 
-[[entities/kubebuilder]] shows how such a controller is structured: rebuild status from observed children, set owner references, and write status through the status subresource.
+[entities/kubebuilder](../entities/kubebuilder.md) shows how such a controller is structured: rebuild status from observed children, set owner references, and write status through the status subresource.
 
 ## Caveat
 
-SampleDB is an illustration, not a named deployment. No database operator adopter was read in the dossier. See [[open-knowledge-gaps]].
+SampleDB is an illustration, not a named deployment. No database operator adopter was read in the dossier. See [open-knowledge-gaps](../open-knowledge-gaps.md).
 
 ## Related
 
-[[concepts/declarative-vs-imperative]]
+[concepts/declarative-vs-imperative](../concepts/declarative-vs-imperative.md)

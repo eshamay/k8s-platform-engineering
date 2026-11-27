@@ -19,7 +19,7 @@ tags: [crossplane, composition, deletion-ordering, foreground, usages]
 
 ## Scenario
 
-A platform team composes a database and its network under one composite resource, and the database must be deleted before the network. With the default policy the whole tree is removed at once and the order is not honored. The Crossplane Compositions page and issue 6084 describe the options. [[sources/research-owner-references-and-garbage-collection]]
+A platform team composes a database and its network under one composite resource, and the database must be deleted before the network. With the default policy the whole tree is removed at once and the order is not honored. The Crossplane Compositions page and issue 6084 describe the options. [sources/research-owner-references-and-garbage-collection](../sources/research-owner-references-and-garbage-collection.md)
 
 ## How it works
 
@@ -29,12 +29,12 @@ Issue 6084, opened in November 2024 and closed as stale in April 2025, shows why
 
 ## Why the example matters
 
-It shows a tool-level answer layered on the general mechanism. See [[findings/background-deletion-gives-no-teardown-ordering-between-dependents]] and [[decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown]]. The dossier did not cover Crossplane v2 namespaced composites or `managementPolicies`.
+It shows a tool-level answer layered on the general mechanism. See [findings/background-deletion-gives-no-teardown-ordering-between-dependents](../findings/background-deletion-gives-no-teardown-ordering-between-dependents.md) and [decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown](../decisions/choose-foreground-or-a-pipeline-policy-for-ordered-composite-teardown.md). The dossier did not cover Crossplane v2 namespaced composites or `managementPolicies`.
 
 ## Related
 
-[[entities/crossplane]], [[concepts/composite-resource]], [[concepts/owner-references-and-garbage-collection]], [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]]
+[entities/crossplane](../entities/crossplane.md), [concepts/composite-resource](../concepts/composite-resource.md), [concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md), [examples/kro-deletes-instance-resources-in-reverse-dependency-waves](kro-deletes-instance-resources-in-reverse-dependency-waves.md)
 
 ## Update from the v2.5 verification pass (2026-11-26)
 
-The composition `deletionPolicy` (Background, Foreground, Pipeline) is alpha, behind `--enable-function-controlled-deletion`, and new in v2.5.0. The default stays Background, legacy cluster-scoped XRs are always deleted with Background, and `kubectl delete --cascade=orphan` or `--cascade=foreground` and Argo CD foreground propagation make Crossplane ignore the policy and emit a warning event. [[sources/research-gap-g3-crossplane-v2]] See [[findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays]].
+The composition `deletionPolicy` (Background, Foreground, Pipeline) is alpha, behind `--enable-function-controlled-deletion`, and new in v2.5.0. The default stays Background, legacy cluster-scoped XRs are always deleted with Background, and `kubectl delete --cascade=orphan` or `--cascade=foreground` and Argo CD foreground propagation make Crossplane ignore the policy and emit a warning event. [sources/research-gap-g3-crossplane-v2](../sources/research-gap-g3-crossplane-v2.md) See [findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays](../findings/a-managed-resource-without-delete-in-its-management-policies-is-removed-from-kubernetes-but-its-cloud-resource-stays.md).

@@ -16,7 +16,7 @@ tags: [use-case, stateful, databases, operators]
 
 ## Scenario
 
-Stateful data services are the classic operator use case, because a database needs human operational knowledge that a Deployment cannot express: provisioning, high availability, version upgrades, backups, and schema migrations. [[sources/research-operator-pattern]]
+Stateful data services are the classic operator use case, because a database needs human operational knowledge that a Deployment cannot express: provisioning, high availability, version upgrades, backups, and schema migrations. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## How it works
 
@@ -24,8 +24,8 @@ The CNCF explainer names Postgres operators and the Elastic operator as well-kno
 
 ## Caveat
 
-The dossier names these operators without reading their documentation, so object counts, failure behavior, and adopters are unknown. See [[examples/database-operator-encodes-runbooks]] for the SampleDB illustration, [[examples/postgrescluster-custom-resource-reconciled-into-child-objects]] for a concrete resource shape, and [[open-knowledge-gaps]].
+The dossier names these operators without reading their documentation, so object counts, failure behavior, and adopters are unknown. See [examples/database-operator-encodes-runbooks](database-operator-encodes-runbooks.md) for the SampleDB illustration, [examples/postgrescluster-custom-resource-reconciled-into-child-objects](postgrescluster-custom-resource-reconciled-into-child-objects.md) for a concrete resource shape, and [open-knowledge-gaps](../open-knowledge-gaps.md).
 
 ## Related
 
-[[concepts/operator-pattern]], [[concepts/finalizers]]
+[concepts/operator-pattern](../concepts/operator-pattern.md), [concepts/finalizers](../concepts/finalizers.md)

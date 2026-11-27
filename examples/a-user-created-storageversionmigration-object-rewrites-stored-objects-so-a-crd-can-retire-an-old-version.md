@@ -19,7 +19,7 @@ tags: [kubernetes, v1-37, crd, versioning, storage-migration, ga]
 
 ## Scenario
 
-A team has moved a CRD from an old version to a new preferred version and wants to drop the old version from the CRD. Objects written earlier are still stored in etcd in the old form, so the old version cannot be removed until they are rewritten. Kubernetes v1.37 made the built-in way to do that Generally Available. [[sources/research-gap-g3-k8s-and-controller-runtime]]
+A team has moved a CRD from an old version to a new preferred version and wants to drop the old version from the CRD. Objects written earlier are still stored in etcd in the old form, so the old version cannot be removed until they are rewritten. Kubernetes v1.37 made the built-in way to do that Generally Available. [sources/research-gap-g3-k8s-and-controller-runtime](../sources/research-gap-g3-k8s-and-controller-runtime.md)
 
 ## Steps
 
@@ -36,8 +36,8 @@ Migration needs an integer resource version and fails for resources that do not 
 
 ## Related
 
-[[concepts/crd-versioning-and-storage-migration]], [[findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object]], [[findings/crd-version-removal-without-migration-strands-stored-objects]]
+[concepts/crd-versioning-and-storage-migration](../concepts/crd-versioning-and-storage-migration.md), [findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object](../findings/storage-version-migration-is-not-triggered-automatically-so-a-retired-crd-version-needs-a-user-created-object.md), [findings/crd-version-removal-without-migration-strands-stored-objects](../findings/crd-version-removal-without-migration-strands-stored-objects.md)
 
 ## Update from the Flux and Kubernetes recheck
 
-Update 2026-11-26: while the migration runs, `Running` is True with a message such as "The migration is running, 120/500 objects not yet migrated" (format from source, the numbers are illustrative). On completion `Running` becomes False with reason `MigrationCompleted` and `Succeeded` becomes True. See [[findings/storageversionmigration-reports-progress-as-text-in-the-running-condition-message-and-has-no-numeric-progress-field]]. [[sources/research-gap-b1-recheck-flux-k8s]]
+Update 2026-11-26: while the migration runs, `Running` is True with a message such as "The migration is running, 120/500 objects not yet migrated" (format from source, the numbers are illustrative). On completion `Running` becomes False with reason `MigrationCompleted` and `Succeeded` becomes True. See [findings/storageversionmigration-reports-progress-as-text-in-the-running-condition-message-and-has-no-numeric-progress-field](../findings/storageversionmigration-reports-progress-as-text-in-the-running-condition-message-and-has-no-numeric-progress-field.md). [sources/research-gap-b1-recheck-flux-k8s](../sources/research-gap-b1-recheck-flux-k8s.md)

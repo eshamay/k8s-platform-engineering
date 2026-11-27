@@ -16,7 +16,7 @@ tags: [kubebuilder, controller-runtime, informers, indexer, cronjob]
 
 ## Scenario
 
-The Kubebuilder CronJob tutorial builds a reconciler that creates Jobs on a schedule. It shows how the informer machinery appears at the framework level. [[sources/research-informers-reflectors-and-workqueues]]
+The Kubebuilder CronJob tutorial builds a reconciler that creates Jobs on a schedule. It shows how the informer machinery appears at the framework level. [sources/research-informers-reflectors-and-workqueues](../sources/research-informers-reflectors-and-workqueues.md)
 
 ## How the pieces connect
 
@@ -24,4 +24,4 @@ The reconciler fetches the primary CronJob, lists the Jobs it owns, updates stat
 
 ## Lesson
 
-Framework calls such as `Owns()` and `Watches()` create the informers, the event-to-key mapping, and the queue for the author. Indexers are the cache-side counterpart of label selectors on the API server. See [[examples/kubebuilder-cronjob-tutorial-shows-the-end-to-end-shape-of-a-go-operator]], [[entities/kubebuilder]], [[entities/controller-runtime]], and [[concepts/informers-reflectors-and-workqueues]].
+Framework calls such as `Owns()` and `Watches()` create the informers, the event-to-key mapping, and the queue for the author. Indexers are the cache-side counterpart of label selectors on the API server. See [examples/kubebuilder-cronjob-tutorial-shows-the-end-to-end-shape-of-a-go-operator](kubebuilder-cronjob-tutorial-shows-the-end-to-end-shape-of-a-go-operator.md), [entities/kubebuilder](../entities/kubebuilder.md), [entities/controller-runtime](../entities/controller-runtime.md), and [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md).

@@ -16,7 +16,7 @@ tags: [config-connector, monitoringalertpolicy, duplicate-resource, gcp-api, fai
 
 ## Scenario
 
-Config Connector issue 648 was opened on 2022-04-05 against v1.76.0. A MonitoringAlertPolicy carried an invalid query, so the create call returned HTTP 400. [[sources/research-gap-g1-leaked-resources-adoption]] URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/648
+Config Connector issue 648 was opened on 2022-04-05 against v1.76.0. A MonitoringAlertPolicy carried an invalid query, so the create call returned HTTP 400. [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md) URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/648
 
 ## What happened
 
@@ -24,8 +24,8 @@ Even though the create call failed, a new alert policy appeared on each reconcil
 
 ## Why it belongs here
 
-A failed create is not always a create that did nothing, so a controller that retries on error can duplicate the resource. This is a case where the cloud API, and not a crash, produced the ambiguity. See [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]] and [[concepts/idempotency]].
+A failed create is not always a create that did nothing, so a controller that retries on error can duplicate the resource. This is a case where the cloud API, and not a crash, produced the ambiguity. See [findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent](../findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent.md) and [concepts/idempotency](../concepts/idempotency.md).
 
 ## Related
 
-[[entities/config-connector]], [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]]
+[entities/config-connector](../entities/config-connector.md), [findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes](../findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes.md)

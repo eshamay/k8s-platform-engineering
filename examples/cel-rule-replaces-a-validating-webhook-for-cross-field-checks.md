@@ -19,7 +19,7 @@ tags: [crd, cel, validation, webhooks]
 
 ## Scenario
 
-A CRD author wants to reject an object whose minimum replica count is larger than its maximum. A plain OpenAPI schema can check each field alone but cannot compare two fields, so before CEL the usual answer was a validating admission webhook. [[sources/research-custom-resource-definition]]
+A CRD author wants to reject an object whose minimum replica count is larger than its maximum. A plain OpenAPI schema can check each field alone but cannot compare two fields, so before CEL the usual answer was a validating admission webhook. [sources/research-custom-resource-definition](../sources/research-custom-resource-definition.md)
 
 ## How it works
 
@@ -27,8 +27,8 @@ The Kubernetes blog announcing beta validation rules uses exactly this check. Th
 
 ## Lesson
 
-The rule travels with the CRD, so there is no webhook to deploy, secure, or keep available, and the dossier reports that per-rule cost limits protect the apiserver from expensive expressions. The dossier read only the first part of the announcement, so transition rules and feature-gate history are not covered here. Validation ratcheting, covered on the CRD task page, lets stricter rules be added without invalidating objects that already exist. See [[comparisons/cel-validation-rules-versus-validating-webhooks]], [[decisions/validate-with-cel-rules-or-a-validating-webhook]], and [[concepts/admission-webhooks-and-cel]].
+The rule travels with the CRD, so there is no webhook to deploy, secure, or keep available, and the dossier reports that per-rule cost limits protect the apiserver from expensive expressions. The dossier read only the first part of the announcement, so transition rules and feature-gate history are not covered here. Validation ratcheting, covered on the CRD task page, lets stricter rules be added without invalidating objects that already exist. See [comparisons/cel-validation-rules-versus-validating-webhooks](../comparisons/cel-validation-rules-versus-validating-webhooks.md), [decisions/validate-with-cel-rules-or-a-validating-webhook](../decisions/validate-with-cel-rules-or-a-validating-webhook.md), and [concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md).
 
 ## Additions from the admission dossier
 
-The admission dossier covers the transition-rule side that the first dossier did not read: `oldSelf` rules run only on updates, and the Kubernetes immutability post shows `self == oldSelf` and append-only patterns. See [[examples/cel-transition-rules-enforce-crd-immutability]] and [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]]. [[sources/research-admission-webhooks-and-cel]]
+The admission dossier covers the transition-rule side that the first dossier did not read: `oldSelf` rules run only on updates, and the Kubernetes immutability post shows `self == oldSelf` and append-only patterns. See [examples/cel-transition-rules-enforce-crd-immutability](cel-transition-rules-enforce-crd-immutability.md) and [findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost](../findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost.md). [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)

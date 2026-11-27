@@ -16,7 +16,7 @@ tags: [crossplane, compliance, governance, tagging, multi-tenancy]
 
 ## Scenario
 
-Compliance and governance are a motivation for composite resources in the dossier, not a named deployment. The Crossplane blog on designing compositions for organizational needs (Markus Schweig, Upbound, 2023-10-06) argues for the pattern. [[sources/research-composite-resource]]
+Compliance and governance are a motivation for composite resources in the dossier, not a named deployment. The Crossplane blog on designing compositions for organizational needs (Markus Schweig, Upbound, 2023-10-06) argues for the pattern. [sources/research-composite-resource](../sources/research-composite-resource.md)
 
 ## How it works
 
@@ -26,4 +26,4 @@ The post also describes a test-driven loop using kind, Kuttl, and Skaffold in wh
 
 ## Caveats
 
-The post is vendor-authored and predates v2, so claims, external secret stores, and native patch-and-transform appear in it although v2 removed or changed them. See [[findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane]]. For the API-as-contract idea see [[findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion]], and for related examples see [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]].
+The post is vendor-authored and predates v2, so claims, external secret stores, and native patch-and-transform appear in it although v2 removed or changed them. See [findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane](../findings/older-claims-and-patch-and-transform-material-no-longer-matches-current-crossplane.md). For the API-as-contract idea see [findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion](../findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion.md), and for related examples see [examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources](crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources.md).

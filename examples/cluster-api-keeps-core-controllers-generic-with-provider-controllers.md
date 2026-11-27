@@ -16,7 +16,7 @@ tags: [use-case, cluster-api, providers, lifecycle]
 
 ## Scenario
 
-Managing whole Kubernetes clusters across AWS, GCP, vSphere, and other infrastructure would be unmanageable if one operator knew every backend. Cluster API solves this by treating cluster lifecycle as the operator domain and splitting the controllers. [[sources/research-operator-pattern]]
+Managing whole Kubernetes clusters across AWS, GCP, vSphere, and other infrastructure would be unmanageable if one operator knew every backend. Cluster API solves this by treating cluster lifecycle as the operator domain and splitting the controllers. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ A management cluster holds Cluster API custom resources and runs controllers for
 
 ## Related
 
-[[entities/cluster-api]], [[examples/cluster-fleet-lifecycle-with-cluster-api]], [[comparisons/how-flux-ack-and-cluster-api-split-controllers]], [[concepts/provider]]
+[entities/cluster-api](../entities/cluster-api.md), [examples/cluster-fleet-lifecycle-with-cluster-api](cluster-fleet-lifecycle-with-cluster-api.md), [comparisons/how-flux-ack-and-cluster-api-split-controllers](../comparisons/how-flux-ack-and-cluster-api-split-controllers.md), [concepts/provider](../concepts/provider.md)

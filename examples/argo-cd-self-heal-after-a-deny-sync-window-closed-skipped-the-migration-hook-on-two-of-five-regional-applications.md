@@ -16,7 +16,7 @@ tags: [argo-cd, self-heal, sync-window, hooks, migration, incident, gitops]
 
 ## Scenario
 
-A CNCF Ambassador published a post on 2026-11-20 that retells a customer incident. The customer is unnamed and the figures are secondhand. A release was pushed during a deny sync window, and five regional Argo CD Applications, each with automated sync, prune, and self-heal, were waiting to roll out the same commit. [[sources/research-gap-g1-gitops-drift-incidents]] URL: https://www.cncf.io/blog/2026/11/20/when-a-sync-window-closes-how-argo-cd-self-heal-skipped-the-migration-hook/
+A CNCF Ambassador published a post on 2026-11-20 that retells a customer incident. The customer is unnamed and the figures are secondhand. A release was pushed during a deny sync window, and five regional Argo CD Applications, each with automated sync, prune, and self-heal, were waiting to roll out the same commit. [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md) URL: https://www.cncf.io/blog/2026/11/20/when-a-sync-window-closes-how-argo-cd-self-heal-skipped-the-migration-hook/
 
 ## What happened
 
@@ -24,12 +24,12 @@ When the window closed, all five Applications rolled out the commit. Three ran t
 
 ## Mitigations offered
 
-The post offers two. The first is to make the migration a managed resource with a sync wave and a release-specific name, so that it is part of the desired state and not a hook. The second is to turn self-heal off for those Applications, which lets the timer-driven full sync run the hook but means "Anyone who edits a resource by hand now leaves it OutOfSync". See [[decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off]].
+The post offers two. The first is to make the migration a managed resource with a sync wave and a release-specific name, so that it is part of the desired state and not a hook. The second is to turn self-heal off for those Applications, which lets the timer-driven full sync run the hook but means "Anyone who edits a resource by hand now leaves it OutOfSync". See [decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off](../decisions/make-a-migration-a-managed-resource-or-turn-self-heal-off.md).
 
 ## Why it belongs here
 
-This is the strongest dated example of drift correction, a feature meant to be safe and automatic, causing a production incident, although the customer is anonymous. The mechanism is analyzed in [[findings/argo-cd-self-heal-runs-a-partial-sync-that-skips-hooks-according-to-one-author-so-a-migration-hook-can-be-missed]].
+This is the strongest dated example of drift correction, a feature meant to be safe and automatic, causing a production incident, although the customer is anonymous. The mechanism is analyzed in [findings/argo-cd-self-heal-runs-a-partial-sync-that-skips-hooks-according-to-one-author-so-a-migration-hook-can-be-missed](../findings/argo-cd-self-heal-runs-a-partial-sync-that-skips-hooks-according-to-one-author-so-a-migration-hook-can-be-missed.md).
 
 ## Related
 
-[[entities/argo-cd]], [[concepts/self-healing-and-drift-detection]], [[examples/argo-cd-sync-waves-order-crds-operators-and-workloads]], [[decisions/staged-adoption-of-automated-drift-correction]]
+[entities/argo-cd](../entities/argo-cd.md), [concepts/self-healing-and-drift-detection](../concepts/self-healing-and-drift-detection.md), [examples/argo-cd-sync-waves-order-crds-operators-and-workloads](argo-cd-sync-waves-order-crds-operators-and-workloads.md), [decisions/staged-adoption-of-automated-drift-correction](../decisions/staged-adoption-of-automated-drift-correction.md)

@@ -19,7 +19,7 @@ tags: [ack, prune, gitops, deletion, feature-request]
 
 ## Scenario
 
-On 2026-11-09 gecube opened ACK community issue 3153 as a feature request. A CR drops out of git, the GitOps agent prunes it, and the AWS resource goes with it. [[sources/research-gap-g1-other-tool-pitfalls]] URL: https://github.com/aws-controllers-k8s/community/issues/3153
+On 2026-11-09 gecube opened ACK community issue 3153 as a feature request. A CR drops out of git, the GitOps agent prunes it, and the AWS resource goes with it. [sources/research-gap-g1-other-tool-pitfalls](../sources/research-gap-g1-other-tool-pitfalls.md) URL: https://github.com/aws-controllers-k8s/community/issues/3153
 
 ## What the issue says
 
@@ -27,12 +27,12 @@ The deletion cannot be undone once the API server accepts the DELETE. The issue 
 
 ## Status and limits
 
-Open when read, no incident attached, and part of one reporter's batch. See [[findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs]]. The reported prune incident in [[examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone]] shows the same path from a real report.
+Open when read, no incident attached, and part of one reporter's batch. See [findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs](../findings/pruning-an-ack-custom-resource-deletes-the-aws-resource-and-the-namespace-retain-annotation-is-ignored-in-single-namespace-installs.md). The reported prune incident in [examples/an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone](an-argo-cd-prune-left-an-ack-wafv2-webacl-terminating-on-its-finalizer-after-the-aws-resource-was-already-gone.md) shows the same path from a real report.
 
 ## Related
 
-[[entities/ack]], [[findings/unintended-deletion-through-prune]]
+[entities/ack](../entities/ack.md), [findings/unintended-deletion-through-prune](../findings/unintended-deletion-through-prune.md)
 
 ## Addition from the o3 dossier
 
-The reporter says Argo CD prune, Flux Kustomization prune, and a Helm upgrade run by helm-controller all send the DELETE (iam-controller v1.11.3, repro scripts supplied), and that a controller-wide `retain` did not help because every chart-rendered custom resource carried `deletion-policy: delete`. The issue also cites related issues where a DBInstance with `deletionProtection` removed from Git stays in Terminating because AWS refuses the delete. The reproduction used a kind cluster with moto as the AWS stand-in, so it is not a production incident. No maintainer reply was present. See [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]]. [[sources/research-gap-o3-gitops-provider-managed]]
+The reporter says Argo CD prune, Flux Kustomization prune, and a Helm upgrade run by helm-controller all send the DELETE (iam-controller v1.11.3, repro scripts supplied), and that a controller-wide `retain` did not help because every chart-rendered custom resource carried `deletion-policy: delete`. The issue also cites related issues where a DBInstance with `deletionProtection` removed from Git stays in Terminating because AWS refuses the delete. The reproduction used a kind cluster with moto as the AWS stand-in, so it is not a production incident. No maintainer reply was present. See [findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain](../findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain.md). [sources/research-gap-o3-gitops-provider-managed](../sources/research-gap-o3-gitops-provider-managed.md)

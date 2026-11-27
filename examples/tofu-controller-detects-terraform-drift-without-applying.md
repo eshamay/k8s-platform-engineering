@@ -16,7 +16,7 @@ tags: [terraform, opentofu, drift, gitops, flux]
 
 ## Scenario
 
-Terraform users who already run Flux want visibility into drift between their Terraform state and real infrastructure, but do not want a controller applying changes automatically. The [[entities/tofu-controller]] README describes this model: "you'd like to use GitOps just for drift detection, so you can decide to do things later when a drift occurs." The source is https://github.com/flux-iac/tofu-controller. [[sources/research-self-healing-and-drift-detection]]
+Terraform users who already run Flux want visibility into drift between their Terraform state and real infrastructure, but do not want a controller applying changes automatically. The [entities/tofu-controller](../entities/tofu-controller.md) README describes this model: "you'd like to use GitOps just for drift detection, so you can decide to do things later when a drift occurs." The source is https://github.com/flux-iac/tofu-controller. [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md)
 
 ## Why it fits
 
@@ -24,4 +24,4 @@ Detection-only mode separates noticing a difference from acting on it, which sui
 
 ## Limits
 
-The README digest gave no detail on approval modes or intervals, so how drift is surfaced is unknown. See [[decisions/staged-adoption-of-automated-drift-correction]] and [[open-knowledge-gaps]].
+The README digest gave no detail on approval modes or intervals, so how drift is surfaced is unknown. See [decisions/staged-adoption-of-automated-drift-correction](../decisions/staged-adoption-of-automated-drift-correction.md) and [open-knowledge-gaps](../open-knowledge-gaps.md).

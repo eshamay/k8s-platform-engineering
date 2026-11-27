@@ -16,7 +16,7 @@ tags: [flux, hpa, replicas, ssa, field-ownership, drift]
 
 ## Scenario
 
-Between 2022-03-08 and 2022-03-10 an anonymous reporter put an existing HPA-managed Deployment under Flux. [[sources/research-gap-g1-gitops-drift-incidents]] URL: https://github.com/fluxcd/flux2/issues/2514
+Between 2022-03-08 and 2022-03-10 an anonymous reporter put an existing HPA-managed Deployment under Flux. [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md) URL: https://github.com/fluxcd/flux2/issues/2514
 
 ## What happened
 
@@ -24,8 +24,8 @@ On the first reconciliation the replica count dropped. The reporter wrote "my po
 
 ## Why it belongs here
 
-It separates two causes that look alike: a `replicas` value in Git that fights the HPA forever, and a one-time ownership handoff that resets the count once. The first is the revert loop in [[examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed]]. See [[findings/handing-replicas-between-git-and-an-hpa-can-reset-the-count-or-leave-an-application-permanently-out-of-sync]].
+It separates two causes that look alike: a `replicas` value in Git that fights the HPA forever, and a one-time ownership handoff that resets the count once. The first is the revert loop in [examples/flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed](flux-resetting-hpa-replicas-caused-a-sev2-scaling-loop-until-ignore-rules-existed.md). See [findings/handing-replicas-between-git-and-an-hpa-can-reset-the-count-or-leave-an-application-permanently-out-of-sync](../findings/handing-replicas-between-git-and-an-hpa-can-reset-the-count-or-leave-an-application-permanently-out-of-sync.md).
 
 ## Related
 
-[[entities/flux]], [[examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict]], [[findings/controllers-fighting-over-fields-cause-revert-loops]]
+[entities/flux](../entities/flux.md), [examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict](hpa-and-git-both-set-replicas-surface-an-ssa-conflict.md), [findings/controllers-fighting-over-fields-cause-revert-loops](../findings/controllers-fighting-over-fields-cause-revert-loops.md)

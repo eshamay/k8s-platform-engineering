@@ -16,7 +16,7 @@ tags: [use-case, flux, helm, helmrelease, remediation]
 
 ## Scenario
 
-A Helm-heavy team runs `helm upgrade` from a CI job. A failed upgrade leaves the release in a bad state until someone notices, and nothing corrects the release if an operator edits a live object. The Flux guide for Helm users frames the alternative this way: "While the Helm client commands let you imperatively do things, Flux Helm Custom Resources let you declare what you want the Helm SDK to do automatically." [[sources/research-flux-deep-dive]]
+A Helm-heavy team runs `helm upgrade` from a CI job. A failed upgrade leaves the release in a bad state until someone notices, and nothing corrects the release if an operator edits a live object. The Flux guide for Helm users frames the alternative this way: "While the Helm client commands let you imperatively do things, Flux Helm Custom Resources let you declare what you want the Helm SDK to do automatically." [sources/research-flux-deep-dive](../sources/research-flux-deep-dive.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ The team declares a HelmRelease that names a chart, through a HelmChart or throu
 
 ## Related
 
-[[entities/flux]], [[entities/helm]], [[examples/flux-helmrelease-crd-policies-createreplace-and-dependson]], [[examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port]], [[findings/circular-dependson-chains-between-flux-resources-never-reconcile]], [[concepts/declarative-vs-imperative]]
+[entities/flux](../entities/flux.md), [entities/helm](../entities/helm.md), [examples/flux-helmrelease-crd-policies-createreplace-and-dependson](flux-helmrelease-crd-policies-createreplace-and-dependson.md), [examples/flux-helmrelease-drift-correction-blocked-by-edited-service-port](flux-helmrelease-drift-correction-blocked-by-edited-service-port.md), [findings/circular-dependson-chains-between-flux-resources-never-reconcile](../findings/circular-dependson-chains-between-flux-resources-never-reconcile.md), [concepts/declarative-vs-imperative](../concepts/declarative-vs-imperative.md)

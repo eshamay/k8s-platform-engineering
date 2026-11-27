@@ -16,7 +16,7 @@ tags: [finalizers, troubleshooting, runbook, pods]
 
 ## Scenario
 
-A pod stays in Terminating long after a delete. The OneUptime runbook gives a command-level sequence, from reading the cause to removing it. [[sources/research-finalizers]]
+A pod stays in Terminating long after a delete. The OneUptime runbook gives a command-level sequence, from reading the cause to removing it. [sources/research-finalizers](../sources/research-finalizers.md)
 
 ## How it works
 
@@ -28,4 +28,4 @@ The dossier marks this source as a vendor blog and calls it practical but not au
 
 ## Related
 
-[[concepts/finalizers]], [[decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller]], [[examples/stuck-terminating-namespace-fixed-through-the-finalize-subresource]]
+[concepts/finalizers](../concepts/finalizers.md), [decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller](../decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller.md), [examples/stuck-terminating-namespace-fixed-through-the-finalize-subresource](stuck-terminating-namespace-fixed-through-the-finalize-subresource.md)

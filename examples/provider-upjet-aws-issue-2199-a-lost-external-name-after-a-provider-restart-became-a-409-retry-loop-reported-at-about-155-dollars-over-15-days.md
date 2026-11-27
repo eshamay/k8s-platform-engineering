@@ -16,7 +16,7 @@ tags: [crossplane, upjet, provider-aws, external-name, retry-loop, cost, idempot
 
 ## Scenario
 
-On 2026-08-18 a user opened issue 2199 on provider-upjet-aws, which was still open when the dossier read it. The report concerns a PodIdentityAssociation, which the provider creates asynchronously over a window of about 30 to 60 seconds. [[sources/research-gap-g1-leaked-resources-adoption]] URL: https://github.com/crossplane-contrib/provider-upjet-aws/issues/2199
+On 2026-08-18 a user opened issue 2199 on provider-upjet-aws, which was still open when the dossier read it. The report concerns a PodIdentityAssociation, which the provider creates asynchronously over a window of about 30 to 60 seconds. [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md) URL: https://github.com/crossplane-contrib/provider-upjet-aws/issues/2199
 
 ## What happened
 
@@ -28,8 +28,8 @@ The reporter says each stuck resource cost about $12 per day in GuardDuty analys
 
 ## Why it belongs here
 
-It is a dated, named-reporter case of the hazard that [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]] describes, and it shows a cost that comes from the retries and not from a leaked resource. It sits beside [[examples/provider-restart-blocks-a-crossplane-resource-on-external-create-pending]], where the guard stops the resource instead of looping.
+It is a dated, named-reporter case of the hazard that [findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes](../findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes.md) describes, and it shows a cost that comes from the retries and not from a leaked resource. It sits beside [examples/provider-restart-blocks-a-crossplane-resource-on-external-create-pending](provider-restart-blocks-a-crossplane-resource-on-external-create-pending.md), where the guard stops the resource instead of looping.
 
 ## Related
 
-[[entities/crossplane]], [[entities/upjet]], [[findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error]]
+[entities/crossplane](../entities/crossplane.md), [entities/upjet](../entities/upjet.md), [findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error](../findings/provider-upjet-aws-controllers-do-not-set-withdeterministicexternalname-so-deterministically-named-resources-stay-stuck-after-a-transient-error.md)

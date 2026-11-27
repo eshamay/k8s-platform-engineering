@@ -16,7 +16,7 @@ tags: [crd, operator-pattern, controller, etcd]
 
 ## Scenario
 
-A team wants to run a database on Kubernetes without every application team learning how to assemble the pieces. A CRD registers a `PostgresCluster`-style kind, and an application team creates one small object that states how many replicas and which version it wants. [[sources/research-custom-resource-definition]]
+A team wants to run a database on Kubernetes without every application team learning how to assemble the pieces. A CRD registers a `PostgresCluster`-style kind, and an application team creates one small object that states how many replicas and which version it wants. [sources/research-custom-resource-definition](../sources/research-custom-resource-definition.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ Once the CRD exists, the apiserver serves the new kind like any built-in type. T
 
 ## Lesson
 
-The CRD supplies only the data model and the API endpoint. All behavior lives in the controller, so the quality of the platform depends on the controller following the conventions for `spec`, `status`, and conditions. Because the objects live in the same etcd as everything else, the secondary source also cites a limit of about 1.5 MB per object, which should be confirmed against official documentation before it is relied on. See [[concepts/operator-pattern]], [[concepts/custom-resource-definition]], [[examples/database-operator-encodes-runbooks]], and [[findings/etcd-scale-limits-of-the-shared-store]].
+The CRD supplies only the data model and the API endpoint. All behavior lives in the controller, so the quality of the platform depends on the controller following the conventions for `spec`, `status`, and conditions. Because the objects live in the same etcd as everything else, the secondary source also cites a limit of about 1.5 MB per object, which should be confirmed against official documentation before it is relied on. See [concepts/operator-pattern](../concepts/operator-pattern.md), [concepts/custom-resource-definition](../concepts/custom-resource-definition.md), [examples/database-operator-encodes-runbooks](database-operator-encodes-runbooks.md), and [findings/etcd-scale-limits-of-the-shared-store](../findings/etcd-scale-limits-of-the-shared-store.md).

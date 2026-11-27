@@ -19,7 +19,7 @@ tags: [finalizers, crossplane, ack, config-connector, deletion]
 
 ## Scenario
 
-An engineer deletes a custom resource that represents an S3 bucket, an RDS database, or a Google Cloud resource. The three tools in this example all treat that delete as a request to tear down the real resource. [[sources/research-finalizers]]
+An engineer deletes a custom resource that represents an S3 bucket, an RDS database, or a Google Cloud resource. The three tools in this example all treat that delete as a request to tear down the real resource. [sources/research-finalizers](../sources/research-finalizers.md)
 
 ## How it works
 
@@ -31,12 +31,12 @@ Config Connector deletes the Google Cloud resource by default. The annotation `c
 
 ## Caveats
 
-The dossier found that the ACK, Config Connector, and kro pages do not say how finalizers are named or removed in each tool, so a comparison would need live objects or source code. See [[open-knowledge-gaps]].
+The dossier found that the ACK, Config Connector, and kro pages do not say how finalizers are named or removed in each tool, so a comparison would need live objects or source code. See [open-knowledge-gaps](../open-knowledge-gaps.md).
 
 ## Related
 
-[[entities/crossplane]], [[entities/ack]], [[entities/config-connector]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]], [[decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted]]
+[entities/crossplane](../entities/crossplane.md), [entities/ack](../entities/ack.md), [entities/config-connector](../entities/config-connector.md), [comparisons/deletion-policies-across-gitops-and-provider-tools](../comparisons/deletion-policies-across-gitops-and-provider-tools.md), [decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted](../decisions/delete-or-retain-the-external-resource-when-the-kubernetes-object-is-deleted.md)
 
 ## Verified against current documentation (o3 dossier)
 
-The ACK and Config Connector defaults and opt-outs on this page were re-read in the 2026 documentation: Config Connector says "When deleting a Config Connector resource the associated Google Cloud resource is deleted by default", and ACK deletes the AWS resource and then the custom resource. Argo CD prune and Flux prune are ordinary deletes, so the defaults apply, see [[findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain]]. [[sources/research-gap-o3-gitops-provider-managed]]
+The ACK and Config Connector defaults and opt-outs on this page were re-read in the 2026 documentation: Config Connector says "When deleting a Config Connector resource the associated Google Cloud resource is deleted by default", and ACK deletes the AWS resource and then the custom resource. Argo CD prune and Flux prune are ordinary deletes, so the defaults apply, see [findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain](../findings/ack-deletion-policy-resolves-from-the-resource-then-the-namespace-then-the-controller-default-and-one-reporter-says-chart-stamped-delete-defeats-a-controller-wide-retain.md). [sources/research-gap-o3-gitops-provider-managed](../sources/research-gap-o3-gitops-provider-managed.md)

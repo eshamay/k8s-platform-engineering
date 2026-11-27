@@ -16,7 +16,7 @@ tags: [ack, iam-controller, adopt-or-create, accidental-adoption, deletion]
 
 ## Scenario
 
-On 2026-11-09 ACK community issue 3149 was opened with a reproduction of adoption gone wrong. The dossier cautions that most of its late-2026 ACK adoption evidence comes from a single prolific reporter, so it should not be read as independent corroboration. The reproduction used iam-controller v1.11.3 and runtime v0.67.0 against moto standing in for IAM, so it is not a run against real AWS. The author says no misconfiguration is needed: one cluster and default settings are enough. [[sources/research-gap-g1-leaked-resources-adoption]] URL: https://github.com/aws-controllers-k8s/community/issues/3149
+On 2026-11-09 ACK community issue 3149 was opened with a reproduction of adoption gone wrong. The dossier cautions that most of its late-2026 ACK adoption evidence comes from a single prolific reporter, so it should not be read as independent corroboration. The reproduction used iam-controller v1.11.3 and runtime v0.67.0 against moto standing in for IAM, so it is not a run against real AWS. The author says no misconfiguration is needed: one cluster and default settings are enough. [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md) URL: https://github.com/aws-controllers-k8s/community/issues/3149
 
 ## What happened
 
@@ -32,8 +32,8 @@ A role created outside ACK and tagged `team=terraform` was adopted and the tag w
 
 ## Why it belongs here
 
-It is the most detailed reproduction of accidental adoption in the dossier, and it supplies the evidence that [[findings/adopt-or-create-can-take-over-a-look-alike-resource]] lacked. The mechanism is in [[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]].
+It is the most detailed reproduction of accidental adoption in the dossier, and it supplies the evidence that [findings/adopt-or-create-can-take-over-a-look-alike-resource](../findings/adopt-or-create-can-take-over-a-look-alike-resource.md) lacked. The mechanism is in [findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource](../findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource.md).
 
 ## Related
 
-[[entities/ack]], [[examples/ack-adopt-or-create-brings-existing-aws-resources-under-management]], [[decisions/adopt-or-create-or-require-explicit-import]]
+[entities/ack](../entities/ack.md), [examples/ack-adopt-or-create-brings-existing-aws-resources-under-management](ack-adopt-or-create-brings-existing-aws-resources-under-management.md), [decisions/adopt-or-create-or-require-explicit-import](../decisions/adopt-or-create-or-require-explicit-import.md)

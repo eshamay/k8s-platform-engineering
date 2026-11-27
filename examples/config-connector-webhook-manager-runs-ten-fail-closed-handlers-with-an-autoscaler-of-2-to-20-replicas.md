@@ -16,7 +16,7 @@ tags: [config-connector, webhooks, availability, hpa, verified]
 
 ## Scenario
 
-Config Connector ships a separate webhook-manager Deployment whose HPA reads "maxReplicas: 20 minReplicas: 2". Its handlers in `pkg/webhook/register.go` all use `FailurePolicy: admissionregistration.Fail`. https://raw.githubusercontent.com/GoogleCloudPlatform/k8s-config-connector/master/config/installbundle/components/webhook/autoscaler.yaml [[sources/research-gap-m6-admission-crds]]
+Config Connector ships a separate webhook-manager Deployment whose HPA reads "maxReplicas: 20 minReplicas: 2". Its handlers in `pkg/webhook/register.go` all use `FailurePolicy: admissionregistration.Fail`. https://raw.githubusercontent.com/GoogleCloudPlatform/k8s-config-connector/master/config/installbundle/components/webhook/autoscaler.yaml [sources/research-gap-m6-admission-crds](../sources/research-gap-m6-admission-crds.md)
 
 ## Reliability
 
@@ -24,4 +24,4 @@ VERIFIED from files on master in the v1.162.0 era.
 
 ## Related
 
-[[findings/config-connector-and-cluster-api-register-many-webhooks-and-every-one-uses-failure-policy-fail]] and [[entities/config-connector]].
+[findings/config-connector-and-cluster-api-register-many-webhooks-and-every-one-uses-failure-policy-fail](../findings/config-connector-and-cluster-api-register-many-webhooks-and-every-one-uses-failure-policy-fail.md) and [entities/config-connector](../entities/config-connector.md).

@@ -16,7 +16,7 @@ tags: [postmortem, upgrade, gke, pdb, hpa, loveholidays]
 
 ## Scenario
 
-loveholidays ran GKE with GitOps-managed manifests. In March 2019 the team planned a 2 to 2.5 hour upgrade from Kubernetes 1.10 to 1.12, two minor versions apart. [[sources/research-pitfalls-and-case-studies]]
+loveholidays ran GKE with GitOps-managed manifests. In March 2019 the team planned a 2 to 2.5 hour upgrade from Kubernetes 1.10 to 1.12, two minor versions apart. [sources/research-pitfalls-and-case-studies](../sources/research-pitfalls-and-case-studies.md)
 
 ## What happened
 
@@ -24,8 +24,8 @@ The upgrade took roughly seven hours. Node drains were slow because of emptyDir 
 
 ## Lesson
 
-The author's rule is "Always consult GKE release notes first before making upgrades to the cluster". The other lessons were to stay close to current versions, to keep test environments identical to production including naming, to use PDBs and safe-to-evict annotations and tuned grace periods, and to alert on HPA saturation and duplicate ReplicaSets. See [[concepts/pitfalls-and-case-studies]].
+The author's rule is "Always consult GKE release notes first before making upgrades to the cluster". The other lessons were to stay close to current versions, to keep test environments identical to production including naming, to use PDBs and safe-to-evict annotations and tuned grace periods, and to alert on HPA saturation and duplicate ReplicaSets. See [concepts/pitfalls-and-case-studies](../concepts/pitfalls-and-case-studies.md).
 
 ## Related
 
-[[findings/a-new-cluster-wide-default-must-wait-until-existing-workloads-carry-explicit-values]]
+[findings/a-new-cluster-wide-default-must-wait-until-existing-workloads-carry-explicit-values](../findings/a-new-cluster-wide-default-must-wait-until-existing-workloads-carry-explicit-values.md)

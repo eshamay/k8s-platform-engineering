@@ -16,7 +16,7 @@ tags: [argo-cd, kube-green, managedfieldsmanagers, secondary-source, conflict-po
 
 ## Scenario
 
-Tools that scale workloads on a schedule, such as kube-green and kube-downscaler, change `replicas` and so collide with Argo CD's self-heal. A practitioner write-up on christianhuth.de, dated 2026-08 by its image path, walks through six ways to resolve it. [[sources/research-gap-m4-ssa-conflict-policy]]
+Tools that scale workloads on a schedule, such as kube-green and kube-downscaler, change `replicas` and so collide with Argo CD's self-heal. A practitioner write-up on christianhuth.de, dated 2026-08 by its image path, walks through six ways to resolve it. [sources/research-gap-m4-ssa-conflict-policy](../sources/research-gap-m4-ssa-conflict-policy.md)
 
 ## What the write-up says
 
@@ -24,8 +24,8 @@ It says that ignoring differences by manager, with Argo CD's `managedFieldsManag
 
 ## Evidence quality
 
-This is a SECONDARY-ONLY personal write-up. Argo CD's own documentation confirms that `managedFieldsManagers` ignores "all fields owned by `kube-controller-manager`" in its example, so the mechanism is documented, but the dependence on another project's manager name is the author's observation. It is one of the only two sources the dossier found on mixed GitOps and controller ownership, and no named adopter policy was found. See [[decisions/force-conflicts-or-surface-them-to-humans]] and [[examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict]].
+This is a SECONDARY-ONLY personal write-up. Argo CD's own documentation confirms that `managedFieldsManagers` ignores "all fields owned by `kube-controller-manager`" in its example, so the mechanism is documented, but the dependence on another project's manager name is the author's observation. It is one of the only two sources the dossier found on mixed GitOps and controller ownership, and no named adopter policy was found. See [decisions/force-conflicts-or-surface-them-to-humans](../decisions/force-conflicts-or-surface-them-to-humans.md) and [examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict](hpa-and-git-both-set-replicas-surface-an-ssa-conflict.md).
 
 ## Related
 
-[[entities/argo-cd]], [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]], [[findings/controllers-fighting-over-fields-cause-revert-loops]]
+[entities/argo-cd](../entities/argo-cd.md), [comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights](../comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights.md), [findings/controllers-fighting-over-fields-cause-revert-loops](../findings/controllers-fighting-over-fields-cause-revert-loops.md)

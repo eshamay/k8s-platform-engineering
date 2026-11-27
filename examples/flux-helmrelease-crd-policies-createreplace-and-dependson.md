@@ -16,7 +16,7 @@ tags: [flux, helm, crd, gitops]
 
 ## Scenario
 
-A chart ships CRDs, and the team delivers it with a Flux HelmRelease. Helm itself will not upgrade or delete CRDs, so a chart upgrade that changes a CRD would silently leave the old definition in the cluster. [[sources/research-custom-resource-definition]]
+A chart ships CRDs, and the team delivers it with a Flux HelmRelease. Helm itself will not upgrade or delete CRDs, so a chart upgrade that changes a CRD would silently leave the old definition in the cluster. [sources/research-custom-resource-definition](../sources/research-custom-resource-definition.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ Flux adds `spec.install.crds` and `spec.upgrade.crds` with three policies: Skip,
 
 ## Lesson
 
-Flux compensates for Helm's limit instead of removing it, and the retained-on-removal behavior is a deliberate safety choice that leaves orphaned CRDs for a human to clean up. The dossier read about 100,000 of 130,000 characters of the page. See [[findings/helm-does-not-upgrade-or-delete-crds]], [[findings/deleting-a-crd-deletes-every-custom-resource-of-that-kind]], [[comparisons/missing-crd-handling-flux-versus-argo-cd]], [[examples/flux-dependson-and-health-checks-gate-rollout]], and [[entities/flux]].
+Flux compensates for Helm's limit instead of removing it, and the retained-on-removal behavior is a deliberate safety choice that leaves orphaned CRDs for a human to clean up. The dossier read about 100,000 of 130,000 characters of the page. See [findings/helm-does-not-upgrade-or-delete-crds](../findings/helm-does-not-upgrade-or-delete-crds.md), [findings/deleting-a-crd-deletes-every-custom-resource-of-that-kind](../findings/deleting-a-crd-deletes-every-custom-resource-of-that-kind.md), [comparisons/missing-crd-handling-flux-versus-argo-cd](../comparisons/missing-crd-handling-flux-versus-argo-cd.md), [examples/flux-dependson-and-health-checks-gate-rollout](flux-dependson-and-health-checks-gate-rollout.md), and [entities/flux](../entities/flux.md).

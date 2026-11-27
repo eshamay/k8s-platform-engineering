@@ -16,7 +16,7 @@ tags: [cluster-api, owner-references, clusterctl-move, deletion]
 
 ## Scenario
 
-A management cluster holds the objects that describe a fleet of workload clusters. The team needs two guarantees: deleting a Cluster tears down everything beneath it, and `clusterctl move` can relocate the whole set of objects to another management cluster in a valid order. The Cluster API book page on owner references defines the contract that both depend on. [[sources/research-owner-references-and-garbage-collection]]
+A management cluster holds the objects that describe a fleet of workload clusters. The team needs two guarantees: deleting a Cluster tears down everything beneath it, and `clusterctl move` can relocate the whole set of objects to another management cluster in a valid order. The Cluster API book page on owner references defines the contract that both depend on. [sources/research-owner-references-and-garbage-collection](../sources/research-owner-references-and-garbage-collection.md)
 
 ## How it works
 
@@ -24,8 +24,8 @@ The ownership chain is Cluster, MachineDeployment, MachineSet, Machine, with inf
 
 ## Why the example matters
 
-This is the clearest named project in the dossier that treats ownership as a core API contract and not just a convenience. The machine-level teardown that follows the cascade is described separately in [[examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node]]. The hazard of lost references has its own page: [[findings/backup-and-restore-tools-can-strip-owner-references-so-controllers-must-re-reconcile-them]].
+This is the clearest named project in the dossier that treats ownership as a core API contract and not just a convenience. The machine-level teardown that follows the cascade is described separately in [examples/cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node](cluster-api-machine-deletion-drains-detaches-and-runs-hooks-before-removing-the-node.md). The hazard of lost references has its own page: [findings/backup-and-restore-tools-can-strip-owner-references-so-controllers-must-re-reconcile-them](../findings/backup-and-restore-tools-can-strip-owner-references-so-controllers-must-re-reconcile-them.md).
 
 ## Related
 
-[[entities/cluster-api]], [[concepts/owner-references-and-garbage-collection]], [[examples/cluster-fleet-lifecycle-with-cluster-api]]
+[entities/cluster-api](../entities/cluster-api.md), [concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md), [examples/cluster-fleet-lifecycle-with-cluster-api](cluster-fleet-lifecycle-with-cluster-api.md)

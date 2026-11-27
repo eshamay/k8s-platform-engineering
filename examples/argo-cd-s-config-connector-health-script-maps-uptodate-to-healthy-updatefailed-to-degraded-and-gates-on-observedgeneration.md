@@ -16,7 +16,7 @@ tags: [argo-cd, config-connector, health, conditions, observedgeneration]
 
 ## Scenario
 
-Argo CD cannot derive health from custom resource status without a script, and Config Connector publishes one `Ready` condition whose reason carries the phase. Argo CD therefore ships a Lua health check for the `cnrm.cloud.google.com` group, last changed 2026-10-30 and read near release v3.6.3. [[sources/research-gap-m3-status-conditions]] URL: https://github.com/argoproj/argo-cd/blob/master/resource_customizations/_.cnrm.cloud.google.com/_/health.lua
+Argo CD cannot derive health from custom resource status without a script, and Config Connector publishes one `Ready` condition whose reason carries the phase. Argo CD therefore ships a Lua health check for the `cnrm.cloud.google.com` group, last changed 2026-10-30 and read near release v3.6.3. [sources/research-gap-m3-status-conditions](../sources/research-gap-m3-status-conditions.md) URL: https://github.com/argoproj/argo-cd/blob/master/resource_customizations/_.cnrm.cloud.google.com/_/health.lua
 
 ## How it works
 
@@ -26,4 +26,4 @@ The reason mapping is `UpToDate` with status True gives Healthy, `UpdateFailed` 
 
 ## Lesson
 
-The script matches the shipped reason `UpdateFailed`, which corroborates [[findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code]]. It also shows a consumer that reads only the top-level generation, as in [[findings/kstatus-reads-only-the-top-level-observedgeneration-because-its-condition-struct-has-no-per-condition-field]]. Argo CD's operation-state docs and controller aggregation code were not read. See [[entities/argo-cd]], [[entities/config-connector]], and [[examples/argo-cd-rolls-up-child-health-with-lua-checks]].
+The script matches the shipped reason `UpdateFailed`, which corroborates [findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code](../findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code.md). It also shows a consumer that reads only the top-level generation, as in [findings/kstatus-reads-only-the-top-level-observedgeneration-because-its-condition-struct-has-no-per-condition-field](../findings/kstatus-reads-only-the-top-level-observedgeneration-because-its-condition-struct-has-no-per-condition-field.md). Argo CD's operation-state docs and controller aggregation code were not read. See [entities/argo-cd](../entities/argo-cd.md), [entities/config-connector](../entities/config-connector.md), and [examples/argo-cd-rolls-up-child-health-with-lua-checks](argo-cd-rolls-up-child-health-with-lua-checks.md).

@@ -16,7 +16,7 @@ tags: [gvk, crossplane, kro, platform-api]
 
 ## Scenario
 
-A platform team wants application teams to create a `Database` or `App` object in the team's own API group. It declares the type once, and the tool generates the CRD that application teams consume. [[sources/research-gvk-and-gvr]]
+A platform team wants application teams to create a `Database` or `App` object in the team's own API group. It declares the type once, and the tool generates the CRD that application teams consume. [sources/research-gvk-and-gvr](../sources/research-gvk-and-gvr.md)
 
 ## Crossplane
 
@@ -28,4 +28,4 @@ A ResourceGraphDefinition (RGD) has a `schema` block that declares `apiVersion`,
 
 ## Lesson
 
-The GVK becomes the platform's public contract, so naming and versioning decisions are product decisions. A group chosen carelessly cannot be changed later. See [[findings/group-and-plural-names-are-effectively-permanent]], [[decisions/conversion-webhook-versus-new-xrd-for-breaking-changes]], [[examples/platform-team-self-service-apis-with-crossplane-and-kro]], [[entities/crossplane]], and [[entities/kro]].
+The GVK becomes the platform's public contract, so naming and versioning decisions are product decisions. A group chosen carelessly cannot be changed later. See [findings/group-and-plural-names-are-effectively-permanent](../findings/group-and-plural-names-are-effectively-permanent.md), [decisions/conversion-webhook-versus-new-xrd-for-breaking-changes](../decisions/conversion-webhook-versus-new-xrd-for-breaking-changes.md), [examples/platform-team-self-service-apis-with-crossplane-and-kro](platform-team-self-service-apis-with-crossplane-and-kro.md), [entities/crossplane](../entities/crossplane.md), and [entities/kro](../entities/kro.md).

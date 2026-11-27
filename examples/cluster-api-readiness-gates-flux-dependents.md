@@ -19,7 +19,7 @@ tags: [cluster-api, flux, kstatus, ordering]
 
 ## Scenario
 
-Flux can hold back dependent Kustomizations until a Cluster API infrastructure object reports ready. That makes the status of provider objects a load-bearing input to GitOps ordering. [[sources/research-spec-status-split]]
+Flux can hold back dependent Kustomizations until a Cluster API infrastructure object reports ready. That makes the status of provider objects a load-bearing input to GitOps ordering. [sources/research-spec-status-split](../sources/research-spec-status-split.md)
 
 ## How it works
 
@@ -27,8 +27,8 @@ Flux uses kstatus to judge readiness without per-kind logic. kstatus reads `obse
 
 ## Lesson
 
-Generic readiness depends on every provider following one convention. When a project changes its condition vocabulary, the consumers need explicit per-kind checks again. See [[findings/premature-readiness-in-kstatus-based-tools]], [[entities/cluster-api]], [[entities/kstatus]], and [[examples/flux-dependson-and-health-checks-gate-rollout]].
+Generic readiness depends on every provider following one convention. When a project changes its condition vocabulary, the consumers need explicit per-kind checks again. See [findings/premature-readiness-in-kstatus-based-tools](../findings/premature-readiness-in-kstatus-based-tools.md), [entities/cluster-api](../entities/cluster-api.md), [entities/kstatus](../entities/kstatus.md), and [examples/flux-dependson-and-health-checks-gate-rollout](flux-dependson-and-health-checks-gate-rollout.md).
 
 ## Current state of the CEL guidance
 
-Flux's community CEL cheatsheet (last changed 2026-04-21) still shows a `cluster.x-k8s.io/v1beta1` Cluster keyed on `Ready`, and no v1beta2 variant keyed on `Available` was found. Kustomization and HelmRelease take expressions through `.spec.healthCheckExprs`. See [[findings/the-flux-cel-cheatsheet-keys-cluster-api-health-on-ready-and-shows-no-v1beta2-available-variant]] and [[sources/research-gap-g3-argocd-capi]].
+Flux's community CEL cheatsheet (last changed 2026-04-21) still shows a `cluster.x-k8s.io/v1beta1` Cluster keyed on `Ready`, and no v1beta2 variant keyed on `Available` was found. Kustomization and HelmRelease take expressions through `.spec.healthCheckExprs`. See [findings/the-flux-cel-cheatsheet-keys-cluster-api-health-on-ready-and-shows-no-v1beta2-available-variant](../findings/the-flux-cel-cheatsheet-keys-cluster-api-health-on-ready-and-shows-no-v1beta2-available-variant.md) and [sources/research-gap-g3-argocd-capi](../sources/research-gap-g3-argocd-capi.md).

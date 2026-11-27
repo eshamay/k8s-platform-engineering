@@ -16,7 +16,7 @@ tags: [postmortem, priorityclass, replicaset, cascade, grafana, cortex]
 
 ## Scenario
 
-Grafana Labs operated Cortex-based hosted Prometheus. To make room for large Cortex ingester pods during upgrades, it added four PriorityClasses and made "medium" the global default. [[sources/research-pitfalls-and-case-studies]]
+Grafana Labs operated Cortex-based hosted Prometheus. To make room for large Cortex ingester pods during upgrades, it added four PriorityClasses and made "medium" the global default. [sources/research-pitfalls-and-case-studies](../sources/research-pitfalls-and-case-studies.md)
 
 ## What happened
 
@@ -24,8 +24,8 @@ A new Cortex cluster was deployed without priorities, so it received the default
 
 ## Lesson
 
-The author's conclusion was "we should not have made medium the default priority until we had added the high priority designation". The incident is a clean example of a controller reconcile loop, here a ReplicaSet, amplifying a scheduling policy. Other lessons were to roll out cluster-global configuration with design review and to size reverse proxies against retry stampedes. See [[findings/a-new-cluster-wide-default-must-wait-until-existing-workloads-carry-explicit-values]] and [[concepts/reconciliation-loop]].
+The author's conclusion was "we should not have made medium the default priority until we had added the high priority designation". The incident is a clean example of a controller reconcile loop, here a ReplicaSet, amplifying a scheduling policy. Other lessons were to roll out cluster-global configuration with design review and to size reverse proxies against retry stampedes. See [findings/a-new-cluster-wide-default-must-wait-until-existing-workloads-carry-explicit-values](../findings/a-new-cluster-wide-default-must-wait-until-existing-workloads-carry-explicit-values.md) and [concepts/reconciliation-loop](../concepts/reconciliation-loop.md).
 
 ## Related
 
-[[concepts/pitfalls-and-case-studies]]
+[concepts/pitfalls-and-case-studies](../concepts/pitfalls-and-case-studies.md)

@@ -16,7 +16,7 @@ tags: [config-connector, deletion, finalizer, abandon, direct-controller]
 
 ## Scenario
 
-On 2026-11-17 a reporter opened issue 15930 on the Config Connector repository. They say they reproduced it on v1.161.0. Direct-controller resources whose referenced or parent object was deleted first never finish deleting. [[sources/research-gap-g1-other-tool-pitfalls]] URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/15930
+On 2026-11-17 a reporter opened issue 15930 on the Config Connector repository. They say they reproduced it on v1.161.0. Direct-controller resources whose referenced or parent object was deleted first never finish deleting. [sources/research-gap-g1-other-tool-pitfalls](../sources/research-gap-g1-other-tool-pitfalls.md) URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/15930
 
 ## What the reporter says
 
@@ -24,8 +24,8 @@ The object stays Terminating, and `deletion-policy: abandon` "does not release t
 
 ## Status and limits
 
-Open when read and unconfirmed by maintainers. It is a reporter's reproduction and not a production outage. See [[findings/config-connector-direct-controller-resources-stick-in-terminating-when-a-parent-is-deleted-first-and-abandon-does-not-release-them]].
+Open when read and unconfirmed by maintainers. It is a reporter's reproduction and not a production outage. See [findings/config-connector-direct-controller-resources-stick-in-terminating-when-a-parent-is-deleted-first-and-abandon-does-not-release-them](../findings/config-connector-direct-controller-resources-stick-in-terminating-when-a-parent-is-deleted-first-and-abandon-does-not-release-them.md).
 
 ## Related
 
-[[entities/config-connector]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]]
+[entities/config-connector](../entities/config-connector.md), [comparisons/deletion-policies-across-gitops-and-provider-tools](../comparisons/deletion-policies-across-gitops-and-provider-tools.md)

@@ -16,7 +16,7 @@ tags: [kluctl, server-side-apply, conflict, deployment-tool]
 
 ## Scenario
 
-Kluctl is a deployment tool that originally shelled out to `kubectl` and used client-side apply. That approach hit the annotation size limit on large CRDs, notably Prometheus operator CRDs, and gave no per-field control. [[sources/research-server-side-apply-and-field-ownership]]
+Kluctl is a deployment tool that originally shelled out to `kubectl` and used client-side apply. That approach hit the annotation size limit on large CRDs, notably Prometheus operator CRDs, and gave no per-field control. [sources/research-server-side-apply-and-field-ownership](../sources/research-server-side-apply-and-field-ownership.md)
 
 ## What happened
 
@@ -28,4 +28,4 @@ The user can pass `--force-apply`, annotate a resource with `kluctl.io/force-app
 
 ## Lesson
 
-The quote that sums it up is "Kluctl will not overwrite any fields that it lost ownership of, unless you explicitly tell it to do so." It is a worked example of a third conflict policy between force-everything and fail-everything. See [[comparisons/ssa-conflict-policy-across-tools]], [[entities/kluctl]], and [[decisions/force-conflicts-or-surface-them-to-humans]].
+The quote that sums it up is "Kluctl will not overwrite any fields that it lost ownership of, unless you explicitly tell it to do so." It is a worked example of a third conflict policy between force-everything and fail-everything. See [comparisons/ssa-conflict-policy-across-tools](../comparisons/ssa-conflict-policy-across-tools.md), [entities/kluctl](../entities/kluctl.md), and [decisions/force-conflicts-or-surface-them-to-humans](../decisions/force-conflicts-or-surface-them-to-humans.md).

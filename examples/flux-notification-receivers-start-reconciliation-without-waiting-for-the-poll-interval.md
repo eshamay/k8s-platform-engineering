@@ -16,7 +16,7 @@ tags: [use-case, flux, notification-controller, webhooks, alerts]
 
 ## Scenario
 
-By default Flux learns about a new commit or image only when a source's interval next fires, so a push can wait for up to one interval before it is deployed. Operators also need to hear about failures without watching the cluster. The notification controller covers both needs. [[sources/research-flux-deep-dive]]
+By default Flux learns about a new commit or image only when a source's interval next fires, so a push can wait for up to one interval before it is deployed. Operators also need to hear about failures without watching the cluster. The notification controller covers both needs. [sources/research-flux-deep-dive](../sources/research-flux-deep-dive.md)
 
 ## How it works
 
@@ -26,4 +26,4 @@ A missing webhook is a quiet failure, since the system keeps working but changes
 
 ## Related
 
-[[entities/flux]], [[findings/suspended-resources-polling-lag-and-a-missing-with-source-flag-make-flux-failures-silent]], [[findings/drift-detection-latency-is-the-interval]], [[examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing]], [[examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding]]
+[entities/flux](../entities/flux.md), [findings/suspended-resources-polling-lag-and-a-missing-with-source-flag-make-flux-failures-silent](../findings/suspended-resources-polling-lag-and-a-missing-with-source-flag-make-flux-failures-silent.md), [findings/drift-detection-latency-is-the-interval](../findings/drift-detection-latency-is-the-interval.md), [examples/flux-kustomization-interval-and-retry-interval-set-the-loop-timing](flux-kustomization-interval-and-retry-interval-set-the-loop-timing.md), [examples/morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding](morgan-stanley-runs-flux-across-more-than-500-clusters-with-self-service-onboarding.md)

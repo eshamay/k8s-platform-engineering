@@ -16,7 +16,7 @@ tags: [flux, argo-cd, config-connector, prune, inventory, deletion]
 
 ## Scenario
 
-A team removes a manifest from Git, or deletes a GitOps object, and wants to predict which cluster objects disappear. Kubernetes garbage collection will not answer the question, because Flux and Argo CD apply objects that they do not own through owner references. The dossier reads their deletion pages to show the separate mechanisms. [[sources/research-owner-references-and-garbage-collection]]
+A team removes a manifest from Git, or deletes a GitOps object, and wants to predict which cluster objects disappear. Kubernetes garbage collection will not answer the question, because Flux and Argo CD apply objects that they do not own through owner references. The dossier reads their deletion pages to show the separate mechanisms. [sources/research-owner-references-and-garbage-collection](../sources/research-owner-references-and-garbage-collection.md)
 
 ## How it works
 
@@ -28,8 +28,8 @@ Config Connector keeps real cloud resources on the other side of the seam. Delet
 
 ## Why the example matters
 
-Flux's `Orphan` policy and Argo CD's non-cascading delete are the GitOps equivalents of `--cascade=orphan`. The three tools show that each layer needs its own policy. See [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]] and [[examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan]].
+Flux's `Orphan` policy and Argo CD's non-cascading delete are the GitOps equivalents of `--cascade=orphan`. The three tools show that each layer needs its own policy. See [comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers](../comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers.md) and [examples/flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan](flux-kustomization-deletion-policy-chooses-between-mirror-prune-delete-wait-and-orphan.md).
 
 ## Related
 
-[[entities/flux]], [[entities/argo-cd]], [[entities/config-connector]], [[findings/unintended-deletion-through-prune]], [[concepts/owner-references-and-garbage-collection]]
+[entities/flux](../entities/flux.md), [entities/argo-cd](../entities/argo-cd.md), [entities/config-connector](../entities/config-connector.md), [findings/unintended-deletion-through-prune](../findings/unintended-deletion-through-prune.md), [concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md)

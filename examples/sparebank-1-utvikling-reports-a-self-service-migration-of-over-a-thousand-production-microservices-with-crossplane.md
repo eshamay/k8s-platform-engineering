@@ -16,7 +16,7 @@ tags: [crossplane, adopters, sparebank-1, self-reported, migration, self-service
 
 ## Scenario
 
-SpareBank 1 Utvikling lists itself in the Crossplane ADOPTERS file with a production migration. [[sources/research-gap-g1-named-adopters]]
+SpareBank 1 Utvikling lists itself in the Crossplane ADOPTERS file with a production migration. [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md)
 
 ## What the entry says
 
@@ -28,4 +28,4 @@ Unlike the pure resource counts in other entries, this one counts workloads that
 
 ## Related
 
-[[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]], [[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]], [[entities/crossplane]]
+[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources](crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources.md), [examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand](crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand.md), [entities/crossplane](../entities/crossplane.md)

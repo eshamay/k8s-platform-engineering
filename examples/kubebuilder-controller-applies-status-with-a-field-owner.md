@@ -16,7 +16,7 @@ tags: [kubebuilder, server-side-apply, controller, client-go]
 
 ## Scenario
 
-An operator author wants the controller to write only the fields it manages, while users and other operators may add labels or spec fields that the controller must not overwrite. [[sources/research-server-side-apply-and-field-ownership]]
+An operator author wants the controller to write only the fields it manages, while users and other operators may add labels or spec fields that the controller must not overwrite. [sources/research-server-side-apply-and-field-ownership](../sources/research-server-side-apply-and-field-ownership.md)
 
 ## What happened
 
@@ -28,4 +28,4 @@ The book recommends SSA when several controllers or users manage one resource, w
 
 ## Lesson
 
-The Kubernetes maintainer blog adds that new controllers should be "reconstructive", rebuilding their desired fields from scratch each time, while existing controllers can extract and re-apply. See [[findings/applying-a-whole-read-back-object-claims-every-field]], [[entities/kubebuilder]], and [[concepts/spec-status-split]].
+The Kubernetes maintainer blog adds that new controllers should be "reconstructive", rebuilding their desired fields from scratch each time, while existing controllers can extract and re-apply. See [findings/applying-a-whole-read-back-object-claims-every-field](../findings/applying-a-whole-read-back-object-claims-every-field.md), [entities/kubebuilder](../entities/kubebuilder.md), and [concepts/spec-status-split](../concepts/spec-status-split.md).

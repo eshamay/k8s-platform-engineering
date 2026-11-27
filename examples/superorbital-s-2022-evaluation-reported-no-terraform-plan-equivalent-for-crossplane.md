@@ -19,16 +19,16 @@ tags: [crossplane, terraform, superorbital, evaluation, secondary-only, dated]
 
 ## Scenario
 
-The consultancy SuperOrbital evaluated Crossplane in a 2022 post (https://superorbital.io/blog/crossplane-2022/, 2022-09-08), the most independent substantive source the dossier found for Crossplane versus Terraform. [[sources/research-gap-o6-platform-landscape]]
+The consultancy SuperOrbital evaluated Crossplane in a 2022 post (https://superorbital.io/blog/crossplane-2022/, 2022-09-08), the most independent substantive source the dossier found for Crossplane versus Terraform. [sources/research-gap-o6-platform-landscape](../sources/research-gap-o6-platform-landscape.md)
 
 ## What it reported
 
-The post says "Crossplane has no equivalent to a dry run mode, like `terraform plan`". It reports that a change to a field that would force recreation in Terraform may be ignored, with the native AWS provider continuing to report the resource as in sync. For providers generated from Terraform it notes "the additional embedded Terraform process to investigate" when debugging. It concludes that "adopting it today is similar to adopting Docker in 2013". All of this is SECONDARY-ONLY, comes from a consultancy and not a production adopter, and is four years old. It predates Crossplane v2 and function-based composition, so the wiki treats it as a dated report and not as a statement about current behavior. [[sources/research-gap-o6-platform-landscape]]
+The post says "Crossplane has no equivalent to a dry run mode, like `terraform plan`". It reports that a change to a field that would force recreation in Terraform may be ignored, with the native AWS provider continuing to report the resource as in sync. For providers generated from Terraform it notes "the additional embedded Terraform process to investigate" when debugging. It concludes that "adopting it today is similar to adopting Docker in 2013". All of this is SECONDARY-ONLY, comes from a consultancy and not a production adopter, and is four years old. It predates Crossplane v2 and function-based composition, so the wiki treats it as a dated report and not as a statement about current behavior. [sources/research-gap-o6-platform-landscape](../sources/research-gap-o6-platform-landscape.md)
 
 ## Related
 
-[[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]], [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]], [[entities/upjet]]
+[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply](../comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply.md), [findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated](../findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated.md), [entities/upjet](../entities/upjet.md)
 
 ## A 2025 practitioner makes the same plan argument
 
-A Medium post by Gavin Yap (2025-01-10) also treats `terraform plan` as the feature that gives confidence before changing production databases, and supports it with an anonymous story of a plan that under-reported a recreate. See [[findings/one-practitioner-reports-a-terraform-plan-that-showed-an-update-while-the-apply-recreated-the-resource-and-lost-data]]. [[sources/medium-terraform-opentofu-crossplane]]
+A Medium post by Gavin Yap (2025-01-10) also treats `terraform plan` as the feature that gives confidence before changing production databases, and supports it with an anonymous story of a plan that under-reported a recreate. See [findings/one-practitioner-reports-a-terraform-plan-that-showed-an-update-while-the-apply-recreated-the-resource-and-lost-data](../findings/one-practitioner-reports-a-terraform-plan-that-showed-an-update-while-the-apply-recreated-the-resource-and-lost-data.md). [sources/medium-terraform-opentofu-crossplane](../sources/medium-terraform-opentofu-crossplane.md)

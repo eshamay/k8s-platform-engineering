@@ -16,7 +16,7 @@ tags: [kro, schema, breaking-changes, rgd, user-report]
 
 ## Scenario
 
-On 2026-09-04 JacobGabrielson opened kro issue 1395. A schema change to an existing RGD was blocked by the breaking-change gate introduced in kro v0.8.0. [[sources/research-gap-g1-other-tool-pitfalls]] URL: https://github.com/kubernetes-sigs/kro/issues/1395
+On 2026-09-04 JacobGabrielson opened kro issue 1395. A schema change to an existing RGD was blocked by the breaking-change gate introduced in kro v0.8.0. [sources/research-gap-g1-other-tool-pitfalls](../sources/research-gap-g1-other-tool-pitfalls.md) URL: https://github.com/kubernetes-sigs/kro/issues/1395
 
 ## What the reporter says
 
@@ -24,8 +24,8 @@ The error did not name the `kro.run/allow-breaking-changes` annotation. The repo
 
 ## Status and limits
 
-It is a user report from one reporter, open when read, and the dossier did not confirm whether the error text changed in later releases. A related report, issue 1391, says tightened validation markers are not patched into the live CRD. See [[findings/a-kro-breaking-change-error-did-not-name-the-override-annotation-and-an-added-enum-or-cel-marker-was-not-patched-into-the-live-crd]].
+It is a user report from one reporter, open when read, and the dossier did not confirm whether the error text changed in later releases. A related report, issue 1391, says tightened validation markers are not patched into the live CRD. See [findings/a-kro-breaking-change-error-did-not-name-the-override-annotation-and-an-added-enum-or-cel-marker-was-not-patched-into-the-live-crd](../findings/a-kro-breaking-change-error-did-not-name-the-override-annotation-and-an-added-enum-or-cel-marker-was-not-patched-into-the-live-crd.md).
 
 ## Related
 
-[[entities/kro]], [[findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion]]
+[entities/kro](../entities/kro.md), [findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion](../findings/platform-api-schemas-are-contracts-and-breaking-changes-are-blocked-or-need-conversion.md)

@@ -16,7 +16,7 @@ tags: [idempotency, deployment, statefulset, replicaset, controller-runtime]
 
 ## Scenario
 
-A controller owns child objects and may be restarted, or may read a stale cache, between deciding to create a child and seeing it in its cache. If the next reconcile creates the child again, the cluster ends up with duplicates. The controller-runtime FAQ describes how the built-in controllers avoid this. [[sources/research-idempotency]]
+A controller owns child objects and may be restarted, or may read a stale cache, between deciding to create a child and seeing it in its cache. If the next reconcile creates the child again, the cluster ends up with duplicates. The controller-runtime FAQ describes how the built-in controllers avoid this. [sources/research-idempotency](../sources/research-idempotency.md)
 
 ## What each controller does
 
@@ -26,8 +26,8 @@ A controller owns child objects and may be restarted, or may read a stale cache,
 
 ## Lesson
 
-Deterministic names turn the API server's optimistic locking into a free idempotency check, because the second create fails loudly. Where names must be generated, the controller needs its own record of intent, which is the same shape of problem that external cloud creates have in a harder form. See [[concepts/idempotency]], [[findings/stale-cache-and-double-action]], and [[examples/how-core-controllers-handle-cache-lag]]. [[sources/research-idempotency]]
+Deterministic names turn the API server's optimistic locking into a free idempotency check, because the second create fails loudly. Where names must be generated, the controller needs its own record of intent, which is the same shape of problem that external cloud creates have in a harder form. See [concepts/idempotency](../concepts/idempotency.md), [findings/stale-cache-and-double-action](../findings/stale-cache-and-double-action.md), and [examples/how-core-controllers-handle-cache-lag](how-core-controllers-handle-cache-lag.md). [sources/research-idempotency](../sources/research-idempotency.md)
 
 ## Related
 
-[[entities/controller-runtime]], [[concepts/reconciliation-loop]]
+[entities/controller-runtime](../entities/controller-runtime.md), [concepts/reconciliation-loop](../concepts/reconciliation-loop.md)

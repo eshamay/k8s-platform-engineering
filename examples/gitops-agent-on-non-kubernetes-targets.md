@@ -16,7 +16,7 @@ tags: [gitops, pull-model, vms, custom-operators]
 
 ## Scenario
 
-INNOQ argues that GitOps is a pattern and does not require Kubernetes. The same agent-plus-Git model can manage virtual machines or cloud infrastructure if a custom operator runs inside the target environment, reads the desired state from Git, and reconciles it. [[sources/research-gitops-pull-based-delivery]]
+INNOQ argues that GitOps is a pattern and does not require Kubernetes. The same agent-plus-Git model can manage virtual machines or cloud infrastructure if a custom operator runs inside the target environment, reads the desired state from Git, and reconciles it. [sources/research-gitops-pull-based-delivery](../sources/research-gitops-pull-based-delivery.md)
 
 ## Why the pull model still applies
 
@@ -24,8 +24,8 @@ The article's security case does not depend on Kubernetes. A central build serve
 
 ## Caveat
 
-The source is a consultancy article describing a design. The dossier did not find a named production deployment of this approach. Compare with Kubernetes-native versions in [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]].
+The source is a consultancy article describing a design. The dossier did not find a named production deployment of this approach. Compare with Kubernetes-native versions in [examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd](git-driven-cluster-reconciliation-with-flux-and-argo-cd.md).
 
 ## Related
 
-[[comparisons/push-versus-pull-delivery]], [[concepts/gitops-pull-based-delivery]], [[concepts/universal-control-plane]]
+[comparisons/push-versus-pull-delivery](../comparisons/push-versus-pull-delivery.md), [concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md), [concepts/universal-control-plane](../concepts/universal-control-plane.md)

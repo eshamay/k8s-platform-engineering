@@ -16,7 +16,7 @@ tags: [kubernetes, v1-36, v1-37, staleness, metrics, statefulset, pr-138451]
 
 ## Scenario
 
-Kubernetes v1.36 added resource-version gating so that the StatefulSet controller, like the DaemonSet, ReplicaSet, and Job controllers, skips a sync until its informer cache has caught up with its own write. Each controller counts skips in a metric named `stale_sync_skips_total` under its own subsystem. [[sources/research-gap-b1-recheck-flux-k8s]]
+Kubernetes v1.36 added resource-version gating so that the StatefulSet controller, like the DaemonSet, ReplicaSet, and Job controllers, skips a sync until its informer cache has caught up with its own write. Each controller counts skips in a metric named `stale_sync_skips_total` under its own subsystem. [sources/research-gap-b1-recheck-flux-k8s](../sources/research-gap-b1-recheck-flux-k8s.md)
 
 ## What happened
 
@@ -26,8 +26,8 @@ That the counter was missing from a v1.36.0 `/metrics` endpoint is the dossier's
 
 ## What it shows
 
-A new feature can ship with its behavior enabled and its observability only partly wired up. The metric that would have shown skipped StatefulSet syncs was absent in the first release, so the first release's data for that controller would read as "no skips". See [[findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37]] and [[examples/kubernetes-v1-36-daemonset-statefulset-replicaset-and-job-controllers-skip-a-sync-until-the-cache-catches-up-with-their-own-write]].
+A new feature can ship with its behavior enabled and its observability only partly wired up. The metric that would have shown skipped StatefulSet syncs was absent in the first release, so the first release's data for that controller would read as "no skips". See [findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37](../findings/the-statefulset-stale-sync-skip-metric-was-defined-but-not-registered-in-v1-36-0-and-registered-in-v1-37.md) and [examples/kubernetes-v1-36-daemonset-statefulset-replicaset-and-job-controllers-skip-a-sync-until-the-cache-catches-up-with-their-own-write](kubernetes-v1-36-daemonset-statefulset-replicaset-and-job-controllers-skip-a-sync-until-the-cache-catches-up-with-their-own-write.md).
 
 ## Related
 
-[[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source]], [[concepts/informers-reflectors-and-workqueues]]
+[findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source](../findings/the-kubernetes-v1-36-staleness-blog-names-metrics-differently-from-the-changelog-and-source.md), [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md)

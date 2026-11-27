@@ -16,7 +16,7 @@ tags: [use-case, flux, gitops, controllers]
 
 ## Scenario
 
-Delivering cluster state from Git involves fetching sources, rendering manifests, installing Helm releases, sending notifications, and updating images. Flux assigns each concern to its own controller instead of building one large operator. [[sources/research-operator-pattern]]
+Delivering cluster state from Git involves fetching sources, rendering manifests, installing Helm releases, sending notifications, and updating images. Flux assigns each concern to its own controller instead of building one large operator. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ The Flux documentation describes Flux as built from the GitOps Toolkit, "a set o
 
 ## Related
 
-[[entities/flux]], [[comparisons/how-flux-ack-and-cluster-api-split-controllers]], [[decisions/one-controller-per-kind-or-one-multi-kind-controller]], [[examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd]]
+[entities/flux](../entities/flux.md), [comparisons/how-flux-ack-and-cluster-api-split-controllers](../comparisons/how-flux-ack-and-cluster-api-split-controllers.md), [decisions/one-controller-per-kind-or-one-multi-kind-controller](../decisions/one-controller-per-kind-or-one-multi-kind-controller.md), [examples/git-driven-cluster-reconciliation-with-flux-and-argo-cd](git-driven-cluster-reconciliation-with-flux-and-argo-cd.md)

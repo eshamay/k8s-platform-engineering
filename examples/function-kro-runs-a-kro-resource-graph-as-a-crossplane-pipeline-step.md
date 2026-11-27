@@ -22,7 +22,7 @@ tags: [crossplane, kro, function-kro, networking, convergence]
 
 ## Scenario
 
-A platform team wants the lightweight YAML and CEL authoring of kro but also wants Crossplane's revisioning and its ability to own cloud APIs. The Crossplane blog post announcing `function-kro` (2026-03-19) shows the combined shape with a `NetworkingStack` API. [[sources/research-composite-resource]]
+A platform team wants the lightweight YAML and CEL authoring of kro but also wants Crossplane's revisioning and its ability to own cloud APIs. The Crossplane blog post announcing `function-kro` (2026-03-19) shows the combined shape with a `NetworkingStack` API. [sources/research-composite-resource](../sources/research-composite-resource.md)
 
 ## How it works
 
@@ -32,12 +32,12 @@ The post lists what Crossplane adds around the graph: the schema is separated fr
 
 ## Why the example matters
 
-It is the clearest evidence in the dossier that the two models are converging, with kro-style graphs becoming one way of authoring a Crossplane function. The claim of full feature parity is the project's own. See [[entities/function-kro]], [[comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models]], and [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]].
+It is the clearest evidence in the dossier that the two models are converging, with kro-style graphs becoming one way of authoring a Crossplane function. The claim of full feature parity is the project's own. See [entities/function-kro](../entities/function-kro.md), [comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models](../comparisons/crossplane-composition-functions-versus-kro-resource-graph-execution-models.md), and [decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer](../decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer.md).
 
 ## Update from the o5 dossier
 
-Update 2026-11-26: the full-parity claim above is the project's own. The repository lists behavioral differences, see [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]], and v0.4.0 moved the function onto kro v0.10.0's graph engine, see [[examples/function-kro-v0-4-0-moved-onto-the-kro-v0-10-0-graph-engine-on-2026-11-26-with-one-listed-maintainer]]. [[sources/research-gap-o5-kro-ecosystem]]
+Update 2026-11-26: the full-parity claim above is the project's own. The repository lists behavioral differences, see [findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps](../findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps.md), and v0.4.0 moved the function onto kro v0.10.0's graph engine, see [examples/function-kro-v0-4-0-moved-onto-the-kro-v0-10-0-graph-engine-on-2026-11-26-with-one-listed-maintainer](function-kro-v0-4-0-moved-onto-the-kro-v0-10-0-graph-engine-on-2026-11-26-with-one-listed-maintainer.md). [sources/research-gap-o5-kro-ecosystem](../sources/research-gap-o5-kro-ecosystem.md)
 
 ## Update from the o8 dossier
 
-Update 2026-11-26: reading `fn.go` shows the function does not use kro's controller. It approximates kro's built-in conditions from a single run, writes only declared status paths to the desired XR, and omits `InstanceManaged`, see [[findings/function-kro-approximates-kro-built-in-conditions-from-one-run-and-writes-only-declared-status-paths-to-the-desired-xr]]. Where it marks per-resource readiness was not located, see [[findings/no-documentation-was-found-of-a-standalone-kro-controller-feeding-a-crossplane-composite-and-function-kro-s-readiness-link-is-unlocated]]. [[sources/research-gap-o8-crossplane-residuals]]
+Update 2026-11-26: reading `fn.go` shows the function does not use kro's controller. It approximates kro's built-in conditions from a single run, writes only declared status paths to the desired XR, and omits `InstanceManaged`, see [findings/function-kro-approximates-kro-built-in-conditions-from-one-run-and-writes-only-declared-status-paths-to-the-desired-xr](../findings/function-kro-approximates-kro-built-in-conditions-from-one-run-and-writes-only-declared-status-paths-to-the-desired-xr.md). Where it marks per-resource readiness was not located, see [findings/no-documentation-was-found-of-a-standalone-kro-controller-feeding-a-crossplane-composite-and-function-kro-s-readiness-link-is-unlocated](../findings/no-documentation-was-found-of-a-standalone-kro-controller-feeding-a-crossplane-composite-and-function-kro-s-readiness-link-is-unlocated.md). [sources/research-gap-o8-crossplane-residuals](../sources/research-gap-o8-crossplane-residuals.md)

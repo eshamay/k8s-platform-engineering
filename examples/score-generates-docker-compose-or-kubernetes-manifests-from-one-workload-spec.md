@@ -16,7 +16,7 @@ tags: [score, workload-spec, docker-compose, example, developer-experience]
 
 ## The use case
 
-A team wants developers to run an application the same way on a laptop and in a cluster without hand-maintaining a Compose file and a set of Kubernetes manifests. The Score site presents one `score.yaml` that declares the containers, their ports, and abstract resources such as `type: postgres` (https://score.dev/). The command `score-compose` turns it into a Docker Compose project for local work, and `score-k8s` turns it into Kubernetes manifests. [[sources/research-kro-and-abstraction-models]]
+A team wants developers to run an application the same way on a laptop and in a cluster without hand-maintaining a Compose file and a set of Kubernetes manifests. The Score site presents one `score.yaml` that declares the containers, their ports, and abstract resources such as `type: postgres` (https://score.dev/). The command `score-compose` turns it into a Docker Compose project for local work, and `score-k8s` turns it into Kubernetes manifests. [sources/research-kro-and-abstraction-models](../sources/research-kro-and-abstraction-models.md)
 
 ## What the abstraction hides
 
@@ -24,4 +24,4 @@ The developer states that a Postgres database is needed and does not say how it 
 
 ## Evidence strength
 
-The adopters named on the site are small and mid-size companies: Mineiros, Frontside Software, and BAUHAUS Deutschland, each using a single spec across local Docker and Kubernetes. These are vendor-site testimonials and not independent case studies. Score generates output only, so continuous reconciliation of what it produces still falls to a GitOps tool. See [[entities/score]] and [[comparisons/score-versus-radius-as-developer-facing-workload-abstractions]]. [[sources/research-kro-and-abstraction-models]]
+The adopters named on the site are small and mid-size companies: Mineiros, Frontside Software, and BAUHAUS Deutschland, each using a single spec across local Docker and Kubernetes. These are vendor-site testimonials and not independent case studies. Score generates output only, so continuous reconciliation of what it produces still falls to a GitOps tool. See [entities/score](../entities/score.md) and [comparisons/score-versus-radius-as-developer-facing-workload-abstractions](../comparisons/score-versus-radius-as-developer-facing-workload-abstractions.md). [sources/research-kro-and-abstraction-models](../sources/research-kro-and-abstraction-models.md)

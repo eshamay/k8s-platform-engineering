@@ -16,7 +16,7 @@ tags: [kyverno, validating-admission-policy, cel, policy-engines]
 
 ## Scenario
 
-Kyverno, a CNCF project, started as a webhook-based policy engine, so enforcement depended on Kyverno's own webhook being up. Teams that want its reporting and exceptions, but not a webhook on the write path for every rule, face the availability concern described in [[findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them]]. [[sources/research-admission-webhooks-and-cel]]
+Kyverno, a CNCF project, started as a webhook-based policy engine, so enforcement depended on Kyverno's own webhook being up. Teams that want its reporting and exceptions, but not a webhook on the write path for every rule, face the availability concern described in [findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them](../findings/fail-closed-webhooks-can-block-the-writes-needed-to-repair-them.md). [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)
 
 ## How it works
 
@@ -24,8 +24,8 @@ Kyverno's ValidatingPolicy is a CEL-first policy type described as a superset of
 
 ## Lesson
 
-The example shows the ecosystem moving from webhook-based engines toward CEL: the engine keeps the human-facing features and hands the hot path to the API server. The dossier did not read Kyverno's documentation on its own webhook failure policy and availability, so how much resilience the generated objects buy in practice is open; see [[open-knowledge-gaps]] and [[comparisons/kyverno-versus-native-validating-admission-policy]].
+The example shows the ecosystem moving from webhook-based engines toward CEL: the engine keeps the human-facing features and hands the hot path to the API server. The dossier did not read Kyverno's documentation on its own webhook failure policy and availability, so how much resilience the generated objects buy in practice is open; see [open-knowledge-gaps](../open-knowledge-gaps.md) and [comparisons/kyverno-versus-native-validating-admission-policy](../comparisons/kyverno-versus-native-validating-admission-policy.md).
 
 ## Related
 
-[[entities/kyverno]], [[concepts/admission-webhooks-and-cel]], and [[examples/vap-minimum-replicas-policy-with-per-environment-parameters]].
+[entities/kyverno](../entities/kyverno.md), [concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md), and [examples/vap-minimum-replicas-policy-with-per-environment-parameters](vap-minimum-replicas-policy-with-per-environment-parameters.md).

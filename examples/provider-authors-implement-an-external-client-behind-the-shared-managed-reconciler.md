@@ -16,7 +16,7 @@ tags: [crossplane, provider, reconciler, external-client, idempotency]
 
 ## Scenario
 
-Someone wants to add a new kind of external resource to Crossplane, for example a SaaS object, without writing a whole controller. The provider-development guide shows that a managed resource is a controller pattern with a shared reconciler library, so the author supplies only the calls that touch the external API. [[sources/research-managed-resource]]
+Someone wants to add a new kind of external resource to Crossplane, for example a SaaS object, without writing a whole controller. The provider-development guide shows that a managed resource is a controller pattern with a shared reconciler library, so the author supplies only the calls that touch the external API. [sources/research-managed-resource](../sources/research-managed-resource.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ The shared `managed.Reconciler` walks the phases Connect, Observe, Create, Updat
 
 ## Lesson
 
-Because the loop is shared, every [[concepts/provider]] gets the same Synced and Ready semantics, the same finalizer behavior, and the same management policies, and the author owns only correctness of the external calls. The same idempotency rules apply as in any controller, see [[concepts/idempotency]] and [[concepts/reconciliation-loop]]. The leak risk that follows from an interrupted create is covered by [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]].
+Because the loop is shared, every [concepts/provider](../concepts/provider.md) gets the same Synced and Ready semantics, the same finalizer behavior, and the same management policies, and the author owns only correctness of the external calls. The same idempotency rules apply as in any controller, see [concepts/idempotency](../concepts/idempotency.md) and [concepts/reconciliation-loop](../concepts/reconciliation-loop.md). The leak risk that follows from an interrupted create is covered by [findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource](../findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource.md).

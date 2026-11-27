@@ -16,7 +16,7 @@ tags: [config-connector, argo-cd, server-side-apply, crd, annotation-limit]
 
 ## Scenario
 
-A team deploys Config Connector's CRD bundle through an Argo CD Application. The bundle is large, and client-side apply stores the whole object in the `last-applied-configuration` annotation, which is capped at 262,144 bytes. [[sources/research-gap-m4-ssa-conflict-policy]]
+A team deploys Config Connector's CRD bundle through an Argo CD Application. The bundle is large, and client-side apply stores the whole object in the `last-applied-configuration` annotation, which is capped at 262,144 bytes. [sources/research-gap-m4-ssa-conflict-policy](../sources/research-gap-m4-ssa-conflict-policy.md)
 
 ## What the issue says
 
@@ -24,8 +24,8 @@ GitHub issue 11689 in GoogleCloudPlatform/k8s-config-connector is a proposal by 
 
 ## Limits of the evidence
 
-This is the text of a contributor proposal, not official documentation, and the public Config Connector page that might confirm it returned empty content. Treat it as the project's contributor view of the Argo CD seam, not as a documented requirement. The same constraint appears for other large CRDs in [[examples/argo-cd-applicationsets-crd-too-large-for-client-side-apply]] and [[findings/large-crds-exceed-the-client-side-apply-annotation-limit]].
+This is the text of a contributor proposal, not official documentation, and the public Config Connector page that might confirm it returned empty content. Treat it as the project's contributor view of the Argo CD seam, not as a documented requirement. The same constraint appears for other large CRDs in [examples/argo-cd-applicationsets-crd-too-large-for-client-side-apply](argo-cd-applicationsets-crd-too-large-for-client-side-apply.md) and [findings/large-crds-exceed-the-client-side-apply-annotation-limit](../findings/large-crds-exceed-the-client-side-apply-annotation-limit.md).
 
 ## Related
 
-[[entities/config-connector]], [[entities/argo-cd]], [[findings/config-connector-writes-with-update-under-cnrm-controller-manager-and-reads-other-managers-fields-as-user-intent]]
+[entities/config-connector](../entities/config-connector.md), [entities/argo-cd](../entities/argo-cd.md), [findings/config-connector-writes-with-update-under-cnrm-controller-manager-and-reads-other-managers-fields-as-user-intent](../findings/config-connector-writes-with-update-under-cnrm-controller-manager-and-reads-other-managers-fields-as-user-intent.md)

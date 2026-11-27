@@ -16,7 +16,7 @@ tags: [crossplane, usage, deletion-ordering, protection]
 
 ## Scenario
 
-A database subnet must not be deleted before the database that sits in it, and a production database must not disappear because someone ran a careless delete. Deleting a [[concepts/managed-resource]] normally deletes the real cloud resource right away, so the platform needs a second guardrail beyond `managementPolicies`. [[sources/research-managed-resource]]
+A database subnet must not be deleted before the database that sits in it, and a production database must not disappear because someone ran a careless delete. Deleting a [concepts/managed-resource](../concepts/managed-resource.md) normally deletes the real cloud resource right away, so the platform needs a second guardrail beyond `managementPolicies`. [sources/research-managed-resource](../sources/research-managed-resource.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ A Usage object marks one resource as in use, optionally by another resource. The
 
 ## Lesson
 
-Usages add ordering and protection at the delete verb, while `managementPolicies` decide whether the delete verb is allowed at all. The two controls cover different mistakes, so the sources present them as complementary. For ordering through owner references and deletion policies see [[examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown]], and for the wider catalog of deletion controls see [[comparisons/deletion-policies-across-gitops-and-provider-tools]] and [[findings/destructive-deletion-of-external-resources]].
+Usages add ordering and protection at the delete verb, while `managementPolicies` decide whether the delete verb is allowed at all. The two controls cover different mistakes, so the sources present them as complementary. For ordering through owner references and deletion policies see [examples/crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown](crossplane-foreground-and-pipeline-deletion-policies-order-composed-resource-teardown.md), and for the wider catalog of deletion controls see [comparisons/deletion-policies-across-gitops-and-provider-tools](../comparisons/deletion-policies-across-gitops-and-provider-tools.md) and [findings/destructive-deletion-of-external-resources](../findings/destructive-deletion-of-external-resources.md).

@@ -16,7 +16,7 @@ tags: [gitops, argo-cd, crossplane, cloud-infrastructure]
 
 ## Scenario
 
-A team keeps databases, buckets, and IAM definitions in Git next to application manifests. Argo CD applies the Crossplane custom resources, and Crossplane's provider controllers call the cloud APIs. This is the clearest documented example of the two-layer loop, in which the GitOps agent reconciles Git into the Kubernetes API and the domain controllers reconcile the API into reality. [[sources/research-gitops-pull-based-delivery]]
+A team keeps databases, buckets, and IAM definitions in Git next to application manifests. Argo CD applies the Crossplane custom resources, and Crossplane's provider controllers call the cloud APIs. This is the clearest documented example of the two-layer loop, in which the GitOps agent reconciles Git into the Kubernetes API and the domain controllers reconcile the API into reality. [sources/research-gitops-pull-based-delivery](../sources/research-gitops-pull-based-delivery.md)
 
 ## What the Argo CD side must be told
 
@@ -24,8 +24,8 @@ The Crossplane documentation lists four pieces of configuration for Argo CD. Fir
 
 ## Why it matters
 
-A generic GitOps agent does not understand custom-resource health or ownership unless it is configured to. Without the health checks the agent reports Healthy while a database is still provisioning, which weakens any sync-wave ordering built on health. See [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]], [[examples/crossplane-database-claim-reports-synced-and-ready]], and [[entities/crossplane]].
+A generic GitOps agent does not understand custom-resource health or ownership unless it is configured to. Without the health checks the agent reports Healthy while a database is still provisioning, which weakens any sync-wave ordering built on health. See [findings/generic-gitops-agents-cannot-judge-custom-resource-health](../findings/generic-gitops-agents-cannot-judge-custom-resource-health.md), [examples/crossplane-database-claim-reports-synced-and-ready](crossplane-database-claim-reports-synced-and-ready.md), and [entities/crossplane](../entities/crossplane.md).
 
 ## Related
 
-[[entities/argo-cd]], [[concepts/gitops-pull-based-delivery]], [[examples/cloud-services-as-kubernetes-objects]]
+[entities/argo-cd](../entities/argo-cd.md), [concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md), [examples/cloud-services-as-kubernetes-objects](cloud-services-as-kubernetes-objects.md)

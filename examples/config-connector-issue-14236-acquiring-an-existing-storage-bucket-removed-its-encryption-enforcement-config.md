@@ -16,7 +16,7 @@ tags: [config-connector, acquisition, storagebucket, csek, adoption]
 
 ## Scenario
 
-Issue 14236 on the Config Connector repository was opened on 2026-10-21 against v1.117.0. The reporter applied a StorageBucket manifest for a bucket that already existed, so Config Connector acquired it by name. The issue was open when the dossier read it, and maintainers had not confirmed it in the text read. The dossier also notes the report's claim that the behavior is still reproducible against the v1.159.0 CRD. [[sources/research-gap-g1-leaked-resources-adoption]] URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/14236
+Issue 14236 on the Config Connector repository was opened on 2026-10-21 against v1.117.0. The reporter applied a StorageBucket manifest for a bucket that already existed, so Config Connector acquired it by name. The issue was open when the dossier read it, and maintainers had not confirmed it in the text read. The dossier also notes the report's claim that the behavior is still reproducible against the v1.159.0 CRD. [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md) URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/14236
 
 ## What happened
 
@@ -28,8 +28,8 @@ Issue 13840 (2026-10-08, closed, resolution not read) shows the opposite failure
 
 ## Why it belongs here
 
-It is the only dated Config Connector report in the dossier of acquisition changing a live resource, and it feeds [[findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model]]. It adds a real case to [[examples/config-connector-acquires-an-existing-google-cloud-resource-by-name]].
+It is the only dated Config Connector report in the dossier of acquisition changing a live resource, and it feeds [findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model](../findings/acquiring-an-existing-cloud-resource-can-strip-settings-the-custom-resource-definition-does-not-model.md). It adds a real case to [examples/config-connector-acquires-an-existing-google-cloud-resource-by-name](config-connector-acquires-an-existing-google-cloud-resource-by-name.md).
 
 ## Related
 
-[[entities/config-connector]], [[decisions/adopt-or-create-or-require-explicit-import]]
+[entities/config-connector](../entities/config-connector.md), [decisions/adopt-or-create-or-require-explicit-import](../decisions/adopt-or-create-or-require-explicit-import.md)

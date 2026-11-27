@@ -19,7 +19,7 @@ tags: [crossplane, scale, crd-count, memory, self-reported]
 
 ## Scenario
 
-Crossplane's CRD-count problem moved from the API server to Crossplane's own processes, and releases in 2026 report measured reductions. All numbers below come from the project and are self-reported, not independent benchmarks. [[sources/research-gap-g3-crossplane-v2]]
+Crossplane's CRD-count problem moved from the API server to Crossplane's own processes, and releases in 2026 report measured reductions. All numbers below come from the project and are self-reported, not independent benchmarks. [sources/research-gap-g3-crossplane-v2](../sources/research-gap-g3-crossplane-v2.md)
 
 ## Reported measurements
 
@@ -34,8 +34,8 @@ The dossier found no measurement of API server memory with versus without activa
 
 ## Lesson
 
-Quote the numbers as project-reported and tie each to its cluster size. See [[decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds]], [[findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory]], [[examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs]], and [[concepts/scale-and-sharding]].
+Quote the numbers as project-reported and tie each to its cluster size. See [decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds](../decisions/split-a-large-provider-into-families-or-filter-or-lazy-load-its-crds.md), [findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory](../findings/splitting-a-provider-into-a-family-trades-fewer-crds-for-more-pods-and-memory.md), [examples/crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs](crossplane-managed-resource-activation-policies-install-only-the-resource-types-a-cluster-needs.md), and [concepts/scale-and-sharding](../concepts/scale-and-sharding.md).
 
 ## Release-note and docs confirmation (2026-11-26)
 
-The v2.4.0 notes say a safe-start provider's runtime `Deployment` is created with zero replicas until a ManagedResourceDefinition is active, and the v2.5 MRD documentation says "Each CRD consumes about 3 MiB of API server memory" with 300 MiB or more for large providers. [[sources/research-gap-b1-recheck-kro-crossplane]]
+The v2.4.0 notes say a safe-start provider's runtime `Deployment` is created with zero replicas until a ManagedResourceDefinition is active, and the v2.5 MRD documentation says "Each CRD consumes about 3 MiB of API server memory" with 300 MiB or more for large providers. [sources/research-gap-b1-recheck-kro-crossplane](../sources/research-gap-b1-recheck-kro-crossplane.md)

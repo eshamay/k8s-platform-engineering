@@ -16,7 +16,7 @@ tags: [argo-rollouts, workqueue, resync, reconcile-loop, unexplained-cause]
 
 ## Scenario
 
-On 2025-02-19 a user reported on Argo Rollouts v1.7.2, run with `--rollout-resync=60`, that workqueue add rates for DestinationRules, Services, and Rollouts stayed constantly high after promotions. The setup was about 800 Rollouts across 4 clusters, and the issue was open when read. [[sources/research-gap-g1-operator-loop-failures]] URL: https://github.com/argoproj/argo-rollouts/issues/4140
+On 2025-02-19 a user reported on Argo Rollouts v1.7.2, run with `--rollout-resync=60`, that workqueue add rates for DestinationRules, Services, and Rollouts stayed constantly high after promotions. The setup was about 800 Rollouts across 4 clusters, and the issue was open when read. [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md) URL: https://github.com/argoproj/argo-rollouts/issues/4140
 
 ## What happened
 
@@ -24,8 +24,8 @@ The reporter described the result as unexpected 2 to 4 times the events per obje
 
 ## Why it belongs here
 
-It pairs a high event rate with a deliberate periodic resync, and it is one of two places where the dossier finds a project's users relying on resync as a guard. See [[findings/projects-add-periodic-resync-as-a-safety-net-against-missed-events-and-bugs]].
+It pairs a high event rate with a deliberate periodic resync, and it is one of two places where the dossier finds a project's users relying on resync as a guard. See [findings/projects-add-periodic-resync-as-a-safety-net-against-missed-events-and-bugs](../findings/projects-add-periodic-resync-as-a-safety-net-against-missed-events-and-bugs.md).
 
 ## Related
 
-[[concepts/informers-reflectors-and-workqueues]], [[decisions/keep-informer-resync-disabled-or-set-a-periodic-resync]], [[findings/cost-of-constant-reconciliation]]
+[concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md), [decisions/keep-informer-resync-disabled-or-set-a-periodic-resync](../decisions/keep-informer-resync-disabled-or-set-a-periodic-resync.md), [findings/cost-of-constant-reconciliation](../findings/cost-of-constant-reconciliation.md)

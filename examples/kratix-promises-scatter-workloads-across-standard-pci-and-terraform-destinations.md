@@ -19,7 +19,7 @@ tags: [use-case, kratix, multi-cluster, pci, vendor-claim]
 
 ## Scenario
 
-A financial-services style organization needs multi-cluster segmentation, where regulated workloads such as PCI DSS ones run on a separate cluster from ordinary workloads. This is Syntasso's own example, so it is a vendor illustration and not an independent case study. [[sources/research-landscape]]
+A financial-services style organization needs multi-cluster segmentation, where regulated workloads such as PCI DSS ones run on a separate cluster from ordinary workloads. This is Syntasso's own example, so it is a vendor illustration and not an independent case study. [sources/research-landscape](../sources/research-landscape.md)
 
 ## How it works
 
@@ -27,8 +27,8 @@ A Promise exposes one self-service API to application teams. Using Destinations,
 
 ## Related
 
-[[entities/kratix]], [[entities/backstage]], [[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers]]
+[entities/kratix](../entities/kratix.md), [entities/backstage](../entities/backstage.md), [comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers](../comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers.md)
 
 ## How the routing works (o6 dossier)
 
-The vendor's illustration is consistent with the documented rules. Destinations carry labels, a Promise's `spec.destinationSelectors` match them in the first stage, and a Destination with `strictMatchLabels: true` accepts only Promises whose selectors match its labels, which is the documented way to keep ordinary workloads off a PCI cluster. In the second stage a Resource workflow's output goes to a matching Destination, chosen at random if several match, unless a `destination-selectors.yaml` file narrows it, with precedence Promise selectors, Promise workflow, then Resource workflow. The Terraform destination works because a Destination is any system an external tool reconciles from the state store. See [[findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match]] and [[findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable]]. The example remains a vendor illustration, and the scheduler code was not read. [[sources/research-gap-o6-platform-landscape]]
+The vendor's illustration is consistent with the documented rules. Destinations carry labels, a Promise's `spec.destinationSelectors` match them in the first stage, and a Destination with `strictMatchLabels: true` accepts only Promises whose selectors match its labels, which is the documented way to keep ordinary workloads off a PCI cluster. In the second stage a Resource workflow's output goes to a matching Destination, chosen at random if several match, unless a `destination-selectors.yaml` file narrows it, with precedence Promise selectors, Promise workflow, then Resource workflow. The Terraform destination works because a Destination is any system an external tool reconciles from the state store. See [findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match](../findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match.md) and [findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable](../findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable.md). The example remains a vendor illustration, and the scheduler code was not read. [sources/research-gap-o6-platform-landscape](../sources/research-gap-o6-platform-landscape.md)

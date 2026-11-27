@@ -16,7 +16,7 @@ tags: [garbage-collection, graph-builder, internals, controllers]
 
 ## Scenario
 
-A platform engineer wants to know why a dependent was deleted, or why an owner is still waiting, and needs the mechanics behind the observed behavior. Two sources explain the internals. The SoByte post is a source-code walkthrough from 2022, and the Kubernetes design proposal in the archive gives the original rationale. The dossier warns that the proposal's foreground and background labels differ from the later implementation, so the proposal is good for architecture and history only. [[sources/research-owner-references-and-garbage-collection]]
+A platform engineer wants to know why a dependent was deleted, or why an owner is still waiting, and needs the mechanics behind the observed behavior. Two sources explain the internals. The SoByte post is a source-code walkthrough from 2022, and the Kubernetes design proposal in the archive gives the original rationale. The dossier warns that the proposal's foreground and background labels differ from the later implementation, so the proposal is good for architecture and history only. [sources/research-owner-references-and-garbage-collection](../sources/research-owner-references-and-garbage-collection.md)
 
 ## How it works
 
@@ -24,8 +24,8 @@ A GraphBuilder watches all resources through monitors and maintains a dependency
 
 ## Why the example matters
 
-The graph is built from watch events, so the collector is a level-based controller like any other and shares the cache-lag concerns described in [[concepts/informers-reflectors-and-workqueues]]. One related open issue, a down conversion webhook stalling garbage collection, is described in [[findings/a-down-conversion-webhook-can-stall-garbage-collection]].
+The graph is built from watch events, so the collector is a level-based controller like any other and shares the cache-lag concerns described in [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md). One related open issue, a down conversion webhook stalling garbage collection, is described in [findings/a-down-conversion-webhook-can-stall-garbage-collection](../findings/a-down-conversion-webhook-can-stall-garbage-collection.md).
 
 ## Related
 
-[[concepts/owner-references-and-garbage-collection]], [[concepts/reconciliation-loop]]
+[concepts/owner-references-and-garbage-collection](../concepts/owner-references-and-garbage-collection.md), [concepts/reconciliation-loop](../concepts/reconciliation-loop.md)

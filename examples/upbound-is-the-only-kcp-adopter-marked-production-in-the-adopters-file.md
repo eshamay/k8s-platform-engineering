@@ -16,7 +16,7 @@ tags: [kcp, adopters, upbound, self-reported, maturity]
 
 ## Scenario
 
-The kcp project keeps an ADOPTERS.md with a maturity label for each organization. [[sources/research-gap-g1-named-adopters]]
+The kcp project keeps an ADOPTERS.md with a maturity label for each organization. [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md)
 
 ## What the file says
 
@@ -24,8 +24,8 @@ The dossier counted 8 table lines, including header lines. Upbound is labeled "P
 
 ## How to read it
 
-The labels are self-assigned, but they are the only maturity signal in any adopters file the wiki has read, and they show kcp is in production at one named organization and in development elsewhere. That fits the Sandbox maturity recorded in [[entities/kcp]], and it leaves the gap on independent scale benchmarks for kcp open.
+The labels are self-assigned, but they are the only maturity signal in any adopters file the wiki has read, and they show kcp is in production at one named organization and in development elsewhere. That fits the Sandbox maturity recorded in [entities/kcp](../entities/kcp.md), and it leaves the gap on independent scale benchmarks for kcp open.
 
 ## Related
 
-[[entities/kcp]], [[comparisons/tenancy-models-namespaces-vcluster-kcp]], [[examples/multi-tenant-api-hosting-with-kcp]]
+[entities/kcp](../entities/kcp.md), [comparisons/tenancy-models-namespaces-vcluster-kcp](../comparisons/tenancy-models-namespaces-vcluster-kcp.md), [examples/multi-tenant-api-hosting-with-kcp](multi-tenant-api-hosting-with-kcp.md)

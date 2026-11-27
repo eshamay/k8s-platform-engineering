@@ -16,7 +16,7 @@ tags: [validating-admission-policy, cel, guardrails, parameters]
 
 ## Scenario
 
-A platform team wants every Deployment to run at least a minimum number of replicas, and wants different minimums for different environments without copying the policy. Before in-process CEL policies, this kind of guardrail was usually a validating webhook, with its own service and certificates. [[sources/research-admission-webhooks-and-cel]]
+A platform team wants every Deployment to run at least a minimum number of replicas, and wants different minimums for different environments without copying the policy. Before in-process CEL policies, this kind of guardrail was usually a validating webhook, with its own service and certificates. [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)
 
 ## How it works
 
@@ -26,8 +26,8 @@ This mirrors a division of labor that platform teams already have. The rule auth
 
 ## Lesson
 
-The guardrail runs inside the API server, so there is no webhook to keep available. The tutorial notes that a new policy does not retroactively affect existing objects, so a team adopting a guardrail may want to start with `Audit` or `Warn` to see what would fail. Checks that need data outside the request still need a webhook; see [[findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost]].
+The guardrail runs inside the API server, so there is no webhook to keep available. The tutorial notes that a new policy does not retroactively affect existing objects, so a team adopting a guardrail may want to start with `Audit` or `Warn` to see what would fail. Checks that need data outside the request still need a webhook; see [findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost](../findings/cel-policies-cannot-reach-external-data-and-have-bounded-cost.md).
 
 ## Related
 
-[[concepts/admission-webhooks-and-cel]], [[comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules]], and [[decisions/validate-with-cel-rules-or-a-validating-webhook]].
+[concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md), [comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules](../comparisons/admission-mechanisms-webhooks-vap-map-and-crd-rules.md), and [decisions/validate-with-cel-rules-or-a-validating-webhook](../decisions/validate-with-cel-rules-or-a-validating-webhook.md).

@@ -16,7 +16,7 @@ tags: [convergence, replicas, level-triggered, deployment]
 
 ## Scenario
 
-A user changes the replica count of a Deployment several times in quick succession, for example from 1 to 5 and then to 2. The dossier treats this as the standard example of convergence: the controller ends at the final count however many intermediate values it did or did not see. [[sources/research-eventual-consistency-and-convergence]]
+A user changes the replica count of a Deployment several times in quick succession, for example from 1 to 5 and then to 2. The dossier treats this as the standard example of convergence: the controller ends at the final count however many intermediate values it did or did not see. [sources/research-eventual-consistency-and-convergence](../sources/research-eventual-consistency-and-convergence.md)
 
 ## What happens
 
@@ -24,4 +24,4 @@ The HackerNoon explainer contrasts the two designs on this scenario. An edge-tri
 
 ## Lesson
 
-Convergence does not promise that every intermediate state is processed. It promises that the last declared state wins. Users should therefore treat a quick sequence of edits as one edit to the final value. See [[concepts/eventual-consistency-and-convergence]], [[concepts/level-triggered-vs-edge-triggered]], and [[examples/how-core-controllers-handle-cache-lag]].
+Convergence does not promise that every intermediate state is processed. It promises that the last declared state wins. Users should therefore treat a quick sequence of edits as one edit to the final value. See [concepts/eventual-consistency-and-convergence](../concepts/eventual-consistency-and-convergence.md), [concepts/level-triggered-vs-edge-triggered](../concepts/level-triggered-vs-edge-triggered.md), and [examples/how-core-controllers-handle-cache-lag](how-core-controllers-handle-cache-lag.md).

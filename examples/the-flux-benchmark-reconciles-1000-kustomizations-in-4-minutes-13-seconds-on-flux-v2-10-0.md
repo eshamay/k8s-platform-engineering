@@ -16,7 +16,7 @@ tags: [flux, benchmark, kustomize-controller, scale, project-run]
 
 ## Scenario
 
-The fluxcd/flux-benchmark repository publishes results per Flux release. The v2.10.0 section gives a scale reference for a single unsharded controller. [[sources/research-gap-g1-named-adopters]] URL: https://github.com/fluxcd/flux-benchmark/blob/main/RESULTS.md.
+The fluxcd/flux-benchmark repository publishes results per Flux release. The v2.10.0 section gives a scale reference for a single unsharded controller. [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md) URL: https://github.com/fluxcd/flux-benchmark/blob/main/RESULTS.md.
 
 ## The numbers
 
@@ -24,8 +24,8 @@ With a kustomize-controller of 2 CPU and 1Gi at concurrency 20, on a 3-node Kind
 
 ## How to read it
 
-This is a project-run benchmark and not a production report, and the environment is a single small Kind cluster. A maintainer cited about three minutes per thousand Kustomizations in a user thread, which is in the same range. The Flux sharding page advises sharding only at "tens of thousands of applications". See [[examples/an-unnamed-user-with-300-namespaces-saw-5-minute-delays-and-a-flux-maintainer-cited-1k-kustomizations-in-about-3-minutes]].
+This is a project-run benchmark and not a production report, and the environment is a single small Kind cluster. A maintainer cited about three minutes per thousand Kustomizations in a user thread, which is in the same range. The Flux sharding page advises sharding only at "tens of thousands of applications". See [examples/an-unnamed-user-with-300-namespaces-saw-5-minute-delays-and-a-flux-maintainer-cited-1k-kustomizations-in-about-3-minutes](an-unnamed-user-with-300-namespaces-saw-5-minute-delays-and-a-flux-maintainer-cited-1k-kustomizations-in-about-3-minutes.md).
 
 ## Related
 
-[[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]], [[entities/flux]], [[concepts/scale-and-sharding]]
+[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice](../comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice.md), [entities/flux](../entities/flux.md), [concepts/scale-and-sharding](../concepts/scale-and-sharding.md)

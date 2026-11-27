@@ -16,7 +16,7 @@ tags: [crossplane, conditions, cloud, convergence]
 
 ## Scenario
 
-A team asks for a database through a Crossplane claim. The request becomes managed resources that poll the cloud API while the provider provisions slowly. The dossier uses this to show how status conditions describe a convergence that takes minutes. [[sources/research-eventual-consistency-and-convergence]]
+A team asks for a database through a Crossplane claim. The request becomes managed resources that poll the cloud API while the provider provisions slowly. The dossier uses this to show how status conditions describe a convergence that takes minutes. [sources/research-eventual-consistency-and-convergence](../sources/research-eventual-consistency-and-convergence.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ Each managed resource mirrors an external cloud object and treats `forProvider` 
 
 ## Lesson
 
-While the cloud provisions, a user sees `Synced` true and `Ready` false, which means the controller is working and the thing is not yet usable. Reading only one of the two conditions gives the wrong answer. See [[entities/crossplane]], [[concepts/managed-resource]], [[concepts/composite-resource]], [[findings/misleading-readiness-and-stale-status]], and [[examples/cloud-console-changes-reverted-by-provider-controllers]].
+While the cloud provisions, a user sees `Synced` true and `Ready` false, which means the controller is working and the thing is not yet usable. Reading only one of the two conditions gives the wrong answer. See [entities/crossplane](../entities/crossplane.md), [concepts/managed-resource](../concepts/managed-resource.md), [concepts/composite-resource](../concepts/composite-resource.md), [findings/misleading-readiness-and-stale-status](../findings/misleading-readiness-and-stale-status.md), and [examples/cloud-console-changes-reverted-by-provider-controllers](cloud-console-changes-reverted-by-provider-controllers.md).

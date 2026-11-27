@@ -22,7 +22,7 @@ tags: [ack, aws, drift, resync, api-cost]
 
 ## Scenario
 
-An AWS shop runs [[entities/ack]] and needs to decide how quickly drift in AWS resources is noticed. The ACK drift-recovery page (https://aws-controllers-k8s.github.io/community/docs/user-docs/drift-recovery/) says controllers detect drift "by continuing to reconcile resources after they have reached their desired state, but with much longer delays." [[sources/research-self-healing-and-drift-detection]]
+An AWS shop runs [entities/ack](../entities/ack.md) and needs to decide how quickly drift in AWS resources is noticed. The ACK drift-recovery page (https://aws-controllers-k8s.github.io/community/docs/user-docs/drift-recovery/) says controllers detect drift "by continuing to reconcile resources after they have reached their desired state, but with much longer delays." [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md)
 
 ## The knobs
 
@@ -30,10 +30,10 @@ After a resource reaches `ResourceSynced = true`, the controller reconciles it a
 
 ## Lesson
 
-This is the clearest statement in the sources of the freshness-versus-API-cost trade-off, because each observation is a call to a rate-limited cloud API. See [[decisions/choosing-a-drift-check-interval-for-external-resources]], [[findings/cost-of-constant-reconciliation]], and [[findings/drift-detection-latency-is-the-interval]].
+This is the clearest statement in the sources of the freshness-versus-API-cost trade-off, because each observation is a call to a rate-limited cloud API. See [decisions/choosing-a-drift-check-interval-for-external-resources](../decisions/choosing-a-drift-check-interval-for-external-resources.md), [findings/cost-of-constant-reconciliation](../findings/cost-of-constant-reconciliation.md), and [findings/drift-detection-latency-is-the-interval](../findings/drift-detection-latency-is-the-interval.md).
 
 ## Confirmation of the default
 
-The 2026-11-26 dossier confirms the 10 hour default against the runtime constant `defaultResyncPeriod = 10 * time.Hour` as well as the drift-recovery page. [[sources/research-gap-g3-reconcile-defaults]]
+The 2026-11-26 dossier confirms the 10 hour default against the runtime constant `defaultResyncPeriod = 10 * time.Hour` as well as the drift-recovery page. [sources/research-gap-g3-reconcile-defaults](../sources/research-gap-g3-reconcile-defaults.md)
 
-Correction note, 2026-11-26: ACK's "resync" is `requeue.NeededAfter(nil, r.resyncPeriod)` with `defaultResyncPeriod = 10 * time.Hour`, a requeue after a successful reconcile and not an informer resync, so each pass re-reads the AWS resource. See [[findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack]] and [[examples/ack-service-controllers-scope-their-cache-by-namespace-and-label-selector-and-trigger-on-generation-changes]]. [[sources/research-gap-m5-informers-caches]]
+Correction note, 2026-11-26: ACK's "resync" is `requeue.NeededAfter(nil, r.resyncPeriod)` with `defaultResyncPeriod = 10 * time.Hour`, a requeue after a successful reconcile and not an informer resync, so each pass re-reads the AWS resource. See [findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack](../findings/the-word-resync-names-three-different-mechanisms-in-client-go-kro-and-ack.md) and [examples/ack-service-controllers-scope-their-cache-by-namespace-and-label-selector-and-trigger-on-generation-changes](ack-service-controllers-scope-their-cache-by-namespace-and-label-selector-and-trigger-on-generation-changes.md). [sources/research-gap-m5-informers-caches](../sources/research-gap-m5-informers-caches.md)

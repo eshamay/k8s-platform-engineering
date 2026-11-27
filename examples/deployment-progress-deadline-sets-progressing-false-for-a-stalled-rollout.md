@@ -16,7 +16,7 @@ tags: [deployment, conditions, rollout, kubectl, built-in]
 
 ## Scenario
 
-A team rolls out a new image, but the new pods never become ready. The team uses `kubectl rollout status` in a pipeline and needs the command to fail instead of waiting forever. [[sources/research-conditions]]
+A team rolls out a new image, but the new pods never become ready. The team uses `kubectl rollout status` in a pipeline and needs the command to fail instead of waiting forever. [sources/research-conditions](../sources/research-conditions.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ A Deployment publishes the conditions `Progressing`, `Available`, and `ReplicaFa
 
 ## Lesson
 
-The Deployment is the built-in model that the rest of the ecosystem is compared against. Its conditions describe state over time, not just binary health: a rollout can be `Available` and still `Progressing`, and a stall is an explicit condition with a reason, not merely an absence. See [[examples/deployment-status-reports-ready-replicas-against-spec-replicas]], [[concepts/conditions]], [[concepts/spec-status-split]], and [[comparisons/health-and-readiness-models-across-tools]].
+The Deployment is the built-in model that the rest of the ecosystem is compared against. Its conditions describe state over time, not just binary health: a rollout can be `Available` and still `Progressing`, and a stall is an explicit condition with a reason, not merely an absence. See [examples/deployment-status-reports-ready-replicas-against-spec-replicas](deployment-status-reports-ready-replicas-against-spec-replicas.md), [concepts/conditions](../concepts/conditions.md), [concepts/spec-status-split](../concepts/spec-status-split.md), and [comparisons/health-and-readiness-models-across-tools](../comparisons/health-and-readiness-models-across-tools.md).

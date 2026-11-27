@@ -16,7 +16,7 @@ tags: [config-connector, leader-election, multi-cluster, gitops, deletion]
 
 ## Scenario
 
-On 2026-11-25 acpana opened issue 16444 on the Config Connector repository. The setup is multiple clusters running Config Connector with leader election, with GitOps delivering the objects. [[sources/research-gap-g1-other-tool-pitfalls]] URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/16444
+On 2026-11-25 acpana opened issue 16444 on the Config Connector repository. The setup is multiple clusters running Config Connector with leader election, with GitOps delivering the objects. [sources/research-gap-g1-other-tool-pitfalls](../sources/research-gap-g1-other-tool-pitfalls.md) URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/16444
 
 ## The sequence
 
@@ -28,8 +28,8 @@ The issue's phrase is "silently deleting live resources", with no error reported
 
 ## Status and limits
 
-An open report one day old when read, filed by one reporter and not reproduced by the dossier, with no maintainer response. See [[findings/config-connector-leader-election-across-clusters-can-run-a-stale-deletion-against-live-google-cloud-resources]].
+An open report one day old when read, filed by one reporter and not reproduced by the dossier, with no maintainer response. See [findings/config-connector-leader-election-across-clusters-can-run-a-stale-deletion-against-live-google-cloud-resources](../findings/config-connector-leader-election-across-clusters-can-run-a-stale-deletion-against-live-google-cloud-resources.md).
 
 ## Related
 
-[[entities/config-connector]], [[findings/destructive-deletion-of-external-resources]]
+[entities/config-connector](../entities/config-connector.md), [findings/destructive-deletion-of-external-resources](../findings/destructive-deletion-of-external-resources.md)

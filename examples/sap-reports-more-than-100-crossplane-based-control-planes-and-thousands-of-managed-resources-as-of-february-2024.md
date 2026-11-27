@@ -16,7 +16,7 @@ tags: [crossplane, adopters, sap, self-reported, scale]
 
 ## Scenario
 
-SAP lists itself in the Crossplane project's ADOPTERS file. The entry is the most specific statement of control-plane count in that file. [[sources/research-gap-g1-named-adopters]]
+SAP lists itself in the Crossplane project's ADOPTERS file. The entry is the most specific statement of control-plane count in that file. [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md)
 
 ## What the entry says
 
@@ -28,4 +28,4 @@ The figure counts control planes, so it is a fleet-shape statement and not the s
 
 ## Related
 
-[[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand]], [[entities/crossplane]], [[concepts/managed-resource]]
+[examples/crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand](crossplane-adopters-report-managed-resource-counts-from-thousands-to-two-hundred-thousand.md), [entities/crossplane](../entities/crossplane.md), [concepts/managed-resource](../concepts/managed-resource.md)

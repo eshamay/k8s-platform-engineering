@@ -16,11 +16,11 @@ tags: [kro, ack, composition, readiness, deletion, aws]
 
 ## Scenario
 
-The ACK documentation includes a "Using ACK with kro" guide whose ResourceGraphDefinition composes an ACK S3 Bucket, an ACK DynamoDB Table, and a Deployment, with outputs read from `status.ackResourceMetadata.arn`. URL: https://aws-controllers-k8s.github.io/docs/guides/kro/ (documentation copyright 2026, read against kro v0.10.0). [[sources/research-gap-o3-gitops-provider-managed]]
+The ACK documentation includes a "Using ACK with kro" guide whose ResourceGraphDefinition composes an ACK S3 Bucket, an ACK DynamoDB Table, and a Deployment, with outputs read from `status.ackResourceMetadata.arn`. URL: https://aws-controllers-k8s.github.io/docs/guides/kro/ (documentation copyright 2026, read against kro v0.10.0). [sources/research-gap-o3-gitops-provider-managed](../sources/research-gap-o3-gitops-provider-managed.md)
 
 ## What the guide states
 
-Quote: "kro waits for ACK resources to become ready before creating dependent resources". Quote: "If an ACK resource fails, dependent resources won't be created". On deleting an instance, kro removes the Deployment first and then the AWS resources, following ACK's deletion policy. This is the first-party description of the interplay, in contrast with the AWS EKS guide in [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]].
+Quote: "kro waits for ACK resources to become ready before creating dependent resources". Quote: "If an ACK resource fails, dependent resources won't be created". On deleting an instance, kro removes the Deployment first and then the AWS resources, following ACK's deletion policy. This is the first-party description of the interplay, in contrast with the AWS EKS guide in [examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps](the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps.md).
 
 ## Not documented
 
@@ -28,4 +28,4 @@ The guide does not say how kro's own alpha `kro.run/deletion-policy` annotation 
 
 ## Related
 
-[[entities/kro]], [[entities/ack]], [[findings/crossplane-function-auto-ready-and-kro-readywhen-gate-on-the-provider-ready-condition-and-no-worked-example-of-crossplane-composing-ack-or-config-connector-was-found]], [[findings/ack-referencing-resources-wait-on-backoff-after-the-referenced-resource-syncs-according-to-issue-3131]], [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]]
+[entities/kro](../entities/kro.md), [entities/ack](../entities/ack.md), [findings/crossplane-function-auto-ready-and-kro-readywhen-gate-on-the-provider-ready-condition-and-no-worked-example-of-crossplane-composing-ack-or-config-connector-was-found](../findings/crossplane-function-auto-ready-and-kro-readywhen-gate-on-the-provider-ready-condition-and-no-worked-example-of-crossplane-composing-ack-or-config-connector-was-found.md), [findings/ack-referencing-resources-wait-on-backoff-after-the-referenced-resource-syncs-according-to-issue-3131](../findings/ack-referencing-resources-wait-on-backoff-after-the-referenced-resource-syncs-according-to-issue-3131.md), [examples/kro-deletes-instance-resources-in-reverse-dependency-waves](kro-deletes-instance-resources-in-reverse-dependency-waves.md)

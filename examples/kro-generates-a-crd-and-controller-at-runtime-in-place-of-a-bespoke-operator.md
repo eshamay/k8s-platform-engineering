@@ -16,7 +16,7 @@ tags: [use-case, kro, no-code, platform-engineering]
 
 ## Scenario
 
-A team needs a custom API composed of existing resources but does not want to write controller code. kro offers a no-code route. [[sources/research-operator-pattern]]
+A team needs a custom API composed of existing resources but does not want to write controller code. kro offers a no-code route. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## How it works
 
@@ -24,8 +24,8 @@ A kro ResourceGraphDefinition declares a schema and templated resources with CEL
 
 ## Caveat
 
-The dossier read only the overview, so kro's readiness and status mechanics are not covered here. See [[entities/kro]] and [[open-knowledge-gaps]].
+The dossier read only the overview, so kro's readiness and status mechanics are not covered here. See [entities/kro](../entities/kro.md) and [open-knowledge-gaps](../open-knowledge-gaps.md).
 
 ## Related
 
-[[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]], [[examples/platform-team-self-service-apis-with-crossplane-and-kro]], [[decisions/build-a-custom-operator-or-compose-existing-resources]]
+[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro](../comparisons/hand-written-operator-versus-crossplane-composition-versus-kro.md), [examples/platform-team-self-service-apis-with-crossplane-and-kro](platform-team-self-service-apis-with-crossplane-and-kro.md), [decisions/build-a-custom-operator-or-compose-existing-resources](../decisions/build-a-custom-operator-or-compose-existing-resources.md)

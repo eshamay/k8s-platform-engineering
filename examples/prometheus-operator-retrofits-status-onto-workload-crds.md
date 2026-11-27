@@ -16,7 +16,7 @@ tags: [prometheus-operator, status-subresource, retrofit, design-proposal]
 
 ## Scenario
 
-Users of Prometheus Operator could not tell whether a `Prometheus` resource was actually available without querying the operator out of band. The project responded with an implemented design proposal that adds a status subresource after the CRDs already existed. [[sources/research-spec-status-split]]
+Users of Prometheus Operator could not tell whether a `Prometheus` resource was actually available without querying the operator out of band. The project responded with an implemented design proposal that adds a status subresource after the CRDs already existed. [sources/research-spec-status-split](../sources/research-spec-status-split.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ The proposal adds status to `Prometheus`, `Alertmanager`, `PrometheusAgent`, and
 
 ## Lesson
 
-Adding status later is possible, but it is a design decision per kind, and the kinds that are configuration inputs read by many consumers are poor candidates. The project drew the line at workload-like objects that have one owning reconciler. See [[decisions/which-crds-get-a-status-subresource]], [[findings/config-style-crds-with-several-reconcilers-get-no-status]], [[entities/prometheus-operator]], and [[concepts/spec-status-split]].
+Adding status later is possible, but it is a design decision per kind, and the kinds that are configuration inputs read by many consumers are poor candidates. The project drew the line at workload-like objects that have one owning reconciler. See [decisions/which-crds-get-a-status-subresource](../decisions/which-crds-get-a-status-subresource.md), [findings/config-style-crds-with-several-reconcilers-get-no-status](../findings/config-style-crds-with-several-reconcilers-get-no-status.md), [entities/prometheus-operator](../entities/prometheus-operator.md), and [concepts/spec-status-split](../concepts/spec-status-split.md).

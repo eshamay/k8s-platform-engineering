@@ -16,7 +16,7 @@ tags: [aenix, kuberoot, distributions, kubernetes-as-a-kernel, cozystack]
 
 ## Scenario
 
-Aenix, the company behind [[entities/cozystack]], published "Kubernetes as the Linux kernel" in October 2026 (https://aenix.io/blog/2026/10/kubernetes-as-the-linux-kernel/). The post argues that Kubernetes should be a stable core with purpose-built distributions on top, and presents kuberoot as its implementation. It frames the idea as a corollary of Tim Hockin's KubeCon Chicago 2023 talk on treating complexity as a budget, which is known here only through the post. [[sources/research-gap-o5-kro-ecosystem]]
+Aenix, the company behind [entities/cozystack](../entities/cozystack.md), published "Kubernetes as the Linux kernel" in October 2026 (https://aenix.io/blog/2026/10/kubernetes-as-the-linux-kernel/). The post argues that Kubernetes should be a stable core with purpose-built distributions on top, and presents kuberoot as its implementation. It frames the idea as a corollary of Tim Hockin's KubeCon Chicago 2023 talk on treating complexity as a budget, which is known here only through the post. [sources/research-gap-o5-kro-ecosystem](../sources/research-gap-o5-kro-ecosystem.md)
 
 ## What the post says about itself
 
@@ -24,4 +24,4 @@ The post says kuberoot was built "in our spare time by a very small team" and wa
 
 ## Why it matters
 
-This is a single-vendor proposal with its own caveats, and no SIG or KEP source backs it, see [[findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post]]. The broader scenario list is in [[examples/non-container-appliances-on-the-kubernetes-api]].
+This is a single-vendor proposal with its own caveats, and no SIG or KEP source backs it, see [findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post](../findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post.md). The broader scenario list is in [examples/non-container-appliances-on-the-kubernetes-api](non-container-appliances-on-the-kubernetes-api.md).

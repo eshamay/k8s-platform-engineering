@@ -16,7 +16,7 @@ tags: [controllers, non-kubernetes, reference-architecture]
 
 ## Scenario
 
-The ApeiroRA reference architecture, an EU-funded open cloud effort, recommends the controller pattern for digital-twin style systems that sit outside classic container scheduling. [[sources/research-level-triggered-vs-edge-triggered]]
+The ApeiroRA reference architecture, an EU-funded open cloud effort, recommends the controller pattern for digital-twin style systems that sit outside classic container scheduling. [sources/research-level-triggered-vs-edge-triggered](../sources/research-level-triggered-vs-edge-triggered.md)
 
 ## What it recommends
 
@@ -24,4 +24,4 @@ The page says that "Controllers continuously reconcile the actual state with the
 
 ## Why it matters
 
-It shows the level-triggered controller as a general architectural idiom rather than a Kubernetes implementation detail, which supports the claim in [[concepts/universal-control-plane]]. See also [[findings/cost-of-constant-reconciliation]] and [[concepts/level-triggered-vs-edge-triggered]].
+It shows the level-triggered controller as a general architectural idiom rather than a Kubernetes implementation detail, which supports the claim in [concepts/universal-control-plane](../concepts/universal-control-plane.md). See also [findings/cost-of-constant-reconciliation](../findings/cost-of-constant-reconciliation.md) and [concepts/level-triggered-vs-edge-triggered](../concepts/level-triggered-vs-edge-triggered.md).

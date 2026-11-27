@@ -16,7 +16,7 @@ tags: [gvk, deprecation, upgrade]
 
 ## Scenario
 
-Teams upgrading across Kubernetes 1.25 and 1.26 had to migrate manifests off GVKs that the API server stopped serving. [[sources/research-gvk-and-gvr]]
+Teams upgrading across Kubernetes 1.25 and 1.26 had to migrate manifests off GVKs that the API server stopped serving. [sources/research-gvk-and-gvr](../sources/research-gvk-and-gvr.md)
 
 ## What was removed
 
@@ -24,4 +24,4 @@ PodSecurityPolicy (`policy/v1beta1`) was deprecated in 1.21 and removed in 1.25,
 
 ## Lesson
 
-A GVK can disappear from a cluster on a published schedule, and manifests, charts, and clients pinned to the old GVK break. The mitigation named in the sources is moving to GA versions ahead of the upgrade. See [[findings/removed-beta-gvks-break-pinned-manifests-and-clients]] and [[concepts/gvk-and-gvr]].
+A GVK can disappear from a cluster on a published schedule, and manifests, charts, and clients pinned to the old GVK break. The mitigation named in the sources is moving to GA versions ahead of the upgrade. See [findings/removed-beta-gvks-break-pinned-manifests-and-clients](../findings/removed-beta-gvks-break-pinned-manifests-and-clients.md) and [concepts/gvk-and-gvr](../concepts/gvk-and-gvr.md).

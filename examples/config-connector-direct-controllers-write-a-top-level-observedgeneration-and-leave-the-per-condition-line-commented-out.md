@@ -16,7 +16,7 @@ tags: [config-connector, observedgeneration, conditions, direct-controllers]
 
 ## Scenario
 
-Config Connector's newer direct controllers share a base in `pkg/controller/direct/directbase/operations.go` (file last changed 2026-11-06). The base sets status after each reconcile and has to decide where to record the generation it acted on. [[sources/research-gap-m3-status-conditions]] URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/direct/directbase/operations.go
+Config Connector's newer direct controllers share a base in `pkg/controller/direct/directbase/operations.go` (file last changed 2026-11-06). The base sets status after each reconcile and has to decide where to record the generation it acted on. [sources/research-gap-m3-status-conditions](../sources/research-gap-m3-status-conditions.md) URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/direct/directbase/operations.go
 
 ## How it works
 
@@ -26,4 +26,4 @@ In the same package, `isAPIServerUpdateRequired` is a stub that returns true, wi
 
 ## Lesson
 
-Config Connector is a worked case of the "top-level only" option in [[decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both]], which is the placement kstatus and Argo CD consume. See [[findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code]], [[entities/config-connector]], and [[comparisons/observedgeneration-top-level-versus-per-condition]].
+Config Connector is a worked case of the "top-level only" option in [decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both](../decisions/place-observedgeneration-at-the-top-level-on-each-condition-or-both.md), which is the placement kstatus and Argo CD consume. See [findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code](../findings/config-connector-shipped-updatefailed-with-a-single-ready-condition-and-the-first-field-path-message-and-operation-id-reason-are-not-in-code.md), [entities/config-connector](../entities/config-connector.md), and [comparisons/observedgeneration-top-level-versus-per-condition](../comparisons/observedgeneration-top-level-versus-per-condition.md).

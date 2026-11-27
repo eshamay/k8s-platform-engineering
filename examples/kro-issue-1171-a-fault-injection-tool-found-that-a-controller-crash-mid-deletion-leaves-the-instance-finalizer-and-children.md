@@ -16,7 +16,7 @@ tags: [kro, deletion, finalizer, fault-injection, kamera]
 
 ## Scenario
 
-On 2026-03-19 the fault-injection tool kamera filed kro issue 1171 against kro v0.8.4. It crashes the controller during an instance deletion and checks what is left. [[sources/research-gap-g1-other-tool-pitfalls]] URL: https://github.com/kubernetes-sigs/kro/issues/1171
+On 2026-03-19 the fault-injection tool kamera filed kro issue 1171 against kro v0.8.4. It crashes the controller during an instance deletion and checks what is left. [sources/research-gap-g1-other-tool-pitfalls](../sources/research-gap-g1-other-tool-pitfalls.md) URL: https://github.com/kubernetes-sigs/kro/issues/1171
 
 ## What it reports
 
@@ -28,4 +28,4 @@ This is a test-tool finding, not a production incident. On 2026-11-26 the issue 
 
 ## Related
 
-[[findings/a-kro-controller-crash-during-instance-deletion-can-leave-the-finalizer-and-children-according-to-a-fault-injection-report]], [[examples/kro-deletes-instance-resources-in-reverse-dependency-waves]], [[entities/kro]]
+[findings/a-kro-controller-crash-during-instance-deletion-can-leave-the-finalizer-and-children-according-to-a-fault-injection-report](../findings/a-kro-controller-crash-during-instance-deletion-can-leave-the-finalizer-and-children-according-to-a-fault-injection-report.md), [examples/kro-deletes-instance-resources-in-reverse-dependency-waves](kro-deletes-instance-resources-in-reverse-dependency-waves.md), [entities/kro](../entities/kro.md)

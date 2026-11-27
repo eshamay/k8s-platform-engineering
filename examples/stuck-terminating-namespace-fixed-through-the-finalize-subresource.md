@@ -22,7 +22,7 @@ tags: [finalizers, namespaces, troubleshooting, openshift]
 
 ## Scenario
 
-An administrator deletes a namespace and it never leaves the Terminating state. Red Hat's troubleshooting guide walks through the diagnosis and the last-resort fix. [[sources/research-finalizers]]
+An administrator deletes a namespace and it never leaves the Terminating state. Red Hat's troubleshooting guide walks through the diagnosis and the last-resort fix. [sources/research-finalizers](../sources/research-finalizers.md)
 
 ## How it works
 
@@ -30,16 +30,16 @@ The diagnosis starts by reading `spec.finalizers` on the namespace and the statu
 
 ## Why the example matters
 
-The namespace finalizer is a field in `spec` and has its own subresource, which makes it different from the metadata finalizers on most objects. The case shows both the escape hatch and its cost. See [[decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller]] and [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]].
+The namespace finalizer is a field in `spec` and has its own subresource, which makes it different from the metadata finalizers on most objects. The case shows both the escape hatch and its cost. See [decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller](../decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller.md) and [findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data](../findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data.md).
 
 ## Related
 
-[[concepts/finalizers]], [[examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete]], [[findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing]]
+[concepts/finalizers](../concepts/finalizers.md), [examples/diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete](diagnosing-a-pod-stuck-terminating-from-finalizer-to-force-delete.md), [findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing](../findings/finalizers-strand-objects-in-terminating-when-the-controller-is-missing-or-failing.md)
 
 ## Addition from the pitfalls dossier
 
-The pitfalls dossier summarizes this same Red Hat guide. The namespace status condition `NamespaceFinalizersRemaining` names the culprit, here a custom resource finalizer (`tackles.tackle.io/finalizer`) whose controller was not removing it. The author's CI created and deleted namespaces, and operator finalizers left them Terminating. The dossier also notes that the guide treats force removal as the fix without warning that it can orphan guarded resources. See [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]] and [[sources/research-pitfalls-and-case-studies]].
+The pitfalls dossier summarizes this same Red Hat guide. The namespace status condition `NamespaceFinalizersRemaining` names the culprit, here a custom resource finalizer (`tackles.tackle.io/finalizer`) whose controller was not removing it. The author's CI created and deleted namespaces, and operator finalizers left them Terminating. The dossier also notes that the guide treats force removal as the fix without warning that it can orphan guarded resources. See [findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data](../findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data.md) and [sources/research-pitfalls-and-case-studies](../sources/research-pitfalls-and-case-studies.md).
 
 ## The Kubernetes blog's caution and recovery step
 
-The official Kubernetes blog post of 2021 describes the same last-resort update to the namespace `finalize` subresource and warns that it may delete the namespace only and leave orphan objects in a namespace that no longer exists. It says re-creating the namespace manually can sometimes make the orphans reappear so they can be cleaned up. See [[findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back]]. [[sources/kubernetes-finalizers-blog]]
+The official Kubernetes blog post of 2021 describes the same last-resort update to the namespace `finalize` subresource and warns that it may delete the namespace only and leave orphan objects in a namespace that no longer exists. It says re-creating the namespace manually can sometimes make the orphans reappear so they can be cleaned up. See [findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back](../findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back.md). [sources/kubernetes-finalizers-blog](../sources/kubernetes-finalizers-blog.md)

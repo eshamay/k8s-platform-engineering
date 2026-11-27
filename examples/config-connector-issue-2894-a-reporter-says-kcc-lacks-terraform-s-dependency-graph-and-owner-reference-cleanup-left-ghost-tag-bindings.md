@@ -16,12 +16,12 @@ tags: [config-connector, ordering, owner-references, tag-bindings, issue, single
 
 ## Scenario
 
-Issue 2894 was opened on 2024-10-10 against KCC 1.123.1 in cluster mode by a reporter with no repository association. The reporter characterizes the tool this way: "KCC does not have the same dependency graph that Terraform has", and says that cleanup driven by owner references left ghost tag bindings in Google Cloud. URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2894 [[sources/research-gap-o4-config-connector-ack]]
+Issue 2894 was opened on 2024-10-10 against KCC 1.123.1 in cluster mode by a reporter with no repository association. The reporter characterizes the tool this way: "KCC does not have the same dependency graph that Terraform has", and says that cleanup driven by owner references left ghost tag bindings in Google Cloud. URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2894 [sources/research-gap-o4-config-connector-ack](../sources/research-gap-o4-config-connector-ack.md)
 
 ## Evidence strength
 
-SECONDARY-ONLY. It is the reporter's characterization, and the dossier recorded no maintainer confirmation. It supports, but does not independently prove, the claim in [[findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering]]. Owner references delete without ordering, a point kro makes in [[findings/default-owner-references-delete-out-of-order-and-cannot-link-namespaced-to-cluster-scoped-objects-so-kro-uses-applysets]].
+SECONDARY-ONLY. It is the reporter's characterization, and the dossier recorded no maintainer confirmation. It supports, but does not independently prove, the claim in [findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering](../findings/config-connector-has-no-terraform-style-dependency-graph-and-argo-cd-deletes-children-without-ordering.md). Owner references delete without ordering, a point kro makes in [findings/default-owner-references-delete-out-of-order-and-cannot-link-namespaced-to-cluster-scoped-objects-so-kro-uses-applysets](../findings/default-owner-references-delete-out-of-order-and-cannot-link-namespaced-to-cluster-scoped-objects-so-kro-uses-applysets.md).
 
 ## Lesson
 
-Owner-reference garbage collection is not a substitute for dependency-ordered teardown against an external API, see [[comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers]].
+Owner-reference garbage collection is not a substitute for dependency-ordered teardown against an external API, see [comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers](../comparisons/how-tools-garbage-collect-owner-references-inventory-and-finalizers.md).

@@ -16,7 +16,7 @@ tags: [garbage-collection, conversion-webhook, kubernetes-1-32, pull-request, ve
 
 ## Scenario
 
-Issue 101078, "Creating a CRD with broken converter webhook prevents GC controller from initialization", stayed open through abandoned attempts: PR 110858 (closed unmerged 2024-02-04) and PR 120164 (closed unmerged 2024-08-28). PR 125796 "garbagecollector: controller should not be blocking on failed cache sync" merged 2024-09-25 with milestone v1.32 ("Garbage collector controller should not block indefinitely on cache sync failure."), and 101078 was closed as completed that day. https://github.com/kubernetes/kubernetes/pull/125796 and https://github.com/kubernetes/kubernetes/issues/101078 [[sources/research-gap-m6-admission-crds]]
+Issue 101078, "Creating a CRD with broken converter webhook prevents GC controller from initialization", stayed open through abandoned attempts: PR 110858 (closed unmerged 2024-02-04) and PR 120164 (closed unmerged 2024-08-28). PR 125796 "garbagecollector: controller should not be blocking on failed cache sync" merged 2024-09-25 with milestone v1.32 ("Garbage collector controller should not block indefinitely on cache sync failure."), and 101078 was closed as completed that day. https://github.com/kubernetes/kubernetes/pull/125796 and https://github.com/kubernetes/kubernetes/issues/101078 [sources/research-gap-m6-admission-crds](../sources/research-gap-m6-admission-crds.md)
 
 ## Reliability
 
@@ -24,4 +24,4 @@ VERIFIED from the issue and pull request pages and the 1.32 changelog. The remai
 
 ## Related
 
-[[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]] and [[examples/kubernetes-issue-127105-a-failing-resource-sync-stalled-garbage-collection-of-other-resources-in-an-ha-kind-cluster]].
+[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type](../findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type.md) and [examples/kubernetes-issue-127105-a-failing-resource-sync-stalled-garbage-collection-of-other-resources-in-an-ha-kind-cluster](kubernetes-issue-127105-a-failing-resource-sync-stalled-garbage-collection-of-other-resources-in-an-ha-kind-cluster.md).

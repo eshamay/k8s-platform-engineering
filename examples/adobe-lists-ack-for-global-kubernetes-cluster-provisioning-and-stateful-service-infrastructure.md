@@ -16,7 +16,7 @@ tags: [ack, adopters, adobe, self-reported]
 
 ## Scenario
 
-The AWS Controllers for Kubernetes community keeps an ADOPTERS file that calls itself "a self-reported list of users to help identify adoption and points of contact." Adobe is the first row the dossier read. [[sources/research-gap-g1-named-adopters]]
+The AWS Controllers for Kubernetes community keeps an ADOPTERS file that calls itself "a self-reported list of users to help identify adoption and points of contact." Adobe is the first row the dossier read. [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md)
 
 ## What the entry says
 
@@ -24,8 +24,8 @@ Adobe's use is described as "Global Kubernetes cluster provisioning, stateful se
 
 ## How to read it
 
-This is the first named production-style ACK adopter in the wiki that comes from ACK's own file. It also shows ACK used alongside several controllers at once, which matches the one-controller-per-AWS-service split described in [[entities/ack]].
+This is the first named production-style ACK adopter in the wiki that comes from ACK's own file. It also shows ACK used alongside several controllers at once, which matches the one-controller-per-AWS-service split described in [entities/ack](../entities/ack.md).
 
 ## Related
 
-[[entities/ack]], [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]]
+[entities/ack](../entities/ack.md), [comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso](../comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso.md)

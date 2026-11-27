@@ -16,7 +16,7 @@ tags: [cluster-api, webhooks, cert-manager, clusterctl, upgrade]
 
 ## Scenario
 
-On 2024-04-26 Cluster API maintainer chrischdi opened issue 10522 after a clusterctl upgrade test (v0.4 to v1.6) failed. [[sources/research-gap-g1-other-tool-pitfalls]] URL: https://github.com/kubernetes-sigs/cluster-api/issues/10522
+On 2024-04-26 Cluster API maintainer chrischdi opened issue 10522 after a clusterctl upgrade test (v0.4 to v1.6) failed. [sources/research-gap-g1-other-tool-pitfalls](../sources/research-gap-g1-other-tool-pitfalls.md) URL: https://github.com/kubernetes-sigs/cluster-api/issues/10522
 
 ## What happened
 
@@ -24,8 +24,8 @@ The test failed because "a validating webhook was not available due to x509 erro
 
 ## Status and limits
 
-The issue was open when read on 2026-11-26. It is a test failure from a maintainer and not a user outage, and later releases were not checked. See [[findings/cluster-api-webhooks-can-be-unreachable-for-up-to-90-seconds-during-cert-manager-certificate-rotation]].
+The issue was open when read on 2026-11-26. It is a test failure from a maintainer and not a user outage, and later releases were not checked. See [findings/cluster-api-webhooks-can-be-unreachable-for-up-to-90-seconds-during-cert-manager-certificate-rotation](../findings/cluster-api-webhooks-can-be-unreachable-for-up-to-90-seconds-during-cert-manager-certificate-rotation.md).
 
 ## Related
 
-[[entities/cluster-api]], [[entities/cert-manager]]
+[entities/cluster-api](../entities/cluster-api.md), [entities/cert-manager](../entities/cert-manager.md)

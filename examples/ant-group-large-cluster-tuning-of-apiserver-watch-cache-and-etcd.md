@@ -16,7 +16,7 @@ tags: [scale, etcd, apiserver, case-study]
 
 ## Scenario
 
-Ant Group engineers ran a Kubernetes cluster of more than 10,000 nodes and wrote up the apiserver and etcd bottlenecks they hit. The write-up is not about CRDs, but custom resources share the same storage and watch paths as built-in objects, so the same bottlenecks apply as custom resource counts grow. [[sources/research-custom-resource-definition]]
+Ant Group engineers ran a Kubernetes cluster of more than 10,000 nodes and wrote up the apiserver and etcd bottlenecks they hit. The write-up is not about CRDs, but custom resources share the same storage and watch paths as built-in objects, so the same bottlenecks apply as custom resource counts grow. [sources/research-custom-resource-definition](../sources/research-custom-resource-definition.md)
 
 ## What they did
 
@@ -24,4 +24,4 @@ The techniques described are serving list requests from the apiserver watch cach
 
 ## Lesson
 
-The dossier does not break out CRD counts from this case, so it is context for scale limits and not evidence about a specific CRD ceiling. The wiki's open question about authoritative CRD scale limits stays open. See [[findings/etcd-scale-limits-of-the-shared-store]], [[concepts/informers-reflectors-and-workqueues]], and [[concepts/custom-resource-definition]].
+The dossier does not break out CRD counts from this case, so it is context for scale limits and not evidence about a specific CRD ceiling. The wiki's open question about authoritative CRD scale limits stays open. See [findings/etcd-scale-limits-of-the-shared-store](../findings/etcd-scale-limits-of-the-shared-store.md), [concepts/informers-reflectors-and-workqueues](../concepts/informers-reflectors-and-workqueues.md), and [concepts/custom-resource-definition](../concepts/custom-resource-definition.md).

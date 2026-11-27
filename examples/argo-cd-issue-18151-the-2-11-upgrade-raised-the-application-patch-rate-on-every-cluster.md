@@ -16,7 +16,7 @@ tags: [argo-cd, reconcile-loop, patch-rate, upgrade, unexplained-cause]
 
 ## Scenario
 
-On 2024-05-09 a reporter, diranged, wrote that after upgrading to Argo CD 2.11 the application controller's PATCH rate to Application objects jumped across about 10 clusters. The reporter rolled back to 2.10.9 and reproduced the jump again on retry, and the issue was closed on 2024-08-01. [[sources/research-gap-g1-operator-loop-failures]] URL: https://github.com/argoproj/argo-cd/issues/18151
+On 2024-05-09 a reporter, diranged, wrote that after upgrading to Argo CD 2.11 the application controller's PATCH rate to Application objects jumped across about 10 clusters. The reporter rolled back to 2.10.9 and reproduced the jump again on retry, and the issue was closed on 2024-08-01. [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md) URL: https://github.com/argoproj/argo-cd/issues/18151
 
 ## What happened
 
@@ -28,4 +28,4 @@ It is a widely reproduced write storm with an unproven cause, which is a caution
 
 ## Related
 
-[[entities/argo-cd]], [[findings/self-triggered-reconcile-loops-generate-their-own-events]], [[findings/diff-is-not-apply-server-defaults-look-like-drift]]
+[entities/argo-cd](../entities/argo-cd.md), [findings/self-triggered-reconcile-loops-generate-their-own-events](../findings/self-triggered-reconcile-loops-generate-their-own-events.md), [findings/diff-is-not-apply-server-defaults-look-like-drift](../findings/diff-is-not-apply-server-defaults-look-like-drift.md)

@@ -16,7 +16,7 @@ tags: [use-case, controllers, built-in]
 
 ## Scenario
 
-The Kubernetes Controllers page explains the control loop with a thermostat and then uses the built-in Job controller as its worked example. It is the mechanical foundation that every operator copies. [[sources/research-operator-pattern]]
+The Kubernetes Controllers page explains the control loop with a thermostat and then uses the built-in Job controller as its worked example. It is the mechanical foundation that every operator copies. [sources/research-operator-pattern](../sources/research-operator-pattern.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ The Job controller watches Job objects. When it sees one that needs work, it cre
 
 ## Takeaway
 
-The page states that "each controller tries to move the current cluster state closer to the desired state" and prefers several small controllers over one monolith. See [[concepts/operator-pattern]], [[concepts/reconciliation-loop]], and [[decisions/one-controller-per-kind-or-one-multi-kind-controller]].
+The page states that "each controller tries to move the current cluster state closer to the desired state" and prefers several small controllers over one monolith. See [concepts/operator-pattern](../concepts/operator-pattern.md), [concepts/reconciliation-loop](../concepts/reconciliation-loop.md), and [decisions/one-controller-per-kind-or-one-multi-kind-controller](../decisions/one-controller-per-kind-or-one-multi-kind-controller.md).

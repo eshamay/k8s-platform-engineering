@@ -16,7 +16,7 @@ tags: [use-case, ack, config-connector, provider]
 
 ## Scenario
 
-Teams that already use Kubernetes want S3 buckets, databases, and IAM roles to follow the same RBAC, audit, and GitOps workflow as their Deployments. [[entities/ack]] on AWS and [[entities/config-connector]] on Google Cloud expose these services as custom resources. [[sources/research-universal-control-plane]]
+Teams that already use Kubernetes want S3 buckets, databases, and IAM roles to follow the same RBAC, audit, and GitOps workflow as their Deployments. [entities/ack](../entities/ack.md) on AWS and [entities/config-connector](../entities/config-connector.md) on Google Cloud expose these services as custom resources. [sources/research-universal-control-plane](../sources/research-universal-control-plane.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ Each cloud service is represented as a CRD, and a controller reconciles the obje
 
 ## What to watch
 
-Deleting the object can delete the real resource by default, and adoption by name can collide with existing infrastructure. See [[findings/destructive-deletion-of-external-resources]] and [[findings/immutable-fields-and-drift-collisions]]. The dossier names no end-user organizations running these tools at scale.
+Deleting the object can delete the real resource by default, and adoption by name can collide with existing infrastructure. See [findings/destructive-deletion-of-external-resources](../findings/destructive-deletion-of-external-resources.md) and [findings/immutable-fields-and-drift-collisions](../findings/immutable-fields-and-drift-collisions.md). The dossier names no end-user organizations running these tools at scale.

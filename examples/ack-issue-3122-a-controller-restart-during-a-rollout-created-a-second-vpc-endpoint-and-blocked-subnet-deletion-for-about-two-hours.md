@@ -19,7 +19,7 @@ tags: [ack, ec2-controller, duplicate-resource, client-token, leader-election, i
 
 ## Scenario
 
-On 2026-10-31 sapphirew opened ACK community issue 3122 about a CI run for ec2-controller pull request 398, a build dated 2026-10-30. The controller was updated by a Deployment rollout (RollingUpdate) with leader election disabled. [[sources/research-gap-g1-leaked-resources-adoption]] URL: https://github.com/aws-controllers-k8s/community/issues/3122
+On 2026-10-31 sapphirew opened ACK community issue 3122 about a CI run for ec2-controller pull request 398, a build dated 2026-10-30. The controller was updated by a Deployment rollout (RollingUpdate) with leader election disabled. [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md) URL: https://github.com/aws-controllers-k8s/community/issues/3122
 
 ## What happened
 
@@ -31,16 +31,16 @@ The issue says the old pod's create cannot be seen directly, because Prow keeps 
 
 ## Maintainer response
 
-Maintainer knottnt cautioned on 2026-11-03 that a stable token can break re-creation after an out-of-band deletion, and suggested turning leader election on by default and using the Recreate deployment strategy. See [[decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout]].
+Maintainer knottnt cautioned on 2026-11-03 that a stable token can break re-creation after an out-of-band deletion, and suggested turning leader election on by default and using the Recreate deployment strategy. See [decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout](../decisions/make-an-ack-create-retry-safe-with-a-stable-client-token-leader-election-or-a-recreate-rollout.md).
 
 ## Why it belongs here
 
-It is the best timestamped reproduction in the dossier of a duplicate cloud resource from a lost create result, and the figures are the issue author's CI observation. The wider audit is in [[findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource]], and the mechanism is the one in [[concepts/idempotency]] and [[examples/ec2-client-token-makes-a-retried-runinstances-call-safe]].
+It is the best timestamped reproduction in the dossier of a duplicate cloud resource from a lost create result, and the figures are the issue author's CI observation. The wider audit is in [findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource](../findings/an-ack-audit-found-48-resources-in-22-controllers-where-a-lost-create-response-duplicates-the-resource-or-wedges-the-custom-resource.md), and the mechanism is the one in [concepts/idempotency](../concepts/idempotency.md) and [examples/ec2-client-token-makes-a-retried-runinstances-call-safe](ec2-client-token-makes-a-retried-runinstances-call-safe.md).
 
 ## Related
 
-[[entities/ack]], [[findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource]], [[findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent]]
+[entities/ack](../entities/ack.md), [findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource](../findings/a-create-that-succeeds-while-the-status-write-fails-can-leak-an-external-resource.md), [findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent](../findings/blind-retries-duplicate-side-effects-when-the-cloud-api-is-not-idempotent.md)
 
 ## Seen again in the other-tool pitfalls dossier
 
-The 2026-11-26 other-tool pitfalls dossier re-read issue 3122 and confirmed the reporter (sapphirew, not gecube), the 2026-10-31 filing date, the 2026-10-30 CI run, and that the evidence is specific to `CreateVpcEndpoint`, with the title's "Create calls" generalizing. See [[findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource]] for the ownership issue filed separately. [[sources/research-gap-g1-other-tool-pitfalls]]
+The 2026-11-26 other-tool pitfalls dossier re-read issue 3122 and confirmed the reporter (sapphirew, not gecube), the 2026-10-31 filing date, the 2026-10-30 CI run, and that the evidence is specific to `CreateVpcEndpoint`, with the title's "Create calls" generalizing. See [findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource](../findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource.md) for the ownership issue filed separately. [sources/research-gap-g1-other-tool-pitfalls](../sources/research-gap-g1-other-tool-pitfalls.md)

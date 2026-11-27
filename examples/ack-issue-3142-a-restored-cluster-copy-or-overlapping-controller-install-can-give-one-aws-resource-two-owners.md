@@ -16,7 +16,7 @@ tags: [ack, ownership, deletion, restore, gecube]
 
 ## Scenario
 
-On 2026-11-09 gecube opened ACK community issue 3142 as part of a batch of ACK issues. It asks what stops two controllers from managing one AWS resource. [[sources/research-gap-g1-other-tool-pitfalls]] URL: https://github.com/aws-controllers-k8s/community/issues/3142
+On 2026-11-09 gecube opened ACK community issue 3142 as part of a batch of ACK issues. It asks what stops two controllers from managing one AWS resource. [sources/research-gap-g1-other-tool-pitfalls](../sources/research-gap-g1-other-tool-pitfalls.md) URL: https://github.com/aws-controllers-k8s/community/issues/3142
 
 ## What the reporter says
 
@@ -24,8 +24,8 @@ ACK records ownership only in the CR status, and nothing in AWS names an owner. 
 
 ## Status and limits
 
-Open when read. The batch is one reporter's audit, so it is not independent corroboration, and no incident with real impact is attached. See [[findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource]] and [[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]].
+Open when read. The batch is one reporter's audit, so it is not independent corroboration, and no incident with real impact is attached. See [findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource](../findings/ack-records-ownership-only-in-custom-resource-status-so-overlapping-controllers-or-a-restored-copy-can-share-one-aws-resource.md) and [findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource](../findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource.md).
 
 ## Related
 
-[[entities/ack]], [[examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name]]
+[entities/ack](../entities/ack.md), [examples/ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name](ack-issue-3067-a-gitops-bootstrap-across-two-clusters-left-one-duplicate-route-53-hosted-zone-per-name.md)

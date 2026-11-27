@@ -16,7 +16,7 @@ tags: [argo-cd, crd, server-side-apply, helm]
 
 ## Scenario
 
-A team installs Argo CD through its helm chart and syncs the chart with client-side apply. The generated schema of the ApplicationSets CRD has grown so large that the install fails. [[sources/research-custom-resource-definition]]
+A team installs Argo CD through its helm chart and syncs the chart with client-side apply. The generated schema of the ApplicationSets CRD has grown so large that the install fails. [sources/research-custom-resource-definition](../sources/research-custom-resource-definition.md)
 
 ## What happened
 
@@ -28,4 +28,4 @@ The issue lists two workarounds: set the `ServerSideApply=true` sync option, and
 
 ## Lesson
 
-Large generated CRDs and delivery tools that rely on client-side apply collide, and the fix is a different apply mechanism rather than a smaller CRD. See [[findings/large-crds-exceed-the-client-side-apply-annotation-limit]], [[concepts/server-side-apply-and-field-ownership]], and [[entities/argo-cd]].
+Large generated CRDs and delivery tools that rely on client-side apply collide, and the fix is a different apply mechanism rather than a smaller CRD. See [findings/large-crds-exceed-the-client-side-apply-annotation-limit](../findings/large-crds-exceed-the-client-side-apply-annotation-limit.md), [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md), and [entities/argo-cd](../entities/argo-cd.md).

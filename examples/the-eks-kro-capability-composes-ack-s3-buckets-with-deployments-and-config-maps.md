@@ -22,7 +22,7 @@ tags: [kro, ack, eks, aws, resource-graph]
 
 ## Scenario
 
-AWS documents kro as a managed capability of Amazon EKS and walks through a beginner example, a `WebApplication` API whose ResourceGraphDefinition produces a Deployment and a Service. Its main use-case section goes further and composes ACK S3 Buckets with ConfigMaps and Deployments. [[sources/research-composite-resource]]
+AWS documents kro as a managed capability of Amazon EKS and walks through a beginner example, a `WebApplication` API whose ResourceGraphDefinition produces a Deployment and a Service. Its main use-case section goes further and composes ACK S3 Buckets with ConfigMaps and Deployments. [sources/research-composite-resource](../sources/research-composite-resource.md)
 
 ## How it works
 
@@ -32,12 +32,12 @@ The guide stresses a timing property: "kro validates ResourceGraphDefinitions at
 
 ## Why the example matters
 
-It is evidence that a hyperscaler productized kro and pairs it with ACK, which fills the role of leaf provider while kro supplies the composite layer. It also shows the status-to-spec wiring that gives a resource graph its ordering. The project itself still reports a `v1alpha1` API, so a managed offering does not settle maturity, see [[findings/immature-abstractions-in-the-control-plane-ecosystem]]. For the same pattern on Google Cloud see [[examples/self-service-gke-cluster-with-kro]], and for the tools see [[entities/kro]] and [[entities/ack]].
+It is evidence that a hyperscaler productized kro and pairs it with ACK, which fills the role of leaf provider while kro supplies the composite layer. It also shows the status-to-spec wiring that gives a resource graph its ordering. The project itself still reports a `v1alpha1` API, so a managed offering does not settle maturity, see [findings/immature-abstractions-in-the-control-plane-ecosystem](../findings/immature-abstractions-in-the-control-plane-ecosystem.md). For the same pattern on Google Cloud see [examples/self-service-gke-cluster-with-kro](self-service-gke-cluster-with-kro.md), and for the tools see [entities/kro](../entities/kro.md) and [entities/ack](../entities/ack.md).
 
 ## First-party ACK view of the same pattern (o3 dossier)
 
-The ACK documentation's own kro guide composes an S3 Bucket, a DynamoDB Table, and a Deployment and states the readiness and deletion ordering, see [[examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources]]. [[sources/research-gap-o3-gitops-provider-managed]]
+The ACK documentation's own kro guide composes an S3 Bucket, a DynamoDB Table, and a Deployment and states the readiness and deletion ordering, see [examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources](the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources.md). [sources/research-gap-o3-gitops-provider-managed](../sources/research-gap-o3-gitops-provider-managed.md)
 
 ## The EKS overview page that precedes this example
 
-AWS also publishes a short overview page, "Resource composition with kro", which introduces the managed capability, shows the `WebApplication` RGD that produces a Deployment and a Service, and describes how to enable the capability through the console, CLI, or an infrastructure-as-code tool. It names ACK and Argo CD as the two integrations with other managed capabilities. The ACK S3 composition in this example comes from the longer AWS guide, and the overview page does not repeat it. [[sources/resource-composition-with-kro]]
+AWS also publishes a short overview page, "Resource composition with kro", which introduces the managed capability, shows the `WebApplication` RGD that produces a Deployment and a Service, and describes how to enable the capability through the console, CLI, or an infrastructure-as-code tool. It names ACK and Argo CD as the two integrations with other managed capabilities. The ACK S3 composition in this example comes from the longer AWS guide, and the overview page does not repeat it. [sources/resource-composition-with-kro](../sources/resource-composition-with-kro.md)

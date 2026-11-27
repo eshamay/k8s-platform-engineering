@@ -16,7 +16,7 @@ tags: [ack, route53, duplicate-resource, gitops, bootstrap, adoption]
 
 ## Scenario
 
-On 2026-10-01 shrinedogg opened ACK community issue 3067. The reporter ran the ACK controller on a throwaway cluster during a GitOps bootstrap and then on the durable management cluster. The second cluster started with empty status for the same manifests. [[sources/research-gap-g1-leaked-resources-adoption]] URL: https://github.com/aws-controllers-k8s/community/issues/3067
+On 2026-10-01 shrinedogg opened ACK community issue 3067. The reporter ran the ACK controller on a throwaway cluster during a GitOps bootstrap and then on the durable management cluster. The second cluster started with empty status for the same manifests. [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md) URL: https://github.com/aws-controllers-k8s/community/issues/3067
 
 ## What happened
 
@@ -28,8 +28,8 @@ Maintainer knottnt asked whether ACK should enforce a constraint the service its
 
 ## Why it belongs here
 
-Here the lost state is not a crashed reconcile but a second cluster with empty status. A create that is only guarded by the custom resource's own status cannot see what another controller already made, which links this case to the ownership-tag proposal in [[findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource]].
+Here the lost state is not a crashed reconcile but a second cluster with empty status. A create that is only guarded by the custom resource's own status cannot see what another controller already made, which links this case to the ownership-tag proposal in [findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource](../findings/ack-adopt-or-create-removes-the-only-guard-against-two-custom-resources-owning-one-aws-resource.md).
 
 ## Related
 
-[[entities/ack]], [[decisions/adopt-or-create-or-require-explicit-import]], [[concepts/gitops-pull-based-delivery]]
+[entities/ack](../entities/ack.md), [decisions/adopt-or-create-or-require-explicit-import](../decisions/adopt-or-create-or-require-explicit-import.md), [concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md)

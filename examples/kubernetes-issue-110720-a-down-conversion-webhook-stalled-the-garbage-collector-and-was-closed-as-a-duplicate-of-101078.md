@@ -16,12 +16,12 @@ tags: [garbage-collection, conversion-webhook, crd, issue, verified]
 
 ## Scenario
 
-Issue 110720 was closed on 2022-06-24 as a duplicate of 101078 by maintainer liggitt, whose recommendation was that the collector stop blocking on discovery or informer sync, because "the only reason we block until discovered resources have synced is for blockOwnerDeletion", which is already advisory and racy. https://github.com/kubernetes/kubernetes/issues/110720 [[sources/research-gap-m6-admission-crds]]
+Issue 110720 was closed on 2022-06-24 as a duplicate of 101078 by maintainer liggitt, whose recommendation was that the collector stop blocking on discovery or informer sync, because "the only reason we block until discovered resources have synced is for blockOwnerDeletion", which is already advisory and racy. https://github.com/kubernetes/kubernetes/issues/110720 [sources/research-gap-m6-admission-crds](../sources/research-gap-m6-admission-crds.md)
 
 ## Reliability
 
-VERIFIED. The fix arrived two years later, in [[examples/kubernetes-pull-request-125796-let-the-garbage-collector-proceed-after-a-failed-cache-sync-and-closed-issue-101078-in-v1-32]].
+VERIFIED. The fix arrived two years later, in [examples/kubernetes-pull-request-125796-let-the-garbage-collector-proceed-after-a-failed-cache-sync-and-closed-issue-101078-in-v1-32](kubernetes-pull-request-125796-let-the-garbage-collector-proceed-after-a-failed-cache-sync-and-closed-issue-101078-in-v1-32.md).
 
 ## Related
 
-[[findings/a-down-conversion-webhook-can-stall-garbage-collection]] and [[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]].
+[findings/a-down-conversion-webhook-can-stall-garbage-collection](../findings/a-down-conversion-webhook-can-stall-garbage-collection.md) and [findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type](../findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type.md).

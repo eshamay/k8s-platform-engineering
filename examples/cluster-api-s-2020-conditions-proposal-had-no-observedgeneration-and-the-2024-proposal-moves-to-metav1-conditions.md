@@ -16,7 +16,7 @@ tags: [cluster-api, conditions, observedgeneration, polarity, proposals]
 
 ## Scenario
 
-Cluster API defined its own condition type in a May 2020 proposal and replaced it in a 2024 proposal. The two documents show how the project's position on both `observedGeneration` placement and polarity changed. [[sources/research-gap-m3-status-conditions]]
+Cluster API defined its own condition type in a May 2020 proposal and replaced it in a 2024 proposal. The two documents show how the project's position on both `observedGeneration` placement and polarity changed. [sources/research-gap-m3-status-conditions](../sources/research-gap-m3-status-conditions.md)
 
 ## How it works
 
@@ -26,4 +26,4 @@ The 2024 proposal (`20240916-improve-status-in-CAPI-resources.md`, created 2024-
 
 ## Lesson
 
-Cluster API moved from no generation marker to the per-condition marker of `metav1.Condition`, which a kstatus-style tool does not read. This is the context for the readiness question in [[examples/cluster-api-adds-available-and-operation-conditions-beside-ready]] and [[findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled]]. See [[entities/cluster-api]] and [[comparisons/observedgeneration-top-level-versus-per-condition]].
+Cluster API moved from no generation marker to the per-condition marker of `metav1.Condition`, which a kstatus-style tool does not read. This is the context for the readiness question in [examples/cluster-api-adds-available-and-operation-conditions-beside-ready](cluster-api-adds-available-and-operation-conditions-beside-ready.md) and [findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled](../findings/kstatus-treats-an-unknown-kind-without-a-ready-condition-as-always-reconciled.md). See [entities/cluster-api](../entities/cluster-api.md) and [comparisons/observedgeneration-top-level-versus-per-condition](../comparisons/observedgeneration-top-level-versus-per-condition.md).

@@ -16,7 +16,7 @@ tags: [gvk, kubebuilder, scaffolding]
 
 ## Scenario
 
-A project composes external APIs while scaffolding with Kubebuilder. Two external resources can share the same Group, Version, and Kind under different domains, so the Group, Version, and Kind alone do not identify one type. [[sources/research-gvk-and-gvr]]
+A project composes external APIs while scaffolding with Kubebuilder. Two external resources can share the same Group, Version, and Kind under different domains, so the Group, Version, and Kind alone do not identify one type. [sources/research-gvk-and-gvr](../sources/research-gvk-and-gvr.md)
 
 ## The proposal
 
@@ -24,4 +24,4 @@ Kubebuilder issue 5872, opened on 2026-07-14, proposes that the tool error on an
 
 ## Lesson
 
-GVK is a strong identifier inside one cluster, but it is not always a unique key in tooling that works across API domains. The safe response in the proposal is to fail and ask for explicit input. See [[entities/kubebuilder]] and [[concepts/gvk-and-gvr]].
+GVK is a strong identifier inside one cluster, but it is not always a unique key in tooling that works across API domains. The safe response in the proposal is to fail and ask for explicit input. See [entities/kubebuilder](../entities/kubebuilder.md) and [concepts/gvk-and-gvr](../concepts/gvk-and-gvr.md).

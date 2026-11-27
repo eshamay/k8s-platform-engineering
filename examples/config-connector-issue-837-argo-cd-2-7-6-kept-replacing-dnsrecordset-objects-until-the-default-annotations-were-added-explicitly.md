@@ -16,7 +16,7 @@ tags: [config-connector, argo-cd, drift, annotations, state-into-spec]
 
 ## Scenario
 
-Config Connector issue 837 was opened on 2023-07-14 by a user (peter-tar) running Argo CD 2.7.6 and is still open with four comments. Argo CD repeatedly "replaced" KCC DNSRecordSet objects and failed with an immutable-field error. URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/837. [[sources/research-gap-o3-gitops-provider-managed]]
+Config Connector issue 837 was opened on 2023-07-14 by a user (peter-tar) running Argo CD 2.7.6 and is still open with four comments. Argo CD repeatedly "replaced" KCC DNSRecordSet objects and failed with an immutable-field error. URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/837. [sources/research-gap-o3-gitops-provider-managed](../sources/research-gap-o3-gitops-provider-managed.md)
 
 ## What was said
 
@@ -24,8 +24,8 @@ A Google-affiliated contributor (diviner524) explained, "Config Connector will u
 
 ## Evidence limits
 
-This is SECONDARY-ONLY: a tracker report that no maintainer confirmed as a defect, and the page does not say whether the same behavior occurs on current Config Connector and Argo CD versions. It fits the drift mechanism in [[findings/config-connector-state-into-spec-merge-populates-unspecified-fields-that-argo-cd-and-config-sync-treat-as-drift-and-absent-is-the-default-from-1-123-1]], where the controller writes fields that Git does not hold.
+This is SECONDARY-ONLY: a tracker report that no maintainer confirmed as a defect, and the page does not say whether the same behavior occurs on current Config Connector and Argo CD versions. It fits the drift mechanism in [findings/config-connector-state-into-spec-merge-populates-unspecified-fields-that-argo-cd-and-config-sync-treat-as-drift-and-absent-is-the-default-from-1-123-1](../findings/config-connector-state-into-spec-merge-populates-unspecified-fields-that-argo-cd-and-config-sync-treat-as-drift-and-absent-is-the-default-from-1-123-1.md), where the controller writes fields that Git does not hold.
 
 ## Related
 
-[[entities/config-connector]], [[entities/argo-cd]], [[findings/defaulting-and-drift-reconcile-loops]]
+[entities/config-connector](../entities/config-connector.md), [entities/argo-cd](../entities/argo-cd.md), [findings/defaulting-and-drift-reconcile-loops](../findings/defaulting-and-drift-reconcile-loops.md)

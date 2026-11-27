@@ -16,7 +16,7 @@ tags: [server-side-apply, hpa, gitops, conflict]
 
 ## Scenario
 
-A repository says a Deployment should have 3 replicas, and a horizontal pod autoscaler has since set `replicas` to 10 to absorb load. A CD system now applies the repository's manifest. [[sources/research-server-side-apply-and-field-ownership]]
+A repository says a Deployment should have 3 replicas, and a horizontal pod autoscaler has since set `replicas` to 10 to absorb load. A CD system now applies the repository's manifest. [sources/research-server-side-apply-and-field-ownership](../sources/research-server-side-apply-and-field-ownership.md)
 
 ## What happened
 
@@ -28,4 +28,4 @@ The post notes a possible future in which tools parse `managedFields` to decide 
 
 ## Lesson
 
-The example shows why a blanket force is dangerous when a second controller legitimately owns a field. See [[decisions/force-conflicts-or-surface-them-to-humans]], [[findings/controllers-fighting-over-fields-cause-revert-loops]], and [[concepts/server-side-apply-and-field-ownership]].
+The example shows why a blanket force is dangerous when a second controller legitimately owns a field. See [decisions/force-conflicts-or-surface-them-to-humans](../decisions/force-conflicts-or-surface-them-to-humans.md), [findings/controllers-fighting-over-fields-cause-revert-loops](../findings/controllers-fighting-over-fields-cause-revert-loops.md), and [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md).

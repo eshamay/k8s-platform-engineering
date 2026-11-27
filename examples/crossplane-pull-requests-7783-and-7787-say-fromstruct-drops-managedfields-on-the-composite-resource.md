@@ -16,7 +16,7 @@ tags: [crossplane, server-side-apply, managedfields, pull-request, issue-7453]
 
 ## Context
 
-Issue 7453 (opened 2026-05-31, Crossplane v2.3.1 with function-go-templating) reports that a field an external controller applied to a composite resource with force-conflicts disappeared within about 100 milliseconds, and that `metadata.managedFields` was empty (`[]`). It is open with the labels `bug` and `stale`, and its only maintainer comment (2026-08-27) says "I couldn't reproduce this just now on v2.3.1". See [[examples/crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource]]. [[sources/research-gap-b1-recheck-kro-crossplane]] URL: https://github.com/crossplane/crossplane/issues/7453
+Issue 7453 (opened 2026-05-31, Crossplane v2.3.1 with function-go-templating) reports that a field an external controller applied to a composite resource with force-conflicts disappeared within about 100 milliseconds, and that `metadata.managedFields` was empty (`[]`). It is open with the labels `bug` and `stale`, and its only maintainer comment (2026-08-27) says "I couldn't reproduce this just now on v2.3.1". See [examples/crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource](crossplane-issue-7453-reports-an-external-ssa-writer-losing-a-field-on-a-composite-resource.md). [sources/research-gap-b1-recheck-kro-crossplane](../sources/research-gap-b1-recheck-kro-crossplane.md) URL: https://github.com/crossplane/crossplane/issues/7453
 
 ## What happened
 
@@ -26,4 +26,4 @@ The v2.5.0 source does apply the XR status by replacing the XR content with the 
 
 ## Lesson
 
-The state is "reported, not reproduced by a maintainer, open", and the source reading is inconclusive and not a refutation. No cluster was run, so whether the bug is real is unverified. The existence of two competing open pull requests shows that contributors consider the `FromStruct` path suspect, which is evidence about their belief and not about the behavior. See [[findings/managedfields-are-hidden-from-kubectl-output-by-default]], [[concepts/server-side-apply-and-field-ownership]], and [[entities/crossplane]].
+The state is "reported, not reproduced by a maintainer, open", and the source reading is inconclusive and not a refutation. No cluster was run, so whether the bug is real is unverified. The existence of two competing open pull requests shows that contributors consider the `FromStruct` path suspect, which is evidence about their belief and not about the behavior. See [findings/managedfields-are-hidden-from-kubectl-output-by-default](../findings/managedfields-are-hidden-from-kubectl-output-by-default.md), [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md), and [entities/crossplane](../entities/crossplane.md).

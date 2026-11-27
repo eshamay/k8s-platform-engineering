@@ -16,7 +16,7 @@ tags: [argo-cd, health, lua, status]
 
 ## Scenario
 
-Argo CD must report one health value for an application that may contain Deployments, custom resources, and many other kinds. It cannot do that from `spec`, so it reads each child's `status`. [[sources/research-spec-status-split]]
+Argo CD must report one health value for an application that may contain Deployments, custom resources, and many other kinds. It cannot do that from `spec`, so it reads each child's `status`. [sources/research-spec-status-split](../sources/research-spec-status-split.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ Argo CD ships built-in health checks for core types. For CRDs it runs Lua script
 
 ## Lesson
 
-A tool that does not understand the status shape of a kind cannot gate ordering on it. The cost of unstandardized status is paid as per-kind code in every consumer. See [[entities/argo-cd]], [[findings/generic-gitops-agents-cannot-judge-custom-resource-health]], [[examples/crossplane-resources-hosted-by-argo-cd]], and [[comparisons/health-and-readiness-models-across-tools]].
+A tool that does not understand the status shape of a kind cannot gate ordering on it. The cost of unstandardized status is paid as per-kind code in every consumer. See [entities/argo-cd](../entities/argo-cd.md), [findings/generic-gitops-agents-cannot-judge-custom-resource-health](../findings/generic-gitops-agents-cannot-judge-custom-resource-health.md), [examples/crossplane-resources-hosted-by-argo-cd](crossplane-resources-hosted-by-argo-cd.md), and [comparisons/health-and-readiness-models-across-tools](../comparisons/health-and-readiness-models-across-tools.md).

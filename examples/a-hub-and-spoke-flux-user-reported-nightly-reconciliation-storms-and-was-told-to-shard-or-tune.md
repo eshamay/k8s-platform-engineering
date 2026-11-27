@@ -16,7 +16,7 @@ tags: [flux, hub-and-spoke, sharding, reconciliation-storm, issue-report]
 
 ## Scenario
 
-On 2025-08-05 an anonymous user opened flux2 issue 5470 describing a hub-and-spoke setup in which many changes merged during nightly deploy windows caused reconciliation storms. [[sources/research-gap-g1-named-adopters]] URL: https://github.com/fluxcd/flux2/issues/5470.
+On 2025-08-05 an anonymous user opened flux2 issue 5470 describing a hub-and-spoke setup in which many changes merged during nightly deploy windows caused reconciliation storms. [sources/research-gap-g1-named-adopters](../sources/research-gap-g1-named-adopters.md) URL: https://github.com/fluxcd/flux2/issues/5470.
 
 ## Maintainer advice
 
@@ -24,8 +24,8 @@ A maintainer suggested several options, including "use sharding to spread out th
 
 ## Why it belongs here
 
-It is a second issue-level case, after [[examples/an-unnamed-user-with-300-namespaces-saw-5-minute-delays-and-a-flux-maintainer-cited-1k-kustomizations-in-about-3-minutes]], where sharding is recommended to a real user without a named organization. No published incident connects these storms to API Priority and Fairness, so the dossier leaves that part of the gap unanswered.
+It is a second issue-level case, after [examples/an-unnamed-user-with-300-namespaces-saw-5-minute-delays-and-a-flux-maintainer-cited-1k-kustomizations-in-about-3-minutes](an-unnamed-user-with-300-namespaces-saw-5-minute-delays-and-a-flux-maintainer-cited-1k-kustomizations-in-about-3-minutes.md), where sharding is recommended to a real user without a named organization. No published incident connects these storms to API Priority and Fairness, so the dossier leaves that part of the gap unanswered.
 
 ## Related
 
-[[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]], [[entities/flux]], [[findings/client-side-throttling-and-server-side-apf-are-separate-layers]]
+[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances](flux-sharding-splits-reconciliation-across-label-selected-controller-instances.md), [entities/flux](../entities/flux.md), [findings/client-side-throttling-and-server-side-apf-are-separate-layers](../findings/client-side-throttling-and-server-side-apf-are-separate-layers.md)

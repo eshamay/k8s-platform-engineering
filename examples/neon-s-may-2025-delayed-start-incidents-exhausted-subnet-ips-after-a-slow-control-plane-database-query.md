@@ -16,7 +16,7 @@ tags: [postmortem, neon, aws-cni, ip-exhaustion, control-plane, 2025]
 
 ## Scenario
 
-Neon runs database compute pods on Kubernetes in AWS us-east-1. On 2025-05-16 and 2025-05-19 it had two incidents in which customers could not create or start inactive databases, for a total of 5.5 hours. Neon published the postmortem on 2025-05-21 at https://neon.com/blog/postmortem-delayed-start-compute-operations, and the figures are self-reported. The cause was in Neon's own control plane, which is a platform layered on Kubernetes, and not in the Kubernetes control plane. [[sources/research-gap-g1-outage-postmortems]]
+Neon runs database compute pods on Kubernetes in AWS us-east-1. On 2025-05-16 and 2025-05-19 it had two incidents in which customers could not create or start inactive databases, for a total of 5.5 hours. Neon published the postmortem on 2025-05-21 at https://neon.com/blog/postmortem-delayed-start-compute-operations, and the figures are self-reported. The cause was in Neon's own control plane, which is a platform layered on Kubernetes, and not in the Kubernetes control plane. [sources/research-gap-g1-outage-postmortems](../sources/research-gap-g1-outage-postmortems.md)
 
 ## What happened
 
@@ -26,4 +26,4 @@ For mitigation, Neon set the AWS CNI `WARM_IP_TARGET` to 1, which released some 
 
 ## Why it belongs here
 
-This is a 2025 incident with a primary write-up, so it is the recent platform evidence the wiki lacked. It differs from the OpenAI case in [[examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane]] because the failing layer is a platform control plane whose backing database slowed down, and the Kubernetes API was not the bottleneck. See [[findings/a-slow-control-plane-database-stopped-pod-suspension-and-exhausted-subnet-ips-and-a-cni-setting-change-caused-a-second-outage]] and [[concepts/pitfalls-and-case-studies]].
+This is a 2025 incident with a primary write-up, so it is the recent platform evidence the wiki lacked. It differs from the OpenAI case in [examples/an-openai-outage-shows-many-api-clients-can-overload-the-control-plane](an-openai-outage-shows-many-api-clients-can-overload-the-control-plane.md) because the failing layer is a platform control plane whose backing database slowed down, and the Kubernetes API was not the bottleneck. See [findings/a-slow-control-plane-database-stopped-pod-suspension-and-exhausted-subnet-ips-and-a-cni-setting-change-caused-a-second-outage](../findings/a-slow-control-plane-database-stopped-pod-suspension-and-exhausted-subnet-ips-and-a-cni-setting-change-caused-a-second-outage.md) and [concepts/pitfalls-and-case-studies](../concepts/pitfalls-and-case-studies.md).

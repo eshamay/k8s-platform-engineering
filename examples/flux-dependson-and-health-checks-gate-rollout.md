@@ -16,7 +16,7 @@ tags: [flux, gitops, ordering, health-checks]
 
 ## Scenario
 
-A platform team commits manifests to Git and Flux applies them. Some Kustomizations depend on others, for example workloads that need a CRD or an operator to exist first. The dossier describes how Flux layers explicit ordering on top of an eventually consistent cluster. [[sources/research-eventual-consistency-and-convergence]]
+A platform team commits manifests to Git and Flux applies them. Some Kustomizations depend on others, for example workloads that need a CRD or an operator to exist first. The dossier describes how Flux layers explicit ordering on top of an eventually consistent cluster. [sources/research-eventual-consistency-and-convergence](../sources/research-eventual-consistency-and-convergence.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ A Kustomization re-reconciles at `spec.interval` with a 60-second minimum, and i
 
 ## Lesson
 
-Flux does not abandon eventual consistency to get ordering. It adds health-gated dependencies so that the retry-until-ready behavior happens in a controlled order instead of as a burst of transient errors. See [[entities/flux]], [[findings/ordering-and-dependency-failures]], [[comparisons/ordering-models-flux-argo-cd-kro-crossplane]], and [[examples/gitops-reverts-a-hand-edited-deployment]].
+Flux does not abandon eventual consistency to get ordering. It adds health-gated dependencies so that the retry-until-ready behavior happens in a controlled order instead of as a burst of transient errors. See [entities/flux](../entities/flux.md), [findings/ordering-and-dependency-failures](../findings/ordering-and-dependency-failures.md), [comparisons/ordering-models-flux-argo-cd-kro-crossplane](../comparisons/ordering-models-flux-argo-cd-kro-crossplane.md), and [examples/gitops-reverts-a-hand-edited-deployment](gitops-reverts-a-hand-edited-deployment.md).

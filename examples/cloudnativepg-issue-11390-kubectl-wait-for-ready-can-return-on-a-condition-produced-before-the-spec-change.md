@@ -16,7 +16,7 @@ tags: [cloudnativepg, observedgeneration, readiness, kubectl-wait, status]
 
 ## Scenario
 
-On 2026-09-01 a reporter, GellertBabel, filed issue 11390 against CloudNativePG 1.30.0, using a kind cluster on Kubernetes 1.36. The issue was open when the dossier read it, so no fix is known. [[sources/research-gap-g1-operator-loop-failures]] URL: https://github.com/cloudnative-pg/cloudnative-pg/issues/11390
+On 2026-09-01 a reporter, GellertBabel, filed issue 11390 against CloudNativePG 1.30.0, using a kind cluster on Kubernetes 1.36. The issue was open when the dossier read it, so no fix is known. [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md) URL: https://github.com/cloudnative-pg/cloudnative-pg/issues/11390
 
 ## What happened
 
@@ -24,8 +24,8 @@ After patching `spec.instances`, `kubectl wait --for=condition=Ready` returned i
 
 ## Why it belongs here
 
-It shows the consumer side of a missing `observedGeneration`: scripts and CI that gate on a Ready condition cannot be made reliable without the field. See [[findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed]].
+It shows the consumer side of a missing `observedGeneration`: scripts and CI that gate on a Ready condition cannot be made reliable without the field. See [findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed](../findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed.md).
 
 ## Related
 
-[[findings/missing-observedgeneration-hides-stale-status]], [[concepts/conditions]], [[concepts/spec-status-split]]
+[findings/missing-observedgeneration-hides-stale-status](../findings/missing-observedgeneration-hides-stale-status.md), [concepts/conditions](../concepts/conditions.md), [concepts/spec-status-split](../concepts/spec-status-split.md)

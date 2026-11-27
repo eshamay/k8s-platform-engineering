@@ -16,7 +16,7 @@ tags: [cert-manager, webhooks, conversion, tls]
 
 ## Scenario
 
-cert-manager is an operator that ships its own CRDs, so it needs the full set of API-server extension points for them: validating bad objects, filling defaults, and converting between API versions. It is the best documented example in the dossier of an operator using all three webhook roles. [[sources/research-admission-webhooks-and-cel]]
+cert-manager is an operator that ships its own CRDs, so it needs the full set of API-server extension points for them: validating bad objects, filling defaults, and converting between API versions. It is the best documented example in the dossier of an operator using all three webhook roles. [sources/research-admission-webhooks-and-cel](../sources/research-admission-webhooks-and-cel.md)
 
 ## How it works
 
@@ -24,8 +24,8 @@ The cert-manager webhook page describes one webhook component that handles valid
 
 ## Lesson
 
-The same page lists the failure modes seen in practice: API server to webhook connectivity on GKE private clusters and on EKS with custom CNIs, and an initial unavailability after install while the webhook waits for leader election, certificate generation, and CA bundle injection. These are the costs that in-process CEL avoids for validation, and they remain for conversion, where CEL has no equivalent in the sources. See [[findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window]] and [[entities/cert-manager]].
+The same page lists the failure modes seen in practice: API server to webhook connectivity on GKE private clusters and on EKS with custom CNIs, and an initial unavailability after install while the webhook waits for leader election, certificate generation, and CA bundle injection. These are the costs that in-process CEL avoids for validation, and they remain for conversion, where CEL has no equivalent in the sources. See [findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window](../findings/webhook-tls-and-network-bootstrap-leaves-an-unready-window.md) and [entities/cert-manager](../entities/cert-manager.md).
 
 ## Related
 
-[[concepts/admission-webhooks-and-cel]], [[concepts/crd-versioning-and-storage-migration]], [[findings/a-down-conversion-webhook-can-stall-garbage-collection]], and [[examples/kubebuilder-operator-scaffolds-defaulting-and-validating-webhooks]].
+[concepts/admission-webhooks-and-cel](../concepts/admission-webhooks-and-cel.md), [concepts/crd-versioning-and-storage-migration](../concepts/crd-versioning-and-storage-migration.md), [findings/a-down-conversion-webhook-can-stall-garbage-collection](../findings/a-down-conversion-webhook-can-stall-garbage-collection.md), and [examples/kubebuilder-operator-scaffolds-defaulting-and-validating-webhooks](kubebuilder-operator-scaffolds-defaulting-and-validating-webhooks.md).

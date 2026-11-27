@@ -16,12 +16,12 @@ tags: [ack, flux, server-side-apply, references, ecs]
 
 ## Scenario
 
-ACK community issue 2361 was opened on 2025-02-26 and is open. A user of Flux reports that the ACK controller rewrites reference fields into the custom resource, and that Flux server-side apply "updates these references back to match the Git repository state." The ACK controller then diffs changed desired state against AWS, and the reporter saw unnecessary ECS redeploys at the 10-hour resync. Setting `kustomize.toolkit.fluxcd.io/ssa: merge` did not help. A maintainer suggested a fix modeled on eks-controller pull request 128. URL: https://github.com/aws-controllers-k8s/community/issues/2361. [[sources/research-gap-o3-gitops-provider-managed]]
+ACK community issue 2361 was opened on 2025-02-26 and is open. A user of Flux reports that the ACK controller rewrites reference fields into the custom resource, and that Flux server-side apply "updates these references back to match the Git repository state." The ACK controller then diffs changed desired state against AWS, and the reporter saw unnecessary ECS redeploys at the 10-hour resync. Setting `kustomize.toolkit.fluxcd.io/ssa: merge` did not help. A maintainer suggested a fix modeled on eks-controller pull request 128. URL: https://github.com/aws-controllers-k8s/community/issues/2361. [sources/research-gap-o3-gitops-provider-managed](../sources/research-gap-o3-gitops-provider-managed.md)
 
 ## Evidence limits
 
-SECONDARY-ONLY. The report is a user's account of an anonymous cluster, and no maintainer-confirmed resolution was found. See [[findings/flux-server-side-apply-reverts-ack-reference-fields-that-the-controller-rewrote-according-to-issue-2361]] for the mechanism and [[examples/ack-resync-period-tuning-for-stateful-resources]] for the 10-hour interval.
+SECONDARY-ONLY. The report is a user's account of an anonymous cluster, and no maintainer-confirmed resolution was found. See [findings/flux-server-side-apply-reverts-ack-reference-fields-that-the-controller-rewrote-according-to-issue-2361](../findings/flux-server-side-apply-reverts-ack-reference-fields-that-the-controller-rewrote-according-to-issue-2361.md) for the mechanism and [examples/ack-resync-period-tuning-for-stateful-resources](ack-resync-period-tuning-for-stateful-resources.md) for the 10-hour interval.
 
 ## Related
 
-[[entities/ack]], [[entities/flux]], [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]]
+[entities/ack](../entities/ack.md), [entities/flux](../entities/flux.md), [comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights](../comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights.md)

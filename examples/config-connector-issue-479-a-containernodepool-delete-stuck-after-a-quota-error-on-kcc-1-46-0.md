@@ -16,7 +16,7 @@ tags: [config-connector, deletion, quota, backoff, issue, single-source]
 
 ## Scenario
 
-Issue 479 was opened on 2021-05-27 against KCC 1.46.0 in cluster mode. The reporter says a `ContainerNodePool` delete stuck after a quota error and was not retried to completion. A contributor asked for logs and said backoff retry "(which should be the designed behaviour)". URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/479 [[sources/research-gap-o4-config-connector-ack]]
+Issue 479 was opened on 2021-05-27 against KCC 1.46.0 in cluster mode. The reporter says a `ContainerNodePool` delete stuck after a quota error and was not retried to completion. A contributor asked for logs and said backoff retry "(which should be the designed behaviour)". URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/479 [sources/research-gap-o4-config-connector-ack](../sources/research-gap-o4-config-connector-ack.md)
 
 ## Evidence strength
 
@@ -24,4 +24,4 @@ SECONDARY-ONLY. The dossier did not confirm the reporter's outcome in the part o
 
 ## Lesson
 
-A failed delete against a cloud API keeps the finalizer in place, so the object lingers until the controller's backoff succeeds. See [[findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling]] and [[concepts/finalizers]].
+A failed delete against a cloud API keeps the finalizer in place, so the object lingers until the controller's backoff succeeds. See [findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling](../findings/argo-cd-and-config-connector-document-bounded-exponential-backoff-and-status-based-health-for-failure-handling.md) and [concepts/finalizers](../concepts/finalizers.md).

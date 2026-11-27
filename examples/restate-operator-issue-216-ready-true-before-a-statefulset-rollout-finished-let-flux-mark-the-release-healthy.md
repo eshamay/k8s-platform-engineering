@@ -16,7 +16,7 @@ tags: [restate, flux, readiness, observedgeneration, statefulset, status]
 
 ## Scenario
 
-On 2026-10-12 a reporter, we2beast, filed issue 216 against restate-operator 3.1.0. The issue was open when the dossier read it. [[sources/research-gap-g1-operator-loop-failures]] URL: https://github.com/restatedev/restate-operator/issues/216
+On 2026-10-12 a reporter, we2beast, filed issue 216 against restate-operator 3.1.0. The issue was open when the dossier read it. [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md) URL: https://github.com/restatedev/restate-operator/issues/216
 
 ## What happened
 
@@ -24,8 +24,8 @@ A RestateCluster reported Ready=True before its StatefulSet rollout had finished
 
 ## Why it belongs here
 
-It connects a missing `observedGeneration` to a concrete delivery-tool consequence, a health-gated Flux release that proceeds early. See [[findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed]].
+It connects a missing `observedGeneration` to a concrete delivery-tool consequence, a health-gated Flux release that proceeds early. See [findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed](../findings/ready-can-be-reported-for-a-spec-generation-the-controller-has-not-yet-observed.md).
 
 ## Related
 
-[[findings/premature-readiness-in-kstatus-based-tools]], [[entities/flux]], [[examples/flux-dependson-and-health-checks-gate-rollout]]
+[findings/premature-readiness-in-kstatus-based-tools](../findings/premature-readiness-in-kstatus-based-tools.md), [entities/flux](../entities/flux.md), [examples/flux-dependson-and-health-checks-gate-rollout](flux-dependson-and-health-checks-gate-rollout.md)

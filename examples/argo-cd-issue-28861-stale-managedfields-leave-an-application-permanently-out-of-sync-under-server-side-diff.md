@@ -16,7 +16,7 @@ tags: [argo-cd, server-side-diff, managed-fields, out-of-sync, issue]
 
 ## Scenario
 
-An Application uses Server-Side Diff, and stale entries in the live object's `managedFields` change what the server's dry-run apply reports. [[sources/research-gap-m4-ssa-conflict-policy]]
+An Application uses Server-Side Diff, and stale entries in the live object's `managedFields` change what the server's dry-run apply reports. [sources/research-gap-m4-ssa-conflict-policy](../sources/research-gap-m4-ssa-conflict-policy.md)
 
 ## What the issue says
 
@@ -24,8 +24,8 @@ Issue 28861 in argoproj/argo-cd, filed 2026-07-22 and open on 2026-11-26, report
 
 ## Why it matters
 
-The documentation calls Server-Side Diff stable since v3.1.0, and this issue was filed against a release line after that. It shows that a stable label does not remove the dependence of the diff on clean field ownership, the same dependence that wedges Flux's dry-run in [[findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal]]. See [[findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs]].
+The documentation calls Server-Side Diff stable since v3.1.0, and this issue was filed against a release line after that. It shows that a stable label does not remove the dependence of the diff on clean field ownership, the same dependence that wedges Flux's dry-run in [findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal](../findings/a-stale-manager-owning-a-list-entry-key-breaks-the-dry-run-after-removal.md). See [findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs](../findings/argo-cd-documents-server-side-diff-as-stable-since-v3-1-0-while-the-issue-tracker-holds-many-open-bugs.md).
 
 ## Related
 
-[[entities/argo-cd]], [[findings/diff-is-not-apply-server-defaults-look-like-drift]], [[concepts/server-side-apply-and-field-ownership]]
+[entities/argo-cd](../entities/argo-cd.md), [findings/diff-is-not-apply-server-defaults-look-like-drift](../findings/diff-is-not-apply-server-defaults-look-like-drift.md), [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md)

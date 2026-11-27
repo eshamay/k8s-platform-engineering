@@ -19,20 +19,20 @@ tags: [config-connector, crossplane, drift, cloud]
 
 ## Scenario
 
-A database or bucket is managed through a Kubernetes object, and someone changes it in the cloud console. Config Connector and Crossplane providers reconcile external cloud objects on a schedule, so the console change is detected and reverted. [[sources/research-level-triggered-vs-edge-triggered]]
+A database or bucket is managed through a Kubernetes object, and someone changes it in the cloud console. Config Connector and Crossplane providers reconcile external cloud objects on a schedule, so the console change is detected and reverted. [sources/research-level-triggered-vs-edge-triggered](../sources/research-level-triggered-vs-edge-triggered.md)
 
 ## Config Connector
 
-Config Connector reconciles periodically to correct drift once a resource is UpToDate and retries failures with exponential backoff capped at two minutes. The annotation `cnrm.cloud.google.com/reconcile-interval-in-seconds` tunes the interval, and a value of "0" disables it. Fields that cannot be read back, such as passwords, are actuated only on a spec change, and immutable-field changes need recreation. See [[entities/config-connector]].
+Config Connector reconciles periodically to correct drift once a resource is UpToDate and retries failures with exponential backoff capped at two minutes. The annotation `cnrm.cloud.google.com/reconcile-interval-in-seconds` tunes the interval, and a value of "0" disables it. Fields that cannot be read back, such as passwords, are actuated only on a spec change, and immutable-field changes need recreation. See [entities/config-connector](../entities/config-connector.md).
 
 ## Crossplane
 
-A Crossplane provider re-reconciles each managed resource and compares `forProvider` to the external resource, acting according to `managementPolicies` such as Observe, Update, and LateInitialize. A poll interval and a pause annotation control cadence, but the default poll interval was not confirmed. See [[entities/crossplane]].
+A Crossplane provider re-reconciles each managed resource and compares `forProvider` to the external resource, acting according to `managementPolicies` such as Observe, Update, and LateInitialize. A poll interval and a pause annotation control cadence, but the default poll interval was not confirmed. See [entities/crossplane](../entities/crossplane.md).
 
 ## Others
 
-ACK and Cluster API follow the same shape according to the dossier, but their drift behavior could not be confirmed from the pages fetched. See [[entities/ack]], [[entities/cluster-api]], [[examples/cloud-services-as-kubernetes-objects]], and [[findings/continuous-loops-override-intentional-changes]].
+ACK and Cluster API follow the same shape according to the dossier, but their drift behavior could not be confirmed from the pages fetched. See [entities/ack](../entities/ack.md), [entities/cluster-api](../entities/cluster-api.md), [examples/cloud-services-as-kubernetes-objects](cloud-services-as-kubernetes-objects.md), and [findings/continuous-loops-override-intentional-changes](../findings/continuous-loops-override-intentional-changes.md).
 
 ## Further detail from the self-healing dossier
 
-The Crossplane documentation says `forProvider` is the source of truth, and ACK documents that drift is found by continued reconciliation with a roughly 10-hour default, so a console change to an AWS resource may sit for hours. [[sources/research-self-healing-and-drift-detection]] See [[examples/crossplane-managed-resource-enforces-forprovider-and-observes-adopted-resources]] and [[examples/ack-resync-period-tuning-for-stateful-resources]].
+The Crossplane documentation says `forProvider` is the source of truth, and ACK documents that drift is found by continued reconciliation with a roughly 10-hour default, so a console change to an AWS resource may sit for hours. [sources/research-self-healing-and-drift-detection](../sources/research-self-healing-and-drift-detection.md) See [examples/crossplane-managed-resource-enforces-forprovider-and-observes-adopted-resources](crossplane-managed-resource-enforces-forprovider-and-observes-adopted-resources.md) and [examples/ack-resync-period-tuning-for-stateful-resources](ack-resync-period-tuning-for-stateful-resources.md).

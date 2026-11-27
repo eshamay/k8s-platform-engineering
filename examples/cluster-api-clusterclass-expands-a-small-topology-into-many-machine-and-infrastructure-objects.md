@@ -19,7 +19,7 @@ tags: [cluster-api, clusterclass, topology, composite-pattern]
 
 ## Scenario
 
-An operator wants many similar clusters without repeating boilerplate. Cluster API's ClusterClass answers the same expansion problem that composite resources answer for general platforms, but only for cluster objects. [[sources/research-composite-resource]]
+An operator wants many similar clusters without repeating boilerplate. Cluster API's ClusterClass answers the same expansion problem that composite resources answer for general platforms, but only for cluster objects. [sources/research-composite-resource](../sources/research-composite-resource.md)
 
 ## How it works
 
@@ -27,8 +27,8 @@ A ClusterClass is a reusable definition of what a cluster looks like. A Cluster 
 
 ## Caveats
 
-The page read is a thin landing page that labels the feature experimental and alpha. Correction 2026-11-26: that label is out of date for v1.15, as described below. The dossier does not name an industry deployment. ClusterClass is not a general-purpose composer, so it complements Crossplane and kro and does not replace them. See [[entities/cluster-api]], [[examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects]], [[examples/cluster-fleet-lifecycle-with-cluster-api]], and [[concepts/composite-resource]].
+The page read is a thin landing page that labels the feature experimental and alpha. Correction 2026-11-26: that label is out of date for v1.15, as described below. The dossier does not name an industry deployment. ClusterClass is not a general-purpose composer, so it complements Crossplane and kro and does not replace them. See [entities/cluster-api](../entities/cluster-api.md), [examples/cluster-api-topology-controller-uses-ssa-for-co-authored-objects](cluster-api-topology-controller-uses-ssa-for-co-authored-objects.md), [examples/cluster-fleet-lifecycle-with-cluster-api](cluster-fleet-lifecycle-with-cluster-api.md), and [concepts/composite-resource](../concepts/composite-resource.md).
 
 ## Maturity and the proposal
 
-At v1.15.0-rc.0 the `ClusterTopology` gate is Beta and on by default, and the v1.14.4 docs still say alpha. The proposal (created 2021-05-26) describes ClusterClass as a collection of template references and the Cluster as "a single control point to manage the Kubernetes version, worker pools, labels, replicas", with continuous reconciliation of the managed objects. Its history adds MachineHealthCheck support on 2022-01-10 and upgrade plans on 2025-05-13, and its frontmatter still says `provisional`. See [[examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules]], [[findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional]], and [[sources/research-gap-g3-argocd-capi]].
+At v1.15.0-rc.0 the `ClusterTopology` gate is Beta and on by default, and the v1.14.4 docs still say alpha. The proposal (created 2021-05-26) describes ClusterClass as a collection of template references and the Cluster as "a single control point to manage the Kubernetes version, worker pools, labels, replicas", with continuous reconciliation of the managed objects. Its history adds MachineHealthCheck support on 2022-01-10 and upgrade plans on 2025-05-13, and its frontmatter still says `provisional`. See [examples/cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules](cluster-api-v1-15-0-rc-0-promotes-clustertopology-to-beta-and-adds-cel-health-check-rules.md), [findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional](../findings/cluster-api-clusterclass-maturity-labels-disagree-across-doc-versions-and-the-original-proposal-still-says-provisional.md), and [sources/research-gap-g3-argocd-capi](../sources/research-gap-g3-argocd-capi.md).

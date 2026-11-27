@@ -16,7 +16,7 @@ tags: [use-case, crossplane, composition-functions, service-catalog]
 
 ## Scenario
 
-VSHN is a Swiss DevOps and managed Kubernetes provider that has run Crossplane in production for roughly three years. It uses composition functions in the VSHN Application Catalog (AppCat), a marketplace where customers self-provision databases, message queues, and object storage. The platform team owns the expansion logic, and customers see only the small API object they create. [[sources/research-composition]]
+VSHN is a Swiss DevOps and managed Kubernetes provider that has run Crossplane in production for roughly three years. It uses composition functions in the VSHN Application Catalog (AppCat), a marketplace where customers self-provision databases, message queues, and object storage. The platform team owns the expansion logic, and customers see only the small API object they create. [sources/research-composition](../sources/research-composition.md)
 
 ## Why patch and transform was not enough
 
@@ -24,12 +24,12 @@ Early in the project the team hit the limits of patch and transform: it has no c
 
 ## Lessons from the alpha
 
-The post records several operational lessons. OpenShift's crun runtime initially could not run functions and was slow when it could. Resources missing from a function request were deleted, so a function must return the full desired state on every call, as described in [[findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it]]. Mixing patch and transform with functions for the same objects "increases complexity dramatically" because it hides where a change originates, see [[findings/patch-and-transform-cannot-branch-loop-or-patch-between-composed-resources]].
+The post records several operational lessons. OpenShift's crun runtime initially could not run functions and was slow when it could. Resources missing from a function request were deleted, so a function must return the full desired state on every call, as described in [findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it](../findings/a-composition-function-that-omits-a-resource-from-its-desired-state-deletes-it.md). Mixing patch and transform with functions for the same objects "increases complexity dramatically" because it hides where a change originates, see [findings/patch-and-transform-cannot-branch-loop-or-patch-between-composed-resources](../findings/patch-and-transform-cannot-branch-loop-or-patch-between-composed-resources.md).
 
 ## Why it is the best catalogue example
 
-The dossier calls this the clearest example of composition as a product catalogue, because one provider sells many service types across clouds from one declarative layer. It is a single self-reported case, and the dossier gives no scale numbers for it. A broader list of adopters is in [[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]].
+The dossier calls this the clearest example of composition as a product catalogue, because one provider sells many service types across clouds from one declarative layer. It is a single self-reported case, and the dossier gives no scale numbers for it. A broader list of adopters is in [examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources](crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources.md).
 
 ## Related
 
-[[concepts/composition]], [[entities/crossplane]], [[examples/a-composition-function-pipeline-turns-observed-state-into-desired-state]], [[examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function]]
+[concepts/composition](../concepts/composition.md), [entities/crossplane](../entities/crossplane.md), [examples/a-composition-function-pipeline-turns-observed-state-into-desired-state](a-composition-function-pipeline-turns-observed-state-into-desired-state.md), [examples/imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function](imagine-learning-replaces-thousand-line-patch-and-transform-files-with-a-looping-composition-function.md)

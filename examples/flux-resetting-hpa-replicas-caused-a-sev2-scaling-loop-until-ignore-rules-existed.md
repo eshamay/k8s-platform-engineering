@@ -16,7 +16,7 @@ tags: [flux, hpa, drift, ssa, ignore-rules, cert-manager, sev2]
 
 ## Scenario
 
-A team runs Flux against workloads scaled by an HPA and against CRDs whose `caBundle` is injected by cert-manager's cainjector. Flux's kustomize-controller periodically runs a server-side apply dry run and corrects any drift it finds. [[sources/research-pitfalls-and-case-studies]]
+A team runs Flux against workloads scaled by an HPA and against CRDs whose `caBundle` is injected by cert-manager's cainjector. Flux's kustomize-controller periodically runs a server-side apply dry run and corrects any drift it finds. [sources/research-pitfalls-and-case-studies](../sources/research-pitfalls-and-case-studies.md)
 
 ## What happened
 
@@ -28,8 +28,8 @@ Flux added a Kustomization `.spec.ignore` list of JSON Pointer paths with an opt
 
 ## Lesson
 
-The cost is that Git changes to an ignored field are no longer applied, see [[findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied]]. The same situation in Argo CD is handled differently, see [[comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights]]. The Kubernetes-level view is in [[examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict]].
+The cost is that Git changes to an ignored field are no longer applied, see [findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied](../findings/ignoring-a-field-in-flux-or-argo-cd-means-git-changes-to-it-are-no-longer-applied.md). The same situation in Argo CD is handled differently, see [comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights](../comparisons/flux-ignore-rules-versus-argo-cd-ignoredifferences-and-force-conflicts-for-drift-fights.md). The Kubernetes-level view is in [examples/hpa-and-git-both-set-replicas-surface-an-ssa-conflict](hpa-and-git-both-set-replicas-surface-an-ssa-conflict.md).
 
 ## Related
 
-[[concepts/pitfalls-and-case-studies]], [[entities/flux]], [[entities/cert-manager]]
+[concepts/pitfalls-and-case-studies](../concepts/pitfalls-and-case-studies.md), [entities/flux](../entities/flux.md), [entities/cert-manager](../entities/cert-manager.md)

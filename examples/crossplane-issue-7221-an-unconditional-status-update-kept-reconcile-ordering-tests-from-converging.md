@@ -16,7 +16,7 @@ tags: [crossplane, reconcile-loop, status-writes, compositionrevision, kamera]
 
 ## Scenario
 
-On 2026-03-19 tgoodwin filed Crossplane issue 7221 after running the kamera reconcile-ordering test tool against Crossplane. Maintainer jbw976 acknowledged it, and it was closed on 2026-05-13. The fix pull request was not read. [[sources/research-gap-g1-operator-loop-failures]] URL: https://github.com/crossplane/crossplane/issues/7221
+On 2026-03-19 tgoodwin filed Crossplane issue 7221 after running the kamera reconcile-ordering test tool against Crossplane. Maintainer jbw976 acknowledged it, and it was closed on 2026-05-13. The fix pull request was not read. [sources/research-gap-g1-operator-loop-failures](../sources/research-gap-g1-operator-loop-failures.md) URL: https://github.com/crossplane/crossplane/issues/7221
 
 ## What happened
 
@@ -24,8 +24,8 @@ The CompositionRevision and composite reconcilers call `Status().Update()` on ev
 
 ## Why it belongs here
 
-It is the named Crossplane case for [[findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop]], and it shows that the rate limiter hides a loop in production while a convergence test exposes it.
+It is the named Crossplane case for [findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop](../findings/a-status-patch-or-update-on-every-pass-keeps-a-controller-in-a-self-sustaining-reconcile-loop.md), and it shows that the rate limiter hides a loop in production while a convergence test exposes it.
 
 ## Related
 
-[[entities/crossplane]], [[concepts/composition]], [[examples/cluster-api-provider-rke2-issue-905-an-unconditional-status-patch-held-the-controller-at-about-ten-reconciles-per-second]]
+[entities/crossplane](../entities/crossplane.md), [concepts/composition](../concepts/composition.md), [examples/cluster-api-provider-rke2-issue-905-an-unconditional-status-patch-held-the-controller-at-about-ten-reconciles-per-second](cluster-api-provider-rke2-issue-905-an-unconditional-status-patch-held-the-controller-at-about-ten-reconciles-per-second.md)

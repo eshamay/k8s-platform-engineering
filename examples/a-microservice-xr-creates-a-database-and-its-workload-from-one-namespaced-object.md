@@ -16,7 +16,7 @@ tags: [use-case, crossplane, crossplane-v2, illustration]
 
 ## Scenario
 
-The Crossplane 2.0 announcement sketches a platform team that offers a `Microservice` kind. One namespaced object creates an RDS instance, security groups, a Deployment, a Service, an Ingress, and monitoring dashboards. [[sources/research-composition]]
+The Crossplane 2.0 announcement sketches a platform team that offers a `Microservice` kind. One namespaced object creates an RDS instance, security groups, a Deployment, a Service, an Ingress, and monitoring dashboards. [sources/research-composition](../sources/research-composition.md)
 
 ## What makes it possible
 
@@ -24,8 +24,8 @@ Crossplane 2.0 lets a Composition include any Kubernetes resource, not only Cros
 
 ## Caveat
 
-The dossier states this is an illustration from the Crossplane authors and not a named customer, so the page stays at draft until a real deployment is found. For the earlier claim-based model see [[examples/a-v1-crossplane-claim-fronts-a-cluster-scoped-composite-resource]].
+The dossier states this is an illustration from the Crossplane authors and not a named customer, so the page stays at draft until a real deployment is found. For the earlier claim-based model see [examples/a-v1-crossplane-claim-fronts-a-cluster-scoped-composite-resource](a-v1-crossplane-claim-fronts-a-cluster-scoped-composite-resource.md).
 
 ## Related
 
-[[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources]], [[concepts/composition]], [[entities/crossplane]], [[examples/platform-team-self-service-apis-with-crossplane-and-kro]]
+[comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources](../comparisons/crossplane-v1-claims-versus-v2-namespaced-composite-resources.md), [concepts/composition](../concepts/composition.md), [entities/crossplane](../entities/crossplane.md), [examples/platform-team-self-service-apis-with-crossplane-and-kro](platform-team-self-service-apis-with-crossplane-and-kro.md)

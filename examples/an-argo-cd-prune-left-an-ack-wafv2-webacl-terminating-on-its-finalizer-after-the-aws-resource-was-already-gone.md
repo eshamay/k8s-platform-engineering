@@ -16,7 +16,7 @@ tags: [ack, argo-cd, prune, finalizers, wafv2, incident]
 
 ## Scenario
 
-In ACK issue 2911, opened 2026-06-04, a reporter running the ACK wafv2 controller (v1.3.2 per the reporter) had Argo CD manage a WebACL custom resource. The reporter and the issue are anonymous. [[sources/research-gap-g1-gitops-drift-incidents]] URL: https://github.com/aws-controllers-k8s/community/issues/2911
+In ACK issue 2911, opened 2026-06-04, a reporter running the ACK wafv2 controller (v1.3.2 per the reporter) had Argo CD manage a WebACL custom resource. The reporter and the issue are anonymous. [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md) URL: https://github.com/aws-controllers-k8s/community/issues/2911
 
 ## What happened
 
@@ -24,8 +24,8 @@ Argo CD pruned the WebACL CR. The controller deleted the AWS WAF resource, but i
 
 ## Why it belongs here
 
-The case shows how a routine prune can turn into a manual finalizer patch. In this instance the manual patch is safe, because the AWS resource was already gone, so removing the finalizer skips no cleanup. The same patch would be unsafe if the cloud resource still existed, see [[findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data]]. The mechanism is described in [[findings/pruning-a-custom-resource-whose-controller-does-not-map-a-not-found-error-leaves-it-terminating-on-its-finalizer]].
+The case shows how a routine prune can turn into a manual finalizer patch. In this instance the manual patch is safe, because the AWS resource was already gone, so removing the finalizer skips no cleanup. The same patch would be unsafe if the cloud resource still existed, see [findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data](../findings/forcing-a-finalizer-off-skips-cleanup-and-can-leak-billing-resources-or-corrupt-data.md). The mechanism is described in [findings/pruning-a-custom-resource-whose-controller-does-not-map-a-not-found-error-leaves-it-terminating-on-its-finalizer](../findings/pruning-a-custom-resource-whose-controller-does-not-map-a-not-found-error-leaves-it-terminating-on-its-finalizer.md).
 
 ## Related
 
-[[entities/ack]], [[entities/argo-cd]], [[comparisons/deletion-policies-across-gitops-and-provider-tools]], [[decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller]]
+[entities/ack](../entities/ack.md), [entities/argo-cd](../entities/argo-cd.md), [comparisons/deletion-policies-across-gitops-and-provider-tools](../comparisons/deletion-policies-across-gitops-and-provider-tools.md), [decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller](../decisions/remove-a-stuck-finalizer-by-force-or-repair-the-owning-controller.md)

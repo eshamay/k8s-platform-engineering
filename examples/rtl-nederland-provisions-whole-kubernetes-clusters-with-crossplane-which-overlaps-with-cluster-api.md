@@ -16,12 +16,12 @@ tags: [use-case, crossplane, cluster-api, adopter, self-reported]
 
 ## Scenario
 
-The Crossplane adopters list says RTL Nederland provisions whole Kubernetes clusters on Azure and AWS with Crossplane. The entry is self-reported and unverified (https://github.com/crossplane/crossplane/blob/main/ADOPTERS.md). [[sources/research-landscape]]
+The Crossplane adopters list says RTL Nederland provisions whole Kubernetes clusters on Azure and AWS with Crossplane. The entry is self-reported and unverified (https://github.com/crossplane/crossplane/blob/main/ADOPTERS.md). [sources/research-landscape](../sources/research-landscape.md)
 
 ## Why it matters
 
-Cluster provisioning is the home territory of [[entities/cluster-api]], where a management cluster reconciles Cluster and Machine objects through infrastructure, bootstrap, and control-plane providers (https://cluster-api.sigs.k8s.io/user/concepts). RTL's use shows that the provisioning layer has no hard border. A general framework such as [[entities/crossplane]] can create clusters as managed resources, while Cluster API offers cluster-specific kinds such as MachineHealthCheck. The wiki compares the two provider models in [[comparisons/crossplane-providers-versus-cluster-api-providers]].
+Cluster provisioning is the home territory of [entities/cluster-api](../entities/cluster-api.md), where a management cluster reconciles Cluster and Machine objects through infrastructure, bootstrap, and control-plane providers (https://cluster-api.sigs.k8s.io/user/concepts). RTL's use shows that the provisioning layer has no hard border. A general framework such as [entities/crossplane](../entities/crossplane.md) can create clusters as managed resources, while Cluster API offers cluster-specific kinds such as MachineHealthCheck. The wiki compares the two provider models in [comparisons/crossplane-providers-versus-cluster-api-providers](../comparisons/crossplane-providers-versus-cluster-api-providers.md).
 
 ## Related
 
-[[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources]], [[examples/cluster-fleet-lifecycle-with-cluster-api]], [[concepts/tooling-landscape]]
+[examples/crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources](crossplane-adopters-build-self-service-platforms-and-service-catalogs-on-composite-resources.md), [examples/cluster-fleet-lifecycle-with-cluster-api](cluster-fleet-lifecycle-with-cluster-api.md), [concepts/tooling-landscape](../concepts/tooling-landscape.md)

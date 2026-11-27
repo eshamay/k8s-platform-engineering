@@ -16,7 +16,7 @@ tags: [crossplane, composite-resource, stale-cache, duplicate-create, crossplane
 
 ## Scenario
 
-On 2025-02-01 bobh66 opened Crossplane issue 6260, which was later closed. The report concerns Crossplane 1.17, where the composite reconciler read objects through a cache of unstructured objects. [[sources/research-gap-g1-leaked-resources-adoption]] URL: https://github.com/crossplane/crossplane/issues/6260
+On 2025-02-01 bobh66 opened Crossplane issue 6260, which was later closed. The report concerns Crossplane 1.17, where the composite reconciler read objects through a cache of unstructured objects. [sources/research-gap-g1-leaked-resources-adoption](../sources/research-gap-g1-leaked-resources-adoption.md) URL: https://github.com/crossplane/crossplane/issues/6260
 
 ## What happened
 
@@ -24,8 +24,8 @@ The reporter's analysis is that the composite reconciler "can leak resources whe
 
 ## Why it belongs here
 
-It is the same mechanism as the stale-cache leak scenario that the Crossplane maintainer lists in issue 3037, a stale read followed by a second create, one layer up in the composition loop. See [[findings/stale-cache-and-double-action]] and [[examples/built-in-controllers-use-deterministic-names-to-avoid-duplicate-children]].
+It is the same mechanism as the stale-cache leak scenario that the Crossplane maintainer lists in issue 3037, a stale read followed by a second create, one layer up in the composition loop. See [findings/stale-cache-and-double-action](../findings/stale-cache-and-double-action.md) and [examples/built-in-controllers-use-deterministic-names-to-avoid-duplicate-children](built-in-controllers-use-deterministic-names-to-avoid-duplicate-children.md).
 
 ## Related
 
-[[entities/crossplane]], [[concepts/composite-resource]], [[findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes]]
+[entities/crossplane](../entities/crossplane.md), [concepts/composite-resource](../concepts/composite-resource.md), [findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes](../findings/an-ambiguous-create-result-halts-reconciliation-until-a-human-intervenes.md)

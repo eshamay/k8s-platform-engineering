@@ -16,7 +16,7 @@ tags: [flux, helmrelease, conditions, audit-trail]
 
 ## Scenario
 
-A Flux HelmRelease is a mature controller status that serves two audiences at once. People use it as an audit trail of what the controller tried, and tools use it as machine-readable health. [[sources/research-spec-status-split]]
+A Flux HelmRelease is a mature controller status that serves two audiences at once. People use it as an audit trail of what the controller tried, and tools use it as machine-readable health. [sources/research-spec-status-split](../sources/research-spec-status-split.md)
 
 ## How it works
 
@@ -24,4 +24,4 @@ The conditions are `Ready`, `Reconciling`, `Stalled`, `Released`, and `TestSucce
 
 ## Lesson
 
-The status never repeats the user's intent; it records what happened to that intent. Two traps remain for readers: a suspended resource keeps its last condition and can look healthy, and a chain of `DependencyNotReady` conditions points at an upstream problem. See [[entities/flux]], [[concepts/conditions]], [[examples/flux-dependson-and-health-checks-gate-rollout]], and [[comparisons/health-and-readiness-models-across-tools]].
+The status never repeats the user's intent; it records what happened to that intent. Two traps remain for readers: a suspended resource keeps its last condition and can look healthy, and a chain of `DependencyNotReady` conditions points at an upstream problem. See [entities/flux](../entities/flux.md), [concepts/conditions](../concepts/conditions.md), [examples/flux-dependson-and-health-checks-gate-rollout](flux-dependson-and-health-checks-gate-rollout.md), and [comparisons/health-and-readiness-models-across-tools](../comparisons/health-and-readiness-models-across-tools.md).

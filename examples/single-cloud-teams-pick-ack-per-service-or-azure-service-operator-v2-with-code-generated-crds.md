@@ -16,7 +16,7 @@ tags: [use-case, ack, azure-service-operator, aws, azure]
 
 ## Scenario
 
-A team runs on only one public cloud and wants that cloud's resources as Kubernetes objects without adopting a multi-cloud framework. [[sources/research-landscape]]
+A team runs on only one public cloud and wants that cloud's resources as Kubernetes objects without adopting a multi-cloud framework. [sources/research-landscape](../sources/research-landscape.md)
 
 ## How it works on AWS
 
@@ -28,4 +28,4 @@ Azure-only teams use Azure Service Operator v2. Its CRDs are code-generated from
 
 ## Related
 
-[[entities/ack]], [[entities/azure-service-operator]], [[examples/ack-ships-one-controller-per-aws-service]], [[examples/azure-service-operator-generates-crds-from-azure-resource-manager-schemas]], [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]]
+[entities/ack](../entities/ack.md), [entities/azure-service-operator](../entities/azure-service-operator.md), [examples/ack-ships-one-controller-per-aws-service](ack-ships-one-controller-per-aws-service.md), [examples/azure-service-operator-generates-crds-from-azure-resource-manager-schemas](azure-service-operator-generates-crds-from-azure-resource-manager-schemas.md), [comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso](../comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso.md)

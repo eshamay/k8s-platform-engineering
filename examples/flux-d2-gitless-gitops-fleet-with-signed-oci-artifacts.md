@@ -16,7 +16,7 @@ tags: [gitops, flux, oci, supply-chain, fleet]
 
 ## Scenario
 
-ControlPlane's Flux D2 reference architecture targets regulated, multi-tenant fleets that cannot allow clusters to connect directly to a Git host. Instead of pulling from Git, each cluster pulls signed OCI artifacts from a registry. [[sources/research-gitops-pull-based-delivery]]
+ControlPlane's Flux D2 reference architecture targets regulated, multi-tenant fleets that cannot allow clusters to connect directly to a Git host. Instead of pulling from Git, each cluster pulls signed OCI artifacts from a registry. [sources/research-gitops-pull-based-delivery](../sources/research-gitops-pull-based-delivery.md)
 
 ## How it works
 
@@ -24,8 +24,8 @@ The fleet is split across three repositories: fleet, infrastructure, and applica
 
 ## What to take from it
 
-The example shows where the pull model is heading for supply-chain-sensitive organizations: the agent still pulls and reconciles, but the thing it pulls from changes from a mutable Git branch to an immutable, signed artifact. The source is a vendor write-up, so the claims about reduced risk are the vendor's own and were not independently verified. See [[decisions/git-versus-oci-as-the-canonical-source]] for the trade-off and [[entities/flux]] for the tool.
+The example shows where the pull model is heading for supply-chain-sensitive organizations: the agent still pulls and reconciles, but the thing it pulls from changes from a mutable Git branch to an immutable, signed artifact. The source is a vendor write-up, so the claims about reduced risk are the vendor's own and were not independently verified. See [decisions/git-versus-oci-as-the-canonical-source](../decisions/git-versus-oci-as-the-canonical-source.md) for the trade-off and [entities/flux](../entities/flux.md) for the tool.
 
 ## Related
 
-[[concepts/gitops-pull-based-delivery]], [[comparisons/push-versus-pull-delivery]]
+[concepts/gitops-pull-based-delivery](../concepts/gitops-pull-based-delivery.md), [comparisons/push-versus-pull-delivery](../comparisons/push-versus-pull-delivery.md)

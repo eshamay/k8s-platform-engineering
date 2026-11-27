@@ -16,7 +16,7 @@ tags: [argo-cd, applicationset, app-of-apps, deletion, incident]
 
 ## Scenario
 
-An anonymous reporter running Argo CD v2.6.6 saw an ApplicationSet-generated Application deleted together with the resources it managed. The issue was still open when the dossier read it, with comments through 2024-11-10, and a second reporter described the same behavior with an app-of-apps layout. [[sources/research-gap-g1-gitops-drift-incidents]] URL: https://github.com/argoproj/argo-cd/issues/20440
+An anonymous reporter running Argo CD v2.6.6 saw an ApplicationSet-generated Application deleted together with the resources it managed. The issue was still open when the dossier read it, with comments through 2024-11-10, and a second reporter described the same behavior with an app-of-apps layout. [sources/research-gap-g1-gitops-drift-incidents](../sources/research-gap-g1-gitops-drift-incidents.md) URL: https://github.com/argoproj/argo-cd/issues/20440
 
 ## What happened
 
@@ -24,8 +24,8 @@ The report says "All of the resources that were deployed by ArgoCD (from other a
 
 ## Why it belongs here
 
-It is the widest blast radius in the dossier, because one deleted generated Application removed the agent that would have restored it. See [[findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed]].
+It is the widest blast radius in the dossier, because one deleted generated Application removed the agent that would have restored it. See [findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed](../findings/deleting-or-recreating-an-argo-cd-parent-can-cascade-to-everything-it-managed.md).
 
 ## Related
 
-[[entities/argo-cd]], [[examples/argo-cd-app-of-apps-out-of-sync-from-image-updater]], [[examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads]]
+[entities/argo-cd](../entities/argo-cd.md), [examples/argo-cd-app-of-apps-out-of-sync-from-image-updater](argo-cd-app-of-apps-out-of-sync-from-image-updater.md), [examples/argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads](argo-cd-resources-finalizer-cascades-an-application-delete-to-its-workloads.md)
