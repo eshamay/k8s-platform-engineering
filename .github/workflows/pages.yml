@@ -13,6 +13,7 @@ on:
     branches: [main]
     paths:
       - "outputs/**"
+      - "site_overlay/**"
       - ".sticki-publish.json"
       - "bin/build_site.py"
       - "Gemfile"
