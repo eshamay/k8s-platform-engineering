@@ -90,6 +90,7 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [#date-the-vshn-figures-on-the-vshn-appcat-example](#date-the-vshn-figures-on-the-vshn-appcat-example--status-open) — open
 - [#remove-the-corrects-earlier-statements-section-wording-from-the-crossplane-entity](#remove-the-corrects-earlier-statements-section-wording-from-the-crossplane-entity--status-open) — open
 - [#decide-whether-to-restore-the-flux-five-minute-origin-speculation-in-part-2](#decide-whether-to-restore-the-flux-five-minute-origin-speculation-in-part-2--status-open) — open
+- [#make-the-orphan-and-dangling-link-checks-work-with-markdown-links](#make-the-orphan-and-dangling-link-checks-work-with-markdown-links--status-open) — open
 
 ## Open
 
@@ -635,6 +636,13 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** Decide whether Part 2 of the tutorial series should restore the speculation about the origin of the Flux five-minute sentence. The five-minute-sentence finding says the origin is a 2022-08-10 docs commit with no stated reason and treats the jitter-package comment as an unverified inference. The jitter finding says that comment may feed the five-minute folklore. Part 2 now states only the commit and the one-minute flux create flag and drops the speculation, so no ruling is needed unless the speculation should be restored. Pages: [findings/the-flux-concepts-page-five-minute-sentence-replaced-one-minute-in-an-august-2022-docs-commit-with-no-stated-reason](findings/the-flux-concepts-page-five-minute-sentence-replaced-one-minute-in-an-august-2022-docs-commit-with-no-stated-reason.md), [findings/flux-controllers-jitter-reconcile-intervals-by-plus-or-minus-5-percent-by-default](findings/flux-controllers-jitter-reconcile-intervals-by-plus-or-minus-5-percent-by-default.md).
 - **Why:** Two wiki pages disagree, and the output review of 2026-11-26 ([findings/outputs-review-2026-11-26](findings/outputs-review-2026-11-26.md)) removed the speculation from [outputs/part-2-krm-and-api-machinery](outputs/part-2-krm-and-api-machinery.md) pending a ruling.
 - **Acceptance:** A decision is recorded either to keep the document as it stands or to restore the speculation, and the two findings agree.
+- **Drafted by:** agent on 2026-11-26
+
+## Make the orphan and dangling-link checks work with markdown links — status: open
+
+- **What:** sticki-lint checks 3 (orphan pages) and 4 (dangling links) look only for `[[wikilinks]]`, so after the wikilink conversion it would report every page as an orphan and find no dangling links. Until the plugin reads markdown links, use `python3 -I bin/gh_links.py --check` for dangling links and treat lint orphan results as invalid. Either request markdown-link support in the sticki-wiki plugin source (never edit the installed cache) or add an orphan report to `bin/gh_links.py` (pages with no inbound markdown link from another page, excluding `index.md` and `type: output` pages).
+- **Why:** The wiki now stores relative markdown links so that GitHub renders them, which the lint skill does not recognize.
+- **Acceptance:** Orphan and dangling-link checks give correct results on the converted wiki.
 - **Drafted by:** agent on 2026-11-26
 
 ## Done
