@@ -1046,3 +1046,6 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 
 ## [2026-11-26] todo | closed-gap todos done
 - marked done the todos to close the resolved-candidate gaps of the mechanics and accuracy pass (14) and the other-tool coverage pass (11)
+
+## [2026-11-26] todo | dropped the study guide todo
+- dropped at the user's request; the study guide is no longer part of the plan

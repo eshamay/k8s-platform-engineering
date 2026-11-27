@@ -14,7 +14,6 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#promote-draft-pages-to-active]] — open
 - [[#add-sticki-lint-to-the-recurring-routine]] — open
 - [[#deepen-the-dossiers-that-rest-on-model-digests]] — open
-- [[#build-the-study-guide-from-the-corpus]] — open
 - [[#decide-on-the-23-partial-and-4-still-open-gaps-from-the-evidence-pass]] — open
 - [[#batch-3-p4-benchmarks-and-scale-by-controller-gaps]] — open
 - [[#batch-3-p4b-turn-design-choice-evidence-into-decision-pages]] — open
@@ -61,12 +60,6 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** Read primary sources for `research-scale-and-sharding`, `research-pitfalls-and-case-studies`, and `research-landscape`, which the wiki's own findings flag as relying on summarizing fetches, vendor posts, or older versions.
 - **Why:** Numeric scale limits, incident details, and landscape comparisons need rechecking before the outputs lean on them.
 - **Acceptance:** Findings that flag the caveats updated or closed out with primary citations.
-
-## Build the study guide from the corpus — status: open
-
-- **What:** Run `study-guide:build` against this wiki once the outputs are reviewed.
-- **Why:** The wiki is large (493 pages) and a guided pathway would help readers; the output is gitignored under `study-guide/`.
-- **Acceptance:** `study-guide/` tree exists and `.sticki/derived.json` registers it.
 
 ## Decide on the 23 partial and 4 still-open gaps from the evidence pass — status: open
 
@@ -1164,3 +1157,10 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Each source is saved and ingested, or recorded as unavailable.
 - **Drafted by:** agent on 2026-11-26
 - **Outcome:** 2026-11-26: dropped, split into one todo per unreadable source (listed below it in the open index) so each can be closed independently.
+
+## Build the study guide from the corpus — status: dropped
+
+- **What:** Run `study-guide:build` against this wiki once the outputs are reviewed.
+- **Why:** The wiki is large (493 pages) and a guided pathway would help readers; the output is gitignored under `study-guide/`.
+- **Acceptance:** `study-guide/` tree exists and `.sticki/derived.json` registers it.
+- **Outcome:** 2026-11-26: dropped at the user's request; the study guide is no longer part of the plan.
