@@ -5,6 +5,9 @@ status: draft
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: bex-co-kro-radar-post
+    hash: 748c0bc7495e
+    ingested: 2026-11-26
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
@@ -36,3 +39,7 @@ kro offers early validation and inferred ordering but its API may break and its 
 ## Update from the o5 dossier
 
 Update 2026-11-26: for the "both" option, the `function-kro` parity claim is the project's own and the repository documents differences, see [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]]. The function has one listed maintainer. kro's scale is untested by any benchmark, see [[findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter]]. The related question of RGD against the alpha Graph API is in [[decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api]]. [[sources/research-gap-o5-kro-ecosystem]]
+
+## Secondary view: start with kro on a non-critical abstraction
+
+A bex.co post argues that a team weighing a hand-rolled controller against kro should begin with kro's pattern on a non-critical abstraction, watch how the alpha API changes, and keep a hand-rolled controller for the parts, TLS and custom domains in its case, that no RGD supplies. The post treats Crossplane's function-kro as a sign that the ecosystem is converging on YAML and CEL authoring. This is one company's opinion and not an outcome report. See [[examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner]]. [[sources/bex-co-kro-radar-post]]

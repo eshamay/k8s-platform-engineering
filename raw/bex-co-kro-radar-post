@@ -1,0 +1,121 @@
+kro Just Landed in CNCF's 'Adopt' Tier Next to Helm — While Still Being Alpha Software
+July 29, 2026
+9 min read
+Dora NodaDora Noda
+Self-Hosting
+PaaS
+Kubernetes
+Infrastructure
+cloud computing
+Copy page
+Print
+Share
+
+A tool can be rated ready for broad production use by 400 developers and still ship an API labeled v1alpha1, with the maintainers themselves warning it may break. That's exactly where kro (Kube Resource Orchestrator) sits after CNCF and SlashData published their Q1 2026 Platform Engineering Radar in March: kro landed in the "Adopt" tier of the application-delivery category, in the same bracket as Helm and Backstage — tools that have been production defaults for years. The survey ran in Q4 2025 across more than 400 professional cloud-native developers, and it rated kro on maturity, usefulness, and recommendation, not on how long the project has existed.
+
+That gap — a top-tier maturity rating on a project whose own README says the API can still introduce breaking changes — is the interesting part. This post covers what the rating actually measured, what kro's ResourceGraphDefinition (RGD) pattern looks like in real YAML, and what it would concretely cost a Cluster API-based platform like bex to build its own tenant-facing service definition on top of it versus writing a hand-rolled operator.
+
+What the CNCF/SlashData Radar Actually Measured
+The Technology Radar isn't a popularity contest or a GitHub-star leaderboard. CNCF and SlashData surveyed 400+ developers in Q4 2025 about their real experience with platform engineering tools across three categories — workflow automation, application delivery, and security/compliance management — and scored each tool on three axes: maturity, usefulness, and likelihood to recommend. Those scores sort each tool into "Adopt," "Trial," or "Assess."
+
+In the application-delivery category, three tools cleared the bar for "Adopt": Helm, Backstage, and kro. Helm has been the de facto Kubernetes package manager since 2016. Backstage has been CNCF-graduated since 2022 and is the reference internal developer portal at hundreds of companies. kro, by contrast, was only introduced by Google, AWS, and Microsoft as a joint experiment in late 2024 and donated to Kubernetes SIGs as kubernetes-sigs/kro — a subproject of SIG Cloud Provider — sometime after. Its README still opens with an alpha disclaimer. The rating isn't measuring years in production; it's measuring whether the developers who've tried it rate what they got as mature enough, useful enough, and worth recommending. For kro specifically, that's a signal about the pattern — Kubernetes-native composite resources authored in YAML+CEL instead of Go — more than a claim that any specific kro release is battle-hardened.
+
+The survey result isn't happening in a vacuum, either. CNCF's own blog ran a December 2025 walkthrough of "building platforms using kro for composition," AWS's EKS documentation now ships a dedicated kro-concepts page walking teams through RGDs as a supported pattern for building tenant-facing APIs on EKS, and Crossplane — a project with its own, older composition model — shipped a function specifically to consume kro's authoring style rather than compete with it outright. None of that is proof the alpha API won't change. It is evidence that the idea kro embodies — grouping Kubernetes resources into a single tenant-facing API without hand-writing a controller — has already crossed from "interesting experiment" to "thing three hyperscalers' own docs point teams toward," independent of the survey.
+
+What kro Actually Does: A Real ResourceGraphDefinition
+kro's core object is the ResourceGraphDefinition (RGD). You give it a schema (the fields a tenant fills in) and a set of resource templates (the Kubernetes objects those fields expand into), and kro generates a new CRD plus a controller that reconciles it — at runtime, with no code you have to write or build. Here's a trimmed version of kro's own published web-app-with-ingress example:
+
+
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: webapp
+spec:
+  schema:
+    apiVersion: v1alpha1
+    kind: WebApp
+    spec:
+      name: string
+      image: string | default="nginx"
+      ingress:
+        enabled: boolean | default=false
+    status:
+      availableReplicas: ${deployment.status.availableReplicas}
+ 
+  resources:
+    - id: deployment
+      template:
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: ${schema.spec.name}
+        spec:
+          replicas: 3
+          selector:
+            matchLabels:
+              app: ${schema.spec.name}
+          template:
+            metadata:
+              labels:
+                app: ${schema.spec.name}
+            spec:
+              containers:
+                - name: app
+                  image: ${schema.spec.image}
+                  ports:
+                    - containerPort: 80
+ 
+    - id: service
+      template:
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: ${schema.spec.name}
+        spec:
+          selector: ${deployment.spec.selector.matchLabels}
+          ports:
+            - port: 80
+              targetPort: 80
+ 
+    - id: ingress
+      includeWhen:
+        - ${schema.spec.ingress.enabled}
+      template:
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+          name: ${schema.spec.name}
+        spec:
+          rules:
+            - http:
+                paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: ${service.metadata.name}
+                        port:
+                          number: 80
+Apply that once, and kro generates a WebApp CRD. A tenant then creates one WebApp object with a name, an image, and ingress.enabled: true, and gets a Deployment, Service, and (conditionally) an Ingress — provisioned in the right order automatically. That ordering is the mechanically interesting part: kro doesn't just template YAML, it parses every ${...} CEL expression across the templates, walks the expression AST to find cross-resource references (service.spec.selector reads from deployment), and builds a directed acyclic graph from those references. It topologically sorts that graph, creates independent resources in parallel, and only creates a dependent resource once the fields it reads from are actually resolvable. Delete the WebApp, and kro tears everything down in reverse order. None of that graph logic is something you write — it's inferred from the templates themselves.
+
+kro vs. Crossplane vs. a Hand-Rolled Operator
+This composite-resource idea isn't new — it's the same problem Crossplane's Composition model and a hand-rolled custom controller both solve. What differs is the authoring cost and the blast radius when something breaks:
+
+Scrollable table
+Approach	Authoring model	What you own	Where it breaks down
+Hand-rolled operator	Go + controller-runtime, full reconcile loop you write	Everything — schema validation, ordering, status propagation, tests	Highest cost per new resource type; every new tenant-facing object is a new controller to build and maintain
+Crossplane Compositions	Composition functions (Go, or now function-kro's YAML+CEL) over a control-plane-wide resource model	A composition per abstraction, Crossplane's provider ecosystem for cloud resources	Heavier control plane to operate; strongest story is external cloud resources (RDS, IAM), not bare Kubernetes objects
+kro RGD	Pure YAML + CEL, no code, no separate control plane	An RGD per abstraction; kro generates the CRD and controller	Alpha API (breaking changes possible), no built-in cross-cloud resource provisioning — it composes Kubernetes objects, not cloud APIs
+The trend line matters here: Crossplane shipped function-kro, a composition function that lets Crossplane pipelines consume kro's YAML+CEL authoring model directly. That's the ecosystem converging on "author composite Kubernetes APIs in declarative YAML with CEL for the data-flow logic" as the shared idiom, rather than three incompatible ways to solve the same problem.
+
+What This Buys — and Doesn't — for a Hetzner-Based Cluster API Fleet
+A git-push PaaS built on Cluster API already needs exactly the object kro is designed to generate: a tenant-facing "deploy this app" API that expands into a Deployment, a Service, an Ingress or Gateway route, TLS material, and whatever else a running service needs — without making the tenant write any of those objects by hand. Building that as a kro RGD instead of a hand-rolled controller means the schema, the dependency ordering, and the generated CRD come from a declarative spec instead of hundreds of lines of Go reconcile logic — a real reduction in the code a small platform team has to own and keep correct.
+
+But the gaps are concrete, not hypothetical hand-waving:
+
+The API is still v1alpha1. kro's own maintainers commit to migration paths and deprecation notices, not to API stability. A platform's tenant-facing CRD schema — the thing every deployed app's manifest depends on — inheriting an alpha upstream API is a real operational risk to plan around, not a footnote.
+Kro composes Kubernetes objects, not infrastructure. It has no opinion on where the cluster itself comes from. That's still Cluster API's job — CAPH for Hetzner bare metal, CAPMox for Proxmox, whichever provider a fleet runs. kro starts one layer up, once a cluster already exists.
+No built-in per-tenant TLS or custom-domain model. The web-app-ingress example's includeWhen: ingress.enabled toggle is the right shape, but a real platform still has to author the actual cert-issuance and domain-verification logic inside its own RGD — kro gives you the composition primitive, not a finished PaaS.
+Cloud-agnostic ambitions vs. a Hetzner-specific fleet. kro's founding pitch is portability across GKE, EKS, and AKS — the whole point of a Google/AWS/Azure collaboration is that the same RGD produces a working WebApp on any of the three. A platform running exclusively on owned Hetzner capacity via Cluster API doesn't need that portability; it needs the composite-resource pattern applied to one substrate, which is a narrower, easier problem than the one kro is ultimately solving. Paying for generality you'll never use is its own kind of cost — mostly in surface area to understand, not runtime overhead, but real all the same.
+Static type-checking is a feature, not a guarantee. kro validates CEL expressions against real Kubernetes OpenAPI schemas at RGD-apply time, catching typos in field references before a tenant ever creates an instance — a genuine advantage over a hand-rolled controller's "find out at runtime" default. But that check only covers the schema kro can see; a Hetzner-specific field a platform's own CRDs expose still needs the platform team's own validation layer on top.
+The "Adopt" rating is a real signal that the pattern — not any specific alpha release — has cleared a usefulness bar with the developers who've tried it. For a platform team deciding whether to build its own tenant-facing service definition as a hand-rolled controller or as a kro RGD, that's a reasonable case for starting with kro's pattern on a non-critical abstraction first, watching how the alpha API evolves, and keeping the option to fall back to a hand-rolled controller for the parts — TLS, custom domains — that still need bex-specific logic no RGD ships out of the box.

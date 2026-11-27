@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: bex-co-kro-radar-post
+    hash: 748c0bc7495e
+    ingested: 2026-11-26
   - id: research-gap-m2-ownership-gc
     hash: 62aafaded9c0
     ingested: 2026-11-26
@@ -241,3 +244,7 @@ The provider best-practices page says not to use a derived infrastructure name a
 ## Release and troubleshooting evidence (o4 dossier)
 
 Cluster API v1.15.0-rc.0 (2026-11-24, a pre-release) lists two breaking changes and says v1beta1 is on track to be unserved in v1.16, and the troubleshooting page documents infinite reconcile with co-authored slices and server-side apply failing to remove list items after atomic-to-map transitions, see [[findings/cluster-api-co-authored-list-slices-can-reconcile-forever-and-server-side-apply-can-fail-to-remove-list-items]] and [[findings/cluster-api-v1-15-0-final-was-not-released-on-2026-11-26-so-every-v1-15-statement-is-a-release-candidate-claim]]. No named-organization postmortem was found. [[sources/research-gap-o4-config-connector-ack]]
+
+## Cluster API with kro one layer above (bex.co, secondary)
+
+A bex.co post describes a platform as a service built on Cluster API with providers for Hetzner and Proxmox, and says kro would start "one layer up", once a cluster exists, because kro composes Kubernetes objects and has no opinion on where a cluster comes from. This is the author's reasoning about layering, not a tested integration. See [[examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner]]. [[sources/bex-co-kro-radar-post]]

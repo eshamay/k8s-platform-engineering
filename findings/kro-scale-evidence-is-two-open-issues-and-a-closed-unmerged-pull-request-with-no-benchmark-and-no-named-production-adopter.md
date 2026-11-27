@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: bex-co-kro-radar-post
+    hash: 748c0bc7495e
+    ingested: 2026-11-26
   - id: research-gap-o5-kro-ecosystem
     hash: 7905031da128
     ingested: 2026-11-26
@@ -27,3 +30,7 @@ A Perun Engineering article (2026-07-19, https://perun.au/insights/kro-productio
 ## Why it matters
 
 Capacity for kro must be tested, because nothing first-party states how many RGDs or instances one controller handles. The single worker default and the shared queue are the knobs to examine first. See [[findings/the-kro-docs-faq-says-a-dedicated-controller-per-rgd-while-the-tuning-page-and-source-describe-one-shared-queue]], [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]], and [[examples/kro-shared-queue-tunes-throughput]].
+
+## The bex.co radar post adds no adopter
+
+The bex.co post of 2026-07-29 is now read in full. It reports a CNCF and SlashData survey rating for kro, which is developer sentiment, and it names no organization running kro in production and gives no scale number. The finding's conclusion of no named production adopter stands. See [[findings/one-blog-reports-that-the-cncf-and-slashdata-q1-2026-radar-rated-kro-adopt-from-a-survey-of-more-than-400-developers]]. [[sources/bex-co-kro-radar-post]]

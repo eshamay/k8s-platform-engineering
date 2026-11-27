@@ -154,6 +154,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-o8-crossplane-residuals]] — verified dossier on Crossplane scaling guidance, Upjet runtime, package dependency resolution, and function-kro status, 2026-11-26
 - [[sources/research-gap-o9-cadence-and-staleness]] — verified dossier on Config Connector controller kind per resource, reconcile cadence and per-kind overrides, and Kubernetes v1.36 staleness gates, metrics and KEP 5647 status, 2026-11-26
 - [[sources/resource-composition-with-kro]] — Amazon EKS documentation overview of managed kro under EKS Capabilities, with the ACK and Argo CD integrations (draft)
+- [[sources/bex-co-kro-radar-post]] — secondary bex.co blog post reporting a CNCF and SlashData radar placing kro in Adopt, and weighing kro for a Cluster API platform (draft)
 
 ## Examples
 
@@ -450,6 +451,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/config-connector-serviceusage-service-and-bigtable-instance-and-table-reconcile-hourly-by-service-mapping]] — three kinds with an hourly mean interval (active)
 - [[examples/config-connector-alloydbcluster-and-billingbudgetsbudget-show-kinds-that-support-more-than-one-controller]] — kinds that default to Terraform or DCL and also support direct (active)
 - [[examples/kubernetes-pull-request-143314-fixed-the-informer-store-resource-version-gauge-reporting-zero-before-a-store-recorded-a-version]] — 1.38 changelog fix for the gauge reporting 0 (active)
+- [[examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner]] — a company evaluating, not adopting, kro against a hand-rolled controller, secondary (draft)
 
 ## Comparisons
 
@@ -960,6 +962,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/monitorinformerstaleness-and-the-handler-bookmarkfunc-are-absent-from-kubernetes-v1-36-0-v1-37-0-and-master-source]] — confirmed absence at three refs (active)
 - [[findings/kep-5647-is-implementable-with-a-beta-v1-37-target-and-an-open-tracking-issue-labelled-lifecycle-stale]] — KEP and tracking-issue status (active)
 - [[findings/the-amazon-eks-kro-overview-lists-resourcegraphdefinition-as-the-only-primary-resource-type-and-names-no-kro-version]] — the AWS overview names only RGD as kro's primary resource type and no kro version (draft)
+- [[findings/one-blog-reports-that-the-cncf-and-slashdata-q1-2026-radar-rated-kro-adopt-from-a-survey-of-more-than-400-developers]] — the radar placement is reported by one blog and the radar was not read (draft)
 
 ## Outputs
 

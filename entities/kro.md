@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: bex-co-kro-radar-post
+    hash: 748c0bc7495e
+    ingested: 2026-11-26
   - id: resource-composition-with-kro
     hash: 1d5781610376
     ingested: 2026-11-26
@@ -270,3 +273,9 @@ Correction note: the docs FAQ still says kro "deploys a dedicated controller" pe
 ## Managed kro on Amazon EKS (EKS Capabilities overview)
 
 The Amazon EKS documentation page "Resource composition with kro" states that under EKS Capabilities kro is "fully managed by AWS", so customers do not install, maintain, or scale kro controllers on their clusters. It describes the RGD as the single primary resource type, composes native resources and any installed CRD, and names two integrations with other EKS managed capabilities: ACK for AWS resources and Argo CD for deploying kro custom resources across clusters. A customer enables it by creating a kro capability resource through the console, the CLI, or an infrastructure-as-code tool. The page is vendor documentation, it names no kro version, no scale limit, and no mention of the alpha `Graph` kind, and its example is `kro.run/v1alpha1`. It is the first-party AWS statement behind the earlier remark that AWS offers kro as a managed capability, and it is still not evidence of production adopters or scale. See [[findings/the-amazon-eks-kro-overview-lists-resourcegraphdefinition-as-the-only-primary-resource-type-and-names-no-kro-version]]. [[sources/resource-composition-with-kro]]
+
+## The bex.co radar post, read in full (secondary)
+
+The bex.co post of 2026-07-29 is now read in full, and it repeats what the correction section above already recorded as a secondary-only claim: the CNCF and SlashData Q1 2026 Platform Engineering Radar rated kro "Adopt" in application delivery next to Helm and Backstage, from a Q4 2025 survey of more than 400 developers. The radar itself is still unread, so the placement stays attributed to the blog. The post names no company running kro in production and reports no scale figure or incident, so it does not fill the adopter gap. Its author is a Cluster API platform company that is evaluating kro, see [[examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner]]. See [[findings/one-blog-reports-that-the-cncf-and-slashdata-q1-2026-radar-rated-kro-adopt-from-a-survey-of-more-than-400-developers]].
+
+Correction note on dates: the post says kro was introduced as a joint Google, AWS, and Microsoft experiment in "late 2024", while this page records the announcement on 2025-01-30. The announcement date here comes from a stronger source, so the post's wording is treated as loose, and the discrepancy is recorded and not resolved. The post's description of kro as a SIG Cloud Provider subproject agrees with the governance section above, and its title wording about CNCF refers to the survey's sponsor and not to kro's project status. [[sources/bex-co-kro-radar-post]]

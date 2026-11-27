@@ -1059,3 +1059,13 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 - fact conflicts: 0
 - gaps drafted: 1
 - rationale: A targeted pass using the markdown handler on an extensionless file holding the AWS vendor overview of managed kro. It confirms AWS's managed offering, the ACK and Argo CD integrations, and the enable path, and it settles nothing about scale, adopters, or version. Two open gaps received not-settled notes, one gap about the managed capability's kro version was drafted, and nothing was closed.
+
+## [2026-11-26] ingest | bex.co blog post: kro Just Landed in CNCF's 'Adopt' Tier Next to Helm While Still Being Alpha Software
+- source: [[sources/bex-co-kro-radar-post]]
+- raw: `raw/bex-co-kro-radar-post` (sha256: 748c0bc7495e)
+- pages touched: [[entities/kro]], [[entities/backstage]], [[entities/cluster-api]], [[comparisons/hand-written-operator-versus-crossplane-composition-versus-kro]], [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]], [[findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter]], open-knowledge-gaps
+- new pages: [[sources/bex-co-kro-radar-post]], [[findings/one-blog-reports-that-the-cncf-and-slashdata-q1-2026-radar-rated-kro-adopt-from-a-survey-of-more-than-400-developers]], [[examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner]]
+- contradictions raised: 0 (two discrepancy notes: the kro introduction date, and Backstage's CNCF level)
+- fact conflicts: 0
+- gaps drafted: 0
+- rationale: A secondary blog post that reports a CNCF and SlashData radar the wiki had cited only second-hand. The post is now read in full and stays attributed to its author, the radar remains unread, and no named production adopter appears, so four open gaps received not-settled notes. Two minor discrepancies with existing pages were recorded as correction notes because the post is a weaker source than the pages it differs from.
