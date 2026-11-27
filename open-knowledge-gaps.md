@@ -77,7 +77,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#neutral-comparisons-of-crossplane-with-terraform-and-single-cloud-operators]] — open, unassigned
 - [[#kro-governance-status-and-the-future-of-the-graph-api]] — open, unassigned
 - [[#scaling-limits-of-per-rgd-kro-controllers-and-named-production-kro-adopters]] — open, unassigned
-- [[#krm-function-specification-and-runtime-requirements]] — open, unassigned
 - [[#independent-benchmarks-for-argo-cd-footprint-and-portal-claims]] — open, unassigned
 - [[#direct-comparison-of-config-connector-and-crossplane]] — open, unassigned
 - [[#cloud-api-rate-limits-and-crossplane-provider-reconcile-tuning]] — open, unassigned
@@ -977,18 +976,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** kro, scale, adopters, production
 - **Possible resolution from [[sources/research-gap-o5-kro-ecosystem]]:** Not settled, and the user decides whether to close it. The premise is corrected again: kro runs one shared queue and one worker by default, and only the docs FAQ still says a dedicated controller per RGD, see [[findings/the-kro-docs-faq-says-a-dedicated-controller-per-rgd-while-the-tuning-page-and-source-describe-one-shared-queue]]. No measured scaling limit, benchmark, ADOPTERS file, or named production adopter was found, and the only scale evidence is open issues 198 and 610 plus a closed unmerged pull request, see [[findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter]].
 
-## KRM function specification and runtime requirements — status: open
-
-- **Question:** What does the KRM function specification require of a function and its runtime, and which tools can run functions without containers?
-- **Why it matters:** The dossier did not fetch the specification, and the Kustomize discussion shows that the container requirement blocks use on laptops, CI, and Argo CD.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Fetch the KRM function specification and the kpt function documentation.
-  - [ ] Update [[entities/kpt]] and [[findings/moving-kustomize-helm-inflation-to-krm-functions-needs-a-container-runtime-that-laptops-ci-and-argo-cd-often-lack]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** krm-functions, kpt, kustomize, containers
-- **Possible resolution from [[sources/research-gap-o7-krm-functions]]:** Largely settled for the specification, and the user decides whether to close it. The spec says a function MUST be a container exchanging a `ResourceList` over stdin and stdout, is decoupled from in-cluster components, and requires non-root capability and a non-zero exit on failure, see [[findings/the-krm-functions-spec-requires-a-container-with-a-resourcelist-on-stdin-and-stdout-and-a-non-zero-exit-on-failure]]. kpt and Kustomize run functions without containers only through opt-in exec extensions, see [[findings/kpt-and-kustomize-run-functions-without-containers-only-through-opt-in-exec-extensions-that-both-docs-discourage]]. Not settled: Argo CD, Flux, and Helm-inflation constraints were not read, and no WASM or in-process runtime was searched for beyond the kpt and Kustomize pages.
-
 ## Independent benchmarks for Argo CD footprint and portal claims — status: open
 
 - **Question:** Do independent measurements support the vendor claims that Argo CD has a heavier footprint than Flux, that Port goes beyond Backstage, and that a portal alone leaves ticket queues?
@@ -1869,3 +1856,18 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Closed by:** Eric Shamay on 2026-11-26
 
 - **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Settled as of 2026-11-26, and the user decides whether to close it. tofu-controller is community maintained at flux-iac with five active maintainers, releases through v0.17.0 (2026-11-16), and a last push on 2026-11-25. The Terraform Operator (now GalleyBytes) has had no release since v0.17.1 (2024-05-17) and no commit since 2025-12-09, with one author behind 196 of about 206 commits, and no deprecation notice was found. See [[findings/tofu-controller-is-community-maintained-under-flux-iac-and-v0-17-0-removed-the-v1alpha1-api]] and [[findings/terraform-operator-has-had-no-release-since-may-2024-and-is-effectively-single-maintainer]].
+
+## KRM function specification and runtime requirements — status: closed (2026-11-26)
+
+- **Question:** What does the KRM function specification require of a function and its runtime, and which tools can run functions without containers?
+- **Why it matters:** The dossier did not fetch the specification, and the Kustomize discussion shows that the container requirement blocks use on laptops, CI, and Argo CD.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Fetch the KRM function specification and the kpt function documentation.
+  - [ ] Update [[entities/kpt]] and [[findings/moving-kustomize-helm-inflation-to-krm-functions-needs-a-container-runtime-that-laptops-ci-and-argo-cd-often-lack]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** krm-functions, kpt, kustomize, containers
+- **Resolution:** Largely settled for the specification. The spec says a function MUST be a container exchanging a `ResourceList` over stdin and stdout, is decoupled from in-cluster components, and requires non-root capability and a non-zero exit on failure, see [[findings/the-krm-functions-spec-requires-a-container-with-a-resourcelist-on-stdin-and-stdout-and-a-non-zero-exit-on-failure]]. kpt and Kustomize run functions without containers only through opt-in exec extensions, see [[findings/kpt-and-kustomize-run-functions-without-containers-only-through-opt-in-exec-extensions-that-both-docs-discourage]]. Not settled: Argo CD, Flux, and Helm-inflation constraints were not read, and no WASM or in-process runtime was searched for beyond the kpt and Kustomize pages.
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-gap-o7-krm-functions]]:** Largely settled for the specification, and the user decides whether to close it. The spec says a function MUST be a container exchanging a `ResourceList` over stdin and stdout, is decoupled from in-cluster components, and requires non-root capability and a non-zero exit on failure, see [[findings/the-krm-functions-spec-requires-a-container-with-a-resourcelist-on-stdin-and-stdout-and-a-non-zero-exit-on-failure]]. kpt and Kustomize run functions without containers only through opt-in exec extensions, see [[findings/kpt-and-kustomize-run-functions-without-containers-only-through-opt-in-exec-extensions-that-both-docs-discourage]]. Not settled: Argo CD, Flux, and Helm-inflation constraints were not read, and no WASM or in-process runtime was searched for beyond the kpt and Kustomize pages.
