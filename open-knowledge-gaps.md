@@ -67,7 +67,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#feature-parity-of-function-kro-with-standalone-kro]] — open, unassigned
 - [[#config-connector-and-ack-behavior-when-wrapped-by-compositions]] — open, unassigned
 - [[#upjet-runtime-execution-model-and-cost]] — open, unassigned
-- [[#config-connector-controller-kind-per-resource]] — open, unassigned
 - [[#flux-and-argo-cd-handling-of-provider-managed-resources]] — open, unassigned
 - [[#flux-source-controller-internals-and-artifact-serving-under-leader-election]] — open, unassigned
 - [[#flux-sharding-in-production-and-the-helmchart-labeling-rule]] — open, unassigned
@@ -851,18 +850,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** upjet, crossplane, terraform, performance
 - **Possible resolution from [[sources/research-gap-o8-crossplane-residuals]]:** Settled for the runtime model and not settled for cost, and the user decides whether to close it. Upjet supports a fork-based Terraform CLI mode, a no-fork Plugin SDK v2 mode, and a no-fork Plugin Framework mode, chosen per resource configuration. In CLI mode each resource has a workspace with a state file and one forked provider process is shared through gRPC reattach until an invocation TTL. Metrics exist for process counts and time-to-readiness, but no official memory or CPU figures were found, and which official providers use which mode was not established. See [[findings/upjet-supports-three-terraform-execution-modes-selected-per-resource-configuration]], [[findings/upjet-cli-mode-keeps-a-terraform-workspace-per-resource-and-shares-a-forked-provider-process-until-an-invocation-ttl]], and [[findings/no-official-upjet-memory-or-cpu-figures-exist-and-the-memory-footprint-issue-was-closed-as-outdated-by-provider-families]].
-
-## Config Connector controller kind per resource — status: open
-
-- **Question:** Which Config Connector resources use the direct, Terraform-based, or DCL-based controller, and what is the direction of travel between them?
-- **Why it matters:** The controller kind decides backoff defaults (2 minutes maximum for Terraform and DCL, tunable for direct) and drift behavior, but the reconciliation page does not map resources to kinds. See [[sources/research-provider]] and [[entities/config-connector]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Find a per-resource list or the Config Connector release notes on direct controllers.
-  - [ ] Update [[entities/config-connector]] with the mapping.
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** config-connector, reconciliation, verification
-- **Possible resolution from [[sources/research-gap-o9-cadence-and-staleness]]:** Largely settled for the mapping, and the user decides whether to close it. The mapping is the Go table `ControllerConfigStatic` in `pkg/controller/resourceconfig/static_config.go`, with 814 entries at master commit 5cce7c7e. By default controller it has Direct 539, Terraform 206, DCL 65 and 4 IAM-specific kinds (the dossier author's own count), 510 kinds support only Direct, 140 only Terraform and 50 only DCL, and 110 kinds support more than one controller. The controller-types page says "New resources use the direct controller by default. Existing resources are migrated regularly.", a namespace override beats the build-time default, and live CRD labels identify Terraform and DCL, with neither label meaning direct. Not settled: the table is published only in source, so there is no per-resource doc, and the release in which any kind migrated to direct was not found because release notes were not read. See [[findings/config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them]], [[findings/config-connector-routes-a-kind-to-its-controller-by-namespace-override-then-static-default-and-a-live-crd-label-shows-which-one-runs]], [[examples/config-connector-alloydbcluster-and-billingbudgetsbudget-show-kinds-that-support-more-than-one-controller]], and [[decisions/accept-the-build-time-controller-for-a-config-connector-kind-or-override-it-per-namespace-or-per-resource]].
 
 ## Flux and Argo CD handling of provider-managed resources — status: open
 
@@ -1873,3 +1860,18 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Closed by:** Eric Shamay on 2026-11-26
 
 - **Possible resolution from [[sources/research-gap-o7-krm-functions]]:** Largely settled for history, and the user decides whether to close it. The alpha `xfn` sidecar (v1.11.0, 2023-01-31) was replaced in v1.14.0 (2023-11-01) by package-manager Deployments behind headless Services, xfn moved out of tree, and a "feat: remove xfn" commit is on main, see [[findings/crossplane-moved-composition-functions-from-an-xfn-sidecar-in-v1-11-to-package-manager-deployments-in-v1-14]]. The 2023 VSHN sidecar description and the design document describe different eras. Not settled: whether an xfn-like container wrapper is maintained, the exact function pod construction in source, and the controlled-rollout one-pager.
+
+## Config Connector controller kind per resource — status: closed (2026-11-26)
+
+- **Question:** Which Config Connector resources use the direct, Terraform-based, or DCL-based controller, and what is the direction of travel between them?
+- **Why it matters:** The controller kind decides backoff defaults (2 minutes maximum for Terraform and DCL, tunable for direct) and drift behavior, but the reconciliation page does not map resources to kinds. See [[sources/research-provider]] and [[entities/config-connector]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find a per-resource list or the Config Connector release notes on direct controllers.
+  - [ ] Update [[entities/config-connector]] with the mapping.
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** config-connector, reconciliation, verification
+- **Resolution:** Largely settled for the mapping. The mapping is the Go table `ControllerConfigStatic` in `pkg/controller/resourceconfig/static_config.go`, with 814 entries at master commit 5cce7c7e. By default controller it has Direct 539, Terraform 206, DCL 65 and 4 IAM-specific kinds (the dossier author's own count), 510 kinds support only Direct, 140 only Terraform and 50 only DCL, and 110 kinds support more than one controller. The controller-types page says "New resources use the direct controller by default. Existing resources are migrated regularly.", a namespace override beats the build-time default, and live CRD labels identify Terraform and DCL, with neither label meaning direct. Not settled: the table is published only in source, so there is no per-resource doc, and the release in which any kind migrated to direct was not found because release notes were not read. See [[findings/config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them]], [[findings/config-connector-routes-a-kind-to-its-controller-by-namespace-override-then-static-default-and-a-live-crd-label-shows-which-one-runs]], [[examples/config-connector-alloydbcluster-and-billingbudgetsbudget-show-kinds-that-support-more-than-one-controller]], and [[decisions/accept-the-build-time-controller-for-a-config-connector-kind-or-override-it-per-namespace-or-per-resource]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-gap-o9-cadence-and-staleness]]:** Largely settled for the mapping, and the user decides whether to close it. The mapping is the Go table `ControllerConfigStatic` in `pkg/controller/resourceconfig/static_config.go`, with 814 entries at master commit 5cce7c7e. By default controller it has Direct 539, Terraform 206, DCL 65 and 4 IAM-specific kinds (the dossier author's own count), 510 kinds support only Direct, 140 only Terraform and 50 only DCL, and 110 kinds support more than one controller. The controller-types page says "New resources use the direct controller by default. Existing resources are migrated regularly.", a namespace override beats the build-time default, and live CRD labels identify Terraform and DCL, with neither label meaning direct. Not settled: the table is published only in source, so there is no per-resource doc, and the release in which any kind migrated to direct was not found because release notes were not read. See [[findings/config-connector-s-static-config-table-lists-814-kinds-and-sets-direct-as-the-default-for-539-of-them]], [[findings/config-connector-routes-a-kind-to-its-controller-by-namespace-override-then-static-default-and-a-live-crd-label-shows-which-one-runs]], [[examples/config-connector-alloydbcluster-and-billingbudgetsbudget-show-kinds-that-support-more-than-one-controller]], and [[decisions/accept-the-build-time-controller-for-a-config-connector-kind-or-override-it-per-namespace-or-per-resource]].
