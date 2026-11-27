@@ -3,8 +3,11 @@ title: Crossplane adoption needs a hosting cluster, Kubernetes skills, and platf
 type: finding
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: medium-terraform-opentofu-crossplane
+    hash: 13ec64862460
+    ingested: 2026-11-26
   - id: research-crossplane-deep-dive
     hash: 44034359219f
     ingested: 2026-11-25
@@ -25,3 +28,7 @@ A team that does not already run Kubernetes pays for a cluster, its upgrades, an
 ## Mitigations and caveats
 
 The Encore source sells a competing product, and the Crossplane blog is advocacy, so the cost is best read as a point on which the critic and the project agree. For teams that already operate Kubernetes, the cost is mostly authoring effort, which functions and the guidance in [[findings/oversized-compositions-and-cloud-shaped-apis-make-platform-apis-hard-to-use]] address. The single-cloud operators in [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]] still need a cluster but avoid the authoring layer. See also [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]] and [[findings/immature-abstractions-in-the-control-plane-ecosystem]].
+
+## A Terraform user's view of the same costs (secondary)
+
+A Medium post by Gavin Yap (2025-01-10) describes the same costs from a non-user's side: a Kubernetes cluster with its Day 2 work, a portal such as Backstage for self-service, and several days of setup against under an hour for Terraform or OpenTofu. The estimates are his own and untested, and the post says its author has not used Crossplane extensively. [[sources/medium-terraform-opentofu-crossplane]]

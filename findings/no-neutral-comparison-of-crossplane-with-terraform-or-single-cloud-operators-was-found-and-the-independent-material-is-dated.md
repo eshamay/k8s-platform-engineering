@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: medium-terraform-opentofu-crossplane
+    hash: 13ec64862460
+    ingested: 2026-11-26
   - id: research-gap-o6-platform-landscape
     hash: caa824f6fb9e
     ingested: 2026-11-26
@@ -33,3 +36,7 @@ The only substantive independent source is four years old and predates Crossplan
 ## Related
 
 [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]], [[comparisons/crossplane-versus-cloud-vendor-add-ons-ack-config-connector-and-aso]], [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]], [[decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane]]
+
+## The January 2025 Medium post is another non-neutral source
+
+The Medium post by Gavin Yap (2025-01-10) compares Terraform and OpenTofu with Crossplane, but the author promotes his own OpenTofu framework, says the article reflects his personal perspective, and says he has not used Crossplane extensively. It therefore adds a practitioner opinion and not a neutral comparison, and the finding's conclusion stands. See [[examples/a-practitioner-prefers-a-yaml-abstracted-opentofu-framework-with-gitlab-merge-requests-over-crossplane-and-a-portal]]. [[sources/medium-terraform-opentofu-crossplane]]

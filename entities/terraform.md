@@ -5,6 +5,9 @@ status: draft
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: medium-terraform-opentofu-crossplane
+    hash: 13ec64862460
+    ingested: 2026-11-26
   - id: medium-config-connector-pitfalls
     hash: c5b9825d753a
     ingested: 2026-11-26
@@ -41,3 +44,7 @@ Two controllers run Terraform from Kubernetes custom resources, [[entities/tofu-
 ## A practitioner's comparison with Config Connector
 
 A 2023 Medium post by a Config Connector user says Terraform's strength is its dependency graph, inferred from references and extendable with `depends_on`, and its weaknesses are the HCL entry barrier for developers and the need to understand state, while Config Connector is fully declarative but supports only Google Cloud. This is one practitioner's opinion and not a controlled comparison. [[sources/medium-config-connector-pitfalls]]
+
+## A practitioner's OpenTofu framework and plan-review argument (secondary)
+
+A Medium post by Gavin Yap (2025-01-10) describes Terraform and OpenTofu with an S3 state backend and DynamoDB or, from Terraform 1.10, the experimental `use_lockfile` option for locking, and a chicken-and-egg problem when the backend bucket must exist first. He values `terraform plan` as a preview before changes to production data, and recommends scheduled CI jobs for reconciliation. His own framework puts short YAML definitions in front of HCL, with GitLab merge requests for self-service. See [[examples/a-practitioner-prefers-a-yaml-abstracted-opentofu-framework-with-gitlab-merge-requests-over-crossplane-and-a-portal]] and [[findings/one-practitioner-reports-a-terraform-plan-that-showed-an-update-while-the-apply-recreated-the-resource-and-lost-data]]. [[sources/medium-terraform-opentofu-crossplane]]

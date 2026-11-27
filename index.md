@@ -158,6 +158,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/kcp-kubecon-talk]] — auto-generated transcript of a short KubeCon talk on kcp workspaces by Yan Vegas of Accenture, the speaker's account (draft)
 - [[sources/kubernetes-finalizers-blog]] — official Kubernetes blog post of 2021 by Aaron Alpar of Kasten on finalizers, owner references, propagation policy, and forcing namespace finalization (draft)
 - [[sources/medium-config-connector-pitfalls]] — secondary Medium post by Michał Marszałek, 2023, on Config Connector dependency order, Argo CD sync waves, and a finalizer-clearing CronJob (draft)
+- [[sources/medium-terraform-opentofu-crossplane]] — secondary Medium opinion post by Gavin Yap, 2025, choosing Terraform or OpenTofu over Crossplane, by an author who has not used Crossplane extensively (draft)
 
 ## Examples
 
@@ -458,6 +459,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour]] — a speaker's unmeasured timing claim and CRD-version handling for kcp (draft)
 - [[examples/a-configmap-with-a-finalizer-no-controller-handles-stays-in-deletion-until-kubectl-patch-removes-the-finalizer-list]] — a dead finalizer on a ConfigMap keeps a delete pending until a JSON patch clears it (draft)
 - [[examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first]] — a single practitioner's workaround for BigQuery tables stuck in DeleteFailed, secondary (draft)
+- [[examples/a-practitioner-prefers-a-yaml-abstracted-opentofu-framework-with-gitlab-merge-requests-over-crossplane-and-a-portal]] — one practitioner's OpenTofu and GitLab self-service setup chosen over Crossplane, secondary (draft)
 
 ## Comparisons
 
@@ -971,6 +973,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/one-blog-reports-that-the-cncf-and-slashdata-q1-2026-radar-rated-kro-adopt-from-a-survey-of-more-than-400-developers]] — the radar placement is reported by one blog and the radar was not read (draft)
 - [[findings/the-2021-kubernetes-finalizers-blog-says-kubectl-cannot-set-the-propagation-policy-while-its-own-example-uses-cascade-orphan]] — a dated statement in the blog that current documentation and the blog's own example contradict (draft)
 - [[findings/forcing-namespace-finalization-can-leave-orphan-objects-in-a-namespace-that-no-longer-exists-and-recreating-the-namespace-may-bring-them-back]] — the blog's warning and recovery step for forced namespace finalization (draft)
+- [[findings/one-practitioner-reports-a-terraform-plan-that-showed-an-update-while-the-apply-recreated-the-resource-and-lost-data]] — an anonymous anecdote that a plan can under-report a recreate when a provider is faulty (draft)
 
 ## Outputs
 

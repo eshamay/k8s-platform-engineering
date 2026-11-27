@@ -85,6 +85,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#recent-2024-to-2026-platform-incident-evidence]] — open, unassigned
 - [[#which-kro-version-and-feature-gates-the-amazon-eks-managed-capability-runs]] — open, unassigned
 - [[#which-cve-the-kcp-speaker-said-the-kcp-side-discovered]] — open, unassigned
+- [[#crossplane-backup-and-disaster-recovery-guidance-including-velero-and-external-name-after-a-restore]] — open, unassigned
 
 ---
 
@@ -904,6 +905,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** crossplane, terraform, comparison, bias
 - **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Not settled, and the user decides whether to keep it open. The readable material is vendor, consultancy, or lab writing: a Spacelift article (vendor), a Crossplane-friendly VSHN post, a 2021 Crossplane project post, a lab migration walkthrough, and a 2022 SuperOrbital post that is the most independent and predates Crossplane v2. No independent benchmark, named adopter migration post-mortem, or primary-document comparison of Config Connector, ACK, and Azure Service Operator was found, and two Medium posts were unreadable. See [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]] and [[decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane]].
 - **Possible resolution from [[sources/medium-config-connector-pitfalls]]:** Not settled, and the user decides whether to close it. The post is one Config Connector user's opinion contrasting Config Connector with Terraform on dependency handling, HCL and state, and mentions Crossplane only for multi-cloud support. It is not neutral, not a benchmark, and not a head-to-head comparison involving Crossplane.
+- **Possible resolution from [[sources/medium-terraform-opentofu-crossplane]]:** Not settled, and the user decides whether to close it. The Medium post by Gavin Yap (2025-01-10) is an individual's opinion that favors his own OpenTofu framework, and its author says he has not used Crossplane extensively, so it is neither neutral nor a hands-on Crossplane evaluation. It does add practitioner objections on setup time, portal cost, disaster recovery, and plan review. See [[examples/a-practitioner-prefers-a-yaml-abstracted-opentofu-framework-with-gitlab-merge-requests-over-crossplane-and-a-portal]].
 
 ## kro governance status and the future of the Graph API — status: open
 
@@ -1023,6 +1025,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-gap-o4-config-connector-ack]]:** Partly settled on documentation and release-note evidence, and not settled for named-organization postmortems, which were not found. Added: a Config Connector design document and known-issues page, kro v0.10.0 fixes and an alpha orphan policy (pull request 1445), ACK contributor replies on issues 3122 and 3152 with the reminder that issues 3142, 3153, and 3154 are one reporter's audit with no maintainer root cause, and Cluster API v1.15.0-rc.0 notes and troubleshooting page. Whether any kro fix followed a production incident was not determined. See [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]], [[findings/kro-v0-10-0-fixes-partial-apply-cleanup-and-duplicate-rgd-identities-and-pull-request-1445-adds-an-alpha-deletion-policy-behind-an-off-by-default-gate]], and [[examples/config-connector-issue-534-deleting-a-bigquerydataset-before-its-tables-left-both-in-failure-and-the-issue-has-been-open-since-2021]].
 - **Possible resolution from [[sources/bex-co-kro-radar-post]]:** Not settled, and the user decides whether to close it. The post is a secondary opinion piece that lists five anticipated gaps for kro, namely the alpha API, no cluster provisioning, no TLS or custom-domain model, unneeded portability, and type checking limited to visible schemas. They are predictions by an evaluator and not first-party reports or incidents.
 - **Possible resolution from [[sources/medium-config-connector-pitfalls]]:** Not settled, and the user decides whether to close it. The Medium post is a secondary practitioner account, not first-party, and it names no organization. It repeats the Config Connector ordering and deletion pitfall already held as reporter claims in issue 534 and a design document, and it adds a worked workaround, see [[examples/a-practitioner-ran-a-cronjob-that-removed-finalizers-from-config-connector-bigquery-tables-whose-dataset-was-deleted-first]].
+- **Possible resolution from [[sources/medium-terraform-opentofu-crossplane]]:** Not settled, and the user decides whether to close it. The post concerns Terraform and Crossplane and covers none of kro, Config Connector, ACK, or Cluster API.
 
 ## Force-conflicts versus strip-or-adopt when two controllers co-own a field — status: open
 
@@ -1920,3 +1923,14 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Record the identifier, affected versions, and fix in [[entities/kcp]].
 - **Drafted by:** agent on 2026-11-26
 - **Tags:** kcp, security, cve, multi-tenancy
+
+## Crossplane backup and disaster recovery guidance, including Velero and external-name after a restore — status: open
+
+- **Question:** Does Crossplane's documentation recommend Velero or another backup tool for restoring a control plane, and what must be done with `crossplane.io/external-name` and managed resources after a restore into a new cluster?
+- **Why it matters:** A Terraform user asserts that Crossplane's default disaster recovery relies on Velero and that the external-name annotation must be patched during a recovery without it, which bears on deletion safety and duplicate creation. The wiki has not read Crossplane's own guidance, and related restore failures exist for ACK and Config Connector, see [[examples/ack-issue-3142-a-restored-cluster-copy-or-overlapping-controller-install-can-give-one-aws-resource-two-owners]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the Crossplane documentation and issues on backup, restore, and external-name.
+  - [ ] Record the recommended procedure and the failure modes in [[entities/crossplane]].
+- **Drafted by:** agent on 2026-11-26
+- **Tags:** crossplane, disaster-recovery, velero, external-name

@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: medium-terraform-opentofu-crossplane
+    hash: 13ec64862460
+    ingested: 2026-11-26
   - id: research-gap-o6-platform-landscape
     hash: caa824f6fb9e
     ingested: 2026-11-26
@@ -25,3 +28,7 @@ The post says "Crossplane has no equivalent to a dry run mode, like `terraform p
 ## Related
 
 [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]], [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]], [[entities/upjet]]
+
+## A 2025 practitioner makes the same plan argument
+
+A Medium post by Gavin Yap (2025-01-10) also treats `terraform plan` as the feature that gives confidence before changing production databases, and supports it with an anonymous story of a plan that under-reported a recreate. See [[findings/one-practitioner-reports-a-terraform-plan-that-showed-an-update-while-the-apply-recreated-the-resource-and-lost-data]]. [[sources/medium-terraform-opentofu-crossplane]]

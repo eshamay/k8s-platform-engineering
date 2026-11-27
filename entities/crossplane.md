@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: medium-terraform-opentofu-crossplane
+    hash: 13ec64862460
+    ingested: 2026-11-26
   - id: research-gap-m2-ownership-gc
     hash: 62aafaded9c0
     ingested: 2026-11-26
@@ -346,3 +349,7 @@ Packages: only one revision of a Provider or Configuration is Active, `revisionA
 Scaling: v2.5.0 (2026-11-24) adds an alpha garbage collector for unused CompositionRevisions with `spec.unusedRevisionHistoryLimit` defaulting to 1, see [[examples/crossplane-v2-5-0-released-2026-11-24-with-alpha-compositionrevision-garbage-collection-and-an-upgrade-ownership-fix]]. Correction note: the docs Pods guide still calls `--max-reconcile-rate` a per-second rate while v2.1.0 renamed it `--max-concurrent-reconciles`, a worker pool size, and no numeric capacity limit or independent benchmark was found. The release that changed the XR circuit breaker default from 50 burst (v2.1.0 notes) to 100 (v2.5.0 source) was not traced.
 
 Status: `function-kro` approximates kro built-in conditions from one run and sets only declared status paths on the desired XR, see [[findings/function-kro-approximates-kro-built-in-conditions-from-one-run-and-writes-only-declared-status-paths-to-the-desired-xr]]. v2.5.0 reserves `status.crossplane` on modern XRs. [[sources/research-gap-o8-crossplane-residuals]]
+
+## A Terraform user's objections, disaster recovery, and a dated flag (secondary)
+
+A Medium post by Gavin Yap (2025-01-10), written by someone who says he has not used Crossplane extensively, lists objections: Kubernetes and portal overhead, several Kinds for one S3 bucket in the Upbound AWS provider, a pipeline Composition that he finds long, and disaster recovery. He says Crossplane's default disaster recovery relies on Velero and that without Velero the `crossplane.io/external-name` annotation must be patched during recovery. This wiki has not read Crossplane's backup guidance, so the Velero claim is unverified and a gap was drafted, see [[open-knowledge-gaps]]. The post also recommends a `ControllerConfig` resource to pass `--poll=5m`, and correction note: this page's source record says the v2 upgrade guide removes `ControllerConfig`, so that recommendation does not apply to v2. [[sources/medium-terraform-opentofu-crossplane]]

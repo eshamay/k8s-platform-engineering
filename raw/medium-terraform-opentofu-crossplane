@@ -1,0 +1,498 @@
+Choosing between Terraform (OpenTofu) and Crossplane
+Gavin Yap
+Gavin Yap
+
+Follow
+11 min read
+·
+Jan 10, 2025
+2
+
+
+
+
+
+Infrastructure as Code
+Infrastructure as Code (IaC) is no longer unfamiliar to DevOps professionals and stands as a cornerstone of Platform Engineering. A successful IaC is to achieve Self-service and GitOps, where Self-service enables target users — those requesting specific resources — to create them independently, without requiring intervention from DevOps teams.
+
+Lately, there are many people advocating IDPs and Crossplane. I took an interest and spend sometime to investigate if the Crossplane’s Juice, is worth the squeeze.
+
+Before you proceed, note that this article reflects my personal perspective on IaC tools. If you’re a strong advocate of Crossplane, you may want to stop here, if you are easily offended
+
+How each IaC tool works in general
+Terraform
+Install a cli from terraform of a certain version. Terraform OpenTofu
+Configure your access to your cloud provider.
+Create a *.tf to install writing your code. Which in general, usually comprises of the following
+- Setup a backend to store your state file.
+- Define your cloud provider
+- Start writing resource blocks to create your resources
+You then do each of the steps in sequence:
+- terraform init
+- terraform validate (optional - for syntax validation)
+- terraform plan
+-terraform apply
+# Define the Terraform backend
+terraform {
+  backend "s3" {
+    bucket         = "my-terraform-state-bucket"
+    key            = "state/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-lock-table" # Optional: For state locking
+    encrypt        = true
+  }
+}
+
+# Define the provider
+provider "aws" {
+  region = "us-east-1"
+}
+
+# Create an S3 bucket
+resource "aws_s3_bucket" "example" {
+  bucket = "my-example-bucket"
+
+  # Enable versioning
+  versioning {
+    enabled = true
+  }
+
+  # Enable server-side encryption
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
+  # Define public access block
+  bucket_policy = <<EOT
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadGetObject",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::my-example-bucket/*",
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    }
+  ]
+}
+EOT
+}
+
+# Output the bucket name
+output "bucket_name" {
+  value = aws_s3_bucket.example.bucket
+}
+Example 1: of creating and S3 bucket resource in AWS
+
+How I do it differently
+I created a framework, with currently 3 services using OpenTofu as follows:
+
+AWS Networking
+AWS IAM
+AWS IAM Identity Center
+How it works:
+
+Install of using CLI, the framework, uses Taskfile and Docker. To mount the files and execute the *.tf files when needed.
+Install of writing HCL syntax, the resources definition is abstracted from HCL and HCL is the programmatic layer to execute init, plan and apply.
+my-example-bucket:
+  versioning:
+    enabled: true
+  server_side_encryption_configuration:
+    rule:
+      apply_server_side_encryption_by_default:
+        sse_algorithm: AES256
+  attach_policy: true
+  policy: |
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "PublicReadGetObject",
+          "Effect": "Deny",
+          "Principal": "*",
+          "Action": "s3:GetObject",
+          "Resource": "arn:aws:s3:::my-example-bucket/*",
+          "Condition": {
+            "Bool": {
+              "aws:SecureTransport": "false"
+            }
+          }
+        }
+      ]
+    }
+Example 2: Is the resource definition I need equivalent of Example1. See s3-tf-demo
+
+Crossplane
+Install Kubernetes.
+Deploy Crossplane using Helm charts.
+Configure your cloud provider.
+Set up cloud credentials.
+Write Kubernetes manifests for resource creation.
+How I Would Approach It
+Though I haven’t used Crossplane extensively in my professional experience, here’s how I envision setting it up:
+
+Organize Resource Types
+Separate resources into dedicated repositories for better manageability.
+Integrate with ArgoCD
+Use ArgoCD to sync these repositories with your Kubernetes cluster.
+Complex Resources
+Many resources require multiple YAML configurations for various aspects (e.g., Bucket, BucketVersioning, BucketServerSideEncryptionConfiguration, and BucketPolicy). See this example.
+Enable Self-Service
+Implement an Internal Developer Portal (IDP) with a UI for users to submit pull requests for resource definitions.
+This approach streamlines resource creation while leveraging GitOps principles.
+
+Let’s go through each points
+Setting up
+Terraform
+Setting up Terraform is straightforward, with a gentle learning curve.
+
+The state file acts like a journal to track your resource inventory. Commonly, an object store like AWS S3 is used. Starting from Terraform 1.10.x, the S3 backend includes an experimental use_lockfile option for state file locking to prevent concurrent executions. For earlier versions or OpenTofu, DynamoDB is typically used for locking, adding a minor overhead that Terraform can initialize automatically.
+
+Using S3 as a backend introduces a “chicken-and-egg” issue: the bucket must exist before you can configure it in Terraform. Here’s a basic setup process instead:
+
+Install the CLI for Terraform or OpenTofu.
+Configure cloud provider access.
+Create an S3 bucket for the backend.
+Create a DynamoDB table for state locking.
+Write *.tf files:
+- Define the backend.
+- Configure the cloud provider.
+- Add resource blocks.
+Run the following steps:
+- terraform init
+- terraform validate (optional)
+- terraform plan
+-terraform apply
+This structure ensures a smooth Terraform workflow.
+
+Crossplane
+Setting up Kubernetes is already a significant effort, and managing Day 2 operations adds complexity. Crossplane’s default Disaster Recovery (DR) solution relies on Velero, introducing yet another tool to manage.
+
+In my experience, it’s better to avoid running stateful workloads directly. Instead, I use Terraform and bootstrap scripts to create EKS clusters, allowing us to restore clusters in under 30 minutes during a DR scenario — most of the time spent provisioning the EKS cluster itself.
+
+With Crossplane’s reliance on Velero, there are two options:
+
+Adapt existing tooling to incorporate Velero.
+Patch crossplane.io/external-name during a DR event if Velero is excluded.
+Both options require testing, and at this point, Crossplane starts to feel less simple.
+
+Another challenge is managing complex resources. For example, provisioning an S3 bucket requires multiple Kinds (e.g., Bucket, BucketVersioning, BucketPolicy)—almost one Kind per attribute.
+
+To enable Self-Service, tools like Backstage are needed to provide a UI that translates user requests into CRDs managed by Crossplane. However, this adds more setup overhead, and having tried Backstage, I found it introduces another learning curve
+
+Compare
+Despite the overhead of creating an S3 bucket and DynamoDB, with Terraform or OpenTofu, you can be productive in under an hour — even without additional tooling. In contrast, setting up Crossplane from scratch, especially alongside a Developer Platform, would likely take me several days.
+
+Get Gavin Yap’s stories in your inbox
+Join Medium for free to get updates from this writer.
+
+Enter your email
+Subscribe
+
+Remember me for faster sign in
+
+Disaster Recovery
+
+Terraform doesn’t require DR for itself. S3 already offers high availability with three 9s of SLA, and you can easily configure cross-region replication for backups. With Crossplane, however, you must consider the RTO and RPO for the Kubernetes cluster running Crossplane itself.
+
+Complex Resources
+
+Crossplane often requires multiple Kinds for a single resource. For example, provisioning an S3 bucket involves separate definitions for Bucket, BucketVersioning, BucketPolicy, etc. From a programmer's perspective, it feels more like C structs than Object-Oriented design.
+In my Terraform/OpenTofu framework, YAML abstraction simplifies this greatly. For example:
+
+bucket1: {}
+bucket2: {}
+bucket3: {}
+This allows me to define buckets with defaults, leaving only essential attributes to specify.
+
+Self-Service
+
+I use GitLab as the IDP for Terraform/OpenTofu. Developers can create resources using its built-in editor with clear, concise YAML definitions. Submitting a PR triggers pipelines to execute IaC. There’s no need for a complex UI when resource definitions are simple and well-documented. A good README.md and, if needed, an LLM-powered chatbot can assist with YAML crafting.
+
+Crossplane, on the other hand, requires significant effort to build an IDP. Large organizations that boast about their IDP success often started their Platform Engineering journey earlier than most.
+
+Programmatic
+Terraform
+The only challenge arises with programmatic access. If you’re a software developer who values Big O complexity, trust me — it can get tricky when writing complex HCL statements. However, once you overcome the learning curve, it becomes manageable.
+
+At its core, it’s all about data manipulation before passing it into a resource block or module.
+
+Example: Processing YAML files for VPCs:
+
+locals {
+  # Process VPC YAML files:
+  # 1. Decode YAML and handle errors.
+  # 2. Filter out invalid configurations.
+  # 3. Create an error flag and collect errors.
+  # 4. Generate a list of valid VPCs and their attributes.
+  # 5. Group by unique VPC names.
+  # 6. Filter VPCs marked for creation.
+
+  vpcs_config_tuple         = [for f in fileset(path.module, "./resources/vpcs/*/*.yaml"): ["${split("/", f)[2]}", try(yamldecode(file(f)), null), f]]
+  vpc_config_tuple_with_err = [for vpc in local.vpcs_config_tuple: vpc[2] if vpc[1] == null]
+  vpc_config_tuple_has_err  = length(local.vpc_config_tuple_with_err) > 0
+  array_of_vpcs             = [for tuple in local.vpcs_config_tuple: merge({vpc = "${tuple[0]}"}, tuple[1]) if !local.vpc_config_tuple_has_err]
+  vpc_names                 = toset([for vpc in local.array_of_vpcs: vpc.vpc])
+  grouped_vpcs              = {for vpc in local.vpc_names: vpc => merge([for v in local.array_of_vpcs: v if v.vpc == vpc]...)}
+  vpcs                      = {for k, v in local.grouped_vpcs: k => v if try(v.create, true)}
+}
+This logic:
+
+Reads YAML files from ./resources/vpcs/<vpc_name>
+Collects errors in vpc_config_tuple_with_err if YAML decoding fails.
+Generates a map
+<vpc_name>: 
+  <attributes...>
+Filters out entries where create: false.
+While this may appear complex, it becomes intuitive with practice. Most of my team members is able to master this feat in 3 months or less.
+
+Therefore, Pulumi helps to address this making it more accessible for developers accustomed to traditional programming paradigms.
+
+Crossplane
+Pardon me if I do not know enough. but from what I understand about Crossplane, it feels overwhelming. Even without the programmatic aspects, managing an S3 resource already involves dealing with so many Kinds — let alone without composition.
+
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: Bucket
+metadata:
+  name: my-example-bucket
+spec:
+  forProvider:
+    bucket: my-example-bucket
+  providerConfigRef:
+    name: aws-provider
+---
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketVersioning
+metadata:
+  name: my-example-bucket-versioning
+spec:
+  forProvider:
+    bucket: my-example-bucket
+    status: Enabled
+  providerConfigRef:
+    name: aws-provider
+---
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketServerSideEncryptionConfiguration
+metadata:
+  name: my-example-bucket-encryption
+spec:
+  forProvider:
+    bucket: my-example-bucket
+    rules:
+      - applyServerSideEncryptionByDefault:
+          sseAlgorithm: AES256
+  providerConfigRef:
+    name: aws-provider
+---
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketPublicAccessBlock
+metadata:
+  name: my-example-bucket-public-access-block
+spec:
+  forProvider:
+    bucket: my-example-bucket
+    blockPublicAcls: true
+    blockPublicPolicy: true
+    ignorePublicAcls: true
+    restrictPublicBuckets: true
+  providerConfigRef:
+    name: aws-provider
+---
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketPolicy
+metadata:
+  name: my-example-bucket-policy
+spec:
+  forProvider:
+    bucket: my-example-bucket
+    policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::my-example-bucket/*",
+            "Condition": {
+              "Bool": {
+                "aws:SecureTransport": "false"
+              }
+            }
+          }
+        ]
+      }
+  providerConfigRef:
+    name: aws-provider
+Example 4: For the same in Example 1 and Example 2
+
+So compositions,
+
+1. I can create a CompositeS3Bucket that looks much simple below, which looks very close to .
+
+apiVersion: aws.example.org/v1alpha1
+kind: CompositeS3Bucket
+metadata:
+  name: mys3-bucket.aws.example.org
+spec:
+  parameters:
+    bucketName: my-example-bucket
+    region: ap-southeast-1
+    versioning:
+      enabled: true
+    server_side_encryption_configuration:
+      rule:
+        apply_server_side_encryption_by_default:
+          sse_algorithm: AES256
+    attach_policy: true
+    policy: |
+      {
+          "Version": "2012-10-17",
+          "Statement": [
+          {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::my-example-bucket/*",
+            "Condition": {
+              "Bool": {
+                "aws:SecureTransport": "false"
+              }
+            }
+          }
+        ]
+      }
+2. Before applying above, I need CompositeResourceDefinition. It serves a contract to what are your parameters are in the Composite Resource. In the above case, a CompositeS3Bucket.
+
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: composites3buckets.aws.example.org
+spec:
+  group: aws.example.org
+  names:
+    kind: CompositeS3Bucket
+    plural: composites3buckets
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                parameters:
+                  type: object
+                  properties:
+                    bucketName:
+                      type: string
+                    region:
+                      type: string
+      ... Truncated Due to too long ...
+3. In order to support programmatic, you need KCL-functions.
+
+kubectl apply -f- <<EOF
+apiVersion: pkg.crossplane.io/v1beta1
+kind: Function
+metadata:
+  name: kcl-function
+spec:
+  package: xpkg.upbound.io/crossplane-contrib/function-kcl:latest
+EOF
+4. Composition looks kinda like CI/CD pipeline, but is more akin to build each Kind of the resource programmatically
+
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: composites3buckets.aws.example.org
+spec:
+  compositeTypeRef:
+    apiVersion: aws.example.org/v1alpha1
+    kind: CompositeS3Bucket
+  mode: Pipeline
+  pipeline:
+    - step: process-with-kcl-bucket
+      functionRef:
+        name: kcl-function
+      input:
+        apiVersion: krm.kcl.dev/v1alpha1
+        kind: KCLRun
+        spec:
+          source: |
+            spec = option("params").oxr.spec
+            bucket = {
+              apiVersion: "s3.aws.upbound.io/v1beta1",
+              kind: "Bucket",
+              metadata: {
+                name: spec.parameters.bucketName
+              },
+              spec: {
+                forProvider: {
+                  region: spec.parameters.region,
+                }
+              }
+            }
+            items = [bucket]
+    - step: process-with-kcl-bucket-versioning
+      ...
+    - step: process-with-kcl-bpa
+      ...
+    - step: ...Lot of Truncation...
+You can see I am almost like, WTF……..
+
+Other Points
+Reconciliation
+Reconciliation in infrastructure as code (IaC) tools like Terraform, OpenTofu, Pulumi, and Crossplane involves aligning the actual state of resources with the desired state defined in code. However, if resources are created outside of IaC processes, they won’t be managed or reconciled by these tools.
+
+Organizations with strong DevSecOps practices often enforce policies, such as Service Control Policies (SCPs), to prevent resource creation outside approved IaC pipelines. This approach requires a mature engineering culture and adherence of compliance to actual practices.
+
+Reconciliation processes typically involve querying cloud provider APIs to compare and align resource states. To manage the frequency of these operations and avoid issues like API rate limiting, it’s essential to adjust reconciliation rates and polling intervals.
+
+Recommendations:
+
+1. Adjust Reconciliation Rate:
+
+Use the --max-reconcile-rate flag to set a global maximum rate of reconciliations per second across all controllers. See here.
+Set the --poll-interval flag to determine how often controllers check the state of managed resources.
+2. Configure Controller Settings:
+
+Implement a ControllerConfig resource to pass arguments like --poll=5m, adjusting the polling frequency to reduce API call rates. See here.
+While these issues were identified several years ago, they remain relevant for newcomers to Crossplane.
+
+Regarding Terraform, automating reconciliation can be achieved by integrating it with continuous integration/continuous deployment (CI/CD) pipelines that trigger like a cronjob. This setup ensures that only things needed and safe to be reconcile, will reconcile.
+
+Operational Safety
+The terraform plan command is a crucial feature in Terraform's workflow, allowing you to preview proposed changes before applying them. This step is essential for ensuring that modifications won't inadvertently destroy or alter critical resources, such as production databases.
+
+In my experience, I had use a Terraform provider from one of our service provider which shows update and no recreate when running terraform plan, however it recreates upon terraform apply thus losing data/setup of the thing managed through Terraform. We had the plan logs within our Ci/Cd and ask provider to investigate the issue. It was the official terraform provider from out service provider that is an issue.
+
+Now without this feature, I would lack confidence in making changes to critical production resources, such as databases. This command is essential for previewing proposed modifications, ensuring that unintended actions — like accidental deletions or misconfigurations — are identified before implementation.
+
+Conclusion
+Terraform and OpenTofu are highly relevant to me, but much of today’s Terraform code lacks good DevEx and extensibility while failing to embrace the KISS (Keep It Simple, Stupid) principle.
+
+AWS Networking is an example I created, leveraging open-source tools with the flexibility to replace components if needed. It emphasizes security, compliance, modular “Lego block” designs for building solutions (e.g., EC2, S3, RDS, SQS/SNS), and FinOps features like cost estimation and upfront budget planning. Git serves as the “source of truth,” anchoring IDP, source code, documentation, and linking to dashboards and metrics.
+
+At this point, I don’t see the value in investing hours of engineering effort to deviate from the foundation of an existing comprehensive Git tool, such as GitLab or Azure DevOps.
+
+The autopilot system, whether driven by AI or automation, must always have a fail-safe mechanism where humans act as the ultimate fallback and last line of defense. Personally, I wouldn’t feel comfortable flying in an airplane without a human pilot — or with a human pilot who lacks basic controls like a yoke.
+
+Here’s a real-world example: My security team once applied SCPs that inadvertently rendered our IaC runners unable to execute requests. Despite attempts to restore functionality, the solution ultimately required recreating an API key for the runners. During the outage, however, we were able to fall back on manual IaC operations, which our tooling had made straightforward and efficient.
+
+Unless a quick and robust disaster recovery (DR) plan is in place, it’s hard to imagine having an effective interim Plan B to keep operations running smoothly for Crossplane.

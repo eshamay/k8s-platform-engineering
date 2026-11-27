@@ -1099,3 +1099,13 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 - fact conflicts: 0
 - gaps drafted: 0
 - rationale: A secondary practitioner post that the wiki had cited only through a brief extraction. The full text confirms the earlier summary, adds the sync-wave values, the two cited upstream issues, and the CronJob workaround, and stays attributed to its author. The post's statement that Argo CD has no deletion ordering differs from the wiki's wave-reversal record for pruning, so a discrepancy note was added and the stronger page was kept. Five open gaps received not-settled or partly-informative notes and none was closed.
+
+## [2026-11-26] ingest | Medium post: Choosing between Terraform (OpenTofu) and Crossplane (Gavin Yap, 2025)
+- source: [[sources/medium-terraform-opentofu-crossplane]]
+- raw: `raw/medium-terraform-opentofu-crossplane` (sha256: 13ec64862460)
+- pages touched: [[comparisons/crossplane-versus-terraform-reconciliation-versus-plan-and-apply]], [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]], [[findings/crossplane-adoption-needs-a-hosting-cluster-kubernetes-skills-and-platform-team-owned-abstractions]], [[entities/crossplane]], [[entities/terraform]], [[examples/superorbital-s-2022-evaluation-reported-no-terraform-plan-equivalent-for-crossplane]], open-knowledge-gaps
+- new pages: [[sources/medium-terraform-opentofu-crossplane]], [[examples/a-practitioner-prefers-a-yaml-abstracted-opentofu-framework-with-gitlab-merge-requests-over-crossplane-and-a-portal]], [[findings/one-practitioner-reports-a-terraform-plan-that-showed-an-update-while-the-apply-recreated-the-resource-and-lost-data]]
+- contradictions raised: 0 (one correction note: the post's ControllerConfig recommendation does not apply to Crossplane v2)
+- fact conflicts: 0
+- gaps drafted: 1
+- rationale: An opinion post by a Terraform and OpenTofu user who says he has not used Crossplane extensively, labeled secondary throughout. It adds practitioner objections, an anonymous plan-versus-apply anecdote, and an unverified Velero disaster recovery claim that became a drafted gap. It does not settle the neutral-comparison gap, so that gap and one other received not-settled notes, and nothing was closed. No output passage was affected.

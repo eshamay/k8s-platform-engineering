@@ -5,6 +5,9 @@ status: draft
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: medium-terraform-opentofu-crossplane
+    hash: 13ec64862460
+    ingested: 2026-11-26
   - id: research-crossplane-deep-dive
     hash: 44034359219f
     ingested: 2026-11-25
@@ -49,3 +52,7 @@ The dossier does not measure drift-correction latency or the cost of either appr
 ## Neutral evidence check (o6 dossier)
 
 A later search for neutral comparisons found none that is both independent and current. The most independent source is a 2022 SuperOrbital post that reports no `terraform plan` equivalent and recreate-forcing field changes that may be ignored while the provider reports in sync, and it predates Crossplane v2, see [[examples/superorbital-s-2022-evaluation-reported-no-terraform-plan-equivalent-for-crossplane]]. The Spacelift article is a vendor of Terraform orchestration, and the VSHN post comes from a Crossplane-using integrator. Crossplane is CNCF graduated per the landscape file. The "no plan preview" row above therefore rests on a dated secondary source. See [[findings/no-neutral-comparison-of-crossplane-with-terraform-or-single-cloud-operators-was-found-and-the-independent-material-is-dated]] and [[decisions/run-existing-terraform-in-the-cluster-with-tofu-controller-or-terraform-operator-or-model-resources-natively-in-crossplane]]. [[sources/research-gap-o6-platform-landscape]]
+
+## A practitioner's objection from a Terraform user (secondary)
+
+A Medium post by Gavin Yap (2025-01-10) is one more individual opinion and, by the author's own words, comes from someone who has not used Crossplane extensively. He argues for Terraform or OpenTofu with GitLab merge requests on four grounds: setup time (under an hour against several days), the cost of a portal for Crossplane self-service, disaster recovery of the cluster that runs Crossplane, and the value of `terraform plan` before changes to production data. It agrees with the table above on the review step and on the prerequisite of a running cluster, and it adds the disaster recovery point, which the wiki had not recorded. It does not change the table. A related anecdote shows a plan can mislead when a provider is faulty, see [[findings/one-practitioner-reports-a-terraform-plan-that-showed-an-update-while-the-apply-recreated-the-resource-and-lost-data]]. See [[examples/a-practitioner-prefers-a-yaml-abstracted-opentofu-framework-with-gitlab-merge-requests-over-crossplane-and-a-portal]]. The post is not the neutral comparison the evidence-check section above says is missing. [[sources/medium-terraform-opentofu-crossplane]]
