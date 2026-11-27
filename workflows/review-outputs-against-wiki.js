@@ -2,7 +2,7 @@ export const meta = {
   name: 'review-outputs-against-wiki',
   description: 'Review each of the seven outputs against the current wiki for correctness, completeness and contradictions, fix them in place in a timeless voice, verify, check cross-document consistency, write a findings page, commit one signed commit per document',
   phases: [
-    { title: 'Review', detail: 'six read-only reviewers per document: citation fidelity (3 section slices), status and contradiction sweep, completeness and currency, timeless voice and prose' },
+    { title: 'Review', detail: 'four read-only reviewers per document: citation fidelity (one agent), status and contradiction sweep, completeness and currency, timeless voice and prose' },
     { title: 'Fix', detail: 'one fixer per document applies verified fixes in place' },
     { title: 'Verify', detail: 'one adversarial verifier per document, with one more fix round when needed' },
     { title: 'Consistency', detail: 'cross-document consistency, link check, full-text scan for evolution language' },
@@ -137,8 +137,8 @@ function docPath(slug) {
 
 const COMMON = 'You are reviewing one tutorial document of a Kubernetes platform-engineering knowledge wiki at ' + WIKI + '. Read ' + WIKI + '/CLAUDE.md first. You are READ-ONLY: do not edit, create or delete any file and do not run any git command that changes anything (git diff, git log, git show and rg are fine). The wiki pages are the source of truth for this review; the document must say what the wiki pages say, and nothing the wiki contradicts. Do not rely on memory for any fact; open the wiki page. Return structured issues. For every issue give a verbatim quote of the passage as it appears in the document (short enough to be unique, long enough to locate), a plain description of the problem, the wiki page (path without .md, for example findings/some-page) that supports the fix, and exact replacement text written in the document\'s narrative style and obeying both rule blocks below. Report only real problems; report nothing when the document is right. If a sentence is right but could be longer or richer, that is not an issue unless the wiki holds a verified fact that is missing.\n\n' + PROSE_RULES + '\n\n' + TIMELESS_RULES + '\n\n'
 
-function lensA(slug, k) {
-  return COMMON + 'Document: ' + docPath(slug) + '\nLens A, citation fidelity, slice ' + k + ' of 3. Read the whole document for context, but review only the sections whose H2 heading index (counting from 1 in order of appearance; the text before the first H2 counts as index 1) satisfies index mod 3 == ' + k + '. In those sections, for EVERY [[wikilink]] citation and every factual sentence: open the cited wiki page and check that the sentence matches it exactly, including numbers, versions, defaults, release stages (alpha, beta, GA), field, flag and finalizer names, dates, named organizations and incidents, and what is attributed to whom. Flag a sentence that overstates, understates, or misattributes its source; one that cites a page that does not support it; and factual sentences with no citation that a wiki page settles (give the page). Report counts of sections reviewed and claims checked.'
+function lensA(slug) {
+  return COMMON + 'Document: ' + docPath(slug) + '\nLens A, citation fidelity. Read the whole document. For EVERY [[wikilink]] citation and every factual sentence: open the cited wiki page and check that the sentence matches it exactly, including numbers, versions, defaults, release stages (alpha, beta, GA), field, flag and finalizer names, dates, named organizations and incidents, and what is attributed to whom. Flag a sentence that overstates, understates, or misattributes its source; one that cites a page that does not support it; and factual sentences with no citation that a wiki page settles (give the page). Work through the document section by section so that no section is skipped. Report counts of sections reviewed and claims checked.'
 }
 
 function lensB(slug) {
@@ -168,16 +168,14 @@ const results = await pipeline(
   OUTPUT_SLUGS,
   slug =>
     parallel([
-      () => agent(lensA(slug, 1), { label: 'reviewA1:' + slug, phase: 'Review', schema: ISSUE_SCHEMA, agentType: 'general-purpose' }),
-      () => agent(lensA(slug, 2), { label: 'reviewA2:' + slug, phase: 'Review', schema: ISSUE_SCHEMA, agentType: 'general-purpose' }),
-      () => agent(lensA(slug, 0), { label: 'reviewA3:' + slug, phase: 'Review', schema: ISSUE_SCHEMA, agentType: 'general-purpose' }),
+      () => agent(lensA(slug), { label: 'reviewA:' + slug, phase: 'Review', schema: ISSUE_SCHEMA, agentType: 'general-purpose' }),
       () => agent(lensB(slug), { label: 'reviewB:' + slug, phase: 'Review', schema: ISSUE_SCHEMA, agentType: 'general-purpose' }),
       () => agent(lensC(slug), { label: 'reviewC:' + slug, phase: 'Review', schema: ISSUE_SCHEMA, agentType: 'general-purpose' }),
       () => agent(lensD(slug), { label: 'reviewD:' + slug, phase: 'Review', schema: ISSUE_SCHEMA, agentType: 'general-purpose' }),
     ]).then(rs => {
       const ok = rs.filter(Boolean)
       const issues = ok.flatMap(r => (r.issues || []).map(i => Object.assign({ lens: r.lens }, i)))
-      log(slug + ': ' + ok.length + '/6 reviewers returned, ' + issues.length + ' issues')
+      log(slug + ': ' + ok.length + '/4 reviewers returned, ' + issues.length + ' issues')
       return { slug: slug, reviewers: ok.length, claimsChecked: ok.reduce((n, r) => n + (r.claimsChecked || 0), 0), issues: issues }
     }),
   rev =>
