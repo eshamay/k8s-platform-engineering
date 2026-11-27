@@ -22,13 +22,11 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#review-closed-gap-resolutions-refined-by-the-b1-recheck-of-cluster-api-and-argo-cd]] — open
 - [[#review-closed-gap-resolutions-refined-by-the-b1-recheck-of-kro-and-crossplane]] — open
 - [[#review-closed-gap-resolutions-refined-by-the-b1-recheck-of-flux-and-kubernetes]] — open
-- [[#close-the-resolved-candidate-gaps-from-the-mechanics-and-accuracy-pass]] — open
 - [[#decide-on-the-26-partial-and-3-still-open-mechanics-gaps]] — open
 - [[#fetch-the-sources-the-mechanics-and-accuracy-pass-could-not-read]] — open
 - [[#recheck-cluster-api-machinehealthcheck-and-clusterclass-once-v1-15-0-final-ships]] — open
 - [[#review-the-unrevised-passages-that-kept-their-caveats-in-the-seven-outputs]] — open
 - [[#update-flux-ramp-up-waitfortermination-passage-with-the-timeout-behavior]] — open
-- [[#close-the-resolved-candidate-gaps-from-the-other-tool-coverage-pass]] — open
 - [[#decide-on-the-19-partial-and-5-still-open-other-tool-gaps]] — open
 - [[#review-the-radius-single-blog-finding-that-the-other-tool-pass-marked-contradicted]] — open
 - [[#fetch-the-flux-ocirepository-docs-from-the-controller-repository]] — open
@@ -119,13 +117,6 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** User decision recorded for each closed gap.
 - **Drafted by:** agent on 2026-11-26
 
-## Close the resolved-candidate gaps from the mechanics and accuracy pass — status: open
-
-- **What:** Run `sticki-gaps` to review and close the 14 gaps marked resolved-candidate in [[findings/mechanics-and-accuracy-pass-gap-dispositions]]. Start with the ones whose remainder is a single named detail: the Argo CD and Flux finalizer gaps, Cluster API issue 1514, informer resync, CEL cost limits, the conversion webhook and garbage collection gap, and Config Connector conflict handling.
-- **Why:** Only the user closes gaps. The pass added possible-resolution notes and closed none.
-- **Acceptance:** Each resolved-candidate gap is closed with a Resolution paragraph or left open with a reason.
-- **Drafted by:** agent on 2026-11-26
-
 ## Decide on the 26 partial and 3 still-open mechanics gaps — status: open
 
 - **What:** Review the 26 partial and 3 still-open rows in [[findings/mechanics-and-accuracy-pass-gap-dispositions]]. Two still-open gaps ("best default conflict policy" and "criteria for choosing an operator framework") are decisions the user can make without more research, using [[decisions/force-conflicts-or-strip-or-adopt-when-two-controllers-co-own-a-field]] and the operator-framework decision page.
@@ -159,13 +150,6 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **What:** In `outputs/flux-ramp-up.md`, the paragraph beginning "The `spec.deletionPolicy` takes four values" says WaitForTermination waits for the children to leave etcd. It should add that the wait is bounded by `.spec.timeout`, after which the controller logs an error and lets the Kustomization be deleted, which matters for provider-managed resources with finalizers.
 - **Why:** The passage predates the dossier [[sources/research-gap-o4-config-connector-ack]].
 - **Acceptance:** Passage revised and citing [[findings/a-flux-waitfortermination-deletion-policy-gives-up-at-spec-timeout-and-lets-the-kustomization-be-deleted-while-a-provider-resource-may-still-be-finalizing]].
-- **Drafted by:** agent on 2026-11-26
-
-## Close the resolved-candidate gaps from the other-tool coverage pass — status: open
-
-- **What:** Run `sticki-gaps` to review and close the 11 gaps marked resolved-candidate in [[findings/other-tool-coverage-pass-gap-dispositions]]. The strongest candidates are the Config Connector controller-kind, reconcile-cadence and namespaced-mode gaps, the Kubernetes v1.36 staleness gap, the Radius and Score status gap, the Kratix and tofu-controller maintenance gaps, the two Crossplane and KRM function history gaps, and the Argo CD ignore-differences gap.
-- **Why:** Only the user closes gaps. The pass added possible-resolution notes and closed none.
-- **Acceptance:** Each resolved-candidate gap is closed with a Resolution paragraph or left open with a reason.
 - **Drafted by:** agent on 2026-11-26
 
 ## Decide on the 19 partial and 5 still-open other-tool gaps — status: open
@@ -1154,6 +1138,22 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** Passage revised and citing [[findings/config-connector-namespaced-mode-is-the-crd-default-and-needs-one-configconnectorcontext-per-namespace-while-cluster-mode-takes-exactly-one-credential]], [[findings/config-connector-deletion-policy-has-two-source-values-and-only-abandon-changes-the-delete-path-and-the-terraform-based-controller-path-is-unverified]], and [[findings/no-neutral-comparison-of-config-connector-and-crossplane-was-found-so-the-evidence-is-two-vendor-positions]].
 - **Drafted by:** agent on 2026-11-26
 - **Outcome:** 2026-11-26: revised in the other-tool coverage pass (Revise phase); the diff of the output shows every cited page in the added text. Caveats the dossier left open stay in the passage.
+
+## Close the resolved-candidate gaps from the mechanics and accuracy pass — status: done
+
+- **What:** Run `sticki-gaps` to review and close the 14 gaps marked resolved-candidate in [[findings/mechanics-and-accuracy-pass-gap-dispositions]]. Start with the ones whose remainder is a single named detail: the Argo CD and Flux finalizer gaps, Cluster API issue 1514, informer resync, CEL cost limits, the conversion webhook and garbage collection gap, and Config Connector conflict handling.
+- **Why:** Only the user closes gaps. The pass added possible-resolution notes and closed none.
+- **Acceptance:** Each resolved-candidate gap is closed with a Resolution paragraph or left open with a reason.
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: the 14 resolved-candidate gaps were closed by Eric Shamay through sticki-gaps, one signed commit each.
+
+## Close the resolved-candidate gaps from the other-tool coverage pass — status: done
+
+- **What:** Run `sticki-gaps` to review and close the 11 gaps marked resolved-candidate in [[findings/other-tool-coverage-pass-gap-dispositions]]. The strongest candidates are the Config Connector controller-kind, reconcile-cadence and namespaced-mode gaps, the Kubernetes v1.36 staleness gap, the Radius and Score status gap, the Kratix and tofu-controller maintenance gaps, the two Crossplane and KRM function history gaps, and the Argo CD ignore-differences gap.
+- **Why:** Only the user closes gaps. The pass added possible-resolution notes and closed none.
+- **Acceptance:** Each resolved-candidate gap is closed with a Resolution paragraph or left open with a reason.
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: the 11 resolved-candidate gaps were closed by Eric Shamay through sticki-gaps, one signed commit each.
 
 ## Dropped
 
