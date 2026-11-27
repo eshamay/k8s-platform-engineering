@@ -226,3 +226,12 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 - moved 51 closed gaps to [[open-knowledge-gaps-archive]], 118 done and 2 dropped todos to [[todo-archive]], and 114 older log entries (bootstrap through Batch 1) to [[log-archive]], all verbatim
 - active files now: open-knowledge-gaps.md (79 open), todo.md (open todos only), log.md (Batch 2 onward)
 - bare anchors that pointed across the split were rewritten to the archive file; CLAUDE.md documents the archive files
+
+## [2026-11-26] outputs | review against the wiki
+- page: [[findings/outputs-review-2026-11-26]]
+- outputs reviewed: all 7; 1,610 claims checked; 688 issues reported; 724 edits applied; 11 skipped; each document had four reviewers, one of them the single citation-fidelity reviewer
+- verdicts: Part 5 passed verification; the other six needed a second fix round
+- cross-document checks: 12 consistency issues and 24 link and wording issues found and fixed; 0 dangling wikilinks
+- decisions needed: 1 (Flux five-minute origin speculation in Part 2)
+- wiki problems recorded: 52 distinct pages or page pairs, each with an open todo; no wiki page other than the anchor files and the findings page was edited
+- rationale: The outputs were checked against the wiki and revised in place so that each statement matches its supporting page and the prose follows the timeless-voice contract. No gap was closed.

@@ -578,6 +578,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ## Findings
 
+- [[findings/outputs-review-2026-11-26]] — review of the seven outputs against the wiki: counts, applied changes, decisions and wiki problems (active)
 - [[findings/a-flux-dependson-across-shards-failed-with-dependency-not-found-until-a-2024-fix]] — cross-shard dependsOn failure, kustomize-controller issue 1175 (active)
 - [[findings/objects-that-leave-a-flux-shard-keep-stale-artifacts-on-the-old-source-controller]] — source-controller issue 2150, anonymous report (draft)
 - [[findings/kro-s-single-shared-queue-can-starve-resources-and-a-maintainer-proposed-weighted-queues]] — kro shared queue and issue 198, with the per-RGD controller correction (active)
