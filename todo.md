@@ -32,11 +32,6 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#fetch-the-flux-changelog-and-adopters-list]] — open
 - [[#fetch-the-argo-cd-resource-hooks-and-applicationset-docs]] — open
 - [[#find-named-flux-versus-argo-cd-migration-case-studies]] — open
-- [[#get-a-transcript-of-the-kubecon-kcp-talk]] — open
-- [[#fetch-the-aws-eks-kro-page]] — open
-- [[#fetch-the-bexco-kro-cncf-radar-post]] — open
-- [[#fetch-the-medium-post-comparing-terraform-opentofu-and-crossplane]] — open
-- [[#fetch-the-medium-post-on-config-connector-pitfalls]] — open
 - [[#fetch-the-crossplane-composition-functions-docs-page]] — open
 - [[#find-the-function-kro-engine-and-crossplane-package-revision-source-files]] — open
 - [[#read-the-kro-crossplane-eks-idp-lab-repository]] — open
@@ -124,6 +119,7 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Why:** The scrape tools returned empty bodies or no results, and some remainders in partial gaps depend on these pages.
 - **Acceptance:** Each source is saved and ingested, or recorded as unavailable.
 - **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: partly done. The Kubernetes finalizers blog was fetched and ingested as [[sources/kubernetes-finalizers-blog]] (seq 80). The other listed sources are still unread.
 
 ## Recheck Cluster API MachineHealthCheck and ClusterClass once v1.15.0 final ships — status: open
 
@@ -188,41 +184,6 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
 - **Drafted by:** agent on 2026-11-26
 
-## Get a transcript of the KubeCon kcp talk — status: open
-
-- **What:** The video https://www.youtube.com/watch?v=-GJgzn3pyvM (the KubeCon EU 2024 kcp talk linked from kcp.io) could not be read and no transcript was retrieved. Save the auto-generated transcript or the slides into `raw/` (as was done for the Spotify talk) and ingest it.
-- **Why:** The talk is the main primary source for community direction of the Kubernetes-as-a-kernel distribution model. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o5-kro-ecosystem).
-- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
-- **Drafted by:** agent on 2026-11-26
-
-## Fetch the AWS EKS kro page — status: open
-
-- **What:** https://docs.aws.amazon.com/eks/latest/userguide/kro.html appeared in search results with null content. Save the page into `raw/` and ingest it.
-- **Why:** AWS documentation of kro on EKS is evidence of vendor adoption and of supported scale or limits. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o5-kro-ecosystem).
-- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
-- **Drafted by:** agent on 2026-11-26
-
-## Fetch the bex.co kro CNCF radar post — status: open
-
-- **What:** https://bex.co/blog/2026/07/29/kro-kube-resource-orchestrator-cncf-radar-adopt appeared in search with null content. Save the page into `raw/` and ingest it, marking it secondary if it is an analyst or adopter opinion.
-- **Why:** It may name a production adopter of kro, which the gap 'Scaling limits of per-RGD kro controllers and named production kro adopters' still lacks. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o5-kro-ecosystem).
-- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
-- **Drafted by:** agent on 2026-11-26
-
-## Fetch the Medium post comparing Terraform, OpenTofu and Crossplane — status: open
-
-- **What:** https://medium.com/@maclarensg_50191/choosing-between-terraform-opentofu-and-crossplane-3fdbacbefc68 returned an empty body (Medium blocks the scraper). Save the page text into `raw/` and ingest it, marking it as an individual author's opinion.
-- **Why:** It is a candidate neutral comparison for 'Neutral comparisons of Crossplane with Terraform and single-cloud operators'. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o6-platform-landscape).
-- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
-- **Drafted by:** agent on 2026-11-26
-
-## Fetch the Medium post on Config Connector pitfalls — status: open
-
-- **What:** https://medium.com/@michamarszaek/navigating-config-connector-challenges-a-guide-to-overcoming-pitfalls-a63777ae7ed1 returned an empty body. Save the page text into `raw/` and ingest it, marking it as an individual author's account.
-- **Why:** It is a practitioner account of Config Connector problems, which the first-party pitfall evidence gap needs to compare against. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o6-platform-landscape).
-- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
-- **Drafted by:** agent on 2026-11-26
-
 ## Fetch the Crossplane composition functions docs page — status: open
 
 - **What:** https://docs.crossplane.io/latest/concepts/composition-functions/ returned an empty body; the pass read the same content from the crossplane/docs repository through gh instead. Save the rendered page into `raw/` only if the rendered text differs from the repository source, otherwise record the substitution as sufficient.
@@ -252,6 +213,46 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Drafted by:** agent on 2026-11-26
 
 ## Done
+
+## Get a transcript of the KubeCon kcp talk — status: done
+
+- **What:** The video https://www.youtube.com/watch?v=-GJgzn3pyvM (the KubeCon EU 2024 kcp talk linked from kcp.io) could not be read and no transcript was retrieved. Save the auto-generated transcript or the slides into `raw/` (as was done for the Spotify talk) and ingest it.
+- **Why:** The talk is the main primary source for community direction of the Kubernetes-as-a-kernel distribution model. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o5-kro-ecosystem).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: the auto-generated transcript was saved as `raw/kcp-kubecon-talk` and ingested as [[sources/kcp-kubecon-talk]] (seq 79). The transcript has recognition errors, is the speaker's own account, and does not address the distribution model.
+
+## Fetch the AWS EKS kro page — status: done
+
+- **What:** https://docs.aws.amazon.com/eks/latest/userguide/kro.html appeared in search results with null content. Save the page into `raw/` and ingest it.
+- **Why:** AWS documentation of kro on EKS is evidence of vendor adoption and of supported scale or limits. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o5-kro-ecosystem).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: the page was saved as `raw/resource-composition-with-kro` and ingested as [[sources/resource-composition-with-kro]] (seq 77). It is a vendor overview that gives no scale limits and names no kro version.
+
+## Fetch the bex.co kro CNCF radar post — status: done
+
+- **What:** https://bex.co/blog/2026/07/29/kro-kube-resource-orchestrator-cncf-radar-adopt appeared in search with null content. Save the page into `raw/` and ingest it, marking it secondary if it is an analyst or adopter opinion.
+- **Why:** It may name a production adopter of kro, which the gap 'Scaling limits of per-RGD kro controllers and named production kro adopters' still lacks. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o5-kro-ecosystem).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: the post was saved as `raw/bex-co-kro-radar-post` and ingested as [[sources/bex-co-kro-radar-post]] (seq 78), marked secondary. It names no production adopter, and the CNCF and SlashData radar it cites was not read.
+
+## Fetch the Medium post comparing Terraform, OpenTofu and Crossplane — status: done
+
+- **What:** https://medium.com/@maclarensg_50191/choosing-between-terraform-opentofu-and-crossplane-3fdbacbefc68 returned an empty body (Medium blocks the scraper). Save the page text into `raw/` and ingest it, marking it as an individual author's opinion.
+- **Why:** It is a candidate neutral comparison for 'Neutral comparisons of Crossplane with Terraform and single-cloud operators'. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o6-platform-landscape).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: the post was saved as `raw/medium-terraform-opentofu-crossplane` and ingested as [[sources/medium-terraform-opentofu-crossplane]] (seq 82), marked secondary and opinion. Its author says he has not used Crossplane extensively.
+
+## Fetch the Medium post on Config Connector pitfalls — status: done
+
+- **What:** https://medium.com/@michamarszaek/navigating-config-connector-challenges-a-guide-to-overcoming-pitfalls-a63777ae7ed1 returned an empty body. Save the page text into `raw/` and ingest it, marking it as an individual author's account.
+- **Why:** It is a practitioner account of Config Connector problems, which the first-party pitfall evidence gap needs to compare against. It is listed under "Needs manual fetch" in [[findings/other-tool-coverage-pass-gap-dispositions]] (cluster o6-platform-landscape).
+- **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
+- **Drafted by:** agent on 2026-11-26
+- **Outcome:** 2026-11-26: the post was saved as `raw/medium-config-connector-pitfalls` and ingested as [[sources/medium-config-connector-pitfalls]] (seq 81), marked secondary. It is a single practitioner's account.
 
 ## Update crossplane-ramp-up for the v2.5 verification pass — status: done
 

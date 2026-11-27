@@ -1109,3 +1109,7 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 - fact conflicts: 0
 - gaps drafted: 1
 - rationale: An opinion post by a Terraform and OpenTofu user who says he has not used Crossplane extensively, labeled secondary throughout. It adds practitioner objections, an anonymous plan-versus-apply anecdote, and an unverified Velero disaster recovery claim that became a drafted gap. It does not settle the neutral-comparison gap, so that gap and one other received not-settled notes, and nothing was closed. No output passage was affected.
+
+## [2026-11-26] todo | fetched-source todos done
+- marked done the five fetch todos for the KubeCon kcp transcript, the AWS EKS kro page, the bex.co kro radar post, the Medium Terraform, OpenTofu and Crossplane post, and the Medium Config Connector pitfalls post, each with an Outcome line naming its source page and seq (77 to 79, 81, 82)
+- added an Outcome line to the open todo for the sources the mechanics and accuracy pass could not read, noting that the Kubernetes finalizers blog was fetched and ingested as seq 80; that todo stays open
