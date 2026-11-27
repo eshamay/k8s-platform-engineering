@@ -77,7 +77,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#neutral-comparisons-of-crossplane-with-terraform-and-single-cloud-operators]] — open, unassigned
 - [[#kro-governance-status-and-the-future-of-the-graph-api]] — open, unassigned
 - [[#scaling-limits-of-per-rgd-kro-controllers-and-named-production-kro-adopters]] — open, unassigned
-- [[#primary-source-status-of-radius-and-score]] — open, unassigned
 - [[#krm-function-specification-and-runtime-requirements]] — open, unassigned
 - [[#kratix-destination-and-gitstatestore-mechanics]] — open, unassigned
 - [[#maintenance-status-of-tofu-controller-and-terraform-operator]] — open, unassigned
@@ -980,18 +979,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** kro, scale, adopters, production
 - **Possible resolution from [[sources/research-gap-o5-kro-ecosystem]]:** Not settled, and the user decides whether to close it. The premise is corrected again: kro runs one shared queue and one worker by default, and only the docs FAQ still says a dedicated controller per RGD, see [[findings/the-kro-docs-faq-says-a-dedicated-controller-per-rgd-while-the-tuning-page-and-source-describe-one-shared-queue]]. No measured scaling limit, benchmark, ADOPTERS file, or named production adopter was found, and the only scale evidence is open issues 198 and 610 plus a closed unmerged pull request, see [[findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter]].
 
-## Primary-source status of Radius and Score — status: open
-
-- **Question:** What do the primary Radius and Score documents and CNCF listings say about maturity, governance, and lineage?
-- **Why it matters:** Radius claims come from one third-party blog because its docs could not be read, and Score's CNCF Sandbox status and Humanitec origin come only from its own site.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the primary Radius documentation and the CNCF project pages for both.
-  - [ ] Revise [[entities/radius]], [[entities/score]], and [[comparisons/score-versus-radius-as-developer-facing-workload-abstractions]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** radius, score, cncf, verification
-- **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Largely settled for status and governance, and the user decides whether to close it. Both are CNCF Sandbox per the CNCF landscape file (Radius accepted 2024-04-16, Score 2024-07-08) and both sandbox issues passed their votes. All four Radius maintainers are Microsoft employees, its main-repository GOVERNANCE.md holds only a code-of-conduct pointer, and only channel 0.62 (v0.62.0, 2026-10-27) is supported. Score's maintainers span Oracle, an independent, Docker, and Checkly, and its sandbox application names Humanitec as the "sponsoring company". Not settled: no primary text says Humanitec created Score, and the radapp.io and score.dev documentation sites were not read, so what each tool does rests on READMEs. See [[findings/radius-and-score-are-both-cncf-sandbox-projects-per-the-landscape-file-and-both-passed-sandbox-votes]], [[findings/all-four-radius-maintainers-are-microsoft-employees-and-only-the-newest-minor-channel-is-supported]], and [[findings/score-maintainers-span-four-employers-and-the-sandbox-application-names-humanitec-as-sponsoring-company]].
-
 ## KRM function specification and runtime requirements — status: open
 
 - **Question:** What does the KRM function specification require of a function and its runtime, and which tools can run functions without containers?
@@ -1863,3 +1850,18 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 
 - **Possible resolution from [[sources/research-gap-g3-reconcile-defaults]]:** Marginally helpful, on the ACK default only. The 10 hour resync default is verified against the drift-recovery page and the runtime constant `defaultResyncPeriod = 10 * time.Hour`. The failure-mode details for Argo CD drift, Flux conflicts, and Config Connector were not read. See [[entities/ack]].
 - **Possible resolution from [[sources/research-gap-o4-config-connector-ack]]:** Largely settled for the documented defaults, and the user decides whether to close it. Argo CD automated sync (no prune and no self-heal by default, no retry for the same commit, 5 second self-heal delay, `manualDefaults` turns manual prune on, foreground propagation), Flux kustomize-controller (four `deletionPolicy` values, `WaitForTermination` gives up at the timeout, `ssa` and `force` limits), ACK (deletion-policy order, 10 hour drift default, two documentation sites that disagree on adoption maturity, cross-namespace default false from 2026-10-08 releases), and Config Connector known issues (1.132.0, 1.134.0, webhook TLS race before 1.134.1) were read from primary pages. Not settled: whether Argo CD cascade deletion honors waves and whether ACK feature-gate defaults match the new site in runtime source. See [[findings/a-flux-waitfortermination-deletion-policy-gives-up-at-spec-timeout-and-lets-the-kustomization-be-deleted-while-a-provider-resource-may-still-be-finalizing]], [[findings/the-ack-old-and-new-documentation-sites-disagree-on-adoption-maturity-and-cross-namespace-references-default-to-blocked-from-2026-10-08-releases]], and [[findings/config-connector-known-issues-record-a-webhook-tls-race-before-1-134-1-and-direct-reconciler-regressions-in-1-132-0-and-1-134-0]].
+
+## Primary-source status of Radius and Score — status: closed (2026-11-26)
+
+- **Question:** What do the primary Radius and Score documents and CNCF listings say about maturity, governance, and lineage?
+- **Why it matters:** Radius claims come from one third-party blog because its docs could not be read, and Score's CNCF Sandbox status and Humanitec origin come only from its own site.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the primary Radius documentation and the CNCF project pages for both.
+  - [ ] Revise [[entities/radius]], [[entities/score]], and [[comparisons/score-versus-radius-as-developer-facing-workload-abstractions]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** radius, score, cncf, verification
+- **Resolution:** Largely settled for status and governance. Both are CNCF Sandbox per the CNCF landscape file (Radius accepted 2024-04-16, Score 2024-07-08) and both sandbox issues passed their votes. All four Radius maintainers are Microsoft employees, its main-repository GOVERNANCE.md holds only a code-of-conduct pointer, and only channel 0.62 (v0.62.0, 2026-10-27) is supported. Score's maintainers span Oracle, an independent, Docker, and Checkly, and its sandbox application names Humanitec as the "sponsoring company". Not settled: no primary text says Humanitec created Score, and the radapp.io and score.dev documentation sites were not read, so what each tool does rests on READMEs. See [[findings/radius-and-score-are-both-cncf-sandbox-projects-per-the-landscape-file-and-both-passed-sandbox-votes]], [[findings/all-four-radius-maintainers-are-microsoft-employees-and-only-the-newest-minor-channel-is-supported]], and [[findings/score-maintainers-span-four-employers-and-the-sandbox-application-names-humanitec-as-sponsoring-company]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Largely settled for status and governance, and the user decides whether to close it. Both are CNCF Sandbox per the CNCF landscape file (Radius accepted 2024-04-16, Score 2024-07-08) and both sandbox issues passed their votes. All four Radius maintainers are Microsoft employees, its main-repository GOVERNANCE.md holds only a code-of-conduct pointer, and only channel 0.62 (v0.62.0, 2026-10-27) is supported. Score's maintainers span Oracle, an independent, Docker, and Checkly, and its sandbox application names Humanitec as the "sponsoring company". Not settled: no primary text says Humanitec created Score, and the radapp.io and score.dev documentation sites were not read, so what each tool does rests on READMEs. See [[findings/radius-and-score-are-both-cncf-sandbox-projects-per-the-landscape-file-and-both-passed-sandbox-votes]], [[findings/all-four-radius-maintainers-are-microsoft-employees-and-only-the-newest-minor-channel-is-supported]], and [[findings/score-maintainers-span-four-employers-and-the-sandbox-application-names-humanitec-as-sponsoring-company]].
