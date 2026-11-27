@@ -41,3 +41,14 @@ Every action in the workflow is pinned to a full commit SHA. Update the SHAs del
 ## Commit identity
 
 Commits are authored as Eric Shamay and signed with the GPG key configured in this repository's local git config.
+
+## Links in the wiki
+
+GitHub does not render wikilinks, so links in the wiki are stored as relative Markdown links. The sticki skills still write `[[wikilinks]]`; after any operation that writes pages run:
+
+```
+python3 -I bin/gh_links.py --write    # convert wikilinks
+python3 -I bin/gh_links.py --check    # verify every link and anchor (exit 0 means clean)
+```
+
+`outputs/` and `raw/` are not converted (the Pages build resolves the wikilinks in `outputs/`). After closing a gap or todo, `python3 -I bin/gh_links.py --refresh-anchors` repairs anchors whose heading status suffix changed.

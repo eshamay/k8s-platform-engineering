@@ -235,3 +235,7 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 - decisions needed: 1 (Flux five-minute origin speculation in Part 2)
 - wiki problems recorded: 52 distinct pages or page pairs, each with an open todo; no wiki page other than the anchor files and the findings page was edited
 - rationale: The outputs were checked against the wiki and revised in place so that each statement matches its supporting page and the prose follows the timeless-voice contract. No gap was closed.
+
+## [2026-11-26] housekeeping | wikilinks converted to markdown links
+- converted 15,249 wikilinks in 943 files to relative markdown links so GitHub renders them as clickable links; outputs/ and raw/ keep their wikilinks
+- added bin/gh_links.py (--dry-run, --write, --check, --refresh-anchors), a Link convention section in CLAUDE.md, a README section, and a converter step in the workflow scripts

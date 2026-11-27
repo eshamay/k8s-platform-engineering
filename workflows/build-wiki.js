@@ -180,7 +180,7 @@ for (const topic of topics) {
 - Fan out sticki-page-writer subagents only if the touch budget exceeds about 8 pages; otherwise draft inline.
 - Never edit irrefutable-facts.md or purpose.md. Never close a gap; draft new gaps for unanswered questions, and add "Possible resolution" notes under the three seeded gaps when the source helps.
 - Follow the markdown hygiene rule and the frontmatter contract in ${WIKI}/CLAUDE.md. Pages are written in clear full sentences, not telegraphic fragments.
-- Complete the whole procedure including index.md, log.md, .sticki/events.jsonl, .sticki/state.json, and the git commit "ingest: <title> (seq N)", staging only this ingest's paths. Other ingests run one at a time, so there is no concurrent writer, but never batch two sources into one commit. If git commit fails, stop and report the error; never use --no-verify.
+- Before the commit, run python3 -I bin/gh_links.py --write from the wiki root so every [[wikilink]] you wrote becomes a relative markdown link that GitHub renders (it never touches raw/ or outputs/), then run python3 -I bin/gh_links.py --check and fix anything it reports; stage the files it changed that belong to this ingest. Complete the whole procedure including index.md, log.md, .sticki/events.jsonl, .sticki/state.json, and the git commit "ingest: <title> (seq N)", staging only this ingest's paths. Other ingests run one at a time, so there is no concurrent writer, but never batch two sources into one commit. If git commit fails, stop and report the error; never use --no-verify.
 Return the commit short SHA, pages created, pages touched, and any problems.`,
     { label: `ingest:${r.slug}`, phase: 'Ingest', schema: INGEST_SCHEMA, agentType: 'general-purpose' },
   )
