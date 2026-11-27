@@ -16,7 +16,7 @@ tags: [tool, gitops, flux]
 
 ## What it is
 
-The Flux Operator is a ControlPlane project that installs and manages Flux through a `FluxInstance` resource, so the Flux controllers themselves become declaratively managed objects. The dossier cites its sharding documentation as the example of operator-managed installs versus manual ones. [[sources/research-flux-deep-dive]]
+The Flux Operator is a ControlPlane project that installs and manages Flux through a `FluxInstance` resource, so the Flux controllers themselves become declaratively managed objects. The dossier cites its sharding documentation as the example of operator-managed installs versus manual ones. [sources/research-flux-deep-dive](../sources/research-flux-deep-dive.md)
 
 ## Sharding
 
@@ -24,8 +24,8 @@ The Flux Operator documentation says it supports "sharding the workload across m
 
 ## Related to this wiki
 
-The ControlPlane D2 reference architecture, which also uses a `FluxInstance`, is described in [[examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts]]. The dossier also notes that third-party UIs and the Flux Operator weaken the older claim that Flux has no UI, but it did not read a source on that.
+The ControlPlane D2 reference architecture, which also uses a `FluxInstance`, is described in [examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts](../examples/flux-d2-gitless-gitops-fleet-with-signed-oci-artifacts.md). The dossier also notes that third-party UIs and the Flux Operator weaken the older claim that Flux has no UI, but it did not read a source on that.
 
 ## Related
 
-[[entities/flux]], [[examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances]], [[findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents]], [[comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice]]
+[entities/flux](flux.md), [examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances](../examples/flux-sharding-splits-reconciliation-across-label-selected-controller-instances.md), [findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents](../findings/sharded-flux-dependents-must-carry-the-same-shard-label-as-their-parents.md), [comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice](../comparisons/flux-scaling-options-intervals-concurrency-sharding-and-source-choice.md)

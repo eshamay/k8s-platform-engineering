@@ -16,7 +16,7 @@ tags: [entity, deployment-tool, server-side-apply]
 
 ## What it is
 
-Kluctl is a deployment tool for Kubernetes that appears in the wiki through one source: a Kubernetes blog post written by its author, Alexander Block. The tool originally shelled out to `kubectl` and used client-side apply, then moved to calling server-side apply directly. [[sources/research-server-side-apply-and-field-ownership]]
+Kluctl is a deployment tool for Kubernetes that appears in the wiki through one source: a Kubernetes blog post written by its author, Alexander Block. The tool originally shelled out to `kubectl` and used client-side apply, then moved to calling server-side apply directly. [sources/research-server-side-apply-and-field-ownership](../sources/research-server-side-apply-and-field-ownership.md)
 
 ## Behavior documented
 
@@ -24,4 +24,4 @@ Kluctl makes conflict decisions per field. It overwrites changes from known inte
 
 ## Caveat
 
-The only source is the tool author's own account. See [[examples/kluctl-decides-field-level-conflicts-with-known-manager-heuristics]], [[comparisons/ssa-conflict-policy-across-tools]], and [[concepts/server-side-apply-and-field-ownership]].
+The only source is the tool author's own account. See [examples/kluctl-decides-field-level-conflicts-with-known-manager-heuristics](../examples/kluctl-decides-field-level-conflicts-with-known-manager-heuristics.md), [comparisons/ssa-conflict-policy-across-tools](../comparisons/ssa-conflict-policy-across-tools.md), and [concepts/server-side-apply-and-field-ownership](../concepts/server-side-apply-and-field-ownership.md).

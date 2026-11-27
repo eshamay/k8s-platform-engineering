@@ -16,7 +16,7 @@ tags: [gardener, managed-kubernetes, scale, multi-cluster]
 
 ## What it is
 
-Gardener is a managed-Kubernetes project whose operators run many clusters, and its documentation includes sizing guidance for those clusters. In this wiki it matters as a source of operator advice that sits below the tested maximums in the SIG Scalability envelope. [[sources/research-scale-and-sharding]]
+Gardener is a managed-Kubernetes project whose operators run many clusters, and its documentation includes sizing guidance for those clusters. In this wiki it matters as a source of operator advice that sits below the tested maximums in the SIG Scalability envelope. [sources/research-scale-and-sharding](../sources/research-scale-and-sharding.md)
 
 ## Scale guidance
 
@@ -28,4 +28,4 @@ The page is a draft because the wiki holds only one source about Gardener and it
 
 ## Related pages
 
-[[examples/gardener-advises-keeping-most-clusters-under-about-500-nodes-and-controlling-webhooks-and-object-counts]], [[concepts/scale-and-sharding]], [[findings/etcd-scale-limits-of-the-shared-store]].
+[examples/gardener-advises-keeping-most-clusters-under-about-500-nodes-and-controlling-webhooks-and-object-counts](../examples/gardener-advises-keeping-most-clusters-under-about-500-nodes-and-controlling-webhooks-and-object-counts.md), [concepts/scale-and-sharding](../concepts/scale-and-sharding.md), [findings/etcd-scale-limits-of-the-shared-store](../findings/etcd-scale-limits-of-the-shared-store.md).

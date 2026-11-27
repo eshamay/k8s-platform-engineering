@@ -17,7 +17,7 @@ tags: [tool, platform-framework, promise, syntasso]
 
 # Kratix
 
-Kratix is an orchestration framework from Syntasso that sits behind a developer portal. Its central object is the Promise, a contract between platform and application teams that bundles a self-service API, embedded workflows, and fleet management. [[sources/research-landscape]]
+Kratix is an orchestration framework from Syntasso that sits behind a developer portal. Its central object is the Promise, a contract between platform and application teams that bundles a self-service API, embedded workflows, and fleet management. [sources/research-landscape](../sources/research-landscape.md)
 
 ## Mechanics as documented
 
@@ -25,12 +25,12 @@ The documentation says Kratix "lets you offer everything as-a-service via clear 
 
 ## Vendor claims
 
-Syntasso's blog argues that a portal gives only visibility and that Kratix adds Promises and workflows so developers stop waiting on tickets, and it claims progressive disclosure limits cognitive load. It mentions NatWest, The Access Group, and Veeam as case studies by link only. The source is a vendor blog, so these are attributed claims. See [[examples/kratix-promises-scatter-workloads-across-standard-pci-and-terraform-destinations]].
+Syntasso's blog argues that a portal gives only visibility and that Kratix adds Promises and workflows so developers stop waiting on tickets, and it claims progressive disclosure limits cognitive load. It mentions NatWest, The Access Group, and Veeam as case studies by link only. The source is a vendor blog, so these are attributed claims. See [examples/kratix-promises-scatter-workloads-across-standard-pci-and-terraform-destinations](../examples/kratix-promises-scatter-workloads-across-standard-pci-and-terraform-destinations.md).
 
 ## Related
 
-[[concepts/tooling-landscape]], [[entities/backstage]], [[concepts/composite-resource]], [[comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers]]
+[concepts/tooling-landscape](../concepts/tooling-landscape.md), [entities/backstage](backstage.md), [concepts/composite-resource](../concepts/composite-resource.md), [comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers](../comparisons/backstage-versus-port-versus-kratix-as-portal-and-orchestration-layers.md)
 
 ## Destinations and GitStateStores (o6 dossier)
 
-A Destination is a cluster-scoped record of "a system that Kratix can write documents to", and an external tool such as Flux or Argo CD reconciles what Kratix writes, see [[findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable]]. A GitStateStore or BucketStateStore holds the location and credentials. Scheduling is label matching in two stages, with random selection among several matching Destinations, see [[findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match]]. The GitStateStore Go type says its `insecure` field defaults to true when unset, see [[findings/the-kratix-gitstatestore-insecure-field-defaults-to-true-when-unset-in-the-go-type]]. The scheduler source code was not read. [[sources/research-gap-o6-platform-landscape]]
+A Destination is a cluster-scoped record of "a system that Kratix can write documents to", and an external tool such as Flux or Argo CD reconciles what Kratix writes, see [findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable](../findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable.md). A GitStateStore or BucketStateStore holds the location and credentials. Scheduling is label matching in two stages, with random selection among several matching Destinations, see [findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match](../findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match.md). The GitStateStore Go type says its `insecure` field defaults to true when unset, see [findings/the-kratix-gitstatestore-insecure-field-defaults-to-true-when-unset-in-the-go-type](../findings/the-kratix-gitstatestore-insecure-field-defaults-to-true-when-unset-in-the-go-type.md). The scheduler source code was not read. [sources/research-gap-o6-platform-landscape](../sources/research-gap-o6-platform-landscape.md)
