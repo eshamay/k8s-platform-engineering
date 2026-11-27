@@ -65,7 +65,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#flux-handling-of-composite-resources-and-kro-instances]] — open, unassigned
 - [[#scale-of-composite-resources-per-controller]] — open, unassigned
 - [[#feature-parity-of-function-kro-with-standalone-kro]] — open, unassigned
-- [[#crossplane-function-runner-architecture-history]] — open, unassigned
 - [[#config-connector-and-ack-behavior-when-wrapped-by-compositions]] — open, unassigned
 - [[#upjet-runtime-execution-model-and-cost]] — open, unassigned
 - [[#config-connector-controller-kind-per-resource]] — open, unassigned
@@ -828,18 +827,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** function-kro, kro, crossplane, verification
 - **Possible resolution from [[sources/research-gap-o5-kro-ecosystem]]:** Partly settled, and the user decides whether to close it. The README claims full parity, but the repository lists concrete behavioral differences from kro, and v0.4.0 (2026-11-26) runs kro v0.10.0's own graph engine, so parity reads as the same engine with documented gaps, see [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]]. Still unanswered: independent production reports, whether the SSA desired-state problem is fixed, and how GraphRevision maps to CompositionRevision.
-
-## Crossplane function runner architecture history — status: open
-
-- **Question:** Which parts of the earlier Crossplane function runner model (a gRPC runner as a sidecar to the Crossplane pod, and a container-runner path) still exist, given that the design doc describes functions as Deployments behind a headless Service?
-- **Why it matters:** The VSHN post from 2023 and the design doc disagree on the runtime shape, and operators need the current model to size and secure functions. See [[sources/research-composition]] and [[entities/crossplane]].
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Read the current Crossplane Function package and runtime documentation.
-  - [ ] Update [[entities/crossplane]] and [[findings/composition-functions-add-moving-parts-that-must-be-healthy]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** crossplane, composition-functions, verification
-- **Possible resolution from [[sources/research-gap-o7-krm-functions]]:** Largely settled for history, and the user decides whether to close it. The alpha `xfn` sidecar (v1.11.0, 2023-01-31) was replaced in v1.14.0 (2023-11-01) by package-manager Deployments behind headless Services, xfn moved out of tree, and a "feat: remove xfn" commit is on main, see [[findings/crossplane-moved-composition-functions-from-an-xfn-sidecar-in-v1-11-to-package-manager-deployments-in-v1-14]]. The 2023 VSHN sidecar description and the design document describe different eras. Not settled: whether an xfn-like container wrapper is maintained, the exact function pod construction in source, and the controlled-rollout one-pager.
 
 ## Config Connector and ACK behavior when wrapped by compositions — status: open
 
@@ -1871,3 +1858,18 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Closed by:** Eric Shamay on 2026-11-26
 
 - **Possible resolution from [[sources/research-gap-o7-krm-functions]]:** Largely settled for the specification, and the user decides whether to close it. The spec says a function MUST be a container exchanging a `ResourceList` over stdin and stdout, is decoupled from in-cluster components, and requires non-root capability and a non-zero exit on failure, see [[findings/the-krm-functions-spec-requires-a-container-with-a-resourcelist-on-stdin-and-stdout-and-a-non-zero-exit-on-failure]]. kpt and Kustomize run functions without containers only through opt-in exec extensions, see [[findings/kpt-and-kustomize-run-functions-without-containers-only-through-opt-in-exec-extensions-that-both-docs-discourage]]. Not settled: Argo CD, Flux, and Helm-inflation constraints were not read, and no WASM or in-process runtime was searched for beyond the kpt and Kustomize pages.
+
+## Crossplane function runner architecture history — status: closed (2026-11-26)
+
+- **Question:** Which parts of the earlier Crossplane function runner model (a gRPC runner as a sidecar to the Crossplane pod, and a container-runner path) still exist, given that the design doc describes functions as Deployments behind a headless Service?
+- **Why it matters:** The VSHN post from 2023 and the design doc disagree on the runtime shape, and operators need the current model to size and secure functions. See [[sources/research-composition]] and [[entities/crossplane]].
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Read the current Crossplane Function package and runtime documentation.
+  - [ ] Update [[entities/crossplane]] and [[findings/composition-functions-add-moving-parts-that-must-be-healthy]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** crossplane, composition-functions, verification
+- **Resolution:** Largely settled for history. The alpha `xfn` sidecar (v1.11.0, 2023-01-31) was replaced in v1.14.0 (2023-11-01) by package-manager Deployments behind headless Services, xfn moved out of tree, and a "feat: remove xfn" commit is on main, see [[findings/crossplane-moved-composition-functions-from-an-xfn-sidecar-in-v1-11-to-package-manager-deployments-in-v1-14]]. The 2023 VSHN sidecar description and the design document describe different eras. Not settled: whether an xfn-like container wrapper is maintained, the exact function pod construction in source, and the controlled-rollout one-pager.
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-gap-o7-krm-functions]]:** Largely settled for history, and the user decides whether to close it. The alpha `xfn` sidecar (v1.11.0, 2023-01-31) was replaced in v1.14.0 (2023-11-01) by package-manager Deployments behind headless Services, xfn moved out of tree, and a "feat: remove xfn" commit is on main, see [[findings/crossplane-moved-composition-functions-from-an-xfn-sidecar-in-v1-11-to-package-manager-deployments-in-v1-14]]. The 2023 VSHN sidecar description and the design document describe different eras. Not settled: whether an xfn-like container wrapper is maintained, the exact function pod construction in source, and the controlled-rollout one-pager.
