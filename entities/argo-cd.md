@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: resource-composition-with-kro
+    hash: 1d5781610376
+    ingested: 2026-11-26
   - id: research-gap-m2-ownership-gc
     hash: 62aafaded9c0
     ingested: 2026-11-26
@@ -315,3 +318,7 @@ Argo CD now ships built-in Lua health scripts for the `cnrm.cloud.google.com`, `
 ## Automated-sync and deletion defaults re-read (o4 dossier)
 
 The o4 dossier re-read the automated-sync, sync-options, and application-deletion pages at `master` (v3.6.3 released 2026-11-24). Prune and self-heal are off unless set, a failed sync is not retried for the same commit and parameters, the self-heal delay is 5 seconds, `manualDefaults` turns manual prune on, and prune and cascade deletion default to foreground propagation. Pruning reverses wave order, but whether cascade application deletion honors waves was not found, see [[findings/a-config-connector-design-document-says-a-child-whose-parent-was-deleted-first-sticks-on-dependencynotfound-and-no-read-documentation-describes-ordered-teardown]]. [[sources/research-gap-o4-config-connector-ack]]
+
+## Argo CD as the multi-cluster delivery capability for kro resources on EKS
+
+The EKS overview page for kro lists Argo CD as the managed capability that deploys kro custom resources across multiple clusters, which positions Argo CD as the GitOps delivery layer above kro in AWS's managed stack. The page does not address how Argo CD tracks the children kro creates, and the tracking-id and owner-reference recipe from the kro FAQ above is still the only documented approach in this wiki. [[sources/resource-composition-with-kro]]

@@ -153,6 +153,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-o7-krm-functions]] — verified dossier on the KRM function specification and runtime requirements and the Crossplane function runner history, 2026-11-26
 - [[sources/research-gap-o8-crossplane-residuals]] — verified dossier on Crossplane scaling guidance, Upjet runtime, package dependency resolution, and function-kro status, 2026-11-26
 - [[sources/research-gap-o9-cadence-and-staleness]] — verified dossier on Config Connector controller kind per resource, reconcile cadence and per-kind overrides, and Kubernetes v1.36 staleness gates, metrics and KEP 5647 status, 2026-11-26
+- [[sources/resource-composition-with-kro]] — Amazon EKS documentation overview of managed kro under EKS Capabilities, with the ACK and Argo CD integrations (draft)
 
 ## Examples
 
@@ -958,6 +959,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[findings/kubernetes-v1-37-0-already-carries-the-horizontal-pod-autoscaler-staleness-gate-and-every-per-controller-gate-depends-on-atomicfifo]] — HPA gate in v1.37.0 and AtomicFIFO dependency (active)
 - [[findings/monitorinformerstaleness-and-the-handler-bookmarkfunc-are-absent-from-kubernetes-v1-36-0-v1-37-0-and-master-source]] — confirmed absence at three refs (active)
 - [[findings/kep-5647-is-implementable-with-a-beta-v1-37-target-and-an-open-tracking-issue-labelled-lifecycle-stale]] — KEP and tracking-issue status (active)
+- [[findings/the-amazon-eks-kro-overview-lists-resourcegraphdefinition-as-the-only-primary-resource-type-and-names-no-kro-version]] — the AWS overview names only RGD as kro's primary resource type and no kro version (draft)
 
 ## Outputs
 

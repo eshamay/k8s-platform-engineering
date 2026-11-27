@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: resource-composition-with-kro
+    hash: 1d5781610376
+    ingested: 2026-11-26
   - id: research-gap-m1-finalizers
     hash: 014549e333b6
     ingested: 2026-11-26
@@ -206,3 +209,7 @@ The deletion policy lookup is the resource annotation, then the namespace annota
 ## Documentation sites and defaults (o4 dossier)
 
 The o4 dossier found that ACK's old and new documentation sites disagree on adoption maturity (alpha with gates off versus Beta enabled by default), that a contributor calls the old site deprecated, and that controller releases on or after 2026-10-08 default `--enable-cross-namespace` to false, see [[findings/the-ack-old-and-new-documentation-sites-disagree-on-adoption-maturity-and-cross-namespace-references-default-to-blocked-from-2026-10-08-releases]]. The deletion-policy order (resource, namespace, controller flag, default `delete`) was re-read in both sites' source files. The ACK issue reports 3142, 3152, 3153, 3154, and 3122 were re-read: 3142, 3153, and 3154 are one reporter's audit with no maintainer root cause, while 3152 and 3122 each carry a contributor reply, see [[findings/no-named-organization-postmortem-was-found-for-kro-config-connector-ack-or-cluster-api]]. [[sources/research-gap-o4-config-connector-ack]]
+
+## ACK inside the managed kro capability on EKS
+
+The EKS overview page for kro names ACK as one of two integrations with other EKS managed capabilities and says kro lets teams compose workload resources with ACK-managed AWS resources into building blocks with default and immutable settings. The page gives no ACK example of its own and adds nothing on ACK readiness or deletion. [[sources/resource-composition-with-kro]]

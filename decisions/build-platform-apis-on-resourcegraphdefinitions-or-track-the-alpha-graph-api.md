@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: resource-composition-with-kro
+    hash: 1d5781610376
+    ingested: 2026-11-26
   - id: research-gap-o5-kro-ecosystem
     hash: 7905031da128
     ingested: 2026-11-26
@@ -35,3 +38,7 @@ Choosing RGD accepts `v1alpha1` churn on the kind itself but keeps behavior defi
 ## Related
 
 [[entities/kro]], [[decisions/choose-kro-crossplane-or-both-for-a-platform-abstraction-layer]]
+
+## Note from the EKS overview page
+
+The Amazon EKS overview of managed kro describes the ResourceGraphDefinition as kro's single primary resource type and never mentions Graph, which is consistent with building on RGDs when using the managed capability. It does not state which kro version the capability runs, so whether Graph is even available there is unknown. See [[findings/the-amazon-eks-kro-overview-lists-resourcegraphdefinition-as-the-only-primary-resource-type-and-names-no-kro-version]]. [[sources/resource-composition-with-kro]]

@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: resource-composition-with-kro
+    hash: 1d5781610376
+    ingested: 2026-11-26
   - id: research-gap-m2-ownership-gc
     hash: 62aafaded9c0
     ingested: 2026-11-26
@@ -263,3 +266,7 @@ kro v0.10.0 (2026-11-10) fixes Graph cleanup after partial apply failures, rejec
 Update 2026-11-26: the o5 dossier confirms the governance wording above from the README, the SIG README, and OWNERS files, and adds that the live kro.run roadmap still lists v0.10.0 as "Next" after the release. The Graph design document says an RGD "internally is a graph" and Graph "does not replace or deprecate the RGD Kind", and a newer proposal, KREP-026 propagation control (issue 1510), was opened 2026-11-13. No Graph promotion timeline and no CNCF listing check exist yet. See [[decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api]]. [[sources/research-gap-o5-kro-ecosystem]]
 
 Correction note: the docs FAQ still says kro "deploys a dedicated controller" per RGD, but the tuning page and the v0.10.0 source describe one shared queue, see [[findings/the-kro-docs-faq-says-a-dedicated-controller-per-rgd-while-the-tuning-page-and-source-describe-one-shared-queue]]. Scale evidence stays qualitative, see [[findings/kro-scale-evidence-is-two-open-issues-and-a-closed-unmerged-pull-request-with-no-benchmark-and-no-named-production-adopter]]. The function-kro integration now has a documented difference list, see [[findings/function-kro-lists-documented-behavioral-differences-from-upstream-kro-so-its-full-parity-claim-reads-as-same-engine-with-gaps]].
+
+## Managed kro on Amazon EKS (EKS Capabilities overview)
+
+The Amazon EKS documentation page "Resource composition with kro" states that under EKS Capabilities kro is "fully managed by AWS", so customers do not install, maintain, or scale kro controllers on their clusters. It describes the RGD as the single primary resource type, composes native resources and any installed CRD, and names two integrations with other EKS managed capabilities: ACK for AWS resources and Argo CD for deploying kro custom resources across clusters. A customer enables it by creating a kro capability resource through the console, the CLI, or an infrastructure-as-code tool. The page is vendor documentation, it names no kro version, no scale limit, and no mention of the alpha `Graph` kind, and its example is `kro.run/v1alpha1`. It is the first-party AWS statement behind the earlier remark that AWS offers kro as a managed capability, and it is still not evidence of production adopters or scale. See [[findings/the-amazon-eks-kro-overview-lists-resourcegraphdefinition-as-the-only-primary-resource-type-and-names-no-kro-version]]. [[sources/resource-composition-with-kro]]

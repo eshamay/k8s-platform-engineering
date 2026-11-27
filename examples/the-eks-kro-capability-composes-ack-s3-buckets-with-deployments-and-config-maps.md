@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: resource-composition-with-kro
+    hash: 1d5781610376
+    ingested: 2026-11-26
   - id: research-composite-resource
     hash: 8640896d06b9
     ingested: 2026-11-25
@@ -34,3 +37,7 @@ It is evidence that a hyperscaler productized kro and pairs it with ACK, which f
 ## First-party ACK view of the same pattern (o3 dossier)
 
 The ACK documentation's own kro guide composes an S3 Bucket, a DynamoDB Table, and a Deployment and states the readiness and deletion ordering, see [[examples/the-ack-docs-kro-guide-composes-an-s3-bucket-a-dynamodb-table-and-a-deployment-and-deletes-the-deployment-before-the-aws-resources]]. [[sources/research-gap-o3-gitops-provider-managed]]
+
+## The EKS overview page that precedes this example
+
+AWS also publishes a short overview page, "Resource composition with kro", which introduces the managed capability, shows the `WebApplication` RGD that produces a Deployment and a Service, and describes how to enable the capability through the console, CLI, or an infrastructure-as-code tool. It names ACK and Argo CD as the two integrations with other managed capabilities. The ACK S3 composition in this example comes from the longer AWS guide, and the overview page does not repeat it. [[sources/resource-composition-with-kro]]

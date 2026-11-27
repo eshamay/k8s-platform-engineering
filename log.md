@@ -1049,3 +1049,13 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 
 ## [2026-11-26] todo | dropped the study guide todo
 - dropped at the user's request; the study guide is no longer part of the plan
+
+## [2026-11-26] ingest | Amazon EKS documentation: Resource composition with kro
+- source: [[sources/resource-composition-with-kro]]
+- raw: `raw/resource-composition-with-kro` (sha256: 1d5781610376)
+- pages touched: [[entities/kro]], [[entities/ack]], [[entities/argo-cd]], [[examples/the-eks-kro-capability-composes-ack-s3-buckets-with-deployments-and-config-maps]], [[decisions/build-platform-apis-on-resourcegraphdefinitions-or-track-the-alpha-graph-api]], open-knowledge-gaps
+- new pages: [[sources/resource-composition-with-kro]], [[findings/the-amazon-eks-kro-overview-lists-resourcegraphdefinition-as-the-only-primary-resource-type-and-names-no-kro-version]]
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 1
+- rationale: A targeted pass using the markdown handler on an extensionless file holding the AWS vendor overview of managed kro. It confirms AWS's managed offering, the ACK and Argo CD integrations, and the enable path, and it settles nothing about scale, adopters, or version. Two open gaps received not-settled notes, one gap about the managed capability's kro version was drafted, and nothing was closed.
