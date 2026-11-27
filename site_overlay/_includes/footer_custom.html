@@ -1,0 +1,63 @@
+<script>
+// Sidebar sections: expand the document that is open and highlight the section being read.
+// The section lists are rendered by _includes/components/nav/links.html (see site_overlay/).
+(function () {
+  function trimSlash(p) { return p.replace(/\/index\.html$/, '/').replace(/\/+$/, ''); }
+
+  function init() {
+    var nav = document.getElementById('site-nav');
+    if (!nav) return;
+    var here = trimSlash(location.pathname);
+
+    // Expand the open document (and its ancestors) so its sections are visible.
+    var current = null;
+    nav.querySelectorAll('li.nav-list-item').forEach(function (li) {
+      var link = li.querySelector(':scope > a.nav-list-link');
+      var list = li.querySelector(':scope > ul.nav-sections');
+      if (!link || !list) return;
+      var target = trimSlash(new URL(link.getAttribute('href'), location.href).pathname);
+      if (target === here) { current = li; }
+    });
+    if (!current) return;
+    for (var li = current; li && li !== nav; li = li.parentElement) {
+      if (li.classList && li.classList.contains('nav-list-item')) {
+        li.classList.add('active');
+        var b = li.querySelector(':scope > .nav-list-expander');
+        if (b) b.setAttribute('aria-pressed', 'true');
+      }
+    }
+
+    // Highlight the section link for the heading nearest the top of the viewport.
+    var links = {};
+    current.querySelectorAll(':scope > ul.nav-sections a.nav-section-link').forEach(function (a) {
+      var id = decodeURIComponent((a.getAttribute('href').split('#')[1] || ''));
+      if (id) links[id] = a;
+    });
+    var heads = Object.keys(links).map(function (id) { return document.getElementById(id); }).filter(Boolean);
+    if (!heads.length) return;
+    var active = null;
+    function mark() {
+      var pick = heads[0];
+      for (var i = 0; i < heads.length; i++) {
+        if (heads[i].getBoundingClientRect().top - 90 <= 0) pick = heads[i]; else break;
+      }
+      var a = links[pick.id];
+      if (a === active) return;
+      if (active) { active.classList.remove('current-section'); active.removeAttribute('aria-current'); }
+      active = a;
+      a.classList.add('current-section');
+      a.setAttribute('aria-current', 'location');
+    }
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () { ticking = false; mark(); });
+    }, { passive: true });
+    window.addEventListener('hashchange', mark);
+    mark();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>
