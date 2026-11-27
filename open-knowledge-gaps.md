@@ -78,7 +78,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#kro-governance-status-and-the-future-of-the-graph-api]] — open, unassigned
 - [[#scaling-limits-of-per-rgd-kro-controllers-and-named-production-kro-adopters]] — open, unassigned
 - [[#krm-function-specification-and-runtime-requirements]] — open, unassigned
-- [[#kratix-destination-and-gitstatestore-mechanics]] — open, unassigned
 - [[#maintenance-status-of-tofu-controller-and-terraform-operator]] — open, unassigned
 - [[#independent-benchmarks-for-argo-cd-footprint-and-portal-claims]] — open, unassigned
 - [[#direct-comparison-of-config-connector-and-crossplane]] — open, unassigned
@@ -991,18 +990,6 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Tags:** krm-functions, kpt, kustomize, containers
 - **Possible resolution from [[sources/research-gap-o7-krm-functions]]:** Largely settled for the specification, and the user decides whether to close it. The spec says a function MUST be a container exchanging a `ResourceList` over stdin and stdout, is decoupled from in-cluster components, and requires non-root capability and a non-zero exit on failure, see [[findings/the-krm-functions-spec-requires-a-container-with-a-resourcelist-on-stdin-and-stdout-and-a-non-zero-exit-on-failure]]. kpt and Kustomize run functions without containers only through opt-in exec extensions, see [[findings/kpt-and-kustomize-run-functions-without-containers-only-through-opt-in-exec-extensions-that-both-docs-discourage]]. Not settled: Argo CD, Flux, and Helm-inflation constraints were not read, and no WASM or in-process runtime was searched for beyond the kpt and Kustomize pages.
 
-## Kratix Destination and GitStateStore mechanics — status: open
-
-- **Question:** How do Kratix Destinations and GitStateStores decide where a Promise's output is written and scheduled?
-- **Why it matters:** The fetched excerpt omitted both, and the PCI cluster example depends on them. The InfraCloud article redirected away and two other sites were unreachable.
-- **Owner:** unassigned
-- **How to close:**
-  - [ ] Fetch the Kratix documentation on Destinations and GitStateStores.
-  - [ ] Expand [[entities/kratix]] and [[examples/kratix-promises-scatter-workloads-across-standard-pci-and-terraform-destinations]].
-- **Drafted by:** agent on 2026-11-25
-- **Tags:** kratix, destinations, gitops
-- **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Mostly settled from the Kratix reference documentation and the GitStateStore Go type, and the user decides whether to close it. A Destination is a cluster-scoped record of a system Kratix writes documents to, with `dependencies` and `resources` directories and an immutable `filepath.mode`. A GitStateStore holds the repository, branch, auth method (`basicAuth`, `ssh`, `githubApp`), and an `insecure` field that defaults to true when unset. Scheduling is two-stage label matching with random selection among several matches and a documented precedence order. Not settled: the scheduler and work-creator source code was not read, and the vendor PCI example was not checked against it. See [[findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable]], [[findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match]], and [[findings/the-kratix-gitstatestore-insecure-field-defaults-to-true-when-unset-in-the-go-type]].
-
 ## Maintenance status of tofu-controller and Terraform Operator — status: open
 
 - **Question:** What is the current maintenance level of tofu-controller after Weaveworks' wind-down, and of the community Terraform Operator?
@@ -1865,3 +1852,18 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Closed by:** Eric Shamay on 2026-11-26
 
 - **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Largely settled for status and governance, and the user decides whether to close it. Both are CNCF Sandbox per the CNCF landscape file (Radius accepted 2024-04-16, Score 2024-07-08) and both sandbox issues passed their votes. All four Radius maintainers are Microsoft employees, its main-repository GOVERNANCE.md holds only a code-of-conduct pointer, and only channel 0.62 (v0.62.0, 2026-10-27) is supported. Score's maintainers span Oracle, an independent, Docker, and Checkly, and its sandbox application names Humanitec as the "sponsoring company". Not settled: no primary text says Humanitec created Score, and the radapp.io and score.dev documentation sites were not read, so what each tool does rests on READMEs. See [[findings/radius-and-score-are-both-cncf-sandbox-projects-per-the-landscape-file-and-both-passed-sandbox-votes]], [[findings/all-four-radius-maintainers-are-microsoft-employees-and-only-the-newest-minor-channel-is-supported]], and [[findings/score-maintainers-span-four-employers-and-the-sandbox-application-names-humanitec-as-sponsoring-company]].
+
+## Kratix Destination and GitStateStore mechanics — status: closed (2026-11-26)
+
+- **Question:** How do Kratix Destinations and GitStateStores decide where a Promise's output is written and scheduled?
+- **Why it matters:** The fetched excerpt omitted both, and the PCI cluster example depends on them. The InfraCloud article redirected away and two other sites were unreachable.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Fetch the Kratix documentation on Destinations and GitStateStores.
+  - [ ] Expand [[entities/kratix]] and [[examples/kratix-promises-scatter-workloads-across-standard-pci-and-terraform-destinations]].
+- **Drafted by:** agent on 2026-11-25
+- **Tags:** kratix, destinations, gitops
+- **Resolution:** Mostly settled from the Kratix reference documentation and the GitStateStore Go type. A Destination is a cluster-scoped record of a system Kratix writes documents to, with `dependencies` and `resources` directories and an immutable `filepath.mode`. A GitStateStore holds the repository, branch, auth method (`basicAuth`, `ssh`, `githubApp`), and an `insecure` field that defaults to true when unset. Scheduling is two-stage label matching with random selection among several matches and a documented precedence order. Not settled: the scheduler and work-creator source code was not read, and the vendor PCI example was not checked against it. See [[findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable]], [[findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match]], and [[findings/the-kratix-gitstatestore-insecure-field-defaults-to-true-when-unset-in-the-go-type]].
+- **Closed by:** Eric Shamay on 2026-11-26
+
+- **Possible resolution from [[sources/research-gap-o6-platform-landscape]]:** Mostly settled from the Kratix reference documentation and the GitStateStore Go type, and the user decides whether to close it. A Destination is a cluster-scoped record of a system Kratix writes documents to, with `dependencies` and `resources` directories and an immutable `filepath.mode`. A GitStateStore holds the repository, branch, auth method (`basicAuth`, `ssh`, `githubApp`), and an `insecure` field that defaults to true when unset. Scheduling is two-stage label matching with random selection among several matches and a documented precedence order. Not settled: the scheduler and work-creator source code was not read, and the vendor PCI example was not checked against it. See [[findings/a-kratix-destination-writes-dependencies-and-resources-directories-and-its-filepath-mode-is-immutable]], [[findings/kratix-schedules-in-two-stages-by-label-matching-and-picks-a-destination-at-random-when-several-match]], and [[findings/the-kratix-gitstatestore-insecure-field-defaults-to-true-when-unset-in-the-go-type]].
