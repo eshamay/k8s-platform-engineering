@@ -40,6 +40,7 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - [[#fetch-the-crossplane-composition-functions-docs-page]] — open
 - [[#find-the-function-kro-engine-and-crossplane-package-revision-source-files]] — open
 - [[#read-the-kro-crossplane-eks-idp-lab-repository]] — open
+- [[#add-the-speaker-s-account-of-kcp-workspaces-to-the-part-1-kcp-passage]] — open
 
 ## Open
 
@@ -243,6 +244,12 @@ H2 slug is the anchor for each entry; refer to entries with `[[#slug]]`.
 - **Acceptance:** The source is saved in `raw/` and ingested, or recorded as unavailable with the reason.
 - **Drafted by:** agent on 2026-11-26
 
+## Add the speaker's account of kcp workspaces to the part-1 kcp passage — status: open
+
+- **What:** In `outputs/part-1-core-architectural-principles.md`, the paragraph beginning "At the far edge of the idea is a project like kcp" could add that a KubeCon speaker describes a workspace as a Kubernetes API without nodes, created in about a second, and say plainly that the figure is an unmeasured spoken estimate. Outputs are not edited by ingest.
+- **Why:** The passage predates the ingest of the KubeCon kcp talk transcript. The addition is optional because the speaker's description agrees with the passage.
+- **Acceptance:** Passage revised through `sticki-summarize` or by hand, citing [[examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour]] and [[entities/kcp]].
+- **Drafted by:** agent on 2026-11-26
 
 ## Done
 

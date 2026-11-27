@@ -84,6 +84,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - [[#how-often-forced-finalizer-removal-orphans-guarded-resources]] — open, unassigned
 - [[#recent-2024-to-2026-platform-incident-evidence]] — open, unassigned
 - [[#which-kro-version-and-feature-gates-the-amazon-eks-managed-capability-runs]] — open, unassigned
+- [[#which-cve-the-kcp-speaker-said-the-kcp-side-discovered]] — open, unassigned
 
 ---
 
@@ -105,6 +106,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Possible resolution from [[sources/research-landscape]]:** Partly helpful. The adopters list names Nike, Consensys, SAP, Deutsche Bahn (DB Systel), Stone Payments, RTL Nederland, and Akamai with use cases, all self-reported, and Syntasso links NatWest, The Access Group, and Veeam as Kratix case studies without detail. See [[examples/rtl-nederland-provisions-whole-kubernetes-clusters-with-crossplane-which-overlaps-with-cluster-api]].
 - **Possible resolution from [[sources/research-gap-b1-unverified-claims]]:** Settles one negative result only. The Cluster API repository root listing has no adopters file (root only, subdirectories not searched). No new adopters were named. See [[entities/cluster-api]].
 - **Possible resolution from [[sources/bex-co-kro-radar-post]]:** Not settled for kro, and the user decides whether to close it. A secondary bex.co post cites a CNCF and SlashData survey rating for kro but names no production user, and its author is evaluating kro and not running it. See [[examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner]].
+- **Possible resolution from [[sources/kcp-kubecon-talk]]:** Not settled for kcp, and the user decides whether to close it. The speaker says he works for Accenture and gives no customer or production user, and his employer is not stated to run kcp. The adopters file read earlier remains the only adopter evidence, see [[entities/kcp]].
 
 ## Independent scale benchmarks for etcd, vcluster, and kcp — status: open
 
@@ -116,6 +118,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Update [[findings/etcd-scale-limits-of-the-shared-store]] and [[comparisons/tenancy-models-namespaces-vcluster-kcp]].
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** scale, etcd, vcluster, kcp
+- **Possible resolution from [[sources/kcp-kubecon-talk]]:** Not settled, and the user decides whether to close it. The KubeCon transcript gives no benchmark or tenant count for kcp. Its only figures are the speaker's spoken estimates of about a second for a workspace and half an hour to an hour for a managed cluster, which are not independent measurements.
 
 ## Control-plane-as-platform outage postmortems — status: open
 
@@ -142,6 +145,7 @@ This file tracks unresolved questions about Kubernetes platform engineering.
 - **Drafted by:** agent on 2026-11-25
 - **Tags:** distributions, aenix, kep
 - **Possible resolution from [[sources/research-gap-o5-kro-ecosystem]]:** Not settled in favor of the model, and the user decides whether to close it. No SIG charter, KEP, or talk adopting a distribution model was found, and the only direct source is Aenix's own post, which calls its project lab-tested and small. Adjacent signals exist in kcp (CNCF Sandbox), its not-production-ready generic-controlplane, and API-machinery KEPs that do not mention the model, see [[findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post]].
+- **Possible resolution from [[sources/kcp-kubecon-talk]]:** Not settled, and the user decides whether to close it. The kcp KubeCon talk was expected to be a primary source on this, but the transcript is a short kcp introduction that does not mention a distribution model, a SIG, or a KEP. It adds nothing for or against the model.
 
 ## Argo CD versus Flux head-to-head behavior — status: open
 
@@ -1897,3 +1901,14 @@ This file tracks unresolved questions about Kubernetes platform engineering.
   - [ ] Check whether a managed cluster accepts a `Graph` object.
 - **Drafted by:** agent on 2026-11-26
 - **Tags:** kro, eks, managed-service, version
+
+## Which CVE the kcp speaker said the kcp side discovered — status: open
+
+- **Question:** Which CVE does the kcp KubeCon talk transcript refer to when the speaker says another talk covers "the CVE which we discovered", and which components and versions did it affect?
+- **Why it matters:** A vulnerability in a multi-tenant control plane bears on the isolation claims recorded in [[comparisons/tenancy-models-namespaces-vcluster-kcp]], and the transcript names no identifier.
+- **Owner:** unassigned
+- **How to close:**
+  - [ ] Find the kcp security advisories and the conference schedule entry for the talk the speaker mentions.
+  - [ ] Record the identifier, affected versions, and fix in [[entities/kcp]].
+- **Drafted by:** agent on 2026-11-26
+- **Tags:** kcp, security, cve, multi-tenancy

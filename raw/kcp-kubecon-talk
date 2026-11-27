@@ -1,0 +1,40 @@
+0:000 secondsHi, my name is Yan Vegas. I work for a company called Accenture. And today I'll be presenting about the KCP project.
+0:099 secondsSo basically uh the [clears throat] problem statement in Kubernetes is a bit and I'm sure many of you have been there already.
+0:1919 secondsWhen I want something in Kubernetes, a space for me, myself, the team, I either have something called a
+0:2727 secondsnamespace and have projects around the namespace who promise me to do uh like namespace on steroids to have an
+0:3535 secondsisolated account at Kubernetes or I get the full Kubernetes cluster experience
+0:4242 secondsvia an isolated uh own tenant. And while a namespace is very quick to provision, a full Kubernetes cluster with if
+0:5151 secondsadditionally have some uh opinion about it is from like even from a managed cloud provider half an hour to an hour.
+0:5959 secondsSo it's very heavy as an account and it shouldn't be heavy.
+1:051 minute, 5 secondsSo Bane coming back to the roots here what if we have both of that. So we have a
+1:131 minute, 13 secondslightweight Kubernetes API uh and still have the full isolated experience.
+1:191 minute, 19 seconds[clears throat]
+1:201 minute, 20 secondsSo basically true isolation without the infrastructure backing it.
+1:271 minute, 27 secondsAnd uh a vanilla Kubernetes cluster has around 80 built-in resources last time I checked. And uh for a use case where you
+1:371 minute, 37 secondsare working with extending Kubernetes and uh like doubling down on CRDs uh
+1:451 minute, 45 secondsthat is a lot and a lot of stuff you don't need for that. So basically have a bit of a lightweight API server which um
+1:521 minute, 52 secondswhich can be provisioned in seconds. So and that exactly is the KCP project. KCP is um uh an open-source horizontally
+2:022 minutes, 2 secondsscalable control plane for Kubernetes like APIs uh and that provides isolated
+2:092 minutes, 9 secondsKubernetes endpoints and an endpoint in uh in KCP is called a workspace and what you get with a workspace is basically a
+2:172 minutes, 17 secondsfullblown Kubernetes API um without all the workload and infrastructure stuff.
+2:252 minutes, 25 secondsSo there are no nodes, no pots, no uh deployments, nothing like that. And
+2:322 minutes, 32 secondsinside a workspace, you are cluster admin. So you are basically uh in your in your own account and you
+2:402 minutes, 40 secondscan do whatever you want. And KCP serves as the as the housing around that. So when you create a workspace, it's up
+2:472 minutes, 47 secondsthere in in in in literally a second and it allows you to do to to to um well
+2:552 minutes, 55 secondsyeah to control everything, not just the non-namespace stuff on the just the namespace stuff and since it's a
+3:023 minutes, 2 secondsKubernetes like API, you can use all the familiar tools uh to access it like cubectl, helm uh basically everything which is based on client go.
+3:133 minutes, 13 secondsOops.
+3:153 minutes, 15 secondsSo it's a single binary. It's a it's in go written and it's compiled to a single binary. So you can just uh run it on on
+3:233 minutes, 23 secondson uh on your laptop or on on a managed service or of course uh on Kubernetes as
+3:303 minutes, 30 secondswell to play around with it. Um but it is also can be uh deployed as a global control plane uh with multi-reion
+3:373 minutes, 37 secondssupport with many caching layers um and aggregate APIs um uh based on the on the
+3:443 minutes, 44 secondsdeployment infrastructure and what really shines about uh KCP is the mechanism to deal with CRDs. So um I'm
+3:543 minutes, 54 secondsnot [clears throat] sure how many of you have run into the uh issue when upgrading a CRD from v1 alpha 1 to v
+4:024 minutes, 2 secondsalpha 2 and there's a breaking change in between and you thought ah well I'll just have a different api version and
+4:084 minutes, 8 secondsthat's sure is enough well not in kubernetes but kcp solves exactly this problem so you get mechanism for dealing
+4:164 minutes, 16 secondswith different a uh different crds and different cd versions for example version upgrades or the controllers who
+4:264 minutes, 26 secondsare backing that. Basically, what you can do is have uh the v1 alpha 1 served by a different controller than the v1
+4:344 minutes, 34 secondsalpha 2. You can also have a different name for your API which you export in in KCP than in the different in the backing cluster.
+4:454 minutes, 45 secondsSo if that spiked your attention then um there's more on KCP on this conference.
+4:524 minutes, 52 secondsUm yeah the first one is uh is rightly going into the CVE which we discovered.
+4:594 minutes, 59 secondsUm so um but the other ones on Wednesday they go deeper into the projects themselves and that's it. Thank you very much.

@@ -5,6 +5,9 @@ status: active
 created: 2026-11-25
 updated: 2026-11-26
 sources:
+  - id: kcp-kubecon-talk
+    hash: d7a7a3fee0ab
+    ingested: 2026-11-26
   - id: research-gap-b1-recheck-flux-k8s
     hash: c78dc9a9635e
     ingested: 2026-11-26
@@ -61,3 +64,7 @@ Correction note, 2026-11-26: the correction above said the exact shape of the pr
 ## Additions from the admission and CRD dossier
 
 Cluster API runs its own CRD migrator that patches every custom resource and then sets `status.storedVersions`, and labels CRDs with contract versions ([[findings/cluster-api-labels-crds-with-contract-versions-and-runs-a-crd-migrator-for-storage-version-migration]]). A down conversion webhook no longer stalls garbage collection from Kubernetes 1.32 ([[findings/since-kubernetes-1-32-the-garbage-collector-proceeds-after-a-failed-cache-sync-but-cannot-see-block-owner-deletion-owners-of-the-unsynced-type]]). [[sources/research-gap-m6-admission-crds]]
+
+## kcp's per-version controllers (speaker's account)
+
+A kcp speaker says that in kcp the `v1alpha1` and `v1alpha2` versions of an API can be served by different controllers, and that an exported API can carry a different name from the API in the backing cluster, as a way to handle breaking CRD changes. The talk gave no mechanism, so this page's treatment of conversion strategies is unchanged and the claim is recorded only as kcp's stated approach. See [[entities/kcp]]. [[sources/kcp-kubecon-talk]]

@@ -1069,3 +1069,13 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 - fact conflicts: 0
 - gaps drafted: 0
 - rationale: A secondary blog post that reports a CNCF and SlashData radar the wiki had cited only second-hand. The post is now read in full and stays attributed to its author, the radar remains unread, and no named production adopter appears, so four open gaps received not-settled notes. Two minor discrepancies with existing pages were recorded as correction notes because the post is a weaker source than the pages it differs from.
+
+## [2026-11-26] ingest | KubeCon talk on kcp by Yan Vegas of Accenture (auto-generated transcript)
+- source: [[sources/kcp-kubecon-talk]]
+- raw: `raw/kcp-kubecon-talk` (sha256: d7a7a3fee0ab)
+- pages touched: [[entities/kcp]], [[comparisons/tenancy-models-namespaces-vcluster-kcp]], [[concepts/crd-versioning-and-storage-migration]], [[concepts/universal-control-plane]], [[examples/multi-tenant-api-hosting-with-kcp]], [[findings/no-sig-charter-or-kep-adopts-a-kubernetes-distribution-model-and-the-only-direct-source-is-aenix-s-own-post]], open-knowledge-gaps, todo
+- new pages: [[sources/kcp-kubecon-talk]], [[examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour]]
+- contradictions raised: 0
+- fact conflicts: 0
+- gaps drafted: 1
+- rationale: A short auto-generated transcript treated as the speaker's account, with recognition errors recorded under Limits. It agrees with the wiki's description of kcp and adds unmeasured timing claims and a note on per-version controllers for CRDs. It does not address the distribution model the earlier todo expected, so three open gaps received not-settled notes, one gap about the CVE the speaker mentioned was drafted, and one optional output todo was appended.

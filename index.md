@@ -155,6 +155,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[sources/research-gap-o9-cadence-and-staleness]] — verified dossier on Config Connector controller kind per resource, reconcile cadence and per-kind overrides, and Kubernetes v1.36 staleness gates, metrics and KEP 5647 status, 2026-11-26
 - [[sources/resource-composition-with-kro]] — Amazon EKS documentation overview of managed kro under EKS Capabilities, with the ACK and Argo CD integrations (draft)
 - [[sources/bex-co-kro-radar-post]] — secondary bex.co blog post reporting a CNCF and SlashData radar placing kro in Adopt, and weighing kro for a Cluster API platform (draft)
+- [[sources/kcp-kubecon-talk]] — auto-generated transcript of a short KubeCon talk on kcp workspaces by Yan Vegas of Accenture, the speaker's account (draft)
 
 ## Examples
 
@@ -452,6 +453,7 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 - [[examples/config-connector-alloydbcluster-and-billingbudgetsbudget-show-kinds-that-support-more-than-one-controller]] — kinds that default to Terraform or DCL and also support direct (active)
 - [[examples/kubernetes-pull-request-143314-fixed-the-informer-store-resource-version-gauge-reporting-zero-before-a-store-recorded-a-version]] — 1.38 changelog fix for the gauge reporting 0 (active)
 - [[examples/bex-co-weighs-a-kro-resourcegraphdefinition-against-a-hand-rolled-operator-for-a-cluster-api-paas-on-hetzner]] — a company evaluating, not adopting, kro against a hand-rolled controller, secondary (draft)
+- [[examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour]] — a speaker's unmeasured timing claim and CRD-version handling for kcp (draft)
 
 ## Comparisons
 

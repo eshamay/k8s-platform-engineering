@@ -3,8 +3,11 @@ title: "Tenancy models: namespaces, vcluster, and kcp"
 type: comparison
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: kcp-kubecon-talk
+    hash: d7a7a3fee0ab
+    ingested: 2026-11-26
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
@@ -25,3 +28,7 @@ This comparison follows Kubermatic's vendor explainer and the vCluster blog, so 
 ## Reading the comparison
 
 Kubermatic's advice is to pick namespaces for simplicity when teams trust each other. vCluster argues that a single etcd cannot be sharded for one logical keyspace, so per-tenant virtual control planes are the way to scale. See [[findings/etcd-scale-limits-of-the-shared-store]] and [[examples/multi-tenant-api-hosting-with-kcp]]. Independent benchmarks are missing, so the figures should be treated as indicative.
+
+## A speaker's timing claim for kcp workspaces
+
+A KubeCon speaker on kcp says a namespace is quick, a managed full cluster takes half an hour to an hour, and a kcp workspace appears in about a second. This is a spoken estimate from a promotional talk and not a benchmark, so it joins the vendor figures above and does not replace them, and the table's tenant counts are unchanged. See [[examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour]]. [[sources/kcp-kubecon-talk]]

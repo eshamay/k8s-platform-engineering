@@ -3,8 +3,11 @@ title: Universal Control Plane
 type: concept
 status: active
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: kcp-kubecon-talk
+    hash: d7a7a3fee0ab
+    ingested: 2026-11-26
   - id: krm-platform-vocabulary
     hash: 731a6941f9db
     ingested: 2026-11-25
@@ -64,3 +67,7 @@ See also [[comparisons/tenancy-models-namespaces-vcluster-kcp]] and [[comparison
 ## To research
 
 Named production adopters and object counts, independent scale benchmarks, and control-plane outage postmortems. These are tracked in [[open-knowledge-gaps]].
+
+## kcp as a lightweight API server (speaker's account)
+
+A KubeCon talk transcript describes kcp workspaces as the Kubernetes API with the workload and infrastructure resources removed, so the API server and CRDs can be used alone, which is the far end of this idea described above. The speaker's figures are unmeasured. See [[examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour]]. [[sources/kcp-kubecon-talk]]

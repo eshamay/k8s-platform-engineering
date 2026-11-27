@@ -5,6 +5,9 @@ status: active
 created: 2026-11-26
 updated: 2026-11-26
 sources:
+  - id: kcp-kubecon-talk
+    hash: d7a7a3fee0ab
+    ingested: 2026-11-26
   - id: research-gap-o5-kro-ecosystem
     hash: 7905031da128
     ingested: 2026-11-26
@@ -29,3 +32,7 @@ Supporting a broader direction: kcp's CNCF hosting and "beyond compute" goal, an
 ## Related
 
 [[concepts/universal-control-plane]], [[examples/non-container-appliances-on-the-kubernetes-api]], [[entities/kcp]]
+
+## The kcp KubeCon talk does not address the distribution model
+
+The earlier todo expected the KubeCon kcp talk to be the main primary source on community direction for the distribution model. The transcript is a short kcp introduction and says nothing about a Kubernetes distribution model, a SIG, or a KEP, so this finding's conclusion is unchanged. [[sources/kcp-kubecon-talk]]

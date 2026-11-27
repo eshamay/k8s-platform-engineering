@@ -3,8 +3,11 @@ title: Multi-tenant API hosting with kcp
 type: example
 status: draft
 created: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 sources:
+  - id: kcp-kubecon-talk
+    hash: d7a7a3fee0ab
+    ingested: 2026-11-26
   - id: research-universal-control-plane
     hash: 037575049a4c
     ingested: 2026-11-25
@@ -25,3 +28,7 @@ Namespaces are cheap but share CRDs and suffer noisy neighbors, and per-tenant v
 ## Evidence quality
 
 The tenant counts come from vendors, and the million-workspace target is a goal. No named production deployment appears in the dossier.
+
+## A speaker's description of workspaces
+
+A kcp speaker at KubeCon describes a workspace as an isolated Kubernetes API where the tenant is cluster admin and which is created in about a second, usable with kubectl, Helm, and other client-go tools. This repeats the scenario above in the speaker's words and adds no measurement. See [[examples/a-kcp-speaker-says-a-workspace-takes-about-a-second-to-create-where-a-managed-cluster-takes-half-an-hour-to-an-hour]]. [[sources/kcp-kubecon-talk]]
