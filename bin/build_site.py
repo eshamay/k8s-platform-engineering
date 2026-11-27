@@ -205,6 +205,40 @@ def yesc(s):
     return '"' + str(s).replace('\\', '\\\\').replace('"', '\\"') + '"'
 
 
+# LOCAL PATCH (k8s-platform-engineering): section lists for the sidebar. When the config key
+# "nav_sections" is true, every emitted page gets a front-matter list "sections" with one entry
+# per "## " heading (title and the kramdown/GFM heading id), which the overlay in
+# site_overlay/_includes/components/nav/links.html renders as an expandable list under the page.
+def heading_id(text):
+    t = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", text.strip())
+    t = t.replace("`", "").replace("*", "").lower()
+    t = re.sub(r"[^\w\- ]", "", t)
+    return t.replace(" ", "-")
+
+
+def nav_sections_of(body):
+    """Return [(title, id)] for H2 headings outside fenced code, ids de-duplicated like kramdown."""
+    res, seen, fence = [], {}, None
+    for line in body.splitlines():
+        m = FENCE_RE.match(line)
+        if m:
+            tok = m.group(1)[0]
+            fence = tok if fence is None else (None if fence == tok else fence)
+            continue
+        if fence:
+            continue
+        h = re.match(r"^## +(.*?)\s*#*\s*$", line)
+        if not h:
+            continue
+        raw = h.group(1)
+        base = heading_id(raw)
+        n = seen.get(base, 0)
+        seen[base] = n + 1
+        title = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", raw).replace("`", "").replace("*", "").strip()
+        res.append((title, base if n == 0 else f"{base}-{n}"))
+    return res
+
+
 def is_symlinked(path, root):
     """True if path or any component between root and path is a symlink."""
     p = Path(path)
@@ -392,6 +426,12 @@ class Builder:
         front = ["---", "layout: default", f"title: {yesc(title)}"]
         if parent:
             front.append(f"parent: {yesc(parent)}")
+        if self.cfg.get("nav_sections"):
+            secs = nav_sections_of(body)
+            if secs:
+                front.append("sections:")
+                for t, i in secs:
+                    front += [f"  - title: {yesc(t)}", f"    id: {yesc(i)}"]
         front += [f"nav_order: {order}", f'permalink: "{permalink}"', "---", ""]
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text("\n".join(front) + "\n" + body, encoding="utf-8")
@@ -480,6 +520,11 @@ aux_links_new_tab: true
     def build(self):
         self._prepare_out()
         self.write_config()
+        # LOCAL PATCH (k8s-platform-engineering): copy committed theme overrides (for example
+        # _includes/components/nav/links.html) from <wiki>/site_overlay into the build tree.
+        overlay = self.wiki / self.cfg.get("overlay_dir", "site_overlay")
+        if overlay.is_dir() and not is_symlinked(overlay, self.wiki):
+            shutil.copytree(overlay, self.out, dirs_exist_ok=True)
         for folder, title, order in self.sections:
             idx = self.out / folder / "index.md"
             idx.parent.mkdir(parents=True, exist_ok=True)

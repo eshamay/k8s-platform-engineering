@@ -5,7 +5,7 @@
   "include_sources": false,
   "publish_info_pages": false,
   "publish_status": ["active", "stale", "contradicted"],
-  "publish_dirs": ["outputs"],
+  "nav_sections": true, "publish_dirs": ["outputs"],
   "exclude_dirs": [],
   "nav_order_stems": [
     "part-1-core-architectural-principles",
