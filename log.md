@@ -245,3 +245,18 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 
 ## [2026-11-27] housekeeping | sidebar sections
 - each published document now expands in the sidebar into its sections: nav_sections in .sticki-publish.json, a sections list emitted by bin/build_site.py, and theme overrides in site_overlay/
+
+## [2026-11-27] outputs | trimmed to principles and design
+- Scope: the seven outputs were trimmed so they teach principles, design and architecture and no longer carry configuration values, version numbers, release dates, commit, issue and pull request references, resolved bugs, or tables that compare tools across configuration values. This log is the only place that records what was trimmed.
+- part-1-core-architectural-principles: 37 passages removed, 45 rewritten, 1 table removed (the cadence table, replaced by a prose paragraph on what each tool compares).
+- part-2-krm-and-api-machinery: 43 passages removed, 81 rewritten, no tables removed.
+- part-3-controller-and-operator-mechanics: 36 passages removed, 86 rewritten, no tables removed.
+- part-4-platform-abstractions: 56 passages removed, 52 rewritten, no tables removed (the design comparison table was kept).
+- part-5-platform-architecture-principles-and-operating-at-scale: 41 passages removed, 117 rewritten, no tables removed.
+- flux-ramp-up: 36 passages removed, 65 rewritten, no tables removed (the mechanism and feature table was kept).
+- crossplane-ramp-up: 18 passages removed, 73 rewritten, no tables removed.
+- Judgment call: incident stories (Skyscanner, Spotify, Reddit, Zalando, OpenAI, Jetstack) were kept at year level because each teaches an architectural lesson, and their clock times, durations, versions and counts were dropped. Single-product bug stories that rest on one reporter or a later fix were removed.
+- Judgment call: order-of-magnitude scale figures (hundreds of clusters, thousands of CRDs) were kept as structural evidence, while per-CRD memory, request counts, defaults, flags and intervals were removed. Example manifests keep placeholders in place of concrete intervals.
+- Judgment call: design contrasts were kept, such as Argo CD prune and self-heal being opt-in, fail-closed versus fail-open webhooks, and the Crossplane v1 versus v2 composite scope, stated without values or versions.
+- Judgment call: wikilink slugs that contain version, issue or stage words were left unchanged because slugs are link targets. A strict build reported no link warnings.
+- Limitation: Part 1 was read in full, and the other six documents were checked with pattern sweeps and context reads, so a subtle leftover could remain in prose that was not read line by line.
