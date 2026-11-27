@@ -999,3 +999,7 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 
 ## [2026-11-26] todo | split the other-tool manual-fetch todo
 - dropped the umbrella todo and added 12 per-source todos for the unreadable sources listed in [[findings/other-tool-coverage-pass-gap-dispositions]]
+
+## [2026-11-26] gaps | close | Adoption, observe-only, and ignore-differences controls
+- closed by Eric Shamay
+- resolution: Largely settled for Argo CD and Flux, with no observe-only mode found. `ignoreDifferences` (JSON pointer, JQ, `managedFieldsManagers`) is diff-only unless `RespectIgnoreDifferences=true` and then only for existing resources, Argo CD server-side apply uses `--force-conflicts`, and Flux `.spec.ignore` rules match every object when no target selector is given, with per-object `force` and `prune: disabled` annotations. Neither tool's pages read describe an observe-only mode like Crossplane Observe, and the closest equivalents are manual sync and the ApplicationSet create-only policy, which does not stop owner-reference deletion. See [[findings/argo-cd-ignoredifferences-only-affects-the-diff-unless-respectignoredifferences-is-set-and-then-only-for-resources-that-already-exist]], [[findings/a-flux-ignore-rule-without-a-target-selector-matches-every-object-the-kustomization-manages]], and [[comparisons/exemption-and-ignore-controls-across-tools]].
