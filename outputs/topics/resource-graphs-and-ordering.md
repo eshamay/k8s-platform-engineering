@@ -1,7 +1,7 @@
 ---
 title: "Resource Graphs and Ordering: Dependencies, Readiness and Convergence"
 type: output
-status: draft
+status: active
 created: 2026-11-27
 updated: 2026-11-27
 sources:
@@ -208,7 +208,7 @@ tags: [outputs]
 
 > **Audience:** An engineer fluent in Kubernetes who needs depth on how platforms order dependent resources and decide when one is ready.<br>
 > **Purpose:** Teach the principles behind dependency ordering, readiness signals, convergence and teardown in Flux, Argo CD, kro and Crossplane, so the reader can reason about new situations without a product manual.<br>
-> **Status:** Draft<br>
+> **Status:** Active<br>
 > **Created:** 2026-11-27<br>
 > **As of:** 2026-11-27<br>
 > **Draws on:** the wiki pages listed under Further reading, which rest on the research dossiers, practitioner write-ups and project documentation recorded in the wiki sources.<br>
