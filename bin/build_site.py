@@ -386,6 +386,13 @@ class Builder:
             except ValueError:
                 self.warnings.append(f"{src_rel}: asset escapes wiki ({tgt})")
                 return m.group(0)
+            # LOCAL PATCH (k8s-platform-engineering): images are copied into the site and served by
+            # Pages (correct content type and base URL) instead of linking to the raw GitHub URL.
+            if bang == "!" and abs_t.is_file() and not is_symlinked(abs_t, self.wiki):
+                dest = self.out / "assets" / "figures" / abs_t.name
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(abs_t, dest)
+                return f"![{disp}]({{{{ '/assets/figures/{abs_t.name}' | relative_url }}}})"
             if self.cfg["blob_base"]:
                 raw = self.cfg["blob_base"].replace("/blob/", "/raw/")
                 return f"{bang}[{disp}]({raw}/{rel}{anc})"
