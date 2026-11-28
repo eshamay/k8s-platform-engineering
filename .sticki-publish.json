@@ -4,8 +4,15 @@
   "feature_dir": "outputs",
   "include_sources": false,
   "publish_info_pages": false,
-  "publish_status": ["active", "stale", "contradicted"],
-  "nav_sections": true, "publish_dirs": ["outputs"],
+  "publish_status": [
+    "active",
+    "stale",
+    "contradicted"
+  ],
+  "nav_sections": true,
+  "publish_dirs": [
+    "outputs"
+  ],
   "exclude_dirs": [],
   "nav_order_stems": [
     "part-1-core-architectural-principles",
@@ -19,5 +26,19 @@
   ],
   "url": "https://eshamay.github.io",
   "baseurl": "/k8s-platform-engineering",
-  "blob_base": "https://github.com/eshamay/k8s-platform-engineering/blob/main"
+  "blob_base": "https://github.com/eshamay/k8s-platform-engineering/blob/main",
+  "output_groups": [
+    {
+      "dir": "k8s-platform-rampup",
+      "title": "K8S Platform Rampup"
+    },
+    {
+      "dir": "products",
+      "title": "Products"
+    },
+    {
+      "dir": "topics",
+      "title": "Topics"
+    }
+  ]
 }

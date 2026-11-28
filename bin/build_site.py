@@ -285,7 +285,7 @@ class Builder:
                 continue
             if allow and d.name not in allow:
                 continue
-            if any(f.suffix == ".md" and not f.is_symlink() for f in d.glob("*.md")):
+            if any(f.suffix == ".md" and not f.is_symlink() for f in d.rglob("*.md")):
                 dirs.append(d.name)
         preferred = [self.cfg["feature_dir"], "decisions", "findings", "comparisons", "concepts",
                      "entities", "people", "companies", "papers", "examples", "methodologies",
@@ -299,11 +299,14 @@ class Builder:
 
     def _index(self):
         for folder, _t, _o in self.sections:
-            for f in sorted((self.wiki / folder).glob("*.md")):
+            for f in self.folder_docs(folder):
                 if f.is_symlink():
                     continue
-                self._add(f"{folder}/{f.stem}",
-                          {"pub": True, "permalink": f"/{folder}/{f.stem}/", "rel": f"{folder}/{f.name}"})
+                rel = f.relative_to(self.wiki).as_posix()
+                info = {"pub": True, "permalink": f"/{folder}/{f.stem}/", "rel": rel}
+                self._add(rel[:-3], info)
+                if f.parent != self.wiki / folder:       # also resolve the flat key outputs/<stem>
+                    self.by_path.setdefault(f"{folder}/{f.stem}", info)
         if self.cfg["publish_info_pages"]:
             for fn, (_t, pl, _o, _p) in INFO_PAGES.items():
                 if (self.wiki / fn).is_file():
@@ -436,9 +439,30 @@ class Builder:
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text("\n".join(front) + "\n" + body, encoding="utf-8")
 
+    # LOCAL PATCH (k8s-platform-engineering): documents may live in group subfolders
+    # (outputs/<group>/<stem>.md). Page URLs stay /<folder>/<stem>/; the group becomes a sidebar
+    # section whose title and order come from the config key "output_groups".
+    def folder_docs(self, folder):
+        d = self.wiki / folder
+        return sorted(list(d.glob("*.md")) + list(d.glob("*/*.md")))
+
+    def group_of(self, f, folder):
+        return None if f.parent == self.wiki / folder else f.parent.name
+
+    def group_list(self):
+        return [(g["dir"], g.get("title") or g["dir"].replace("-", " ").title())
+                for g in (self.cfg.get("output_groups") or [])]
+
+    def group_title(self, name):
+        return dict(self.group_list()).get(name) or name.replace("-", " ").title()
+
+    def group_rank(self, name):
+        names = [d for d, _t in self.group_list()]
+        return names.index(name) if name in names else len(names)
+
     def pages_of(self, folder):
         res = []
-        for f in sorted((self.wiki / folder).glob("*.md")):
+        for f in self.folder_docs(folder):
             if f.is_symlink() or f.name == "index.md" or not self._publishable(f):
                 continue
             fm, body = split_fm(f.read_text(encoding="utf-8"))
@@ -526,12 +550,40 @@ aux_links_new_tab: true
         if overlay.is_dir() and not is_symlinked(overlay, self.wiki):
             shutil.copytree(overlay, self.out, dirs_exist_ok=True)
         for folder, title, order in self.sections:
+            pages = self.pages_of(folder)
+            groups = sorted({self.group_of(f, folder) for f, _t in pages} - {None},
+                            key=lambda g: (self.group_rank(g), g))
             idx = self.out / folder / "index.md"
             idx.parent.mkdir(parents=True, exist_ok=True)
+            if groups:
+                # LOCAL PATCH: grouped folder. The folder landing page stays reachable but is hidden
+                # from the sidebar; each group is a top-level section containing its documents.
+                links = "\n".join(f'- [{self.group_title(g)}]({{{{ \'/{folder}/{g}/\' | relative_url }}}})' for g in groups)
+                idx.write_text(f'---\nlayout: default\ntitle: {yesc(title)}\nnav_exclude: true\n'
+                               f'permalink: "/{folder}/"\n---\n\n# {title}\n\n{links}\n', encoding="utf-8")
+                for gi, g in enumerate(groups, start=1):
+                    gdir = self.out / folder / g
+                    gdir.mkdir(parents=True, exist_ok=True)
+                    gt = self.group_title(g)
+                    (gdir / "index.md").write_text(
+                        f'---\nlayout: default\ntitle: {yesc(gt)}\nnav_order: {gi}\nhas_children: true\n'
+                        f'permalink: "/{folder}/{g}/"\n---\n\n# {gt}\n\n'
+                        '{% assign kids = site.pages | where: "parent", page.title | sort: "nav_order" %}\n'
+                        '<ul>\n{% for k in kids %}<li><a href="{{ k.url | relative_url }}">{{ k.title }}</a></li>\n'
+                        '{% endfor %}</ul>\n', encoding="utf-8")
+                    members = [(f, t) for f, t in pages if self.group_of(f, folder) == g]
+                    for o, (f, t) in enumerate(members, start=1):
+                        self.emit(f, f.relative_to(self.wiki).as_posix(), t, gt, o,
+                                  f"/{folder}/{f.stem}/", self.out / folder / f.name)
+                ungrouped = [(f, t) for f, t in pages if self.group_of(f, folder) is None]
+                if ungrouped:
+                    sys.exit(f"[build_site] documents directly in {folder}/ next to groups: "
+                             f"{[f.name for f, _t in ungrouped]}; move them into a group folder")
+                continue
             idx.write_text(f'---\nlayout: default\ntitle: {yesc(title)}\nnav_order: {order}\n'
                            f'has_children: true\npermalink: "/{folder}/"\n---\n\n# {title}\n',
                            encoding="utf-8")
-            for o, (f, t) in enumerate(self.pages_of(folder), start=1):
+            for o, (f, t) in enumerate(pages, start=1):
                 self.emit(f, f"{folder}/{f.name}", t, title, o, f"/{folder}/{f.stem}/",
                           self.out / folder / f.name)
         if self.cfg["publish_info_pages"]:
@@ -558,7 +610,16 @@ aux_links_new_tab: true
                  self.cfg["description"], ""]
         if (self.wiki / feat).is_dir():
             fp = self.pages_of(feat)
-            if fp:
+            grouped = sorted({self.group_of(f, feat) for f, _t in fp} - {None},
+                             key=lambda g: (self.group_rank(g), g))
+            if fp and grouped:
+                for g in grouped:
+                    lines += [f"## {self.group_title(g)}", ""]
+                    for f, t in fp:
+                        if self.group_of(f, feat) == g:
+                            lines.append(f"- [{t}]({{{{ '/{feat}/{f.stem}/' | relative_url }}}})")
+                    lines.append("")
+            elif fp:
                 lines += [f"## Featured — {feat.title()}", ""]
                 for f, t in fp:
                     lines.append(f"- [{t}]({{{{ '/{feat}/{f.stem}/' | relative_url }}}})")
