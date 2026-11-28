@@ -56,3 +56,7 @@ python3 -I bin/gh_links.py --check    # verify every link and anchor (exit 0 mea
 ## Sidebar sections
 
 Each published document expands in the left sidebar into its numbered sections. `bin/build_site.py` writes a `sections` list (one entry per `##` heading) into each page when `"nav_sections": true` is set in `.sticki-publish.json`, and `site_overlay/` (copied into `build/` on every build) holds the theme overrides that render it: `_includes/components/nav/links.html` is a copy of the just-the-docs 0.10.1 file with the section list added (re-diff it when the theme version in `Gemfile.lock` changes), `_includes/footer_custom.html` expands the open document and highlights the section being read, and `_includes/head_custom.html` holds the styling.
+
+## Writing a new output
+
+New outputs follow `methodologies/writing-ramp-up-outputs.md`. Run the workflow with a topic and a slug (`workflows/write-ramp-up-output.js`, args `topic`, `slug`, `title`, `today`); it writes a draft into `outputs/`. Check any output with `python3 -I bin/lint_outputs.py`, which fails on versions, dates, issue and commit references, banned words and revision wording.

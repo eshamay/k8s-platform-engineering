@@ -1,0 +1,2 @@
+# Deliberate teaching examples the lint should not flag: <output file> | <text inside the finding>
+outputs/flux-ramp-up.md | numbers like 1.4.2 encode major, minor and patch

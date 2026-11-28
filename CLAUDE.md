@@ -39,6 +39,10 @@ Four classes. The contract is enforced by skill scoping and by warning headers i
 | **Append-only** | `log.md`, `log-archive.md`, `.sticki/events.jsonl` | Agents append new entries; nobody mutates past ones. `log.md` uses the greppable `## [YYYY-MM-DD] <op> \| <subject>` header. |
 | **Agent-may-write** | `index.md`, `todo.md`, `open-knowledge-gaps.md` (drafts only; `closed` is human-only via `sticki-gaps`), `.sticki/state.json`, all content folders | Per the lifecycle rules. `.sticki/derived.json` is consumer-owned. |
 
+## Writing outputs
+
+New documents for `outputs/` follow `methodologies/writing-ramp-up-outputs.md` (audience, content filter, voice, skeleton, process, checklist) and are produced with `workflows/write-ramp-up-output.js`. Check them with `python3 -I bin/lint_outputs.py`. Outputs teach principles, design and architecture; they never carry versions, dates, flags, defaults, release stages, or issue and commit references.
+
 ## Link convention
 
 GitHub does not render Obsidian-style wikilinks, so the stored form of every link in the wiki is a relative Markdown link whose text is the path as it was written, for example `[examples/foo](../examples/foo.md)`, with `[page#heading](page.md#heading-id)` for headings (heading ids include the ` — status: ...` suffix that gap and todo headings carry, so closing a gap changes its id). The sticki skills and page-writer agents still write `[[wikilinks]]`; after any operation that writes pages, run `python3 -I bin/gh_links.py --write` to convert them, then `python3 -I bin/gh_links.py --check` (it must exit 0). `python3 -I bin/gh_links.py --refresh-anchors` repairs anchors whose heading status changed. `raw/` (immutable) and `outputs/` keep their wikilinks, because `bin/build_site.py` resolves the output links for the Pages site. Frontmatter, fenced code and inline code are never converted.
