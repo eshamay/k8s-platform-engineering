@@ -271,3 +271,7 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 ## [2026-11-27] outputs | Figure 1 in Part 1
 - added an Excalidraw diagram of the four GitOps delivery topologies (Argo CD hub, argocd-agent, Flux per-cluster controllers, Flux remote Kustomization) as outputs/figures/gitops-delivery-topologies.excalidraw and .svg, embedded as Figure 1 in Part 1
 - the site build now copies embedded images into the published site
+
+## [2026-11-27] outputs | diagrams for Parts 1 to 5
+- drew 38 diagrams from the reviewed opportunity list and inserted them into Parts 1 to 5 as Figures 1.1 to 5.7 (Part 1 includes the earlier GitOps delivery topologies figure); each is an Excalidraw file, a matching SVG and a JSON spec in outputs/figures/
+- added bin/figure_gen.py (spec to Excalidraw and SVG, with layout checks) and the draw-figures workflow
