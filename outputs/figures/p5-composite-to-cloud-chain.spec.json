@@ -1,0 +1,237 @@
+{
+ "slug": "p5-composite-to-cloud-chain",
+ "title": "From composite resource to cloud API",
+ "alt": "A left-to-right chain in which a composite resource passes through two function pods in a Composition pipeline to a managed resource, which a provider controller reconciles against the cloud API.",
+ "width": 1000,
+ "height": 600,
+ "elements": [
+  {
+   "id": "xrd",
+   "type": "box",
+   "x": 20,
+   "y": 30,
+   "w": 190,
+   "h": 80,
+   "label": "CompositeResource-\nDefinition",
+   "style": "neutral",
+   "fs": 15
+  },
+  {
+   "id": "crd",
+   "type": "box",
+   "x": 320,
+   "y": 30,
+   "w": 100,
+   "h": 80,
+   "label": "CRD",
+   "style": "store"
+  },
+  {
+   "id": "xr",
+   "type": "box",
+   "x": 530,
+   "y": 30,
+   "w": 160,
+   "h": 80,
+   "label": "Composite\nresource",
+   "style": "store"
+  },
+  {
+   "id": "panel",
+   "type": "box",
+   "x": 290,
+   "y": 190,
+   "w": 390,
+   "h": 140,
+   "label": "",
+   "style": "cluster",
+   "valign": "top",
+   "fs": 15
+  },
+  {
+   "id": "ptxt",
+   "type": "text",
+   "x": 480,
+   "y": 205,
+   "text": "Pipeline, in order",
+   "fs": 15,
+   "color": "ink"
+  },
+  {
+   "id": "f1",
+   "type": "box",
+   "x": 305,
+   "y": 235,
+   "w": 120,
+   "h": 75,
+   "label": "First function\npod",
+   "style": "controller",
+   "fs": 15
+  },
+  {
+   "id": "f2",
+   "type": "box",
+   "x": 545,
+   "y": 235,
+   "w": 120,
+   "h": 75,
+   "label": "Next function\npod",
+   "style": "controller",
+   "fs": 15
+  },
+  {
+   "id": "haz",
+   "type": "box",
+   "x": 290,
+   "y": 390,
+   "w": 390,
+   "h": 50,
+   "label": "Function omits a resource: it is deleted",
+   "style": "danger",
+   "fs": 15
+  },
+  {
+   "id": "mr",
+   "type": "box",
+   "x": 740,
+   "y": 170,
+   "w": 210,
+   "h": 120,
+   "label": "Managed resource\nspec.forProvider\nstatus.atProvider",
+   "style": "store",
+   "fs": 15
+  },
+  {
+   "id": "prov",
+   "type": "box",
+   "x": 740,
+   "y": 390,
+   "w": 210,
+   "h": 100,
+   "label": "Provider controller\nConnect, Observe, Create,\nUpdate, Delete",
+   "style": "controller",
+   "fs": 15
+  },
+  {
+   "id": "cloud",
+   "type": "box",
+   "x": 740,
+   "y": 530,
+   "w": 210,
+   "h": 60,
+   "label": "Cloud API\n(external resource)",
+   "style": "hub",
+   "fs": 15
+  },
+  {
+   "id": "e0",
+   "type": "arrow",
+   "from": "xrd",
+   "to": "crd",
+   "kind": "flow",
+   "label": "becomes"
+  },
+  {
+   "id": "e0b",
+   "type": "arrow",
+   "from": "crd",
+   "to": "xr",
+   "kind": "flow",
+   "label": "schema for"
+  },
+  {
+   "id": "e1",
+   "type": "arrow",
+   "from": "xr",
+   "to": "f1",
+   "kind": "flow",
+   "label": "calls over gRPC",
+   "label_pos": [
+    565,
+    135
+   ]
+  },
+  {
+   "id": "e2",
+   "type": "arrow",
+   "from": "f1",
+   "to": "f2",
+   "kind": "flow",
+   "label": "desired state"
+  },
+  {
+   "id": "e3",
+   "type": "arrow",
+   "from": "f2",
+   "to": "mr",
+   "kind": "flow",
+   "label": "produce",
+   "label_pos": [
+    684,
+    282
+   ]
+  },
+  {
+   "id": "e5",
+   "type": "arrow",
+   "from": "prov",
+   "to": "mr",
+   "kind": "pull",
+   "from_side": "top",
+   "to_side": "bottom",
+   "from_at": 0.15,
+   "to_at": 0.15,
+   "label": "reads forProvider",
+   "label_pos": [
+    640,
+    355
+   ]
+  },
+  {
+   "id": "e6",
+   "type": "arrow",
+   "from": "prov",
+   "to": "mr",
+   "kind": "write",
+   "from_side": "top",
+   "to_side": "bottom",
+   "from_at": 0.75,
+   "to_at": 0.75,
+   "label": "atProvider",
+   "label_pos": [
+    905,
+    355
+   ]
+  },
+  {
+   "id": "e4",
+   "type": "arrow",
+   "from": "prov",
+   "to": "cloud",
+   "kind": "apply",
+   "label": "calls",
+   "label_pos": [
+    862,
+    498
+   ]
+  }
+ ],
+ "legend": [
+  {
+   "kind": "flow",
+   "text": "flow"
+  },
+  {
+   "kind": "pull",
+   "text": "reads"
+  },
+  {
+   "kind": "write",
+   "text": "observed state written back"
+  },
+  {
+   "kind": "apply",
+   "text": "calls cloud"
+  }
+ ]
+}

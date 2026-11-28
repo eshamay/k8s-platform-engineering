@@ -1,0 +1,148 @@
+{
+ "slug": "p5-three-layer-landscape",
+ "title": "Three layers of the tooling landscape",
+ "alt": "Three stacked rows labelled platform and portal, delivery and provisioning, each listing example tools, with a note that tools should be compared within a layer and not across layers.",
+ "width": 1000,
+ "height": 460,
+ "elements": [
+  {
+   "id": "frame",
+   "type": "box",
+   "x": 20,
+   "y": 20,
+   "w": 960,
+   "h": 420,
+   "style": "panel"
+  },
+  {
+   "id": "r1",
+   "type": "box",
+   "x": 40,
+   "y": 50,
+   "w": 230,
+   "h": 90,
+   "label": "Platform and portal\nwhat app teams see",
+   "style": "neutral"
+  },
+  {
+   "id": "p1",
+   "type": "box",
+   "x": 300,
+   "y": 50,
+   "w": 150,
+   "h": 90,
+   "label": "Backstage\nPort",
+   "style": "neutral"
+  },
+  {
+   "id": "p2",
+   "type": "box",
+   "x": 465,
+   "y": 50,
+   "w": 150,
+   "h": 90,
+   "label": "Kratix",
+   "style": "neutral"
+  },
+  {
+   "id": "p3",
+   "type": "box",
+   "x": 630,
+   "y": 50,
+   "w": 150,
+   "h": 90,
+   "label": "Cozystack",
+   "style": "neutral"
+  },
+  {
+   "id": "r2",
+   "type": "box",
+   "x": 40,
+   "y": 160,
+   "w": 230,
+   "h": 90,
+   "label": "Delivery\nsource to cluster",
+   "style": "neutral"
+  },
+  {
+   "id": "d1",
+   "type": "box",
+   "x": 300,
+   "y": 160,
+   "w": 150,
+   "h": 90,
+   "label": "Flux",
+   "style": "neutral"
+  },
+  {
+   "id": "d2",
+   "type": "box",
+   "x": 465,
+   "y": 160,
+   "w": 150,
+   "h": 90,
+   "label": "Argo CD",
+   "style": "neutral"
+  },
+  {
+   "id": "r3",
+   "type": "box",
+   "x": 40,
+   "y": 270,
+   "w": 230,
+   "h": 90,
+   "label": "Provisioning\nto cloud calls",
+   "style": "neutral"
+  },
+  {
+   "id": "v1",
+   "type": "box",
+   "x": 300,
+   "y": 270,
+   "w": 150,
+   "h": 90,
+   "label": "Crossplane",
+   "style": "neutral"
+  },
+  {
+   "id": "v2",
+   "type": "box",
+   "x": 465,
+   "y": 270,
+   "w": 150,
+   "h": 90,
+   "label": "Cloud vendor\noperators",
+   "style": "neutral"
+  },
+  {
+   "id": "v3",
+   "type": "box",
+   "x": 630,
+   "y": 270,
+   "w": 150,
+   "h": 90,
+   "label": "Terraform\nwrappers",
+   "style": "neutral"
+  },
+  {
+   "id": "v4",
+   "type": "box",
+   "x": 795,
+   "y": 270,
+   "w": 150,
+   "h": 90,
+   "label": "Cluster API",
+   "style": "neutral"
+  },
+  {
+   "id": "n1",
+   "type": "box",
+   "x": 40,
+   "y": 385,
+   "w": 920,
+   "h": 40,
+   "label": "Compare tools within a layer, not across layers",
+   "style": "note"
+  }
+ ]
+}

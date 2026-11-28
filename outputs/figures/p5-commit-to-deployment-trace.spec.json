@@ -1,0 +1,30 @@
+{
+  "slug": "p5-commit-to-deployment-trace",
+  "title": "From a Git commit to a running Deployment",
+  "alt": "A Git commit is fetched by the Flux source controller, handed to the kustomize controller, applied to the API server with server-side apply, and carried on by the Deployment controller to a ReplicaSet and pods, with an optional webhook through the notification controller.",
+  "width": 1000,
+  "height": 520,
+  "elements": [
+    {"id": "frame", "type": "box", "x": 20, "y": 20, "w": 960, "h": 440, "style": "panel"},
+    {"id": "git", "type": "box", "x": 40, "y": 80, "w": 130, "h": 80, "label": "Git repository", "style": "git", "fs": 15},
+    {"id": "src", "type": "box", "x": 280, "y": 80, "w": 160, "h": 80, "label": "Source controller\nGitRepository", "style": "controller", "fs": 15},
+    {"id": "kus", "type": "box", "x": 560, "y": 80, "w": 160, "h": 80, "label": "Kustomize controller\nKustomization", "style": "controller", "fs": 15},
+    {"id": "api", "type": "box", "x": 840, "y": 80, "w": 120, "h": 80, "label": "API server", "style": "hub", "fs": 15},
+    {"id": "notif", "type": "box", "x": 40, "y": 320, "w": 190, "h": 80, "label": "Notification controller\n(optional webhook)", "style": "controller", "fs": 15},
+    {"id": "dep", "type": "box", "x": 840, "y": 320, "w": 120, "h": 80, "label": "Deployment\ncontroller", "style": "controller", "fs": 15},
+    {"id": "rs", "type": "box", "x": 560, "y": 320, "w": 160, "h": 80, "label": "ReplicaSet\nand pods", "style": "store", "fs": 15},
+    {"id": "e1", "type": "arrow", "from": "src", "to": "git", "kind": "pull", "label": "fetch", "label_dy": -22},
+    {"id": "e2", "type": "arrow", "from": "src", "to": "kus", "kind": "flow", "label": "artifact", "label_dy": -22},
+    {"id": "e3", "type": "arrow", "from": "kus", "to": "api", "kind": "apply", "label": "server-side\napply", "label_dy": -22},
+    {"id": "e4", "type": "arrow", "from": "git", "to": "notif", "kind": "flow", "label": "webhook", "label_dx": 45},
+    {"id": "e5", "type": "arrow", "from": "notif", "to": "src", "kind": "apply", "label": "refresh now", "from_side": "right", "to_side": "bottom", "via": [[360, 360]], "label_pos": [425, 260]},
+    {"id": "e6", "type": "arrow", "from": "api", "to": "dep", "kind": "watch", "label": "new image tag", "label_dx": -65},
+    {"id": "e7", "type": "arrow", "from": "dep", "to": "rs", "kind": "apply", "label": "creates", "label_dy": -22}
+  ],
+  "legend": [
+    {"kind": "pull", "text": "fetch"},
+    {"kind": "flow", "text": "hand-off"},
+    {"kind": "apply", "text": "write or command"},
+    {"kind": "watch", "text": "watch"}
+  ]
+}

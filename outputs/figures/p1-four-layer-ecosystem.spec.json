@@ -1,0 +1,24 @@
+{
+  "slug": "p1-four-layer-ecosystem",
+  "title": "Four layers of the Kubernetes ecosystem",
+  "alt": "Four stacked layers from top to bottom: delivery (Flux, Argo CD), composition (Crossplane, kro), provider controllers (ACK, Config Connector, Azure Service Operator, Cluster API) and primitives; Git feeds the delivery layer and the provider controllers call external cloud APIs.",
+  "width": 1000,
+  "height": 620,
+  "elements": [
+    {"id": "frame", "type": "box", "x": 250, "y": 15, "w": 480, "h": 570, "label": "Kubernetes API server", "style": "panel", "valign": "top"},
+    {"id": "git", "type": "box", "x": 20, "y": 80, "w": 100, "h": 80, "label": "Git\nrepository", "style": "git"},
+    {"id": "l4", "type": "box", "x": 280, "y": 70, "w": 420, "h": 100, "label": "Delivery\nFlux, Argo CD", "style": "neutral"},
+    {"id": "l3", "type": "box", "x": 280, "y": 225, "w": 420, "h": 100, "label": "Composition\nCrossplane, kro", "style": "neutral"},
+    {"id": "l2", "type": "box", "x": 280, "y": 380, "w": 420, "h": 100, "label": "Provider controllers\nACK, Config Connector,\nAzure Service Operator, Cluster API", "style": "neutral", "fs": 15},
+    {"id": "l1", "type": "box", "x": 280, "y": 505, "w": 420, "h": 60, "label": "Primitives\nControllers, CRDs, operator pattern", "style": "neutral", "fs": 15},
+    {"id": "cloud", "type": "box", "x": 880, "y": 395, "w": 100, "h": 70, "label": "External\ncloud APIs", "style": "hub"},
+    {"id": "e1", "type": "arrow", "from": "git", "to": "l4", "kind": "flow", "label": "desired state", "label_dx": -28, "label_dy": -20},
+    {"id": "e3", "type": "arrow", "from": "l4", "to": "l3", "kind": "apply", "label": "reconciles", "label_dx": 60},
+    {"id": "e4", "type": "arrow", "from": "l3", "to": "l2", "kind": "apply", "label": "expands into resources", "label_dx": 95},
+    {"id": "e2", "type": "arrow", "from": "l2", "to": "cloud", "kind": "apply", "label": "direct control", "label_dx": 0, "label_dy": -20}
+  ],
+  "legend": [
+    {"kind": "flow", "text": "desired state from Git"},
+    {"kind": "apply", "text": "act on a resource or external system"}
+  ]
+}

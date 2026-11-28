@@ -1,0 +1,180 @@
+{
+  "slug": "p4-abstraction-axes",
+  "title": "Abstraction height and whether anything keeps running",
+  "alt": "A grid placing Helm, Kustomize and Score in a render-once row and Crossplane, kro and Radius in a controller-driven row, with columns running from close to manifests through a typed middle API to high at the workload.",
+  "width": 1000,
+  "height": 540,
+  "elements": [
+    {
+      "id": "frame",
+      "type": "box",
+      "x": 10,
+      "y": 10,
+      "w": 980,
+      "h": 520,
+      "style": "panel"
+    },
+    {
+      "id": "h1",
+      "type": "text",
+      "x": 200,
+      "y": 30,
+      "w": 230,
+      "align": "center",
+      "text": "Close to manifests",
+      "fs": 17,
+      "color": "ink"
+    },
+    {
+      "id": "h2",
+      "type": "text",
+      "x": 460,
+      "y": 30,
+      "w": 230,
+      "align": "center",
+      "text": "Middle: typed API",
+      "fs": 17,
+      "color": "ink"
+    },
+    {
+      "id": "h3",
+      "type": "text",
+      "x": 720,
+      "y": 30,
+      "w": 230,
+      "align": "center",
+      "text": "High: at the workload",
+      "fs": 17,
+      "color": "ink"
+    },
+    {
+      "id": "h4",
+      "type": "text",
+      "x": 200,
+      "y": 58,
+      "w": 750,
+      "align": "center",
+      "text": "Abstraction height, low to high",
+      "fs": 15,
+      "color": "muted"
+    },
+    {
+      "id": "r1",
+      "type": "box",
+      "x": 185,
+      "y": 95,
+      "w": 780,
+      "h": 200,
+      "style": "panel"
+    },
+    {
+      "id": "r2",
+      "type": "box",
+      "x": 185,
+      "y": 310,
+      "w": 780,
+      "h": 205,
+      "style": "panel"
+    },
+    {
+      "id": "l1",
+      "type": "box",
+      "x": 20,
+      "y": 120,
+      "w": 160,
+      "h": 150,
+      "label": "Render time\nOutput once",
+      "style": "note"
+    },
+    {
+      "id": "l2",
+      "type": "box",
+      "x": 20,
+      "y": 335,
+      "w": 160,
+      "h": 150,
+      "label": "Controller-driven\nReconciles forever",
+      "style": "note"
+    },
+    {
+      "id": "helm",
+      "type": "box",
+      "x": 235,
+      "y": 108,
+      "w": 140,
+      "h": 62,
+      "label": "Helm\nvalues",
+      "style": "neutral"
+    },
+    {
+      "id": "kust",
+      "type": "box",
+      "x": 235,
+      "y": 180,
+      "w": 140,
+      "h": 62,
+      "label": "Kustomize\npatches",
+      "style": "neutral"
+    },
+    {
+      "id": "score",
+      "type": "box",
+      "x": 765,
+      "y": 145,
+      "w": 140,
+      "h": 70,
+      "label": "Score",
+      "style": "neutral"
+    },
+    {
+      "id": "xp",
+      "type": "box",
+      "x": 495,
+      "y": 322,
+      "w": 160,
+      "h": 62,
+      "label": "Crossplane\ntyped API",
+      "style": "controller"
+    },
+    {
+      "id": "kro",
+      "type": "box",
+      "x": 495,
+      "y": 394,
+      "w": 160,
+      "h": 62,
+      "label": "kro\ntyped API",
+      "style": "controller"
+    },
+    {
+      "id": "rad",
+      "type": "box",
+      "x": 765,
+      "y": 358,
+      "w": 140,
+      "h": 70,
+      "label": "Radius",
+      "style": "controller"
+    },
+    {
+      "id": "n1",
+      "type": "box",
+      "x": 200,
+      "y": 252,
+      "w": 750,
+      "h": 34,
+      "label": "Continuous correction is a GitOps tool's job",
+      "style": "note"
+    },
+    {
+      "id": "n2",
+      "type": "box",
+      "x": 200,
+      "y": 462,
+      "w": 750,
+      "h": 48,
+      "label": "Drift correction, ordered deletion;\nthe control plane becomes a production dependency",
+      "style": "note"
+    }
+  ]
+}

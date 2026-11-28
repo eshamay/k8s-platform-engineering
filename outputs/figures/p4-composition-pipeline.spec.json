@@ -1,0 +1,28 @@
+{
+  "slug": "p4-composition-pipeline",
+  "title": "A Composition as a pipeline of functions",
+  "alt": "Crossplane reads a composite resource, calls each composition function pod in order over gRPC, passes the desired state from one step to the next, and applies the result to the API server.",
+  "width": 1000,
+  "height": 580,
+  "elements": [
+    {"id": "xr", "type": "box", "x": 30, "y": 60, "w": 150, "h": 80, "label": "Composite\nresource (XR)", "style": "store"},
+    {"id": "xp", "type": "box", "x": 30, "y": 220, "w": 150, "h": 90, "label": "Crossplane\ncontroller", "style": "controller"},
+    {"id": "api", "type": "box", "x": 30, "y": 460, "w": 150, "h": 70, "label": "API server", "style": "hub"},
+    {"id": "panel", "type": "box", "x": 370, "y": 130, "w": 600, "h": 230, "label": "Composition pipeline: function pods", "style": "cluster", "valign": "top", "fs": 15},
+    {"id": "f1", "type": "box", "x": 400, "y": 230, "w": 140, "h": 80, "label": "Step 1\nfunction pod", "style": "agent"},
+    {"id": "f2", "type": "box", "x": 610, "y": 230, "w": 140, "h": 80, "label": "Step 2\nfunction pod", "style": "agent"},
+    {"id": "f3", "type": "box", "x": 800, "y": 230, "w": 140, "h": 80, "label": "More steps\nin order", "style": "agent", "dashed": true},
+    {"id": "in", "type": "box", "x": 370, "y": 440, "w": 600, "h": 110, "label": "Each call carries\nXR state, observed state of owned resources,\naccumulated desired state, input, context", "style": "note", "fs": 15},
+    {"id": "e0", "type": "arrow", "from": "xp", "to": "xr", "kind": "pull", "label": "reads each reconcile", "label_pos": [215, 100], "label_fs": 15},
+    {"id": "e1", "type": "arrow", "from": "xp", "to": "f1", "kind": "flow", "label": "gRPC call, in order", "from_side": "right", "to_side": "left", "from_at": 0.3, "label_pos": [190, 205], "label_fs": 15},
+    {"id": "e2", "type": "arrow", "from": "f1", "to": "f2", "kind": "flow", "label": "desired state passed on", "label_pos": [520, 205], "label_fs": 15},
+    {"id": "e2b", "type": "arrow", "from": "f2", "to": "f3", "kind": "flow"},
+    {"id": "e4", "type": "arrow", "from": "f3", "to": "xp", "kind": "flow", "label": "final desired state", "from_side": "bottom", "to_side": "right", "to_at": 0.85, "via": [[870, 395], [230, 395], [230, 297]], "label_pos": [560, 375], "label_fs": 15},
+    {"id": "e3", "type": "arrow", "from": "xp", "to": "api", "kind": "apply", "label": "apply result", "label_dx": 75, "label_fs": 15}
+  ],
+  "legend": [
+    {"kind": "pull", "text": "reads", "fs": 15},
+    {"kind": "flow", "text": "call and hand-off", "fs": 15},
+    {"kind": "apply", "text": "write", "fs": 15}
+  ]
+}

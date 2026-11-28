@@ -1,0 +1,38 @@
+{
+  "slug": "p2-admission-request-path",
+  "title": "Admission in the API server request path",
+  "alt": "A request passes left to right through authentication, authorization, mutating webhooks, schema validation, validating webhooks and then storage in etcd, with HTTPS webhook services called above the path and in-process CEL policies and CRD rules running below it",
+  "width": 1000,
+  "height": 600,
+  "elements": [
+    {"id": "frame", "type": "box", "x": 10, "y": 10, "w": 980, "h": 580, "style": "panel"},
+    {"id": "t1", "type": "text", "x": 27, "y": 30, "text": "Webhook route: HTTPS callout to a separate service", "fs": 16, "color": "orange"},
+    {"id": "wm", "type": "box", "x": 357, "y": 80, "w": 125, "h": 70, "label": "Webhook\nservice", "style": "agent", "fs": 15},
+    {"id": "wv", "type": "box", "x": 687, "y": 80, "w": 125, "h": 70, "label": "Webhook\nservice", "style": "agent", "fs": 15},
+    {"id": "authn", "type": "box", "x": 27, "y": 230, "w": 125, "h": 70, "label": "Authentication", "style": "hub", "fs": 15},
+    {"id": "authz", "type": "box", "x": 192, "y": 230, "w": 125, "h": 70, "label": "Authorization", "style": "hub", "fs": 15},
+    {"id": "mut", "type": "box", "x": 357, "y": 230, "w": 125, "h": 70, "label": "Mutating\nwebhooks", "style": "controller", "fs": 15},
+    {"id": "schema", "type": "box", "x": 522, "y": 230, "w": 125, "h": 70, "label": "Schema\nvalidation", "style": "controller", "fs": 15},
+    {"id": "val", "type": "box", "x": 687, "y": 230, "w": 125, "h": 70, "label": "Validating\nwebhooks", "style": "controller", "fs": 15},
+    {"id": "etcd", "type": "box", "x": 852, "y": 230, "w": 125, "h": 70, "label": "etcd\n(persisted)", "style": "store", "fs": 15},
+    {"id": "cel", "type": "box", "x": 27, "y": 360, "w": 946, "h": 170, "style": "cluster", "dashed": true},
+    {"id": "t2", "type": "text", "x": 45, "y": 372, "text": "In-process CEL route", "fs": 16, "color": "purple"}, {"id": "t3", "type": "text", "x": 45, "y": 400, "text": "inside the API server,", "fs": 15, "color": "purple"}, {"id": "t4", "type": "text", "x": 45, "y": 422, "text": "no webhook service", "fs": 15, "color": "purple"},
+    {"id": "map", "type": "box", "x": 345, "y": 430, "w": 150, "h": 80, "label": "Mutating admission\npolicy", "style": "neutral", "fs": 15},
+    {"id": "crd", "type": "box", "x": 510, "y": 430, "w": 150, "h": 80, "label": "CRD validation\nrules", "style": "neutral", "fs": 15},
+    {"id": "vap", "type": "box", "x": 675, "y": 430, "w": 150, "h": 80, "label": "Validating admission\npolicy", "style": "neutral", "fs": 15},
+    {"id": "e1", "type": "arrow", "from": "authn", "to": "authz", "kind": "flow"},
+    {"id": "e2", "type": "arrow", "from": "authz", "to": "mut", "kind": "flow"},
+    {"id": "e3", "type": "arrow", "from": "mut", "to": "schema", "kind": "flow"},
+    {"id": "e4", "type": "arrow", "from": "schema", "to": "val", "kind": "flow"},
+    {"id": "e5", "type": "arrow", "from": "val", "to": "etcd", "kind": "flow"},
+    {"id": "w1", "type": "arrow", "from": "mut", "to": "wm", "kind": "apply", "double": true},
+    {"id": "w2", "type": "arrow", "from": "val", "to": "wv", "kind": "apply", "double": true},
+    {"id": "c1", "type": "arrow", "from": "mut", "to": "map", "kind": "flow"},
+    {"id": "c2", "type": "arrow", "from": "schema", "to": "crd", "kind": "flow"},
+    {"id": "c3", "type": "arrow", "from": "val", "to": "vap", "kind": "flow"}
+  ],
+  "legend": [
+    {"kind": "flow", "text": "request path or in-process check"},
+    {"kind": "apply", "text": "HTTPS AdmissionReview, request and response"}
+  ]
+}

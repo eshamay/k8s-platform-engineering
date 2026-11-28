@@ -296,8 +296,8 @@ class Fig:
                 self.boxes["_l1"] = {"x": x, "y": ly + 32, "w": 0, "h": 0, "el": self.base("rectangle", x, ly, 0, 0, id=self.nid("r")), "style": "neutral", "id": "_l1"}
                 self.boxes["_l2"] = {"x": x + 60, "y": ly + 32, "w": 0, "h": 0, "el": self.base("rectangle", x + 60, ly, 0, 0, id=self.nid("r")), "style": "neutral", "id": "_l2"}
                 self.arrow({"from": "_l1", "to": "_l2", "kind": it["kind"], "from_side": "right", "to_side": "left", "sw": 3})
-                self.free({"x": x + 72, "y": ly + 22, "text": it["text"], "fs": 14, "color": "ink"})
-                x += 72 + len(it["text"]) * 14 * CW + 40
+                self.free({"x": x + 72, "y": ly + 22, "text": it["text"], "fs": it.get("fs", 14), "color": "ink"})
+                x += 72 + len(it["text"]) * it.get("fs", 14) * CW + 40
             self.els = [e for e in self.els if not (e["type"] == "rectangle" and e["width"] == 0)]
             H = H + 84
         os.makedirs(out_dir, exist_ok=True)

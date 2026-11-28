@@ -1,0 +1,32 @@
+{
+  "slug": "p3-operator-crd-controller-children",
+  "title": "A custom kind and its controller",
+  "alt": "An application team writes a PostgresCluster object to the API server, whose new kind comes from a CRD and whose objects are stored in etcd; a controller watches the object, creates StatefulSets, Services and Secrets, and writes progress back to status.",
+  "width": 1000,
+  "height": 470,
+  "elements": [
+    {"id": "frame", "type": "box", "x": 20, "y": 20, "w": 960, "h": 430, "style": "panel"},
+    {"id": "team", "type": "box", "x": 35, "y": 180, "w": 170, "h": 80, "label": "Application team\nwrites the object", "style": "agent", "fs": 15},
+    {"id": "api", "type": "box", "x": 310, "y": 160, "w": 190, "h": 120, "label": "API server\nserves the new kind", "style": "hub"},
+    {"id": "crd", "type": "box", "x": 280, "y": 350, "w": 150, "h": 70, "label": "CRD\nmodel and endpoint", "style": "store", "fs": 15},
+    {"id": "etcd", "type": "box", "x": 460, "y": 350, "w": 100, "h": 70, "label": "etcd\nstorage", "style": "store", "fs": 15},
+    {"id": "ctrl", "type": "box", "x": 590, "y": 180, "w": 150, "h": 80, "label": "Controller\nholds behavior", "style": "controller", "fs": 15},
+    {"id": "sts", "type": "box", "x": 810, "y": 70, "w": 150, "h": 60, "label": "StatefulSets", "style": "neutral"},
+    {"id": "svc", "type": "box", "x": 810, "y": 190, "w": 150, "h": 60, "label": "Services", "style": "neutral"},
+    {"id": "sec", "type": "box", "x": 810, "y": 310, "w": 150, "h": 60, "label": "Secrets", "style": "neutral"},
+    {"id": "e1", "type": "arrow", "from": "team", "to": "api", "kind": "apply", "label": "write", "label_dy": -22},
+    {"id": "e2", "type": "arrow", "from": "crd", "to": "api", "kind": "flow", "label": "defines kind", "from_side": "top", "from_at": 0.5, "to_side": "bottom", "to_at": 0.2, "label_dx": -70},
+    {"id": "e3", "type": "arrow", "from": "api", "to": "etcd", "kind": "flow", "label": "stores", "from_side": "bottom", "from_at": 0.8, "to_side": "top", "to_at": 0.5, "label_dx": 40},
+    {"id": "e4", "type": "arrow", "from": "api", "to": "ctrl", "kind": "watch", "label": "watch", "label_dy": -22},
+    {"id": "e5", "type": "arrow", "from": "ctrl", "to": "sts", "kind": "apply", "label": "create", "label_pos": [700, 150]},
+    {"id": "e6", "type": "arrow", "from": "ctrl", "to": "svc", "kind": "apply"},
+    {"id": "e7", "type": "arrow", "from": "ctrl", "to": "sec", "kind": "apply"},
+    {"id": "e8", "type": "arrow", "from": "ctrl", "to": "api", "kind": "write", "label": "status", "from_side": "top", "from_at": 0.5, "to_side": "top", "to_at": 0.5, "via": [[665, 100], [405, 100]], "label_pos": [520, 78]}
+  ],
+  "legend": [
+    {"kind": "apply", "text": "write or create"},
+    {"kind": "watch", "text": "watch for changes"},
+    {"kind": "write", "text": "status written back"},
+    {"kind": "flow", "text": "defines or stores"}
+  ]
+}

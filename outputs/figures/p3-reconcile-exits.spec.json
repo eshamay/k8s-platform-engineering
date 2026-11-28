@@ -1,0 +1,28 @@
+{
+  "slug": "p3-reconcile-exits",
+  "title": "Four ways a reconcile pass can end",
+  "alt": "A finished reconcile pass branches into four return values: an empty result with no error means converged, a RequeueAfter delay means healthy but waiting, a non-nil error means a failed attempt requeued with exponential backoff, and a TerminalError is logged and counted but not retried.",
+  "width": 1000,
+  "height": 540,
+  "elements": [
+    {"id": "h1", "type": "text", "x": 270, "y": 20, "text": "What the reconciler returns", "fs": 15, "color": "purple", "w": 300, "align": "center"},
+    {"id": "h2", "type": "text", "x": 650, "y": 20, "text": "What the workqueue does next", "fs": 15, "color": "purple", "w": 320, "align": "center"},
+    {"id": "pass", "type": "box", "x": 30, "y": 210, "w": 170, "h": 100, "label": "Reconcile pass\nends", "style": "controller"},
+    {"id": "r1", "type": "box", "x": 270, "y": 60, "w": 300, "h": 80, "label": "Empty result,\nnil error", "style": "neutral"},
+    {"id": "r2", "type": "box", "x": 270, "y": 180, "w": 300, "h": 80, "label": "RequeueAfter\ndelay", "style": "neutral"},
+    {"id": "r3", "type": "box", "x": 270, "y": 300, "w": 300, "h": 80, "label": "Non-nil error", "style": "neutral"},
+    {"id": "r4", "type": "box", "x": 270, "y": 420, "w": 300, "h": 80, "label": "TerminalError", "style": "neutral"},
+    {"id": "o1", "type": "box", "x": 650, "y": 60, "w": 320, "h": 80, "label": "Converged\nidle until next watch event", "style": "ok"},
+    {"id": "o2", "type": "box", "x": 650, "y": 180, "w": 320, "h": 80, "label": "Healthy but waiting\nreturns after the delay", "style": "note"},
+    {"id": "o3", "type": "box", "x": 650, "y": 300, "w": 320, "h": 80, "label": "Attempt failed\nrequeued with exponential backoff", "style": "danger"},
+    {"id": "o4", "type": "box", "x": 650, "y": 420, "w": 320, "h": 80, "label": "Logged and counted\nnot retried", "style": "danger"},
+    {"id": "a1", "type": "arrow", "from": "pass", "to": "r1", "kind": "flow"},
+    {"id": "a2", "type": "arrow", "from": "pass", "to": "r2", "kind": "flow"},
+    {"id": "a3", "type": "arrow", "from": "pass", "to": "r3", "kind": "flow"},
+    {"id": "a4", "type": "arrow", "from": "pass", "to": "r4", "kind": "flow", "from_side": "bottom", "to_side": "left", "via": [[115, 460]]},
+    {"id": "b1", "type": "arrow", "from": "r1", "to": "o1", "kind": "flow"},
+    {"id": "b2", "type": "arrow", "from": "r2", "to": "o2", "kind": "flow"},
+    {"id": "b3", "type": "arrow", "from": "r3", "to": "o3", "kind": "flow"},
+    {"id": "b4", "type": "arrow", "from": "r4", "to": "o4", "kind": "flow"}
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "slug": "p5-finalizer-deletion-lifecycle",
+  "title": "How a finalizer delays object deletion",
+  "alt": "A client deletes an object, the API server sets the deletion timestamp and leaves it Terminating, the owning controller cleans up the external resource and removes its finalizer, and the API server then removes the object; three propagation modes are shown below.",
+  "width": 1000,
+  "height": 600,
+  "elements": [
+    {"id": "frame", "type": "box", "x": 20, "y": 20, "w": 960, "h": 570, "style": "panel"},
+    {"id": "t1", "type": "text", "x": 40, "y": 40, "text": "Deletion of an object that carries a finalizer", "fs": 16, "color": "purple"},
+    {"id": "client", "type": "box", "x": 40, "y": 100, "w": 120, "h": 80, "label": "Client", "style": "agent"},
+    {"id": "api", "type": "box", "x": 250, "y": 100, "w": 160, "h": 80, "label": "API server", "style": "hub"},
+    {"id": "obj", "type": "box", "x": 530, "y": 100, "w": 150, "h": 80, "label": "Object\nTerminating", "style": "danger"},
+    {"id": "ctl", "type": "box", "x": 780, "y": 100, "w": 180, "h": 80, "label": "Owning\ncontroller", "style": "controller"},
+    {"id": "ext", "type": "box", "x": 780, "y": 290, "w": 180, "h": 80, "label": "External\nresource", "style": "hub"},
+    {"id": "gone", "type": "box", "x": 250, "y": 290, "w": 160, "h": 80, "label": "Object\nremoved", "style": "ok"},
+    {"id": "e1", "type": "arrow", "from": "client", "to": "api", "kind": "delete", "label": "delete"},
+    {"id": "e2", "type": "arrow", "from": "api", "to": "obj", "kind": "write", "label": "sets timestamp", "label_dy": -22},
+    {"id": "e3", "type": "arrow", "from": "obj", "to": "ctl", "kind": "watch", "label": "sees it", "label_dy": -22},
+    {"id": "e4", "type": "arrow", "from": "ctl", "to": "ext", "kind": "delete", "label": "clean up", "label_dx": 40, "from_side": "bottom", "to_side": "top"},
+    {"id": "e5", "type": "arrow", "from": "ctl", "to": "api", "kind": "apply", "label": "remove finalizer", "from_side": "bottom", "from_at": 0.15, "to_side": "bottom", "to_at": 0.8, "via": [[807, 235], [378, 235]], "label_pos": [520, 212]},
+    {"id": "e6", "type": "arrow", "from": "api", "to": "gone", "kind": "flow", "label": "list empty", "from_side": "bottom", "from_at": 0.2, "to_side": "top", "to_at": 0.2, "label_dx": -55},
+    {"id": "t2", "type": "text", "x": 40, "y": 410, "text": "Propagation modes decide timing for dependents", "fs": 16, "color": "purple"},
+    {"id": "m1", "type": "box", "x": 40, "y": 450, "w": 290, "h": 130, "label": "Background\nOwner removed at once;\ndependents cleaned later", "style": "note"},
+    {"id": "m2", "type": "box", "x": 355, "y": 450, "w": 290, "h": 130, "label": "Foreground\nFinalizer on owner waits for\nblockOwnerDeletion dependents", "style": "note"},
+    {"id": "m3", "type": "box", "x": 670, "y": 450, "w": 290, "h": 130, "label": "Orphan\nDependents are\nleft behind", "style": "note"}
+  ],
+  "legend": [
+    {"kind": "delete", "text": "delete or cleanup"},
+    {"kind": "write", "text": "written by API"},
+    {"kind": "watch", "text": "watch"},
+    {"kind": "apply", "text": "edit"}
+  ]
+}

@@ -1,0 +1,306 @@
+{
+ "slug": "p1-flux-controllers",
+ "title": "Flux as single-purpose controllers",
+ "alt": "Flux's source controller pulls Git, OCI, Helm, and bucket content into artifacts that the kustomize and helm controllers apply to the cluster, while the notification controller turns webhooks into immediate reconciles and image automation writes new tags back to Git.",
+ "width": 1000,
+ "height": 600,
+ "elements": [
+  {
+   "id": "frame",
+   "type": "box",
+   "x": 240,
+   "y": 20,
+   "w": 740,
+   "h": 560,
+   "style": "cluster",
+   "label": ""
+  },
+  {
+   "id": "ctitle",
+   "type": "text",
+   "x": 620,
+   "y": 32,
+   "text": "Flux controllers, coordinating through CRDs",
+   "fs": 15,
+   "color": "muted",
+   "align": "center",
+   "w": 340
+  },
+  {
+   "id": "hook",
+   "type": "box",
+   "x": 20,
+   "y": 60,
+   "w": 130,
+   "h": 60,
+   "label": "Webhook\nsender",
+   "style": "hub"
+  },
+  {
+   "id": "oci",
+   "type": "box",
+   "x": 20,
+   "y": 170,
+   "w": 130,
+   "h": 55,
+   "label": "OCI",
+   "style": "git"
+  },
+  {
+   "id": "helmrepo",
+   "type": "box",
+   "x": 20,
+   "y": 245,
+   "w": 130,
+   "h": 55,
+   "label": "Helm repository",
+   "style": "git",
+   "fs": 15
+  },
+  {
+   "id": "bucket",
+   "type": "box",
+   "x": 20,
+   "y": 320,
+   "w": 130,
+   "h": 55,
+   "label": "Bucket",
+   "style": "git"
+  },
+  {
+   "id": "git",
+   "type": "box",
+   "x": 20,
+   "y": 400,
+   "w": 130,
+   "h": 60,
+   "label": "Git",
+   "style": "git"
+  },
+  {
+   "id": "notif",
+   "type": "box",
+   "x": 300,
+   "y": 60,
+   "w": 130,
+   "h": 60,
+   "label": "Notification\ncontroller",
+   "style": "controller"
+  },
+  {
+   "id": "src",
+   "type": "box",
+   "x": 270,
+   "y": 230,
+   "w": 160,
+   "h": 70,
+   "label": "Source\ncontroller",
+   "style": "controller"
+  },
+  {
+   "id": "img",
+   "type": "box",
+   "x": 270,
+   "y": 490,
+   "w": 160,
+   "h": 60,
+   "label": "Image automation\ncontroller",
+   "style": "controller",
+   "fs": 15
+  },
+  {
+   "id": "art",
+   "type": "box",
+   "x": 530,
+   "y": 240,
+   "w": 120,
+   "h": 50,
+   "label": "Artifacts",
+   "style": "store"
+  },
+  {
+   "id": "kust",
+   "type": "box",
+   "x": 720,
+   "y": 90,
+   "w": 180,
+   "h": 60,
+   "label": "Kustomize\ncontroller",
+   "style": "controller"
+  },
+  {
+   "id": "helm",
+   "type": "box",
+   "x": 720,
+   "y": 380,
+   "w": 180,
+   "h": 60,
+   "label": "Helm\ncontroller",
+   "style": "controller"
+  },
+  {
+   "id": "res",
+   "type": "box",
+   "x": 780,
+   "y": 235,
+   "w": 160,
+   "h": 60,
+   "label": "Cluster\nresources",
+   "style": "store"
+  },
+  {
+   "id": "e1",
+   "type": "arrow",
+   "from": "hook",
+   "to": "notif",
+   "kind": "flow",
+   "label": "webhook",
+   "label_dx": -30
+  },
+  {
+   "id": "e2",
+   "type": "arrow",
+   "from": "notif",
+   "to": "src",
+   "kind": "flow",
+   "label": "reconcile now",
+   "label_dx": 70
+  },
+  {
+   "id": "e3",
+   "type": "arrow",
+   "from": "oci",
+   "to": "src",
+   "kind": "pull",
+   "from_side": "right",
+   "to_side": "left",
+   "to_at": 0.2
+  },
+  {
+   "id": "e4",
+   "type": "arrow",
+   "from": "helmrepo",
+   "to": "src",
+   "kind": "pull",
+   "from_side": "right",
+   "to_side": "left",
+   "to_at": 0.5
+  },
+  {
+   "id": "e5",
+   "type": "arrow",
+   "from": "bucket",
+   "to": "src",
+   "kind": "pull",
+   "from_side": "right",
+   "to_side": "left",
+   "to_at": 0.8
+  },
+  {
+   "id": "e6",
+   "type": "arrow",
+   "from": "git",
+   "to": "src",
+   "kind": "pull",
+   "from_side": "right",
+   "to_side": "bottom",
+   "via": [
+    [
+     350,
+     430
+    ]
+   ]
+  },
+  {
+   "id": "e7",
+   "type": "arrow",
+   "from": "src",
+   "to": "art",
+   "kind": "flow",
+   "label": "produces"
+  },
+  {
+   "id": "e8",
+   "type": "arrow",
+   "from": "art",
+   "to": "kust",
+   "kind": "flow",
+   "to_side": "left"
+  },
+  {
+   "id": "e9",
+   "type": "arrow",
+   "from": "art",
+   "to": "helm",
+   "kind": "flow",
+   "to_side": "left"
+  },
+  {
+   "id": "e10",
+   "type": "arrow",
+   "from": "kust",
+   "to": "res",
+   "kind": "apply",
+   "label": "apply",
+   "label_dx": 45,
+   "label_dy": 0
+  },
+  {
+   "id": "e11",
+   "type": "arrow",
+   "from": "helm",
+   "to": "res",
+   "kind": "apply",
+   "label": "apply",
+   "label_dx": 45,
+   "label_dy": 0
+  },
+  {
+   "id": "e12",
+   "type": "arrow",
+   "from": "img",
+   "to": "git",
+   "kind": "write",
+   "label": "new tags",
+   "label_dx": 60,
+   "label_dy": -14,
+   "from_side": "left",
+   "to_side": "bottom",
+   "via": [
+    [
+     85,
+     520
+    ]
+   ]
+  },
+  {
+   "id": "n1",
+   "type": "box",
+   "x": 500,
+   "y": 480,
+   "w": 440,
+   "h": 60,
+   "label": "Users and other automation\ncan also write the CRDs",
+   "style": "note",
+   "fs": 15
+  }
+ ],
+ "legend": [
+  {
+   "kind": "pull",
+   "text": "pull content"
+  },
+  {
+   "kind": "flow",
+   "text": "control flow"
+  },
+  {
+   "kind": "apply",
+   "text": "apply"
+  },
+  {
+   "kind": "write",
+   "text": "write back"
+  }
+ ]
+}

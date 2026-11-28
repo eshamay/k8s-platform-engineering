@@ -1,0 +1,30 @@
+{
+  "slug": "p4-kro-resource-graph",
+  "title": "How kro builds an ordered resource graph",
+  "alt": "A ResourceGraphDefinition schema generates a CRD and registers a dynamic controller that reconciles an instance graph, in which the bucket is created before the deployment because of the ARN reference, independent resources are created in parallel, and deletion runs in reverse order.",
+  "width": 1000,
+  "height": 540,
+  "elements": [
+    {"id": "rgd", "type": "box", "x": 20, "y": 20, "w": 340, "h": 400, "style": "panel"},
+    {"id": "rgdt", "type": "text", "x": 40, "y": 34, "text": "ResourceGraphDefinition", "fs": 16, "color": "purple"},
+    {"id": "schema", "type": "box", "x": 50, "y": 65, "w": 280, "h": 70, "label": "schema\n(declares the new kind)", "style": "store"},
+    {"id": "crd", "type": "box", "x": 50, "y": 190, "w": 280, "h": 70, "label": "Generated CRD", "style": "hub"},
+    {"id": "ctl", "type": "box", "x": 50, "y": 320, "w": 280, "h": 70, "label": "Dynamic controller\n(reconciles instances)", "style": "controller"},
+    {"id": "g1", "type": "arrow", "from": "schema", "to": "crd", "kind": "flow", "label": "generates"},
+    {"id": "g2", "type": "arrow", "from": "crd", "to": "ctl", "kind": "flow", "label": "registers"},
+    {"id": "inst", "type": "box", "x": 500, "y": 190, "w": 480, "h": 330, "style": "cluster"},
+    {"id": "instt", "type": "text", "x": 520, "y": 204, "text": "Resources built for one instance", "fs": 16, "color": "purple"},
+    {"id": "bucket", "type": "box", "x": 520, "y": 250, "w": 150, "h": 70, "label": "Bucket\ncreated first", "style": "store"},
+    {"id": "dep", "type": "box", "x": 810, "y": 250, "w": 150, "h": 70, "label": "Deployment\ncreated second", "style": "store"},
+    {"id": "pt", "type": "text", "x": 520, "y": 420, "text": "Independent resources, created in parallel", "fs": 15, "color": "purple"},
+    {"id": "ra", "type": "box", "x": 520, "y": 445, "w": 170, "h": 55, "label": "Resource A", "style": "store"},
+    {"id": "rb", "type": "box", "x": 790, "y": 445, "w": 170, "h": 55, "label": "Resource B", "style": "store"},
+    {"id": "e1", "type": "arrow", "from": "ctl", "to": "inst", "kind": "flow", "from_side": "right", "to_side": "left", "label": "reconciles"},
+    {"id": "e2", "type": "arrow", "from": "bucket", "to": "dep", "kind": "flow", "label": "ARN feeds env var", "label_dy": -18},
+    {"id": "e3", "type": "arrow", "from": "dep", "to": "bucket", "kind": "delete", "from_side": "bottom", "to_side": "bottom", "via": [[885, 360], [595, 360]], "label": "deleted first, bucket last", "label_pos": [740, 378]}
+  ],
+  "legend": [
+    {"kind": "flow", "text": "generates, registers, feeds"},
+    {"kind": "delete", "text": "teardown order"}
+  ]
+}

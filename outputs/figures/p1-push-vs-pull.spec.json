@@ -1,0 +1,205 @@
+{
+ "slug": "p1-push-vs-pull",
+ "title": "Where push and pull delivery hold credentials",
+ "alt": "Side-by-side comparison: on the left a CI server outside three environments holds all their credentials and pushes to each; on the right an agent inside a cluster reads Git and writes to the cluster API with in-cluster identity.",
+ "width": 1000,
+ "height": 500,
+ "elements": [
+  {
+   "id": "pl",
+   "type": "box",
+   "x": 20,
+   "y": 20,
+   "w": 470,
+   "h": 470,
+   "style": "panel"
+  },
+  {
+   "id": "pr",
+   "type": "box",
+   "x": 510,
+   "y": 20,
+   "w": 470,
+   "h": 470,
+   "style": "panel"
+  },
+  {
+   "id": "t1",
+   "type": "text",
+   "x": 40,
+   "y": 36,
+   "text": "Push: actor runs outside the target",
+   "fs": 17,
+   "color": "orange"
+  },
+  {
+   "id": "t2",
+   "type": "text",
+   "x": 530,
+   "y": 36,
+   "text": "Pull: agent runs in the target",
+   "fs": 17,
+   "color": "green"
+  },
+  {
+   "id": "ci",
+   "type": "box",
+   "x": 140,
+   "y": 140,
+   "w": 220,
+   "h": 80,
+   "label": "CI server\nholds all credentials",
+   "style": "agent",
+   "fs": 15
+  },
+  {
+   "id": "e1",
+   "type": "box",
+   "x": 40,
+   "y": 360,
+   "w": 130,
+   "h": 60,
+   "label": "Environment A",
+   "style": "neutral",
+   "fs": 15
+  },
+  {
+   "id": "e2",
+   "type": "box",
+   "x": 185,
+   "y": 360,
+   "w": 130,
+   "h": 60,
+   "label": "Environment B",
+   "style": "neutral",
+   "fs": 15
+  },
+  {
+   "id": "e3",
+   "type": "box",
+   "x": 330,
+   "y": 360,
+   "w": 130,
+   "h": 60,
+   "label": "Environment C",
+   "style": "neutral",
+   "fs": 15
+  },
+  {
+   "id": "n1",
+   "type": "box",
+   "x": 60,
+   "y": 435,
+   "w": 380,
+   "h": 40,
+   "label": "Compromised CI exposes all of them",
+   "style": "danger",
+   "fs": 15
+  },
+  {
+   "id": "git2",
+   "type": "box",
+   "x": 595,
+   "y": 70,
+   "w": 140,
+   "h": 60,
+   "label": "Git\nrepository",
+   "style": "git"
+  },
+  {
+   "id": "cl",
+   "type": "box",
+   "x": 530,
+   "y": 200,
+   "w": 430,
+   "h": 220,
+   "label": "Target cluster",
+   "style": "cluster",
+   "valign": "top"
+  },
+  {
+   "id": "ag",
+   "type": "box",
+   "x": 600,
+   "y": 270,
+   "w": 130,
+   "h": 80,
+   "label": "Pull agent",
+   "style": "controller",
+   "fs": 15
+  },
+  {
+   "id": "api",
+   "type": "box",
+   "x": 820,
+   "y": 270,
+   "w": 130,
+   "h": 80,
+   "label": "Cluster API",
+   "style": "store",
+   "fs": 15
+  },
+  {
+   "id": "n2",
+   "type": "box",
+   "x": 560,
+   "y": 435,
+   "w": 380,
+   "h": 40,
+   "label": "Agent uses in-cluster identity",
+   "style": "ok",
+   "fs": 15
+  },
+  {
+   "id": "a2",
+   "type": "arrow",
+   "from": "ci",
+   "to": "e1",
+   "kind": "apply"
+  },
+  {
+   "id": "a3",
+   "type": "arrow",
+   "from": "ci",
+   "to": "e2",
+   "kind": "apply"
+  },
+  {
+   "id": "a4",
+   "type": "arrow",
+   "from": "ci",
+   "to": "e3",
+   "kind": "apply"
+  },
+  {
+   "id": "b1",
+   "type": "arrow",
+   "from": "ag",
+   "to": "git2",
+   "kind": "pull",
+   "label": "read access",
+   "label_dx": 70,
+   "label_dy": -14
+  },
+  {
+   "id": "b2",
+   "type": "arrow",
+   "from": "ag",
+   "to": "api",
+   "kind": "apply",
+   "label": "in-cluster\nidentity",
+   "label_dy": -36
+  }
+ ],
+ "legend": [
+  {
+   "kind": "apply",
+   "text": "write to target"
+  },
+  {
+   "kind": "pull",
+   "text": "read desired state"
+  }
+ ],
+ "caption": "A push pipeline runs on a CI server outside its targets and holds credentials for every environment, so one compromise exposes them all. A pull agent runs inside the target, reads the source with read access and writes to the cluster with its in-cluster identity."
+}

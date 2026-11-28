@@ -1,0 +1,31 @@
+{
+  "slug": "p5-kratix-two-stage-scheduling",
+  "title": "How Kratix schedules work to Destinations",
+  "alt": "A Promise's dependencies pass a first label-matching stage and a resource request passes the resource.configure workflow and a second label-matching stage, both reaching Destinations, which receive documents written to a Git or bucket state store under dependencies and resources directories that a Flux or Argo CD agent reads.",
+  "width": 1000,
+  "height": 560,
+  "elements": [
+    {"id": "promise", "type": "box", "x": 30, "y": 90, "w": 150, "h": 80, "label": "Promise\ndependencies", "style": "store"},
+    {"id": "stage1", "type": "box", "x": 370, "y": 90, "w": 140, "h": 80, "label": "Stage 1\nlabel match", "style": "controller"},
+    {"id": "req", "type": "box", "x": 30, "y": 360, "w": 130, "h": 80, "label": "Resource\nrequest", "style": "store"},
+    {"id": "wf", "type": "box", "x": 200, "y": 360, "w": 170, "h": 80, "label": "resource.configure\nworkflow", "style": "controller", "fs": 15},
+    {"id": "stage2", "type": "box", "x": 400, "y": 360, "w": 120, "h": 80, "label": "Stage 2\nlabel match", "style": "controller"},
+    {"id": "dest", "type": "box", "x": 540, "y": 225, "w": 120, "h": 90, "label": "Destinations", "style": "hub"},
+    {"id": "store", "type": "box", "x": 780, "y": 60, "w": 190, "h": 330, "label": "State store\nGit or bucket", "style": "panel", "valign": "top"},
+    {"id": "deps", "type": "box", "x": 800, "y": 140, "w": 150, "h": 70, "label": "dependencies\ndirectory", "style": "git", "fs": 15},
+    {"id": "res", "type": "box", "x": 800, "y": 260, "w": 150, "h": 70, "label": "resources\ndirectory", "style": "git", "fs": 15},
+    {"id": "agent", "type": "box", "x": 780, "y": 470, "w": 190, "h": 70, "label": "Flux or Argo CD\nagent", "style": "agent"},
+    {"id": "e1", "type": "arrow", "from": "promise", "to": "stage1", "kind": "flow", "label": "Promise selectors"},
+    {"id": "e2", "type": "arrow", "from": "stage1", "to": "dest", "kind": "flow"},
+    {"id": "e3", "type": "arrow", "from": "req", "to": "wf", "kind": "flow"},
+    {"id": "e4", "type": "arrow", "from": "wf", "to": "stage2", "kind": "flow"},
+    {"id": "e5", "type": "arrow", "from": "stage2", "to": "dest", "kind": "flow"},
+    {"id": "e6", "type": "arrow", "from": "dest", "to": "store", "kind": "write", "label": "documents"},
+    {"id": "e7", "type": "arrow", "from": "agent", "to": "store", "kind": "pull"}
+  ],
+  "legend": [
+    {"kind": "flow", "text": "scheduling flow"},
+    {"kind": "write", "text": "Kratix writes documents"},
+    {"kind": "pull", "text": "agent reads"}
+  ]
+}

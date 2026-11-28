@@ -1,0 +1,24 @@
+{
+  "slug": "p3-ownership-cascade",
+  "title": "Ownership and the delete cascade",
+  "alt": "A Deployment owns ReplicaSets, which own pods; a delete call removes the Deployment at once, then the garbage collector deletes the ownerless ReplicaSets and then the ownerless pods",
+  "width": 1000,
+  "height": 480,
+  "elements": [
+    {"id": "t1", "type": "text", "x": 40, "y": 30, "text": "Ownership: each object is owned by the one to its left", "fs": 16, "color": "muted"},
+    {"id": "dep", "type": "box", "x": 40, "y": 100, "w": 200, "h": 90, "label": "Deployment", "style": "store"},
+    {"id": "rs", "type": "box", "x": 400, "y": 100, "w": 200, "h": 90, "label": "ReplicaSets", "style": "store"},
+    {"id": "pods", "type": "box", "x": 760, "y": 100, "w": 200, "h": 90, "label": "Pods", "style": "store"},
+    {"id": "del", "type": "box", "x": 40, "y": 340, "w": 200, "h": 90, "label": "Delete call\nnames only the Deployment", "style": "agent", "fs": 15},
+    {"id": "gc", "type": "box", "x": 400, "y": 340, "w": 200, "h": 90, "label": "Garbage collector\ndependency graph", "style": "controller", "fs": 15},
+    {"id": "o1", "type": "arrow", "from": "dep", "to": "rs", "kind": "flow", "label": "owns", "label_fs": 15},
+    {"id": "o2", "type": "arrow", "from": "rs", "to": "pods", "kind": "flow", "label": "owns", "label_fs": 15},
+    {"id": "d1", "type": "arrow", "from": "del", "to": "dep", "kind": "delete", "label": "removed at once", "label_dx": 75, "label_fs": 15},
+    {"id": "d2", "type": "arrow", "from": "gc", "to": "rs", "kind": "delete", "label": "then deleted", "label_dx": 70, "label_fs": 15},
+    {"id": "d3", "type": "arrow", "from": "gc", "to": "pods", "kind": "delete", "from_side": "right", "to_side": "bottom", "via": [[860, 385]], "label": "next, collected", "label_pos": [700, 355], "label_fs": 15}
+  ],
+  "legend": [
+    {"kind": "flow", "text": "owns", "fs": 15},
+    {"kind": "delete", "text": "deleted", "fs": 15}
+  ]
+}

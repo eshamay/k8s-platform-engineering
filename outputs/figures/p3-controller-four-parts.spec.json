@@ -1,0 +1,23 @@
+{
+  "slug": "p3-controller-four-parts",
+  "title": "The four parts of a controller",
+  "alt": "A controller reads the spec of an object, observes current state from other objects or an external API, acts on the difference, and writes its observations to the status of the same object.",
+  "width": 1000,
+  "height": 480,
+  "elements": [
+    {"id": "obj", "type": "box", "x": 20, "y": 20, "w": 400, "h": 230, "style": "cluster", "label": "Object in the API", "valign": "top", "dashed": true},
+    {"id": "spec", "type": "box", "x": 50, "y": 70, "w": 340, "h": 70, "style": "store", "label": "spec\nintent, owned by users"},
+    {"id": "status", "type": "box", "x": 50, "y": 160, "w": 340, "h": 70, "style": "store", "label": "status\nobservation, owned by controller"},
+    {"id": "ctrl", "type": "box", "x": 620, "y": 70, "w": 240, "h": 160, "style": "controller", "label": "Controller\ncompute difference,\nthen act"},
+    {"id": "cur", "type": "box", "x": 620, "y": 340, "w": 240, "h": 80, "style": "hub", "label": "Current state\nother objects or external API"},
+    {"id": "n1", "type": "text", "x": 20, "y": 270, "text": "Separate /status subresource with its own permissions", "fs": 15, "color": "muted"},
+    {"id": "n2", "type": "text", "x": 20, "y": 295, "text": "so re-applying a manifest cannot overwrite status", "fs": 15, "color": "muted"},
+    {"id": "e1", "type": "arrow", "from": "spec", "to": "ctrl", "kind": "pull", "label": "read desired", "from_side": "right", "to_side": "left", "to_at": 0.2},
+    {"id": "e2", "type": "arrow", "from": "cur", "to": "ctrl", "kind": "pull", "label": "observe", "label_dx": 36, "from_side": "top", "to_side": "bottom"},
+    {"id": "e4", "type": "arrow", "from": "ctrl", "to": "status", "kind": "write", "label": "write what it learned", "from_side": "left", "to_side": "right", "from_at": 0.78125, "to_at": 0.5}
+  ],
+  "legend": [
+    {"kind": "pull", "text": "read"},
+    {"kind": "write", "text": "write back status"}
+  ]
+}

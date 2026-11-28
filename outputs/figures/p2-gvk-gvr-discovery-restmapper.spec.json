@@ -1,0 +1,31 @@
+{
+  "slug": "p2-gvk-gvr-discovery-restmapper",
+  "title": "How a manifest kind becomes a URL",
+  "alt": "A manifest with a GVK is looked up in a RESTMapper built from a cached discovery snapshot, producing a GVR URL sent to the API server, while a CRD installed after the snapshot leads to a no-matches-for-kind failure.",
+  "width": 1000,
+  "height": 450,
+  "elements": [
+    {"id": "frame", "type": "box", "x": 20, "y": 20, "w": 960, "h": 410, "style": "panel"},
+    {"id": "manifest", "type": "box", "x": 40, "y": 60, "w": 140, "h": 80, "label": "Manifest\n(GVK)", "style": "git"},
+    {"id": "mapper", "type": "box", "x": 300, "y": 60, "w": 170, "h": 80, "label": "RESTMapper\nkind to resource", "style": "controller"},
+    {"id": "url", "type": "box", "x": 580, "y": 60, "w": 150, "h": 80, "label": "REST URL\n(GVR)", "style": "store"},
+    {"id": "api", "type": "box", "x": 830, "y": 60, "w": 120, "h": 80, "label": "API\nserver", "style": "hub", "fs": 15},
+    {"id": "fail", "type": "box", "x": 40, "y": 250, "w": 160, "h": 70, "label": "no matches\nfor kind", "style": "danger", "fs": 15},
+    {"id": "cache", "type": "box", "x": 300, "y": 240, "w": 170, "h": 90, "label": "Cached\ndiscovery snapshot", "style": "store"},
+    {"id": "disc", "type": "box", "x": 600, "y": 245, "w": 170, "h": 80, "label": "Aggregated\ndiscovery", "style": "hub"},
+    {"id": "crd", "type": "box", "x": 620, "y": 360, "w": 130, "h": 50, "label": "New CRD", "style": "note", "fs": 15},
+    {"id": "e1", "type": "arrow", "from": "manifest", "to": "mapper", "kind": "flow", "label": "look up kind", "label_fs": 15},
+    {"id": "e2", "type": "arrow", "from": "mapper", "to": "url", "kind": "flow", "label": "resource", "label_fs": 15},
+    {"id": "e3", "type": "arrow", "from": "url", "to": "api", "kind": "apply", "label": "send", "label_fs": 15},
+    {"id": "e4", "type": "arrow", "from": "cache", "to": "disc", "kind": "pull", "label": "whole catalog", "label_fs": 15},
+    {"id": "e5", "type": "arrow", "from": "cache", "to": "mapper", "kind": "flow", "label": "builds", "label_fs": 15},
+    {"id": "e6", "type": "arrow", "from": "crd", "to": "disc", "kind": "delete", "label": "added after fetch", "label_fs": 15, "label_pos": [700, 340]},
+    {"id": "e7", "type": "arrow", "from": "mapper", "to": "fail", "kind": "delete", "label": "not in snapshot", "label_fs": 15, "from_side": "bottom", "from_at": 0.1, "to_side": "top", "via": [[317,190],[120,190]], "label_pos": [120,165]}
+  ],
+  "legend": [
+    {"kind": "flow", "text": "ordinary flow"},
+    {"kind": "pull", "text": "fetch"},
+    {"kind": "apply", "text": "request"},
+    {"kind": "delete", "text": "failure path"}
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "slug": "p4-claims-vs-namespaced-xr",
+  "title": "Claims versus namespaced composites",
+  "alt": "Two side-by-side panels: in the claim model a claim in the tenant namespace references a separate cluster-scoped composite that composes resources, while in the namespaced model the composite and its composed resources all sit inside the tenant namespace.",
+  "width": 1000,
+  "height": 500,
+  "elements": [
+    {"id": "pl", "type": "box", "x": 20, "y": 20, "w": 470, "h": 460, "style": "panel"},
+    {"id": "pr", "type": "box", "x": 510, "y": 20, "w": 470, "h": 460, "style": "panel"},
+    {"id": "tl", "type": "text", "x": 20, "y": 32, "w": 470, "align": "center", "text": "Claim model", "fs": 18, "color": "purple"},
+    {"id": "tr", "type": "text", "x": 510, "y": 32, "w": 470, "align": "center", "text": "Namespaced composite", "fs": 18, "color": "purple"},
+
+    {"id": "nsl", "type": "box", "x": 40, "y": 75, "w": 430, "h": 130, "style": "cluster", "label": "Tenant namespace", "valign": "top", "fs": 15},
+    {"id": "claim", "type": "box", "x": 150, "y": 120, "w": 210, "h": 65, "style": "agent", "label": "Claim\n(developer creates)"},
+    {"id": "xrl", "type": "box", "x": 150, "y": 270, "w": 210, "h": 65, "style": "store", "label": "Composite\n(cluster-scoped)"},
+    {"id": "cl", "type": "box", "x": 150, "y": 395, "w": 210, "h": 60, "style": "neutral", "label": "Composed\nresources"},
+    {"id": "e1", "type": "arrow", "from": "claim", "to": "xrl", "kind": "flow", "label": "resourceRef", "from_at": 0.25, "to_at": 0.25, "label_pos": [118, 230]},
+    {"id": "e2", "type": "arrow", "from": "xrl", "to": "claim", "kind": "flow", "label": "claimRef", "from_at": 0.75, "to_at": 0.75, "label_pos": [318, 230]},
+    {"id": "e3", "type": "arrow", "from": "xrl", "to": "cl", "kind": "apply", "label": "composes", "label_pos": [268, 352]},
+
+    {"id": "nsr", "type": "box", "x": 530, "y": 75, "w": 430, "h": 380, "style": "cluster", "label": "Tenant namespace", "valign": "top", "fs": 15},
+    {"id": "xrr", "type": "box", "x": 640, "y": 140, "w": 210, "h": 70, "style": "store", "label": "Composite\n(developer creates)"},
+    {"id": "cr", "type": "box", "x": 640, "y": 330, "w": 210, "h": 70, "style": "neutral", "label": "Composed\nresources"},
+    {"id": "e4", "type": "arrow", "from": "xrr", "to": "cr", "kind": "apply", "label": "composes", "label_pos": [758, 258]},
+    {"id": "n1", "type": "text", "x": 530, "y": 425, "w": 430, "align": "center", "text": "Composite is the tenant boundary", "fs": 15, "color": "muted"}
+  ],
+  "legend": [
+    {"kind": "flow", "text": "reference between objects"},
+    {"kind": "apply", "text": "composite creates children"}
+  ]
+}

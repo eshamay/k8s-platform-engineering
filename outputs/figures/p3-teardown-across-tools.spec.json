@@ -1,0 +1,271 @@
+{
+ "slug": "p3-teardown-across-tools",
+ "title": "How each tool controls teardown",
+ "alt": "Five rows, one per tool (Argo CD, Flux, kro, Cluster API, Crossplane), each linking the tool to the mechanism that controls its teardown and then to how deletion proceeds.",
+ "width": 1000,
+ "height": 530,
+ "elements": [
+  {
+   "id": "frame",
+   "type": "box",
+   "x": 20,
+   "y": 20,
+   "w": 960,
+   "h": 490,
+   "style": "panel"
+  },
+  {
+   "id": "h1",
+   "type": "text",
+   "x": 40,
+   "y": 40,
+   "text": "Tool",
+   "fs": 16,
+   "color": "muted",
+   "w": 180,
+   "align": "center"
+  },
+  {
+   "id": "h2",
+   "type": "text",
+   "x": 300,
+   "y": 40,
+   "text": "What controls teardown",
+   "fs": 16,
+   "color": "muted",
+   "w": 260,
+   "align": "center"
+  },
+  {
+   "id": "h3",
+   "type": "text",
+   "x": 680,
+   "y": 40,
+   "text": "How it proceeds",
+   "fs": 16,
+   "color": "muted",
+   "w": 260,
+   "align": "center"
+  },
+  {
+   "id": "a0",
+   "type": "box",
+   "x": 40,
+   "y": 80,
+   "w": 180,
+   "h": 64,
+   "label": "Argo CD",
+   "style": "controller"
+  },
+  {
+   "id": "b0",
+   "type": "box",
+   "x": 300,
+   "y": 80,
+   "w": 260,
+   "h": 64,
+   "label": "Finalizer on\nthe Application",
+   "style": "store"
+  },
+  {
+   "id": "c0",
+   "type": "box",
+   "x": 680,
+   "y": 80,
+   "w": 260,
+   "h": 64,
+   "label": "Application stays\nuntil finalizer clears",
+   "style": "neutral"
+  },
+  {
+   "id": "e0",
+   "type": "arrow",
+   "from": "a0",
+   "to": "b0",
+   "kind": "flow"
+  },
+  {
+   "id": "f0",
+   "type": "arrow",
+   "from": "b0",
+   "to": "c0",
+   "kind": "flow"
+  },
+  {
+   "id": "a1",
+   "type": "box",
+   "x": 40,
+   "y": 164,
+   "w": 180,
+   "h": 64,
+   "label": "Flux",
+   "style": "controller"
+  },
+  {
+   "id": "b1",
+   "type": "box",
+   "x": 300,
+   "y": 164,
+   "w": 260,
+   "h": 64,
+   "label": "Kustomization\ngarbage collection",
+   "style": "store"
+  },
+  {
+   "id": "c1",
+   "type": "box",
+   "x": 680,
+   "y": 164,
+   "w": 260,
+   "h": 64,
+   "label": "Deletion policy\nchooses what happens",
+   "style": "neutral"
+  },
+  {
+   "id": "e1",
+   "type": "arrow",
+   "from": "a1",
+   "to": "b1",
+   "kind": "flow"
+  },
+  {
+   "id": "f1",
+   "type": "arrow",
+   "from": "b1",
+   "to": "c1",
+   "kind": "flow"
+  },
+  {
+   "id": "a2",
+   "type": "box",
+   "x": 40,
+   "y": 248,
+   "w": 180,
+   "h": 64,
+   "label": "kro",
+   "style": "controller"
+  },
+  {
+   "id": "b2",
+   "type": "box",
+   "x": 300,
+   "y": 248,
+   "w": 260,
+   "h": 64,
+   "label": "Finalizer on\nthe instance",
+   "style": "store"
+  },
+  {
+   "id": "c2",
+   "type": "box",
+   "x": 680,
+   "y": 248,
+   "w": 260,
+   "h": 64,
+   "label": "Waits for all resources,\nreverse-dependency waves",
+   "style": "neutral"
+  },
+  {
+   "id": "e2",
+   "type": "arrow",
+   "from": "a2",
+   "to": "b2",
+   "kind": "flow"
+  },
+  {
+   "id": "f2",
+   "type": "arrow",
+   "from": "b2",
+   "to": "c2",
+   "kind": "flow"
+  },
+  {
+   "id": "a3",
+   "type": "box",
+   "x": 40,
+   "y": 332,
+   "w": 180,
+   "h": 64,
+   "label": "Cluster API",
+   "style": "controller"
+  },
+  {
+   "id": "b3",
+   "type": "box",
+   "x": 300,
+   "y": 332,
+   "w": 260,
+   "h": 64,
+   "label": "Machine\ndeletionTimestamp",
+   "style": "store"
+  },
+  {
+   "id": "c3",
+   "type": "box",
+   "x": 680,
+   "y": 332,
+   "w": 260,
+   "h": 64,
+   "label": "Annotation hooks",
+   "style": "neutral"
+  },
+  {
+   "id": "e3",
+   "type": "arrow",
+   "from": "a3",
+   "to": "b3",
+   "kind": "flow"
+  },
+  {
+   "id": "f3",
+   "type": "arrow",
+   "from": "b3",
+   "to": "c3",
+   "kind": "flow"
+  },
+  {
+   "id": "a4",
+   "type": "box",
+   "x": 40,
+   "y": 416,
+   "w": 180,
+   "h": 64,
+   "label": "Crossplane",
+   "style": "controller"
+  },
+  {
+   "id": "b4",
+   "type": "box",
+   "x": 300,
+   "y": 416,
+   "w": 260,
+   "h": 64,
+   "label": "Owner references to\nthe composite",
+   "style": "store"
+  },
+  {
+   "id": "c4",
+   "type": "box",
+   "x": 680,
+   "y": 416,
+   "w": 260,
+   "h": 64,
+   "label": "Ordered or\nunordered teardown",
+   "style": "neutral"
+  },
+  {
+   "id": "e4",
+   "type": "arrow",
+   "from": "a4",
+   "to": "b4",
+   "kind": "flow"
+  },
+  {
+   "id": "f4",
+   "type": "arrow",
+   "from": "b4",
+   "to": "c4",
+   "kind": "flow"
+  }
+ ]
+}

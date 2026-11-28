@@ -1,0 +1,36 @@
+{
+  "slug": "p4-render-time-vs-controller",
+  "title": "Render-time tools versus controller-driven abstractions",
+  "alt": "Two lanes: a render tool produces manifests that a GitOps tool fetches and applies to the cluster, while a live controller watches a parent API object, reconciles child resources, writes status back to the parent and deletes children in order.",
+  "width": 1000,
+  "height": 490,
+  "elements": [
+    {"id": "p1", "type": "box", "x": 20, "y": 20, "w": 960, "h": 230, "style": "panel"},
+    {"id": "h1", "type": "text", "x": 40, "y": 32, "text": "Render-time family: produce manifests once", "fs": 16, "color": "purple"},
+    {"id": "r", "type": "box", "x": 50, "y": 100, "w": 170, "h": 90, "label": "Render tool\nHelm, Kustomize", "style": "neutral"},
+    {"id": "m", "type": "box", "x": 320, "y": 100, "w": 140, "h": 90, "label": "Manifests\n(emitted once)", "style": "git"},
+    {"id": "g", "type": "box", "x": 560, "y": 100, "w": 160, "h": 90, "label": "GitOps tool\nFlux, Argo CD", "style": "controller"},
+    {"id": "c1", "type": "box", "x": 840, "y": 100, "w": 120, "h": 90, "label": "Cluster\nresources", "style": "store"},
+    {"id": "a1", "type": "arrow", "from": "r", "to": "m", "kind": "flow", "label": "render", "label_fs": 15},
+    {"id": "a2", "type": "arrow", "from": "m", "to": "g", "kind": "pull", "label": "fetch", "label_fs": 15},
+    {"id": "a3", "type": "arrow", "from": "g", "to": "c1", "kind": "apply", "label": "keeps correct", "label_fs": 15},
+
+    {"id": "p2", "type": "box", "x": 20, "y": 280, "w": 960, "h": 200, "style": "panel"},
+    {"id": "h2", "type": "text", "x": 40, "y": 292, "text": "Controller-driven family: the abstraction is itself an API", "fs": 16, "color": "purple"},
+    {"id": "par", "type": "box", "x": 50, "y": 360, "w": 200, "h": 100, "label": "Parent object\nin the API", "style": "store"},
+    {"id": "ctl", "type": "box", "x": 410, "y": 360, "w": 190, "h": 100, "label": "Live controller\n(reconcile loop)", "style": "controller"},
+    {"id": "kids", "type": "box", "x": 790, "y": 360, "w": 170, "h": 100, "label": "Child\nresources", "style": "store"},
+    {"id": "b1", "type": "arrow", "from": "ctl", "to": "par", "kind": "watch", "label": "watch", "label_fs": 15, "from_side": "left", "to_side": "right", "from_at": 0.3, "to_at": 0.3},
+    {"id": "b2", "type": "arrow", "from": "ctl", "to": "kids", "kind": "apply", "label": "reconcile", "label_fs": 15, "from_side": "right", "to_side": "left", "from_at": 0.3, "to_at": 0.3},
+    {"id": "b3", "type": "arrow", "from": "ctl", "to": "kids", "kind": "delete", "label": "ordered delete", "label_fs": 15, "from_side": "right", "to_side": "left", "from_at": 0.75, "to_at": 0.75},
+    {"id": "b4", "type": "arrow", "from": "ctl", "to": "par", "kind": "write", "label": "status", "label_fs": 15, "from_side": "left", "to_side": "right", "from_at": 0.75, "to_at": 0.75}
+  ],
+  "legend": [
+    {"kind": "flow", "text": "render", "fs": 15},
+    {"kind": "pull", "text": "fetch", "fs": 15},
+    {"kind": "apply", "text": "apply", "fs": 15},
+    {"kind": "watch", "text": "watch", "fs": 15},
+    {"kind": "write", "text": "status", "fs": 15},
+    {"kind": "delete", "text": "teardown", "fs": 15}
+  ]
+}

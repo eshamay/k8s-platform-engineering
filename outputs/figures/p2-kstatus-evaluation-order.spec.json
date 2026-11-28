@@ -1,0 +1,28 @@
+{
+  "slug": "p2-kstatus-evaluation-order",
+  "title": "The kstatus decision order",
+  "alt": "A top-to-bottom flowchart of kstatus checks: a deletion timestamp gives Terminating, a generation mismatch gives InProgress, Reconciling or Stalled conditions give InProgress or Failed, and the Ready fallback gives Current or InProgress.",
+  "width": 1000,
+  "height": 580,
+  "elements": [
+    {"id": "d1", "type": "box", "x": 60, "y": 40, "w": 340, "h": 70, "label": "1. Deletion timestamp\nset?", "style": "controller"},
+    {"id": "d2", "type": "box", "x": 60, "y": 160, "w": 340, "h": 70, "label": "2. generation differs from\nstatus.observedGeneration?", "style": "controller"},
+    {"id": "d3", "type": "box", "x": 60, "y": 280, "w": 340, "h": 110, "label": "3. Conditions, in array order\nReconciling or Stalled\n(first match wins)", "style": "controller"},
+    {"id": "d4", "type": "box", "x": 60, "y": 440, "w": 340, "h": 100, "label": "4. Type-specific rules,\nthen Ready condition", "style": "controller"},
+    {"id": "o1", "type": "box", "x": 620, "y": 45, "w": 320, "h": 60, "label": "Terminating", "style": "neutral"},
+    {"id": "o2", "type": "box", "x": 620, "y": 155, "w": 320, "h": 80, "label": "InProgress\nLatestGenerationNotObserved", "style": "neutral"},
+    {"id": "o3", "type": "box", "x": 620, "y": 275, "w": 320, "h": 50, "label": "InProgress\nReconciling=True", "style": "neutral"},
+    {"id": "o4", "type": "box", "x": 620, "y": 335, "w": 320, "h": 50, "label": "Failed\nStalled=True", "style": "danger"},
+    {"id": "o5", "type": "box", "x": 620, "y": 430, "w": 320, "h": 50, "label": "Current\nReady=True", "style": "ok"},
+    {"id": "o6", "type": "box", "x": 620, "y": 500, "w": 320, "h": 50, "label": "InProgress\nReady False or Unknown", "style": "neutral"},
+    {"id": "a1", "type": "arrow", "from": "d1", "to": "d2", "kind": "flow", "label": "no", "label_dx": 22, "label_fs": 15},
+    {"id": "a2", "type": "arrow", "from": "d2", "to": "d3", "kind": "flow", "label": "no", "label_dx": 22, "label_fs": 15},
+    {"id": "a3", "type": "arrow", "from": "d3", "to": "d4", "kind": "flow", "label": "neither", "label_dx": 42, "label_fs": 15},
+    {"id": "b1", "type": "arrow", "from": "d1", "to": "o1", "kind": "flow", "label": "yes", "label_fs": 15},
+    {"id": "b2", "type": "arrow", "from": "d2", "to": "o2", "kind": "flow", "label": "yes", "label_fs": 15},
+    {"id": "b3", "type": "arrow", "from": "d3", "to": "o3", "kind": "flow", "from_side": "right", "from_at": 0.2, "to_side": "left", "label": "Reconciling", "label_fs": 15, "label_dy": -12},
+    {"id": "b4", "type": "arrow", "from": "d3", "to": "o4", "kind": "flow", "from_side": "right", "from_at": 0.8, "to_side": "left", "label": "Stalled", "label_fs": 15},
+    {"id": "b5", "type": "arrow", "from": "d4", "to": "o5", "kind": "flow", "from_side": "right", "from_at": 0.1, "to_side": "left", "label": "True", "label_fs": 15},
+    {"id": "b6", "type": "arrow", "from": "d4", "to": "o6", "kind": "flow", "from_side": "right", "from_at": 0.9, "to_side": "left", "label": "False or Unknown", "label_fs": 15}
+  ]
+}

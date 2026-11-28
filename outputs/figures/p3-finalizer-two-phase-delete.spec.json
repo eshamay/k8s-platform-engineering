@@ -1,0 +1,27 @@
+{
+  "slug": "p3-finalizer-two-phase-delete",
+  "title": "How a finalizer turns delete into two steps",
+  "alt": "A client's delete reaches the API server, which sets a deletion timestamp on the object, a watching controller cleans up the external resource and removes its finalizer, and the empty list lets the object be deleted.",
+  "width": 1000,
+  "height": 440,
+  "elements": [
+    {"id": "client", "type": "box", "x": 30, "y": 110, "w": 140, "h": 80, "label": "Client", "style": "agent"},
+    {"id": "api", "type": "box", "x": 230, "y": 110, "w": 140, "h": 80, "label": "API server", "style": "hub"},
+    {"id": "obj", "type": "box", "x": 560, "y": 100, "w": 160, "h": 100, "label": "Terminating object\nfinalizer listed", "style": "store"},
+    {"id": "gone", "type": "box", "x": 850, "y": 110, "w": 120, "h": 80, "label": "Object\ndeleted", "style": "ok"},
+    {"id": "ctrl", "type": "box", "x": 560, "y": 320, "w": 160, "h": 80, "label": "Controller", "style": "controller"},
+    {"id": "ext", "type": "box", "x": 820, "y": 320, "w": 150, "h": 80, "label": "External\nresource", "style": "hub"},
+    {"id": "e1", "type": "arrow", "from": "client", "to": "api", "kind": "delete", "label": "delete"},
+    {"id": "e2", "type": "arrow", "from": "api", "to": "obj", "kind": "write", "label": "1. set timestamp", "label_dy": -22},
+    {"id": "e3", "type": "arrow", "from": "obj", "to": "ctrl", "kind": "watch", "label": "sees update", "from_at": 0.25, "to_at": 0.25, "label_dx": -70},
+    {"id": "e4", "type": "arrow", "from": "ctrl", "to": "obj", "kind": "write", "label": "3. remove finalizer", "from_at": 0.75, "to_at": 0.75, "label_dx": 75},
+    {"id": "e5", "type": "arrow", "from": "ctrl", "to": "ext", "kind": "delete", "label": "2. clean up"},
+    {"id": "e6", "type": "arrow", "from": "obj", "to": "gone", "kind": "flow", "label": "4. list empty", "label_dy": -24}
+  ],
+  "legend": [
+    {"kind": "delete", "text": "delete or cleanup"},
+    {"kind": "write", "text": "update to the object"},
+    {"kind": "watch", "text": "watch notification"},
+    {"kind": "flow", "text": "result"}
+  ]
+}

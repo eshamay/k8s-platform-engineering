@@ -1,0 +1,163 @@
+{
+  "slug": "p2-crd-conversion-hub-spoke",
+  "title": "CRD conversion through a hub version",
+  "alt": "A client asks the API server for a version, the server converts through the hub version, which two spoke versions connect to in both directions, and the object is stored in etcd as the storage version, with an optional conversion webhook service called by the API server.",
+  "width": 1000,
+  "elements": [
+    {
+      "id": "client",
+      "type": "box",
+      "x": 30,
+      "y": 215,
+      "w": 140,
+      "h": 80,
+      "label": "Client\nasks for a version",
+      "style": "agent",
+      "fs": 15
+    },
+    {
+      "id": "api",
+      "type": "box",
+      "x": 250,
+      "y": 215,
+      "w": 160,
+      "h": 80,
+      "label": "API server\nconverts on the fly",
+      "style": "hub",
+      "fs": 15
+    },
+    {
+      "id": "hubv",
+      "type": "box",
+      "x": 500,
+      "y": 215,
+      "w": 160,
+      "h": 80,
+      "label": "Hub version",
+      "style": "controller"
+    },
+    {
+      "id": "etcd",
+      "type": "box",
+      "x": 235,
+      "y": 380,
+      "w": 190,
+      "h": 80,
+      "label": "etcd\nstorage version",
+      "style": "store",
+      "fs": 15
+    },
+    {
+      "id": "sp1",
+      "type": "box",
+      "x": 780,
+      "y": 80,
+      "w": 160,
+      "h": 70,
+      "label": "Spoke version",
+      "style": "neutral"
+    },
+    {
+      "id": "sp2",
+      "type": "box",
+      "x": 780,
+      "y": 350,
+      "w": 160,
+      "h": 70,
+      "label": "Spoke version",
+      "style": "neutral"
+    },
+    {
+      "id": "wh",
+      "type": "box",
+      "x": 250,
+      "y": 50,
+      "w": 160,
+      "h": 80,
+      "label": "Conversion webhook\nservice",
+      "style": "controller",
+      "fs": 15,
+      "dashed": true
+    },
+    {
+      "id": "n1",
+      "type": "text",
+      "x": 430,
+      "y": 80,
+      "text": "Optional: only with the\nWebhook strategy",
+      "fs": 15,
+      "color": "muted"
+    },
+    {
+      "id": "n2",
+      "type": "text",
+      "x": 735,
+      "y": 235,
+      "text": "Spokes talk only to the hub",
+      "fs": 15,
+      "color": "muted"
+    },
+    {
+      "id": "e1",
+      "type": "arrow",
+      "from": "client",
+      "to": "api",
+      "kind": "apply",
+      "label": "request"
+    },
+    {
+      "id": "e2",
+      "type": "arrow",
+      "from": "api",
+      "to": "hubv",
+      "kind": "flow",
+      "label": "convert"
+    },
+    {
+      "id": "e3",
+      "type": "arrow",
+      "from": "api",
+      "to": "etcd",
+      "kind": "write",
+      "label": "stored as storage version"
+    },
+    {
+      "id": "e4",
+      "type": "arrow",
+      "from": "sp1",
+      "to": "hubv",
+      "kind": "flow",
+      "double": true
+    },
+    {
+      "id": "e5",
+      "type": "arrow",
+      "from": "sp2",
+      "to": "hubv",
+      "kind": "flow",
+      "double": true
+    },
+    {
+      "id": "e6",
+      "type": "arrow",
+      "from": "api",
+      "to": "wh",
+      "kind": "apply",
+      "double": true
+    }
+  ],
+  "legend": [
+    {
+      "kind": "apply",
+      "text": "request or call"
+    },
+    {
+      "kind": "flow",
+      "text": "conversion"
+    },
+    {
+      "kind": "write",
+      "text": "write to storage"
+    }
+  ]
+}

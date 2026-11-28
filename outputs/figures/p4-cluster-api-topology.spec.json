@@ -1,0 +1,167 @@
+{
+ "slug": "p4-cluster-api-topology",
+ "title": "Cluster API management cluster and providers",
+ "alt": "A management cluster holds Cluster and Machine objects that generic core controllers reconcile, then pass through an agreed contract to infrastructure, bootstrap and control-plane providers that build the workload clusters, with the management cluster marked as a single point of failure.",
+ "caption": "The controllers, objects and providers all sit inside one management cluster, while the workload clusters they build sit outside it.",
+ "width": 1000,
+ "height": 560,
+ "elements": [
+  {
+   "id": "mgmt",
+   "type": "box",
+   "x": 20,
+   "y": 20,
+   "w": 740,
+   "h": 520,
+   "style": "cluster",
+   "label": "Management cluster",
+   "valign": "top"
+  },
+  {
+   "id": "objs",
+   "type": "box",
+   "x": 40,
+   "y": 200,
+   "w": 130,
+   "h": 100,
+   "label": "Cluster and\nMachine objects",
+   "style": "store"
+  },
+  {
+   "id": "core",
+   "type": "box",
+   "x": 260,
+   "y": 200,
+   "w": 130,
+   "h": 100,
+   "label": "Generic core\ncontrollers",
+   "style": "controller"
+  },
+  {
+   "id": "infra",
+   "type": "box",
+   "x": 540,
+   "y": 80,
+   "w": 190,
+   "h": 80,
+   "label": "Infrastructure\nprovider",
+   "style": "controller"
+  },
+  {
+   "id": "boot",
+   "type": "box",
+   "x": 540,
+   "y": 210,
+   "w": 190,
+   "h": 80,
+   "label": "Bootstrap\nprovider",
+   "style": "controller"
+  },
+  {
+   "id": "cp",
+   "type": "box",
+   "x": 540,
+   "y": 340,
+   "w": 190,
+   "h": 80,
+   "label": "Control-plane\nprovider",
+   "style": "controller"
+  },
+  {
+   "id": "spof",
+   "type": "box",
+   "x": 40,
+   "y": 460,
+   "w": 700,
+   "h": 60,
+   "label": "Single point of failure",
+   "style": "danger"
+  },
+  {
+   "id": "wl",
+   "type": "box",
+   "x": 810,
+   "y": 80,
+   "w": 160,
+   "h": 340,
+   "label": "Workload\nclusters",
+   "style": "cluster"
+  },
+  {
+   "id": "e1",
+   "type": "arrow",
+   "from": "core",
+   "to": "objs",
+   "kind": "watch",
+   "label": "reconcile",
+   "label_dy": -20
+  },
+  {
+   "id": "e3",
+   "type": "arrow",
+   "from": "core",
+   "to": "infra",
+   "kind": "flow"
+  },
+  {
+   "id": "e4",
+   "type": "arrow",
+   "from": "core",
+   "to": "boot",
+   "kind": "flow",
+   "label": "agreed contract",
+   "label_dy": -16
+  },
+  {
+   "id": "e5",
+   "type": "arrow",
+   "from": "core",
+   "to": "cp",
+   "kind": "flow"
+  },
+  {
+   "id": "e6",
+   "type": "arrow",
+   "from": "infra",
+   "to": "wl",
+   "kind": "apply",
+   "from_side": "right",
+   "to_side": "left",
+   "to_at": 0.2
+  },
+  {
+   "id": "e7",
+   "type": "arrow",
+   "from": "boot",
+   "to": "wl",
+   "kind": "apply",
+   "from_side": "right",
+   "to_side": "left",
+   "to_at": 0.5
+  },
+  {
+   "id": "e8",
+   "type": "arrow",
+   "from": "cp",
+   "to": "wl",
+   "kind": "apply",
+   "from_side": "right",
+   "to_side": "left",
+   "to_at": 0.8
+  }
+ ],
+ "legend": [
+  {
+   "kind": "watch",
+   "text": "watch and reconcile"
+  },
+  {
+   "kind": "flow",
+   "text": "control flow"
+  },
+  {
+   "kind": "apply",
+   "text": "provision"
+  }
+ ]
+}

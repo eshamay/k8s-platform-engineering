@@ -1,0 +1,238 @@
+{
+ "slug": "p3-external-create-strategies",
+ "title": "Four ways to make an external create safe",
+ "alt": "Four columns compare deterministic names, a persisted external identity, recording intent then halting, and a server-side client token, each with an example, what it gives you and when it breaks.",
+ "width": 1000,
+ "height": 570,
+ "elements": [
+  {
+   "id": "frame",
+   "type": "box",
+   "x": 10,
+   "y": 10,
+   "w": 980,
+   "h": 550,
+   "style": "panel"
+  },
+  {
+   "id": "r0",
+   "type": "box",
+   "x": 20,
+   "y": 40,
+   "w": 88,
+   "h": 80,
+   "style": "note",
+   "label": "Answer",
+   "fs": 15
+  },
+  {
+   "id": "r1",
+   "type": "box",
+   "x": 20,
+   "y": 170,
+   "w": 88,
+   "h": 80,
+   "style": "note",
+   "label": "Example",
+   "fs": 15
+  },
+  {
+   "id": "r2",
+   "type": "box",
+   "x": 20,
+   "y": 300,
+   "w": 88,
+   "h": 80,
+   "style": "note",
+   "label": "Gives you",
+   "fs": 15
+  },
+  {
+   "id": "r3",
+   "type": "box",
+   "x": 20,
+   "y": 430,
+   "w": 88,
+   "h": 110,
+   "style": "note",
+   "label": "Breaks\nwhen",
+   "fs": 15
+  },
+  {
+   "id": "b00",
+   "type": "box",
+   "x": 118,
+   "y": 40,
+   "w": 206,
+   "h": 80,
+   "style": "neutral",
+   "label": "Deterministic\nnames",
+   "fs": 15
+  },
+  {
+   "id": "b01",
+   "type": "box",
+   "x": 118,
+   "y": 170,
+   "w": 206,
+   "h": 80,
+   "style": "hub",
+   "label": "Config Connector acquires;\nACK adopts by ID",
+   "fs": 15
+  },
+  {
+   "id": "b02",
+   "type": "box",
+   "x": 118,
+   "y": 300,
+   "w": 206,
+   "h": 80,
+   "style": "ok",
+   "label": "Same request names\nsame resource",
+   "fs": 15
+  },
+  {
+   "id": "b03",
+   "type": "box",
+   "x": 118,
+   "y": 430,
+   "w": 206,
+   "h": 110,
+   "style": "danger",
+   "label": "Cloud makes own IDs or\ntolerates duplicates",
+   "fs": 15
+  },
+  {
+   "id": "b10",
+   "type": "box",
+   "x": 334,
+   "y": 40,
+   "w": 206,
+   "h": 80,
+   "style": "neutral",
+   "label": "Persisted external\nidentity",
+   "fs": 15
+  },
+  {
+   "id": "b11",
+   "type": "box",
+   "x": 334,
+   "y": 170,
+   "w": 206,
+   "h": 80,
+   "style": "store",
+   "label": "Crossplane\nexternal-name annotation",
+   "fs": 15
+  },
+  {
+   "id": "b12",
+   "type": "box",
+   "x": 334,
+   "y": 300,
+   "w": 206,
+   "h": 80,
+   "style": "ok",
+   "label": "Used for observe,\nupdate, delete",
+   "fs": 15
+  },
+  {
+   "id": "b13",
+   "type": "box",
+   "x": 334,
+   "y": 430,
+   "w": 206,
+   "h": 110,
+   "style": "danger",
+   "label": "Crash before write:\nnothing to find",
+   "fs": 15
+  },
+  {
+   "id": "b20",
+   "type": "box",
+   "x": 550,
+   "y": 40,
+   "w": 206,
+   "h": 80,
+   "style": "neutral",
+   "label": "Record intent,\nthen halt",
+   "fs": 15
+  },
+  {
+   "id": "b21",
+   "type": "box",
+   "x": 550,
+   "y": 170,
+   "w": 206,
+   "h": 80,
+   "style": "store",
+   "label": "Crossplane writes\nexternal-create-pending\nbefore create",
+   "fs": 15
+  },
+  {
+   "id": "b22",
+   "type": "box",
+   "x": 550,
+   "y": 300,
+   "w": 206,
+   "h": 80,
+   "style": "ok",
+   "label": "No leaked\nduplicates",
+   "fs": 15
+  },
+  {
+   "id": "b23",
+   "type": "box",
+   "x": 550,
+   "y": 430,
+   "w": 206,
+   "h": 110,
+   "style": "danger",
+   "label": "Marker, no outcome:\nneeds a person",
+   "fs": 15
+  },
+  {
+   "id": "b30",
+   "type": "box",
+   "x": 766,
+   "y": 40,
+   "w": 206,
+   "h": 80,
+   "style": "neutral",
+   "label": "Server-side\nclient token",
+   "fs": 15
+  },
+  {
+   "id": "b31",
+   "type": "box",
+   "x": 766,
+   "y": 170,
+   "w": 206,
+   "h": 80,
+   "style": "hub",
+   "label": "EC2 RunInstances\nClientToken",
+   "fs": 15
+  },
+  {
+   "id": "b32",
+   "type": "box",
+   "x": 766,
+   "y": 300,
+   "w": 206,
+   "h": 80,
+   "style": "ok",
+   "label": "Cloud deduplicates\n(token stays stable)",
+   "fs": 15
+  },
+  {
+   "id": "b33",
+   "type": "box",
+   "x": 766,
+   "y": 430,
+   "w": 206,
+   "h": 110,
+   "style": "danger",
+   "label": "Exists only where the\nprovider built it",
+   "fs": 15
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+{
+  "slug": "p2-spec-status-subresource",
+  "title": "Spec and status written through separate endpoints",
+  "alt": "Users and GitOps tools write through the main endpoint into the spec of one object, which bumps metadata.generation, while controllers write through the /status endpoint into the status of the same object.",
+  "width": 1000,
+  "height": 510,
+  "elements": [
+    {"id": "frame", "type": "box", "x": 20, "y": 20, "w": 960, "h": 480, "style": "panel"},
+    {"id": "obj", "type": "box", "x": 690, "y": 60, "w": 270, "h": 420, "style": "cluster", "label": "One object", "valign": "top"},
+    {"id": "users", "type": "box", "x": 50, "y": 120, "w": 170, "h": 80, "label": "Users and\nGitOps tools", "style": "agent"},
+    {"id": "ctrl", "type": "box", "x": 50, "y": 340, "w": 170, "h": 80, "label": "Controllers", "style": "controller"},
+    {"id": "main", "type": "box", "x": 320, "y": 120, "w": 190, "h": 80, "label": "Main endpoint\nignores status", "style": "hub"},
+    {"id": "stat", "type": "box", "x": 320, "y": 340, "w": 190, "h": 80, "label": "/status endpoint\nignores all but status", "style": "hub"},
+    {"id": "spec", "type": "box", "x": 730, "y": 120, "w": 200, "h": 80, "label": "spec\nintent", "style": "store"},
+    {"id": "gen", "type": "box", "x": 730, "y": 258, "w": 200, "h": 50, "label": "metadata.generation", "style": "note", "fs": 15},
+    {"id": "status", "type": "box", "x": 730, "y": 340, "w": 200, "h": 80, "label": "status\nobservations", "style": "store"},
+    {"id": "e1", "type": "arrow", "from": "users", "to": "main", "kind": "apply", "label": "PUT / PATCH", "label_dy": -22, "label_fs": 15},
+    {"id": "e2", "type": "arrow", "from": "main", "to": "spec", "kind": "apply", "label": "spec only", "label_dy": -22, "label_fs": 15},
+    {"id": "e3", "type": "arrow", "from": "ctrl", "to": "stat", "kind": "write", "label": "PUT / PATCH", "label_dy": -22, "label_fs": 15},
+    {"id": "e4", "type": "arrow", "from": "stat", "to": "status", "kind": "write", "label": "status only", "label_dy": -22, "label_fs": 15},
+    {"id": "e5", "type": "arrow", "from": "spec", "to": "gen", "kind": "flow", "label": "spec change\nbumps", "label_dx": 80, "label_dy": 18, "label_fs": 15}
+  ],
+  "legend": [
+    {"kind": "apply", "text": "writes intent", "fs": 15},
+    {"kind": "write", "text": "writes observations", "fs": 15},
+    {"kind": "flow", "text": "bumps on change", "fs": 15}
+  ]
+}

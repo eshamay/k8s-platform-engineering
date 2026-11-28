@@ -1,0 +1,186 @@
+{
+  "slug": "p4-managed-resource-deletion",
+  "title": "Finalizer-guarded deletion of a managed resource",
+  "alt": "A user deletes a managed resource, the object's deletionTimestamp is noticed by the controller, which deletes the external resource and removes the finalizer so the object disappears, while a missing controller or credentials leaves the object stuck in Terminating.",
+  "width": 1000,
+  "height": 520,
+  "elements": [
+    {
+      "id": "frame",
+      "type": "box",
+      "x": 20,
+      "y": 20,
+      "w": 960,
+      "h": 480,
+      "style": "panel"
+    },
+    {
+      "id": "user",
+      "type": "box",
+      "x": 40,
+      "y": 110,
+      "w": 150,
+      "h": 80,
+      "label": "User",
+      "style": "agent"
+    },
+    {
+      "id": "mr",
+      "type": "box",
+      "x": 250,
+      "y": 100,
+      "w": 180,
+      "h": 100,
+      "label": "Managed resource\nhas a finalizer",
+      "style": "store"
+    },
+    {
+      "id": "ctl",
+      "type": "box",
+      "x": 600,
+      "y": 110,
+      "w": 140,
+      "h": 80,
+      "label": "Controller",
+      "style": "controller"
+    },
+    {
+      "id": "ext",
+      "type": "box",
+      "x": 840,
+      "y": 110,
+      "w": 120,
+      "h": 80,
+      "label": "External\nresource",
+      "style": "hub"
+    },
+    {
+      "id": "gone",
+      "type": "box",
+      "x": 40,
+      "y": 360,
+      "w": 170,
+      "h": 80,
+      "label": "Object\ndisappears",
+      "style": "ok"
+    },
+    {
+      "id": "stuck",
+      "type": "box",
+      "x": 250,
+      "y": 360,
+      "w": 190,
+      "h": 80,
+      "label": "Stuck in\nTerminating",
+      "style": "danger"
+    },
+    {
+      "id": "e1",
+      "type": "arrow",
+      "from": "user",
+      "to": "mr",
+      "kind": "delete",
+      "label": "delete",
+      "label_dy": -22
+    },
+    {
+      "id": "e2",
+      "type": "arrow",
+      "from": "mr",
+      "to": "ctl",
+      "kind": "watch",
+      "label": "deletionTimestamp",
+      "label_dy": -22
+    },
+    {
+      "id": "e3",
+      "type": "arrow",
+      "from": "ctl",
+      "to": "ext",
+      "kind": "delete",
+      "label": "delete",
+      "label_dy": -22
+    },
+    {
+      "id": "e4",
+      "type": "arrow",
+      "from": "ctl",
+      "to": "mr",
+      "kind": "write",
+      "label": "remove finalizer",
+      "from_side": "bottom",
+      "to_side": "bottom",
+      "to_at": 0.85,
+      "via": [
+        [
+          670,
+          250
+        ],
+        [
+          403,
+          250
+        ]
+      ],
+      "label_pos": [
+        480,
+        225
+      ]
+    },
+    {
+      "id": "e5",
+      "type": "arrow",
+      "from": "mr",
+      "to": "gone",
+      "kind": "flow",
+      "from_side": "bottom",
+      "to_side": "top",
+      "from_at": 0.1,
+      "to_at": 0.5,
+      "via": [
+        [
+          268,
+          300
+        ],
+        [
+          125,
+          300
+        ]
+      ],
+      "label": "finalizer removed",
+      "label_pos": [
+        135,
+        325
+      ]
+    },
+    {
+      "id": "e6",
+      "type": "arrow",
+      "from": "mr",
+      "to": "stuck",
+      "kind": "flow",
+      "label": "controller or credentials missing",
+      "from_side": "bottom",
+      "to_side": "top",
+      "from_at": 0.5,
+      "to_at": 0.5,
+      "label_pos": [
+        355,
+        325
+      ]
+    }
+  ],
+  "legend": [
+    {
+      "kind": "delete",
+      "text": "deletion"
+    },
+    {
+      "kind": "watch",
+      "text": "controller notices"
+    },
+    {
+      "kind": "write",
+      "text": "write to the object"
+    }
+  ]
+}

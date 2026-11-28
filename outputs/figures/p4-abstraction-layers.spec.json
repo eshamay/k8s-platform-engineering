@@ -1,0 +1,22 @@
+{
+  "slug": "p4-abstraction-layers",
+  "title": "The four abstraction layers and who covers them",
+  "alt": "Four stacked layers, from provider at the bottom through managed resources and composition to composite resource at the top, with Crossplane spanning all four and kro spanning the top two as one graph definition.",
+  "caption": "Read the stack from the bottom: a provider delivers managed resources, a composition maps them to a composite resource. Crossplane covers all four layers, while kro collapses the top two into one graph definition.",
+  "width": 1000,
+  "height": 600,
+  "elements": [
+    {"id": "frame", "type": "box", "x": 20, "y": 20, "w": 960, "h": 560, "style": "panel"},
+    {"id": "xr", "type": "box", "x": 60, "y": 60, "w": 440, "h": 80, "label": "Composite resource\nPostgreSQLInstance, WebApp", "style": "store"},
+    {"id": "comp", "type": "box", "x": 60, "y": 200, "w": 440, "h": 80, "label": "Composition\nmaps high-level to low-level", "style": "controller"},
+    {"id": "mr", "type": "box", "x": 60, "y": 340, "w": 440, "h": 80, "label": "Managed resources\none object per external thing\ne.g. VPC, IAM role", "style": "store", "fs": 15},
+    {"id": "prov", "type": "box", "x": 60, "y": 480, "w": 440, "h": 80, "label": "Provider\ncontrollers and CRDs\nfor one cloud or service", "style": "hub", "fs": 15},
+    {"id": "e0", "type": "arrow", "from": "xr", "to": "comp", "kind": "flow", "label": "mapped by", "label_dx": 70},
+    {"id": "e1", "type": "arrow", "from": "comp", "to": "mr", "kind": "flow", "label": "maps to", "label_dx": 70},
+    {"id": "e2", "type": "arrow", "from": "prov", "to": "mr", "kind": "flow", "label": "delivers", "label_dx": 70},
+    {"id": "cpbar", "type": "box", "x": 530, "y": 60, "w": 14, "h": 500, "style": "note"},
+    {"id": "krobar", "type": "box", "x": 570, "y": 60, "w": 14, "h": 220, "style": "note"},
+    {"id": "kro", "type": "box", "x": 620, "y": 110, "w": 300, "h": 120, "label": "kro\ncomposite + composition as one graph definition", "style": "note"},
+    {"id": "cp", "type": "box", "x": 620, "y": 360, "w": 300, "h": 100, "label": "Crossplane\nall four layers", "style": "note"}
+  ]
+}

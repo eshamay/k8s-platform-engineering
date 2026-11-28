@@ -1,0 +1,21 @@
+{
+  "slug": "p5-zalando-retry-storm-cascade",
+  "title": "A retry storm cascades into a DNS outage",
+  "alt": "Six stages in order: a timed-out downstream call, client retries, a DNS query spike, search-path multiplication of each lookup, DNS pods running out of memory and being killed together, and in-cluster monitoring going blind",
+  "width": 1000,
+  "height": 420,
+  "elements": [
+    {"id": "frame", "type": "box", "x": 20, "y": 20, "w": 960, "h": 380, "style": "panel"},
+    {"id": "b1", "type": "box", "x": 50, "y": 80, "w": 230, "h": 90, "label": "Downstream call\ntimes out", "style": "danger"},
+    {"id": "b2", "type": "box", "x": 385, "y": 80, "w": 230, "h": 90, "label": "Clients retry", "style": "agent"},
+    {"id": "b3", "type": "box", "x": 720, "y": 80, "w": 230, "h": 90, "label": "DNS queries spike", "style": "danger"},
+    {"id": "b4", "type": "box", "x": 50, "y": 270, "w": 230, "h": 100, "label": "Search path multiplies\neach external lookup", "style": "neutral"},
+    {"id": "b5", "type": "box", "x": 385, "y": 270, "w": 230, "h": 100, "label": "DNS pods out of memory\nand killed together", "style": "danger"},
+    {"id": "b6", "type": "box", "x": 720, "y": 270, "w": 230, "h": 100, "label": "In-cluster monitoring\ngoes blind", "style": "danger"},
+    {"id": "e1", "type": "arrow", "from": "b1", "to": "b2", "kind": "flow"},
+    {"id": "e2", "type": "arrow", "from": "b2", "to": "b3", "kind": "flow"},
+    {"id": "e3", "type": "arrow", "from": "b3", "to": "b4", "kind": "flow", "from_side": "bottom", "to_side": "top", "via": [[835, 210], [165, 210]]},
+    {"id": "e4", "type": "arrow", "from": "b4", "to": "b5", "kind": "flow"},
+    {"id": "e5", "type": "arrow", "from": "b5", "to": "b6", "kind": "flow"}
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "slug": "p1-events-as-hints",
+  "title": "Events are hints, state is truth",
+  "alt": "A watch streams changes from the API server into an informer cache, which enqueues deduplicated object keys on a work queue; the reconciler takes a key, reads full state from the API server and writes status back.",
+  "width": 960,
+  "height": 430,
+  "elements": [
+    {"id": "frame", "type": "box", "x": 20, "y": 20, "w": 920, "h": 390, "style": "panel"},
+    {"id": "api", "type": "box", "x": 40, "y": 120, "w": 150, "h": 90, "label": "API server\n(full state)", "style": "hub"},
+    {"id": "inf", "type": "box", "x": 270, "y": 120, "w": 150, "h": 90, "label": "Informer cache\n(client side)", "style": "store"},
+    {"id": "q", "type": "box", "x": 500, "y": 120, "w": 150, "h": 90, "label": "Work queue\n(deduplicated keys)", "style": "neutral"},
+    {"id": "rec", "type": "box", "x": 750, "y": 120, "w": 170, "h": 90, "label": "Reconciler\n(enforces all state)", "style": "controller"},
+    {"id": "e1", "type": "arrow", "from": "api", "to": "inf", "kind": "watch", "label": "watch"},
+    {"id": "e2", "type": "arrow", "from": "inf", "to": "q", "kind": "flow", "label": "enqueue"},
+    {"id": "e3", "type": "arrow", "from": "q", "to": "rec", "kind": "flow", "label": "next"},
+    {"id": "e4", "type": "arrow", "from": "rec", "to": "api", "kind": "pull", "label": "read full state", "from_side": "bottom", "to_side": "bottom", "from_at": 0.3, "to_at": 0.3, "via": [[801, 290], [85, 290]], "label_pos": [330, 300]},
+    {"id": "e5", "type": "arrow", "from": "rec", "to": "api", "kind": "write", "label": "write status", "from_side": "bottom", "to_side": "bottom", "from_at": 0.7, "to_at": 0.7, "via": [[869, 345], [145, 345]], "label_pos": [330, 355]},
+    {"id": "t1", "type": "text", "x": 190, "y": 50, "text": "Events: low-latency hints", "fs": 16, "color": "purple", "w": 400, "align": "center"},
+    {"id": "t2", "type": "text", "x": 640, "y": 50, "text": "State: the source of truth", "fs": 16, "color": "green", "w": 280, "align": "center"}
+  ],
+  "legend": [
+    {"kind": "watch", "text": "watch notification"},
+    {"kind": "flow", "text": "internal flow"},
+    {"kind": "pull", "text": "read"},
+    {"kind": "write", "text": "write back"}
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "slug": "p1-two-layer-loop",
+  "title": "The two-layer loop and its seams",
+  "alt": "Git feeds GitOps controllers that apply into the Kubernetes API, which domain controllers watch and reconcile into external reality, with four pitfall seams listed below: custom-resource health, pruning, drift against mutating controllers, and credentials.",
+  "width": 1000,
+  "height": 480,
+  "elements": [
+    {
+      "id": "frame",
+      "type": "box",
+      "x": 20,
+      "y": 20,
+      "w": 960,
+      "h": 440,
+      "style": "panel"
+    },
+    {
+      "id": "s1",
+      "type": "text",
+      "x": 40,
+      "y": 50,
+      "text": "Layer 1: Git into the API",
+      "fs": 16,
+      "color": "purple",
+      "w": 320,
+      "align": "center"
+    },
+    {
+      "id": "s2",
+      "type": "text",
+      "x": 420,
+      "y": 50,
+      "text": "Layer 2: the API into reality",
+      "fs": 16,
+      "color": "purple",
+      "w": 530,
+      "align": "center"
+    },
+    {
+      "id": "git",
+      "type": "box",
+      "x": 40,
+      "y": 120,
+      "w": 120,
+      "h": 80,
+      "label": "Git\nrepository",
+      "style": "git"
+    },
+    {
+      "id": "gitops",
+      "type": "box",
+      "x": 220,
+      "y": 120,
+      "w": 140,
+      "h": 80,
+      "label": "GitOps\ncontrollers",
+      "style": "controller"
+    },
+    {
+      "id": "api",
+      "type": "box",
+      "x": 420,
+      "y": 100,
+      "w": 150,
+      "h": 120,
+      "label": "Kubernetes API\n(desired state)",
+      "style": "hub"
+    },
+    {
+      "id": "domain",
+      "type": "box",
+      "x": 630,
+      "y": 120,
+      "w": 130,
+      "h": 80,
+      "label": "Domain\ncontrollers",
+      "style": "controller"
+    },
+    {
+      "id": "world",
+      "type": "box",
+      "x": 830,
+      "y": 120,
+      "w": 120,
+      "h": 80,
+      "label": "External\nreality",
+      "style": "neutral",
+      "fs": 15
+    },
+    {
+      "id": "e1",
+      "type": "arrow",
+      "from": "git",
+      "to": "gitops",
+      "kind": "pull",
+      "label": "fetch"
+    },
+    {
+      "id": "e2",
+      "type": "arrow",
+      "from": "gitops",
+      "to": "api",
+      "kind": "apply",
+      "label": "apply"
+    },
+    {
+      "id": "e3",
+      "type": "arrow",
+      "from": "api",
+      "to": "domain",
+      "kind": "watch",
+      "label": "watch"
+    },
+    {
+      "id": "e4",
+      "type": "arrow",
+      "from": "domain",
+      "to": "world",
+      "kind": "apply",
+      "label": "reconcile"
+    },
+    {
+      "id": "n0",
+      "type": "text",
+      "x": 40,
+      "y": 270,
+      "text": "Each layer is level-triggered. The pitfalls mostly occur at the seams between them:",
+      "fs": 16,
+      "color": "muted"
+    },
+    {
+      "id": "k1",
+      "type": "box",
+      "x": 50,
+      "y": 320,
+      "w": 205,
+      "h": 90,
+      "label": "Custom-resource\nhealth",
+      "style": "danger"
+    },
+    {
+      "id": "k2",
+      "type": "box",
+      "x": 280,
+      "y": 320,
+      "w": 205,
+      "h": 90,
+      "label": "Pruning",
+      "style": "danger"
+    },
+    {
+      "id": "k3",
+      "type": "box",
+      "x": 500,
+      "y": 320,
+      "w": 225,
+      "h": 90,
+      "label": "Drift against\nmutating controllers",
+      "style": "danger"
+    },
+    {
+      "id": "k4",
+      "type": "box",
+      "x": 745,
+      "y": 320,
+      "w": 205,
+      "h": 90,
+      "label": "Credentials",
+      "style": "danger"
+    }
+  ],
+  "legend": [
+    {
+      "kind": "pull",
+      "text": "fetch"
+    },
+    {
+      "kind": "apply",
+      "text": "apply to the API"
+    },
+    {
+      "kind": "watch",
+      "text": "watch for changes"
+    }
+  ]
+}

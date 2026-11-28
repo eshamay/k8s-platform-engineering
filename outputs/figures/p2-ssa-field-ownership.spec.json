@@ -1,0 +1,32 @@
+{
+  "slug": "p2-ssa-field-ownership",
+  "title": "Server-side apply and field ownership",
+  "alt": "Flux kustomize-controller, an autoscaler and kubectl each send partial intent to the API server, which merges it into one live object and records per-field owners in managedFields; a differing value from a second manager raises a conflict the applier resolves by forcing, dropping the field or matching the value.",
+  "width": 1000,
+  "height": 575,
+  "elements": [
+    {"id": "w1", "type": "box", "x": 30, "y": 80, "w": 200, "h": 70, "label": "Flux\nkustomize-controller", "style": "controller"},
+    {"id": "w2", "type": "box", "x": 30, "y": 190, "w": 200, "h": 70, "label": "Autoscaler\n(HPA)", "style": "controller"},
+    {"id": "w3", "type": "box", "x": 30, "y": 300, "w": 200, "h": 70, "label": "kubectl", "style": "agent"},
+    {"id": "api", "type": "box", "x": 340, "y": 130, "w": 170, "h": 190, "label": "API server\nmerges partial\nintents", "style": "hub"},
+    {"id": "obj", "type": "box", "x": 610, "y": 50, "w": 360, "h": 340, "label": "Live object: managedFields", "style": "store", "valign": "top"},
+    {"id": "o1", "type": "box", "x": 630, "y": 110, "w": 320, "h": 100, "label": "kustomize-controller\nApply: owns image", "style": "neutral"},
+    {"id": "o2", "type": "box", "x": 630, "y": 240, "w": 320, "h": 120, "label": "kube-controller-manager\nUpdate: owns replicas\n(HPA scales via scale subresource)", "style": "neutral"},
+    {"id": "c", "type": "box", "x": 340, "y": 440, "w": 170, "h": 80, "label": "Conflict error returned\nto later applier", "style": "danger"},
+    {"id": "opts", "type": "box", "x": 590, "y": 420, "w": 390, "h": 130, "label": "Applier chooses", "style": "panel", "valign": "top"},
+    {"id": "p1", "type": "box", "x": 600, "y": 460, "w": 120, "h": 80, "label": "Force\nsole owner", "style": "neutral", "fs": 15},
+    {"id": "p2", "type": "box", "x": 730, "y": 460, "w": 120, "h": 80, "label": "Drop field\ngive up", "style": "neutral", "fs": 15},
+    {"id": "p3", "type": "box", "x": 860, "y": 460, "w": 110, "h": 80, "label": "Same value\nco-owner", "style": "neutral", "fs": 15},
+    {"id": "e1", "type": "arrow", "from": "w1", "to": "api", "kind": "apply", "to_side": "left", "to_at": 0.2},
+    {"id": "e2", "type": "arrow", "from": "w2", "to": "api", "kind": "apply", "to_side": "left", "to_at": 0.5},
+    {"id": "e3", "type": "arrow", "from": "w3", "to": "api", "kind": "apply", "to_side": "left", "to_at": 0.8},
+    {"id": "e4", "type": "arrow", "from": "api", "to": "obj", "kind": "write"},
+    {"id": "e5", "type": "arrow", "from": "api", "to": "c", "kind": "flow", "label": "different value", "label_dx": 60, "label_dy": 0},
+    {"id": "e6", "type": "arrow", "from": "c", "to": "opts", "kind": "flow"}
+  ],
+  "legend": [
+    {"kind": "apply", "text": "partial intent"},
+    {"kind": "write", "text": "merge and record"},
+    {"kind": "flow", "text": "conflict path"}
+  ]
+}

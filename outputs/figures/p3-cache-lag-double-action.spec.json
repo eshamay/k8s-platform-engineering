@@ -1,0 +1,38 @@
+{
+  "slug": "p3-cache-lag-double-action",
+  "title": "How cache lag causes double action",
+  "alt": "Two rows compare a controller that creates a pod, reads a lagging informer cache and creates a second pod, against a controller that records an expectation and skips acting until the cache catches up.",
+  "width": 1000,
+  "height": 640,
+  "elements": [
+    {"id": "p1", "type": "box", "x": 20, "y": 20, "w": 960, "h": 290, "style": "panel"},
+    {"id": "p2", "type": "box", "x": 20, "y": 330, "w": 960, "h": 290, "style": "panel"},
+    {"id": "h1", "type": "text", "x": 40, "y": 30, "text": "Without bookkeeping", "fs": 16, "color": "red"},
+    {"id": "h2", "type": "text", "x": 40, "y": 340, "text": "With expectations", "fs": 16, "color": "green"},
+
+    {"id": "c1", "type": "box", "x": 50, "y": 100, "w": 160, "h": 70, "label": "Controller", "style": "controller"},
+    {"id": "a1", "type": "box", "x": 420, "y": 100, "w": 160, "h": 70, "label": "API server", "style": "hub"},
+    {"id": "k1", "type": "box", "x": 790, "y": 100, "w": 160, "h": 70, "label": "Informer cache\n(still no pod)", "style": "store"},
+    {"id": "d1", "type": "box", "x": 50, "y": 235, "w": 160, "h": 70, "label": "Second pod\ncreated", "style": "danger"},
+    {"id": "e1", "type": "arrow", "from": "c1", "to": "a1", "kind": "apply", "label": "create pod"},
+    {"id": "e2", "type": "arrow", "from": "a1", "to": "k1", "kind": "watch", "label": "watch, arrives late"},
+    {"id":"e4","type":"arrow","from":"c1","to":"d1","kind":"apply","label":"create pod again","label_pos":[190,205]},
+    {"id": "e3", "type": "arrow", "from": "k1", "to": "c1", "kind": "pull", "label": "reconcile again: reads gap", "via": [[870, 68], [130, 68]], "from_side": "top", "to_side": "top", "label_pos": [330, 45]},
+
+    {"id": "c2", "type": "box", "x": 50, "y": 410, "w": 160, "h": 70, "label": "Controller", "style": "controller"},
+    {"id": "a2", "type": "box", "x": 420, "y": 410, "w": 160, "h": 70, "label": "API server", "style": "hub"},
+    {"id": "k2", "type": "box", "x": 790, "y": 410, "w": 160, "h": 70, "label": "Informer cache\n(still no pod)", "style": "store"},
+    {"id": "x2", "type": "box", "x": 50, "y": 545, "w": 160, "h": 70, "label": "Expectations\n(in-flight creates)", "style": "note", "fs": 15},
+    {"id": "o2", "type": "box", "x": 450, "y": 550, "w": 220, "h": 60, "label": "Skip until cache\ncatches up", "style": "ok"},
+    {"id": "f1", "type": "arrow", "from": "c2", "to": "a2", "kind": "apply", "label": "create pod"},
+    {"id": "f2", "type": "arrow", "from": "a2", "to": "k2", "kind": "watch", "label": "watch, arrives late"},
+    {"id":"f5","type":"arrow","from":"k2","to":"c2","kind":"pull","label":"reconcile again: reads gap","via":[[870,378],[130,378]],"from_side":"top","to_side":"top","label_pos":[330,355]},
+    {"id": "f3", "type": "arrow", "from": "c2", "to": "x2", "kind": "flow", "label": "record", "label_pos": [150, 510]},
+    {"id": "f4", "type": "arrow", "from": "x2", "to": "o2", "kind": "flow", "label": "cache not caught up"}
+  ],
+  "legend": [
+    {"kind": "apply", "text": "write"},
+    {"kind": "watch", "text": "watch stream"},
+    {"kind": "pull", "text": "read"}
+  ]
+}

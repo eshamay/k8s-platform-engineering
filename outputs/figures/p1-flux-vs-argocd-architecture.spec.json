@@ -1,0 +1,207 @@
+{
+  "slug": "p1-flux-vs-argocd-architecture",
+  "title": "Argo CD as one application, Flux as a toolkit",
+  "alt": "Side-by-side comparison of Argo CD, an integrated application of an API server, a repository server and an application controller, against Flux, a toolkit of small controllers that each own custom resources, with each tool's drift and prune defaults beneath.",
+  "width": 1000,
+  "height": 640,
+  "elements": [
+    {
+      "id": "pl",
+      "type": "box",
+      "x": 20,
+      "y": 20,
+      "w": 470,
+      "h": 600,
+      "style": "panel"
+    },
+    {
+      "id": "pr",
+      "type": "box",
+      "x": 510,
+      "y": 20,
+      "w": 470,
+      "h": 600,
+      "style": "panel"
+    },
+    {
+      "id": "tl",
+      "type": "text",
+      "x": 20,
+      "y": 38,
+      "w": 470,
+      "align": "center",
+      "text": "Argo CD",
+      "fs": 20,
+      "color": "blue"
+    },
+    {
+      "id": "tr",
+      "type": "text",
+      "x": 510,
+      "y": 38,
+      "w": 470,
+      "align": "center",
+      "text": "Flux",
+      "fs": 20,
+      "color": "blue"
+    },
+    {
+      "id": "cl",
+      "type": "text",
+      "x": 20,
+      "y": 302,
+      "w": 470,
+      "align": "center",
+      "text": "Resulting behavior",
+      "fs": 15,
+      "color": "muted"
+    },
+    {
+      "id": "cr",
+      "type": "text",
+      "x": 510,
+      "y": 302,
+      "w": 470,
+      "align": "center",
+      "text": "Resulting behavior",
+      "fs": 15,
+      "color": "muted"
+    },
+    {
+      "id": "fl",
+      "type": "box",
+      "x": 40,
+      "y": 80,
+      "w": 430,
+      "h": 210,
+      "style": "neutral",
+      "label": "One integrated application",
+      "valign": "top",
+      "fs": 15,
+      "dashed": true
+    },
+    {
+      "id": "a1",
+      "type": "box",
+      "x": 55,
+      "y": 135,
+      "w": 125,
+      "h": 110,
+      "label": "API\nserver",
+      "style": "hub"
+    },
+    {
+      "id": "a2",
+      "type": "box",
+      "x": 195,
+      "y": 135,
+      "w": 125,
+      "h": 110,
+      "label": "Repository server\nrenders manifests",
+      "style": "controller",
+      "fs": 15
+    },
+    {
+      "id": "a3",
+      "type": "box",
+      "x": 335,
+      "y": 135,
+      "w": 120,
+      "h": 110,
+      "label": "Application controller",
+      "style": "controller",
+      "fs": 15
+    },
+    {
+      "id": "fr",
+      "type": "box",
+      "x": 530,
+      "y": 80,
+      "w": 430,
+      "h": 210,
+      "style": "neutral",
+      "label": "Each controller owns its own custom resources",
+      "valign": "top",
+      "fs": 15,
+      "dashed": true
+    },
+    {
+      "id": "f1",
+      "type": "box",
+      "x": 545,
+      "y": 135,
+      "w": 125,
+      "h": 110,
+      "label": "Small\ncontroller",
+      "style": "controller",
+      "fs": 15
+    },
+    {
+      "id": "f2",
+      "type": "box",
+      "x": 685,
+      "y": 135,
+      "w": 125,
+      "h": 110,
+      "label": "Small\ncontroller",
+      "style": "controller",
+      "fs": 15
+    },
+    {
+      "id": "f3",
+      "type": "box",
+      "x": 825,
+      "y": 135,
+      "w": 120,
+      "h": 110,
+      "label": "Small\ncontroller",
+      "style": "controller",
+      "fs": 15
+    },
+    {
+      "id": "dl",
+      "type": "box",
+      "x": 40,
+      "y": 345,
+      "w": 430,
+      "h": 120,
+      "label": "Drift: report\nReports OutOfSync; heals if enabled",
+      "style": "note",
+      "fs": 16
+    },
+    {
+      "id": "pl2",
+      "type": "box",
+      "x": 40,
+      "y": 485,
+      "w": 430,
+      "h": 120,
+      "label": "Prune: opt-in\nGuard against an empty source",
+      "style": "note",
+      "fs": 16
+    },
+    {
+      "id": "dr",
+      "type": "box",
+      "x": 530,
+      "y": 345,
+      "w": 430,
+      "h": 120,
+      "label": "Drift: enforce\nReverts manual edits each reconcile",
+      "style": "note",
+      "fs": 16
+    },
+    {
+      "id": "pr2",
+      "type": "box",
+      "x": 530,
+      "y": 485,
+      "w": 430,
+      "h": 120,
+      "label": "Prune: when enabled\nPer-object opt-out and a deletion policy",
+      "style": "note",
+      "fs": 16
+    }
+  ],
+  "caption": "Argo CD packages its API server, repository server and application controller as one integrated application, while Flux splits the work across small controllers that each own their own custom resources. The boxes below each tool show how that difference carries into the defaults for drift and pruning."
+}
