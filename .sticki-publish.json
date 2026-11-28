@@ -14,7 +14,8 @@
     "part-4-platform-abstractions",
     "part-5-platform-architecture-principles-and-operating-at-scale",
     "flux-ramp-up",
-    "crossplane-ramp-up"
+    "crossplane-ramp-up",
+    "resource-graphs-and-ordering"
   ],
   "url": "https://eshamay.github.io",
   "baseurl": "/k8s-platform-engineering",

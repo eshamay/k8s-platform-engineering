@@ -260,3 +260,6 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 - Judgment call: design contrasts were kept, such as Argo CD prune and self-heal being opt-in, fail-closed versus fail-open webhooks, and the Crossplane v1 versus v2 composite scope, stated without values or versions.
 - Judgment call: wikilink slugs that contain version, issue or stage words were left unchanged because slugs are link targets. A strict build reported no link warnings.
 - Limitation: Part 1 was read in full, and the other six documents were checked with pattern sweeps and context reads, so a subtle leftover could remain in prose that was not read line by line.
+
+## [2026-11-27] outputs | Resource Graphs and Ordering: Dependencies, Readiness and Convergence
+- Wrote outputs/resource-graphs-and-ordering.md using the ramp-up methodology. It is about 12,600 words in 13 top-level sections, and its status is draft, so the published site omits it until it is promoted.
