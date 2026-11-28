@@ -1,6 +1,6 @@
 export const meta = {
   name: 'write-ramp-up-output',
-  description: 'Write one new ramp-up document into outputs/ from a topic the wiki covers: evidence map, outline, parallel section drafts, assembly, four review lenses, fix, verify, lint, commit. Follows methodologies/writing-ramp-up-outputs.md. Args: {topic, slug, title, today, seedPages?}',
+  description: 'Write one new ramp-up document into outputs/ from a topic the wiki covers: evidence map, outline, parallel section drafts, assembly, four review lenses, fix, verify, lint, commit. Follows methodologies/writing-ramp-up-outputs.md. Args: {topic, slug, title, group?, today, seedPages?}',
   phases: [
     { title: 'Scope', detail: 'evidence map of principles, mechanisms, trade-offs, contrasts and lessons from the wiki' },
     { title: 'Outline', detail: 'section outline plus a critic pass' },
@@ -18,7 +18,8 @@ const SLUG = args && args.slug
 const TITLE = (args && args.title) || TOPIC
 const SEED = (args && args.seedPages) || []
 if (!TOPIC || !SLUG) throw new Error('args.topic and args.slug are required')
-const OUT = WIKI + '/outputs/' + SLUG + '.md'
+const GROUP = (args && args.group) || 'topics'   // outputs/<group>/<slug>.md; groups: k8s-platform-rampup, products, topics
+const OUT = WIKI + '/outputs/' + GROUP + '/' + SLUG + '.md'
 const TMP = '/tmp/ramp-' + SLUG
 const METHOD = WIKI + '/methodologies/writing-ramp-up-outputs.md'
 
@@ -255,7 +256,7 @@ if (verify && verify.verdict === 'fix' && verify.issues.length) {
 // ---------- Phase 6: finalize ----------
 phase('Finalize')
 const final = await agent(
-  'Finalize the new output ' + OUT + ' for the wiki at ' + WIKI + '. Read ' + WIKI + '/CLAUDE.md. Steps in order. 1. Run python3 -I ' + WIKI + '/bin/lint_outputs.py ' + OUT + ' and fix remaining errors in that one file by editing it (keep narrative prose; no revision wording); report the final result. 2. Run python3 -I ' + WIKI + '/bin/gh_links.py --check and python3 ' + WIKI + '/bin/build_site.py --strict from ' + WIKI + ' and report both (the document is status draft, so the site omits it; that is expected). 3. Add the slug "' + SLUG + '" to the end of the nav_order_stems list in ' + WIKI + '/.sticki-publish.json (keep valid JSON). 4. Add the page to ' + WIKI + '/index.md under the outputs section in the same style as the other outputs, noting it is a draft, and append to ' + WIKI + '/log.md an entry "## [' + TODAY + '] outputs | ' + TITLE + '" saying the document was written with the ramp-up methodology, its word count and section count. 5. Commit serially, staging explicit paths only, never git add -A, never --no-verify, never push: first git add outputs/' + SLUG + '.md and commit "outputs: add ' + SLUG + ' (draft)"; then git add index.md log.md .sticki-publish.json and commit "outputs: index and nav entries for ' + SLUG + '". Commits are signed automatically; do not change git config. Report the commit shas and any problem plainly.',
+  'Finalize the new output ' + OUT + ' for the wiki at ' + WIKI + '. Read ' + WIKI + '/CLAUDE.md. Steps in order. 1. Run python3 -I ' + WIKI + '/bin/lint_outputs.py ' + OUT + ' and fix remaining errors in that one file by editing it (keep narrative prose; no revision wording); report the final result. 2. Run python3 -I ' + WIKI + '/bin/gh_links.py --check and python3 ' + WIKI + '/bin/build_site.py --strict from ' + WIKI + ' and report both (the document is status draft, so the site omits it; that is expected). 3. Add the slug "' + SLUG + '" to the end of the nav_order_stems list in ' + WIKI + '/.sticki-publish.json (keep valid JSON), and make sure the group "' + GROUP + '" appears in the output_groups list of that file (add an entry with dir and a title-cased title if it is missing). 4. Add the page to ' + WIKI + '/index.md under the outputs section in the same style as the other outputs, noting it is a draft, and append to ' + WIKI + '/log.md an entry "## [' + TODAY + '] outputs | ' + TITLE + '" saying the document was written with the ramp-up methodology, its word count and section count. 5. Commit serially, staging explicit paths only, never git add -A, never --no-verify, never push: first git add outputs/' + GROUP + '/' + SLUG + '.md and commit "outputs: add ' + SLUG + ' (draft)"; then git add index.md log.md .sticki-publish.json and commit "outputs: index and nav entries for ' + SLUG + '". Commits are signed automatically; do not change git config. Report the commit shas and any problem plainly.',
   { label: 'finalize', phase: 'Finalize', schema: FINAL_SCHEMA, agentType: 'general-purpose' },
 )
 

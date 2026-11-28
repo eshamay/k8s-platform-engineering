@@ -11,6 +11,7 @@ export const meta = {
   ],
 }
 
+// NOTE: output paths in this script predate the group folders; documents now live in outputs/<group>/<slug>.md (see GROUP_OF in trim-outputs-to-principles.js).
 const WIKI = '/Users/eshamay/dev/wikis/k8s-platform-engineering'
 const TODAY = (args && args.today) || '2026-11-26'
 const BASE_SHA = (args && args.baseSha) || 'e744fc0'

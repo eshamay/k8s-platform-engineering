@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Lint outputs/*.md against the ramp-up methodology (methodologies/writing-ramp-up-outputs.md).
+"""Lint outputs/**/*.md against the ramp-up methodology (methodologies/writing-ramp-up-outputs.md).
 
-    python3 -I bin/lint_outputs.py                 lint every file in outputs/
+    python3 -I bin/lint_outputs.py                 lint every document under outputs/ (including group folders)
     python3 -I bin/lint_outputs.py outputs/x.md    lint specific files
     python3 -I bin/lint_outputs.py --warnings      also fail on warnings
 
@@ -158,8 +158,10 @@ def main(argv):
     warn_fail = "--warnings" in argv
     files = [a for a in argv[1:] if not a.startswith("--")]
     if not files:
-        d = os.path.join(ROOT, "outputs")
-        files = sorted(os.path.join(d, f) for f in os.listdir(d) if f.endswith(".md") and f != "index.md")
+        files = []
+        for dp, _dns, fns in os.walk(os.path.join(ROOT, "outputs")):
+            files += [os.path.join(dp, f) for f in fns if f.endswith(".md") and f != "index.md"]
+        files.sort()
     errors = warns = 0
     for f in files:
         f = f if os.path.isabs(f) else os.path.join(ROOT, f)
