@@ -22,7 +22,7 @@ k8s-platform-engineering/
 ├── comparisons/                # side-by-side analyses (Compositions vs kro, Flux vs Argo CD, ...)
 ├── decisions/                  # architecturally significant design choices (Nygard ADR template)
 ├── findings/                   # observations, pitfalls, and measurements
-├── outputs/                    # user-facing deliverables (tutorial series, ramp-up guides)
+├── outputs/                    # user-facing deliverables in group folders: k8s-platform-rampup/, products/, topics/ (each group is a sidebar section)
 ├── workflows/                  # re-runnable workflow scripts that build and extend this wiki
 ├── raw/                        # immutable source documents
 └── .sticki/                    # git-tracked machine-readable change surface

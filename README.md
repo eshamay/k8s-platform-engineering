@@ -59,4 +59,4 @@ Each published document expands in the left sidebar into its numbered sections. 
 
 ## Writing a new output
 
-New outputs follow `methodologies/writing-ramp-up-outputs.md`. Run the workflow with a topic and a slug (`workflows/write-ramp-up-output.js`, args `topic`, `slug`, `title`, `today`); it writes a draft into `outputs/`. Check any output with `python3 -I bin/lint_outputs.py`, which fails on versions, dates, issue and commit references, banned words and revision wording.
+New outputs follow `methodologies/writing-ramp-up-outputs.md`. Run the workflow with a topic, a slug and a group (`workflows/write-ramp-up-output.js`, args `topic`, `slug`, `title`, `group`, `today`); it writes a draft into `outputs/`. Check any output with `python3 -I bin/lint_outputs.py`, which fails on versions, dates, issue and commit references, banned words and revision wording.

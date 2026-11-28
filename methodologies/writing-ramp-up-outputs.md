@@ -84,6 +84,10 @@ Do not add a "getting started" or "remaining unknowns" section: the first teache
 
 H2 headings are stable once a document is published: they are cross-referenced by number and listed in the site sidebar.
 
+### Where the file goes
+
+Outputs live in group folders, and each group is a top-level section of the published site: `outputs/k8s-platform-rampup/` (the five-part ramp-up series), `outputs/products/` (one ramp-up guide per product, such as Flux and Crossplane), and `outputs/topics/` (stand-alone deep dives on a design topic; the default for a new document). The path is `outputs/<group>/<slug>.md`. A page's public URL stays `/outputs/<slug>/` whatever its group, and `output_groups` in `.sticki-publish.json` sets each group's sidebar title and order. A new group is a new folder plus an entry in that list.
+
 ## 7. Frontmatter and header
 
 ```yaml
@@ -111,11 +115,11 @@ The metadata header is a blockquote with `Audience`, `Purpose`, `Status`, `Creat
 3. **Draft.** Write each section as full-sentence prose from its outline entry and its pages. Assemble the sections, then read the whole for voice, transitions, repetition and term definitions at first use.
 4. **Review.** Four independent lenses: citation fidelity against the pages; the content filter (run `bin/lint_outputs.py`, then judge every hit and any passage that is product trivia rather than design); reader comprehension for the stated audience; prose, voice and structure.
 5. **Fix, then verify.** One editor applies the findings; an independent verifier re-reads the whole document and the lint output.
-6. **Publish.** Keep `status: draft` until the owner reads it, then change it to `active`, add the slug to `nav_order_stems` in `.sticki-publish.json`, and add it to `index.md` and `log.md`. Commit signed; push only when the owner says so.
+6. **Publish.** Keep `status: draft` until the owner reads it, then change it to `active`, put the file in its group folder, add the slug to `nav_order_stems` in `.sticki-publish.json`, and add it to `index.md` and `log.md`. Commit signed; push only when the owner says so.
 
 ## 9. Definition of done
 
-- `python3 -I bin/lint_outputs.py outputs/<slug>.md` reports no errors, and each warning has been read and judged.
+- `python3 -I bin/lint_outputs.py outputs/<group>/<slug>.md` reports no errors, and each warning has been read and judged.
 - Every wikilink resolves; every cited page says what the sentence says.
 - Each section teaches a principle and explains why; none is a list of facts.
 - A Kubernetes-fluent reader with no prior knowledge of the subject could follow it from the first section to the last without outside material.
