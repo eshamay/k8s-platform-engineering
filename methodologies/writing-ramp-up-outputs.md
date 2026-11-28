@@ -108,6 +108,10 @@ tags: []
 
 The metadata header is a blockquote with `Audience`, `Purpose`, `Status`, `Created`, `As of` and `Draws on` lines, each ending in `<br>`, followed by a short orienting paragraph. `Created` stays fixed; `As of` is bumped when the text changes.
 
+### Figures
+
+A figure is a diagram that shows topology or design, never versions or values. Each figure is two files in `outputs/figures/`: an editable `<name>.excalidraw` (open it at excalidraw.com or in Obsidian) and the `<name>.svg` render that the document embeds, both produced from one layout script so they cannot drift. Validate the `.excalidraw` JSON with `jq` (unique ids, bindings that resolve) and look at a rendered preview before inserting it. In the document, introduce the figure in a sentence of prose, embed it with a relative path and descriptive alt text, and give it a caption on the next line in the form `*Figure N. ...*`, numbered in order within the document. The site build copies embedded images into the published site.
+
 ## 8. Process
 
 1. **Scope.** Search the wiki for the topic and build an evidence map: principles, mechanisms, design choices, trade-offs, design contrasts between tools, incidents with an architectural lesson, each with its supporting pages, plus the questions the evidence leaves open, framed as design questions.

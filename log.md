@@ -267,3 +267,7 @@ Structural lint over 927 content pages (concepts 27, entities 37, sources 67, ex
 ## [2026-11-27] housekeeping | outputs grouped into section folders
 - outputs moved into outputs/k8s-platform-rampup/, outputs/products/ and outputs/topics/; each group is a top-level sidebar section (K8S Platform Rampup, Products, Topics) and document URLs are unchanged
 - links to the documents, the lint, the writing workflow and the maintenance workflows were updated for the new paths
+
+## [2026-11-27] outputs | Figure 1 in Part 1
+- added an Excalidraw diagram of the four GitOps delivery topologies (Argo CD hub, argocd-agent, Flux per-cluster controllers, Flux remote Kustomization) as outputs/figures/gitops-delivery-topologies.excalidraw and .svg, embedded as Figure 1 in Part 1
+- the site build now copies embedded images into the published site
