@@ -978,14 +978,14 @@ Categorized catalog of every page in the wiki. Updated on every ingest.
 
 ## Outputs
 
-- [outputs/part-1-core-architectural-principles](outputs/part-1-core-architectural-principles.md) — tutorial Part 1: why Kubernetes works as a universal control plane (active)
-- [outputs/part-2-krm-and-api-machinery](outputs/part-2-krm-and-api-machinery.md) — tutorial Part 2: the Kubernetes Resource Model and API machinery (active)
-- [outputs/part-3-controller-and-operator-mechanics](outputs/part-3-controller-and-operator-mechanics.md) — tutorial Part 3: how controllers and operators work internally (active)
-- [outputs/part-4-platform-abstractions](outputs/part-4-platform-abstractions.md) — tutorial Part 4: platform abstractions from managed resources to resource graphs (active)
-- [outputs/part-5-platform-architecture-principles-and-operating-at-scale](outputs/part-5-platform-architecture-principles-and-operating-at-scale.md) — tutorial Part 5: principles of good platform architecture and operating at scale (active)
-- [outputs/flux-ramp-up](outputs/flux-ramp-up.md) — Flux ramp-up guide: GitOps Toolkit architecture, operation, and design principles (active)
-- [outputs/crossplane-ramp-up](outputs/crossplane-ramp-up.md) — Crossplane ramp-up guide: compositions, providers, and design principles for control-plane platforms (active)
-- [outputs/resource-graphs-and-ordering](outputs/resource-graphs-and-ordering.md) — Resource Graphs and Ordering: dependencies, readiness and convergence (draft)
+- [outputs/k8s-platform-rampup/part-1-core-architectural-principles](outputs/k8s-platform-rampup/part-1-core-architectural-principles.md) — tutorial Part 1: why Kubernetes works as a universal control plane (active)
+- [outputs/k8s-platform-rampup/part-2-krm-and-api-machinery](outputs/k8s-platform-rampup/part-2-krm-and-api-machinery.md) — tutorial Part 2: the Kubernetes Resource Model and API machinery (active)
+- [outputs/k8s-platform-rampup/part-3-controller-and-operator-mechanics](outputs/k8s-platform-rampup/part-3-controller-and-operator-mechanics.md) — tutorial Part 3: how controllers and operators work internally (active)
+- [outputs/k8s-platform-rampup/part-4-platform-abstractions](outputs/k8s-platform-rampup/part-4-platform-abstractions.md) — tutorial Part 4: platform abstractions from managed resources to resource graphs (active)
+- [outputs/k8s-platform-rampup/part-5-platform-architecture-principles-and-operating-at-scale](outputs/k8s-platform-rampup/part-5-platform-architecture-principles-and-operating-at-scale.md) — tutorial Part 5: principles of good platform architecture and operating at scale (active)
+- [outputs/products/flux-ramp-up](outputs/products/flux-ramp-up.md) — Flux ramp-up guide: GitOps Toolkit architecture, operation, and design principles (active)
+- [outputs/products/crossplane-ramp-up](outputs/products/crossplane-ramp-up.md) — Crossplane ramp-up guide: compositions, providers, and design principles for control-plane platforms (active)
+- [outputs/topics/resource-graphs-and-ordering](outputs/topics/resource-graphs-and-ordering.md) — Resource Graphs and Ordering: dependencies, readiness and convergence (draft)
 - [findings/kro-applies-template-resources-with-server-side-apply-and-force-and-applies-patch-contributions-without-force](findings/kro-applies-template-resources-with-server-side-apply-and-force-and-applies-patch-contributions-without-force.md) — kro managers, force, and conflict detection (active)
 - [findings/the-ack-runtime-sends-merge-patches-and-sets-no-server-side-apply-field-manager](findings/the-ack-runtime-sends-merge-patches-and-sets-no-server-side-apply-field-manager.md) — ACK runtime uses merge patches (active)
 - [findings/config-connector-writes-with-update-under-cnrm-controller-manager-and-reads-other-managers-fields-as-user-intent](findings/config-connector-writes-with-update-under-cnrm-controller-manager-and-reads-other-managers-fields-as-user-intent.md) — Update writes and managedFields reads (active)
