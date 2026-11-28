@@ -2,4 +2,11 @@
 /* Section lists under each document in the sidebar (see site_overlay/_includes/components/nav/links.html). */
 .site-nav .nav-sections .nav-list-link { font-size: 0.8125rem; line-height: 1.35; padding-top: 0.3rem; padding-bottom: 0.3rem; }
 .site-nav .nav-sections .nav-list-link.current-section { font-weight: 600; }
+/* The site title is long enough to wrap onto two lines in the sidebar. The theme fixes the header
+   height, so a wrapped title overflows past the top of the page; let the header grow instead. */
+.site-header { min-height: 4rem; }
+.site-title { height: auto; line-height: 1.25; padding-top: 0.75rem; padding-bottom: 0.75rem; }
+@media (min-width: 50rem) {
+  .site-header { height: auto; max-height: none; }
+}
 </style>
